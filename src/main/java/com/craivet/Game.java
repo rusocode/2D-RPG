@@ -1,12 +1,11 @@
 package com.craivet;
 
 import com.craivet.entity.Player;
-import com.craivet.gfx.Assets;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class GamePanel extends JPanel implements Runnable {
+public class Game extends JPanel implements Runnable {
 
 	// Screen settings
 	final int originalTileSize = 16; // 16x16 tile
@@ -25,7 +24,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	final int fps = 60;
 
-	public GamePanel() {
+	public Game() {
 		setPreferredSize(new Dimension(screenWidth, screenHeight));
 		setBackground(Color.black);
 		// Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)

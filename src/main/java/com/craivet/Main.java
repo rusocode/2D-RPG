@@ -10,7 +10,7 @@ public class Main {
 		window.setResizable(false);
 		window.setTitle("2D Game");
 
-		GamePanel gamePanel = new GamePanel();
+		Game gamePanel = new Game();
 		window.add(gamePanel);
 		window.pack(); // Ajusta el tamaño de la ventana al tamaño y diseño preferidos de sus subcomponentes (=GamePanel)
 		window.setLocationRelativeTo(null);

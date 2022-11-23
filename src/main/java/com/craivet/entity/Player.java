@@ -3,7 +3,7 @@ package com.craivet.entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import com.craivet.GamePanel;
+import com.craivet.Game;
 import com.craivet.KeyHandler;
 import com.craivet.gfx.Assets;
 
@@ -11,11 +11,11 @@ import static com.craivet.utils.Constants.*;
 
 public class Player extends Entity {
 
-	GamePanel gp;
+	Game game;
 	KeyHandler key;
 
-	public Player(GamePanel gp, KeyHandler key) {
-		this.gp = gp;
+	public Player(Game game, KeyHandler key) {
+		this.game = game;
 		this.key = key;
 		setDefaultValues();
 		getPlayerImage();
@@ -29,15 +29,15 @@ public class Player extends Entity {
 	}
 
 	public void getPlayerImage() {
-		BufferedImage[] playerImages = Assets.getImages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
-		down1 = playerImages[0];
-		down2 = playerImages[1];
-		up1 = playerImages[2];
-		up2 = playerImages[3];
-		left1 = playerImages[4];
-		left2 = playerImages[5];
-		right1 = playerImages[6];
-		right2 = playerImages[7];
+		BufferedImage[] subimages = Assets.getSubimages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
+		down1 = subimages[0];
+		down2 = subimages[1];
+		up1 = subimages[2];
+		up2 = subimages[3];
+		left1 = subimages[4];
+		left2 = subimages[5];
+		right1 = subimages[6];
+		right2 = subimages[7];
 	}
 
 	public void update() {
@@ -86,7 +86,7 @@ public class Player extends Entity {
 				if (spriteNum == 2) image = right2;
 				break;
 		}
-		g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
+		g2.drawImage(image, x, y, game.tileSize, game.tileSize, null);
 	}
 
 }
