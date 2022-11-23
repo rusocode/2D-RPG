@@ -71,11 +71,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 	}
 
-
-	private void init() {
-		Assets.init();
-	}
-
 	public void update() {
 		player.update();
 
@@ -89,7 +84,6 @@ public class GamePanel extends JPanel implements Runnable {
 		player.draw(g2);
 		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
 	}
-
 
 	public void startGameThread() {
 		gameThread = new Thread(this);

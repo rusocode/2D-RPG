@@ -1,11 +1,13 @@
 package com.craivet.entity;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import com.craivet.GamePanel;
 import com.craivet.KeyHandler;
 import com.craivet.gfx.Assets;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
+import static com.craivet.utils.Constants.*;
 
 public class Player extends Entity {
 
@@ -27,15 +29,15 @@ public class Player extends Entity {
 	}
 
 	public void getPlayerImage() {
-		Assets.initTexturePlayer();
-		down1 = Assets.playerDown[0];
-		down2 = Assets.playerDown[1];
-		up1 = Assets.playerUp[0];
-		up2 = Assets.playerUp[1];
-		left1 = Assets.playerLeft[0];
-		left2 = Assets.playerLeft[1];
-		right1 = Assets.playerRight[0];
-		right2 = Assets.playerRight[1];
+		BufferedImage[] playerImages = Assets.getImages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
+		down1 = playerImages[0];
+		down2 = playerImages[1];
+		up1 = playerImages[2];
+		up2 = playerImages[3];
+		left1 = playerImages[4];
+		left2 = playerImages[5];
+		right1 = playerImages[6];
+		right2 = playerImages[7];
 	}
 
 	public void update() {

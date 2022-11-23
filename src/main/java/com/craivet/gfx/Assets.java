@@ -1,64 +1,35 @@
 package com.craivet.gfx;
 
-import com.craivet.utils.Utils;
-
 import java.awt.image.BufferedImage;
+
+import com.craivet.utils.Utils;
 
 public class Assets {
 
 	public static SpriteSheet player = new SpriteSheet(Utils.loadImage("textures/player.png"));
-	public static BufferedImage[] playerDown, playerUp, playerLeft, playerRight;
+
+	/**
+	 * Obtiene las subimagenes del sprite sheet especificado.
+	 *
+	 * @param ss     el sprite sheet que contiene las imagenes agrupadas.
+	 * @param width  el ancho de la subimagen.
+	 * @param height el alto de la subimagen.
+	 * @return una matriz con las subimagenes del sprite sheet.
+	 *
+	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
+	 */
+	public static BufferedImage[] getImages(SpriteSheet ss, int width, int height) {
+		int col = ss.getWidth() / width;
+		int row = ss.getHeight() / height;
+		BufferedImage[] images = new BufferedImage[col * row];
+		int i = 0;
+		for (int y = 0; y < row; y++)
+			for (int x = 0; x < col; x++)
+				images[i++] = ss.crop(x * width, y * height, width, height);
+		return images;
+	}
 
 	private Assets() {
-	}
-
-	/**
-	 * Inicializa los sprites del SpriteSheet.
-	 */
-	public static void init() {
-		// initTexturePlayer()
-	}
-
-	/**
-	 * Reeplaza las coordenadas manuales:
-	 * <pre>{@code
-	 * playerDown[0] = player.crop(0, 0, 16, 16);
-	 * playerDown[1] = player.crop(16, 0, 16, 16);
-	 * playerUp[0] = player.crop(0, 16, 16, 16);
-	 * playerUp[1] = player.crop(16, 16, 16, 16);
-	 * playerLeft[0] = player.crop(0, 32, 16, 16);
-	 * playerLeft[1] = player.crop(16, 32, 16, 16);
-	 * playerRight[0] = player.crop(0, 48, 16, 16);
-	 * playerRight[1] = player.crop(16, 48, 16, 16);
-	 * }</pre>
-	 */
-	public static void initTexturePlayer() {
-		playerDown = new BufferedImage[2];
-		playerUp = new BufferedImage[2];
-		playerLeft = new BufferedImage[2];
-		playerRight = new BufferedImage[2];
-
-		int playerWidth = 16;
-		int playerHeight = 16;
-
-		for (int y = 0; y < 4; y++) {
-			for (int x = 0; x < 2; x++) {
-				switch (y) { // Controla las filas
-					case 0:
-						playerDown[x] = player.crop(x * playerWidth, 0, playerWidth, playerHeight);
-						break;
-					case 1:
-						playerUp[x] = player.crop(x * playerWidth, y * playerHeight, playerWidth, playerHeight);
-						break;
-					case 2:
-						playerLeft[x] = player.crop(x * playerWidth, y * playerHeight, playerWidth, playerHeight);
-						break;
-					case 3:
-						playerRight[x] = player.crop(x * playerWidth, y * playerHeight, playerWidth, playerHeight);
-						break;
-				}
-			}
-		}
 	}
 
 }
