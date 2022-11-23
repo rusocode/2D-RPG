@@ -1,5 +1,8 @@
 package com.craivet;
 
+import com.craivet.entity.Player;
+import com.craivet.gfx.Assets;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,7 +12,7 @@ public class GamePanel extends JPanel implements Runnable {
 	final int originalTileSize = 16; // 16x16 tile
 	final int scale = 3;
 
-	final int tileSize = originalTileSize * scale; // 48x48 tile
+	public final int tileSize = originalTileSize * scale; // 48x48 tile
 	// ¿Cuantos tiles se pueden mostrar en una sola pantalla horizontal y verticalmente?
 	final int maxScreenCol = 16;
 	final int maxScreenRow = 12;
@@ -18,11 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	Thread gameThread;
 	KeyHandler keyHandler = new KeyHandler();
-
-	// Establece la posicion del player por defecto
-	int playerX = 100;
-	int playerY = 100;
-	int playerSpeed = 4;
+	Player player = new Player(this, keyHandler);
 
 	final int fps = 60;
 
@@ -37,6 +36,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
+
+		// init();
 
 		// Intervalo de tiempo entre cada frame aplicando la unidad de tiempo en nanosegundos y 60 fps
 		double drawInterval = 1e9 / fps;
@@ -71,12 +72,12 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 
+	private void init() {
+		Assets.init();
+	}
+
 	public void update() {
-		// Sacando los "else" el player se puede mover en diagonal
-		if (keyHandler.up) playerY -= playerSpeed;
-		else if (keyHandler.down) playerY += playerSpeed;
-		else if (keyHandler.left) playerX -= playerSpeed;
-		else if (keyHandler.right) playerX += playerSpeed;
+		player.update();
 
 	}
 
@@ -85,10 +86,8 @@ public class GamePanel extends JPanel implements Runnable {
 		/* La clase Graphics2D extiende la clase Graphics para proporcionar un control mas sofisticado sobre la
 		 * geometria, las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
 		Graphics2D g2 = (Graphics2D) g;
-		g2.setColor(Color.white);
-		g2.fillRect(playerX, playerY, tileSize, tileSize);
-		// Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
-		g2.dispose();
+		player.draw(g2);
+		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
 	}
 
 
