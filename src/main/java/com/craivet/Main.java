@@ -12,12 +12,11 @@ public class Main {
 
 		GamePanel gamePanel = new GamePanel();
 		window.add(gamePanel);
-
-		// Ajusta el tamaño de la ventana al tamaño y diseño preferidos de sus subcomponentes (=GamePanel)
-		window.pack();
-
+		window.pack(); // Ajusta el tamaño de la ventana al tamaño y diseño preferidos de sus subcomponentes (=GamePanel)
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
+
+		gamePanel.startGameThread();
 	}
 
 
