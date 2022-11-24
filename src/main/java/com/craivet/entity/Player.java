@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.craivet.Game;
-import com.craivet.KeyHandler;
+import com.craivet.input.KeyHandler;
 import com.craivet.gfx.Assets;
 
 import static com.craivet.utils.Constants.*;

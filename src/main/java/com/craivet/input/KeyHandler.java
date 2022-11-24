@@ -1,4 +1,4 @@
-package com.craivet;
+package com.craivet.input;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;

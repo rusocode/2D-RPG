@@ -1,9 +1,10 @@
 package com.craivet;
 
-import com.craivet.entity.Player;
-
 import javax.swing.*;
 import java.awt.*;
+
+import com.craivet.entity.Player;
+import com.craivet.input.KeyHandler;
 
 public class Game extends JPanel implements Runnable {
 
@@ -35,8 +36,6 @@ public class Game extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
-
-		// init();
 
 		// Intervalo de tiempo entre cada frame aplicando la unidad de tiempo en nanosegundos y 60 fps
 		double drawInterval = 1e9 / fps;
