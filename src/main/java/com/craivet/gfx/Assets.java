@@ -10,6 +10,10 @@ public class Assets {
 	public static BufferedImage grass = Utils.loadImage("textures/tiles/grass.png");
 	public static BufferedImage wall = Utils.loadImage("textures/tiles/wall.png");
 	public static BufferedImage water = Utils.loadImage("textures/tiles/water.png");
+	public static BufferedImage earth = Utils.loadImage("textures/tiles/earth.png");
+	public static BufferedImage tree = Utils.loadImage("textures/tiles/tree.png");
+	public static BufferedImage sand = Utils.loadImage("textures/tiles/sand.png");
+
 
 	/**
 	 * Obtiene las subimagenes del sprite sheet.

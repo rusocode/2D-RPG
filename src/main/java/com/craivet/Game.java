@@ -18,13 +18,19 @@ public class Game extends JPanel implements Runnable {
 	// ¿Cuantos tiles se pueden mostrar en una sola pantalla horizontal y verticalmente?
 	public final int maxScreenCol = 16;
 	public final int maxScreenRow = 12;
-	final int screenWidth = tileSize * maxScreenCol; // 768 pixels
-	final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
+	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+
+	// World settings
+	public final int maxWorldCol = 50;
+	public final int maxWorldRow = 50;
+	public final int worldWidth = tileSize * maxWorldCol;
+	public final int worldHeight = tileSize * maxWorldRow;
 
 	Thread gameThread;
 	KeyHandler keyHandler = new KeyHandler();
 	TileManager tileManager = new TileManager(this);
-	Player player = new Player(this, keyHandler);
+	public Player player = new Player(this, keyHandler);
 
 	final int fps = 60;
 

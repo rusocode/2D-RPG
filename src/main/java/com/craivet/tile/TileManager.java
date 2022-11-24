@@ -18,9 +18,9 @@ public class TileManager {
 	public TileManager(Game game) {
 		this.game = game;
 		tile = new Tile[10];
-		map = new int[game.maxScreenCol][game.maxScreenRow];
+		map = new int[game.maxWorldCol][game.maxWorldRow];
 		getTileImage();
-		loadMap("maps/map0.txt");
+		loadMap("maps/world01.txt");
 	}
 
 	public void getTileImage() {
@@ -30,15 +30,21 @@ public class TileManager {
 		tile[1].image = Assets.wall;
 		tile[2] = new Tile();
 		tile[2].image = Assets.water;
+		tile[3] = new Tile();
+		tile[3].image = Assets.earth;
+		tile[4] = new Tile();
+		tile[4].image = Assets.tree;
+		tile[5] = new Tile();
+		tile[5].image = Assets.sand;
 	}
 
 	public void loadMap(String path) {
 		try { // TODO try-with-resources
 			BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))));
-			for (int row = 0; row < game.maxScreenRow; row++) {
+			for (int row = 0; row < game.maxWorldRow; row++) {
 				String line = br.readLine();
-				String[] numbers = line.split(" "); // Divide la linea con el delimitante especificado y obtiene los numeros de tile uno por uno
-				for (int col = 0; col < game.maxScreenCol; col++)
+				String[] numbers = line.split(" ");
+				for (int col = 0; col < game.maxWorldCol; col++)
 					map[col][row] = Integer.parseInt(numbers[col]);
 			}
 			br.close();
@@ -48,17 +54,20 @@ public class TileManager {
 	}
 
 	/**
-	 * Dibuja los tiles uno por uno usando la matriz para obtenerlos.
+	 * Dibuja los tiles aplicando el desplazamiento a cada uno.
 	 */
 	public void draw(Graphics2D g2) {
-		int x = 0, y = 0;
-		for (int row = 0; row < game.maxScreenRow; row++) {
-			for (int col = 0; col < game.maxScreenCol; col++) {
-				g2.drawImage(tile[map[col][row]].image, x, y, game.tileSize, game.tileSize, null);
-				x += game.tileSize;
+		for (int row = 0; row < game.maxWorldRow; row++) {
+			for (int col = 0; col < game.maxWorldCol; col++) {
+				int worldX = col * game.tileSize;
+				int worldY = row * game.tileSize;
+				/* Resta la posicion del player (en el mundo) al tile y suma los desplazamientos de la pantalla para que
+				 * quede en el centro de esta. Este desplazamiento compensa la diferencia y obtiene las coordenadas
+				 * correctas para los tiles en la pantalla. */
+				int screenX = worldX - game.player.worldX + game.player.screenX;
+				int screenY = worldY - game.player.worldY + game.player.screenY;
+				g2.drawImage(tile[map[col][row]].image, screenX, screenY, game.tileSize, game.tileSize, null);
 			}
-			x = 0;
-			y += game.tileSize;
 		}
 	}
 

@@ -14,16 +14,24 @@ public class Player extends Entity {
 	Game game;
 	KeyHandler key;
 
+	public final int screenX;
+	public final int screenY;
+
 	public Player(Game game, KeyHandler key) {
 		this.game = game;
 		this.key = key;
+
+		// Posiciona al player en el centro de la pantalla
+		screenX = game.screenWidth / 2 - (game.tileSize / 2);
+		screenY = game.screenHeight / 2 - (game.tileSize / 2);
+
 		setDefaultValues();
 		getPlayerImage();
 	}
 
 	public void setDefaultValues() {
-		x = 100;
-		y = 100;
+		worldX = game.tileSize * 23;
+		worldY = game.tileSize * 21;
 		speed = 4;
 		direction = "down"; // Direccion por defecto
 	}
@@ -44,16 +52,16 @@ public class Player extends Entity {
 		if (key.s || key.w || key.a || key.d) { // Evita que el player se mueva cuando no se presiono ninguna tecla
 			if (key.s) {
 				direction = "down";
-				y += speed;
+				worldY += speed;
 			} else if (key.w) {
 				direction = "up";
-				y -= speed;
+				worldY -= speed;
 			} else if (key.a) {
 				direction = "left";
-				x -= speed;
-			} else if (key.d) {
+				worldX -= speed;
+			} else {
 				direction = "right";
-				x += speed;
+				worldX += speed;
 			}
 			// Funciona como Timer para las animaciones
 			spriteCounter++;
@@ -62,7 +70,7 @@ public class Player extends Entity {
 				else if (spriteNum == 2) spriteNum = 1;
 				spriteCounter = 0;
 			}
-		}
+		} else spriteNum = 1; // Vuelve al sprite inicial (movimiento natural)
 	}
 
 	public void draw(Graphics2D g2) {
@@ -86,7 +94,7 @@ public class Player extends Entity {
 				if (spriteNum == 2) image = right2;
 				break;
 		}
-		g2.drawImage(image, x, y, game.tileSize, game.tileSize, null);
+		g2.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
 	}
 
 }
