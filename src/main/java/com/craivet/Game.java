@@ -4,7 +4,9 @@ import javax.swing.*;
 import java.awt.*;
 
 import com.craivet.entity.Player;
+import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
+import com.craivet.tile.TileManager;
 
 public class Game extends JPanel implements Runnable {
 
@@ -14,13 +16,14 @@ public class Game extends JPanel implements Runnable {
 
 	public final int tileSize = originalTileSize * scale; // 48x48 tile
 	// ¿Cuantos tiles se pueden mostrar en una sola pantalla horizontal y verticalmente?
-	final int maxScreenCol = 16;
-	final int maxScreenRow = 12;
+	public final int maxScreenCol = 16;
+	public final int maxScreenRow = 12;
 	final int screenWidth = tileSize * maxScreenCol; // 768 pixels
 	final int screenHeight = tileSize * maxScreenRow; // 576 pixels
 
 	Thread gameThread;
 	KeyHandler keyHandler = new KeyHandler();
+	TileManager tileManager = new TileManager(this);
 	Player player = new Player(this, keyHandler);
 
 	final int fps = 60;
@@ -79,6 +82,7 @@ public class Game extends JPanel implements Runnable {
 		/* La clase Graphics2D extiende la clase Graphics para proporcionar un control mas sofisticado sobre la
 		 * geometria, las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
 		Graphics2D g2 = (Graphics2D) g;
+		tileManager.draw(g2);
 		player.draw(g2);
 		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
 	}
