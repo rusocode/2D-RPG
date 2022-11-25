@@ -39,15 +39,13 @@ public class TileManager {
 	}
 
 	public void loadMap(String path) {
-		try { // TODO try-with-resources
-			BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))));
+		try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
 			for (int row = 0; row < game.maxWorldRow; row++) {
 				String line = br.readLine();
 				String[] numbers = line.split(" ");
 				for (int col = 0; col < game.maxWorldCol; col++)
 					map[col][row] = Integer.parseInt(numbers[col]);
 			}
-			br.close();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

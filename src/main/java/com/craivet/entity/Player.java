@@ -32,7 +32,7 @@ public class Player extends Entity {
 	public void setDefaultValues() {
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
-		speed = 4;
+		speed = 3;
 		direction = "down"; // Direccion por defecto
 	}
 
