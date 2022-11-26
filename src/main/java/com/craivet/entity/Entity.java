@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 /**
  * Almacena variables que se utilizaran en las clases de player, monster y NPC.
  *
- * <p>Las coordenadas worldX y screenX son diferentes.
+ * <p>Las coordenadas worldX y screenX no son lo mismo.
  */
 
 public abstract class Entity {

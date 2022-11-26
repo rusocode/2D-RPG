@@ -7,6 +7,7 @@ import com.craivet.utils.Utils;
 public class Assets {
 
 	public static SpriteSheet player = new SpriteSheet(Utils.loadImage("textures/entity/player.png"));
+	// Tiles
 	public static BufferedImage grass = Utils.loadImage("textures/tiles/grass.png");
 	public static BufferedImage wall = Utils.loadImage("textures/tiles/wall.png");
 	public static BufferedImage water = Utils.loadImage("textures/tiles/water.png");

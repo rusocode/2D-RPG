@@ -61,10 +61,17 @@ public class TileManager {
 				int worldY = row * game.tileSize;
 				/* Resta la posicion del player (en el mundo) al tile y suma los desplazamientos de la pantalla para que
 				 * quede en el centro de esta. Este desplazamiento compensa la diferencia y obtiene las coordenadas
-				 * correctas para los tiles en la pantalla. */
-				int screenX = worldX - game.player.worldX + game.player.screenX;
-				int screenY = worldY - game.player.worldY + game.player.screenY;
-				g2.drawImage(tile[map[col][row]].image, screenX, screenY, game.tileSize, game.tileSize, null);
+				 * correctas para los tiles en la pantalla. Los tiles se dibujan en base al "movimiento" del player. El
+				 * player se mantiene estatico en el centro de la pantalla. */
+				int screenX = (worldX - game.player.worldX) + game.player.screenX;
+				int screenY = (worldY - game.player.worldY) + game.player.screenY;
+				// Dibuja los tiles que estan dentro de la camara para una mejor eficiencia
+				if (worldX + game.tileSize > game.player.worldX - game.player.screenX &&
+						worldX - game.tileSize < game.player.worldX + game.player.screenX &&
+						worldY + game.tileSize > game.player.worldY - game.player.screenY &&
+						worldY - game.tileSize < game.player.worldY + game.player.screenY) {
+					g2.drawImage(tile[map[col][row]].image, screenX, screenY, game.tileSize, game.tileSize, null);
+				}
 			}
 		}
 	}

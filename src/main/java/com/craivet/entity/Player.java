@@ -14,10 +14,11 @@ public class Player extends Entity {
 	Game game;
 	KeyHandler key;
 
+	// El player permanece fijo en el centro de la pantalla
 	public final int screenX;
 	public final int screenY;
 
-	public Player(Game game, KeyHandler key) {
+	public Player(Game game, KeyHandler key) { // -1.104
 		this.game = game;
 		this.key = key;
 
@@ -30,6 +31,7 @@ public class Player extends Entity {
 	}
 
 	public void setDefaultValues() {
+		// Posiciona al player en el centro del mundo
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
 		speed = 3;
