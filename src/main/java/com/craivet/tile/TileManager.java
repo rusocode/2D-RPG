@@ -12,8 +12,9 @@ import com.craivet.gfx.Assets;
 public class TileManager {
 
 	Game game;
-	int[][] map; // Los tiles se almacenan en esta matriz
-	Tile[] tile;
+	// TODO Nombre world seria mas logico
+	public int[][] map; // Los tiles se almacenan en esta matriz
+	public Tile[] tile;
 
 	public TileManager(Game game) {
 		this.game = game;
@@ -27,13 +28,21 @@ public class TileManager {
 		tile[0] = new Tile();
 		tile[0].image = Assets.grass;
 		tile[1] = new Tile();
+
 		tile[1].image = Assets.wall;
+		tile[1].collision = true;
+
 		tile[2] = new Tile();
 		tile[2].image = Assets.water;
+		tile[2].collision = true;
+
 		tile[3] = new Tile();
 		tile[3].image = Assets.earth;
+
 		tile[4] = new Tile();
 		tile[4].image = Assets.tree;
+		tile[4].collision = true;
+
 		tile[5] = new Tile();
 		tile[5].image = Assets.sand;
 	}

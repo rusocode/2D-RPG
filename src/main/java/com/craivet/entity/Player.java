@@ -18,13 +18,19 @@ public class Player extends Entity {
 	public final int screenX;
 	public final int screenY;
 
-	public Player(Game game, KeyHandler key) { // -1.104
+	public Player(Game game, KeyHandler key) {
 		this.game = game;
 		this.key = key;
 
 		// Posiciona al player en el centro de la pantalla
 		screenX = game.screenWidth / 2 - (game.tileSize / 2);
 		screenY = game.screenHeight / 2 - (game.tileSize / 2);
+
+		solidArea = new Rectangle();
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidArea.width = 32;
+		solidArea.height = 32;
 
 		setDefaultValues();
 		getPlayerImage();
@@ -52,19 +58,33 @@ public class Player extends Entity {
 
 	public void update() {
 		if (key.s || key.w || key.a || key.d) { // Evita que el player se mueva cuando no se presiono ninguna tecla
-			if (key.s) {
-				direction = "down";
-				worldY += speed;
-			} else if (key.w) {
-				direction = "up";
-				worldY -= speed;
-			} else if (key.a) {
-				direction = "left";
-				worldX -= speed;
-			} else {
-				direction = "right";
-				worldX += speed;
+
+			if (key.s) direction = "down";
+			else if (key.w) direction = "up";
+			else if (key.a) direction = "left";
+			else direction = "right";
+
+			collisionOn = false;
+			game.cChecker.checkTile(this);
+
+			// Si no hay colision, el player se puede mover
+			if (!collisionOn) {
+				switch (direction) {
+					case "down":
+						worldY += speed;
+						break;
+					case "up":
+						worldY -= speed;
+						break;
+					case "left":
+						worldX -= speed;
+						break;
+					case "right":
+						worldX += speed;
+						break;
+				}
 			}
+
 			// Funciona como Timer para las animaciones
 			spriteCounter++;
 			if (spriteCounter > 10 - speed) {

@@ -4,7 +4,6 @@ import javax.swing.*;
 import java.awt.*;
 
 import com.craivet.entity.Player;
-import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.TileManager;
 
@@ -30,6 +29,7 @@ public class Game extends JPanel implements Runnable {
 	Thread gameThread;
 	KeyHandler keyHandler = new KeyHandler();
 	TileManager tileManager = new TileManager(this);
+	public CollisionChecker cChecker = new CollisionChecker(this);
 	public Player player = new Player(this, keyHandler);
 
 	final int fps = 60;
