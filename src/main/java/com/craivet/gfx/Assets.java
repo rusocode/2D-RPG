@@ -6,7 +6,9 @@ import com.craivet.utils.Utils;
 
 public class Assets {
 
+	// Entitys
 	public static SpriteSheet player = new SpriteSheet(Utils.loadImage("textures/entity/player.png"));
+
 	// Tiles
 	public static BufferedImage grass = Utils.loadImage("textures/tiles/grass.png");
 	public static BufferedImage wall = Utils.loadImage("textures/tiles/wall.png");
@@ -15,6 +17,10 @@ public class Assets {
 	public static BufferedImage tree = Utils.loadImage("textures/tiles/tree.png");
 	public static BufferedImage sand = Utils.loadImage("textures/tiles/sand.png");
 
+	// Objects
+	public static BufferedImage key = Utils.loadImage("textures/objs/key.png");
+	public static BufferedImage door = Utils.loadImage("textures/objs/door.png");
+	public static BufferedImage chest = Utils.loadImage("textures/objs/chest.png");
 
 	/**
 	 * Obtiene las subimagenes del sprite sheet.

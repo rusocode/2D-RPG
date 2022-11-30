@@ -5,6 +5,7 @@ import java.awt.*;
 
 import com.craivet.entity.Player;
 import com.craivet.input.KeyHandler;
+import com.craivet.object.SuperObject;
 import com.craivet.tile.TileManager;
 
 public class Game extends JPanel implements Runnable {
@@ -30,7 +31,9 @@ public class Game extends JPanel implements Runnable {
 	KeyHandler keyHandler = new KeyHandler();
 	TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
+	public AssetSetter aSetter = new AssetSetter(this);
 	public Player player = new Player(this, keyHandler);
+	public SuperObject[] objs = new SuperObject[10];
 
 	final int fps = 60;
 
@@ -45,6 +48,8 @@ public class Game extends JPanel implements Runnable {
 
 	@Override
 	public void run() {
+
+		setup();
 
 		// Intervalo de tiempo entre cada frame aplicando la unidad de tiempo en nanosegundos y 60 fps
 		double drawInterval = 1e9 / fps;
@@ -92,6 +97,10 @@ public class Game extends JPanel implements Runnable {
 
 	}
 
+	public void setup() {
+		aSetter.setObject();
+	}
+
 	public void update() {
 		player.update();
 
@@ -102,8 +111,15 @@ public class Game extends JPanel implements Runnable {
 		/* La clase Graphics2D extiende la clase Graphics para proporcionar un control mas sofisticado sobre la
 		 * geometria, las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
 		Graphics2D g2 = (Graphics2D) g;
+
 		tileManager.draw(g2);
+
+		for (int i = 0; i < objs.length; i++) {
+			if (objs[i] != null) objs[i].draw(g2, this);
+		}
+
 		player.draw(g2);
+
 		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
 	}
 

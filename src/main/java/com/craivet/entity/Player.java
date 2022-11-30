@@ -26,6 +26,7 @@ public class Player extends Entity {
 		screenX = game.screenWidth / 2 - (game.tileSize / 2);
 		screenY = game.screenHeight / 2 - (game.tileSize / 2);
 
+		// TODO Reemplazar numeros magicos
 		solidArea = new Rectangle();
 		solidArea.x = 8;
 		solidArea.y = 16;
@@ -40,7 +41,7 @@ public class Player extends Entity {
 		// Posiciona al player en el centro del mundo
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
-		speed = 3;
+		speed = 6;
 		direction = "down"; // Direccion por defecto
 	}
 
@@ -59,15 +60,17 @@ public class Player extends Entity {
 	public void update() {
 		if (key.s || key.w || key.a || key.d) { // Evita que el player se mueva cuando no se presiono ninguna tecla
 
+			// Obtiene la direccion dependiendo de la tecla seleccionada
 			if (key.s) direction = "down";
 			else if (key.w) direction = "up";
 			else if (key.a) direction = "left";
 			else direction = "right";
 
+			// Verifica la colision con el tile
 			collisionOn = false;
 			game.cChecker.checkTile(this);
 
-			// Si no hay colision, el player se puede mover
+			// Si no hay colision, el player se puede mover dependiendo de la direccion
 			if (!collisionOn) {
 				switch (direction) {
 					case "down":
@@ -117,6 +120,8 @@ public class Player extends Entity {
 				break;
 		}
 		g2.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
+		// g2.setColor(Color.red);
+		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
 
 }
