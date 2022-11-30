@@ -87,9 +87,8 @@ public class Game extends JPanel implements Runnable {
 			} */
 
 			if (timer >= 1e9) {
-				System.out.println(ticks + " ticks, " + frames + " fps");
+				System.out.println(frames + " fps");
 				timer = 0;
-				ticks = 0;
 				frames = 0;
 			}
 
@@ -103,7 +102,6 @@ public class Game extends JPanel implements Runnable {
 
 	public void update() {
 		player.update();
-
 	}
 
 	public void paintComponent(Graphics g) {
@@ -114,9 +112,8 @@ public class Game extends JPanel implements Runnable {
 
 		tileManager.draw(g2);
 
-		for (int i = 0; i < objs.length; i++) {
-			if (objs[i] != null) objs[i].draw(g2, this);
-		}
+		for (SuperObject obj : objs)
+			if (obj != null) obj.draw(g2, this);
 
 		player.draw(g2);
 
