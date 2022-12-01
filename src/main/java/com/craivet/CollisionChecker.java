@@ -10,6 +10,11 @@ public class CollisionChecker {
 		this.game = game;
 	}
 
+	/**
+	 * Verifica si la entidad colisiona con el tile.
+	 *
+	 * @param entity la entidad con la que colisiona el tile.
+	 */
 	public void checkTile(Entity entity) {
 
 		int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
@@ -57,4 +62,61 @@ public class CollisionChecker {
 		}
 
 	}
+
+	/**
+	 * Verifica si la entidad colisiona con el objeto.
+	 *
+	 * @param entity la entidad con la que colisiona el objeto.
+	 * @param player solo el player puede recoger objetos.
+	 * @return index el indice del objeto en caso de que sea el player el que colisione con este.
+	 */
+	public int checkObject(Entity entity, boolean player) {
+		int index = 999;
+		for (int i = 0; i < game.objs.length; i++) {
+			if (game.objs[i] != null) {
+				// Obtiene la posicion del area solida de la entidad
+				entity.solidArea.x = entity.worldX + entity.solidArea.x;
+				entity.solidArea.y = entity.worldY + entity.solidArea.y;
+				// Obtiene la posicion del area solida del objeto
+				game.objs[i].solidArea.x = game.objs[i].worldX + game.objs[i].solidArea.x;
+				game.objs[i].solidArea.y = game.objs[i].worldY + game.objs[i].solidArea.y;
+				switch (entity.direction) {
+					case "down":
+						entity.solidArea.y += entity.speed;
+						if (entity.solidArea.intersects(game.objs[i].solidArea)) {
+							if (game.objs[i].collision) entity.collisionOn = true;
+							if (player) index = i;
+						}
+						break;
+					case "up":
+						entity.solidArea.y -= entity.speed;
+						if (entity.solidArea.intersects(game.objs[i].solidArea)) {
+							if (game.objs[i].collision) entity.collisionOn = true;
+							if (player) index = i;
+						}
+						break;
+					case "left":
+						entity.solidArea.x -= entity.speed;
+						if (entity.solidArea.intersects(game.objs[i].solidArea)) {
+							if (game.objs[i].collision) entity.collisionOn = true;
+							if (player) index = i;
+						}
+						break;
+					case "right":
+						entity.solidArea.x += entity.speed;
+						if (entity.solidArea.intersects(game.objs[i].solidArea)) {
+							if (game.objs[i].collision) entity.collisionOn = true;
+							if (player) index = i;
+						}
+						break;
+				}
+				entity.solidArea.x = entity.solidAreaDefaultX;
+				entity.solidArea.y = entity.solidAreaDefaultY;
+				game.objs[i].solidArea.x = game.objs[i].solidAreaDefaultX;
+				game.objs[i].solidArea.y = game.objs[i].solidAreaDefaultY;
+			}
+		}
+		return index;
+	}
+
 }

@@ -18,6 +18,8 @@ public class Player extends Entity {
 	public final int screenX;
 	public final int screenY;
 
+	int hasKey;
+
 	public Player(Game game, KeyHandler key) {
 		this.game = game;
 		this.key = key;
@@ -30,6 +32,8 @@ public class Player extends Entity {
 		solidArea = new Rectangle();
 		solidArea.x = 8;
 		solidArea.y = 16;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		solidArea.width = 32;
 		solidArea.height = 32;
 
@@ -57,6 +61,26 @@ public class Player extends Entity {
 		right2 = subimages[7];
 	}
 
+	public void pickUpObject(int i) {
+		if (i != 999) { // El 999 significa que no agarro ningun objeto
+			String name = game.objs[i].name;
+			switch (name) {
+				case "Key":
+					hasKey++;
+					game.objs[i] = null;
+					System.out.println("Keys: " + hasKey);
+					break;
+				case "Door":
+					if (hasKey > 0) {
+						game.objs[i] = null;
+						hasKey--;
+					}
+					System.out.println("Keys: " + hasKey);
+					break;
+			}
+		}
+	}
+
 	public void update() {
 		if (key.s || key.w || key.a || key.d) { // Evita que el player se mueva cuando no se presiono ninguna tecla
 
@@ -69,6 +93,10 @@ public class Player extends Entity {
 			// Verifica la colision con el tile
 			collisionOn = false;
 			game.cChecker.checkTile(this);
+
+			// Verifica la colision con el objeto
+			int indexObj = game.cChecker.checkObject(this, true);
+			pickUpObject(indexObj);
 
 			// Si no hay colision, el player se puede mover dependiendo de la direccion
 			if (!collisionOn) {
