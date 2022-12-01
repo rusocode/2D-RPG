@@ -1,5 +1,6 @@
 package com.craivet;
 
+import com.craivet.object.OBJ_Boots;
 import com.craivet.object.OBJ_Chest;
 import com.craivet.object.OBJ_Door;
 import com.craivet.object.OBJ_Key;
@@ -40,6 +41,10 @@ public class AssetSetter {
 		game.objs[6] = new OBJ_Chest();
 		game.objs[6].worldX = 10 * game.tileSize;
 		game.objs[6].worldY = 7 * game.tileSize;
+
+		game.objs[7] = new OBJ_Boots();
+		game.objs[7].worldX = 25 * game.tileSize;
+		game.objs[7].worldY = 19 * game.tileSize;
 
 	}
 

@@ -45,7 +45,7 @@ public class Player extends Entity {
 		// Posiciona al player en el centro del mundo
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
-		speed = 6;
+		speed = 3;
 		direction = "down"; // Direccion por defecto
 	}
 
@@ -66,16 +66,23 @@ public class Player extends Entity {
 			String name = game.objs[i].name;
 			switch (name) {
 				case "Key":
+					game.playSE(1);
 					hasKey++;
 					game.objs[i] = null;
 					System.out.println("Keys: " + hasKey);
 					break;
 				case "Door":
 					if (hasKey > 0) {
+						game.playSE(3);
 						game.objs[i] = null;
 						hasKey--;
 					}
 					System.out.println("Keys: " + hasKey);
+					break;
+				case "Boots":
+					game.playSE(2);
+					speed += 2;
+					game.objs[i] = null;
 					break;
 			}
 		}
