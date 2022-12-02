@@ -10,6 +10,17 @@ import com.craivet.tile.TileManager;
 
 public class Game extends JPanel implements Runnable {
 
+	Thread thread;
+	KeyHandler keyHandler = new KeyHandler();
+	TileManager tileManager = new TileManager(this);
+	public CollisionChecker cChecker = new CollisionChecker(this);
+	public AssetSetter aSetter = new AssetSetter(this);
+	public Player player = new Player(this, keyHandler);
+	public SuperObject[] objs = new SuperObject[10];
+	public Sound music = new Sound();
+	public Sound sound = new Sound();
+	public UI ui = new UI(this);
+
 	// Screen settings
 	final int originalTileSize = 16; // 16x16 tile
 	final int scale = 3;
@@ -25,18 +36,8 @@ public class Game extends JPanel implements Runnable {
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
 
-	Thread gameThread;
-	KeyHandler keyHandler = new KeyHandler();
-	TileManager tileManager = new TileManager(this);
-	public CollisionChecker cChecker = new CollisionChecker(this);
-	public AssetSetter aSetter = new AssetSetter(this);
-	public Player player = new Player(this, keyHandler);
-	public SuperObject[] objs = new SuperObject[10];
-	public Sound music = new Sound();
-	public Sound sound = new Sound();
-	public UI ui = new UI(this);
-
 	final int fps = 60;
+	private boolean running;
 
 	public Game() {
 		setPreferredSize(new Dimension(screenWidth, screenHeight));
@@ -59,7 +60,8 @@ public class Game extends JPanel implements Runnable {
 		long currentTime;
 		long timer = 0;
 		int frames = 0;
-		while (gameThread != null) {
+
+		while (isRunning()) {
 
 			currentTime = System.nanoTime();
 			delta += (currentTime - lastTime) / drawInterval;
@@ -110,6 +112,17 @@ public class Game extends JPanel implements Runnable {
 		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
 	}
 
+	public synchronized void start() {
+		if (running) return;
+		running = true;
+		thread = new Thread(this, "Game Thread");
+		thread.start();
+	}
+
+	public synchronized boolean isRunning() {
+		return running;
+	}
+
 	public void playMusic(int i) {
 		music.setFile(i);
 		music.play();
@@ -120,14 +133,11 @@ public class Game extends JPanel implements Runnable {
 		music.stop();
 	}
 
-	public void playSE(int i) {
+	public void playSound(int i) {
 		sound.setFile(i);
 		sound.play();
 	}
 
-	public void startGameThread() {
-		gameThread = new Thread(this);
-		gameThread.start();
-	}
+
 }
 

@@ -5,18 +5,15 @@ import javax.swing.*;
 public class Launcher {
 
 	public static void main(String[] args) {
-		JFrame window = new JFrame();
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JFrame window = new JFrame("2D Game");
 		window.setResizable(false);
-		window.setTitle("2D Game");
-
+		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		Game game = new Game();
 		window.add(game);
 		window.pack(); // Ajusta el tamaño de la ventana al tamaño y diseño preferidos de sus subcomponentes (=GamePanel)
 		window.setLocationRelativeTo(null);
+		game.start();
 		window.setVisible(true);
-
-		game.startGameThread();
 	}
 
 

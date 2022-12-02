@@ -63,7 +63,7 @@ public class UI {
 			y = game.screenHeight / 2 + (game.tileSize * 2);
 			g2.drawString(text, x, y);
 
-			game.gameThread = null;
+			game.thread = null;
 
 		} else {
 

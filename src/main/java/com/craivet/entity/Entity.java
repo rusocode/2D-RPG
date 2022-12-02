@@ -11,6 +11,7 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
 
+	// TODO Esta bien declarlas los frames en esta clase, pero si un sprite tiene mas frames?
 	public BufferedImage down1, down2, up1, up2, left1, left2, right1, right2;
 	public String direction;
 

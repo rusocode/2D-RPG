@@ -1,9 +1,9 @@
 package com.craivet.object;
 
-import com.craivet.Game;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
+
+import com.craivet.Game;
 
 public class SuperObject {
 
