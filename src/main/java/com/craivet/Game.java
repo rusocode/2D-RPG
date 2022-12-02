@@ -58,9 +58,7 @@ public class Game extends JPanel implements Runnable {
 		long lastTime = System.nanoTime();
 		long currentTime;
 		long timer = 0;
-		int frames = 0, ticks = 0;
-		boolean shouldRender = false;
-
+		int frames = 0;
 		while (gameThread != null) {
 
 			currentTime = System.nanoTime();
@@ -73,19 +71,7 @@ public class Game extends JPanel implements Runnable {
 				update();
 				repaint();
 				delta--;
-				// shouldRender = true;
 			}
-
-			/* try {
-				Thread.sleep(2);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			} */
-
-			/* if (shouldRender) {
-				repaint();
-				frames++;
-			} */
 
 			if (timer >= 1e9) {
 				System.out.println(frames + " fps");
