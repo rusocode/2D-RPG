@@ -32,7 +32,9 @@ public class Game extends JPanel implements Runnable {
 	public AssetSetter aSetter = new AssetSetter(this);
 	public Player player = new Player(this, keyHandler);
 	public SuperObject[] objs = new SuperObject[10];
+	public Sound music = new Sound();
 	public Sound sound = new Sound();
+	public UI ui = new UI(this);
 
 	final int fps = 60;
 
@@ -97,7 +99,7 @@ public class Game extends JPanel implements Runnable {
 
 	public void setup() {
 		aSetter.setObject();
-		playMusic(0);
+		// playMusic(0);
 	}
 
 	public void update() {
@@ -117,17 +119,19 @@ public class Game extends JPanel implements Runnable {
 
 		player.draw(g2);
 
+		ui.draw(g2);
+
 		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
 	}
 
 	public void playMusic(int i) {
-		sound.setFile(i);
-		sound.play();
-		sound.loop();
+		music.setFile(i);
+		music.play();
+		music.loop();
 	}
 
 	public void stopMusic() {
-		sound.stop();
+		music.stop();
 	}
 
 	public void playSE(int i) {
