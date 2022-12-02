@@ -100,6 +100,9 @@ public class Game extends JPanel implements Runnable {
 		 * geometria, las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
 		Graphics2D g2 = (Graphics2D) g;
 
+		// Debug
+		// long drawStart = System.nanoTime();
+
 		tileManager.draw(g2);
 
 		for (SuperObject obj : objs)
@@ -108,6 +111,9 @@ public class Game extends JPanel implements Runnable {
 		player.draw(g2);
 
 		ui.draw(g2);
+
+		// Debug
+		// System.out.println("Draw time: " + (System.nanoTime() - drawStart));
 
 		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
 	}

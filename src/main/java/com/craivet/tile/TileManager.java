@@ -1,6 +1,7 @@
 package com.craivet.tile;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +9,7 @@ import java.util.Objects;
 
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
+import com.craivet.utils.Utils;
 
 public class TileManager {
 
@@ -18,33 +20,25 @@ public class TileManager {
 
 	public TileManager(Game game) {
 		this.game = game;
-		tile = new Tile[10];
 		map = new int[game.maxWorldCol][game.maxWorldRow];
-		getTileImage();
+		initTiles();
 		loadMap("maps/world01.txt");
 	}
 
-	public void getTileImage() {
-		tile[0] = new Tile();
-		tile[0].image = Assets.grass;
-		tile[1] = new Tile();
+	private void initTiles() {
+		tile = new Tile[10];
+		createTile(0, Assets.grass, false);
+		createTile(1, Assets.wall, true);
+		createTile(2, Assets.water, true);
+		createTile(3, Assets.earth, false);
+		createTile(4, Assets.tree, true);
+		createTile(5, Assets.sand, false);
+	}
 
-		tile[1].image = Assets.wall;
-		tile[1].collision = true;
-
-		tile[2] = new Tile();
-		tile[2].image = Assets.water;
-		tile[2].collision = true;
-
-		tile[3] = new Tile();
-		tile[3].image = Assets.earth;
-
-		tile[4] = new Tile();
-		tile[4].image = Assets.tree;
-		tile[4].collision = true;
-
-		tile[5] = new Tile();
-		tile[5].image = Assets.sand;
+	private void createTile(int i, BufferedImage image, boolean collision) {
+		tile[i] = new Tile();
+		tile[i].image = Utils.scaleImage(image, game.tileSize, game.tileSize);
+		tile[i].collision = collision;
 	}
 
 	public void loadMap(String path) {
@@ -79,7 +73,7 @@ public class TileManager {
 						worldX - game.tileSize < game.player.worldX + game.player.screenX &&
 						worldY + game.tileSize > game.player.worldY - game.player.screenY &&
 						worldY - game.tileSize < game.player.worldY + game.player.screenY) {
-					g2.drawImage(tile[map[col][row]].image, screenX, screenY, game.tileSize, game.tileSize, null);
+					g2.drawImage(tile[map[col][row]].image, screenX, screenY, null);
 				}
 			}
 		}

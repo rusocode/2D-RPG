@@ -1,6 +1,7 @@
 package com.craivet.utils;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Objects;
@@ -21,6 +22,22 @@ public class Utils {
 			System.exit(1);
 		}
 		return null;
+	}
+
+	/**
+	 * Escala la imagen antes de renderizarla para un mejor rendimiento.
+	 *
+	 * @param image  la imagen.
+	 * @param width  el ancho de la imagen.
+	 * @param height el alto de la imagen.
+	 * @return la imagen escalada.
+	 */
+	public static BufferedImage scaleImage(BufferedImage image, int width, int height) {
+		BufferedImage scaledImage = new BufferedImage(width, height, image.getType());
+		Graphics2D g2 = scaledImage.createGraphics(); // Crea un Graphics2D, que se puede usar para dibujar en este BufferedImage
+		g2.drawImage(image, 0, 0, width, height, null);
+		g2.dispose();
+		return scaledImage;
 	}
 
 	private Utils() {

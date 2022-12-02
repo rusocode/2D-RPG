@@ -6,7 +6,7 @@ import com.craivet.utils.Utils;
 
 public class Assets {
 
-	// Entitys
+	// Entities
 	public static SpriteSheet player = new SpriteSheet(Utils.loadImage("textures/entity/player.png"));
 
 	// Tiles

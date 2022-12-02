@@ -2,10 +2,12 @@ package com.craivet.entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.BufferedReader;
 
 import com.craivet.Game;
 import com.craivet.input.KeyHandler;
 import com.craivet.gfx.Assets;
+import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
 
@@ -105,7 +107,7 @@ public class Player extends Entity {
 				image = spriteNum == 1 || collisionOn ? right1 : right2;
 				break;
 		}
-		g2.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
+		g2.drawImage(image, screenX, screenY, null);
 		// g2.setColor(Color.red);
 		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
@@ -120,14 +122,14 @@ public class Player extends Entity {
 
 	public void getPlayerImage() {
 		BufferedImage[] subimages = Assets.getSubimages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
-		down1 = subimages[0];
-		down2 = subimages[1];
-		up1 = subimages[2];
-		up2 = subimages[3];
-		left1 = subimages[4];
-		left2 = subimages[5];
-		right1 = subimages[6];
-		right2 = subimages[7];
+		down1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+		down2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
+		up1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);
+		up2 = Utils.scaleImage(subimages[3], game.tileSize, game.tileSize);
+		left1 = Utils.scaleImage(subimages[4], game.tileSize, game.tileSize);
+		left2 = Utils.scaleImage(subimages[5], game.tileSize, game.tileSize);
+		right1 = Utils.scaleImage(subimages[6], game.tileSize, game.tileSize);
+		right2 = Utils.scaleImage(subimages[7], game.tileSize, game.tileSize);
 	}
 
 	public void pickUpObject(int i) {
