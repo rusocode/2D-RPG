@@ -20,19 +20,59 @@ public class TileManager {
 
 	public TileManager(Game game) {
 		this.game = game;
+		tile = new Tile[50];
 		map = new int[game.maxWorldCol][game.maxWorldRow];
 		initTiles();
-		loadMap("maps/world01.txt");
+		loadMap("maps/worldV2.txt");
 	}
 
 	private void initTiles() {
-		tile = new Tile[10];
-		createTile(0, Assets.grass, false);
-		createTile(1, Assets.wall, true);
-		createTile(2, Assets.water, true);
-		createTile(3, Assets.earth, false);
-		createTile(4, Assets.tree, true);
-		createTile(5, Assets.sand, false);
+
+		// Marcador de posicion
+		createTile(0, Assets.grass00, false);
+		createTile(1, Assets.grass00, false);
+		createTile(2, Assets.grass00, false);
+		createTile(3, Assets.grass00, false);
+		createTile(4, Assets.grass00, false);
+		createTile(5, Assets.grass00, false);
+		createTile(6, Assets.grass00, false);
+		createTile(7, Assets.grass00, false);
+		createTile(8, Assets.grass00, false);
+		createTile(9, Assets.grass00, false);
+		// Marcador de posicion
+
+		createTile(10, Assets.grass00, false);
+		createTile(11, Assets.grass01, false);
+		createTile(12, Assets.water00, true);
+		createTile(13, Assets.water01, true);
+		createTile(14, Assets.water02, true);
+		createTile(15, Assets.water03, true);
+		createTile(16, Assets.water04, true);
+		createTile(17, Assets.water05, true);
+		createTile(18, Assets.water06, true);
+		createTile(19, Assets.water07, true);
+		createTile(20, Assets.water08, true);
+		createTile(21, Assets.water09, true);
+		createTile(22, Assets.water10, true);
+		createTile(23, Assets.water11, true);
+		createTile(24, Assets.water12, true);
+		createTile(25, Assets.water13, true);
+		createTile(26, Assets.road00, false);
+		createTile(27, Assets.road01, false);
+		createTile(28, Assets.road02, false);
+		createTile(29, Assets.road03, false);
+		createTile(30, Assets.road04, false);
+		createTile(31, Assets.road05, false);
+		createTile(32, Assets.road06, false);
+		createTile(33, Assets.road07, false);
+		createTile(34, Assets.road08, false);
+		createTile(35, Assets.road09, false);
+		createTile(36, Assets.road10, false);
+		createTile(37, Assets.road11, false);
+		createTile(38, Assets.road12, false);
+		createTile(39, Assets.earth, false);
+		createTile(40, Assets.wall, true);
+		createTile(41, Assets.tree, true);
 	}
 
 	private void createTile(int i, BufferedImage image, boolean collision) {
