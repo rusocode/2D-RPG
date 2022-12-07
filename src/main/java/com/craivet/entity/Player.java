@@ -20,7 +20,7 @@ public class Player extends Entity {
 	public final int screenX;
 	public final int screenY;
 
-	public int hasKey;
+	// public int hasKey;
 
 	public Player(Game game, KeyHandler key) {
 		this.game = game;
@@ -134,34 +134,7 @@ public class Player extends Entity {
 
 	public void pickUpObject(int i) {
 		if (i != 999) { // El 999 significa que no agarro ningun objeto
-			String name = game.objs[i].name;
-			switch (name) {
-				case "Key":
-					game.playSound(1);
-					hasKey++;
-					game.objs[i] = null;
-					game.ui.showMessage("You got a key!");
-					break;
-				case "Door":
-					if (hasKey > 0) {
-						game.playSound(3);
-						game.objs[i] = null;
-						hasKey--;
-						game.ui.showMessage("You opened the door!");
-					} else game.ui.showMessage("You need a key!");
-					break;
-				case "Boots":
-					game.playSound(2);
-					speed += 2;
-					game.objs[i] = null;
-					game.ui.showMessage("Speed up!");
-					break;
-				case "Chest":
-					game.ui.gameFinished = true;
-					// game.stopMusic();
-					game.playSound(4);
-					break;
-			}
+
 		}
 	}
 

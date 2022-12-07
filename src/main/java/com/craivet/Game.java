@@ -11,7 +11,7 @@ import com.craivet.tile.TileManager;
 public class Game extends JPanel implements Runnable {
 
 	Thread thread;
-	KeyHandler keyHandler = new KeyHandler();
+	KeyHandler keyHandler = new KeyHandler(this);
 	TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
@@ -20,6 +20,11 @@ public class Game extends JPanel implements Runnable {
 	public Sound music = new Sound();
 	public Sound sound = new Sound();
 	public UI ui = new UI(this);
+
+	// Game state
+	public int gameState;
+	public final int playState = 1;
+	public final int pauseState = 2;
 
 	// Screen settings
 	final int originalTileSize = 16; // 16x16 tile
@@ -88,10 +93,14 @@ public class Game extends JPanel implements Runnable {
 	public void setup() {
 		aSetter.setObject();
 		// playMusic(0);
+		gameState = playState;
+
 	}
 
 	public void update() {
-		player.update();
+		if (gameState == playState) player.update();
+		if (gameState == pauseState) {
+		}
 	}
 
 	public void paintComponent(Graphics g) {
