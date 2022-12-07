@@ -7,7 +7,7 @@ import java.awt.event.*;
 public class KeyHandler extends KeyAdapter {
 
 	Game game;
-	public boolean w, s, a, d;
+	public boolean w, s, a, d, enter;
 
 	public KeyHandler(Game game) {
 		this.game = game;
@@ -16,14 +16,27 @@ public class KeyHandler extends KeyAdapter {
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int code = e.getKeyCode();
-		if (code == KeyEvent.VK_W) w = true;
-		if (code == KeyEvent.VK_S) s = true;
-		if (code == KeyEvent.VK_A) a = true;
-		if (code == KeyEvent.VK_D) d = true;
-		if (code == KeyEvent.VK_P) {
-			if (game.gameState == game.playState) game.gameState = game.pauseState;
-			else if (game.gameState == game.pauseState) game.gameState = game.playState;
+
+		// Play state
+		if (game.gameState == game.playState) {
+			if (code == KeyEvent.VK_W) w = true;
+			if (code == KeyEvent.VK_S) s = true;
+			if (code == KeyEvent.VK_A) a = true;
+			if (code == KeyEvent.VK_D) d = true;
+			if (code == KeyEvent.VK_P) game.gameState = game.pauseState;
+			if (code == KeyEvent.VK_ENTER) enter = true;
 		}
+
+		// Pause state
+		else if (game.gameState == game.pauseState) {
+			if (code == KeyEvent.VK_P) game.gameState = game.playState;
+		}
+
+		// Dialogue state
+		else if (game.gameState == game.dialogueState) {
+			if (code == KeyEvent.VK_ENTER) game.gameState = game.playState;
+		}
+
 	}
 
 	@Override

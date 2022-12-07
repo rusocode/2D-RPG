@@ -1,7 +1,6 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
-import com.craivet.entity.Player;
 
 public class CollisionChecker {
 
@@ -123,7 +122,7 @@ public class CollisionChecker {
 	}
 
 	/**
-	 * Verifica si la entidad colisiona con un npc.
+	 * Verifica si la entidad colisiona con el npc.
 	 *
 	 * @param entity la entidad con la que colisiona el tile.
 	 * @param target ?

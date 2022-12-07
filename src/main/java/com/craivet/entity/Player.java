@@ -130,8 +130,13 @@ public class Player extends Entity {
 
 	private void interactNPC(int i) {
 		if (i != 999) {
-			System.out.println("You are hitting an npc!");
+			if (game.keyHandler.enter) {
+				game.gameState = game.dialogueState;
+				game.npcs[i].speak();
+			}
 		}
+
+		game.keyHandler.enter = false;
 
 	}
 

@@ -12,7 +12,7 @@ import com.craivet.tile.TileManager;
 public class Game extends JPanel implements Runnable {
 
 	Thread thread;
-	KeyHandler keyHandler = new KeyHandler(this);
+	public KeyHandler keyHandler = new KeyHandler(this);
 	TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
@@ -22,20 +22,19 @@ public class Game extends JPanel implements Runnable {
 
 	// Entities and objects
 	public Player player = new Player(this, keyHandler);
+	public Entity[] npcs = new Entity[10]; // TODO O entities?
 	public SuperObject[] objs = new SuperObject[10];
-	public Entity[] npcs = new Entity[10];
 
 	// Game state
 	public int gameState;
 	public final int playState = 1;
 	public final int pauseState = 2;
+	public final int dialogueState = 3;
 
 	// Screen settings
 	final int originalTileSize = 16; // 16x16 tile
 	final int scale = 3;
-
 	public final int tileSize = originalTileSize * scale; // 48x48 tile
-	// ¿Cuantos tiles se pueden mostrar en una sola pantalla horizontal y verticalmente?
 	public final int maxScreenCol = 16;
 	public final int maxScreenRow = 12;
 	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels

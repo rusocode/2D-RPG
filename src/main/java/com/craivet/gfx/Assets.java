@@ -61,6 +61,7 @@ public class Assets {
 	 * @param height el alto de la subimagen.
 	 * @return una matriz con las subimagenes del sprite sheet.
 	 *
+	 * <p>TODO No tendria que estar en Utils o SpriteSheet?
 	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
 	 */
 	public static BufferedImage[] getSubimages(SpriteSheet image, int width, int height) {

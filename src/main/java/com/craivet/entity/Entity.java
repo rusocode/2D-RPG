@@ -21,7 +21,6 @@ public abstract class Entity {
 
 	Game game;
 
-	// TODO Esta bien declarlas los frames en esta clase, pero si un sprite tiene mas frames?
 	public BufferedImage down1, down2, up1, up2, left1, left2, right1, right2;
 	public String direction;
 
@@ -37,12 +36,36 @@ public abstract class Entity {
 
 	public int actionLockCounter;
 
+	public String[] dialogues = new String[20];
+	public int dialogueIndex;
+
 	public Entity(Game game) {
 		this.game = game;
 	}
 
 	public void setAction() {
 
+	}
+
+	public void speak() {
+		if (dialogues[dialogueIndex] == null) dialogueIndex = 0;
+		game.ui.currentDialogue = dialogues[dialogueIndex];
+		dialogueIndex++;
+
+		switch (game.player.direction) {
+			case "down":
+				direction = "up";
+				break;
+			case "up":
+				direction = "down";
+				break;
+			case "left":
+				direction = "right";
+				break;
+			case "right":
+				direction = "left";
+				break;
+		}
 	}
 
 	public void update() {
@@ -82,7 +105,7 @@ public abstract class Entity {
 	}
 
 	public void draw(Graphics2D g2) {
-		BufferedImage image = null; // TODO Local?
+		BufferedImage image = null;
 		int screenX = (worldX - game.player.worldX) + game.player.screenX;
 		int screenY = (worldY - game.player.worldY) + game.player.screenY;
 		if (worldX + game.tileSize > game.player.worldX - game.player.screenX &&
@@ -103,7 +126,7 @@ public abstract class Entity {
 					image = spriteNum == 1 || collisionOn ? right1 : right2;
 					break;
 			}
-			g2.drawImage(image, screenX, screenY, game.tileSize, game.tileSize, null);
+			g2.drawImage(image, screenX, screenY, null);
 		}
 	}
 
