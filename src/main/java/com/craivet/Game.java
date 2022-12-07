@@ -11,14 +11,14 @@ import com.craivet.tile.TileManager;
 
 public class Game extends JPanel implements Runnable {
 
-	Thread thread;
+	public Thread thread;
 	public KeyHandler keyHandler = new KeyHandler(this);
-	TileManager tileManager = new TileManager(this);
+	public TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
+	public UI ui = new UI(this);
 	public Sound music = new Sound();
 	public Sound sound = new Sound();
-	public UI ui = new UI(this);
 
 	// Entities and objects
 	public Player player = new Player(this, keyHandler);
@@ -107,8 +107,7 @@ public class Game extends JPanel implements Runnable {
 			for (Entity npc : npcs)
 				if (npc != null) npc.update();
 		}
-		if (gameState == pauseState) {
-		}
+		// if (gameState == pauseState) {}
 	}
 
 	public void paintComponent(Graphics g) {
