@@ -2,28 +2,24 @@ package com.craivet.entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 
 import com.craivet.Game;
-import com.craivet.input.KeyHandler;
 import com.craivet.gfx.Assets;
-import com.craivet.utils.Utils;
+import com.craivet.input.KeyHandler;
 
 import static com.craivet.utils.Constants.*;
 
 public class Player extends Entity {
 
-	Game game;
 	KeyHandler key;
 
 	// El player permanece fijo en el centro de la pantalla
 	public final int screenX;
 	public final int screenY;
 
-	// public int hasKey;
-
 	public Player(Game game, KeyHandler key) {
-		this.game = game;
+		super(game);
+
 		this.key = key;
 
 		// Posiciona al player en el centro de la pantalla
@@ -40,7 +36,7 @@ public class Player extends Entity {
 		solidArea.height = 32;
 
 		setDefaultValues();
-		getPlayerImage();
+		initImages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
 	}
 
 	public void update() {
@@ -53,13 +49,19 @@ public class Player extends Entity {
 			else if (key.a) direction = "left";
 			else direction = "right";
 
-			// Verifica la colision con el tile
+
 			collisionOn = false;
+
+			// Verifica la colision con el tile
 			game.cChecker.checkTile(this);
 
 			// Verifica la colision con el objeto
-			int indexObj = game.cChecker.checkObject(this, true);
-			pickUpObject(indexObj);
+			int objIndex = game.cChecker.checkObject(this, true);
+			pickUpObject(objIndex);
+
+			// Verifica la colision con el npc
+			int npcIndex = game.cChecker.checkEntity(this, game.npcs);
+			interactNPC(npcIndex);
 
 			// Si no hay colision, el player se puede mover dependiendo de la direccion
 			if (!collisionOn) {
@@ -112,7 +114,7 @@ public class Player extends Entity {
 		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 	}
 
-	public void setDefaultValues() {
+	private void setDefaultValues() {
 		// Posiciona al player en el centro del mundo
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
@@ -120,22 +122,17 @@ public class Player extends Entity {
 		direction = "down"; // Direccion por defecto
 	}
 
-	public void getPlayerImage() {
-		BufferedImage[] subimages = Assets.getSubimages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
-		down1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
-		down2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
-		up1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);
-		up2 = Utils.scaleImage(subimages[3], game.tileSize, game.tileSize);
-		left1 = Utils.scaleImage(subimages[4], game.tileSize, game.tileSize);
-		left2 = Utils.scaleImage(subimages[5], game.tileSize, game.tileSize);
-		right1 = Utils.scaleImage(subimages[6], game.tileSize, game.tileSize);
-		right2 = Utils.scaleImage(subimages[7], game.tileSize, game.tileSize);
-	}
-
-	public void pickUpObject(int i) {
+	private void pickUpObject(int i) {
 		if (i != 999) { // El 999 significa que no agarro ningun objeto
 
 		}
+	}
+
+	private void interactNPC(int i) {
+		if (i != 999) {
+			System.out.println("You are hitting an npc!");
+		}
+
 	}
 
 }

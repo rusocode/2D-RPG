@@ -3,6 +3,7 @@ package com.craivet;
 import javax.swing.*;
 import java.awt.*;
 
+import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
 import com.craivet.input.KeyHandler;
 import com.craivet.object.SuperObject;
@@ -15,11 +16,14 @@ public class Game extends JPanel implements Runnable {
 	TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
-	public Player player = new Player(this, keyHandler);
-	public SuperObject[] objs = new SuperObject[10];
 	public Sound music = new Sound();
 	public Sound sound = new Sound();
 	public UI ui = new UI(this);
+
+	// Entities and objects
+	public Player player = new Player(this, keyHandler);
+	public SuperObject[] objs = new SuperObject[10];
+	public Entity[] npcs = new Entity[10];
 
 	// Game state
 	public int gameState;
@@ -92,13 +96,18 @@ public class Game extends JPanel implements Runnable {
 
 	public void setup() {
 		aSetter.setObject();
+		aSetter.setNPC();
 		// playMusic(0);
 		gameState = playState;
 
 	}
 
 	public void update() {
-		if (gameState == playState) player.update();
+		if (gameState == playState) {
+			player.update();
+			for (Entity npc : npcs)
+				if (npc != null) npc.update();
+		}
 		if (gameState == pauseState) {
 		}
 	}
@@ -114,8 +123,12 @@ public class Game extends JPanel implements Runnable {
 
 		tileManager.draw(g2);
 
+		// Objects
 		for (SuperObject obj : objs)
 			if (obj != null) obj.draw(g2, this);
+		// Npcs
+		for (Entity npc : npcs)
+			if (npc != null) npc.draw(g2);
 
 		player.draw(g2);
 

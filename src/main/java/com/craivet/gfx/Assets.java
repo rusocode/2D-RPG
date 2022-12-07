@@ -8,6 +8,7 @@ public class Assets {
 
 	// Entities
 	public static SpriteSheet player = new SpriteSheet(Utils.loadImage("textures/entity/player.png"));
+	public static SpriteSheet oldman = new SpriteSheet(Utils.loadImage("textures/entity/oldman.png"));
 
 	// Tiles
 	public static BufferedImage earth = Utils.loadImage("textures/tiles/earth.png");
@@ -55,21 +56,21 @@ public class Assets {
 	/**
 	 * Obtiene las subimagenes del sprite sheet.
 	 *
-	 * @param ss     el sprite sheet.
+	 * @param image  el sprite sheet.
 	 * @param width  el ancho de la subimagen.
 	 * @param height el alto de la subimagen.
 	 * @return una matriz con las subimagenes del sprite sheet.
 	 *
 	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
 	 */
-	public static BufferedImage[] getSubimages(SpriteSheet ss, int width, int height) {
-		int col = ss.getWidth() / width;
-		int row = ss.getHeight() / height;
+	public static BufferedImage[] getSubimages(SpriteSheet image, int width, int height) {
+		int col = image.getWidth() / width;
+		int row = image.getHeight() / height;
 		BufferedImage[] subimages = new BufferedImage[col * row];
 		int i = 0;
 		for (int y = 0; y < row; y++)
 			for (int x = 0; x < col; x++)
-				subimages[i++] = ss.crop(x * width, y * height, width, height);
+				subimages[i++] = image.crop(x * width, y * height, width, height);
 		return subimages;
 	}
 

@@ -1,9 +1,6 @@
 package com.craivet;
 
-import com.craivet.object.OBJ_Boots;
-import com.craivet.object.OBJ_Chest;
-import com.craivet.object.OBJ_Door;
-import com.craivet.object.OBJ_Key;
+import com.craivet.entity.OldMan;
 
 public class AssetSetter {
 
@@ -15,6 +12,12 @@ public class AssetSetter {
 
 	public void setObject() {
 
+	}
+
+	public void setNPC() {
+		game.npcs[0] = new OldMan(game);
+		game.npcs[0].worldX = game.tileSize * 21;
+		game.npcs[0].worldY = game.tileSize * 21;
 	}
 
 }
