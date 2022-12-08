@@ -5,6 +5,10 @@ import java.awt.image.BufferedImage;
 
 import com.craivet.utils.Utils;
 
+/**
+ * TODO final?
+ */
+
 public class Assets {
 
 	// Fonts
