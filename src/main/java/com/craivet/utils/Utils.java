@@ -24,6 +24,16 @@ public class Utils {
 		return null;
 	}
 
+	public static Font loadFont(String path, int size) {
+		try {
+			return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path))).deriveFont(Font.PLAIN, size);
+		} catch (FontFormatException | IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return null;
+	}
+
 	/**
 	 * Escala la imagen antes de renderizarla para un mejor rendimiento.
 	 *

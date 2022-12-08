@@ -1,10 +1,16 @@
 package com.craivet.gfx;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.craivet.utils.Utils;
 
 public class Assets {
+
+	// Fonts
+	public static Font medieval1 = Utils.loadFont("font/Blackpearl-vPxA.ttf", 22);
+	public static Font medieval2 = Utils.loadFont("font/KnightsQuest-nvDV.ttf", 32);
+	public static Font medieval3 = Utils.loadFont("font/Vecna-oppx.ttf", 32);
 
 	// Entities
 	public static SpriteSheet player = new SpriteSheet(Utils.loadImage("textures/entity/player.png"));
@@ -52,28 +58,6 @@ public class Assets {
 	public static BufferedImage chest = Utils.loadImage("textures/objs/chest.png");
 	public static BufferedImage door = Utils.loadImage("textures/objs/door.png");
 	public static BufferedImage key = Utils.loadImage("textures/objs/key.png");
-
-	/**
-	 * Obtiene las subimagenes del sprite sheet.
-	 *
-	 * @param image  el sprite sheet.
-	 * @param width  el ancho de la subimagen.
-	 * @param height el alto de la subimagen.
-	 * @return una matriz con las subimagenes del sprite sheet.
-	 *
-	 * <p>TODO No tendria que estar en Utils o SpriteSheet?
-	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
-	 */
-	public static BufferedImage[] getSubimages(SpriteSheet image, int width, int height) {
-		int col = image.getWidth() / width;
-		int row = image.getHeight() / height;
-		BufferedImage[] subimages = new BufferedImage[col * row];
-		int i = 0;
-		for (int y = 0; y < row; y++)
-			for (int x = 0; x < col; x++)
-				subimages[i++] = image.crop(x * width, y * height, width, height);
-		return subimages;
-	}
 
 	private Assets() {
 	}

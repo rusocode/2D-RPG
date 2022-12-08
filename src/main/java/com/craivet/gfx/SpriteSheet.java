@@ -24,6 +24,26 @@ public class SpriteSheet {
 		return image.getSubimage(x, y, width, height);
 	}
 
+	/**
+	 * Obtiene las subimagenes del sprite sheet.
+	 *
+	 * @param image  el sprite sheet.
+	 * @param width  el ancho de la subimagen.
+	 * @param height el alto de la subimagen.
+	 * @return una matriz con las subimagenes del sprite sheet.
+	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
+	 */
+	public static BufferedImage[] getSubimages(SpriteSheet image, int width, int height) {
+		int col = image.getWidth() / width;
+		int row = image.getHeight() / height;
+		BufferedImage[] subimages = new BufferedImage[col * row];
+		int i = 0;
+		for (int y = 0; y < row; y++)
+			for (int x = 0; x < col; x++)
+				subimages[i++] = image.crop(x * width, y * height, width, height);
+		return subimages;
+	}
+
 	public int getWidth() {
 		return image.getWidth();
 	}

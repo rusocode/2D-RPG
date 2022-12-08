@@ -136,7 +136,7 @@ public class Player extends Entity {
 			}
 		}
 
-		game.keyHandler.enter = false;
+		// game.keyHandler.enter = false;
 
 	}
 

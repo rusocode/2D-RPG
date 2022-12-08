@@ -1,26 +1,24 @@
 package com.craivet;
 
+import com.craivet.gfx.Assets;
+
 import java.awt.*;
 
 public class UI {
 
-	Game game;
-	Graphics2D g2;
-	Font arial40, arial80B;
-
+	private final Game game;
+	private Graphics2D g2;
 	public String currentDialogue;
 
 	public UI(Game game) {
 		this.game = game;
-		arial40 = new Font("Arial", Font.PLAIN, 40);
-		arial80B = new Font("Arial", Font.BOLD, 80);
 	}
 
 	public void draw(Graphics2D g2) {
 		this.g2 = g2;
-		g2.setFont(arial40);
+		g2.setFont(Assets.medieval1);
+		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2.setColor(Color.white);
-
 		// if (game.gameState == game.playState) {}
 		if (game.gameState == game.pauseState) drawPauseScreen();
 		if (game.gameState == game.dialogueState) drawDialogueScreen();
@@ -43,7 +41,7 @@ public class UI {
 		int height = game.tileSize * 4;
 		drawSubWindow(x, y, width, height);
 
-		g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 28f));
+		// g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 24f));
 		x += game.tileSize;
 		y += game.tileSize;
 

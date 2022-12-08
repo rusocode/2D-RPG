@@ -31,7 +31,7 @@ public class OldMan extends Entity {
 	public void initDialogue() {
 		dialogues[0] = "Hola quemado!";
 		dialogues[1] = "Creo que arriba del bosque hay \nunas plantas de rulo...";
-		dialogues[2] = "Ahora el esta re quemado y no \nreacciona, asi que podes aprovechar \n y cortarlas";
+		dialogues[2] = "Ahora el esta re quemado y no \nreacciona, asi que podes aprovechar \ny cortarlas";
 		dialogues[3] = "Ojo que pegan fuerte";
 	}
 

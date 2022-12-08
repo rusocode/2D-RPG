@@ -138,7 +138,7 @@ public abstract class Entity {
 	 * @param height el alto de la subimagen.
 	 */
 	public void initImages(SpriteSheet image, int width, int height) {
-		BufferedImage[] subimages = Assets.getSubimages(image, width, height);
+		BufferedImage[] subimages = SpriteSheet.getSubimages(image, width, height);
 		down1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 		down2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 		up1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);
