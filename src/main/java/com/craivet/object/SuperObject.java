@@ -8,7 +8,7 @@ import com.craivet.Game;
 public class SuperObject {
 
 	public String name;
-	public BufferedImage image;
+	public BufferedImage image, image2, image3;
 	public int worldX, worldY;
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX, solidAreaDefaultY;

@@ -1,8 +1,11 @@
 package com.craivet;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import com.craivet.gfx.Assets;
+import com.craivet.object.OBJ_Heart;
+import com.craivet.object.SuperObject;
 
 /**
  * Interfaz de usuario.
@@ -12,6 +15,7 @@ public class UI {
 
 	private final Game game;
 	private Graphics2D g2;
+	BufferedImage heart_full, heart_half, heart_blank;
 	public String currentDialogue;
 	public int commandNum;
 	// TODO Implementar musica para pantalla de titulo
@@ -19,6 +23,13 @@ public class UI {
 
 	public UI(Game game) {
 		this.game = game;
+
+		// Create HUD object
+		SuperObject heart = new OBJ_Heart(game);
+		heart_full = heart.image;
+		heart_half = heart.image2;
+		heart_blank = heart.image3;
+
 	}
 
 	public void draw(Graphics2D g2) {
@@ -30,9 +41,15 @@ public class UI {
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
 		if (game.gameState == game.titleState) drawTitleScreen();
-		// if (game.gameState == game.playState) {}
-		if (game.gameState == game.pauseState) drawPauseScreen();
-		if (game.gameState == game.dialogueState) drawDialogueScreen();
+		if (game.gameState == game.playState) drawPlayerLife();
+		if (game.gameState == game.pauseState) {
+			drawPauseScreen();
+			drawPlayerLife();
+		}
+		if (game.gameState == game.dialogueState) {
+			drawDialogueScreen();
+			drawPlayerLife();
+		}
 
 	}
 
@@ -113,6 +130,37 @@ public class UI {
 		}
 	}
 
+	private void drawPlayerLife() {
+
+		game.player.life = 5;
+
+		int x = game.tileSize / 2;
+		int y = game.tileSize / 2;
+		int i = 0;
+
+		// Dibuja los corazones blancos (2 de vida representa 1 corazon lleno)
+		while (i < game.player.maxLife / 2) {
+			g2.drawImage(heart_blank, x, y, null);
+			i++;
+			x += game.tileSize;
+		}
+
+		// Reset
+		x = game.tileSize / 2;
+		y = game.tileSize / 2;
+		i = 0;
+
+		// Draw current life
+		while (i < game.player.life) {
+			g2.drawImage(heart_half, x, y, null);
+			i++;
+			if (i < game.player.life) g2.drawImage(heart_full, x, y, null);
+			i++;
+			x += game.tileSize;
+		}
+
+	}
+
 	private void drawPauseScreen() {
 		g2.setFont(g2.getFont().deriveFont(80f));
 		String text = "PAUSED";
@@ -136,7 +184,6 @@ public class UI {
 			g2.drawString(line, x, y);
 			y += 40;
 		}
-
 	}
 
 	private void drawSubWindow(int x, int y, int width, int height) {

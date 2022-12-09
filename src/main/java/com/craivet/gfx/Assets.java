@@ -62,6 +62,9 @@ public class Assets {
 	public static BufferedImage chest = Utils.loadImage("textures/objs/chest.png");
 	public static BufferedImage door = Utils.loadImage("textures/objs/door.png");
 	public static BufferedImage key = Utils.loadImage("textures/objs/key.png");
+	public static BufferedImage heart_full = Utils.loadImage("textures/objs/heart_full.png");
+	public static BufferedImage heart_half = Utils.loadImage("textures/objs/heart_half.png");
+	public static BufferedImage heart_blank = Utils.loadImage("textures/objs/heart_blank.png");
 
 	private Assets() {
 	}

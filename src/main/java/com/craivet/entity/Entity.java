@@ -39,6 +39,10 @@ public abstract class Entity {
 	public String[] dialogues = new String[20];
 	public int dialogueIndex;
 
+	// Character status
+	public int maxLife;
+	public int life;
+
 	public Entity(Game game) {
 		this.game = game;
 	}

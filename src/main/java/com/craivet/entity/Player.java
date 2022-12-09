@@ -120,6 +120,10 @@ public class Player extends Entity {
 		worldY = game.tileSize * 21;
 		speed = PLAYER_SPEED;
 		direction = "down"; // Direccion por defecto
+
+		// Player status
+		maxLife = 6;
+		life = maxLife; // 1 = heart_half, 2 = heart_full
 	}
 
 	private void pickUpObject(int i) {
