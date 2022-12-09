@@ -28,7 +28,7 @@ public class TileManager {
 
 	private void initTiles() {
 
-		// Marcador de posicion
+		// Marcador de posicion para trabajar con numeros de dos digitos y mejorar la lectura del archivo world.txt
 		createTile(0, Assets.grass00, false);
 		createTile(1, Assets.grass00, false);
 		createTile(2, Assets.grass00, false);
