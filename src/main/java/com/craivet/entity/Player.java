@@ -63,6 +63,11 @@ public class Player extends Entity {
 			int npcIndex = game.cChecker.checkEntity(this, game.npcs);
 			interactNPC(npcIndex);
 
+			// Verifica la colision con eventos
+			game.eHandler.checkEvent();
+
+			game.keyHandler.enter = false;
+
 			// Si no hay colision, el player se puede mover dependiendo de la direccion
 			if (!collisionOn) {
 				switch (direction) {
@@ -139,9 +144,6 @@ public class Player extends Entity {
 				game.npcs[i].speak();
 			}
 		}
-
-		game.keyHandler.enter = false;
-
 	}
 
 }

@@ -11,8 +11,10 @@ import com.craivet.tile.TileManager;
 
 public class Game extends JPanel implements Runnable {
 
+	// System
 	public Thread thread;
 	public KeyHandler keyHandler = new KeyHandler(this);
+	public EventHandler eHandler = new EventHandler(this);
 	public TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);

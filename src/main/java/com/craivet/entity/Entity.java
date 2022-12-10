@@ -41,7 +41,7 @@ public abstract class Entity {
 
 	// Character status
 	public int maxLife;
-	public int life;
+	public int life; // 2 de vida representa 1 corazon lleno (la imagen de heart_full)
 
 	public Entity(Game game) {
 		this.game = game;

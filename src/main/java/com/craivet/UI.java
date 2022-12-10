@@ -43,12 +43,12 @@ public class UI {
 		if (game.gameState == game.titleState) drawTitleScreen();
 		if (game.gameState == game.playState) drawPlayerLife();
 		if (game.gameState == game.pauseState) {
-			drawPauseScreen();
 			drawPlayerLife();
+			drawPauseScreen();
 		}
 		if (game.gameState == game.dialogueState) {
-			drawDialogueScreen();
 			drawPlayerLife();
+			drawDialogueScreen();
 		}
 
 	}
@@ -132,13 +132,13 @@ public class UI {
 
 	private void drawPlayerLife() {
 
-		game.player.life = 5;
+		// game.player.life = 1;
 
 		int x = game.tileSize / 2;
 		int y = game.tileSize / 2;
 		int i = 0;
 
-		// Dibuja los corazones blancos (2 de vida representa 1 corazon lleno)
+		// Dibuja los corazones blancos
 		while (i < game.player.maxLife / 2) {
 			g2.drawImage(heart_blank, x, y, null);
 			i++;
