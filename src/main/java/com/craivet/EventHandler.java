@@ -1,7 +1,5 @@
 package com.craivet;
 
-import java.awt.*;
-
 public class EventHandler {
 
 	Game game;
@@ -59,7 +57,7 @@ public class EventHandler {
 		boolean hit = false;
 
 		game.player.solidArea.x = game.player.worldX + game.player.solidArea.x;
-		game.player.solidArea.y = game.player.worldY +  game.player.solidArea.y;
+		game.player.solidArea.y = game.player.worldY + game.player.solidArea.y;
 		eventRect[col][row].x = col * game.tileSize + eventRect[col][row].x;
 		eventRect[col][row].y = row * game.tileSize + eventRect[col][row].y;
 
@@ -92,13 +90,6 @@ public class EventHandler {
 		canTouchEvent = false;
 	}
 
-	public void teleport(int gameState) {
-		game.gameState = gameState;
-		game.player.worldX = game.tileSize * 37;
-		game.player.worldY = game.tileSize * 10;
-		game.ui.currentDialogue = "You teleported to position\n x=" + game.player.worldX / game.tileSize + " y=" + game.player.worldY / game.tileSize;
-	}
-
 	/**
 	 * Regenera vida al player si toma agua.
 	 */
@@ -108,6 +99,13 @@ public class EventHandler {
 			game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";
 			game.player.life = game.player.maxLife;
 		}
+	}
+
+	public void teleport(int gameState) {
+		game.gameState = gameState;
+		game.player.worldX = game.tileSize * 37;
+		game.player.worldY = game.tileSize * 10;
+		game.ui.currentDialogue = "You teleported to position\n x=" + game.player.worldX / game.tileSize + " y=" + game.player.worldY / game.tileSize;
 	}
 
 }

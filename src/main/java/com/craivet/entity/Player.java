@@ -52,14 +52,14 @@ public class Player extends Entity {
 
 			collisionOn = false;
 
-			// Verifica la colision con el tile
+			// Verifica la colision con tiles
 			game.cChecker.checkTile(this);
 
-			// Verifica la colision con el objeto
+			// Verifica la colision con objetos
 			int objIndex = game.cChecker.checkObject(this, true);
 			pickUpObject(objIndex);
 
-			// Verifica la colision con el npc
+			// Verifica la colision con npc
 			int npcIndex = game.cChecker.checkEntity(this, game.npcs);
 			interactNPC(npcIndex);
 
