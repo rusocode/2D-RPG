@@ -2,11 +2,12 @@ package com.craivet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Comparator;
 
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
 import com.craivet.input.KeyHandler;
-import com.craivet.object.SuperObject;
 import com.craivet.tile.TileManager;
 
 public class Game extends JPanel implements Runnable {
@@ -22,10 +23,11 @@ public class Game extends JPanel implements Runnable {
 	public Sound music = new Sound();
 	public Sound sound = new Sound();
 
-	// Entities and objects
+	// Entities
+	public ArrayList<Entity> entities = new ArrayList<>();
 	public Player player = new Player(this, keyHandler);
-	public Entity[] npcs = new Entity[10]; // TODO O entities?
-	public SuperObject[] objs = new SuperObject[10];
+	public Entity[] npcs = new Entity[10];
+	public Entity[] objs = new Entity[10];
 
 	// Game state
 	public int gameState;
@@ -128,14 +130,22 @@ public class Game extends JPanel implements Runnable {
 		} else {
 			tileManager.draw(g2);
 
-			// Objects
-			for (SuperObject obj : objs)
-				if (obj != null) obj.draw(g2, this);
-			// Npcs
-			for (Entity npc : npcs)
-				if (npc != null) npc.draw(g2);
+			// Add entities to the list
+			entities.add(player);
 
-			player.draw(g2);
+			for (Entity npc : npcs)
+				if (npc != null) entities.add(npc);
+			for (Entity obj : objs)
+				if (obj != null) entities.add(obj);
+
+			/* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
+			 * entonces este se dibuja por debajo. */
+			entities.sort(Comparator.comparingInt(o -> o.worldY));
+
+			// Draw
+			for (Entity entity : entities) entity.draw(g2);
+
+			entities.clear();
 
 			ui.draw(g2);
 		}

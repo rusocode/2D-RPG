@@ -1,19 +1,25 @@
 package com.craivet.object;
 
 import com.craivet.Game;
+import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
-public class OBJ_Door extends SuperObject {
+public class OBJ_Door extends Entity {
 
-	Game game;
-
-	public OBJ_Door (Game game) {
-		this.game = game;
+	public OBJ_Door(Game game) {
+		super(game);
 		name = "Door";
-		image = Assets.door;
+		down1 = Utils.scaleImage(Assets.door, game.tileSize, game.tileSize);
 		collision = true;
-		Utils.scaleImage(image, game.tileSize, game.tileSize);
+
+		solidArea.x = 0;
+		solidArea.y = 16;
+		solidArea.width = 48;
+		solidArea.height = 32;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+
 	}
 
 }

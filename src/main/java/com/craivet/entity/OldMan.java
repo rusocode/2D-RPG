@@ -3,6 +3,7 @@ package com.craivet.entity;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 
+import java.awt.*;
 import java.util.Random;
 
 public class OldMan extends Entity {
@@ -11,6 +12,14 @@ public class OldMan extends Entity {
 		super(game);
 		direction = "down";
 		speed = 1;
+
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidArea.width = 40;
+		solidArea.height = 32;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+
 		initImages(Assets.oldman, 16, 16);
 		initDialogue();
 	}

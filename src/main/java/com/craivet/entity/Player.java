@@ -27,7 +27,7 @@ public class Player extends Entity {
 		screenY = game.screenHeight / 2 - (game.tileSize / 2);
 
 		// TODO Reemplazar numeros magicos
-		solidArea = new Rectangle();
+		solidArea = new Rectangle(); // TODO Hace falta crear este objeto?
 		solidArea.x = 8;
 		solidArea.y = 16;
 		solidAreaDefaultX = solidArea.x;

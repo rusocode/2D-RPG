@@ -3,9 +3,9 @@ package com.craivet;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.object.OBJ_Heart;
-import com.craivet.object.SuperObject;
 
 /**
  * Interfaz de usuario.
@@ -25,7 +25,7 @@ public class UI {
 		this.game = game;
 
 		// Create HUD object
-		SuperObject heart = new OBJ_Heart(game);
+		Entity heart = new OBJ_Heart(game);
 		heart_full = heart.image;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;

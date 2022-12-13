@@ -22,7 +22,7 @@ public abstract class Entity {
 	Game game;
 
 	public BufferedImage down1, down2, up1, up2, left1, left2, right1, right2;
-	public String direction;
+	public String direction = "down";
 
 	public int worldX, worldY;
 	public int speed;
@@ -42,6 +42,10 @@ public abstract class Entity {
 	// Character status
 	public int maxLife;
 	public int life; // 2 de vida representa 1 corazon lleno (la imagen de heart_full)
+
+	public String name;
+	public BufferedImage image, image2, image3;
+	public boolean collision;
 
 	public Entity(Game game) {
 		this.game = game;
@@ -131,6 +135,8 @@ public abstract class Entity {
 					break;
 			}
 			g2.drawImage(image, screenX, screenY, null);
+			g2.setColor(Color.yellow);
+			g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 		}
 	}
 

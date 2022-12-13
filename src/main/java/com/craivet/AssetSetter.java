@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.entity.OldMan;
+import com.craivet.object.OBJ_Door;
 
 public class AssetSetter {
 
@@ -11,6 +12,13 @@ public class AssetSetter {
 	}
 
 	public void setObject() {
+		game.objs[0] = new OBJ_Door(game);
+		game.objs[0].worldX = game.tileSize * 21;
+		game.objs[0].worldY = game.tileSize * 22;
+
+		game.objs[1] = new OBJ_Door(game);
+		game.objs[1].worldX = game.tileSize * 23;
+		game.objs[1].worldY = game.tileSize * 25;
 
 	}
 
@@ -18,6 +26,18 @@ public class AssetSetter {
 		game.npcs[0] = new OldMan(game);
 		game.npcs[0].worldX = game.tileSize * 21;
 		game.npcs[0].worldY = game.tileSize * 21;
+
+		game.npcs[1] = new OldMan(game);
+		game.npcs[1].worldX = game.tileSize * 11;
+		game.npcs[1].worldY = game.tileSize * 21;
+
+		game.npcs[2] = new OldMan(game);
+		game.npcs[2].worldX = game.tileSize * 31;
+		game.npcs[2].worldY = game.tileSize * 21;
+
+		game.npcs[3] = new OldMan(game);
+		game.npcs[3].worldX = game.tileSize * 41;
+		game.npcs[3].worldY = game.tileSize * 21;
 	}
 
 }
