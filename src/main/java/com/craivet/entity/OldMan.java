@@ -3,7 +3,6 @@ package com.craivet.entity;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 
-import java.awt.*;
 import java.util.Random;
 
 public class OldMan extends Entity {

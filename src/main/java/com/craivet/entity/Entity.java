@@ -1,15 +1,11 @@
 package com.craivet.entity;
 
 import com.craivet.Game;
-import com.craivet.gfx.Assets;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-
-import static com.craivet.utils.Constants.PLAYER_HEIGHT;
-import static com.craivet.utils.Constants.PLAYER_WIDTH;
 
 /**
  * Almacena variables que se utilizaran en las clases de player, monster y NPC.

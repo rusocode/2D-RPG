@@ -49,7 +49,6 @@ public class Player extends Entity {
 			else if (key.a) direction = "left";
 			else direction = "right";
 
-
 			collisionOn = false;
 
 			// Verifica la colision con tiles
