@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
+import com.craivet.entity.Player;
 
 public class CollisionChecker {
 
@@ -13,7 +14,7 @@ public class CollisionChecker {
 	/**
 	 * Verifica si la entidad colisiona con el tile.
 	 *
-	 * @param entity la entidad con la que colisiona el tile.
+	 * @param entity la entidad.
 	 */
 	public void checkTile(Entity entity) {
 
@@ -64,15 +65,13 @@ public class CollisionChecker {
 	}
 
 	/**
-	 * Verifica si la entidad, el player en este caso, colisiona con el objeto. En caso de que la entidad sea un NPC,
-	 * no puede agarrar el objeto.
+	 * Verifica si el player colisiona con el objeto. En caso de que la entidad sea un npc, no puede agarrar el objeto.
 	 *
-	 * @param entity la entidad con la que colisiona el objeto.
-	 * @param player solo el player puede recoger objetos.
-	 * @return index el indice del objeto en caso de que sea el player el que colisione con este.
+	 * @param entity la entidad.
+	 * @return el indice del objeto en caso de que el player colisione con este.
 	 */
-	public int checkObject(Entity entity, boolean player) {
-		int index = 999;
+	public int checkObject(Entity entity) {
+		int index = -1;
 		for (int i = 0; i < game.objs.length; i++) {
 			if (game.objs[i] != null) {
 				// Obtiene la posicion del area solida de la entidad
@@ -86,29 +85,28 @@ public class CollisionChecker {
 						entity.solidArea.y += entity.speed;
 						if (entity.solidArea.intersects(game.objs[i].solidArea)) {
 							if (game.objs[i].collision) entity.collisionOn = true;
-							// if (entity instanceof Player) index = i; // TODO Puede ser una otra opcion sin un segundo parametro
-							if (player) index = i;
+							if (entity instanceof Player) index = i;
 						}
 						break;
 					case "up":
 						entity.solidArea.y -= entity.speed;
 						if (entity.solidArea.intersects(game.objs[i].solidArea)) {
 							if (game.objs[i].collision) entity.collisionOn = true;
-							if (player) index = i;
+							if (entity instanceof Player) index = i;
 						}
 						break;
 					case "left":
 						entity.solidArea.x -= entity.speed;
 						if (entity.solidArea.intersects(game.objs[i].solidArea)) {
 							if (game.objs[i].collision) entity.collisionOn = true;
-							if (player) index = i;
+							if (entity instanceof Player) index = i;
 						}
 						break;
 					case "right":
 						entity.solidArea.x += entity.speed;
 						if (entity.solidArea.intersects(game.objs[i].solidArea)) {
 							if (game.objs[i].collision) entity.collisionOn = true;
-							if (player) index = i;
+							if (entity instanceof Player) index = i;
 						}
 						break;
 				}
@@ -124,12 +122,12 @@ public class CollisionChecker {
 	/**
 	 * Verifica si la entidad colisiona con el npc.
 	 *
-	 * @param entity la entidad con la que colisiona el tile.
-	 * @param target ?
-	 * @return index el indice del npc en caso de que el player colisione con este.
+	 * @param entity la entidad.
+	 * @param target npc.
+	 * @return el indice del npc en caso de que el player colisione con este.
 	 */
 	public int checkEntity(Entity entity, Entity[] target) {
-		int index = 999;
+		int index = -1;
 		for (int i = 0; i < target.length; i++) {
 			if (target[i] != null) {
 				// Obtiene la posicion del area solida de la entidad

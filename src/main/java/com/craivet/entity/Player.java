@@ -51,18 +51,10 @@ public class Player extends Entity {
 
 			collisionOn = false;
 
-			// Verifica la colision con tiles
+			// Verifica las colisiones
 			game.cChecker.checkTile(this);
-
-			// Verifica la colision con objetos
-			int objIndex = game.cChecker.checkObject(this, true);
-			pickUpObject(objIndex);
-
-			// Verifica la colision con npc
-			int npcIndex = game.cChecker.checkEntity(this, game.npcs);
-			interactNPC(npcIndex);
-
-			// Verifica la colision con eventos
+			pickUpObject(game.cChecker.checkObject(this));
+			interactNPC(game.cChecker.checkEntity(this, game.npcs));
 			game.eHandler.checkEvent();
 
 			game.keyHandler.enter = false;
@@ -119,28 +111,40 @@ public class Player extends Entity {
 	}
 
 	private void setDefaultValues() {
-		// Posiciona al player en el centro del mundo
+		// Centro del mundo
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
+
 		speed = PLAYER_SPEED;
-		direction = "down"; // Direccion por defecto
+
+		direction = "down";
 
 		// Player status
 		maxLife = 6;
 		life = maxLife; // 1 = heart_half, 2 = heart_full
 	}
 
-	private void pickUpObject(int i) {
-		if (i != 999) { // El 999 significa que no agarro ningun objeto
-
+	/**
+	 * Recoge el objeto si el indice de este es distinto a -1.
+	 *
+	 * @param objIndex indice del objeto.
+	 */
+	private void pickUpObject(int objIndex) {
+		if (objIndex != -1) {
+			// System.out.println("Object picked!");
 		}
 	}
 
-	private void interactNPC(int i) {
-		if (i != 999) {
+	/**
+	 * Interactua con el npc si el indice de este es distinto a -1.
+	 *
+	 * @param npcIndex indice del npc.
+	 */
+	private void interactNPC(int npcIndex) {
+		if (npcIndex != -1) {
 			if (game.keyHandler.enter) {
 				game.gameState = game.dialogueState;
-				game.npcs[i].speak();
+				game.npcs[npcIndex].speak();
 			}
 		}
 	}

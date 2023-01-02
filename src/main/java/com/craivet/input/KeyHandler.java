@@ -65,14 +65,10 @@ public class KeyHandler extends KeyAdapter {
 		}
 
 		// Pause state
-		else if (game.gameState == game.pauseState) {
-			if (code == KeyEvent.VK_P) game.gameState = game.playState;
-		}
+		else if (game.gameState == game.pauseState && code == KeyEvent.VK_P) game.gameState = game.playState;
 
-		// Dialogue state
-		else if (game.gameState == game.dialogueState) {
-			if (code == KeyEvent.VK_ENTER) game.gameState = game.playState;
-		}
+			// Dialogue state
+		else if (game.gameState == game.dialogueState && code == KeyEvent.VK_ENTER) game.gameState = game.playState;
 
 	}
 

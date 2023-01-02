@@ -28,7 +28,7 @@ public abstract class Entity {
 
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX, solidAreaDefaultY;
-	public boolean collisionOn;
+	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades
 
 	public int actionLockCounter;
 
@@ -79,7 +79,7 @@ public abstract class Entity {
 		collisionOn = false;
 
 		game.cChecker.checkTile(this);
-		game.cChecker.checkObject(this, false);
+		game.cChecker.checkObject(this);
 		game.cChecker.checkPlayer(this);
 
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
@@ -131,8 +131,8 @@ public abstract class Entity {
 					break;
 			}
 			g2.drawImage(image, screenX, screenY, null);
-			g2.setColor(Color.yellow);
-			g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+			// g2.setColor(Color.yellow);
+			// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 		}
 	}
 

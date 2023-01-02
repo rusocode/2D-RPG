@@ -10,6 +10,10 @@ import com.craivet.entity.Player;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.TileManager;
 
+/**
+ * TODO interpolacion de renderizado?
+ */
+
 public class Game extends JPanel implements Runnable {
 
 	// System
@@ -26,8 +30,8 @@ public class Game extends JPanel implements Runnable {
 	// Entities
 	public ArrayList<Entity> entities = new ArrayList<>();
 	public Player player = new Player(this, keyHandler);
-	public Entity[] npcs = new Entity[10];
 	public Entity[] objs = new Entity[10];
+	public Entity[] npcs = new Entity[10];
 
 	// Game state
 	public int gameState;
@@ -49,6 +53,7 @@ public class Game extends JPanel implements Runnable {
 	public final int maxWorldCol = 50;
 	public final int maxWorldRow = 50;
 
+	// Game Loop
 	final int fps = 60;
 	private boolean running;
 

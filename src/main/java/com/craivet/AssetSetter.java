@@ -2,10 +2,11 @@ package com.craivet;
 
 import com.craivet.entity.OldMan;
 import com.craivet.object.OBJ_Door;
+import com.craivet.object.OBJ_Key;
 
 public class AssetSetter {
 
-	Game game;
+	private final Game game;
 
 	public AssetSetter(Game game) {
 		this.game = game;
@@ -19,6 +20,10 @@ public class AssetSetter {
 		game.objs[1] = new OBJ_Door(game);
 		game.objs[1].worldX = game.tileSize * 23;
 		game.objs[1].worldY = game.tileSize * 25;
+
+		game.objs[2] = new OBJ_Key(game);
+		game.objs[2].worldX = game.tileSize * 25;
+		game.objs[2].worldY = game.tileSize * 21;
 
 	}
 

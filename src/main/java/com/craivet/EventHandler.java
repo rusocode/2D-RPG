@@ -61,8 +61,8 @@ public class EventHandler {
 		eventRect[col][row].x = col * game.tileSize + eventRect[col][row].x;
 		eventRect[col][row].y = row * game.tileSize + eventRect[col][row].y;
 
-		// Si el player colisiona con el evento y si todavia no sucedio el evento
-		if (game.player.solidArea.intersects(eventRect[col][row]) /* && !eventRect[col][row].eventDone*/) {
+		// Si el player colisiona con el evento
+		if (game.player.solidArea.intersects(eventRect[col][row])) {
 			if (game.player.direction.contentEquals(reqDirection) || game.player.direction.contentEquals("any")) {
 				hit = true;
 				// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
