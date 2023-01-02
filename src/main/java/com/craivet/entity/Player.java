@@ -57,7 +57,7 @@ public class Player extends Entity {
 			interactNPC(game.cChecker.checkEntity(this, game.npcs));
 			game.eHandler.checkEvent();
 
-			game.keyHandler.enter = false;
+			game.keyHandler.enter = false; // TODO No tendria que ir en el metodo interactNPC()?
 
 			// Si no hay colision, el player se puede mover dependiendo de la direccion
 			if (!collisionOn) {

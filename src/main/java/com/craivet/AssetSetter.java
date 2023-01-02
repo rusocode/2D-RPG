@@ -41,7 +41,7 @@ public class AssetSetter {
 		game.npcs[2].worldY = game.tileSize * 21;
 
 		game.npcs[3] = new OldMan(game);
-		game.npcs[3].worldX = game.tileSize * 41;
+		game.npcs[3].worldX = game.tileSize * 26;
 		game.npcs[3].worldY = game.tileSize * 21;
 	}
 
