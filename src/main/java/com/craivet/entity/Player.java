@@ -131,7 +131,7 @@ public class Player extends Entity {
 	 */
 	private void pickUpObject(int objIndex) {
 		if (objIndex != -1) {
-			// System.out.println("Object picked!");
+			System.out.println("Object picked!");
 		}
 	}
 

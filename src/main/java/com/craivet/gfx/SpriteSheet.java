@@ -27,11 +27,12 @@ public class SpriteSheet {
 	/**
 	 * Obtiene las subimagenes del sprite sheet.
 	 *
+	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
+	 *
 	 * @param image  el sprite sheet.
 	 * @param width  el ancho de la subimagen.
 	 * @param height el alto de la subimagen.
 	 * @return una matriz con las subimagenes del sprite sheet.
-	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
 	 */
 	public static BufferedImage[] getSubimages(SpriteSheet image, int width, int height) {
 		int col = image.getWidth() / width;
