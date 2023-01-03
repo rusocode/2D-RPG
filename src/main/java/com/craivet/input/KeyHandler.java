@@ -1,13 +1,15 @@
 package com.craivet.input;
 
+import java.awt.event.*;
+
 import com.craivet.Game;
 
-import java.awt.event.*;
+import static com.craivet.utils.Constants.*;
 
 public class KeyHandler extends KeyAdapter {
 
 	Game game;
-	public boolean w, s, a, d, enter;
+	public boolean w, a, s, d, enter;
 
 	public KeyHandler(Game game) {
 		this.game = game;
@@ -19,7 +21,7 @@ public class KeyHandler extends KeyAdapter {
 
 		// Title state
 		if (game.gameState == game.titleState) {
-			if (game.ui.titleScreenState == 0) {
+			if (game.ui.titleScreenState == MAIN_SCREEN) {
 				if (code == KeyEvent.VK_W) {
 					game.ui.commandNum--;
 					if (game.ui.commandNum < 0) game.ui.commandNum = 2;
@@ -29,11 +31,12 @@ public class KeyHandler extends KeyAdapter {
 					if (game.ui.commandNum > 2) game.ui.commandNum = 0;
 				}
 				if (code == KeyEvent.VK_ENTER) {
-					if (game.ui.commandNum == 0) game.gameState = game.playState; // game.ui.titleScreenState = 1;
+					if (game.ui.commandNum == 0)
+						game.gameState = game.playState; // game.ui.titleScreenState = SELECTION_SCREEN;
 					// if (game.ui.commandNum == 1) {}
 					if (game.ui.commandNum == 2) System.exit(0);
 				}
-			} else if (game.ui.titleScreenState == 1) {
+			} else if (game.ui.titleScreenState == SELECTION_SCREEN) {
 				if (code == KeyEvent.VK_W) {
 					game.ui.commandNum--;
 					if (game.ui.commandNum < 0) game.ui.commandNum = 3;
@@ -43,9 +46,8 @@ public class KeyHandler extends KeyAdapter {
 					if (game.ui.commandNum > 3) game.ui.commandNum = 0;
 				}
 				if (code == KeyEvent.VK_ENTER) {
-					if (game.ui.commandNum == 0) game.gameState = game.playState;
-					if (game.ui.commandNum == 1) game.gameState = game.playState;
-					if (game.ui.commandNum == 2) game.gameState = game.playState;
+					if (game.ui.commandNum == 0 || game.ui.commandNum == 1 || game.ui.commandNum == 2)
+						game.gameState = game.playState;
 					if (game.ui.commandNum == 3) {
 						game.ui.commandNum = 0;
 						game.ui.titleScreenState = 0;
@@ -57,8 +59,8 @@ public class KeyHandler extends KeyAdapter {
 		// Play state
 		if (game.gameState == game.playState) {
 			if (code == KeyEvent.VK_W) w = true;
-			if (code == KeyEvent.VK_S) s = true;
 			if (code == KeyEvent.VK_A) a = true;
+			if (code == KeyEvent.VK_S) s = true;
 			if (code == KeyEvent.VK_D) d = true;
 			if (code == KeyEvent.VK_P) game.gameState = game.pauseState;
 			if (code == KeyEvent.VK_ENTER) enter = true;

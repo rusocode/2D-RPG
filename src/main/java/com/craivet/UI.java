@@ -7,6 +7,8 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.object.OBJ_Heart;
 
+import static com.craivet.utils.Constants.*;
+
 /**
  * Interfaz de usuario.
  */
@@ -18,8 +20,8 @@ public class UI {
 	BufferedImage heart_full, heart_half, heart_blank;
 	public String currentDialogue;
 	public int commandNum;
-	// TODO Implementar musica para pantalla de titulo
-	public int titleScreenState; // 0: first screen, 1: second screen
+	// TODO Implementar musica para pantalla de titulo (https://www.youtube.com/watch?v=blyK-QkZkQ8)
+	public int titleScreenState;
 
 	public UI(Game game) {
 		this.game = game;
@@ -55,7 +57,7 @@ public class UI {
 
 	private void drawTitleScreen() {
 
-		if (titleScreenState == 0) {
+		if (titleScreenState == MAIN_SCREEN) {
 			// Title
 			g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 96f));
 			String text = "Hersir";
@@ -94,8 +96,7 @@ public class UI {
 			y += game.tileSize;
 			g2.drawString(text, x, y);
 			if (commandNum == 2) g2.drawString(">", x - game.tileSize, y);
-		} else if (titleScreenState == 1) {
-			// Class selection screen
+		} else if (titleScreenState == SELECTION_SCREEN) {
 			g2.setColor(Color.white);
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD, 42f));
 

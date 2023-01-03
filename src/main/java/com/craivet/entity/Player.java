@@ -11,7 +11,7 @@ import static com.craivet.utils.Constants.*;
 
 public class Player extends Entity {
 
-	KeyHandler key;
+	private final KeyHandler key;
 
 	// El player permanece fijo en el centro de la pantalla
 	public final int screenX;
@@ -26,17 +26,8 @@ public class Player extends Entity {
 		screenX = game.screenWidth / 2 - (game.tileSize / 2);
 		screenY = game.screenHeight / 2 - (game.tileSize / 2);
 
-		// TODO Reemplazar numeros magicos
-		solidArea = new Rectangle(); // TODO Hace falta crear este objeto?
-		solidArea.x = 8;
-		solidArea.y = 16;
-		solidAreaDefaultX = solidArea.x;
-		solidAreaDefaultY = solidArea.y;
-		solidArea.width = 32;
-		solidArea.height = 32;
-
 		setDefaultValues();
-		initImages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
+
 	}
 
 	public void update() {
@@ -49,15 +40,14 @@ public class Player extends Entity {
 			else if (key.a) direction = "left";
 			else direction = "right";
 
-			collisionOn = false;
-
 			// Verifica las colisiones
+			collisionOn = false;
 			game.cChecker.checkTile(this);
 			pickUpObject(game.cChecker.checkObject(this));
 			interactNPC(game.cChecker.checkEntity(this, game.npcs));
 			game.eHandler.checkEvent();
 
-			game.keyHandler.enter = false; // TODO No tendria que ir en el metodo interactNPC()?
+			game.keyHandler.enter = false; // TODO No tendria que hacerlo desde el KeyHandler?
 
 			// Si no hay colision, el player se puede mover dependiendo de la direccion
 			if (!collisionOn) {
@@ -111,17 +101,22 @@ public class Player extends Entity {
 	}
 
 	private void setDefaultValues() {
+		// TODO Reemplazar numeros magicos
+		solidArea = new Rectangle(); // TODO Hace falta crear este objeto?
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidArea.width = 32;
+		solidArea.height = 32;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
 		// Centro del mundo
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
-
 		speed = PLAYER_SPEED;
-
 		direction = "down";
-
-		// Player status
 		maxLife = 6;
 		life = maxLife; // 1 = heart_half, 2 = heart_full
+		initImages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
 	}
 
 	/**
