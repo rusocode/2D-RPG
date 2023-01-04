@@ -28,7 +28,7 @@ public class UI {
 
 		// Create HUD object
 		Entity heart = new OBJ_Heart(game);
-		heart_full = heart.image;
+		heart_full = heart.image1;
 		heart_half = heart.image2;
 		heart_blank = heart.image3;
 

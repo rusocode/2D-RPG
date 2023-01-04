@@ -32,6 +32,9 @@ public abstract class Entity {
 
 	public int actionLockCounter;
 
+	public boolean invincible;
+	public int invincibleCounter;
+
 	public String[] dialogues = new String[20];
 	public int dialogueIndex;
 
@@ -40,8 +43,11 @@ public abstract class Entity {
 	public int life; // 2 de vida representa 1 corazon lleno (la imagen de heart_full)
 
 	public String name;
-	public BufferedImage image, image2, image3;
+	public BufferedImage image1, image2, image3;
 	public boolean collision;
+
+	// Para diferenciar entre npcs y mobs, ya que los npcs no atacan
+	public int type; // 0 = player, 1 = npc, 2 = mob
 
 	public Entity(Game game) {
 		this.game = game;
@@ -77,10 +83,18 @@ public abstract class Entity {
 		setAction();
 
 		collisionOn = false;
-
 		game.cChecker.checkTile(this);
 		game.cChecker.checkObject(this);
-		game.cChecker.checkPlayer(this);
+		// Verifica la colision entre entidades
+		game.cChecker.checkEntity(this, game.npcs);
+		game.cChecker.checkEntity(this, game.mobs);
+		// Si el mob colisiono con el player
+		if (this.type == 2 && game.cChecker.checkPlayer(this)) {
+			if (!game.player.invincible) {
+				game.player.life--;
+				game.player.invincible = true;
+			}
+		}
 
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
 		if (!collisionOn) {
@@ -145,14 +159,26 @@ public abstract class Entity {
 	 */
 	public void initImages(SpriteSheet image, int width, int height) {
 		BufferedImage[] subimages = SpriteSheet.getSubimages(image, width, height);
-		down1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
-		down2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
-		up1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);
-		up2 = Utils.scaleImage(subimages[3], game.tileSize, game.tileSize);
-		left1 = Utils.scaleImage(subimages[4], game.tileSize, game.tileSize);
-		left2 = Utils.scaleImage(subimages[5], game.tileSize, game.tileSize);
-		right1 = Utils.scaleImage(subimages[6], game.tileSize, game.tileSize);
-		right2 = Utils.scaleImage(subimages[7], game.tileSize, game.tileSize);
+		if (subimages.length > 2) {
+			down1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			down2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
+			up1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);
+			up2 = Utils.scaleImage(subimages[3], game.tileSize, game.tileSize);
+			left1 = Utils.scaleImage(subimages[4], game.tileSize, game.tileSize);
+			left2 = Utils.scaleImage(subimages[5], game.tileSize, game.tileSize);
+			right1 = Utils.scaleImage(subimages[6], game.tileSize, game.tileSize);
+			right2 = Utils.scaleImage(subimages[7], game.tileSize, game.tileSize);
+		} else { // Mobs
+			down1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			down2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
+			up1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			up2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
+			left1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			left2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
+			right1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			right2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
+		}
+
 	}
 
 }

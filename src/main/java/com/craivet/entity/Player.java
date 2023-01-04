@@ -45,6 +45,7 @@ public class Player extends Entity {
 			game.cChecker.checkTile(this);
 			pickUpObject(game.cChecker.checkObject(this));
 			interactNPC(game.cChecker.checkEntity(this, game.npcs));
+			contactMOB(game.cChecker.checkEntity(this, game.mobs));
 			game.eHandler.checkEvent();
 
 			game.keyHandler.enter = false; // TODO No tendria que hacerlo desde el KeyHandler?
@@ -77,6 +78,15 @@ public class Player extends Entity {
 
 		} else spriteNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
+		// Esto debe estar fuera de la declaracion if
+		if (invincible) {
+			invincibleCounter++;
+			if (invincibleCounter > 60) {
+				invincible = false;
+				invincibleCounter = 0;
+			}
+		}
+
 	}
 
 	public void draw(Graphics2D g2) {
@@ -95,28 +105,33 @@ public class Player extends Entity {
 				image = spriteNum == 1 || collisionOn ? right1 : right2;
 				break;
 		}
+
+		if (invincible) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		g2.drawImage(image, screenX, screenY, null);
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Reset alpha
 		// g2.setColor(Color.red);
 		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+
 	}
 
 	private void setDefaultValues() {
-		// TODO Reemplazar numeros magicos
-		solidArea = new Rectangle(); // TODO Hace falta crear este objeto?
+
+		// Posicion en el mundo
+		worldX = game.tileSize * 23;
+		worldY = game.tileSize * 21;
+		speed = PLAYER_SPEED;
+		maxLife = 6;
+		life = maxLife; // 1 = heart_half, 2 = heart_full
+		direction = "down";
+
 		solidArea.x = 8;
 		solidArea.y = 16;
 		solidArea.width = 32;
 		solidArea.height = 32;
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
-		// Centro del mundo
-		worldX = game.tileSize * 23;
-		worldY = game.tileSize * 21;
-		speed = PLAYER_SPEED;
-		direction = "down";
-		maxLife = 6;
-		life = maxLife; // 1 = heart_half, 2 = heart_full
-		initImages(Assets.player, PLAYER_WIDTH, PLAYER_HEIGHT);
+
+		initImages(Assets.player, ENTITY_WIDTH, ENTITY_HEIGHT);
 	}
 
 	/**
@@ -140,6 +155,15 @@ public class Player extends Entity {
 			if (game.keyHandler.enter) {
 				game.gameState = game.dialogueState;
 				game.npcs[npcIndex].speak();
+			}
+		}
+	}
+
+	private void contactMOB(int mobIndex) {
+		if (mobIndex != -1) {
+			if (!invincible) {
+				life--;
+				invincible = true;
 			}
 		}
 	}

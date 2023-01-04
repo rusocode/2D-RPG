@@ -32,6 +32,7 @@ public class Game extends JPanel implements Runnable {
 	public Player player = new Player(this, keyHandler);
 	public Entity[] objs = new Entity[10];
 	public Entity[] npcs = new Entity[10];
+	public Entity[] mobs = new Entity[20];
 
 	// Game state
 	public int gameState;
@@ -106,6 +107,7 @@ public class Game extends JPanel implements Runnable {
 	public void setup() {
 		aSetter.setObject();
 		aSetter.setNPC();
+		aSetter.setMOB();
 		// playMusic(0);
 		gameState = titleState;
 
@@ -116,6 +118,8 @@ public class Game extends JPanel implements Runnable {
 			player.update();
 			for (Entity npc : npcs)
 				if (npc != null) npc.update();
+			for (Entity mob : mobs)
+				if (mob != null) mob.update();
 		}
 		// if (gameState == pauseState) {}
 	}
@@ -137,11 +141,12 @@ public class Game extends JPanel implements Runnable {
 
 			// Add entities to the list
 			entities.add(player);
-
 			for (Entity npc : npcs)
 				if (npc != null) entities.add(npc);
 			for (Entity obj : objs)
 				if (obj != null) entities.add(obj);
+			for (Entity mob : mobs)
+				if (mob != null) entities.add(mob);
 
 			/* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
 			 * entonces este se dibuja por debajo. */
