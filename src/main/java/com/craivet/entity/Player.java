@@ -30,6 +30,26 @@ public class Player extends Entity {
 
 	}
 
+	private void setDefaultValues() {
+
+		// Posicion en el mundo
+		worldX = game.tileSize * 23;
+		worldY = game.tileSize * 21;
+		speed = PLAYER_SPEED;
+		maxLife = 6;
+		life = maxLife; // 1 = heart_half, 2 = heart_full
+		direction = "down";
+
+		solidArea.x = 8;
+		solidArea.y = 16;
+		solidArea.width = 32;
+		solidArea.height = 32;
+		solidAreaDefaultX = solidArea.x;
+		solidAreaDefaultY = solidArea.y;
+
+		initImages(Assets.player, ENTITY_WIDTH, ENTITY_HEIGHT);
+	}
+
 	public void update() {
 
 		if (key.s || key.w || key.a || key.d) { // Evita que el player se mueva cuando no se presiono ninguna tecla
@@ -112,26 +132,6 @@ public class Player extends Entity {
 		// g2.setColor(Color.red);
 		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
-	}
-
-	private void setDefaultValues() {
-
-		// Posicion en el mundo
-		worldX = game.tileSize * 23;
-		worldY = game.tileSize * 21;
-		speed = PLAYER_SPEED;
-		maxLife = 6;
-		life = maxLife; // 1 = heart_half, 2 = heart_full
-		direction = "down";
-
-		solidArea.x = 8;
-		solidArea.y = 16;
-		solidArea.width = 32;
-		solidArea.height = 32;
-		solidAreaDefaultX = solidArea.x;
-		solidAreaDefaultY = solidArea.y;
-
-		initImages(Assets.player, ENTITY_WIDTH, ENTITY_HEIGHT);
 	}
 
 	/**

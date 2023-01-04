@@ -65,7 +65,8 @@ public class CollisionChecker {
 	}
 
 	/**
-	 * Verifica si el player colisiona con el objeto. En caso de que la entidad sea un npc, no puede agarrar el objeto.
+	 * Verifica si la entidad colisiona con el objeto. En caso de que la entidad sea un npc o un mob, no puede agarrar
+	 * el objeto.
 	 *
 	 * @param entity la entidad.
 	 * @return el indice del objeto en caso de que el player colisione con este.
@@ -110,11 +111,11 @@ public class CollisionChecker {
 	}
 
 	/**
-	 * Verifica si la entidad colisiona con el npc.
+	 * Verifica si la entidad colisiona con otra entidad.
 	 *
 	 * @param entity la entidad.
-	 * @param target npc.
-	 * @return el indice del npc en caso de que el player colisione con este.
+	 * @param target la otra entidad.
+	 * @return el indice de la entidad en caso de que colisione con otra entidad.
 	 */
 	public int checkEntity(Entity entity, Entity[] target) {
 		int index = -1;
@@ -158,9 +159,10 @@ public class CollisionChecker {
 	}
 
 	/**
-	 * Verifica si el npc colisiona con el player.
+	 * Verifica si el npc o el mob colisiona con el player.
 	 *
-	 * @param entity el npc.
+	 * @param entity el npc o mob.
+	 * @return true si el npc o mob colisiona con el player.
 	 */
 	public boolean checkPlayer(Entity entity) {
 

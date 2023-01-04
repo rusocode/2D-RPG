@@ -8,9 +8,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
- * Almacena variables que se utilizaran en las clases de player, monster y NPC.
+ * Clase encargada de verificar las colisiones con npcs, mobs y el player.
  *
- * <p>Las coordenadas worldX y screenX no son lo mismo.
+ * <p>TODO Se podria separar los npcs y mobs por package, y por clases abstractas.
  */
 
 public abstract class Entity {
@@ -83,13 +83,19 @@ public abstract class Entity {
 		setAction();
 
 		collisionOn = false;
+
 		game.cChecker.checkTile(this);
 		game.cChecker.checkObject(this);
-		// Verifica la colision entre entidades
+
+		// Verifica la colision con npcs y mobs
 		game.cChecker.checkEntity(this, game.npcs);
 		game.cChecker.checkEntity(this, game.mobs);
-		// Si el mob colisiono con el player
-		if (this.type == 2 && game.cChecker.checkPlayer(this)) {
+
+		// Verifica la colision con el player
+		boolean contactPlayer = game.cChecker.checkPlayer(this);
+
+		// Si fue un mob el que colisiono con el player
+		if (this.type == 2 && contactPlayer) {
 			if (!game.player.invincible) {
 				game.player.life--;
 				game.player.invincible = true;
@@ -159,7 +165,7 @@ public abstract class Entity {
 	 */
 	public void initImages(SpriteSheet image, int width, int height) {
 		BufferedImage[] subimages = SpriteSheet.getSubimages(image, width, height);
-		if (subimages.length > 2) {
+		if (subimages.length > 2) { // Npcs
 			down1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 			down2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 			up1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);
