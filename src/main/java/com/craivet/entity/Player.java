@@ -48,17 +48,20 @@ public class Player extends Entity {
 		solidAreaDefaultY = solidArea.y;
 
 		initImages(Assets.player, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initImagesAttack(Assets.player_attack, 16, 16);
 	}
 
 	public void update() {
 
-		if (key.s || key.w || key.a || key.d) { // Evita que el player se mueva cuando no se presiono ninguna tecla
+		if (attacking) attacking();
+
+		if (key.s || key.w || key.a || key.d || key.enter) { // Evita que el player se mueva cuando no se presiono ninguna tecla
 
 			// Obtiene la direccion dependiendo de la tecla seleccionada
 			if (key.s) direction = "down";
 			else if (key.w) direction = "up";
 			else if (key.a) direction = "left";
-			else direction = "right";
+			else if (key.d) direction = "right";
 
 			// Verifica las colisiones
 			collisionOn = false;
@@ -68,10 +71,8 @@ public class Player extends Entity {
 			contactMOB(game.cChecker.checkEntity(this, game.mobs));
 			game.eHandler.checkEvent();
 
-			game.keyHandler.enter = false; // TODO No tendria que hacerlo desde el KeyHandler?
-
-			// Si no hay colision, el player se puede mover dependiendo de la direccion
-			if (!collisionOn) {
+			// Si no hay colision y si no presiono la tecla enter, el player se puede mover dependiendo de la direccion
+			if (!collisionOn /*&& !key.enter*/) {
 				switch (direction) {
 					case "down":
 						worldY += speed;
@@ -87,6 +88,8 @@ public class Player extends Entity {
 						break;
 				}
 			}
+
+			game.keyHandler.enter = false; // TODO No tendria que hacerlo desde el KeyHandler?
 
 			// Funciona como Timer para las animaciones
 			spriteCounter++;
@@ -113,16 +116,20 @@ public class Player extends Entity {
 		BufferedImage image = null;
 		switch (direction) {
 			case "down":
-				image = spriteNum == 1 || collisionOn ? down1 : down2;
+				if (!attacking) image = spriteNum == 1 || collisionOn ? down1 : down2;
+				if (attacking) image = spriteNum == 1 ? attackDown1 : attackDown2;
 				break;
 			case "up":
-				image = spriteNum == 1 || collisionOn ? up1 : up2;
+				if (!attacking) image = spriteNum == 1 || collisionOn ? up1 : up2;
+				if (attacking) image = spriteNum == 1 ? attackUp1 : attackUp2;
 				break;
 			case "left":
-				image = spriteNum == 1 || collisionOn ? left1 : left2;
+				if (!attacking) image = spriteNum == 1 || collisionOn ? left1 : left2;
+				if (attacking) image = spriteNum == 1 ? attackLeft1 : attackLeft2;
 				break;
 			case "right":
-				image = spriteNum == 1 || collisionOn ? right1 : right2;
+				if (!attacking) image = spriteNum == 1 || collisionOn ? right1 : right2;
+				if (attacking) image = spriteNum == 1 ? attackRight1 : attackRight2;
 				break;
 		}
 
@@ -132,6 +139,17 @@ public class Player extends Entity {
 		// g2.setColor(Color.red);
 		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
+	}
+
+	public void attacking() {
+		spriteCounter++;
+		if (spriteCounter <= 5) spriteNum = 1;
+		if (spriteCounter > 5 && spriteCounter <= 25) spriteNum = 2;
+		if (spriteCounter > 25) {
+			spriteNum = 1;
+			spriteCounter = 0;
+			attacking = false;
+		}
 	}
 
 	/**
@@ -151,11 +169,11 @@ public class Player extends Entity {
 	 * @param npcIndex indice del npc.
 	 */
 	private void interactNPC(int npcIndex) {
-		if (npcIndex != -1) {
-			if (game.keyHandler.enter) {
+		if (game.keyHandler.enter) {
+			if (npcIndex != -1) {
 				game.gameState = game.dialogueState;
 				game.npcs[npcIndex].speak();
-			}
+			} else attacking = true;
 		}
 	}
 

@@ -18,36 +18,34 @@ public abstract class Entity {
 	Game game;
 
 	public BufferedImage down1, down2, up1, up2, left1, left2, right1, right2;
-	public String direction = "down";
-
-	public int worldX, worldY;
-	public int speed;
-
-	public int spriteCounter;
-	public int spriteNum = 1;
-
+	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+	public BufferedImage image1, image2, image3;
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public int solidAreaDefaultX, solidAreaDefaultY;
+	public boolean collision;
+	public String[] dialogues = new String[20];
+
+	// State
+	public int worldX, worldY;
+	public String direction = "down";
+	public int spriteNum = 1;
+	public int dialogueIndex;
 	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades
-
-	public int actionLockCounter;
-
 	public boolean invincible;
+	public boolean attacking;
+
+	// Counter
+	public int spriteCounter;
+	public int actionLockCounter;
 	public int invincibleCounter;
 
-	public String[] dialogues = new String[20];
-	public int dialogueIndex;
-
-	// Character status
-	public int maxLife;
-	public int life; // 2 de vida representa 1 corazon lleno (la imagen de heart_full)
-
-	public String name;
-	public BufferedImage image1, image2, image3;
-	public boolean collision;
-
+	// Character atributes
 	// Para diferenciar entre npcs y mobs, ya que los npcs no atacan
 	public int type; // 0 = player, 1 = npc, 2 = mob
+	public String name;
+	public int speed;
+	public int maxLife;
+	public int life; // 2 de vida representa 1 corazon lleno (la imagen de heart_full)
 
 	public Entity(Game game) {
 		this.game = game;
@@ -184,7 +182,18 @@ public abstract class Entity {
 			right1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 			right2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 		}
+	}
 
+	public void initImagesAttack(SpriteSheet image, int width, int height) {
+		BufferedImage[] subimages = SpriteSheet.getSubimages(image, width, height);
+		attackDown1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+		attackDown2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
+		attackUp1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);
+		attackUp2 = Utils.scaleImage(subimages[3], game.tileSize, game.tileSize);
+		attackLeft1 = Utils.scaleImage(subimages[4], game.tileSize, game.tileSize);
+		attackLeft2 = Utils.scaleImage(subimages[5], game.tileSize, game.tileSize);
+		attackRight1 = Utils.scaleImage(subimages[6], game.tileSize, game.tileSize);
+		attackRight2 = Utils.scaleImage(subimages[7], game.tileSize, game.tileSize);
 	}
 
 }

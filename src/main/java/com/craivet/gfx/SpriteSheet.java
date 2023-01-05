@@ -45,6 +45,31 @@ public class SpriteSheet {
 		return subimages;
 	}
 
+	public static BufferedImage[] getSubimagesAttack(SpriteSheet image, int width, int height) {
+		int col = image.getWidth() / width; // 16
+		int row = image.getHeight() / height; // 32
+		BufferedImage[] subimages = new BufferedImage[col * row];
+		int i = 0;
+		for (int y = 0; y < row; y++) { // 8
+			for (int x = 0; x < col; x++) { // 2
+				subimages[i++] = image.crop(x * width, y * height, width, height);
+
+
+				for (int col2 = 0; col2 < 2; col2++) {
+					switch (col2) {
+						case 0:
+							subimages[i++] = image.crop(x * width, y * height, width, height);
+							break;
+						case 1:
+							subimages[i++] = image.crop(width, y * height, width, height);
+							break;
+					}
+				}
+			}
+		}
+		return subimages;
+	}
+
 	public int getWidth() {
 		return image.getWidth();
 	}
