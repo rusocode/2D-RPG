@@ -46,24 +46,20 @@ public class SpriteSheet {
 	}
 
 	public static BufferedImage[] getSubimagesAttack(SpriteSheet image, int width, int height) {
-		int col = image.getWidth() / width; // 16
-		int row = image.getHeight() / height; // 32
-		BufferedImage[] subimages = new BufferedImage[col * row];
+		int col = image.getWidth() / width; // 2
+		int row = image.getHeight() / height; // 8
+		BufferedImage[] subimages = new BufferedImage[8/* col * row */]; // necesito guardar 8 imagenes no 16
 		int i = 0;
-		for (int y = 0; y < row; y++) { // 8
-			for (int x = 0; x < col; x++) { // 2
-				subimages[i++] = image.crop(x * width, y * height, width, height);
-
-
-				for (int col2 = 0; col2 < 2; col2++) {
-					switch (col2) {
-						case 0:
-							subimages[i++] = image.crop(x * width, y * height, width, height);
-							break;
-						case 1:
-							subimages[i++] = image.crop(width, y * height, width, height);
-							break;
-					}
+		for (int y = 0; y < row; y += 2) {
+			for (int x = 0; x < col; x++) {
+				if (y == 0) subimages[i++] = image.crop(x * width, 0, 16, 32);
+				else if (y == 2) subimages[i++] = image.crop(x * width, 32, 16, 32);
+				else if (y == 4) {
+					if (x == 0) subimages[i++] = image.crop(0, 64, 32, 16);
+					else if (x == 1) subimages[i++] = image.crop(0, 80, 32, 16);
+				} else if (y == 6) {
+					if (x == 0) subimages[i++] = image.crop(0, 96, 32, 16);
+					else if (x == 1) subimages[i++] = image.crop(0, 112, 32, 16);
 				}
 			}
 		}

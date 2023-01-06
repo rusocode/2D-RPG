@@ -36,6 +36,7 @@ public abstract class Entity {
 
 	// Counter
 	public int spriteCounter;
+	public int standCounter;
 	public int actionLockCounter;
 	public int invincibleCounter;
 
@@ -184,8 +185,8 @@ public abstract class Entity {
 		}
 	}
 
-	public void initImagesAttack(SpriteSheet image, int width, int height) {
-		BufferedImage[] subimages = SpriteSheet.getSubimages(image, width, height);
+	public void initAttackImages(SpriteSheet image, int width, int height) {
+		BufferedImage[] subimages = SpriteSheet.getSubimagesAttack(image, width, height);
 		attackDown1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 		attackDown2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 		attackUp1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);

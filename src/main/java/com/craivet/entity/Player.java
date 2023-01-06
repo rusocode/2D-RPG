@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
+import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
 
@@ -48,7 +49,8 @@ public class Player extends Entity {
 		solidAreaDefaultY = solidArea.y;
 
 		initImages(Assets.player, ENTITY_WIDTH, ENTITY_HEIGHT);
-		initImagesAttack(Assets.player_attack, 16, 16);
+		attackDown1 = Utils.scaleImage(Assets.boy_attack_down_1, game.tileSize, game.tileSize * 2);
+		attackDown2 = Utils.scaleImage(Assets.boy_attack_down_2, game.tileSize, game.tileSize * 2);
 	}
 
 	public void update() {
@@ -72,7 +74,7 @@ public class Player extends Entity {
 			game.eHandler.checkEvent();
 
 			// Si no hay colision y si no presiono la tecla enter, el player se puede mover dependiendo de la direccion
-			if (!collisionOn /*&& !key.enter*/) {
+			if (!collisionOn && !key.enter) {
 				switch (direction) {
 					case "down":
 						worldY += speed;
@@ -99,11 +101,18 @@ public class Player extends Entity {
 				spriteCounter = 0;
 			}
 
-		} else spriteNum = 1; // Vuelve al sprite inicial (movimiento natural)
+		} else {
+			standCounter++;
+			if (standCounter == 20) {
+				spriteNum = 1;
+				standCounter = 0;
+			}
+			// spriteNum = 1; // Vuelve al sprite inicial (movimiento natural)
+		}
 
 		// Esto debe estar fuera de la declaracion if
 		if (invincible) {
-			invincibleCounter++;
+			invincibleCounter++; // EL PROBLEMA VIENE DEL spriteCounter
 			if (invincibleCounter > 60) {
 				invincible = false;
 				invincibleCounter = 0;
@@ -116,20 +125,28 @@ public class Player extends Entity {
 		BufferedImage image = null;
 		switch (direction) {
 			case "down":
-				if (!attacking) image = spriteNum == 1 || collisionOn ? down1 : down2;
-				if (attacking) image = spriteNum == 1 ? attackDown1 : attackDown2;
+				if (!attacking) {
+					if (spriteNum == 1) image = down1;
+					if (spriteNum == 2) image = down2;
+					// image = spriteNum == 1 || collisionOn ? down1 : down2;
+				}
+				if (attacking) {
+					if (spriteNum == 1) image = attackDown1;
+					if (spriteNum == 2) image = attackDown2;
+					// image = spriteNum == 1 ? attackDown1 : attackDown2;
+				}
 				break;
 			case "up":
 				if (!attacking) image = spriteNum == 1 || collisionOn ? up1 : up2;
-				if (attacking) image = spriteNum == 1 ? attackUp1 : attackUp2;
+				// if (attacking) image = spriteNum == 1 ? attackUp1 : attackUp2;
 				break;
 			case "left":
 				if (!attacking) image = spriteNum == 1 || collisionOn ? left1 : left2;
-				if (attacking) image = spriteNum == 1 ? attackLeft1 : attackLeft2;
+				// if (attacking) image = spriteNum == 1 ? attackLeft1 : attackLeft2;
 				break;
 			case "right":
 				if (!attacking) image = spriteNum == 1 || collisionOn ? right1 : right2;
-				if (attacking) image = spriteNum == 1 ? attackRight1 : attackRight2;
+				// if (attacking) image = spriteNum == 1 ? attackRight1 : attackRight2;
 				break;
 		}
 
@@ -143,8 +160,8 @@ public class Player extends Entity {
 
 	public void attacking() {
 		spriteCounter++;
-		if (spriteCounter <= 5) spriteNum = 1;
-		if (spriteCounter > 5 && spriteCounter <= 25) spriteNum = 2;
+		if (spriteCounter <= 5) spriteNum = 1; // (0-5 frame)
+		if (spriteCounter > 5 && spriteCounter <= 25) spriteNum = 2; // (6-25 frame)
 		if (spriteCounter > 25) {
 			spriteNum = 1;
 			spriteCounter = 0;

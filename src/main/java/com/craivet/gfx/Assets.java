@@ -19,6 +19,9 @@ public class Assets {
 	// Entities
 	public static SpriteSheet player = new SpriteSheet(Utils.loadImage("textures/entity/player.png"));
 	public static SpriteSheet player_attack = new SpriteSheet(Utils.loadImage("textures/entity/attack.png"));
+	public static BufferedImage boy_attack_down_1 = Utils.loadImage("textures/entity/boy_attack_down_1.png");
+	public static BufferedImage boy_attack_down_2 = Utils.loadImage("textures/entity/boy_attack_down_2.png");
+
 	public static SpriteSheet oldman = new SpriteSheet(Utils.loadImage("textures/entity/oldman.png"));
 	public static SpriteSheet slime = new SpriteSheet(Utils.loadImage("textures/entity/slime.png"));
 
