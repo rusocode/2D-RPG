@@ -126,7 +126,8 @@ public class Player extends Entity {
 			case "up":
 				if (!attacking) image = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 				if (attacking) {
-					tempScreenY -= game.tileSize; // Soluciona el bug para las imagenes de ataque up y left, ya que la posiciom 0,0 de estan son tiles transparentes
+					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
+					tempScreenY -= game.tileSize;
 					image = attackNum == 1 ? attackUp1 : attackUp2;
 				}
 				break;
@@ -139,16 +140,19 @@ public class Player extends Entity {
 				break;
 			case "right":
 				if (!attacking) image = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
-				if (attacking) {
-					// tempScreenX = screenX + attackArea.width;
-					image = attackNum == 1 ? attackRight1 : attackRight2;
-				}
+				if (attacking) image = attackNum == 1 ? attackRight1 : attackRight2;
 				break;
 		}
 
 		if (invincible) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
 		g2.drawImage(image, tempScreenX, tempScreenY, null);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Reset alpha
+
+		g2.setColor(Color.red);
+		g2.setStroke(new BasicStroke(1));
+		g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
+
+
 		// g2.setColor(Color.red);
 		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
 
@@ -172,7 +176,7 @@ public class Player extends Entity {
 			// Ajusta la posicion del player X/Y para el area de ataque
 			switch (direction) {
 				case "down":
-					worldY += attackArea.height;
+					worldY += game.tileSize;
 				case "up":
 					worldY -= attackArea.height;
 					break;
@@ -180,7 +184,7 @@ public class Player extends Entity {
 					worldX -= attackArea.width;
 					break;
 				case "right":
-					worldX += attackArea.width;
+					worldX += game.tileSize;
 					break;
 			}
 
@@ -198,8 +202,8 @@ public class Player extends Entity {
 			solidArea.width = solidAreaWidth;
 			solidArea.height = solidAreaHeight;
 
-
 		}
+
 		if (attackCounter > 25) {
 			attackNum = 1;
 			attackCounter = 0;
