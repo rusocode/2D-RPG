@@ -1,6 +1,6 @@
 package com.craivet;
 
-import com.craivet.entity.OldMan;
+import com.craivet.entity.Oldman;
 import com.craivet.entity.Slime;
 import com.craivet.object.OBJ_Door;
 
@@ -19,7 +19,7 @@ public class AssetSetter {
 	}
 
 	public void setNPC() {
-		game.npcs[0] = new OldMan(game);
+		game.npcs[0] = new Oldman(game);
 		game.npcs[0].worldX = game.tileSize * 21;
 		game.npcs[0].worldY = game.tileSize * 21;
 	}

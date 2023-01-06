@@ -10,7 +10,7 @@ public class OBJ_Chest extends Entity {
 	public OBJ_Chest(Game game) {
 		super(game);
 		name = "Chest";
-		down1 = Utils.scaleImage(Assets.chest, game.tileSize, game.tileSize);
+		movementDown1 = Utils.scaleImage(Assets.chest, game.tileSize, game.tileSize);
 	}
 
 }

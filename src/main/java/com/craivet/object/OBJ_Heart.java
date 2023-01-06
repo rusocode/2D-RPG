@@ -10,9 +10,9 @@ public class OBJ_Heart extends Entity {
 	public OBJ_Heart(Game game) {
 		super(game);
 		name = "Heart";
-		image1 = Utils.scaleImage(Assets.heart_full, game.tileSize, game.tileSize);
-		image2 = Utils.scaleImage(Assets.heart_half, game.tileSize, game.tileSize);
-		image3 = Utils.scaleImage(Assets.heart_blank, game.tileSize, game.tileSize);
+		heart_full = Utils.scaleImage(Assets.heart_full, game.tileSize, game.tileSize);
+		heart_half = Utils.scaleImage(Assets.heart_half, game.tileSize, game.tileSize);
+		heart_blank = Utils.scaleImage(Assets.heart_blank, game.tileSize, game.tileSize);
 	}
 
 }

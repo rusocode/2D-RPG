@@ -57,7 +57,7 @@ public class KeyHandler extends KeyAdapter {
 		}
 
 		// Play state
-		if (game.gameState == game.playState) {
+		else if (game.gameState == game.playState) {
 			if (code == KeyEvent.VK_W) w = true;
 			if (code == KeyEvent.VK_A) a = true;
 			if (code == KeyEvent.VK_S) s = true;

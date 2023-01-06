@@ -10,7 +10,7 @@ public class OBJ_Door extends Entity {
 	public OBJ_Door(Game game) {
 		super(game);
 		name = "Door";
-		down1 = Utils.scaleImage(Assets.door, game.tileSize, game.tileSize);
+		movementDown1 = Utils.scaleImage(Assets.door, game.tileSize, game.tileSize);
 		collision = true;
 
 		solidArea.x = 0;

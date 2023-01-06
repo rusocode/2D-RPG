@@ -10,7 +10,7 @@ public class OBJ_Boots extends Entity {
 	public OBJ_Boots(Game game) {
 		super(game);
 		name = "Boots";
-		down1 = Utils.scaleImage(Assets.boots, game.tileSize, game.tileSize);
+		movementDown1 = Utils.scaleImage(Assets.boots, game.tileSize, game.tileSize);
 	}
 
 }

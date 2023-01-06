@@ -25,16 +25,17 @@ public class SpriteSheet {
 	}
 
 	/**
-	 * Obtiene las subimagenes del sprite sheet.
+	 * Obtiene las subimagenes de movimiento.
 	 *
 	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
+	 * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
 	 *
 	 * @param image  el sprite sheet.
 	 * @param width  el ancho de la subimagen.
 	 * @param height el alto de la subimagen.
 	 * @return una matriz con las subimagenes del sprite sheet.
 	 */
-	public static BufferedImage[] getSubimages(SpriteSheet image, int width, int height) {
+	public static BufferedImage[] getMovementSubimages(SpriteSheet image, int width, int height) {
 		int col = image.getWidth() / width;
 		int row = image.getHeight() / height;
 		BufferedImage[] subimages = new BufferedImage[col * row];
@@ -45,23 +46,35 @@ public class SpriteSheet {
 		return subimages;
 	}
 
-	public static BufferedImage[] getSubimagesAttack(SpriteSheet image, int width, int height) {
+	/**
+	 * Obtiene las subimagenes de ataque.
+	 *
+	 * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
+	 *
+	 * @param image  el sprite sheet.
+	 * @param width  el ancho de la subimagen.
+	 * @param height el alto de la subimagen.
+	 * @return una matriz con las subimagenes del sprite sheet.
+	 */
+	public static BufferedImage[] getAttackSubimages(SpriteSheet image, int width, int height) {
 		int col = image.getWidth() / width; // 2
 		int row = image.getHeight() / height; // 8
-		BufferedImage[] subimages = new BufferedImage[8/* col * row */]; // necesito guardar 8 imagenes no 16
+		BufferedImage[] subimages = new BufferedImage[col * row]; // Necesito guardar 8 imagenes no 16
 		int i = 0;
-		for (int y = 0; y < row; y += 2) {
+		for (int y = 0; y < row; y++) {
 			for (int x = 0; x < col; x++) {
 				if (y == 0) subimages[i++] = image.crop(x * width, 0, 16, 32);
-				else if (y == 2) subimages[i++] = image.crop(x * width, 32, 16, 32);
-				else if (y == 4) {
+				if (y == 1) subimages[i++] = image.crop(x * width, 32, 16, 32);
+				if (y == 2) {
 					if (x == 0) subimages[i++] = image.crop(0, 64, 32, 16);
-					else if (x == 1) subimages[i++] = image.crop(0, 80, 32, 16);
-				} else if (y == 6) {
+					if (x == 1) subimages[i++] = image.crop(0, 80, 32, 16);
+				}
+				if (y == 3) {
 					if (x == 0) subimages[i++] = image.crop(0, 96, 32, 16);
-					else if (x == 1) subimages[i++] = image.crop(0, 112, 32, 16);
+					if (x == 1) subimages[i++] = image.crop(0, 112, 32, 16);
 				}
 			}
+			if (y == 3) break; // Evita iterar hasta los espacios sobrantes de la matriz
 		}
 		return subimages;
 	}

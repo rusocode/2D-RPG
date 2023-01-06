@@ -29,7 +29,7 @@ public class Slime extends Entity {
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
-		initImages(Assets.slime, ENTITY_WIDTH, ENTITY_HEIGHT); // Usa dos imagenes para todas las direcciones
+		initMovementImages(Assets.slime, ENTITY_WIDTH, ENTITY_HEIGHT); // Usa dos imagenes para todas las direcciones
 
 	}
 

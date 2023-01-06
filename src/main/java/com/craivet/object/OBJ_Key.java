@@ -10,7 +10,7 @@ public class OBJ_Key extends Entity {
 	public OBJ_Key(Game game) {
 		super(game);
 		name = "Key";
-		down1 = Utils.scaleImage(Assets.key, game.tileSize, game.tileSize);
+		movementDown1 = Utils.scaleImage(Assets.key, game.tileSize, game.tileSize);
 	}
 
 }

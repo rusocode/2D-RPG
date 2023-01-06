@@ -28,9 +28,9 @@ public class UI {
 
 		// Create HUD object
 		Entity heart = new OBJ_Heart(game);
-		heart_full = heart.image1;
-		heart_half = heart.image2;
-		heart_blank = heart.image3;
+		heart_full = heart.heart_full;
+		heart_half = heart.heart_half;
+		heart_blank = heart.heart_blank;
 
 	}
 
@@ -75,7 +75,7 @@ public class UI {
 			// Image
 			x = game.screenWidth / 2 - (game.tileSize * 2) / 2;
 			y += game.tileSize * 2;
-			g2.drawImage(game.player.down1, x, y, game.tileSize * 2, game.tileSize * 2, null);
+			g2.drawImage(game.player.movementDown1, x, y, game.tileSize * 2, game.tileSize * 2, null);
 
 			// Menu
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48f));

@@ -5,9 +5,9 @@ import com.craivet.gfx.Assets;
 
 import java.util.Random;
 
-public class OldMan extends Entity {
+public class Oldman extends Entity {
 
-	public OldMan(Game game) {
+	public Oldman(Game game) {
 		super(game);
 		direction = "down";
 		speed = 1;
@@ -19,7 +19,7 @@ public class OldMan extends Entity {
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
-		initImages(Assets.oldman, 16, 16);
+		initMovementImages(Assets.oldman, 16, 16);
 		initDialogue();
 	}
 
