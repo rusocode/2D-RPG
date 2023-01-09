@@ -17,6 +17,7 @@ public class Slime extends Entity {
 
 	private void setDefaultValues() {
 		name = "Slime";
+		direction = "down";
 		type = 2;
 		speed = 1;
 		maxLife = 4;

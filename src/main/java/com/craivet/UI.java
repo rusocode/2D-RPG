@@ -5,7 +5,7 @@ import java.awt.image.BufferedImage;
 
 import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
-import com.craivet.object.OBJ_Heart;
+import com.craivet.object.Heart;
 
 import static com.craivet.utils.Constants.*;
 
@@ -27,10 +27,10 @@ public class UI {
 		this.game = game;
 
 		// Create HUD object
-		Entity heart = new OBJ_Heart(game);
-		heart_full = heart.heart_full;
-		heart_half = heart.heart_half;
-		heart_blank = heart.heart_blank;
+		Entity heart = new Heart(game);
+		heart_full = heart.heartFull;
+		heart_half = heart.heartHalf;
+		heart_blank = heart.heartBlank;
 
 	}
 

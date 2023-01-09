@@ -5,9 +5,9 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
-public class OBJ_Door extends Entity {
+public class Door extends Entity {
 
-	public OBJ_Door(Game game) {
+	public Door(Game game) {
 		super(game);
 		name = "Door";
 		movementDown1 = Utils.scaleImage(Assets.door, game.tileSize, game.tileSize);

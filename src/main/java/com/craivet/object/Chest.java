@@ -5,12 +5,12 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
-public class OBJ_Boots extends Entity {
+public class Chest extends Entity {
 
-	public OBJ_Boots(Game game) {
+	public Chest(Game game) {
 		super(game);
-		name = "Boots";
-		movementDown1 = Utils.scaleImage(Assets.boots, game.tileSize, game.tileSize);
+		name = "Chest";
+		movementDown1 = Utils.scaleImage(Assets.chest, game.tileSize, game.tileSize);
 	}
 
 }

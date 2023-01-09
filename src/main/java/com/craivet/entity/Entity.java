@@ -19,7 +19,7 @@ public abstract class Entity {
 
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
 	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
-	public BufferedImage heart_full, heart_half, heart_blank;
+	public BufferedImage heartFull, heartHalf, heartBlank; // TODO Unificar
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public int solidAreaDefaultX, solidAreaDefaultY;
@@ -33,9 +33,9 @@ public abstract class Entity {
 	public int dialogueIndex;
 	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades
 	public boolean invincible;
-	public boolean attacking;
+	public boolean attacked;
 
-	// Counters (TODO Se podria crear una clase Timer para las animaciones)
+	// Counters o timers (TODO Se podria crear una clase Timer para las animaciones)
 	public int movementCounter;
 	public int attackCounter;
 	public int actionLockCounter;

@@ -9,11 +9,14 @@ import com.craivet.input.KeyHandler;
 
 import static com.craivet.utils.Constants.*;
 
+/**
+ * El player permanece fijo en el centro de la pantalla dando la sensacion de movimiento aunque no se "mueva".
+ */
+
 public class Player extends Entity {
 
 	private final KeyHandler key;
 
-	// El player permanece fijo en el centro de la pantalla
 	public final int screenX;
 	public final int screenY;
 
@@ -37,7 +40,7 @@ public class Player extends Entity {
 		worldY = game.tileSize * 21;
 		speed = PLAYER_SPEED;
 		maxLife = 6;
-		life = maxLife; // 1 = heart_half, 2 = heart_full
+		life = maxLife; // 1 = heartHalf, 2 = heartFull
 		direction = "down";
 
 		solidArea.x = 8;
@@ -56,7 +59,7 @@ public class Player extends Entity {
 
 	public void update() {
 
-		if (attacking) attacking();
+		if (attacked) attack();
 
 		// Evita que el player se mueva cuando no se presiono ninguna tecla
 		if (key.s || key.w || key.a || key.d || key.enter) {
@@ -72,7 +75,7 @@ public class Player extends Entity {
 			game.cChecker.checkTile(this);
 			pickUpObject(game.cChecker.checkObject(this));
 			interactNPC(game.cChecker.checkEntity(this, game.npcs));
-			contactMOB(game.cChecker.checkEntity(this, game.mobs));
+			damagePlayer(game.cChecker.checkEntity(this, game.mobs));
 			game.eHandler.checkEvent();
 
 			// Si no hay colision y si no presiono la tecla enter, el player se puede mover dependiendo de la direccion
@@ -120,27 +123,27 @@ public class Player extends Entity {
 		int tempScreenX = screenX, tempScreenY = screenY;
 		switch (direction) {
 			case "down":
-				if (!attacking) image = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
-				if (attacking) image = attackNum == 1 ? attackDown1 : attackDown2;
+				if (!attacked) image = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
+				if (attacked) image = attackNum == 1 ? attackDown1 : attackDown2;
 				break;
 			case "up":
-				if (!attacking) image = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
-				if (attacking) {
+				if (!attacked) image = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
+				if (attacked) {
 					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
 					tempScreenY -= game.tileSize;
 					image = attackNum == 1 ? attackUp1 : attackUp2;
 				}
 				break;
 			case "left":
-				if (!attacking) image = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
-				if (attacking) {
+				if (!attacked) image = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
+				if (attacked) {
 					tempScreenX -= game.tileSize;
 					image = attackNum == 1 ? attackLeft1 : attackLeft2;
 				}
 				break;
 			case "right":
-				if (!attacking) image = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
-				if (attacking) image = attackNum == 1 ? attackRight1 : attackRight2;
+				if (!attacked) image = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
+				if (attacked) image = attackNum == 1 ? attackRight1 : attackRight2;
 				break;
 		}
 
@@ -148,10 +151,9 @@ public class Player extends Entity {
 		g2.drawImage(image, tempScreenX, tempScreenY, null);
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Reset alpha
 
-		g2.setColor(Color.red);
-		g2.setStroke(new BasicStroke(1));
-		g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
-
+		// g2.setColor(Color.red);
+		// g2.setStroke(new BasicStroke(1));
+		// g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
 
 		// g2.setColor(Color.red);
 		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
@@ -159,9 +161,15 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Timer para las animaciones de ataque.
+	 * Ataca al mob si el frame de ataque colisiona con el.
+	 *
+	 * <p>De 0 a 5 milisegundos se muestra el primer frame de ataque. De 6 a 25 milisegundos se muestra el segundo frame
+	 * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
+	 *
+	 * <p>En el segundo frame de ataque, la posicion X/Y se ajusta para el area de ataque y verifica si colisiona con un
+	 * mob.
 	 */
-	public void attacking() {
+	private void attack() {
 		attackCounter++;
 		if (attackCounter <= 5) attackNum = 1; // (0-5 frame)
 		if (attackCounter > 5 && attackCounter <= 25) {
@@ -192,7 +200,7 @@ public class Player extends Entity {
 			solidArea.width = attackArea.width;
 			solidArea.height = attackArea.height;
 
-			// Verifica la colision con el mob con la posicion X/Y y solidArea actualizados
+			// Verifica la colision con el mob con la posicion X/Y y solidArea actualizados, osea el area de ataque
 			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
 			damageMob(mobIndex);
 
@@ -201,13 +209,12 @@ public class Player extends Entity {
 			worldY = currentWorldY;
 			solidArea.width = solidAreaWidth;
 			solidArea.height = solidAreaHeight;
-
 		}
 
 		if (attackCounter > 25) {
 			attackNum = 1;
 			attackCounter = 0;
-			attacking = false;
+			attacked = false;
 		}
 	}
 
@@ -232,11 +239,18 @@ public class Player extends Entity {
 			if (npcIndex != -1) {
 				game.gameState = game.dialogueState;
 				game.npcs[npcIndex].speak();
-			} else attacking = true;
+			} else attacked = true;
 		}
 	}
 
-	private void contactMOB(int mobIndex) {
+	/**
+	 * Daña al player si el indice del mob es distinto a -1.
+	 *
+	 * <p>TODO No tendira que ir en la clase Entity?
+	 *
+	 * @param mobIndex indice del mob.
+	 */
+	private void damagePlayer(int mobIndex) {
 		if (mobIndex != -1) {
 			if (!invincible) {
 				life--;
@@ -245,6 +259,11 @@ public class Player extends Entity {
 		}
 	}
 
+	/**
+	 * Daña al mob si el indice de este es distinto a -1.
+	 *
+	 * @param mobIndex indice del mob.
+	 */
 	private void damageMob(int mobIndex) {
 		if (mobIndex != -1) {
 			if (!game.mobs[mobIndex].invincible) {
