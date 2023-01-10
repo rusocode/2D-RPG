@@ -5,12 +5,20 @@ import com.craivet.gfx.Assets;
 
 import java.util.Random;
 
+import static com.craivet.utils.Constants.*;
+
 public class Oldman extends Entity {
 
 	public Oldman(Game game) {
 		super(game);
+		setDefaultValues();
+	}
+
+	private void setDefaultValues() {
+		name = "Oldman";
 		direction = "down";
 		speed = 1;
+		type = 1;
 
 		solidArea.x = 8;
 		solidArea.y = 16;
@@ -19,7 +27,7 @@ public class Oldman extends Entity {
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
-		initMovementImages(Assets.oldman, 16, 16);
+		initMovementImages(Assets.oldman, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initDialogue();
 	}
 
@@ -31,7 +39,7 @@ public class Oldman extends Entity {
 			if (i <= 25) direction = "down";
 			if (i > 25 && i <= 50) direction = "up";
 			if (i > 50 && i <= 75) direction = "left";
-			if (i > 75 && i <= 100) direction = "right";
+			if (i > 75) direction = "right";
 			actionLockCounter = 0;
 		}
 	}

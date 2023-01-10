@@ -5,8 +5,11 @@ import com.craivet.gfx.Assets;
 
 import java.util.Random;
 
-import static com.craivet.utils.Constants.ENTITY_HEIGHT;
-import static com.craivet.utils.Constants.ENTITY_WIDTH;
+import static com.craivet.utils.Constants.*;
+
+/**
+ * El Slime usa dos frames para todos los movimientos.
+ */
 
 public class Slime extends Entity {
 
@@ -18,8 +21,8 @@ public class Slime extends Entity {
 	private void setDefaultValues() {
 		name = "Slime";
 		direction = "down";
-		type = 2;
 		speed = 1;
+		type = 2;
 		maxLife = 4;
 		life = maxLife;
 
@@ -30,8 +33,7 @@ public class Slime extends Entity {
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
-		initMovementImages(Assets.slime, ENTITY_WIDTH, ENTITY_HEIGHT); // Usa dos imagenes para todas las direcciones
-
+		initMovementImages(Assets.slime, ENTITY_WIDTH, ENTITY_HEIGHT);
 	}
 
 	public void setAction() {
@@ -42,7 +44,7 @@ public class Slime extends Entity {
 			if (i <= 25) direction = "down";
 			if (i > 25 && i <= 50) direction = "up";
 			if (i > 50 && i <= 75) direction = "left";
-			if (i > 75 && i <= 100) direction = "right";
+			if (i > 75) direction = "right";
 			actionLockCounter = 0;
 		}
 	}

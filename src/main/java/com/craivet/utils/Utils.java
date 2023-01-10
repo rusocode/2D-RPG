@@ -50,6 +50,10 @@ public class Utils {
 		return scaledImage;
 	}
 
+	public static void changeAlpha(Graphics2D g2, float alphaValue) {
+		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+	}
+
 	private Utils() {
 	}
 

@@ -17,37 +17,42 @@ public abstract class Entity {
 
 	Game game;
 
-	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
-	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
-	public BufferedImage heartFull, heartHalf, heartBlank; // TODO Unificar
+	// Atributes
+	public String name;
+	public String direction = "down";
+	public int worldX, worldY;
+	public int speed;
+	public int type; // 0 = player, 1 = npc, 2 = mob (diferencia entre npcs y mobs, ya que los npcs no atacan)
+	public int maxLife;
+	public int life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+	public boolean collision;
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public int solidAreaDefaultX, solidAreaDefaultY;
-	public boolean collision;
-	public String[] dialogues = new String[20];
+
+	// Images
+	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
+	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+	public BufferedImage heartFull, heartHalf, heartBlank;
 
 	// States
-	public int worldX, worldY;
-	public String direction = "down";
-	public int movementNum = 1, attackNum = 1;
-	public int dialogueIndex;
 	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades
 	public boolean invincible;
 	public boolean attacked;
+	public boolean alive = true;
+	public boolean dead;
+	public int movementNum = 1, attackNum = 1;
 
 	// Counters o timers (TODO Se podria crear una clase Timer para las animaciones)
 	public int movementCounter;
 	public int attackCounter;
 	public int actionLockCounter;
 	public int invincibleCounter;
+	public int deadCounter;
 
-	// Character atributes
-	// Para diferenciar entre npcs y mobs, ya que los npcs no atacan
-	public int type; // 0 = player, 1 = npc, 2 = mob
-	public String name;
-	public int speed;
-	public int maxLife;
-	public int life; // 2 de vida representa 1 corazon lleno (la imagen de heart_full)
+	// Others
+	public String[] dialogues = new String[20];
+	public int dialogueIndex;
 
 	public Entity(Game game) {
 		this.game = game;
@@ -159,12 +164,29 @@ public abstract class Entity {
 					break;
 			}
 
-			if (invincible) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.4f));
+			if (invincible) Utils.changeAlpha(g2, 0.4f);
+			if (dead) deadAnimation(g2);
 			g2.drawImage(image, screenX, screenY, null);
-			g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
+			Utils.changeAlpha(g2, 1);
 			// g2.setColor(Color.yellow);
 			// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+		}
+	}
+
+	private void deadAnimation(Graphics2D g2) {
+		deadCounter++;
+		int i = 10;
+		if (deadCounter <= i) Utils.changeAlpha(g2, 0);
+		if (deadCounter > i && deadCounter <= i * 2) Utils.changeAlpha(g2, 1);
+		if (deadCounter > i * 2 && deadCounter <= i * 3) Utils.changeAlpha(g2, 0);
+		if (deadCounter > i * 3 && deadCounter <= i * 4) Utils.changeAlpha(g2, 1);
+		if (deadCounter > i * 4 && deadCounter <= i * 5) Utils.changeAlpha(g2, 0);
+		if (deadCounter > i * 5 && deadCounter <= i * 6) Utils.changeAlpha(g2, 1);
+		if (deadCounter > i * 6 && deadCounter <= i * 7) Utils.changeAlpha(g2, 0);
+		if (deadCounter > i * 7 && deadCounter <= i * 8) Utils.changeAlpha(g2, 1);
+		if (deadCounter > i * 8) {
+			dead = false;
+			alive = false;
 		}
 	}
 

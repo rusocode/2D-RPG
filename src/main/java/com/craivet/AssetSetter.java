@@ -2,7 +2,11 @@ package com.craivet;
 
 import com.craivet.entity.Oldman;
 import com.craivet.entity.Slime;
-import com.craivet.object.Door;
+
+/**
+ * Establece las entidades en posiciones especificas del mundo. Esta es la primer clase que se carga antes de ejecutar
+ * el Game Loop, para poder actualizar y dibujar las entidades.
+ */
 
 public class AssetSetter {
 

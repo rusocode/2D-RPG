@@ -10,8 +10,8 @@ public class Door extends Entity {
 	public Door(Game game) {
 		super(game);
 		name = "Door";
-		movementDown1 = Utils.scaleImage(Assets.door, game.tileSize, game.tileSize);
 		collision = true;
+		movementDown1 = Utils.scaleImage(Assets.door, game.tileSize, game.tileSize);
 
 		solidArea.x = 0;
 		solidArea.y = 16;

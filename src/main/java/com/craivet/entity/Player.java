@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
+import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
 
@@ -16,7 +17,6 @@ import static com.craivet.utils.Constants.*;
 public class Player extends Entity {
 
 	private final KeyHandler key;
-
 	public final int screenX;
 	public final int screenY;
 
@@ -24,24 +24,21 @@ public class Player extends Entity {
 		super(game);
 
 		this.key = key;
-
 		// Posiciona al player en el centro de la pantalla
 		screenX = game.screenWidth / 2 - (game.tileSize / 2);
 		screenY = game.screenHeight / 2 - (game.tileSize / 2);
 
 		setDefaultValues();
-
 	}
 
 	private void setDefaultValues() {
-
-		// Posicion en el mundo
+		direction = "down";
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
 		speed = PLAYER_SPEED;
+		type = 0;
 		maxLife = 6;
-		life = maxLife; // 1 = heartHalf, 2 = heartFull
-		direction = "down";
+		life = maxLife;
 
 		solidArea.x = 8;
 		solidArea.y = 16;
@@ -147,9 +144,9 @@ public class Player extends Entity {
 				break;
 		}
 
-		if (invincible) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f));
+		if (invincible) Utils.changeAlpha(g2, 0.3f);
 		g2.drawImage(image, tempScreenX, tempScreenY, null);
-		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Reset alpha
+		Utils.changeAlpha(g2, 1);// Reset alpha
 
 		// g2.setColor(Color.red);
 		// g2.setStroke(new BasicStroke(1));
@@ -157,7 +154,6 @@ public class Player extends Entity {
 
 		// g2.setColor(Color.red);
 		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
-
 	}
 
 	/**
@@ -219,7 +215,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Recoge el objeto si el indice de este es distinto a -1.
+	 * Recoge el objeto.
 	 *
 	 * @param objIndex indice del objeto.
 	 */
@@ -230,7 +226,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Interactua con el npc si el indice de este es distinto a -1.
+	 * Interactua con el npc si el indice de este es distinto a -1, sino esta atacando.
 	 *
 	 * @param npcIndex indice del npc.
 	 */
@@ -244,9 +240,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Daña al player si el indice del mob es distinto a -1.
-	 *
-	 * <p>TODO No tendira que ir en la clase Entity?
+	 * El player recibe daño si colisiona con un mob.
 	 *
 	 * @param mobIndex indice del mob.
 	 */
@@ -260,7 +254,7 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Daña al mob si el indice de este es distinto a -1.
+	 * Daña al mob.
 	 *
 	 * @param mobIndex indice del mob.
 	 */
@@ -269,7 +263,7 @@ public class Player extends Entity {
 			if (!game.mobs[mobIndex].invincible) {
 				game.mobs[mobIndex].life--;
 				game.mobs[mobIndex].invincible = true;
-				if (game.mobs[mobIndex].life <= 0) game.mobs[mobIndex] = null;
+				if (game.mobs[mobIndex].life <= 0) game.mobs[mobIndex].dead = true;
 			}
 		}
 	}

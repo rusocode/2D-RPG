@@ -118,10 +118,14 @@ public class Game extends JPanel implements Runnable {
 			player.update();
 			for (Entity npc : npcs)
 				if (npc != null) npc.update();
-			for (Entity mob : mobs)
-				if (mob != null) mob.update();
+			for (int i = 0; i < mobs.length; i++) {
+				if (mobs[i] != null) {
+					if (mobs[i].alive && !mobs[i].dead)
+						mobs[i].update(); // TODO Si el mob esta vivo es obvio que no esta muerto xD
+					if (!mobs[i].alive/*mobs[i].dead*/) mobs[i] = null;
+				}
+			}
 		}
-		// if (gameState == pauseState) {}
 	}
 
 	public void paintComponent(Graphics g) {
@@ -160,7 +164,6 @@ public class Game extends JPanel implements Runnable {
 			ui.draw(g2);
 		}
 
-
 		// Debug
 		// System.out.println("Draw time: " + (System.nanoTime() - drawStart));
 
@@ -192,7 +195,6 @@ public class Game extends JPanel implements Runnable {
 		sound.setFile(i);
 		sound.play();
 	}
-
 
 }
 
