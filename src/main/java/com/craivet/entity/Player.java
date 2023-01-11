@@ -56,7 +56,7 @@ public class Player extends Entity {
 
 	public void update() {
 
-		if (attacked) attack();
+		if (attacking) attack();
 
 		// Evita que el player se mueva cuando no se presiono ninguna tecla
 		if (key.s || key.w || key.a || key.d || key.enter) {
@@ -120,27 +120,27 @@ public class Player extends Entity {
 		int tempScreenX = screenX, tempScreenY = screenY;
 		switch (direction) {
 			case "down":
-				if (!attacked) image = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
-				if (attacked) image = attackNum == 1 ? attackDown1 : attackDown2;
+				if (!attacking) image = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
+				if (attacking) image = attackNum == 1 ? attackDown1 : attackDown2;
 				break;
 			case "up":
-				if (!attacked) image = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
-				if (attacked) {
+				if (!attacking) image = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
+				if (attacking) {
 					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
 					tempScreenY -= game.tileSize;
 					image = attackNum == 1 ? attackUp1 : attackUp2;
 				}
 				break;
 			case "left":
-				if (!attacked) image = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
-				if (attacked) {
+				if (!attacking) image = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
+				if (attacking) {
 					tempScreenX -= game.tileSize;
 					image = attackNum == 1 ? attackLeft1 : attackLeft2;
 				}
 				break;
 			case "right":
-				if (!attacked) image = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
-				if (attacked) image = attackNum == 1 ? attackRight1 : attackRight2;
+				if (!attacking) image = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
+				if (attacking) image = attackNum == 1 ? attackRight1 : attackRight2;
 				break;
 		}
 
@@ -168,8 +168,8 @@ public class Player extends Entity {
 	private void attack() {
 		attackCounter++;
 		if (attackCounter <= 5) attackNum = 1; // (0-5 frame)
-		if (attackCounter > 5 && attackCounter <= 25) {
-			attackNum = 2; // (6-25 frame)
+		if (attackCounter > 5 && attackCounter <= 25) { // (6-25 frame)
+			attackNum = 2;
 
 			// Guarda la posicion actual de worldX, worldY y solidArea
 			int currentWorldX = worldX;
@@ -206,16 +206,15 @@ public class Player extends Entity {
 			solidArea.width = solidAreaWidth;
 			solidArea.height = solidAreaHeight;
 		}
-
 		if (attackCounter > 25) {
 			attackNum = 1;
 			attackCounter = 0;
-			attacked = false;
+			attacking = false;
 		}
 	}
 
 	/**
-	 * Recoge el objeto.
+	 * Recoge un objeto.
 	 *
 	 * @param objIndex indice del objeto.
 	 */
@@ -235,21 +234,7 @@ public class Player extends Entity {
 			if (npcIndex != -1) {
 				game.gameState = game.dialogueState;
 				game.npcs[npcIndex].speak();
-			} else attacked = true;
-		}
-	}
-
-	/**
-	 * El player recibe daño si colisiona con un mob.
-	 *
-	 * @param mobIndex indice del mob.
-	 */
-	private void damagePlayer(int mobIndex) {
-		if (mobIndex != -1) {
-			if (!invincible) {
-				life--;
-				invincible = true;
-			}
+			} else attacking = true;
 		}
 	}
 
@@ -264,6 +249,20 @@ public class Player extends Entity {
 				game.mobs[mobIndex].life--;
 				game.mobs[mobIndex].invincible = true;
 				if (game.mobs[mobIndex].life <= 0) game.mobs[mobIndex].dead = true;
+			}
+		}
+	}
+
+	/**
+	 * El player recibe daño si colisiona con un mob.
+	 *
+	 * @param mobIndex indice del mob.
+	 */
+	private void damagePlayer(int mobIndex) {
+		if (mobIndex != -1) {
+			if (!invincible) {
+				life--;
+				invincible = true;
 			}
 		}
 	}

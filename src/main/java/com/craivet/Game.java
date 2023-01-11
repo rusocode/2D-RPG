@@ -120,9 +120,11 @@ public class Game extends JPanel implements Runnable {
 				if (npc != null) npc.update();
 			for (int i = 0; i < mobs.length; i++) {
 				if (mobs[i] != null) {
-					if (mobs[i].alive && !mobs[i].dead)
-						mobs[i].update(); // TODO Si el mob esta vivo es obvio que no esta muerto xD
-					if (!mobs[i].alive/*mobs[i].dead*/) mobs[i] = null;
+					/* Cuando muera el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
+					 * genera la animacion de muerte y al finalizarla, establece alive y dead en false para que no
+					 * genere movimiento y elimine el objeto. */
+					if (mobs[i].alive && !mobs[i].dead) mobs[i].update();
+					if (!mobs[i].alive) mobs[i] = null;
 				}
 			}
 		}

@@ -38,7 +38,7 @@ public abstract class Entity {
 	// States
 	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades
 	public boolean invincible;
-	public boolean attacked;
+	public boolean attacking;
 	public boolean alive = true;
 	public boolean dead;
 	public int movementNum = 1, attackNum = 1;
@@ -96,16 +96,7 @@ public abstract class Entity {
 		game.cChecker.checkEntity(this, game.npcs);
 		game.cChecker.checkEntity(this, game.mobs);
 
-		// Verifica la colision con el player
-		boolean contactPlayer = game.cChecker.checkPlayer(this);
-
-		// Si fue un mob el que colisiono con el player
-		if (this.type == 2 && contactPlayer) {
-			if (!game.player.invincible) {
-				game.player.life--;
-				game.player.invincible = true;
-			}
-		}
+		damagePlayer(game.cChecker.checkPlayer(this));
 
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
 		if (!collisionOn) {
@@ -173,6 +164,7 @@ public abstract class Entity {
 		}
 	}
 
+	// Cuando entra a este metodo no entra a ningun if del update en la clase game for mobs
 	private void deadAnimation(Graphics2D g2) {
 		deadCounter++;
 		int i = 10;
@@ -187,6 +179,18 @@ public abstract class Entity {
 		if (deadCounter > i * 8) {
 			dead = false;
 			alive = false;
+		}
+	}
+
+	/**
+	 * Daña al player si el mob colisiona con el.
+	 */
+	private void damagePlayer(boolean contact) {
+		if (this.type == 2 && contact) {
+			if (!game.player.invincible) {
+				game.player.life--;
+				game.player.invincible = true;
+			}
 		}
 	}
 
