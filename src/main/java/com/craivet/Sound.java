@@ -26,7 +26,7 @@ public class Sound {
 		sounds[4] = getClass().getClassLoader().getResource("sounds/fanfare.wav");
 		sounds[5] = getClass().getClassLoader().getResource("sounds/hitmonster.wav");
 		sounds[6] = getClass().getClassLoader().getResource("sounds/receivedamage.wav");
-		sounds[7] = getClass().getClassLoader().getResource("sounds/swingweapon2.wav");
+		sounds[7] = getClass().getClassLoader().getResource("sounds/swingweapon.wav");
 
 	}
 
