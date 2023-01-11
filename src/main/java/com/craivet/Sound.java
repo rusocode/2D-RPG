@@ -5,6 +5,14 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import java.net.URL;
 
+/**
+ * Esta clase solo lee audios en formato wav.
+ *
+ * <p>Java no puede manejar archivos comunes de alta calidad (48000,0 Hz, 32 bits, etc.), si encuentra algo como esto:
+ * <code>line with format PCM_SIGNED 192000.0 Hz, 24 bit, stereo, 6 bytes/frame, little-endian not supported.</code>
+ * Tendra que degradar su archivo, usar el convertidor web y ajustarlo a ~20000.
+ */
+
 public class Sound {
 
 	Clip clip;
@@ -18,7 +26,7 @@ public class Sound {
 		sounds[4] = getClass().getClassLoader().getResource("sounds/fanfare.wav");
 		sounds[5] = getClass().getClassLoader().getResource("sounds/hitmonster.wav");
 		sounds[6] = getClass().getClassLoader().getResource("sounds/receivedamage.wav");
-		sounds[7] = getClass().getClassLoader().getResource("sounds/swingweapon.wav");
+		sounds[7] = getClass().getClassLoader().getResource("sounds/swingweapon2.wav");
 
 	}
 

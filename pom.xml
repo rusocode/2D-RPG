@@ -14,4 +14,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.gagravarr/vorbis-java-core
+        <dependency>
+            <groupId>org.gagravarr</groupId>
+            <artifactId>vorbis-java-core</artifactId>
+            <version>0.8</version>
+        </dependency> -->
+    </dependencies>
+
 </project>
