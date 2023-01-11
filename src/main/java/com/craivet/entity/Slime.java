@@ -23,7 +23,7 @@ public class Slime extends Entity {
 		direction = "down";
 		speed = 1;
 		type = 2;
-		maxLife = 4;
+		maxLife = 20;
 		life = maxLife;
 
 		solidArea.x = 3;
@@ -47,6 +47,14 @@ public class Slime extends Entity {
 			if (i > 75) direction = "right";
 			actionLockCounter = 0;
 		}
+	}
+
+	/**
+	 * Pequeña IA en donde el Slime "huye" (cambia a la direccion actual del player) del Player cuando es atacado.
+	 */
+	public void damageReaction() {
+		actionLockCounter = 0;
+		direction = game.player.direction;
 	}
 
 }

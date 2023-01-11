@@ -234,7 +234,10 @@ public class Player extends Entity {
 			if (npcIndex != -1) {
 				game.gameState = game.dialogueState;
 				game.npcs[npcIndex].speak();
-			} else attacking = true;
+			} else {
+				game.playSound(7);
+				attacking = true;
+			}
 		}
 	}
 
@@ -246,8 +249,11 @@ public class Player extends Entity {
 	private void damageMob(int mobIndex) {
 		if (mobIndex != -1) {
 			if (!game.mobs[mobIndex].invincible) {
+				game.playSound(5);
 				game.mobs[mobIndex].life--;
 				game.mobs[mobIndex].invincible = true;
+				game.mobs[mobIndex].hpBarOn = true; // Activa la barra
+				game.mobs[mobIndex].damageReaction();
 				if (game.mobs[mobIndex].life <= 0) game.mobs[mobIndex].dead = true;
 			}
 		}
@@ -261,6 +267,7 @@ public class Player extends Entity {
 	private void damagePlayer(int mobIndex) {
 		if (mobIndex != -1) {
 			if (!invincible) {
+				game.playSound(6);
 				life--;
 				invincible = true;
 			}

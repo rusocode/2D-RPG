@@ -41,6 +41,7 @@ public abstract class Entity {
 	public boolean attacking;
 	public boolean alive = true;
 	public boolean dead;
+	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
 
 	// Counters o timers (TODO Se podria crear una clase Timer para las animaciones)
@@ -49,6 +50,7 @@ public abstract class Entity {
 	public int actionLockCounter;
 	public int invincibleCounter;
 	public int deadCounter;
+	public int hpBarCounter;
 
 	// Others
 	public String[] dialogues = new String[20];
@@ -60,6 +62,9 @@ public abstract class Entity {
 
 	public void setAction() {
 
+	}
+
+	public void damageReaction() {
 	}
 
 	public void speak() {
@@ -88,14 +93,10 @@ public abstract class Entity {
 		setAction();
 
 		collisionOn = false;
-
 		game.cChecker.checkTile(this);
 		game.cChecker.checkObject(this);
-
-		// Verifica la colision con npcs y mobs
 		game.cChecker.checkEntity(this, game.npcs);
 		game.cChecker.checkEntity(this, game.mobs);
-
 		damagePlayer(game.cChecker.checkPlayer(this));
 
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
@@ -155,7 +156,33 @@ public abstract class Entity {
 					break;
 			}
 
-			if (invincible) Utils.changeAlpha(g2, 0.4f);
+			// Si la barra de hp esta activada
+			if (type == 2 && hpBarOn) {
+
+				double oneScale = (double) game.tileSize / maxLife;
+				double hpBarValue = oneScale * life;
+
+				g2.setColor(new Color(35, 35, 35));
+				g2.fillRect(screenX - 1, screenY + game.tileSize + 4, game.tileSize + 2, 12);
+
+				g2.setColor(new Color(255, 0, 30));
+				g2.fillRect(screenX, screenY + game.tileSize + 5, (int) hpBarValue, 10);
+
+				hpBarCounter++;
+
+				if (hpBarCounter > 240) {
+					hpBarCounter = 0;
+					hpBarOn = false;
+				}
+
+			}
+
+			if (invincible) {
+				hpBarCounter = 0; // Sin esto la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
+				// hpBarOn = true;
+				Utils.changeAlpha(g2, 0.4f);
+			}
+
 			if (dead) deadAnimation(g2);
 			g2.drawImage(image, screenX, screenY, null);
 			Utils.changeAlpha(g2, 1);
@@ -188,6 +215,7 @@ public abstract class Entity {
 	private void damagePlayer(boolean contact) {
 		if (this.type == 2 && contact) {
 			if (!game.player.invincible) {
+				game.playSound(6);
 				game.player.life--;
 				game.player.invincible = true;
 			}
