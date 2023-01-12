@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
-import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -97,11 +96,11 @@ public class Player extends Entity {
 
 			game.keyHandler.enter = false;
 
-			timer.movement(this, 10);
+			timer.timeMovement(this, 10);
 
 		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
-		if (invincible) timer.invincible(this, 60);
+		if (invincible) timer.timeInvincible(this, 60);
 
 	}
 

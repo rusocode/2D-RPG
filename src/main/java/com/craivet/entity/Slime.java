@@ -3,8 +3,6 @@ package com.craivet.entity;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 
-import java.util.Random;
-
 import static com.craivet.utils.Constants.*;
 
 /**
@@ -37,7 +35,7 @@ public class Slime extends Entity {
 	}
 
 	public void setAction() {
-		timer.actionLock(this, 120);
+		timer.timeActionLock(this, 120);
 	}
 
 	/**

@@ -111,9 +111,8 @@ public abstract class Entity {
 			}
 		}
 
-
-		timer.movement(this, 10);
-		if (invincible) timer.invincible(this, 40);
+		timer.timeMovement(this, 10);
+		if (invincible) timer.timeInvincible(this, 40);
 
 	}
 
@@ -152,7 +151,7 @@ public abstract class Entity {
 				g2.setColor(new Color(255, 0, 30));
 				g2.fillRect(screenX, screenY + game.tileSize + 5, (int) hpBarValue, 5);
 
-				timer.hpBar(this, 240);
+				timer.timeHpBar(this, 240);
 			}
 			if (invincible) {
 				// Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
@@ -160,7 +159,7 @@ public abstract class Entity {
 				Utils.changeAlpha(g2, 0.4f);
 			}
 			// Cuando entra a este metodo no entra a ningun if del update en la clase game for mobs
-			if (dead) timer.deadAnimation(this, 10, g2);
+			if (dead) timer.timeDeadAnimation(this, 10, g2);
 
 			g2.drawImage(image, screenX, screenY, null);
 			Utils.changeAlpha(g2, 1);
@@ -168,20 +167,19 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Daña al player si el mob colisiona con el.
+	 * Daña al player.
 	 */
 	private void damagePlayer(boolean contact) {
-		if (this.type == 2 && contact) {
-			if (!game.player.invincible) {
-				game.playSound(6);
-				game.player.life--;
-				game.player.invincible = true;
-			}
+		// Si el mob hace contacto con el player que no es invencible
+		if (this.type == 2 && contact && !game.player.invincible) {
+			game.playSound(6);
+			game.player.life--;
+			game.player.invincible = true;
 		}
 	}
 
 	/**
-	 * Inicializa las subimagenes del sprite sheet y escala cada una.
+	 * Inicializa las subimagenes de movimiento del sprite sheet y escala cada una.
 	 *
 	 * @param image  el sprite sheet.
 	 * @param width  el ancho de la subimagen.
@@ -210,6 +208,13 @@ public abstract class Entity {
 		}
 	}
 
+	/**
+	 * Inicializa las subimagenes de ataque del sprite sheet y escala cada una.
+	 *
+	 * @param image  el sprite sheet.
+	 * @param width  el ancho de la subimagen.
+	 * @param height el alto de la subimagen.
+	 */
 	public void initAttackImages(SpriteSheet image, int width, int height) {
 		BufferedImage[] subimages = SpriteSheet.getAttackSubimages(image, width, height);
 		attackDown1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize * 2);
