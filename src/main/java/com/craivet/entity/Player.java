@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
+import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -17,6 +18,7 @@ import static com.craivet.utils.Constants.*;
 public class Player extends Entity {
 
 	private final KeyHandler key;
+
 	public final int screenX;
 	public final int screenY;
 
@@ -93,25 +95,13 @@ public class Player extends Entity {
 				}
 			}
 
-			game.keyHandler.enter = false; // TODO No tendria que hacerlo desde el KeyHandler?
+			game.keyHandler.enter = false;
 
-			// Timer para las animaciones de movimiento (TODO hacer en un metodo separado)
-			movementCounter++;
-			if (movementCounter > 10 - speed) {
-				if (movementNum == 1) movementNum = 2;
-				else if (movementNum == 2) movementNum = 1;
-				movementCounter = 0;
-			}
+			timer.movement(this, 10);
 
 		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
-		if (invincible) {
-			invincibleCounter++;
-			if (invincibleCounter > 60) {
-				invincible = false;
-				invincibleCounter = 0;
-			}
-		}
+		if (invincible) timer.invincible(this, 60);
 
 	}
 

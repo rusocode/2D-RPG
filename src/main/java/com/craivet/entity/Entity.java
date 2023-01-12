@@ -2,6 +2,7 @@ package com.craivet.entity;
 
 import com.craivet.Game;
 import com.craivet.gfx.SpriteSheet;
+import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -15,7 +16,10 @@ import java.awt.image.BufferedImage;
 
 public abstract class Entity {
 
-	Game game;
+	public Game game;
+	public Timer timer = new Timer();
+	public String[] dialogues = new String[20];
+	public int dialogueIndex;
 
 	// Atributes
 	public String name;
@@ -44,17 +48,7 @@ public abstract class Entity {
 	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
 
-	// Counters o timers (TODO Se podria crear una clase Timer para las animaciones)
-	public int movementCounter;
 	public int attackCounter;
-	public int actionLockCounter;
-	public int invincibleCounter;
-	public int deadCounter;
-	public int hpBarCounter;
-
-	// Others
-	public String[] dialogues = new String[20];
-	public int dialogueIndex;
 
 	public Entity(Game game) {
 		this.game = game;
@@ -117,20 +111,10 @@ public abstract class Entity {
 			}
 		}
 
-		movementCounter++;
-		if (movementCounter > 10 - speed) {
-			if (movementNum == 1) movementNum = 2;
-			else if (movementNum == 2) movementNum = 1;
-			movementCounter = 0;
-		}
 
-		if (invincible) {
-			invincibleCounter++;
-			if (invincibleCounter > 40) {
-				invincible = false;
-				invincibleCounter = 0;
-			}
-		}
+		timer.movement(this, 10);
+		if (invincible) timer.invincible(this, 40);
+
 	}
 
 	public void draw(Graphics2D g2) {
@@ -168,44 +152,18 @@ public abstract class Entity {
 				g2.setColor(new Color(255, 0, 30));
 				g2.fillRect(screenX, screenY + game.tileSize + 5, (int) hpBarValue, 5);
 
-				hpBarCounter++;
-
-				if (hpBarCounter > 240) {
-					hpBarCounter = 0;
-					hpBarOn = false;
-				}
-
+				timer.hpBar(this, 240);
 			}
-
 			if (invincible) {
-				hpBarCounter = 0; // Sin esto la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
-				// hpBarOn = true;
+				// Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
+				timer.hpBarCounter = 0;
 				Utils.changeAlpha(g2, 0.4f);
 			}
+			// Cuando entra a este metodo no entra a ningun if del update en la clase game for mobs
+			if (dead) timer.deadAnimation(this, 10, g2);
 
-			if (dead) deadAnimation(g2);
 			g2.drawImage(image, screenX, screenY, null);
 			Utils.changeAlpha(g2, 1);
-			// g2.setColor(Color.yellow);
-			// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
-		}
-	}
-
-	// Cuando entra a este metodo no entra a ningun if del update en la clase game for mobs
-	private void deadAnimation(Graphics2D g2) {
-		deadCounter++;
-		int i = 10;
-		if (deadCounter <= i) Utils.changeAlpha(g2, 0);
-		if (deadCounter > i && deadCounter <= i * 2) Utils.changeAlpha(g2, 1);
-		if (deadCounter > i * 2 && deadCounter <= i * 3) Utils.changeAlpha(g2, 0);
-		if (deadCounter > i * 3 && deadCounter <= i * 4) Utils.changeAlpha(g2, 1);
-		if (deadCounter > i * 4 && deadCounter <= i * 5) Utils.changeAlpha(g2, 0);
-		if (deadCounter > i * 5 && deadCounter <= i * 6) Utils.changeAlpha(g2, 1);
-		if (deadCounter > i * 6 && deadCounter <= i * 7) Utils.changeAlpha(g2, 0);
-		if (deadCounter > i * 7 && deadCounter <= i * 8) Utils.changeAlpha(g2, 1);
-		if (deadCounter > i * 8) {
-			dead = false;
-			alive = false;
 		}
 	}
 

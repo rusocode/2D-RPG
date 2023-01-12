@@ -81,7 +81,6 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_S) s = false;
 		if (code == KeyEvent.VK_A) a = false;
 		if (code == KeyEvent.VK_D) d = false;
-		// if (code == KeyEvent.VK_ENTER) enter = false;
 	}
 
 }
