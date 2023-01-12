@@ -29,10 +29,24 @@ public abstract class Entity {
 	public int type; // 0 = player, 1 = npc, 2 = mob (diferencia entre npcs y mobs, ya que los npcs no atacan)
 	public int maxLife;
 	public int life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+	public int level;
+	public int strength;
+	public int dexterity;
+	public int attack;
+	public int defense;
+	public int exp;
+	public int nextLevelExp;
+	public int coin;
+	public Entity currentWeapon;
+	public Entity currentShield;
 	public boolean collision;
 	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public int solidAreaDefaultX, solidAreaDefaultY;
+
+	// Item attributes
+	public int attackValue;
+	public int defenseValue;
 
 	// Images
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -153,12 +167,13 @@ public abstract class Entity {
 
 				timer.timeHpBar(this, 240);
 			}
+
 			if (invincible) {
 				// Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
 				timer.hpBarCounter = 0;
 				Utils.changeAlpha(g2, 0.4f);
 			}
-			// Cuando entra a este metodo no entra a ningun if del update en la clase game for mobs
+
 			if (dead) timer.timeDeadAnimation(this, 10, g2);
 
 			g2.drawImage(image, screenX, screenY, null);

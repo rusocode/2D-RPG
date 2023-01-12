@@ -50,6 +50,12 @@ public class Utils {
 		return scaledImage;
 	}
 
+	/**
+	 * Establece la transparencia a la imagen.
+	 *
+	 * @param g2         componente grafico.
+	 * @param alphaValue valor de transparencia.
+	 */
 	public static void changeAlpha(Graphics2D g2, float alphaValue) {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
 	}

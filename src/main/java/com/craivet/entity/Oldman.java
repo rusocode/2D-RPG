@@ -30,7 +30,7 @@ public class Oldman extends Entity {
 	}
 
 	public void setAction() {
-		timer.timeActionLock(this, 120);
+		timer.timeDirection(this, 120);
 	}
 
 	public void initDialogue() {

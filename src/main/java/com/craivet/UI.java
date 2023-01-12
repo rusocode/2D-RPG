@@ -52,11 +52,10 @@ public class UI {
 			drawPlayerLife();
 			drawDialogueScreen();
 		}
-
+		if (game.gameState == game.characterState) drawCharacterScreen();
 	}
 
 	private void drawTitleScreen() {
-
 		if (titleScreenState == MAIN_SCREEN) {
 			// Title
 			g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 96f));
@@ -185,6 +184,46 @@ public class UI {
 			g2.drawString(line, x, y);
 			y += 40;
 		}
+	}
+
+	private void drawCharacterScreen() {
+		final int frameX = game.tileSize * 2;
+		final int frameY = game.tileSize;
+		final int frameWidth = game.tileSize * 5;
+		final int frameHeight = game.tileSize * 10;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+
+		// Text
+		g2.setColor(Color.white);
+		g2.setFont(g2.getFont().deriveFont(32f));
+
+		int textX = frameX + 20;
+		int textY = frameY + game.tileSize;
+		final int lineHeight = 32;
+
+		// Names
+		g2.drawString("Level", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Life", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Strength", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Dexterity", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Attack", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Defense", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Exp", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Next Level", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Coin", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Weapon", textX, textY);
+		textY += lineHeight;
+		g2.drawString("Shield", textX, textY);
+		// textY += lineHeight;
 	}
 
 	private void drawSubWindow(int x, int y, int width, int height) {

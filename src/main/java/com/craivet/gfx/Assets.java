@@ -22,6 +22,17 @@ public class Assets {
 	public static SpriteSheet oldman = new SpriteSheet(Utils.loadImage("textures/entity/oldman.png"));
 	public static SpriteSheet slime = new SpriteSheet(Utils.loadImage("textures/entity/slime.png"));
 
+	// Objects
+	public static BufferedImage boots = Utils.loadImage("textures/objs/boots.png");
+	public static BufferedImage chest = Utils.loadImage("textures/objs/chest.png");
+	public static BufferedImage door = Utils.loadImage("textures/objs/door.png");
+	public static BufferedImage key = Utils.loadImage("textures/objs/key.png");
+	public static BufferedImage heart_full = Utils.loadImage("textures/objs/heart_full.png");
+	public static BufferedImage heart_half = Utils.loadImage("textures/objs/heart_half.png");
+	public static BufferedImage heart_blank = Utils.loadImage("textures/objs/heart_blank.png");
+	public static BufferedImage sword_normal = Utils.loadImage("textures/objs/sword_normal.png");
+	public static BufferedImage shield_wood = Utils.loadImage("textures/objs/shield_wood.png");
+
 	// Tiles
 	public static BufferedImage earth = Utils.loadImage("textures/tiles/earth.png");
 	public static BufferedImage floor01 = Utils.loadImage("textures/tiles/floor01.png");
@@ -58,15 +69,6 @@ public class Assets {
 	public static BufferedImage water11 = Utils.loadImage("textures/tiles/water11.png");
 	public static BufferedImage water12 = Utils.loadImage("textures/tiles/water12.png");
 	public static BufferedImage water13 = Utils.loadImage("textures/tiles/water13.png");
-
-	// Objects
-	public static BufferedImage boots = Utils.loadImage("textures/objs/boots.png");
-	public static BufferedImage chest = Utils.loadImage("textures/objs/chest.png");
-	public static BufferedImage door = Utils.loadImage("textures/objs/door.png");
-	public static BufferedImage key = Utils.loadImage("textures/objs/key.png");
-	public static BufferedImage heart_full = Utils.loadImage("textures/objs/heart_full.png");
-	public static BufferedImage heart_half = Utils.loadImage("textures/objs/heart_half.png");
-	public static BufferedImage heart_blank = Utils.loadImage("textures/objs/heart_blank.png");
 
 	private Assets() {
 	}

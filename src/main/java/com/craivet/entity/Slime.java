@@ -35,14 +35,14 @@ public class Slime extends Entity {
 	}
 
 	public void setAction() {
-		timer.timeActionLock(this, 120);
+		timer.timeDirection(this, 120); // TODO Cambiar valor magico por intervalos
 	}
 
 	/**
 	 * Pequeña IA en donde el Slime "huye" (cambia a la direccion actual del player) del Player cuando es atacado.
 	 */
 	public void damageReaction() {
-		timer.actionLockCounter = 0;
+		timer.directionCounter = 0;
 		direction = game.player.direction;
 	}
 

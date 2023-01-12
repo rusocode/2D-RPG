@@ -8,23 +8,25 @@ import com.craivet.entity.Entity;
 /**
  * Temporizador para controlar las diferentes acciones del juego haciendolo mas natural.
  *
- * <p>Los parametros para cada metodo son la entidad y el cooldown.
+ * <p>Los parametros para cada metodo son la entidad y el cooldown (o intervalos).
+ *
+ * @author Juan Debenedetti
  */
 
 public class Timer {
 
 	public int movementCounter;
 	public int invincibleCounter;
-	public int actionLockCounter;
+	public int directionCounter;
 	public int deadCounter;
 	public int hpBarCounter;
 
 	/**
 	 * Temporiza el movimiento.
 	 *
-	 * <p>Si alcanzo el cooldown y si la entidad esta en el frame de movimiento 1, cambia al frame de movimiento 2 y
-	 * resetea el contador. Si alcanzo el cooldown y si la entidad esta en el frame de movimiento 2, cambia al frame de
-	 * movimiento 1 y resetea el contador.
+	 * <p>Si se completo el cooldown y si la entidad esta en el frame de movimiento 1, cambia al frame de movimiento 2 y
+	 * resetea el contador. Si se completo el cooldown y si la entidad esta en el frame de movimiento 2, cambia al frame
+	 * de movimiento 1 y resetea el contador.
 	 */
 	public void timeMovement(Entity entity, int cooldown) {
 		movementCounter++;
@@ -38,7 +40,7 @@ public class Timer {
 	/**
 	 * Temporiza la invencibilidad.
 	 *
-	 * <p>Si alcanzo el cooldown, deja de ser invencible y resetea el contador.
+	 * <p>Si se completo el cooldown, deja de ser invencible y resetea el contador.
 	 */
 	public void timeInvincible(Entity entity, int cooldown) {
 		invincibleCounter++;
@@ -49,24 +51,23 @@ public class Timer {
 	}
 
 	/**
-	 * Temporiza el cambio de direccion.
+	 * Temporiza la direccion.
 	 *
-	 * <p>Si alcanzo el cooldown, calcula un numero aleatorio entre 1 y 100 para determinar la nueva direccion. Si el
-	 * numero es menor o igual a 25, cambia a la direccion "down" y resetea el contador. Si el numero esta entre 26 y 50,
-	 * ambos incluidos, cambia a la direccion "up" y resetea el contador. Si el numero esta entre 51 y 75, ambos
-	 * incluidos, cambia a la direccion "left" y resetea el contador. Si el numero es mayor a 75, cambia a la direccion
-	 * "right" y resetea el contador.
+	 * <p>Si se completo el cooldown, calcula un numero aleatorio entre 1 y 100 para determinar la nueva direccion. Si
+	 * el numero es menor o igual a 25, cambia a "down" y resetea el contador. Si el numero esta entre 26 y 50, ambos
+	 * incluidos, cambia a "up" y resetea el contador. Si el numero esta entre 51 y 75, ambos incluidos, cambia a "left"
+	 * y resetea el contador. Si el numero es mayor a 75, cambia a "right" y resetea el contador.
 	 */
-	public void timeActionLock(Entity entity, int cooldown) {
-		actionLockCounter++;
-		if (actionLockCounter == cooldown) {
+	public void timeDirection(Entity entity, int cooldown) {
+		directionCounter++;
+		if (directionCounter == cooldown) {
 			Random random = new Random();
 			int i = random.nextInt(100) + 1;
 			if (i <= 25) entity.direction = "down";
 			if (i > 25 && i <= 50) entity.direction = "up";
 			if (i > 50 && i <= 75) entity.direction = "left";
 			if (i > 75) entity.direction = "right";
-			actionLockCounter = 0;
+			directionCounter = 0;
 		}
 	}
 
@@ -80,7 +81,7 @@ public class Timer {
 	 * el contador esta entre el cooldown * 5 y el cooldown * 6, cambia la transparencia a 1. Si el contador esta entre
 	 * el cooldown * 6 y el cooldown * 7, cambia la transparencia a 0. Si el contador esta entre el cooldown * 7 y el
 	 * cooldown * 8, cambia la transparencia a 1. Si el contador es mayor al cooldown * 8, establece el estado dead y
-	 * alive en false.
+	 * alive en false, evitando que el mob actualice su posicion y se elimine como objeto.
 	 */
 	public void timeDeadAnimation(Entity entity, int cooldown, Graphics2D g2) {
 		deadCounter++;
@@ -101,7 +102,7 @@ public class Timer {
 	/**
 	 * Temporiza la barra de vida.
 	 *
-	 * <p>Si alcanzo el cooldown, resetea el contador y desactiva la barra de vida.
+	 * <p>Si se completo el cooldown, resetea el contador y desactiva la barra de vida.
 	 */
 	public void timeHpBar(Entity entity, int cooldown) {
 		hpBarCounter++;

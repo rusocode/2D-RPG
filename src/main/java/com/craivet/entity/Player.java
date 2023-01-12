@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
+import com.craivet.object.ShieldWood;
+import com.craivet.object.SwordNormal;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -20,6 +22,7 @@ public class Player extends Entity {
 
 	public final int screenX;
 	public final int screenY;
+	public boolean attackCanceled;
 
 	public Player(Game game, KeyHandler key) {
 		super(game);
@@ -40,6 +43,16 @@ public class Player extends Entity {
 		type = 0;
 		maxLife = 6;
 		life = maxLife;
+		level = 1;
+		strength = 1; // Mas fuerza, mas daño
+		dexterity = 1; // Mas destreza, menos daño
+		exp = 0;
+		nextLevelExp = 5;
+		coin = 0;
+		currentWeapon = new SwordNormal(game);
+		currentShield = new ShieldWood(game);
+		attack = getAttack();
+		defense = getDefense();
 
 		solidArea.x = 8;
 		solidArea.y = 16;
@@ -94,6 +107,8 @@ public class Player extends Entity {
 				}
 			}
 
+			checkAttack();
+
 			game.keyHandler.enter = false;
 
 			timer.timeMovement(this, 10);
@@ -135,14 +150,21 @@ public class Player extends Entity {
 
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
 		g2.drawImage(image, tempScreenX, tempScreenY, null);
-		Utils.changeAlpha(g2, 1);// Reset alpha
+		Utils.changeAlpha(g2, 1);
 
-		// g2.setColor(Color.red);
-		// g2.setStroke(new BasicStroke(1));
-		// g2.drawRect(tempScreenX, tempScreenY, attackArea.width, attackArea.height);
+	}
 
-		// g2.setColor(Color.red);
-		// g2.fillRect(screenX + solidArea.x, screenY + solidArea.y, solidArea.width, solidArea.height);
+	/**
+	 * Verifica si puede atacar. No puede atacar si interactua con un npc o bebe agua.
+	 */
+	private void checkAttack() {
+		// Si presiono enter y el ataque no esta cancelado
+		if (key.enter && !attackCanceled) {
+			game.playSound(7);
+			attacking = true;
+			attackCounter = 0;
+		}
+		attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
 	}
 
 	/**
@@ -202,6 +224,14 @@ public class Player extends Entity {
 		}
 	}
 
+	private int getAttack() {
+		return strength * currentWeapon.attackValue;
+	}
+
+	private int getDefense() {
+		return dexterity * currentShield.defenseValue;
+	}
+
 	/**
 	 * Recoge un objeto.
 	 *
@@ -214,18 +244,16 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Interactua con el npc si el indice de este es distinto a -1, sino esta atacando.
+	 * Interactua con el npc.
 	 *
 	 * @param npcIndex indice del npc.
 	 */
 	private void interactNPC(int npcIndex) {
 		if (game.keyHandler.enter) {
 			if (npcIndex != -1) {
+				attackCanceled = true; // No puede atacar si interactua con un npc
 				game.gameState = game.dialogueState;
 				game.npcs[npcIndex].speak();
-			} else {
-				game.playSound(7);
-				attacking = true;
 			}
 		}
 	}
