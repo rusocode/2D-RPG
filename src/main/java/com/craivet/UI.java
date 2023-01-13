@@ -17,7 +17,7 @@ public class UI {
 
 	private final Game game;
 	private Graphics2D g2;
-	BufferedImage heart_full, heart_half, heart_blank;
+	BufferedImage heartFull, heartHalf, heartBlank;
 	public String currentDialogue;
 	public int commandNum;
 	// TODO Implementar musica para pantalla de titulo (https://www.youtube.com/watch?v=blyK-QkZkQ8)
@@ -28,9 +28,9 @@ public class UI {
 
 		// Create HUD object
 		Entity heart = new Heart(game);
-		heart_full = heart.heartFull;
-		heart_half = heart.heartHalf;
-		heart_blank = heart.heartBlank;
+		heartFull = heart.heartFull;
+		heartHalf = heart.heartHalf;
+		heartBlank = heart.heartBlank;
 
 	}
 
@@ -140,7 +140,7 @@ public class UI {
 
 		// Dibuja los corazones blancos
 		while (i < game.player.maxLife / 2) {
-			g2.drawImage(heart_blank, x, y, null);
+			g2.drawImage(heartBlank, x, y, null);
 			i++;
 			x += game.tileSize;
 		}
@@ -152,9 +152,9 @@ public class UI {
 
 		// Draw current life
 		while (i < game.player.life) {
-			g2.drawImage(heart_half, x, y, null);
+			g2.drawImage(heartHalf, x, y, null);
 			i++;
-			if (i < game.player.life) g2.drawImage(heart_full, x, y, null);
+			if (i < game.player.life) g2.drawImage(heartFull, x, y, null);
 			i++;
 			x += game.tileSize;
 		}
