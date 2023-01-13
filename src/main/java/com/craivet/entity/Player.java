@@ -267,11 +267,24 @@ public class Player extends Entity {
 		if (mobIndex != -1) {
 			if (!game.mobs[mobIndex].invincible) {
 				game.playSound(5);
-				game.mobs[mobIndex].life--;
+
+				// Resta la defensa del mob al ataque del player para calcular el daño justo
+				int damage = attack - game.mobs[mobIndex].defense;
+				if (damage < 0) damage = 0;
+
+				game.mobs[mobIndex].life -= damage;
+				game.ui.addMessage(damage + " damage!");
+
 				game.mobs[mobIndex].invincible = true;
 				game.mobs[mobIndex].hpBarOn = true; // Activa la barra
 				game.mobs[mobIndex].damageReaction();
-				if (game.mobs[mobIndex].life <= 0) game.mobs[mobIndex].dead = true;
+				if (game.mobs[mobIndex].life <= 0) {
+					game.mobs[mobIndex].dead = true;
+					game.ui.addMessage("Killed the " + game.mobs[mobIndex].name + "!");
+					game.ui.addMessage("Exp + " + game.mobs[mobIndex].exp);
+					exp += game.mobs[mobIndex].exp;
+					checkLevelUp();
+				}
 			}
 		}
 	}
@@ -285,10 +298,38 @@ public class Player extends Entity {
 		if (mobIndex != -1) {
 			if (!invincible) {
 				game.playSound(6);
-				life--;
+
+				// Resta la defensa del player al ataque del mob para calcular el daño justo
+				int damage = game.mobs[mobIndex].attack - defense;
+				if (damage < 0) damage = 0;
+
+				life -= damage;
 				invincible = true;
 			}
 		}
+	}
+
+	/**
+	 * Verifica si subio de nivel.
+	 */
+	private void checkLevelUp() {
+
+		if (exp >= nextLevelExp) {
+			level++;
+			nextLevelExp *= 2;
+			maxLife += 2;
+			strength++;
+			dexterity++;
+			attack = getAttack();
+			defense = getDefense();
+
+			game.playSound(8);
+			game.gameState = game.dialogueState;
+			game.ui.currentDialogue = "You are level " + level + "!";
+
+
+		}
+
 	}
 
 }

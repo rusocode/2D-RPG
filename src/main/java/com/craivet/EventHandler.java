@@ -99,6 +99,7 @@ public class EventHandler {
 			game.gameState = gameState;
 			game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";
 			game.player.life = game.player.maxLife;
+			game.aSetter.setMOB();
 		}
 	}
 

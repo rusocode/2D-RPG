@@ -26,14 +26,27 @@ public class AssetSetter {
 	}
 
 	public void setMOB() {
-		game.mobs[0] = new Slime(game);
-		game.mobs[0].worldX = game.tileSize * 23;
-		game.mobs[0].worldY = game.tileSize * 32;
+		int i = 0;
 
-		game.mobs[1] = new Slime(game);
-		game.mobs[1].worldX = game.tileSize * 23;
-		game.mobs[1].worldY = game.tileSize * 37;
-
+		game.mobs[i] = new Slime(game);
+		game.mobs[i].worldX = game.tileSize * 21;
+		game.mobs[i].worldY = game.tileSize * 38;
+		i++;
+		game.mobs[i] = new Slime(game);
+		game.mobs[i].worldX = game.tileSize * 23;
+		game.mobs[i].worldY = game.tileSize * 42;
+		i++;
+		game.mobs[i] = new Slime(game);
+		game.mobs[i].worldX = game.tileSize * 24;
+		game.mobs[i].worldY = game.tileSize * 37;
+		i++;
+		game.mobs[i] = new Slime(game);
+		game.mobs[i].worldX = game.tileSize * 34;
+		game.mobs[i].worldY = game.tileSize * 42;
+		i++;
+		game.mobs[i] = new Slime(game);
+		game.mobs[i].worldX = game.tileSize * 38;
+		game.mobs[i].worldY = game.tileSize * 42;
 	}
 
 }

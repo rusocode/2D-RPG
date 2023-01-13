@@ -188,7 +188,12 @@ public abstract class Entity {
 		// Si el mob hace contacto con el player que no es invencible
 		if (this.type == 2 && contact && !game.player.invincible) {
 			game.playSound(6);
-			game.player.life--;
+
+			// Resta la defensa del player al ataque del mob para calcular el daño justo
+			int damage = attack - game.player.defense;
+			if (damage < 0) damage = 0;
+
+			game.player.life -= damage;
 			game.player.invincible = true;
 		}
 	}

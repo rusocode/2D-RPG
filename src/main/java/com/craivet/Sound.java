@@ -19,6 +19,7 @@ public class Sound {
 	URL[] sounds = new URL[30];
 
 	public Sound() {
+		// TODO Inicializarlso en Assets
 		sounds[0] = getClass().getClassLoader().getResource("sounds/BlueBoyAdventure.wav");
 		sounds[1] = getClass().getClassLoader().getResource("sounds/coin.wav");
 		sounds[2] = getClass().getClassLoader().getResource("sounds/powerup.wav");
@@ -27,7 +28,7 @@ public class Sound {
 		sounds[5] = getClass().getClassLoader().getResource("sounds/hitmonster.wav");
 		sounds[6] = getClass().getClassLoader().getResource("sounds/receivedamage.wav");
 		sounds[7] = getClass().getClassLoader().getResource("sounds/swingweapon.wav");
-
+		sounds[8] = getClass().getClassLoader().getResource("sounds/levelup.wav");
 	}
 
 	public void setFile(int i) {
