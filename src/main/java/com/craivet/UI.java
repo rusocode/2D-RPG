@@ -12,21 +12,21 @@ import static com.craivet.utils.Constants.*;
 
 /**
  * Interfaz de usuario.
+ *
+ * <p>TODO Implementar musica para pantalla de titulo (<a href="https://www.youtube.com/watch?v=blyK-QkZkQ8">...</a>)
  */
 
 public class UI {
 
 	private final Game game;
+	private final BufferedImage heartFull, heartHalf, heartBlank;
 	private Graphics2D g2;
-	BufferedImage heartFull, heartHalf, heartBlank;
 	public String currentDialogue;
 	public int commandNum;
-	// TODO Implementar musica para pantalla de titulo (https://www.youtube.com/watch?v=blyK-QkZkQ8)
 	public int titleScreenState;
 
-	ArrayList<String> message = new ArrayList<>();
-	ArrayList<Integer> messageCounter = new ArrayList<>();
-
+	private final ArrayList<String> message = new ArrayList<>();
+	private final ArrayList<Integer> messageCounter = new ArrayList<>();
 
 	public UI(Game game) {
 		this.game = game;
@@ -148,13 +148,15 @@ public class UI {
 		for (int i = 0; i < message.size(); i++) {
 			if (message.get(i) != null) {
 
+				// Sombra
 				g2.setColor(Color.black);
 				g2.drawString(message.get(i), messageX + 2, messageY + 2);
+				// Color principal
 				g2.setColor(Color.white);
 				g2.drawString(message.get(i), messageX, messageY);
 
-				int counter = messageCounter.get(i) + 1; // messageCounter++
-				messageCounter.set(i, counter); // Establece el counter al array
+				// Actua como messageCounter++
+				messageCounter.set(i, messageCounter.get(i) + 1);
 
 				messageY += 50;
 
@@ -334,7 +336,7 @@ public class UI {
 
 	public void addMessage(String text) {
 		message.add(text);
-		messageCounter.add(0);
+		messageCounter.add(0); // Cro que evita un IndexOutOfBoundsException
 	}
 
 	/**

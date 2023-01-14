@@ -326,8 +326,6 @@ public class Player extends Entity {
 			game.playSound(8);
 			game.gameState = game.dialogueState;
 			game.ui.currentDialogue = "You are level " + level + "!";
-
-
 		}
 
 	}

@@ -126,7 +126,7 @@ public abstract class Entity {
 		}
 
 		timer.timeMovement(this, 10);
-		if (invincible) timer.timeInvincible(this, 40);
+		if (invincible) timer.timeInvincible(this, 60);
 
 	}
 
