@@ -102,13 +102,13 @@ public class Timer {
 	/**
 	 * Temporiza la barra de vida.
 	 *
-	 * <p>Si se completo el cooldown, resetea el contador y desactiva la barra de vida.
+	 * <p>Si se completo el cooldown, desactiva la barra de vida y resetea el contador.
 	 */
 	public void timeHpBar(Entity entity, int cooldown) {
 		hpBarCounter++;
 		if (hpBarCounter > cooldown) {
-			hpBarCounter = 0;
 			entity.hpBarOn = false;
+			hpBarCounter = 0;
 		}
 	}
 

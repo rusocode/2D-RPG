@@ -1,6 +1,7 @@
 package com.craivet.entity;
 
 import com.craivet.Game;
+import com.craivet.gfx.Assets;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
@@ -187,7 +188,7 @@ public abstract class Entity {
 	private void damagePlayer(boolean contact) {
 		// Si el mob hace contacto con el player que no es invencible
 		if (this.type == 2 && contact && !game.player.invincible) {
-			game.playSound(6);
+			game.playSound(Assets.receive_damage);
 
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
 			int damage = attack - game.player.defense;

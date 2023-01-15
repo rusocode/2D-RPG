@@ -160,7 +160,7 @@ public class Player extends Entity {
 	private void checkAttack() {
 		// Si presiono enter y el ataque no esta cancelado
 		if (key.enter && !attackCanceled) {
-			game.playSound(7);
+			game.playSound(Assets.swing_weapon);
 			attacking = true;
 			attackCounter = 0;
 		}
@@ -178,8 +178,8 @@ public class Player extends Entity {
 	 */
 	private void attack() {
 		attackCounter++;
-		if (attackCounter <= 5) attackNum = 1; // (0-5 frame)
-		if (attackCounter > 5 && attackCounter <= 25) { // (6-25 frame)
+		if (attackCounter <= 5) attackNum = 1; // (0-5 frame de ataque 1)
+		if (attackCounter > 5 && attackCounter <= 25) { // (6-25 frame de ataque 2)
 			attackNum = 2;
 
 			// Guarda la posicion actual de worldX, worldY y solidArea
@@ -266,7 +266,7 @@ public class Player extends Entity {
 	private void damageMob(int mobIndex) {
 		if (mobIndex != -1) {
 			if (!game.mobs[mobIndex].invincible) {
-				game.playSound(5);
+				game.playSound(Assets.hit_monster);
 
 				// Resta la defensa del mob al ataque del player para calcular el daño justo
 				int damage = attack - game.mobs[mobIndex].defense;
@@ -297,12 +297,10 @@ public class Player extends Entity {
 	private void damagePlayer(int mobIndex) {
 		if (mobIndex != -1) {
 			if (!invincible) {
-				game.playSound(6);
-
+				game.playSound(Assets.receive_damage);
 				// Resta la defensa del player al ataque del mob para calcular el daño justo
 				int damage = game.mobs[mobIndex].attack - defense;
 				if (damage < 0) damage = 0;
-
 				life -= damage;
 				invincible = true;
 			}
@@ -313,7 +311,6 @@ public class Player extends Entity {
 	 * Verifica si subio de nivel.
 	 */
 	private void checkLevelUp() {
-
 		if (exp >= nextLevelExp) {
 			level++;
 			nextLevelExp *= 2;
@@ -323,11 +320,10 @@ public class Player extends Entity {
 			attack = getAttack();
 			defense = getDefense();
 
-			game.playSound(8);
+			game.playSound(Assets.level_up);
 			game.gameState = game.dialogueState;
 			game.ui.currentDialogue = "You are level " + level + "!";
 		}
-
 	}
 
 }

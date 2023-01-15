@@ -29,19 +29,22 @@ public class Oldman extends Entity {
 		initDialogue();
 	}
 
+	/**
+	 * Establece la accion especificada.
+	 */
 	public void setAction() {
 		timer.timeDirection(this, 120);
 	}
 
-	public void initDialogue() {
+	public void speak() {
+		super.speak();
+	}
+
+	private void initDialogue() {
 		dialogues[0] = "Hola quemado!";
 		dialogues[1] = "Creo que arriba del bosque hay \nunas plantas de rulo...";
 		dialogues[2] = "Ahora el esta re quemado y no \nreacciona, asi que podes aprovechar \ny cortarlas";
 		dialogues[3] = "Ojo que pegan fuerte";
-	}
-
-	public void speak() {
-		super.speak();
 	}
 
 }

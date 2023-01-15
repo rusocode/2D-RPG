@@ -4,9 +4,25 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 
 public class Utils {
+
+	public static Font loadFont(String path, int size) {
+		try {
+			return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path))).deriveFont(Font.PLAIN, size);
+		} catch (FontFormatException | IOException e) {
+			e.printStackTrace();
+			System.exit(1);
+		}
+		return null;
+	}
+
+	// TODO getResourceAsStream()?
+	public static URL loadSound(String path) {
+		return Utils.class.getClassLoader().getResource(path);
+	}
 
 	/**
 	 * Carga la imagen utilizando la ruta especificada.
@@ -18,16 +34,6 @@ public class Utils {
 		try {
 			return ImageIO.read(Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path)));
 		} catch (IOException e) {
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return null;
-	}
-
-	public static Font loadFont(String path, int size) {
-		try {
-			return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path))).deriveFont(Font.PLAIN, size);
-		} catch (FontFormatException | IOException e) {
 			e.printStackTrace();
 			System.exit(1);
 		}

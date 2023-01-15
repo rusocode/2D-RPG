@@ -2,11 +2,13 @@ package com.craivet;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
+import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.TileManager;
 
@@ -109,7 +111,7 @@ public class Game extends JPanel implements Runnable {
 		aSetter.setObject();
 		aSetter.setNPC();
 		aSetter.setMOB();
-		// playMusic(0);
+		// playMusic(Assets.blue_boy_adventure);
 		gameState = titleState;
 
 	}
@@ -184,9 +186,8 @@ public class Game extends JPanel implements Runnable {
 		return running;
 	}
 
-	public void playMusic(int i) {
-		music.setFile(i);
-		music.play();
+	public void playMusic(URL url) {
+		music.play(url);
 		music.loop();
 	}
 
@@ -194,9 +195,8 @@ public class Game extends JPanel implements Runnable {
 		music.stop();
 	}
 
-	public void playSound(int i) {
-		sound.setFile(i);
-		sound.play();
+	public void playSound(URL url) {
+		sound.play(url);
 	}
 
 }

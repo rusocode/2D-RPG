@@ -8,7 +8,7 @@ import static com.craivet.utils.Constants.*;
 
 public class KeyHandler extends KeyAdapter {
 
-	Game game;
+	private final Game game;
 	public boolean w, a, s, d, enter;
 
 	public KeyHandler(Game game) {
@@ -34,7 +34,7 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_D) d = false;
 	}
 
-	public void titleState(int code) {
+	private void titleState(int code) {
 		if (game.ui.titleScreenState == MAIN_SCREEN) {
 			if (code == KeyEvent.VK_W) {
 				game.ui.commandNum--;
@@ -64,13 +64,13 @@ public class KeyHandler extends KeyAdapter {
 					game.gameState = game.playState;
 				if (game.ui.commandNum == 3) {
 					game.ui.commandNum = 0;
-					game.ui.titleScreenState = 0;
+					game.ui.titleScreenState = MAIN_SCREEN;
 				}
 			}
 		}
 	}
 
-	public void playState(int code) {
+	private void playState(int code) {
 		if (code == KeyEvent.VK_W) w = true;
 		if (code == KeyEvent.VK_A) a = true;
 		if (code == KeyEvent.VK_S) s = true;
@@ -80,15 +80,15 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_ENTER) enter = true;
 	}
 
-	public void pauseState(int code) {
+	private void pauseState(int code) {
 		if (code == KeyEvent.VK_P) game.gameState = game.playState;
 	}
 
-	public void dialogueState(int code) {
+	private void dialogueState(int code) {
 		if (code == KeyEvent.VK_ENTER) game.gameState = game.playState;
 	}
 
-	public void characterState(int code) {
+	private void characterState(int code) {
 		if (code == KeyEvent.VK_C) game.gameState = game.playState;
 	}
 
