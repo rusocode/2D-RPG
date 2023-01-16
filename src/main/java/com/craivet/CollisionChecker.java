@@ -3,9 +3,13 @@ package com.craivet;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
 
+/**
+ * Fisica y deteccion de colisiones.
+ */
+
 public class CollisionChecker {
 
-	public Game game;
+	private final Game game;
 
 	public CollisionChecker(Game game) {
 		this.game = game;
@@ -65,8 +69,7 @@ public class CollisionChecker {
 	}
 
 	/**
-	 * Verifica si la entidad colisiona con el objeto. En caso de que la entidad sea un npc o un mob, no puede agarrar
-	 * el objeto.
+	 * Verifica si la entidad colisiona con el objeto.
 	 *
 	 * @param entity la entidad.
 	 * @return el indice del objeto en caso de que el player colisione con este.
@@ -75,12 +78,11 @@ public class CollisionChecker {
 		int index = -1;
 		for (int i = 0; i < game.objs.length; i++) {
 			if (game.objs[i] != null) {
-				// Obtiene la posicion del area solida de la entidad
-				entity.solidArea.x = entity.worldX + entity.solidArea.x;
-				entity.solidArea.y = entity.worldY + entity.solidArea.y;
-				// Obtiene la posicion del area solida del objeto
-				game.objs[i].solidArea.x = game.objs[i].worldX + game.objs[i].solidArea.x;
-				game.objs[i].solidArea.y = game.objs[i].worldY + game.objs[i].solidArea.y;
+				// Obtiene la posicion del area solida de la entidad y del objeto
+				entity.solidArea.x += entity.worldX;
+				entity.solidArea.y += entity.worldY;
+				game.objs[i].solidArea.x += game.objs[i].worldX;
+				game.objs[i].solidArea.y += game.objs[i].worldY;
 				switch (entity.direction) {
 					case "down":
 						entity.solidArea.y += entity.speed;
@@ -111,22 +113,21 @@ public class CollisionChecker {
 	}
 
 	/**
-	 * Verifica si la entidad colisiona con otra entidad.
+	 * Verifica la colision entre entidades.
 	 *
-	 * @param entity la entidad.
-	 * @param target la otra entidad.
-	 * @return el indice de la entidad en caso de que colisione con otra entidad.
+	 * @param entity      la entidad.
+	 * @param otherEntity la otra entidad.
+	 * @return el indice de la otra entidad en caso de que la entidad colisione con esta.
 	 */
-	public int checkEntity(Entity entity, Entity[] target) {
+	public int checkEntity(Entity entity, Entity[] otherEntity) {
 		int index = -1;
-		for (int i = 0; i < target.length; i++) {
-			if (target[i] != null) {
-				// Obtiene la posicion del area solida de la entidad
-				entity.solidArea.x = entity.worldX + entity.solidArea.x;
-				entity.solidArea.y = entity.worldY + entity.solidArea.y;
-				// Obtiene la posicion del area solida del npc
-				target[i].solidArea.x = target[i].worldX + target[i].solidArea.x;
-				target[i].solidArea.y = target[i].worldY + target[i].solidArea.y;
+		for (int i = 0; i < otherEntity.length; i++) {
+			if (otherEntity[i] != null) {
+				// Obtiene la posicion del area solida de la entidad y de la otra entidad
+				entity.solidArea.x += entity.worldX;
+				entity.solidArea.y += entity.worldY;
+				otherEntity[i].solidArea.x += otherEntity[i].worldX;
+				otherEntity[i].solidArea.y += otherEntity[i].worldY;
 				switch (entity.direction) {
 					case "down":
 						entity.solidArea.y += entity.speed;
@@ -142,8 +143,8 @@ public class CollisionChecker {
 						break;
 				}
 
-				if (entity.solidArea.intersects(target[i].solidArea)) {
-					if (target[i] != entity) { // Evita la colision en si
+				if (entity.solidArea.intersects(otherEntity[i].solidArea)) {
+					if (otherEntity[i] != entity) { // Evita la colision en si misma
 						entity.collisionOn = true;
 						index = i;
 					}
@@ -151,29 +152,28 @@ public class CollisionChecker {
 
 				entity.solidArea.x = entity.solidAreaDefaultX;
 				entity.solidArea.y = entity.solidAreaDefaultY;
-				target[i].solidArea.x = target[i].solidAreaDefaultX;
-				target[i].solidArea.y = target[i].solidAreaDefaultY;
+				otherEntity[i].solidArea.x = otherEntity[i].solidAreaDefaultX;
+				otherEntity[i].solidArea.y = otherEntity[i].solidAreaDefaultY;
 			}
 		}
 		return index;
 	}
 
 	/**
-	 * Verifica si el npc o el mob colisiona con el player.
+	 * Verifica si la entidad colisiona con el player.
 	 *
-	 * @param entity el npc o mob.
-	 * @return true si el npc o mob colisiona con el player.
+	 * <p>TODO Se puede fucionar con el metodo checkEntity()?
+	 *
+	 * @param entity la entidad.
+	 * @return true si la entidad colisiona con el player.
 	 */
 	public boolean checkPlayer(Entity entity) {
-
-		boolean contactPlayer = false;
-
-		// Obtiene la posicion del area solida del npc
-		entity.solidArea.x = entity.worldX + entity.solidArea.x;
-		entity.solidArea.y = entity.worldY + entity.solidArea.y;
-		// Obtiene la posicion del area solida del player
-		game.player.solidArea.x = game.player.worldX + game.player.solidArea.x;
-		game.player.solidArea.y = game.player.worldY + game.player.solidArea.y;
+		boolean contact = false;
+		// Obtiene la posicion del area solida de la entidad y del player
+		entity.solidArea.x += entity.worldX;
+		entity.solidArea.y += entity.worldY;
+		game.player.solidArea.x += game.player.worldX;
+		game.player.solidArea.y += game.player.worldY;
 		switch (entity.direction) {
 			case "down":
 				entity.solidArea.y += entity.speed;
@@ -191,7 +191,7 @@ public class CollisionChecker {
 
 		if (entity.solidArea.intersects(game.player.solidArea)) {
 			entity.collisionOn = true;
-			contactPlayer = true;
+			contact = true;
 		}
 
 		entity.solidArea.x = entity.solidAreaDefaultX;
@@ -199,7 +199,7 @@ public class CollisionChecker {
 		game.player.solidArea.x = game.player.solidAreaDefaultX;
 		game.player.solidArea.y = game.player.solidAreaDefaultY;
 
-		return contactPlayer;
+		return contact;
 
 	}
 
