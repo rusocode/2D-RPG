@@ -19,9 +19,7 @@ import static com.craivet.utils.Constants.*;
 public class Player extends Entity {
 
 	private final KeyHandler key;
-
-	public final int screenX;
-	public final int screenY;
+	public final int screenX, screenY;
 	public boolean attackCanceled;
 
 	public Player(Game game, KeyHandler key) {
