@@ -5,6 +5,8 @@ import com.craivet.entity.Player;
 
 /**
  * Fisica y deteccion de colisiones.
+ *
+ * <p>TODO Hay un bug con la colision de objetos (key) en la posicion 25, 23
  */
 
 public class CollisionChecker {

@@ -2,10 +2,12 @@ package com.craivet.entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
+import com.craivet.object.Key;
 import com.craivet.object.ShieldWood;
 import com.craivet.object.SwordNormal;
 import com.craivet.utils.Utils;
@@ -21,6 +23,8 @@ public class Player extends Entity {
 	private final KeyHandler key;
 	public final int screenX, screenY;
 	public boolean attackCanceled;
+
+	public ArrayList<Entity> inventory = new ArrayList<>();
 
 	public Player(Game game, KeyHandler key) {
 		super(game);
@@ -42,7 +46,7 @@ public class Player extends Entity {
 		maxLife = 6;
 		life = maxLife;
 		level = 1;
-		strength = 1; // Mas fuerza, mas daño
+		strength = 5; // Mas fuerza, mas daño
 		dexterity = 1; // Mas destreza, menos daño
 		exp = 0;
 		nextLevelExp = 5;
@@ -64,6 +68,7 @@ public class Player extends Entity {
 
 		initMovementImages(Assets.player_movement, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initAttackImages(Assets.player_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
+		setItems();
 	}
 
 	public void update() {
@@ -107,7 +112,7 @@ public class Player extends Entity {
 
 			checkAttack();
 
-			game.keyHandler.enter = false;
+			game.keyH.enter = false;
 
 			timer.timeMovement(this, 10);
 
@@ -230,6 +235,12 @@ public class Player extends Entity {
 		return dexterity * currentShield.defenseValue;
 	}
 
+	private void setItems() {
+		inventory.add(currentWeapon);
+		inventory.add(currentShield);
+		inventory.add(new Key(game));
+	}
+
 	/**
 	 * Recoge un objeto.
 	 *
@@ -247,7 +258,7 @@ public class Player extends Entity {
 	 * @param npcIndex indice del npc.
 	 */
 	private void interactNPC(int npcIndex) {
-		if (game.keyHandler.enter) {
+		if (game.keyH.enter) {
 			if (npcIndex != -1) {
 				attackCanceled = true; // No puede atacar si interactua con un npc
 				game.gameState = game.dialogueState;

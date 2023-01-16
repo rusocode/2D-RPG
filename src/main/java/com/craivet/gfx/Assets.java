@@ -16,6 +16,7 @@ public final class Assets {
 	// Sounds
 	public static final URL blue_boy_adventure = Utils.loadSound("sounds/blue_boy_adventure.wav"); // Music
 	public static final URL coin = Utils.loadSound("sounds/coin.wav");
+	public static final URL cursor = Utils.loadSound("sounds/cursor.wav");
 	public static final URL fanfare = Utils.loadSound("sounds/fanfare.wav");
 	public static final URL hit_monster = Utils.loadSound("sounds/hit_monster.wav");
 	public static final URL level_up = Utils.loadSound("sounds/level_up.wav");

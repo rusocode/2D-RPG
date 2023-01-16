@@ -3,6 +3,7 @@ package com.craivet.input;
 import java.awt.event.*;
 
 import com.craivet.Game;
+import com.craivet.gfx.Assets;
 
 import static com.craivet.utils.Constants.*;
 
@@ -10,6 +11,7 @@ public class KeyHandler extends KeyAdapter {
 
 	private final Game game;
 	public boolean w, a, s, d, enter;
+	public boolean showDebugText;
 
 	public KeyHandler(Game game) {
 		this.game = game;
@@ -29,8 +31,8 @@ public class KeyHandler extends KeyAdapter {
 	public void keyReleased(KeyEvent e) {
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_W) w = false;
-		if (code == KeyEvent.VK_S) s = false;
 		if (code == KeyEvent.VK_A) a = false;
+		if (code == KeyEvent.VK_S) s = false;
 		if (code == KeyEvent.VK_D) d = false;
 	}
 
@@ -78,6 +80,10 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_P) game.gameState = game.pauseState;
 		if (code == KeyEvent.VK_C) game.gameState = game.characterState;
 		if (code == KeyEvent.VK_ENTER) enter = true;
+		if (code == KeyEvent.VK_T) showDebugText = !showDebugText;
+		/* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
+		 * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
+		if (code == KeyEvent.VK_R) game.tileManager.loadMap("maps/worldV2.txt");
 	}
 
 	private void pauseState(int code) {
@@ -90,6 +96,30 @@ public class KeyHandler extends KeyAdapter {
 
 	private void characterState(int code) {
 		if (code == KeyEvent.VK_C) game.gameState = game.playState;
+		if (code == KeyEvent.VK_W) {
+			if (game.ui.slotRow > 0) {
+				game.playSound(Assets.cursor);
+				game.ui.slotRow--;
+			}
+		}
+		if (code == KeyEvent.VK_A) {
+			if (game.ui.slotCol > 0) {
+				game.playSound(Assets.cursor);
+				game.ui.slotCol--;
+			}
+		}
+		if (code == KeyEvent.VK_S) {
+			if (game.ui.slotRow < 3) {
+				game.playSound(Assets.cursor);
+				game.ui.slotRow++;
+			}
+		}
+		if (code == KeyEvent.VK_D) {
+			if (game.ui.slotCol < 4) {
+				game.playSound(Assets.cursor);
+				game.ui.slotCol++;
+			}
+		}
 	}
 
 }

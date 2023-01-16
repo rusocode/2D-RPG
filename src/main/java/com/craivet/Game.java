@@ -8,7 +8,6 @@ import java.util.Comparator;
 
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
-import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.TileManager;
 
@@ -20,7 +19,7 @@ public class Game extends JPanel implements Runnable {
 
 	// System
 	public Thread thread;
-	public KeyHandler keyHandler = new KeyHandler(this);
+	public KeyHandler keyH = new KeyHandler(this);
 	public EventHandler eHandler = new EventHandler(this);
 	public TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
@@ -31,7 +30,7 @@ public class Game extends JPanel implements Runnable {
 
 	// Entities
 	public ArrayList<Entity> entities = new ArrayList<>();
-	public Player player = new Player(this, keyHandler);
+	public Player player = new Player(this, keyH);
 	public Entity[] objs = new Entity[10];
 	public Entity[] npcs = new Entity[10];
 	public Entity[] mobs = new Entity[20];
@@ -66,7 +65,7 @@ public class Game extends JPanel implements Runnable {
 		setBackground(Color.black);
 		// Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
 		setDoubleBuffered(true);
-		addKeyListener(keyHandler);
+		addKeyListener(keyH);
 		setFocusable(true);
 	}
 
@@ -140,7 +139,8 @@ public class Game extends JPanel implements Runnable {
 		Graphics2D g2 = (Graphics2D) g;
 
 		// Debug
-		// long drawStart = System.nanoTime();
+		long drawStart = 0;
+		if (keyH.showDebugText) drawStart = System.nanoTime();
 
 		// Title screen
 		if (gameState == titleState) {
@@ -170,7 +170,16 @@ public class Game extends JPanel implements Runnable {
 		}
 
 		// Debug
-		// System.out.println("Draw time: " + (System.nanoTime() - drawStart));
+		if (keyH.showDebugText) {
+			g2.setFont(new Font("Arial", Font.PLAIN, 20));
+			g2.setColor(Color.white);
+			int x = 8, y = screenHeight - 25, gap = 20;
+			g2.drawString("X: " + (player.worldX + player.solidArea.x) / tileSize, x, y);
+			y += gap;
+			g2.drawString("Y: " + (player.worldY + player.solidArea.y) / tileSize, x, y);
+			// y += lineHeight;
+			// g2.drawString("Draw time: " + (System.nanoTime() - drawStart), x, y);
+		}
 
 		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
 	}

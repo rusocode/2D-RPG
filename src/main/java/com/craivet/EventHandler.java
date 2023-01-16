@@ -94,7 +94,7 @@ public class EventHandler {
 	 * Regenera vida al player si toma agua.
 	 */
 	public void healingPool(int col, int row, int gameState) {
-		if (game.keyHandler.enter) {
+		if (game.keyH.enter) {
 			game.player.attackCanceled = true; // No puede atacar si regenera vida
 			game.gameState = gameState;
 			game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";

@@ -13,7 +13,7 @@ public class SwordNormal extends Entity {
 		name = "Normal Sword";
 		movementDown1 = Utils.scaleImage(Assets.sword_normal, game.tileSize, game.tileSize);
 		attackValue = 1;
-
+		itemDescription = "[" + name + "]\nAn old sword.";
 	}
 
 }

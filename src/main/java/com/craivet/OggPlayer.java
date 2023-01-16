@@ -18,7 +18,7 @@ import com.jcraft.jorbis.Info;
 public class OggPlayer {
 
 	public static void main(String[] args) {
-		try {
+		/*try {
 			// Crea una nueva instancia de FileInputStream para el archivo de audio
 			FileInputStream audioFile = new FileInputStream("path/to/audio.ogg");
 			// Crea una nueva instancia de DspState
@@ -46,6 +46,6 @@ public class OggPlayer {
 
 		} catch (FileNotFoundException e) {
 			throw new RuntimeException(e);
-		}
+		}*/
 	}
 }

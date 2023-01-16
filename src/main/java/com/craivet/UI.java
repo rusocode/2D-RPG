@@ -28,6 +28,8 @@ public class UI {
 	private final ArrayList<String> message = new ArrayList<>();
 	private final ArrayList<Integer> messageCounter = new ArrayList<>();
 
+	public int slotCol, slotRow;
+
 	public UI(Game game) {
 		this.game = game;
 
@@ -62,7 +64,10 @@ public class UI {
 			drawPlayerLife();
 			drawDialogueScreen();
 		}
-		if (game.gameState == game.characterState) drawCharacterScreen();
+		if (game.gameState == game.characterState) {
+			drawCharacterScreen();
+			drawInventory();
+		}
 	}
 
 	private void drawTitleScreen() {
@@ -324,6 +329,73 @@ public class UI {
 
 	}
 
+	private void drawInventory() {
+
+		// TODO Estas constantes y variables no tendrian que declararse como globales?
+		// SubWindow
+		final int frameX = game.tileSize * 9;
+		final int frameY = game.tileSize;
+		final int frameWidth = game.tileSize * 6;
+		final int frameHeight = game.tileSize * 5;
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+
+		// Slots
+		final int slotXStart = frameX + 20;
+		final int slotYStart = frameY + 20;
+		int slotX = slotXStart;
+		int slotY = slotYStart;
+		int gap = game.tileSize + 3;
+		// TODO Estas constantes y variables no tendrian que declararse como globales?
+
+		// Draw player´s items
+		for (int i = 0; i < game.player.inventory.size(); i++) {
+			g2.drawImage(game.player.inventory.get(i).movementDown1, slotX, slotY, null);
+
+			slotX += gap;
+
+			// Salta la fila
+			if (i == 4 || i == 9 || i == 14) {
+				slotX = slotXStart;
+				slotY += gap;
+			}
+
+		}
+
+		// Cursor
+		int cursorX = slotXStart + (gap * slotCol);
+		int cursorY = slotYStart + (gap * slotRow);
+		int cursorWidth = game.tileSize;
+		int cursorHeight = game.tileSize;
+
+		// Draw cursor
+		g2.setColor(Color.white);
+		g2.setStroke(new BasicStroke(3));
+		g2.drawRoundRect(cursorX, cursorY, cursorWidth, cursorHeight, 10, 10);
+
+		// Description frame
+		final int dFrameX = frameX;
+		final int dFrameY = frameY + frameHeight;
+		final int dFrameWidth = frameWidth;
+		final int dFrameHeight = game.tileSize * 3;
+
+		drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
+
+		// Draw description text
+		int textX = dFrameX + 20;
+		int textY = dFrameY + game.tileSize;
+		g2.setFont(g2.getFont().deriveFont(22f));
+
+		int itemIndex = getItemIndexOnSlot();
+
+		if (itemIndex < game.player.inventory.size()) {
+			for (String line : game.player.inventory.get(itemIndex).itemDescription.split("\n")) {
+				g2.drawString(line, textX, textY);
+				textY += 32;
+			}
+		}
+
+	}
+
 	private void drawSubWindow(int x, int y, int width, int height) {
 		// Fondo
 		g2.setColor(new Color(0, 0, 0, 210));
@@ -337,6 +409,13 @@ public class UI {
 	public void addMessage(String text) {
 		message.add(text);
 		messageCounter.add(0); // Cro que evita un IndexOutOfBoundsException
+	}
+
+	/**
+	 * Obtiene el indice del item en el slot.
+	 */
+	private int getItemIndexOnSlot() {
+		return slotCol + (slotRow * 5);
 	}
 
 	/**

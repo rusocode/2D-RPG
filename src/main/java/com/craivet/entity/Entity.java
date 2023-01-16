@@ -48,6 +48,7 @@ public abstract class Entity {
 	// Item attributes
 	public int attackValue;
 	public int defenseValue;
+	public String itemDescription;
 
 	// Images
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -154,6 +155,7 @@ public abstract class Entity {
 					break;
 			}
 
+			// TODO Hay un bug con la barra cuando el player tiene mucho damage, la barra del mob se agranda en el ultimo golpe
 			// Si la barra de hp esta activada
 			if (type == 2 && hpBarOn) {
 
