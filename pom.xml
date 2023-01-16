@@ -16,6 +16,13 @@
 
 
     <dependencies>
+
+        <dependency>
+            <groupId>org.jcraft</groupId>
+            <artifactId>jorbis</artifactId>
+            <version>0.0.17</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.gagravarr/vorbis-java-core
         <dependency>
             <groupId>org.gagravarr</groupId>
