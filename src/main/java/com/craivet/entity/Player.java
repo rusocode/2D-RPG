@@ -163,7 +163,7 @@ public class Player extends Entity {
 	private void checkAttack() {
 		// Si presiono enter y el ataque no esta cancelado
 		if (key.enter && !attackCanceled) {
-			game.playSound(Assets.swing_weapon);
+			game.playSound(Assets.swing_weapon_wav);
 			attacking = true;
 			attackCounter = 0;
 		}

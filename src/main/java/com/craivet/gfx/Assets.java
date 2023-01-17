@@ -22,7 +22,8 @@ public final class Assets {
 	public static final URL level_up = Utils.loadSound("sounds/level_up.wav");
 	public static final URL power_up = Utils.loadSound("sounds/power_up.wav");
 	public static final URL receive_damage = Utils.loadSound("sounds/receive_damage.wav");
-	public static final URL swing_weapon = Utils.loadSound("sounds/swing_weapon.wav");
+	public static final URL swing_weapon_wav = Utils.loadSound("sounds/swing_weapon.wav");
+	public static final URL swing_weapon_ogg = Utils.loadSound("sounds/swing_weapon.ogg");
 	public static final URL swing_weapon2 = Utils.loadSound("sounds/swing_weapon2.wav"); // TODO fix
 	public static final URL unlock = Utils.loadSound("sounds/unlock.wav");
 
