@@ -46,7 +46,7 @@ public class Player extends Entity {
 		maxLife = 6;
 		life = maxLife;
 		level = 1;
-		strength = 5; // Mas fuerza, mas daño
+		strength = 1; // Mas fuerza, mas daño
 		dexterity = 1; // Mas destreza, menos daño
 		exp = 0;
 		nextLevelExp = 5;
