@@ -10,7 +10,8 @@ import java.util.Objects;
 
 /**
  * <a href="https://www.tutorialspoint.com/vlcj/vlcj_audio_player.htm#:~:text=Open%20project%20mediaPlayer%20as%20created%20in%20Environment%20Setup%20chapter%20in%20Eclipse.&text=Now%20press%20play%20button%20in,button%20will%20pause%20the%20audio">...</a>.
- * */
+ * <a href="https://stackoverflow.com/questions/45881054/can-not-include-vlc-library-in-java-application">...</a>
+ */
 
 public class OggPlayer {
 
