@@ -162,6 +162,10 @@ public abstract class Entity {
 				double oneScale = (double) game.tileSize / maxLife;
 				double hpBarValue = oneScale * life;
 
+				/* En caso de que el valor de la barra de vida calculada sea menor a 0, le asigna 0 para que no se
+				 * dibuje como valor negativo hacia la izquierda. */
+				if (hpBarValue < 0) hpBarValue = 0;
+
 				g2.setColor(new Color(35, 35, 35));
 				g2.fillRect(screenX - 1, screenY + game.tileSize + 4, game.tileSize + 2, 7);
 

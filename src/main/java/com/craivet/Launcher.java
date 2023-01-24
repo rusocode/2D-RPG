@@ -16,5 +16,4 @@ public class Launcher {
 		window.setVisible(true);
 	}
 
-
 }

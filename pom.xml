@@ -16,11 +16,12 @@
 
     <dependencies>
 
-        <dependency>
+        <!-- <dependency>
             <groupId>uk.co.caprica</groupId>
             <artifactId>vlcj</artifactId>
             <version>4.8.0</version>
         </dependency>
+        -->
 
     </dependencies>
 

@@ -1,12 +1,12 @@
 package com.craivet;
 
-import com.craivet.gfx.Assets;
+/* import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 import uk.co.caprica.vlcj.player.component.EmbeddedMediaPlayerComponent;
 
 import javax.swing.JFrame;
-import java.util.Objects;
+import java.util.Objects; */
 
 /**
  * <a href="https://www.tutorialspoint.com/vlcj/vlcj_audio_player.htm#:~:text=Open%20project%20mediaPlayer%20as%20created%20in%20Environment%20Setup%20chapter%20in%20Eclipse.&text=Now%20press%20play%20button%20in,button%20will%20pause%20the%20audio">...</a>.
@@ -15,7 +15,7 @@ import java.util.Objects;
 
 public class OggPlayer {
 
-	public OggPlayer() {
+	/* public OggPlayer() {
 		JFrame frame = new JFrame("My First Media Player");
 		frame.setBounds(100, 100, 600, 400);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -42,6 +42,6 @@ public class OggPlayer {
 
 	public static void main(String[] args) {
 		new OggPlayer();
-	}
+	} */
 
 }
