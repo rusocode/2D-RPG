@@ -120,6 +120,7 @@ public class KeyHandler extends KeyAdapter {
 				game.ui.slotCol++;
 			}
 		}
+		if (code == KeyEvent.VK_ENTER) game.player.selectItem();
 	}
 
 }

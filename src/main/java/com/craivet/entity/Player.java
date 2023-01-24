@@ -25,6 +25,7 @@ public class Player extends Entity {
 	public boolean attackCanceled;
 
 	public ArrayList<Entity> inventory = new ArrayList<>();
+	int maxInventorySize = 20;
 
 	public Player(Game game, KeyHandler key) {
 		super(game);
@@ -42,11 +43,11 @@ public class Player extends Entity {
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
 		speed = PLAYER_SPEED;
-		type = 0;
+		type = typePlayer;
 		maxLife = 6;
 		life = maxLife;
 		level = 1;
-		strength = 3; // Mas fuerza, mas daño
+		strength = 1; // Mas fuerza, mas daño
 		dexterity = 1; // Mas destreza, menos daño
 		exp = 0;
 		nextLevelExp = 5;
@@ -63,11 +64,11 @@ public class Player extends Entity {
 		solidAreaDefaultX = solidArea.x;
 		solidAreaDefaultY = solidArea.y;
 
-		attackArea.width = 36;
-		attackArea.height = 36;
+		// attackArea.width = 36;
+		// attackArea.height = 36;
 
 		initMovementImages(Assets.player_movement, ENTITY_WIDTH, ENTITY_HEIGHT);
-		initAttackImages(Assets.player_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initAttackImages(Assets.player_attack_sword, ENTITY_WIDTH, ENTITY_HEIGHT);
 		setItems();
 	}
 
@@ -228,6 +229,7 @@ public class Player extends Entity {
 	}
 
 	private int getAttack() {
+		attackArea = currentWeapon.attackArea;
 		return strength * currentWeapon.attackValue;
 	}
 
@@ -248,7 +250,14 @@ public class Player extends Entity {
 	 */
 	private void pickUpObject(int objIndex) {
 		if (objIndex != -1) {
-			System.out.println("Object picked!");
+			String text;
+			if (inventory.size() != maxInventorySize) {
+				inventory.add(game.objs[objIndex]);
+				game.playSound(Assets.coin);
+				text = "Got a " + game.objs[objIndex].name + "!";
+			} else text = "You cannot carry any more!";
+			game.ui.addMessage(text);
+			game.objs[objIndex] = null;
 		}
 	}
 
@@ -332,6 +341,26 @@ public class Player extends Entity {
 			game.playSound(Assets.level_up);
 			game.gameState = game.dialogueState;
 			game.ui.currentDialogue = "You are level " + level + "!";
+		}
+	}
+
+	public void selectItem() {
+		int itemIndex = game.ui.getItemIndexOnSlot();
+		if (itemIndex < inventory.size()) {
+			Entity selectedItem = inventory.get(itemIndex);
+			if (selectedItem.type == typeSword || selectedItem.type == typeAxe) {
+				currentWeapon = selectedItem;
+				attack = getAttack();
+				initAttackImages(currentWeapon.type == typeSword ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+			}
+			if (selectedItem.type == typeShield) {
+				currentShield = selectedItem;
+				defense = getDefense();
+			}
+			if (selectedItem.type == typeConsumable) {
+				selectedItem.use(this);
+				inventory.remove(itemIndex);
+			}
 		}
 	}
 

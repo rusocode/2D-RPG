@@ -10,6 +10,7 @@ public class ShieldWood extends Entity {
 	public ShieldWood(Game game) {
 		super(game);
 
+		type = typeShield;
 		name = "Wood Shield";
 		movementDown1 = Utils.scaleImage(Assets.shield_wood, game.tileSize, game.tileSize);
 		defenseValue = 1;

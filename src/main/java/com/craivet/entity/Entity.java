@@ -27,7 +27,6 @@ public abstract class Entity {
 	public String direction = "down";
 	public int worldX, worldY;
 	public int speed;
-	public int type; // 0 = player, 1 = npc, 2 = mob (diferencia entre npcs y mobs, ya que los npcs no atacan)
 	public int maxLife;
 	public int life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
 	public int level;
@@ -49,6 +48,16 @@ public abstract class Entity {
 	public int attackValue;
 	public int defenseValue;
 	public String itemDescription;
+
+	// Type
+	public int type;
+	public final int typePlayer = 0;
+	public final int typeNPC = 1;
+	public final int typeMOB = 2;
+	public final int typeSword = 3;
+	public final int typeAxe = 4;
+	public final int typeShield = 5;
+	public final int typeConsumable = 6;
 
 	// Images
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -96,6 +105,9 @@ public abstract class Entity {
 				direction = "left";
 				break;
 		}
+	}
+
+	public void use(Entity entity) {
 	}
 
 	public void update() {
@@ -193,7 +205,7 @@ public abstract class Entity {
 	 */
 	private void damagePlayer(boolean contact) {
 		// Si el mob hace contacto con el player que no es invencible
-		if (this.type == 2 && contact && !game.player.invincible) {
+		if (this.type == typeMOB && contact && !game.player.invincible) {
 			game.playSound(Assets.receive_damage);
 
 			// Resta la defensa del player al ataque del mob para calcular el daño justo

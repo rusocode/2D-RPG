@@ -2,7 +2,10 @@ package com.craivet;
 
 import com.craivet.entity.Oldman;
 import com.craivet.entity.Slime;
+import com.craivet.object.Axe;
 import com.craivet.object.Key;
+import com.craivet.object.PotionRed;
+import com.craivet.object.ShieldBlue;
 
 /**
  * Establece las entidades en posiciones especificas del mundo. Esta es la primer clase que se carga antes de ejecutar
@@ -18,7 +21,30 @@ public class AssetSetter {
 	}
 
 	public void setObject() {
-
+		int i = 0;
+		game.objs[i] = new Key(game);
+		game.objs[i].worldX = game.tileSize * 25;
+		game.objs[i].worldY = game.tileSize * 23;
+		i++;
+		game.objs[i] = new Key(game);
+		game.objs[i].worldX = game.tileSize * 21;
+		game.objs[i].worldY = game.tileSize * 19;
+		i++;
+		game.objs[i] = new Key(game);
+		game.objs[i].worldX = game.tileSize * 26;
+		game.objs[i].worldY = game.tileSize * 21;
+		i++;
+		game.objs[i] = new Axe(game);
+		game.objs[i].worldX = game.tileSize * 33;
+		game.objs[i].worldY = game.tileSize * 21;
+		i++;
+		game.objs[i] = new ShieldBlue(game);
+		game.objs[i].worldX = game.tileSize * 35;
+		game.objs[i].worldY = game.tileSize * 21;
+		i++;
+		game.objs[i] = new PotionRed(game);
+		game.objs[i].worldX = game.tileSize * 22;
+		game.objs[i].worldY = game.tileSize * 27;
 	}
 
 	public void setNPC() {

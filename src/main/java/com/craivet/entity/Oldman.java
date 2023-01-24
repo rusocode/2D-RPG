@@ -16,7 +16,7 @@ public class Oldman extends Entity {
 		name = "Oldman";
 		direction = "down";
 		speed = 1;
-		type = 1;
+		type = typeNPC;
 
 		solidArea.x = 8;
 		solidArea.y = 16;

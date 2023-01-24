@@ -20,7 +20,7 @@ public class Slime extends Entity {
 		name = "Slime";
 		direction = "down";
 		speed = 1;
-		type = 2;
+		type = typeMOB;
 		maxLife = 4;
 		life = maxLife;
 		attack = 5;

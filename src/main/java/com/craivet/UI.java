@@ -220,7 +220,7 @@ public class UI {
 		final int frameY = game.tileSize / 2;
 		final int frameWidth = game.screenWidth - (game.tileSize * 4);
 		final int frameHeight = game.tileSize * 4;
-		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight, 22f);
 
 		// Text
 		int textX = frameX + game.tileSize;
@@ -239,10 +239,7 @@ public class UI {
 		final int frameY = game.tileSize;
 		final int frameWidth = game.tileSize * 7;
 		final int frameHeight = game.tileSize * 10;
-		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
-
-		// Text
-		g2.setFont(g2.getFont().deriveFont(30f));
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight, 28f);
 
 		int textX = frameX + 20;
 		int textY = frameY + game.tileSize;
@@ -337,7 +334,7 @@ public class UI {
 		final int frameY = game.tileSize;
 		final int frameWidth = game.tileSize * 6;
 		final int frameHeight = game.tileSize * 5;
-		drawSubWindow(frameX, frameY, frameWidth, frameHeight);
+		drawSubWindow(frameX, frameY, frameWidth, frameHeight, 0);
 
 		// Slots
 		final int slotXStart = frameX + 20;
@@ -349,6 +346,11 @@ public class UI {
 
 		// Draw player´s items
 		for (int i = 0; i < game.player.inventory.size(); i++) {
+			if (game.player.inventory.get(i) == game.player.currentWeapon || game.player.inventory.get(i) == game.player.currentShield) {
+				g2.setColor(new Color(240, 190, 90));
+				g2.fillRoundRect(slotX, slotY, game.tileSize, game.tileSize, 10, 10);
+			}
+
 			g2.drawImage(game.player.inventory.get(i).movementDown1, slotX, slotY, null);
 
 			slotX += gap;
@@ -378,16 +380,12 @@ public class UI {
 		final int dFrameWidth = frameWidth;
 		final int dFrameHeight = game.tileSize * 3;
 
-		drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight);
-
 		// Draw description text
 		int textX = dFrameX + 20;
 		int textY = dFrameY + game.tileSize;
-		g2.setFont(g2.getFont().deriveFont(22f));
-
 		int itemIndex = getItemIndexOnSlot();
-
 		if (itemIndex < game.player.inventory.size()) {
+			drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight, 18f);
 			for (String line : game.player.inventory.get(itemIndex).itemDescription.split("\n")) {
 				g2.drawString(line, textX, textY);
 				textY += 32;
@@ -396,7 +394,8 @@ public class UI {
 
 	}
 
-	private void drawSubWindow(int x, int y, int width, int height) {
+	private void drawSubWindow(int x, int y, int width, int height, float fontSize) {
+		g2.setFont(g2.getFont().deriveFont(fontSize));
 		// Fondo
 		g2.setColor(new Color(0, 0, 0, 210));
 		g2.fillRoundRect(x, y, width, height, 35, 35);
@@ -414,7 +413,7 @@ public class UI {
 	/**
 	 * Obtiene el indice del item en el slot.
 	 */
-	private int getItemIndexOnSlot() {
+	public int getItemIndexOnSlot() {
 		return slotCol + (slotRow * 5);
 	}
 

@@ -29,7 +29,8 @@ public final class Assets {
 
 	// Entities
 	public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage("textures/entity/player/movement.png"));
-	public static final SpriteSheet player_attack = new SpriteSheet(Utils.loadImage("textures/entity/player/attack.png"));
+	public static final SpriteSheet player_attack_sword = new SpriteSheet(Utils.loadImage("textures/entity/player/attack_sword.png"));
+	public static final SpriteSheet player_attack_axe = new SpriteSheet(Utils.loadImage("textures/entity/player/attack_axe.png"));
 	public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage("textures/entity/oldman.png"));
 	public static final SpriteSheet slime = new SpriteSheet(Utils.loadImage("textures/entity/slime.png"));
 
@@ -38,11 +39,14 @@ public final class Assets {
 	public static final BufferedImage chest = Utils.loadImage("textures/objs/chest.png");
 	public static final BufferedImage door = Utils.loadImage("textures/objs/door.png");
 	public static final BufferedImage key = Utils.loadImage("textures/objs/key.png");
+	public static final BufferedImage potion_red = Utils.loadImage("textures/objs/potion_red.png");
 	public static final BufferedImage heart_full = Utils.loadImage("textures/objs/heart_full.png");
 	public static final BufferedImage heart_half = Utils.loadImage("textures/objs/heart_half.png");
 	public static final BufferedImage heart_blank = Utils.loadImage("textures/objs/heart_blank.png");
 	public static final BufferedImage sword_normal = Utils.loadImage("textures/objs/sword_normal.png");
+	public static final BufferedImage axe = Utils.loadImage("textures/objs/axe.png");
 	public static final BufferedImage shield_wood = Utils.loadImage("textures/objs/shield_wood.png");
+	public static final BufferedImage shield_blue = Utils.loadImage("textures/objs/shield_blue.png");
 
 	// Tiles
 	public static final BufferedImage earth = Utils.loadImage("textures/tiles/earth.png");
