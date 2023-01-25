@@ -9,6 +9,7 @@ public class Boots extends Entity {
 
 	public Boots(Game game) {
 		super(game);
+
 		name = "Boots";
 		movementDown1 = Utils.scaleImage(Assets.boots, game.tileSize, game.tileSize);
 	}

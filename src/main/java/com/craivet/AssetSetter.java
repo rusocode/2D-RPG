@@ -55,7 +55,6 @@ public class AssetSetter {
 
 	public void setMOB() {
 		int i = 0;
-
 		game.mobs[i] = new Slime(game);
 		game.mobs[i].worldX = game.tileSize * 21;
 		game.mobs[i].worldY = game.tileSize * 38;

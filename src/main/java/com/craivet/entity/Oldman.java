@@ -13,17 +13,17 @@ public class Oldman extends Entity {
 	}
 
 	private void setDefaultValues() {
+		type = typeNPC;
 		name = "Oldman";
 		direction = "down";
 		speed = 1;
-		type = typeNPC;
 
-		solidArea.x = 8;
-		solidArea.y = 16;
-		solidArea.width = 40;
-		solidArea.height = 32;
-		solidAreaDefaultX = solidArea.x;
-		solidAreaDefaultY = solidArea.y;
+		bodyArea.x = 8;
+		bodyArea.y = 16;
+		bodyArea.width = 40;
+		bodyArea.height = 32;
+		bodyAreaDefaultX = bodyArea.x;
+		bodyAreaDefaultY = bodyArea.y;
 
 		initMovementImages(Assets.oldman, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initDialogue();

@@ -9,16 +9,17 @@ public class Door extends Entity {
 
 	public Door(Game game) {
 		super(game);
-		name = "Door";
-		collision = true;
-		movementDown1 = Utils.scaleImage(Assets.door, game.tileSize, game.tileSize);
 
-		solidArea.x = 0;
-		solidArea.y = 16;
-		solidArea.width = 48;
-		solidArea.height = 32;
-		solidAreaDefaultX = solidArea.x;
-		solidAreaDefaultY = solidArea.y;
+		name = "Door";
+		movementDown1 = Utils.scaleImage(Assets.door, game.tileSize, game.tileSize);
+		collision = true;
+
+		bodyArea.x = 0;
+		bodyArea.y = 16;
+		bodyArea.width = 48;
+		bodyArea.height = 32;
+		bodyAreaDefaultX = bodyArea.x;
+		bodyAreaDefaultY = bodyArea.y;
 
 	}
 

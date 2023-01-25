@@ -346,6 +346,7 @@ public class UI {
 
 		// Draw player´s items
 		for (int i = 0; i < game.player.inventory.size(); i++) {
+			// Remarca de color amarillo el arma seleccionada
 			if (game.player.inventory.get(i) == game.player.currentWeapon || game.player.inventory.get(i) == game.player.currentShield) {
 				g2.setColor(new Color(240, 190, 90));
 				g2.fillRoundRect(slotX, slotY, game.tileSize, game.tileSize, 10, 10);

@@ -13,6 +13,7 @@ public class Heart extends Entity {
 
 	public Heart(Game game) {
 		super(game);
+
 		name = "Heart";
 		heartFull = Utils.scaleImage(Assets.heart_full, game.tileSize, game.tileSize);
 		heartHalf = Utils.scaleImage(Assets.heart_half, game.tileSize, game.tileSize);

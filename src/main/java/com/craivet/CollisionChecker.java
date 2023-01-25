@@ -24,10 +24,10 @@ public class CollisionChecker {
 	 */
 	public void checkTile(Entity entity) {
 
-		int entityBottomWorldY = entity.worldY + entity.solidArea.y + entity.solidArea.height;
-		int entityTopWorldY = entity.worldY + entity.solidArea.y;
-		int entityLeftWorldX = entity.worldX + entity.solidArea.x;
-		int entityRightWorldX = entity.worldX + entity.solidArea.x + entity.solidArea.width;
+		int entityBottomWorldY = entity.worldY + entity.bodyArea.y + entity.bodyArea.height;
+		int entityTopWorldY = entity.worldY + entity.bodyArea.y;
+		int entityLeftWorldX = entity.worldX + entity.bodyArea.x;
+		int entityRightWorldX = entity.worldX + entity.bodyArea.x + entity.bodyArea.width;
 
 		int entityBottomRow = entityBottomWorldY / game.tileSize;
 		int entityTopRow = entityTopWorldY / game.tileSize;
@@ -80,35 +80,35 @@ public class CollisionChecker {
 		int index = -1;
 		for (int i = 0; i < game.objs.length; i++) {
 			if (game.objs[i] != null) {
-				// Obtiene la posicion del area solida de la entidad y del objeto
-				entity.solidArea.x += entity.worldX;
-				entity.solidArea.y += entity.worldY;
-				game.objs[i].solidArea.x += game.objs[i].worldX;
-				game.objs[i].solidArea.y += game.objs[i].worldY;
+				// Obtiene la posicion del area del cuerpo de la entidad y del objeto
+				entity.bodyArea.x += entity.worldX;
+				entity.bodyArea.y += entity.worldY;
+				game.objs[i].bodyArea.x += game.objs[i].worldX;
+				game.objs[i].bodyArea.y += game.objs[i].worldY;
 				switch (entity.direction) {
 					case "down":
-						entity.solidArea.y += entity.speed;
+						entity.bodyArea.y += entity.speed;
 						break;
 					case "up":
-						entity.solidArea.y -= entity.speed;
+						entity.bodyArea.y -= entity.speed;
 						break;
 					case "left":
-						entity.solidArea.x -= entity.speed;
+						entity.bodyArea.x -= entity.speed;
 						break;
 					case "right":
-						entity.solidArea.x += entity.speed;
+						entity.bodyArea.x += entity.speed;
 						break;
 				}
 
-				if (entity.solidArea.intersects(game.objs[i].solidArea)) {
+				if (entity.bodyArea.intersects(game.objs[i].bodyArea)) {
 					if (game.objs[i].collision) entity.collisionOn = true;
 					if (entity instanceof Player) index = i;
 				}
 
-				entity.solidArea.x = entity.solidAreaDefaultX;
-				entity.solidArea.y = entity.solidAreaDefaultY;
-				game.objs[i].solidArea.x = game.objs[i].solidAreaDefaultX;
-				game.objs[i].solidArea.y = game.objs[i].solidAreaDefaultY;
+				entity.bodyArea.x = entity.bodyAreaDefaultX;
+				entity.bodyArea.y = entity.bodyAreaDefaultY;
+				game.objs[i].bodyArea.x = game.objs[i].bodyAreaDefaultX;
+				game.objs[i].bodyArea.y = game.objs[i].bodyAreaDefaultY;
 			}
 		}
 		return index;
@@ -126,36 +126,36 @@ public class CollisionChecker {
 		for (int i = 0; i < otherEntity.length; i++) {
 			if (otherEntity[i] != null) {
 				// Obtiene la posicion del area solida de la entidad y de la otra entidad
-				entity.solidArea.x += entity.worldX;
-				entity.solidArea.y += entity.worldY;
-				otherEntity[i].solidArea.x += otherEntity[i].worldX;
-				otherEntity[i].solidArea.y += otherEntity[i].worldY;
+				entity.bodyArea.x += entity.worldX;
+				entity.bodyArea.y += entity.worldY;
+				otherEntity[i].bodyArea.x += otherEntity[i].worldX;
+				otherEntity[i].bodyArea.y += otherEntity[i].worldY;
 				switch (entity.direction) {
 					case "down":
-						entity.solidArea.y += entity.speed;
+						entity.bodyArea.y += entity.speed;
 						break;
 					case "up":
-						entity.solidArea.y -= entity.speed;
+						entity.bodyArea.y -= entity.speed;
 						break;
 					case "left":
-						entity.solidArea.x -= entity.speed;
+						entity.bodyArea.x -= entity.speed;
 						break;
 					case "right":
-						entity.solidArea.x += entity.speed;
+						entity.bodyArea.x += entity.speed;
 						break;
 				}
 
-				if (entity.solidArea.intersects(otherEntity[i].solidArea)) {
+				if (entity.bodyArea.intersects(otherEntity[i].bodyArea)) {
 					if (otherEntity[i] != entity) { // Evita la colision en si misma
 						entity.collisionOn = true;
 						index = i;
 					}
 				}
 
-				entity.solidArea.x = entity.solidAreaDefaultX;
-				entity.solidArea.y = entity.solidAreaDefaultY;
-				otherEntity[i].solidArea.x = otherEntity[i].solidAreaDefaultX;
-				otherEntity[i].solidArea.y = otherEntity[i].solidAreaDefaultY;
+				entity.bodyArea.x = entity.bodyAreaDefaultX;
+				entity.bodyArea.y = entity.bodyAreaDefaultY;
+				otherEntity[i].bodyArea.x = otherEntity[i].bodyAreaDefaultX;
+				otherEntity[i].bodyArea.y = otherEntity[i].bodyAreaDefaultY;
 			}
 		}
 		return index;
@@ -172,34 +172,34 @@ public class CollisionChecker {
 	public boolean checkPlayer(Entity entity) {
 		boolean contact = false;
 		// Obtiene la posicion del area solida de la entidad y del player
-		entity.solidArea.x += entity.worldX;
-		entity.solidArea.y += entity.worldY;
-		game.player.solidArea.x += game.player.worldX;
-		game.player.solidArea.y += game.player.worldY;
+		entity.bodyArea.x += entity.worldX;
+		entity.bodyArea.y += entity.worldY;
+		game.player.bodyArea.x += game.player.worldX;
+		game.player.bodyArea.y += game.player.worldY;
 		switch (entity.direction) {
 			case "down":
-				entity.solidArea.y += entity.speed;
+				entity.bodyArea.y += entity.speed;
 				break;
 			case "up":
-				entity.solidArea.y -= entity.speed;
+				entity.bodyArea.y -= entity.speed;
 				break;
 			case "left":
-				entity.solidArea.x -= entity.speed;
+				entity.bodyArea.x -= entity.speed;
 				break;
 			case "right":
-				entity.solidArea.x += entity.speed;
+				entity.bodyArea.x += entity.speed;
 				break;
 		}
 
-		if (entity.solidArea.intersects(game.player.solidArea)) {
+		if (entity.bodyArea.intersects(game.player.bodyArea)) {
 			entity.collisionOn = true;
 			contact = true;
 		}
 
-		entity.solidArea.x = entity.solidAreaDefaultX;
-		entity.solidArea.y = entity.solidAreaDefaultY;
-		game.player.solidArea.x = game.player.solidAreaDefaultX;
-		game.player.solidArea.y = game.player.solidAreaDefaultY;
+		entity.bodyArea.x = entity.bodyAreaDefaultX;
+		entity.bodyArea.y = entity.bodyAreaDefaultY;
+		game.player.bodyArea.x = game.player.bodyAreaDefaultX;
+		game.player.bodyArea.y = game.player.bodyAreaDefaultY;
 
 		return contact;
 

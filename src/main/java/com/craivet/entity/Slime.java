@@ -17,22 +17,22 @@ public class Slime extends Entity {
 	}
 
 	private void setDefaultValues() {
+		type = typeMOB;
 		name = "Slime";
 		direction = "down";
 		speed = 1;
-		type = typeMOB;
 		maxLife = 4;
 		life = maxLife;
+		exp = 2;
 		attack = 5;
 		defense = 0;
-		exp = 2;
 
-		solidArea.x = 3;
-		solidArea.y = 18;
-		solidArea.width = 42;
-		solidArea.height = 30;
-		solidAreaDefaultX = solidArea.x;
-		solidAreaDefaultY = solidArea.y;
+		bodyArea.x = 3;
+		bodyArea.y = 18;
+		bodyArea.width = 42;
+		bodyArea.height = 30;
+		bodyAreaDefaultX = bodyArea.x;
+		bodyAreaDefaultY = bodyArea.y;
 
 		initMovementImages(Assets.slime, ENTITY_WIDTH, ENTITY_HEIGHT);
 	}

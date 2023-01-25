@@ -8,7 +8,6 @@ import java.util.Comparator;
 
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
-import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.TileManager;
 
@@ -178,9 +177,9 @@ public class Game extends JPanel implements Runnable {
 			g2.setFont(new Font("Arial", Font.PLAIN, 20));
 			g2.setColor(Color.white);
 			int x = 8, y = screenHeight - 25, gap = 20;
-			g2.drawString("X: " + (player.worldX + player.solidArea.x) / tileSize, x, y);
+			g2.drawString("X: " + (player.worldX + player.bodyArea.x) / tileSize, x, y);
 			y += gap;
-			g2.drawString("Y: " + (player.worldY + player.solidArea.y) / tileSize, x, y);
+			g2.drawString("Y: " + (player.worldY + player.bodyArea.y) / tileSize, x, y);
 			// y += lineHeight;
 			// g2.drawString("Draw time: " + (System.nanoTime() - drawStart), x, y);
 		}

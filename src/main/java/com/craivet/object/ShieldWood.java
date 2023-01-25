@@ -13,8 +13,8 @@ public class ShieldWood extends Entity {
 		type = typeShield;
 		name = "Wood Shield";
 		movementDown1 = Utils.scaleImage(Assets.shield_wood, game.tileSize, game.tileSize);
-		defenseValue = 1;
 		itemDescription = "[" + name + "]\nMade by wood.";
+		defenseValue = 1;
 	}
 
 }

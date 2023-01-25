@@ -12,7 +12,9 @@ import java.awt.image.BufferedImage;
 /**
  * Clase encargada de verificar las colisiones con npcs, mobs y el player.
  *
- * <p>TODO Se podria separar los npcs y mobs por package, y por clases abstractas.
+ * <p>TODO Se podria separar los npcs y mobs por package, y por clases abstractas
+ * <p>TODO En vez de usar la variable "movementDown1" para representar la imagen de un objeto, se podria usar una
+ * var "image"
  */
 
 public abstract class Entity {
@@ -21,33 +23,6 @@ public abstract class Entity {
 	public Timer timer = new Timer();
 	public String[] dialogues = new String[20];
 	public int dialogueIndex;
-
-	// Atributes
-	public String name;
-	public String direction = "down";
-	public int worldX, worldY;
-	public int speed;
-	public int maxLife;
-	public int life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
-	public int level;
-	public int strength;
-	public int dexterity;
-	public int attack;
-	public int defense;
-	public int exp;
-	public int nextLevelExp;
-	public int coin;
-	public Entity currentWeapon;
-	public Entity currentShield;
-	public boolean collision;
-	public Rectangle solidArea = new Rectangle(0, 0, 48, 48);
-	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
-	public int solidAreaDefaultX, solidAreaDefaultY;
-
-	// Item attributes
-	public int attackValue;
-	public int defenseValue;
-	public String itemDescription;
 
 	// Type
 	public int type;
@@ -58,6 +33,33 @@ public abstract class Entity {
 	public final int typeAxe = 4;
 	public final int typeShield = 5;
 	public final int typeConsumable = 6;
+
+	// Atributes
+	public String name;
+	public String direction = "down";
+	public int speed;
+	public int maxLife;
+	public int life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+	public int worldX, worldY;
+	public int level;
+	public int exp;
+	public int nextLevelExp;
+	public int coin;
+	public int strength;
+	public int dexterity;
+	public int attack;
+	public int defense;
+	public Entity currentWeapon;
+	public Entity currentShield;
+	public boolean collision;
+	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
+	public Rectangle bodyArea = new Rectangle(0, 0, 48, 48);
+	public int bodyAreaDefaultX, bodyAreaDefaultY;
+
+	// Item attributes
+	public String itemDescription;
+	public int attackValue;
+	public int defenseValue;
 
 	// Images
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -73,7 +75,7 @@ public abstract class Entity {
 	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
 
-	public int attackCounter;
+	public int attackCounter; // TODO Muevo a timer?
 
 	public Entity(Game game) {
 		this.game = game;

@@ -14,6 +14,7 @@ public class PotionRed extends Entity {
 		super(game);
 
 		this.game = game;
+
 		type = typeConsumable;
 		name = "Red Potion";
 		movementDown1 = Utils.scaleImage(Assets.potion_red, game.tileSize, game.tileSize);

@@ -56,13 +56,13 @@ public class EventHandler {
 	public boolean hit(int col, int row, String reqDirection) {
 		boolean hit = false;
 
-		game.player.solidArea.x = game.player.worldX + game.player.solidArea.x;
-		game.player.solidArea.y = game.player.worldY + game.player.solidArea.y;
+		game.player.bodyArea.x = game.player.worldX + game.player.bodyArea.x;
+		game.player.bodyArea.y = game.player.worldY + game.player.bodyArea.y;
 		eventRect[col][row].x = col * game.tileSize + eventRect[col][row].x;
 		eventRect[col][row].y = row * game.tileSize + eventRect[col][row].y;
 
 		// Si el player colisiona con el evento
-		if (game.player.solidArea.intersects(eventRect[col][row])) {
+		if (game.player.bodyArea.intersects(eventRect[col][row])) {
 			if (game.player.direction.contentEquals(reqDirection) || game.player.direction.contentEquals("any")) {
 				hit = true;
 				// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
@@ -71,8 +71,8 @@ public class EventHandler {
 			}
 		}
 
-		game.player.solidArea.x = game.player.solidAreaDefaultX;
-		game.player.solidArea.y = game.player.solidAreaDefaultY;
+		game.player.bodyArea.x = game.player.bodyAreaDefaultX;
+		game.player.bodyArea.y = game.player.bodyAreaDefaultY;
 		eventRect[col][row].x = eventRect[col][row].eventRectDefaultX;
 		eventRect[col][row].y = eventRect[col][row].eventRectDefaultY;
 

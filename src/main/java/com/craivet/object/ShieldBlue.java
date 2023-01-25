@@ -13,7 +13,8 @@ public class ShieldBlue extends Entity {
 		type = typeShield;
 		name = "Blue Shield";
 		movementDown1 = Utils.scaleImage(Assets.shield_blue, game.tileSize, game.tileSize);
-		defenseValue = 2;
 		itemDescription = "[" + name + "]\nA shiny blue shield.";
+		defenseValue = 2;
 	}
+
 }

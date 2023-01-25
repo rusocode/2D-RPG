@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
+import com.craivet.object.Axe;
 import com.craivet.object.Key;
 import com.craivet.object.ShieldWood;
 import com.craivet.object.SwordNormal;
@@ -25,7 +26,7 @@ public class Player extends Entity {
 	public boolean attackCanceled;
 
 	public ArrayList<Entity> inventory = new ArrayList<>();
-	int maxInventorySize = 20;
+	public final int maxInventorySize = 20;
 
 	public Player(Game game, KeyHandler key) {
 		super(game);
@@ -39,33 +40,34 @@ public class Player extends Entity {
 	}
 
 	private void setDefaultValues() {
-		direction = "down";
-		worldX = game.tileSize * 23;
-		worldY = game.tileSize * 21;
-		speed = PLAYER_SPEED;
 		type = typePlayer;
+		name = "Player";
+		direction = "down";
+		speed = PLAYER_SPEED;
 		maxLife = 6;
 		life = maxLife;
+		worldX = game.tileSize * 23;
+		worldY = game.tileSize * 21;
 		level = 1;
-		strength = 1; // Mas fuerza, mas daño
-		dexterity = 1; // Mas destreza, menos daño
 		exp = 0;
 		nextLevelExp = 5;
 		coin = 0;
+
 		currentWeapon = new SwordNormal(game);
 		currentShield = new ShieldWood(game);
+		strength = 1; // Mas fuerza, mas daño
+		dexterity = 1; // Mas destreza, menos daño
 		attack = getAttack();
 		defense = getDefense();
 
-		solidArea.x = 8;
-		solidArea.y = 16;
-		solidArea.width = 32;
-		solidArea.height = 32;
-		solidAreaDefaultX = solidArea.x;
-		solidAreaDefaultY = solidArea.y;
+		attackArea = currentWeapon.attackArea;
 
-		// attackArea.width = 36;
-		// attackArea.height = 36;
+		bodyArea.x = 8;
+		bodyArea.y = 16;
+		bodyArea.width = 32;
+		bodyArea.height = 32;
+		bodyAreaDefaultX = bodyArea.x;
+		bodyAreaDefaultY = bodyArea.y;
 
 		initMovementImages(Assets.player_movement, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initAttackImages(Assets.player_attack_sword, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -186,11 +188,11 @@ public class Player extends Entity {
 		if (attackCounter > 5 && attackCounter <= 25) { // (6-25 frame de ataque 2)
 			attackNum = 2;
 
-			// Guarda la posicion actual de worldX, worldY y solidArea
+			// Guarda la posicion actual de worldX, worldY y bodyArea
 			int currentWorldX = worldX;
 			int currentWorldY = worldY;
-			int solidAreaWidth = solidArea.width;
-			int solidAreaHeight = solidArea.height;
+			int bodyAreaWidth = bodyArea.width;
+			int bodyAreaHeight = bodyArea.height;
 
 			// Ajusta la posicion del player X/Y para el area de ataque
 			switch (direction) {
@@ -207,19 +209,19 @@ public class Player extends Entity {
 					break;
 			}
 
-			// attackArea se convierte en solidArea
-			solidArea.width = attackArea.width;
-			solidArea.height = attackArea.height;
+			// attackArea se convierte en bodyArea
+			bodyArea.width = attackArea.width;
+			bodyArea.height = attackArea.height;
 
-			// Verifica la colision con el mob con la posicion X/Y y solidArea actualizados, osea el area de ataque
+			// Verifica la colision con el mob con la posicion X/Y y bodyArea actualizados, osea el area de ataque
 			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
 			damageMob(mobIndex);
 
 			// Despues de verificar la colision, resetea los datos originales
 			worldX = currentWorldX;
 			worldY = currentWorldY;
-			solidArea.width = solidAreaWidth;
-			solidArea.height = solidAreaHeight;
+			bodyArea.width = bodyAreaWidth;
+			bodyArea.height = bodyAreaHeight;
 		}
 		if (attackCounter > 25) {
 			attackNum = 1;
@@ -228,23 +230,10 @@ public class Player extends Entity {
 		}
 	}
 
-	private int getAttack() {
-		attackArea = currentWeapon.attackArea;
-		return strength * currentWeapon.attackValue;
-	}
-
-	private int getDefense() {
-		return dexterity * currentShield.defenseValue;
-	}
-
-	private void setItems() {
-		inventory.add(currentWeapon);
-		inventory.add(currentShield);
-		inventory.add(new Key(game));
-	}
-
 	/**
 	 * Recoge un objeto.
+	 *
+	 * <p>Si el inventario no esta lleno, lo agrega al inventario y lo elimina del mundo.
 	 *
 	 * @param objIndex indice del objeto.
 	 */
@@ -344,11 +333,14 @@ public class Player extends Entity {
 		}
 	}
 
+	/**
+	 * Selecciona el item del array de inventario utilizando el indice del slot del inventario UI.
+	 */
 	public void selectItem() {
 		int itemIndex = game.ui.getItemIndexOnSlot();
 		if (itemIndex < inventory.size()) {
 			Entity selectedItem = inventory.get(itemIndex);
-			if (selectedItem.type == typeSword || selectedItem.type == typeAxe) {
+			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) { // selectedItem.type == typeSword || selectedItem.type == typeAxe
 				currentWeapon = selectedItem;
 				attack = getAttack();
 				initAttackImages(currentWeapon.type == typeSword ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -362,6 +354,20 @@ public class Player extends Entity {
 				inventory.remove(itemIndex);
 			}
 		}
+	}
+
+	private int getAttack() {
+		return strength * currentWeapon.attackValue;
+	}
+
+	private int getDefense() {
+		return dexterity * currentShield.defenseValue;
+	}
+
+	private void setItems() {
+		inventory.add(currentWeapon);
+		inventory.add(currentShield);
+		inventory.add(new Key(game));
 	}
 
 }

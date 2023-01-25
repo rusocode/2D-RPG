@@ -9,6 +9,7 @@ public class Key extends Entity {
 
 	public Key(Game game) {
 		super(game);
+
 		name = "Key";
 		movementDown1 = Utils.scaleImage(Assets.key, game.tileSize, game.tileSize);
 		itemDescription = "[" + name + "]\nIt opens a door.";
