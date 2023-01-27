@@ -40,6 +40,8 @@ public abstract class Entity {
 	public int speed;
 	public int maxLife;
 	public int life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+	public int maxMana;
+	public int mana;
 	public int worldX, worldY;
 	public int level;
 	public int exp;
@@ -55,11 +57,13 @@ public abstract class Entity {
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public Rectangle bodyArea = new Rectangle(0, 0, 48, 48);
 	public int bodyAreaDefaultX, bodyAreaDefaultY;
+	public Projectile projectile;
 
 	// Item attributes
 	public String itemDescription;
 	public int attackValue;
 	public int defenseValue;
+	public int useCost; // Costo de disparar un proyectile
 
 	// Images
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -76,6 +80,7 @@ public abstract class Entity {
 	public int movementNum = 1, attackNum = 1;
 
 	public int attackCounter; // TODO Muevo a timer?
+	public int shotAvailableCounter;
 
 	public Entity(Game game) {
 		this.game = game;
@@ -237,7 +242,7 @@ public abstract class Entity {
 			movementLeft2 = Utils.scaleImage(subimages[5], game.tileSize, game.tileSize);
 			movementRight1 = Utils.scaleImage(subimages[6], game.tileSize, game.tileSize);
 			movementRight2 = Utils.scaleImage(subimages[7], game.tileSize, game.tileSize);
-		} else { // Mobs
+		} else { // Mobs o projectile
 			movementDown1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 			movementDown2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 			movementUp1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);

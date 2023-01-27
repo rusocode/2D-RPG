@@ -26,6 +26,7 @@ public final class Assets {
 	public static final URL swing_weapon_ogg = Utils.loadSound("sounds/swing_weapon.ogg");
 	public static final URL swing_weapon2 = Utils.loadSound("sounds/swing_weapon2.wav"); // TODO fix
 	public static final URL unlock = Utils.loadSound("sounds/unlock.wav");
+	public static final URL burning = Utils.loadSound("sounds/burning.wav");
 
 	// Entities
 	public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage("textures/entity/player/movement.png"));
@@ -33,6 +34,9 @@ public final class Assets {
 	public static final SpriteSheet player_attack_axe = new SpriteSheet(Utils.loadImage("textures/entity/player/attack_axe.png"));
 	public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage("textures/entity/oldman.png"));
 	public static final SpriteSheet slime = new SpriteSheet(Utils.loadImage("textures/entity/slime.png"));
+
+	// Projectile
+	public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage("textures/projectile/fireball.png"));
 
 	// Objects
 	public static final BufferedImage boots = Utils.loadImage("textures/objs/boots.png");

@@ -7,10 +7,7 @@ import java.util.ArrayList;
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
-import com.craivet.object.Axe;
-import com.craivet.object.Key;
-import com.craivet.object.ShieldWood;
-import com.craivet.object.SwordNormal;
+import com.craivet.object.*;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -53,6 +50,7 @@ public class Player extends Entity {
 		nextLevelExp = 5;
 		coin = 0;
 
+		projectile = new Fireball(game);
 		currentWeapon = new SwordNormal(game);
 		currentShield = new ShieldWood(game);
 		strength = 1; // Mas fuerza, mas daño
@@ -121,7 +119,17 @@ public class Player extends Entity {
 
 		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
+		// Si el proyectil anterior no sigue vivo
+		if (key.shot && !projectile.alive && shotAvailableCounter == 80) {
+			projectile.set(worldX, worldY, direction, true, this);
+			game.projectiles.add(projectile);
+			game.playSound(Assets.burning);
+			shotAvailableCounter = 0;
+		}
+
 		if (invincible) timer.timeInvincible(this, 60);
+
+		if (shotAvailableCounter < 80) shotAvailableCounter++;
 
 	}
 
@@ -215,7 +223,7 @@ public class Player extends Entity {
 
 			// Verifica la colision con el mob con la posicion X/Y y bodyArea actualizados, osea el area de ataque
 			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
-			damageMob(mobIndex);
+			damageMob(mobIndex, attack);
 
 			// Despues de verificar la colision, resetea los datos originales
 			worldX = currentWorldX;
@@ -269,8 +277,9 @@ public class Player extends Entity {
 	 * Daña al mob.
 	 *
 	 * @param mobIndex indice del mob.
+	 * @param attack   el tipo de ataque (sword o fireball).
 	 */
-	private void damageMob(int mobIndex) {
+	public void damageMob(int mobIndex, int attack) {
 		if (mobIndex != -1) {
 			if (!game.mobs[mobIndex].invincible) {
 				game.playSound(Assets.hit_monster);
@@ -303,7 +312,7 @@ public class Player extends Entity {
 	 */
 	private void damagePlayer(int mobIndex) {
 		if (mobIndex != -1) {
-			if (!invincible) {
+			if (!invincible && !game.mobs[mobIndex].dead) {
 				game.playSound(Assets.receive_damage);
 				// Resta la defensa del player al ataque del mob para calcular el daño justo
 				int damage = game.mobs[mobIndex].attack - defense;

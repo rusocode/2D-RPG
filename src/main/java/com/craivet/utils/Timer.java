@@ -80,8 +80,8 @@ public class Timer {
 	 * transparencia a 1. Si el contador esta entre el cooldown * 4 y el cooldown * 5, cambia la transparencia a 0. Si
 	 * el contador esta entre el cooldown * 5 y el cooldown * 6, cambia la transparencia a 1. Si el contador esta entre
 	 * el cooldown * 6 y el cooldown * 7, cambia la transparencia a 0. Si el contador esta entre el cooldown * 7 y el
-	 * cooldown * 8, cambia la transparencia a 1. Si el contador es mayor al cooldown * 8, establece el estado dead y
-	 * alive en false, evitando que el mob actualice su posicion y se elimine como objeto.
+	 * cooldown * 8, cambia la transparencia a 1. Si el contador es mayor al cooldown * 8, establece el estado alive en
+	 * false.
 	 */
 	public void timeDeadAnimation(Entity entity, int cooldown, Graphics2D g2) {
 		deadCounter++;
@@ -93,10 +93,7 @@ public class Timer {
 		if (deadCounter > cooldown * 5 && deadCounter <= cooldown * 6) Utils.changeAlpha(g2, 1);
 		if (deadCounter > cooldown * 6 && deadCounter <= cooldown * 7) Utils.changeAlpha(g2, 0);
 		if (deadCounter > cooldown * 7 && deadCounter <= cooldown * 8) Utils.changeAlpha(g2, 1);
-		if (deadCounter > cooldown * 8) {
-			entity.dead = false;
-			entity.alive = false;
-		}
+		if (deadCounter > cooldown * 8) entity.alive = false;
 	}
 
 	/**

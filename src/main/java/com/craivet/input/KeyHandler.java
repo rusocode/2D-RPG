@@ -10,7 +10,7 @@ import static com.craivet.utils.Constants.*;
 public class KeyHandler extends KeyAdapter {
 
 	private final Game game;
-	public boolean w, a, s, d, enter;
+	public boolean w, a, s, d, enter, shot;
 	public boolean showDebugText;
 
 	public KeyHandler(Game game) {
@@ -34,6 +34,7 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_A) a = false;
 		if (code == KeyEvent.VK_S) s = false;
 		if (code == KeyEvent.VK_D) d = false;
+		if (code == KeyEvent.VK_F) shot = false;
 	}
 
 	private void titleState(int code) {
@@ -80,6 +81,7 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_P) game.gameState = game.pauseState;
 		if (code == KeyEvent.VK_C) game.gameState = game.characterState;
 		if (code == KeyEvent.VK_ENTER) enter = true;
+		if (code == KeyEvent.VK_F) shot = true;
 		if (code == KeyEvent.VK_T) showDebugText = !showDebugText;
 		/* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
 		 * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */

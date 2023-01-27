@@ -125,7 +125,7 @@ public class CollisionChecker {
 		int index = -1;
 		for (int i = 0; i < otherEntity.length; i++) {
 			if (otherEntity[i] != null) {
-				// Obtiene la posicion del area solida de la entidad y de la otra entidad
+				// Obtiene la posicion del area del cuerpo de la entidad y de la otra entidad
 				entity.bodyArea.x += entity.worldX;
 				entity.bodyArea.y += entity.worldY;
 				otherEntity[i].bodyArea.x += otherEntity[i].worldX;

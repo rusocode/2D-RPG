@@ -30,6 +30,7 @@ public class Game extends JPanel implements Runnable {
 
 	// Entities
 	public ArrayList<Entity> entities = new ArrayList<>();
+	public ArrayList<Entity> projectiles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
 	public Entity[] objs = new Entity[10];
 	public Entity[] npcs = new Entity[10];
@@ -126,10 +127,16 @@ public class Game extends JPanel implements Runnable {
 			for (int i = 0; i < mobs.length; i++) {
 				if (mobs[i] != null) {
 					/* Cuando muera el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
-					 * genera la animacion de muerte y al finalizarla, establece alive y dead en false para que no
-					 * genere movimiento y elimine el objeto. */
+					 * genera la animacion de muerte y al finalizarla, establece alive en false para que no genere
+					 * movimiento y elimine el objeto. */
 					if (mobs[i].alive && !mobs[i].dead) mobs[i].update();
 					if (!mobs[i].alive) mobs[i] = null;
+				}
+			}
+			for (int i = 0; i < projectiles.size(); i++) {
+				if (projectiles.get(i) != null) {
+					if (projectiles.get(i).alive) projectiles.get(i).update();
+					if (!projectiles.get(i).alive) projectiles.remove(i);
 				}
 			}
 		}
@@ -159,6 +166,8 @@ public class Game extends JPanel implements Runnable {
 				if (obj != null) entities.add(obj);
 			for (Entity mob : mobs)
 				if (mob != null) entities.add(mob);
+			for (Entity projectile : projectiles)
+				if (projectile != null) entities.add(projectile);
 
 			/* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
 			 * entonces este se dibuja por debajo. */
