@@ -19,8 +19,10 @@ public class Projectile extends Entity {
 		this.life = this.maxLife; // Resetea la vida al valor maximo cada vez que lanza un proyectil
 	}
 
+	/**
+	 * Actualiza la posicion del fireball y si colisiona con un mob o cuando se termina la vida, deja de estar vivo.
+	 */
 	public void update() {
-		// Si el player lanza un fireball
 		if (entity instanceof Player) {
 			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
 			if (mobIndex != -1) {
@@ -44,7 +46,6 @@ public class Projectile extends Entity {
 				break;
 		}
 
-		// Cuando llega a cero el proyectil desaparece
 		life--;
 		if (life <= 0) alive = false;
 
