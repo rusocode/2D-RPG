@@ -15,6 +15,7 @@ public final class Assets {
 
 	// Sounds
 	public static final URL blue_boy_adventure = Utils.loadSound("sounds/blue_boy_adventure.wav"); // Music
+	public static final URL burning = Utils.loadSound("sounds/burning.wav");
 	public static final URL coin = Utils.loadSound("sounds/coin.wav");
 	public static final URL cursor = Utils.loadSound("sounds/cursor.wav");
 	public static final URL fanfare = Utils.loadSound("sounds/fanfare.wav");
@@ -22,11 +23,11 @@ public final class Assets {
 	public static final URL level_up = Utils.loadSound("sounds/level_up.wav");
 	public static final URL power_up = Utils.loadSound("sounds/power_up.wav");
 	public static final URL receive_damage = Utils.loadSound("sounds/receive_damage.wav");
+	public static final URL spawn = Utils.loadSound("sounds/spawn.wav");
 	public static final URL swing_weapon_wav = Utils.loadSound("sounds/swing_weapon.wav");
 	public static final URL swing_weapon_ogg = Utils.loadSound("sounds/swing_weapon.ogg");
 	public static final URL swing_weapon2 = Utils.loadSound("sounds/swing_weapon2.wav"); // TODO fix
 	public static final URL unlock = Utils.loadSound("sounds/unlock.wav");
-	public static final URL burning = Utils.loadSound("sounds/burning.wav");
 
 	// Entities
 	public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage("textures/entity/player/movement.png"));

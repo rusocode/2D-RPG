@@ -8,6 +8,7 @@ import java.util.Comparator;
 
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
+import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.TileManager;
 

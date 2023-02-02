@@ -37,6 +37,7 @@ public class Player extends Entity {
 	}
 
 	private void setDefaultValues() {
+
 		type = typePlayer;
 		name = "Player";
 		direction = "down";
@@ -120,11 +121,11 @@ public class Player extends Entity {
 		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
 		// Si el proyectil anterior no sigue vivo y si ya pasaron 80 frames desde su lanzamiento
-		if (key.shot  && !projectile.alive && shotAvailableCounter == 80) {
+		if (key.shot && !projectile.alive && shotAvailableCounter == 80) { // TODO Se podria reemplazar por la vida
 			projectile.set(worldX, worldY, direction, true, this);
 			game.projectiles.add(projectile);
-			game.playSound(Assets.burning);
 			shotAvailableCounter = 0;
+			game.playSound(Assets.burning);
 		}
 
 		if (invincible) timer.timeInvincible(this, 60);

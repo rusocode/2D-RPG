@@ -79,6 +79,7 @@ public abstract class Entity {
 	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
 
+	public int movementCounter;
 	public int attackCounter; // TODO Muevo a timer?
 	public int shotAvailableCounter;
 
@@ -233,7 +234,7 @@ public abstract class Entity {
 	 */
 	public void initMovementImages(SpriteSheet image, int width, int height) {
 		BufferedImage[] subimages = SpriteSheet.getMovementSubimages(image, width, height);
-		if (subimages.length > 2) { // Npcs
+		if (subimages.length > 2) {
 			movementDown1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 			movementDown2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 			movementUp1 = Utils.scaleImage(subimages[2], game.tileSize, game.tileSize);
@@ -242,7 +243,7 @@ public abstract class Entity {
 			movementLeft2 = Utils.scaleImage(subimages[5], game.tileSize, game.tileSize);
 			movementRight1 = Utils.scaleImage(subimages[6], game.tileSize, game.tileSize);
 			movementRight2 = Utils.scaleImage(subimages[7], game.tileSize, game.tileSize);
-		} else { // Mobs o projectile
+		} else { // Slime
 			movementDown1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 			movementDown2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 			movementUp1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);

@@ -48,8 +48,10 @@ public class KeyHandler extends KeyAdapter {
 				if (game.ui.commandNum > 2) game.ui.commandNum = 0;
 			}
 			if (code == KeyEvent.VK_ENTER) {
-				if (game.ui.commandNum == 0)
+				if (game.ui.commandNum == 0){
+					game.playSound(Assets.spawn);
 					game.gameState = game.playState; // game.ui.titleScreenState = SELECTION_SCREEN;
+				}
 				// if (game.ui.commandNum == 1) {}
 				if (game.ui.commandNum == 2) System.exit(0);
 			}

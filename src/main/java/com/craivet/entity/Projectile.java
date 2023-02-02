@@ -49,7 +49,15 @@ public class Projectile extends Entity {
 		life--;
 		if (life <= 0) alive = false;
 
-		timer.timeMovement(this, 10);
+		if (alive) {
+			movementCounter++;
+			if (movementCounter > 10) {
+				if (entity.movementNum == 1) entity.movementNum = 2;
+				else if (entity.movementNum == 2) entity.movementNum = 1;
+				movementCounter = 0;
+			}
+			// timer.timeMovement(this, 10);
+		}
 
 	}
 
