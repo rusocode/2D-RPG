@@ -20,42 +20,43 @@ public class Projectile extends Entity {
 	}
 
 	/**
-	 * Actualiza la posicion del fireball y si colisiona con un mob o si se termina la vida de este, deja de vivir.
+	 * Actualiza la posicion del fireball si no colisiona con un mob o si no se termina la vida de este. En caso
+	 * contrario, deja de vivir.
 	 */
 	public void update() {
+		int mobIndex = 0;
 		if (entity instanceof Player) {
-			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
+			mobIndex = game.cChecker.checkEntity(this, game.mobs);
 			/* Cuando el proyectil colisiona con un mob, establece el estado collisionOn en true. Por lo tanto, cuando
 			 * se vuelva a dibujar el proyectil, este se va a mantener en el frame de movimiento 1 ya que en el operador
 			 * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
 			 * movimiento 2. La siguiente linea soluciona este problema. */
 			collisionOn = false;
-			if (mobIndex != -1) {
-				game.player.damageMob(mobIndex, attack);
-				alive = false;
-			}
-		}
-
-		switch (direction) {
-			case "down":
-				worldY += speed;
-				break;
-			case "up":
-				worldY -= speed;
-				break;
-			case "left":
-				worldX -= speed;
-				break;
-			case "right":
-				worldX += speed;
-				break;
+			if (mobIndex != -1) game.player.damageMob(mobIndex, attack);
 		}
 
 		life--;
-		if (life <= 0) alive = false;
 
-		// if (alive)
-		timer.timeMovement(this, 8);
+		if (mobIndex != -1 || life <= 0) alive = false;
+
+		if (alive) {
+			switch (direction) {
+				case "down":
+					worldY += speed;
+					break;
+				case "up":
+					worldY -= speed;
+					break;
+				case "left":
+					worldX -= speed;
+					break;
+				case "right":
+					worldX += speed;
+					break;
+			}
+			timer.timeMovement(this, 8);
+		}
+
 
 	}
 

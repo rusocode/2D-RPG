@@ -121,11 +121,11 @@ public class Player extends Entity {
 		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
 		// Si el proyectil anterior no sigue vivo y si ya pasaron 80 frames desde su lanzamiento
-		if (key.shot && !projectile.alive && shotAvailableCounter == 80) { // TODO Se podria reemplazar por la vida
+		if (key.shot && !projectile.alive && shotAvailableCounter == projectile.maxLife) {
 			projectile.set(worldX, worldY, direction, true, this);
 			game.projectiles.add(projectile);
-			shotAvailableCounter = 0;
 			game.playSound(Assets.burning);
+			shotAvailableCounter = 0;
 		}
 
 		if (invincible) timer.timeInvincible(this, 60);
@@ -282,7 +282,6 @@ public class Player extends Entity {
 	public void damageMob(int mobIndex, int attack) {
 		if (mobIndex != -1) {
 			if (!game.mobs[mobIndex].invincible) {
-				game.playSound(Assets.hit_monster);
 
 				// Resta la defensa del mob al ataque del player para calcular el daño justo
 				int damage = attack - game.mobs[mobIndex].defense;
@@ -290,11 +289,13 @@ public class Player extends Entity {
 
 				game.mobs[mobIndex].life -= damage;
 				game.ui.addMessage(damage + " damage!");
+				if (game.mobs[mobIndex].life > 0) game.playSound(Assets.hit_monster);
 
 				game.mobs[mobIndex].invincible = true;
 				game.mobs[mobIndex].hpBarOn = true; // Activa la barra
 				game.mobs[mobIndex].damageReaction();
 				if (game.mobs[mobIndex].life <= 0) {
+					game.playSound(Assets.mob_death);
 					game.mobs[mobIndex].dead = true;
 					game.ui.addMessage("Killed the " + game.mobs[mobIndex].name + "!");
 					game.ui.addMessage("Exp + " + game.mobs[mobIndex].exp);
