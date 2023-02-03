@@ -55,6 +55,7 @@ public abstract class Entity {
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
 	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
 	public BufferedImage heartFull, heartHalf, heartBlank;
+	public BufferedImage manaFull, manaBlank;
 
 	// States
 	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades

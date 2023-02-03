@@ -43,6 +43,8 @@ public class Player extends Entity {
 		speed = PLAYER_SPEED;
 		maxLife = 6;
 		life = maxLife;
+		maxMana = 4;
+		mana = maxMana;
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
 		level = 1;

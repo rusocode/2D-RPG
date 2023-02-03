@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.object.Heart;
+import com.craivet.object.Mana;
 
 import static com.craivet.utils.Constants.*;
 
@@ -20,6 +21,7 @@ public class UI {
 
 	private final Game game;
 	private final BufferedImage heartFull, heartHalf, heartBlank;
+	private final BufferedImage manaFull, manaBlank;
 	private Graphics2D g2;
 	public String currentDialogue;
 	public int commandNum;
@@ -38,6 +40,10 @@ public class UI {
 		heartFull = heart.heartFull;
 		heartHalf = heart.heartHalf;
 		heartBlank = heart.heartBlank;
+
+		Entity mana = new Mana(game);
+		manaFull = mana.manaFull;
+		manaBlank = mana.manaBlank;
 
 	}
 
@@ -182,7 +188,7 @@ public class UI {
 		int y = game.tileSize / 2;
 		int i = 0;
 
-		// Dibuja los corazones blancos
+		// Dibuja el corazon vacio
 		while (i < game.player.maxLife / 2) {
 			g2.drawImage(heartBlank, x, y, null);
 			i++;
@@ -194,13 +200,33 @@ public class UI {
 		y = game.tileSize / 2;
 		i = 0;
 
-		// Draw current life
+		// Dibuja la vida actual
 		while (i < game.player.life) {
 			g2.drawImage(heartHalf, x, y, null);
 			i++;
 			if (i < game.player.life) g2.drawImage(heartFull, x, y, null);
 			i++;
 			x += game.tileSize;
+		}
+
+		// Dibuja la mana vacia
+		x = (game.tileSize / 2) - 4;
+		y = (int) (game.tileSize * 1.5);
+		i = 0;
+		while (i < game.player.maxMana) {
+			g2.drawImage(manaBlank, x, y, null);
+			i++;
+			x += 35;
+		}
+
+		// Dibuja la mana actual
+		x = (game.tileSize / 2) - 4;
+		y = (int) (game.tileSize * 1.5);
+		i = 0;
+		while (i < game.player.mana) {
+			g2.drawImage(manaFull, x, y, null);
+			i++;
+			x += 35;
 		}
 
 	}
@@ -236,9 +262,9 @@ public class UI {
 
 		// SubWindow
 		final int frameX = game.tileSize;
-		final int frameY = game.tileSize;
+		final int frameY = game.tileSize - 15;
 		final int frameWidth = game.tileSize * 7;
-		final int frameHeight = game.tileSize * 10;
+		final int frameHeight = game.tileSize * 11;
 		drawSubWindow(frameX, frameY, frameWidth, frameHeight, 28f);
 
 		int textX = frameX + 20;
@@ -249,6 +275,8 @@ public class UI {
 		g2.drawString("Level", textX, textY);
 		textY += gap;
 		g2.drawString("Life", textX, textY);
+		textY += gap;
+		g2.drawString("Mana", textX, textY);
 		textY += gap;
 		g2.drawString("Strength", textX, textY);
 		textY += gap;
@@ -280,6 +308,11 @@ public class UI {
 		textY += gap;
 
 		value = String.valueOf(game.player.life + "/" + game.player.maxLife);
+		textX = getXforAlignToRightText(value, tailX);
+		g2.drawString(value, textX, textY);
+		textY += gap;
+
+		value = String.valueOf(game.player.mana + "/" + game.player.maxMana);
 		textX = getXforAlignToRightText(value, tailX);
 		g2.drawString(value, textX, textY);
 		textY += gap;
@@ -322,7 +355,7 @@ public class UI {
 		g2.drawImage(game.player.currentWeapon.movementDown1, tailX - 40, textY - 15, null);
 		textY += gap;
 
-		g2.drawImage(game.player.currentShield.movementDown1, tailX - 40, textY, null);
+		g2.drawImage(game.player.currentShield.movementDown1, tailX - 40, textY - 5, null);
 
 	}
 
@@ -331,7 +364,7 @@ public class UI {
 		// TODO Estas constantes y variables no tendrian que declararse como globales?
 		// SubWindow
 		final int frameX = game.tileSize * 9;
-		final int frameY = game.tileSize;
+		final int frameY = game.tileSize - 15;
 		final int frameWidth = game.tileSize * 6;
 		final int frameHeight = game.tileSize * 5;
 		drawSubWindow(frameX, frameY, frameWidth, frameHeight, 0);
