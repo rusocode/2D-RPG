@@ -5,16 +5,20 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
+import static com.craivet.utils.Constants.*;
+
 public class SwordNormal extends Entity {
 
 	public SwordNormal(Game game) {
 		super(game);
 
-		type = typeSword;
+		type = TYPE_SWORD;
 		name = "Normal Sword";
 		movementDown1 = Utils.scaleImage(Assets.sword_normal, game.tileSize, game.tileSize);
+
 		attackArea.width = 36;
 		attackArea.height = 36;
+
 		itemDescription = "[" + name + "]\nAn old sword.";
 		attackValue = 1;
 	}

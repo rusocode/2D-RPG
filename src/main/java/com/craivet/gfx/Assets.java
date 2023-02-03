@@ -39,6 +39,7 @@ public final class Assets {
 
 	// Projectile
 	public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage("textures/projectile/fireball.png"));
+	public static final SpriteSheet rock = new SpriteSheet(Utils.loadImage("textures/projectile/rock.png"));
 
 	// Objects
 	public static final BufferedImage boots = Utils.loadImage("textures/objs/boots.png");

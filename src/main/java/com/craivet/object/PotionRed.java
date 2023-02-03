@@ -5,6 +5,8 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
+import static com.craivet.utils.Constants.*;
+
 public class PotionRed extends Entity {
 
 	Game game;
@@ -15,9 +17,10 @@ public class PotionRed extends Entity {
 
 		this.game = game;
 
-		type = typeConsumable;
+		type = TYPE_CONSUMABLE;
 		name = "Red Potion";
 		movementDown1 = Utils.scaleImage(Assets.potion_red, game.tileSize, game.tileSize);
+
 		itemDescription = "[Red Potion]\nHeals your life by " + value + ".";
 	}
 

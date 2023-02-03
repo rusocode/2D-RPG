@@ -13,7 +13,7 @@ public class Oldman extends Entity {
 	}
 
 	private void setDefaultValues() {
-		type = typeNPC;
+		type = TYPE_NPC;
 		name = "Oldman";
 		direction = "down";
 		speed = 1;

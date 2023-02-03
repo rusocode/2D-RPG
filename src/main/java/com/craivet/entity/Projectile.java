@@ -24,20 +24,31 @@ public class Projectile extends Entity {
 	 * contrario, deja de vivir.
 	 */
 	public void update() {
-		int mobIndex = 0;
+
+		// Si el player lanza un proyectil
 		if (entity instanceof Player) {
-			mobIndex = game.cChecker.checkEntity(this, game.mobs);
+			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
 			/* Cuando el proyectil colisiona con un mob, establece el estado collisionOn en true. Por lo tanto, cuando
 			 * se vuelva a dibujar el proyectil, este se va a mantener en el frame de movimiento 1 ya que en el operador
 			 * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
 			 * movimiento 2. La siguiente linea soluciona este problema. */
 			collisionOn = false;
-			if (mobIndex != -1) game.player.damageMob(mobIndex, attack);
+			if (mobIndex != -1) {
+				game.player.damageMob(mobIndex, attack);
+				alive = false;
+			}
 		}
 
-		life--;
+		// Si el mob lanza un proyectil
+		if (!(entity instanceof Player)) {
+			boolean contact = game.cChecker.checkPlayer(this);
+			if (contact && !game.player.invincible) {
+				damagePlayer(true, attack);
+				alive = false;
+			}
+		}
 
-		if (mobIndex != -1 || life <= 0) alive = false;
+		if (life-- <= 0) alive = false;
 
 		if (alive) {
 			switch (direction) {
@@ -56,8 +67,6 @@ public class Projectile extends Entity {
 			}
 			timer.timeMovement(this, 8);
 		}
-
-
 	}
 
 }

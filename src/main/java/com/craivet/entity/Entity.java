@@ -9,12 +9,15 @@ import com.craivet.utils.Utils;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static com.craivet.utils.Constants.*;
+
 /**
  * Clase encargada de verificar las colisiones con npcs, mobs y el player.
  *
  * <p>TODO Se podria separar los npcs y mobs por package, y por clases abstractas
  * <p>TODO En vez de usar la variable "movementDown1" para representar la imagen de un objeto, se podria usar una
  * var "image"
+ * <p>TODO Separar en paquetes por items, objetos y proyectiles
  */
 
 public abstract class Entity {
@@ -24,35 +27,19 @@ public abstract class Entity {
 	public String[] dialogues = new String[20];
 	public int dialogueIndex;
 
-	// Type
-	public int type;
-	public final int typePlayer = 0;
-	public final int typeNPC = 1;
-	public final int typeMOB = 2;
-	public final int typeSword = 3;
-	public final int typeAxe = 4;
-	public final int typeShield = 5;
-	public final int typeConsumable = 6;
-
 	// Atributes
+	public int type = TYPE_MOB;
 	public String name;
 	public String direction = "down";
 	public int speed;
-	public int maxLife;
-	public int life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
-	public int maxMana;
-	public int mana;
+	public int maxLife, life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+	public int maxMana, mana;
 	public int worldX, worldY;
-	public int level;
-	public int exp;
-	public int nextLevelExp;
+	public int level, exp, nextLevelExp;
 	public int coin;
-	public int strength;
-	public int dexterity;
-	public int attack;
-	public int defense;
-	public Entity currentWeapon;
-	public Entity currentShield;
+	public int strength, dexterity;
+	public Entity currentWeapon, currentShield;
+	public int attack, defense;
 	public boolean collision;
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public Rectangle bodyArea = new Rectangle(0, 0, 48, 48);
@@ -61,8 +48,7 @@ public abstract class Entity {
 
 	// Item attributes
 	public String itemDescription;
-	public int attackValue;
-	public int defenseValue;
+	public int attackValue, defenseValue;
 	public int useCost; // Costo de disparar un proyectile
 
 	// Images
@@ -79,7 +65,6 @@ public abstract class Entity {
 	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
 
-	public int movementCounter;
 	public int attackCounter; // TODO Muevo a timer?
 	public int shotAvailableCounter;
 
@@ -127,7 +112,7 @@ public abstract class Entity {
 		game.cChecker.checkObject(this);
 		game.cChecker.checkEntity(this, game.npcs);
 		game.cChecker.checkEntity(this, game.mobs);
-		damagePlayer(game.cChecker.checkPlayer(this));
+		damagePlayer(game.cChecker.checkPlayer(this), attack);
 
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
 		if (!collisionOn) {
@@ -149,6 +134,7 @@ public abstract class Entity {
 
 		timer.timeMovement(this, 10);
 		if (invincible) timer.timeInvincible(this, 60);
+		if (shotAvailableCounter < 80) shotAvailableCounter++; // Que hace esto aca?
 
 	}
 
@@ -177,7 +163,7 @@ public abstract class Entity {
 
 			// TODO Hay un bug con la barra cuando el player tiene mucho damage, la barra del mob se agranda en el ultimo golpe
 			// Si la barra de hp esta activada
-			if (type == 2 && hpBarOn) {
+			if (type == TYPE_MOB && hpBarOn) {
 
 				double oneScale = (double) game.tileSize / maxLife;
 				double hpBarValue = oneScale * life;
@@ -211,9 +197,9 @@ public abstract class Entity {
 	/**
 	 * Daña al player.
 	 */
-	private void damagePlayer(boolean contact) {
+	public void damagePlayer(boolean contact, int attack) {
 		// Si el mob hace contacto con el player que no es invencible
-		if (this.type == typeMOB && contact && !game.player.invincible) {
+		if (type == TYPE_MOB && contact && !game.player.invincible) {
 			game.playSound(Assets.receive_damage);
 
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
@@ -243,7 +229,7 @@ public abstract class Entity {
 			movementLeft2 = Utils.scaleImage(subimages[5], game.tileSize, game.tileSize);
 			movementRight1 = Utils.scaleImage(subimages[6], game.tileSize, game.tileSize);
 			movementRight2 = Utils.scaleImage(subimages[7], game.tileSize, game.tileSize);
-		} else { // Slime
+		} else if (subimages.length == 2) { // Slime
 			movementDown1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 			movementDown2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 			movementUp1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
@@ -252,6 +238,15 @@ public abstract class Entity {
 			movementLeft2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
 			movementRight1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 			movementRight2 = Utils.scaleImage(subimages[1], game.tileSize, game.tileSize);
+		} else { // Rock
+			movementDown1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			movementDown2 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			movementUp1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			movementUp2 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			movementLeft1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			movementLeft2 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			movementRight1 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
+			movementRight2 = Utils.scaleImage(subimages[0], game.tileSize, game.tileSize);
 		}
 	}
 

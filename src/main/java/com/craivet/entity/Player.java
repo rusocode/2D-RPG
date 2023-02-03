@@ -37,8 +37,7 @@ public class Player extends Entity {
 	}
 
 	private void setDefaultValues() {
-
-		type = typePlayer;
+		type = TYPE_PLAYER;
 		name = "Player";
 		direction = "down";
 		speed = PLAYER_SPEED;
@@ -51,11 +50,10 @@ public class Player extends Entity {
 		nextLevelExp = 5;
 		coin = 0;
 
-		projectile = new Fireball(game);
-		currentWeapon = new SwordNormal(game);
-		currentShield = new ShieldWood(game);
 		strength = 1; // Mas fuerza, mas daño
 		dexterity = 1; // Mas destreza, menos daño
+		currentWeapon = new SwordNormal(game);
+		currentShield = new ShieldWood(game);
 		attack = getAttack();
 		defense = getDefense();
 
@@ -68,8 +66,11 @@ public class Player extends Entity {
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
 
+		projectile = new Fireball(game);
+
 		initMovementImages(Assets.player_movement, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initAttackImages(Assets.player_attack_sword, ENTITY_WIDTH, ENTITY_HEIGHT);
+
 		setItems();
 	}
 
@@ -121,7 +122,7 @@ public class Player extends Entity {
 		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
 		// Si el proyectil anterior no sigue vivo y si ya pasaron 80 frames desde su lanzamiento
-		if (key.shot && !projectile.alive && shotAvailableCounter == projectile.maxLife) {
+		if (key.shot && !projectile.alive && shotAvailableCounter == 80) {
 			projectile.set(worldX, worldY, direction, true, this);
 			game.projectiles.add(projectile);
 			game.playSound(Assets.burning);
@@ -286,7 +287,6 @@ public class Player extends Entity {
 				// Resta la defensa del mob al ataque del player para calcular el daño justo
 				int damage = attack - game.mobs[mobIndex].defense;
 				if (damage < 0) damage = 0;
-
 				game.mobs[mobIndex].life -= damage;
 				game.ui.addMessage(damage + " damage!");
 				if (game.mobs[mobIndex].life > 0) game.playSound(Assets.hit_monster);
@@ -294,6 +294,7 @@ public class Player extends Entity {
 				game.mobs[mobIndex].invincible = true;
 				game.mobs[mobIndex].hpBarOn = true; // Activa la barra
 				game.mobs[mobIndex].damageReaction();
+
 				if (game.mobs[mobIndex].life <= 0) {
 					game.playSound(Assets.mob_death);
 					game.mobs[mobIndex].dead = true;
@@ -353,13 +354,13 @@ public class Player extends Entity {
 			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) { // selectedItem.type == typeSword || selectedItem.type == typeAxe
 				currentWeapon = selectedItem;
 				attack = getAttack();
-				initAttackImages(currentWeapon.type == typeSword ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+				initAttackImages(currentWeapon.type == TYPE_SWORD ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 			}
-			if (selectedItem.type == typeShield) {
+			if (selectedItem.type == TYPE_SHIELD) {
 				currentShield = selectedItem;
 				defense = getDefense();
 			}
-			if (selectedItem.type == typeConsumable) {
+			if (selectedItem.type == TYPE_CONSUMABLE) {
 				selectedItem.use(this);
 				inventory.remove(itemIndex);
 			}
