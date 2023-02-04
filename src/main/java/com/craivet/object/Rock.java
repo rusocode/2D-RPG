@@ -5,8 +5,7 @@ import com.craivet.entity.Entity;
 import com.craivet.entity.Projectile;
 import com.craivet.gfx.Assets;
 
-import static com.craivet.utils.Constants.ENTITY_HEIGHT;
-import static com.craivet.utils.Constants.ENTITY_WIDTH;
+import static com.craivet.utils.Constants.*;
 
 public class Rock extends Projectile {
 
@@ -29,4 +28,15 @@ public class Rock extends Projectile {
 
 		initMovementImages(Assets.rock, ENTITY_WIDTH, ENTITY_HEIGHT);
 	}
+
+	@Override
+	public boolean haveResource(Entity entity) {
+		return entity.ammo >= useCost;
+	}
+
+	@Override
+	public void subtractResource(Entity entity) {
+		entity.ammo -= useCost;
+	}
+
 }

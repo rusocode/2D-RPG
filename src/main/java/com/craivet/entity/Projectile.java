@@ -2,12 +2,19 @@ package com.craivet.entity;
 
 import com.craivet.Game;
 
-public class Projectile extends Entity {
+public abstract class Projectile extends Entity {
 
 	private Entity entity;
 
 	public Projectile(Game game) {
 		super(game);
+	}
+
+	public boolean haveResource(Entity entity) {
+		return false;
+	}
+
+	public void subtractResource(Entity entity) {
 	}
 
 	public void set(int worldX, int worldY, String direction, boolean alive, Entity entity) {
@@ -20,9 +27,10 @@ public class Projectile extends Entity {
 	}
 
 	/**
-	 * Actualiza la posicion del fireball si no colisiona con un mob o si no se termina la vida de este. En caso
+	 * Actualiza la posicion del proyectil si no colisiona con un mob o si no se termina la vida de este. En caso
 	 * contrario, deja de vivir.
 	 */
+	@Override
 	public void update() {
 
 		// Si el player lanza un proyectil

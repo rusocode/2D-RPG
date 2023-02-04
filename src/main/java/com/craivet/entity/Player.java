@@ -45,6 +45,7 @@ public class Player extends Entity {
 		life = maxLife;
 		maxMana = 4;
 		mana = maxMana;
+		ammo = 5;
 		worldX = game.tileSize * 23;
 		worldY = game.tileSize * 21;
 		level = 1;
@@ -69,6 +70,7 @@ public class Player extends Entity {
 		bodyAreaDefaultY = bodyArea.y;
 
 		projectile = new Fireball(game);
+		// projectile = new Rock(game);
 
 		initMovementImages(Assets.player_movement, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initAttackImages(Assets.player_attack_sword, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -123,12 +125,14 @@ public class Player extends Entity {
 
 		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
-		// Si el proyectil anterior no sigue vivo y si ya pasaron 80 frames desde su lanzamiento
-		if (key.shot && !projectile.alive && shotAvailableCounter == 80) {
+		/* Si presiono la tecla f, y si el proyectil anterior no sigue vivo, y si ya pasaron 80 frames desde su
+		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
+		if (key.shot && !projectile.alive && shotAvailableCounter == 80 && projectile.haveResource(this)) {
 			projectile.set(worldX, worldY, direction, true, this);
+			projectile.subtractResource(this);
 			game.projectiles.add(projectile);
-			game.playSound(Assets.burning);
 			shotAvailableCounter = 0;
+			game.playSound(Assets.burning);
 		}
 
 		if (invincible) timer.timeInvincible(this, 60);

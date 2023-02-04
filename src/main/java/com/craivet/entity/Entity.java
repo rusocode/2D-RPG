@@ -18,6 +18,7 @@ import static com.craivet.utils.Constants.*;
  * <p>TODO En vez de usar la variable "movementDown1" para representar la imagen de un objeto, se podria usar una
  * var "image"
  * <p>TODO Separar en paquetes por items, objetos y proyectiles
+ * <p>TODO Los metodos update() y render() se podrian implementar desde una interfaz
  */
 
 public abstract class Entity {
@@ -34,6 +35,7 @@ public abstract class Entity {
 	public int speed;
 	public int maxLife, life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
 	public int maxMana, mana;
+	public int ammo;
 	public int worldX, worldY;
 	public int level, exp, nextLevelExp;
 	public int coin;
