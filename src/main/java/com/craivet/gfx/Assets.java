@@ -6,6 +6,10 @@ import java.net.URL;
 
 import com.craivet.utils.Utils;
 
+/**
+ * TODO Los metodos loadFont, loadSound y loadImage pueden ser llamados desde un AssetsManager
+ */
+
 public final class Assets {
 
 	// Fonts

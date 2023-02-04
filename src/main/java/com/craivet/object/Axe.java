@@ -2,12 +2,13 @@ package com.craivet.object;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
+import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
 
-public class Axe extends Entity {
+public class Axe extends Item {
 
 	public Axe(Game game) {
 		super(game);

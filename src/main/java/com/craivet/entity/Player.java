@@ -22,7 +22,10 @@ public class Player extends Entity {
 	public final int screenX, screenY;
 	public boolean attackCanceled;
 
-	public ArrayList<Entity> inventory = new ArrayList<>();
+	public Item currentWeapon;
+	public Item currentShield;
+
+	public ArrayList<Item> inventory = new ArrayList<>();
 	public final int maxInventorySize = 20;
 
 	public Player(Game game, KeyHandler key) {
@@ -274,7 +277,7 @@ public class Player extends Entity {
 		if (game.keyH.enter) {
 			if (npcIndex != -1) {
 				attackCanceled = true; // No puede atacar si interactua con un npc
-				game.gameState = game.dialogueState;
+				game.gameState = DIALOGUE_STATE;
 				game.npcs[npcIndex].speak();
 			}
 		}
@@ -345,7 +348,7 @@ public class Player extends Entity {
 			defense = getDefense();
 
 			game.playSound(Assets.level_up);
-			game.gameState = game.dialogueState;
+			game.gameState = DIALOGUE_STATE;
 			game.ui.currentDialogue = "You are level " + level + "!";
 		}
 	}
@@ -356,7 +359,7 @@ public class Player extends Entity {
 	public void selectItem() {
 		int itemIndex = game.ui.getItemIndexOnSlot();
 		if (itemIndex < inventory.size()) {
-			Entity selectedItem = inventory.get(itemIndex);
+			Item selectedItem = inventory.get(itemIndex);
 			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) { // selectedItem.type == typeSword || selectedItem.type == typeAxe
 				currentWeapon = selectedItem;
 				attack = getAttack();

@@ -1,23 +1,25 @@
 package com.craivet;
 
+import static com.craivet.utils.Constants.*;
+
 public class EventHandler {
 
-	Game game;
-	EventRect[][] eventRect;
+	private final Game game;
+	private final EventRect[][] eventRect;
 
 	/* El evento no sucede de nuevo si el player no se encuentra a 1 tile de distancia. Esta mecanica evita que el
 	 * evento se repita en el mismo lugar. */
-	int previousEventX, previousEventY;
-	boolean canTouchEvent = true;
+	private int previousEventX, previousEventY;
+	private boolean canTouchEvent = true;
 
 	public EventHandler(Game game) {
 		this.game = game;
 
-		eventRect = new EventRect[game.maxWorldCol][game.maxWorldRow];
+		eventRect = new EventRect[MAX_WORLD_COL][MAX_WORLD_ROW];
 
 		// Crea un evento para cada tile del mapa
-		for (int row = 0; row < game.maxWorldRow; row++) {
-			for (int col = 0; col < game.maxWorldCol; col++) {
+		for (int row = 0; row < MAX_WORLD_ROW; row++) {
+			for (int col = 0; col < MAX_WORLD_COL; col++) {
 				// Ahora cada evento tiene un area solida
 				eventRect[col][row] = new EventRect();
 				eventRect[col][row].x = 23;
@@ -43,9 +45,9 @@ public class EventHandler {
 		if (distance > game.tileSize) canTouchEvent = true;
 
 		if (canTouchEvent) {
-			if (hit(27, 16, "right")) damagePit(27, 16, game.dialogueState);
+			if (hit(27, 16, "right")) damagePit(27, 16, DIALOGUE_STATE);
 			// if (hit(27, 16, "right")) teleport(game.dialogueState);
-			if (hit(23, 12, "up")) healingPool(23, 12, game.dialogueState);
+			if (hit(23, 12, "up")) healingPool(23, 12, DIALOGUE_STATE);
 		}
 
 	}

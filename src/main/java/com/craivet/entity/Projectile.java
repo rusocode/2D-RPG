@@ -2,7 +2,7 @@ package com.craivet.entity;
 
 import com.craivet.Game;
 
-public abstract class Projectile extends Entity {
+public abstract class Projectile extends Item {
 
 	private Entity entity;
 

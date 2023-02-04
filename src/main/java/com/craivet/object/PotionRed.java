@@ -2,15 +2,16 @@ package com.craivet.object;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
+import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
 
-public class PotionRed extends Entity {
+public class PotionRed extends Item {
 
-	Game game;
-	int value = 5;
+	private final Game game;
+	private final int value = 5;
 
 	public PotionRed(Game game) {
 		super(game);
@@ -25,7 +26,7 @@ public class PotionRed extends Entity {
 	}
 
 	public void use(Entity entity) {
-		game.gameState = game.dialogueState;
+		game.gameState = DIALOGUE_STATE;
 		game.ui.currentDialogue = "Your drink the " + name + "!\n"
 				+ "Your life has been recovered by " + value + ".";
 		entity.life += value;

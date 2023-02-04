@@ -40,7 +40,7 @@ public abstract class Entity {
 	public int level, exp, nextLevelExp;
 	public int coin;
 	public int strength, dexterity;
-	public Entity currentWeapon, currentShield;
+	// public Entity currentWeapon, currentShield;
 	public int attack, defense;
 	public boolean collision;
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
@@ -49,9 +49,9 @@ public abstract class Entity {
 	public Projectile projectile;
 
 	// Item attributes
-	public String itemDescription;
+	/* public String itemDescription;
 	public int attackValue, defenseValue;
-	public int useCost; // Costo de disparar un proyectile
+	public int useCost; // Costo de disparar un proyectile */
 
 	// Images
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;

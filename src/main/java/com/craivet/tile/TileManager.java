@@ -1,5 +1,9 @@
 package com.craivet.tile;
 
+import com.craivet.Game;
+import com.craivet.gfx.Assets;
+import com.craivet.utils.Utils;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
@@ -7,9 +11,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
-import com.craivet.Game;
-import com.craivet.gfx.Assets;
-import com.craivet.utils.Utils;
+import static com.craivet.utils.Constants.*;
 
 public class TileManager {
 
@@ -21,7 +23,7 @@ public class TileManager {
 	public TileManager(Game game) {
 		this.game = game;
 		tile = new Tile[50];
-		map = new int[game.maxWorldCol][game.maxWorldRow];
+		map = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
 		initTiles();
 		loadMap("maps/worldV2.txt");
 	}
@@ -83,10 +85,10 @@ public class TileManager {
 
 	public void loadMap(String path) {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
-			for (int row = 0; row < game.maxWorldRow; row++) {
+			for (int row = 0; row < MAX_WORLD_ROW; row++) {
 				String line = br.readLine();
 				String[] numbers = line.split(" ");
-				for (int col = 0; col < game.maxWorldCol; col++)
+				for (int col = 0; col < MAX_WORLD_COL; col++)
 					map[col][row] = Integer.parseInt(numbers[col]);
 			}
 		} catch (IOException e) {
@@ -98,8 +100,8 @@ public class TileManager {
 	 * Dibuja los tiles aplicando el desplazamiento a cada uno.
 	 */
 	public void draw(Graphics2D g2) {
-		for (int row = 0; row < game.maxWorldRow; row++) {
-			for (int col = 0; col < game.maxWorldCol; col++) {
+		for (int row = 0; row < MAX_WORLD_ROW; row++) {
+			for (int col = 0; col < MAX_WORLD_COL; col++) {
 				int worldX = col * game.tileSize;
 				int worldY = row * game.tileSize;
 				/* Resta la posicion del player (en el mundo) al tile y suma los desplazamientos de la pantalla para que

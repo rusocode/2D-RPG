@@ -57,20 +57,20 @@ public class UI {
 		// Suaviza los bordes de la fuente
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-		if (game.gameState == game.titleState) drawTitleScreen();
-		if (game.gameState == game.playState) {
+		if (game.gameState == TITLE_STATE) drawTitleScreen();
+		if (game.gameState == PLAY_STATE) {
 			drawPlayerLife();
 			drawMessage();
 		}
-		if (game.gameState == game.pauseState) {
+		if (game.gameState == PAUSE_STATE) {
 			drawPlayerLife();
 			drawPauseScreen();
 		}
-		if (game.gameState == game.dialogueState) {
+		if (game.gameState == DIALOGUE_STATE) {
 			drawPlayerLife();
 			drawDialogueScreen();
 		}
-		if (game.gameState == game.characterState) {
+		if (game.gameState == CHARACTER_STATE) {
 			drawCharacterScreen();
 			drawInventory();
 		}

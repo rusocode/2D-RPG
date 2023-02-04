@@ -2,10 +2,11 @@ package com.craivet.object;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
+import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
-public class Key extends Entity {
+public class Key extends Item {
 
 	public Key(Game game) {
 		super(game);

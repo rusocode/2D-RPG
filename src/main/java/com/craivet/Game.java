@@ -1,19 +1,21 @@
 package com.craivet;
 
+import com.craivet.entity.Entity;
+import com.craivet.entity.Item;
+import com.craivet.entity.Player;
+import com.craivet.input.KeyHandler;
+import com.craivet.tile.TileManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import com.craivet.entity.Entity;
-import com.craivet.entity.Player;
-import com.craivet.gfx.Assets;
-import com.craivet.input.KeyHandler;
-import com.craivet.tile.TileManager;
+import static com.craivet.utils.Constants.*;
 
 /**
- * TODO interpolacion de renderizado?
+ * TODO Interpolacion de renderizado?
  */
 
 public class Game extends JPanel implements Runnable {
@@ -33,33 +35,16 @@ public class Game extends JPanel implements Runnable {
 	public ArrayList<Entity> entities = new ArrayList<>();
 	public ArrayList<Entity> projectiles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
-	public Entity[] objs = new Entity[10];
+	public Item[] objs = new Item[10];
 	public Entity[] npcs = new Entity[10];
 	public Entity[] mobs = new Entity[20];
 
-	// Game state
-	public int gameState;
-	public final int titleState = 0;
-	public final int playState = 1;
-	public final int pauseState = 2;
-	public final int dialogueState = 3;
-	public final int characterState = 4;
-
 	// Screen settings
-	final int originalTileSize = 16; // 16x16 tile
-	final int scale = 3;
-	public final int tileSize = originalTileSize * scale; // 48x48 tile
-	public final int maxScreenCol = 16;
-	public final int maxScreenRow = 12;
-	public final int screenWidth = tileSize * maxScreenCol; // 768 pixels
-	public final int screenHeight = tileSize * maxScreenRow; // 576 pixels
+	public final int tileSize = ORIGINAL_TILE_SIZE * SCALE; // 48x48 tile
+	public final int screenWidth = tileSize * MAX_SCREEN_COL; // 768 pixels
+	public final int screenHeight = tileSize * MAX_SCREEN_ROW; // 576 pixels
 
-	// World settings
-	public final int maxWorldCol = 50;
-	public final int maxWorldRow = 50;
-
-	// Game Loop
-	final int fps = 60;
+	public int gameState;
 	private boolean running;
 
 	public Game() {
@@ -77,7 +62,7 @@ public class Game extends JPanel implements Runnable {
 		setup();
 
 		// Intervalo de tiempo entre cada frame aplicando la unidad de tiempo en nanosegundos y 60 fps
-		double drawInterval = 1e9 / fps;
+		double drawInterval = 1e9 / FPS;
 		double delta = 0;
 		long lastTime = System.nanoTime();
 		long currentTime;
@@ -116,12 +101,12 @@ public class Game extends JPanel implements Runnable {
 		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
 		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
 		// playMusic(Assets.blue_boy_adventure);
-		gameState = titleState;
+		gameState = TITLE_STATE;
 
 	}
 
 	public void update() {
-		if (gameState == playState) {
+		if (gameState == PLAY_STATE) {
 			player.update();
 			for (Entity npc : npcs)
 				if (npc != null) npc.update();
@@ -154,7 +139,7 @@ public class Game extends JPanel implements Runnable {
 		if (keyH.showDebugText) drawStart = System.nanoTime();
 
 		// Title screen
-		if (gameState == titleState) {
+		if (gameState == TITLE_STATE) {
 			ui.draw(g2);
 		} else {
 			tileManager.draw(g2);
