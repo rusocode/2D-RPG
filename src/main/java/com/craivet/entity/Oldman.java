@@ -33,7 +33,7 @@ public class Oldman extends Entity {
 	 * Establece la accion especificada.
 	 */
 	public void setAction() {
-		timer.timeDirection(this, 120);
+		timer.timeDirection(this, INTERVAL_DIRECTION);
 	}
 
 	public void speak() {

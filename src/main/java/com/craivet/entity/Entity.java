@@ -40,18 +40,12 @@ public abstract class Entity {
 	public int level, exp, nextLevelExp;
 	public int coin;
 	public int strength, dexterity;
-	// public Entity currentWeapon, currentShield;
 	public int attack, defense;
 	public boolean collision;
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public Rectangle bodyArea = new Rectangle(0, 0, 48, 48);
 	public int bodyAreaDefaultX, bodyAreaDefaultY;
 	public Projectile projectile;
-
-	// Item attributes
-	/* public String itemDescription;
-	public int attackValue, defenseValue;
-	public int useCost; // Costo de disparar un proyectile */
 
 	// Images
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -135,8 +129,8 @@ public abstract class Entity {
 			}
 		}
 
-		timer.timeMovement(this, 10);
-		if (invincible) timer.timeInvincible(this, 60);
+		timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
 		if (shotAvailableCounter < 80) shotAvailableCounter++; // Que hace esto aca?
 
 	}
@@ -180,7 +174,7 @@ public abstract class Entity {
 				g2.setColor(new Color(255, 0, 30));
 				g2.fillRect(screenX, screenY + TILE_SIZE + 5, (int) hpBarValue, 5);
 
-				timer.timeHpBar(this, 240);
+				timer.timeHpBar(this, INTERVAL_HP_BAR);
 			}
 
 			if (invincible) {
@@ -189,7 +183,7 @@ public abstract class Entity {
 				Utils.changeAlpha(g2, 0.4f);
 			}
 
-			if (dead) timer.timeDeadAnimation(this, 10, g2);
+			if (dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
 			g2.drawImage(image, screenX, screenY, null);
 			Utils.changeAlpha(g2, 1);

@@ -125,7 +125,7 @@ public class Player extends Entity {
 			key.enter = false;
 			key.pickup = false;
 
-			timer.timeMovement(this, 10);
+			timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 
 		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
 
@@ -139,7 +139,7 @@ public class Player extends Entity {
 			Sound.play(Assets.burning);
 		}
 
-		if (invincible) timer.timeInvincible(this, 60);
+		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
 		if (shotAvailableCounter < 80) shotAvailableCounter++;
 
 	}
@@ -385,18 +385,6 @@ public class Player extends Entity {
 		inventory.add(new Key(game));
 		inventory.add(new Key(game));
 		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-
 	}
 
 }

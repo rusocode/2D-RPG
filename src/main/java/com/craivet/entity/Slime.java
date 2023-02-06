@@ -44,7 +44,8 @@ public class Slime extends Entity {
 	}
 
 	public void setAction() {
-		timer.timeDirection(this, 120); // TODO Cambiar valor magico por intervalos
+		timer.timeDirection(this, INTERVAL_DIRECTION);
+		// TODO Crear metodo
 		int i = new Random().nextInt(100) + 1;
 		if (i > 99 && !projectile.alive && shotAvailableCounter == 80) {
 			projectile.set(worldX, worldY, direction, true, this);

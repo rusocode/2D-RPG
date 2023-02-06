@@ -2,6 +2,8 @@ package com.craivet.entity;
 
 import com.craivet.Game;
 
+import static com.craivet.utils.Constants.*;
+
 public abstract class Projectile extends Item {
 
 	private Entity entity;
@@ -73,7 +75,7 @@ public abstract class Projectile extends Item {
 					worldX += speed;
 					break;
 			}
-			timer.timeMovement(this, 8);
+			timer.timeMovement(this, INTERVAL_MOVEMENT_PROJECTILE_ANIMATION);
 		}
 	}
 
