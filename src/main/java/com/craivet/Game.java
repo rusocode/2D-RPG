@@ -8,7 +8,6 @@ import com.craivet.tile.TileManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -16,6 +15,9 @@ import static com.craivet.utils.Constants.*;
 
 /**
  * TODO Interpolacion de renderizado?
+ * TODO Separe los diferentes componentes en clases separadas, como la logica del juego, la logica de dibujo, la logica
+ * de sonido, etc.
+ * TODO Use un sistema de eventos para manejar los eventos del juego en lugar de la clase EventHandler.
  */
 
 public class Game extends JPanel implements Runnable {
@@ -28,8 +30,6 @@ public class Game extends JPanel implements Runnable {
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
 	public UI ui = new UI(this);
-	public Sound music = new Sound();
-	public Sound sound = new Sound();
 
 	// Entities
 	public ArrayList<Entity> entities = new ArrayList<>();
@@ -39,16 +39,11 @@ public class Game extends JPanel implements Runnable {
 	public Entity[] npcs = new Entity[10];
 	public Entity[] mobs = new Entity[20];
 
-	// Screen settings
-	public final int tileSize = ORIGINAL_TILE_SIZE * SCALE; // 48x48 tile
-	public final int screenWidth = tileSize * MAX_SCREEN_COL; // 768 pixels
-	public final int screenHeight = tileSize * MAX_SCREEN_ROW; // 576 pixels
-
 	public int gameState;
 	private boolean running;
 
 	public Game() {
-		setPreferredSize(new Dimension(screenWidth, screenHeight));
+		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		setBackground(Color.black);
 		// Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
 		setDoubleBuffered(true);
@@ -100,7 +95,8 @@ public class Game extends JPanel implements Runnable {
 		/* Cuando balancea la espada o interactua con algo (como tomar una pocion, un hacha, una llave, etc.) por
 		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
 		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
-		// playMusic(Assets.blue_boy_adventure);
+		// Sound.play(Assets.blue_boy_adventure);
+		// Sound.loop();
 		gameState = TITLE_STATE;
 
 	}
@@ -171,10 +167,10 @@ public class Game extends JPanel implements Runnable {
 		if (keyH.showDebugText) {
 			g2.setFont(new Font("Arial", Font.PLAIN, 20));
 			g2.setColor(Color.white);
-			int x = 8, y = screenHeight - 25, gap = 20;
-			g2.drawString("X: " + (player.worldX + player.bodyArea.x) / tileSize, x, y);
+			int x = 8, y = SCREEN_HEIGHT - 25, gap = 20;
+			g2.drawString("X: " + (player.worldX + player.bodyArea.x) / TILE_SIZE, x, y);
 			y += gap;
-			g2.drawString("Y: " + (player.worldY + player.bodyArea.y) / tileSize, x, y);
+			g2.drawString("Y: " + (player.worldY + player.bodyArea.y) / TILE_SIZE, x, y);
 			// y += lineHeight;
 			// g2.drawString("Draw time: " + (System.nanoTime() - drawStart), x, y);
 		}
@@ -191,19 +187,6 @@ public class Game extends JPanel implements Runnable {
 
 	public synchronized boolean isRunning() {
 		return running;
-	}
-
-	public void playMusic(URL url) {
-		music.play(url);
-		music.loop();
-	}
-
-	public void stopMusic() {
-		music.stop();
-	}
-
-	public void playSound(URL url) {
-		sound.play(url);
 	}
 
 }

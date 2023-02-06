@@ -1,6 +1,7 @@
 package com.craivet.object;
 
 import com.craivet.Game;
+import com.craivet.Sound;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
@@ -20,7 +21,7 @@ public class PotionRed extends Item {
 
 		type = TYPE_CONSUMABLE;
 		name = "Red Potion";
-		movementDown1 = Utils.scaleImage(Assets.potion_red, game.tileSize, game.tileSize);
+		movementDown1 = Utils.scaleImage(Assets.potion_red, TILE_SIZE, TILE_SIZE);
 
 		itemDescription = "[Red Potion]\nHeals your life by " + value + ".";
 	}
@@ -31,7 +32,7 @@ public class PotionRed extends Item {
 				+ "Your life has been recovered by " + value + ".";
 		entity.life += value;
 		if (game.player.life > game.player.maxLife) game.player.life = game.player.maxLife;
-		game.playSound(Assets.power_up);
+		Sound.play(Assets.power_up);
 	}
 
 }

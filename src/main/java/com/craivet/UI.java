@@ -82,7 +82,7 @@ public class UI {
 			g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 96f));
 			String text = "Hersir";
 			int x = getXForCenteredText(text);
-			int y = game.tileSize * 3;
+			int y = TILE_SIZE * 3;
 
 			// Shadow
 			g2.setColor(Color.gray);
@@ -93,67 +93,67 @@ public class UI {
 			g2.drawString(text, x, y);
 
 			// Image
-			x = game.screenWidth / 2 - (game.tileSize * 2) / 2;
-			y += game.tileSize * 2;
-			g2.drawImage(game.player.movementDown1, x, y, game.tileSize * 2, game.tileSize * 2, null);
+			x = SCREEN_WIDTH / 2 - (TILE_SIZE * 2) / 2;
+			y += TILE_SIZE * 2;
+			g2.drawImage(game.player.movementDown1, x, y, TILE_SIZE * 2, TILE_SIZE * 2, null);
 
 			// Menu
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD, 48f));
 			text = "NEW GAME";
 			x = getXForCenteredText(text);
-			y += game.tileSize * 3.5;
+			y += TILE_SIZE * 3.5;
 			g2.drawString(text, x, y);
-			if (commandNum == 0) g2.drawString(">", x - game.tileSize, y);
+			if (commandNum == 0) g2.drawString(">", x - TILE_SIZE, y);
 
 			text = "LOAD GAME";
 			x = getXForCenteredText(text);
-			y += game.tileSize;
+			y += TILE_SIZE;
 			g2.drawString(text, x, y);
-			if (commandNum == 1) g2.drawString(">", x - game.tileSize, y);
+			if (commandNum == 1) g2.drawString(">", x - TILE_SIZE, y);
 
 			text = "QUIT";
 			x = getXForCenteredText(text);
-			y += game.tileSize;
+			y += TILE_SIZE;
 			g2.drawString(text, x, y);
-			if (commandNum == 2) g2.drawString(">", x - game.tileSize, y);
+			if (commandNum == 2) g2.drawString(">", x - TILE_SIZE, y);
 		} else if (titleScreenState == SELECTION_SCREEN) {
 			g2.setColor(Color.white);
 			g2.setFont(g2.getFont().deriveFont(Font.BOLD, 42f));
 
 			String text = "Select your class!";
 			int x = getXForCenteredText(text);
-			int y = game.tileSize * 3;
+			int y = TILE_SIZE * 3;
 			g2.drawString(text, x, y);
 
 			text = "Fighter";
 			x = getXForCenteredText(text);
-			y += game.tileSize * 3;
+			y += TILE_SIZE * 3;
 			g2.drawString(text, x, y);
-			if (commandNum == 0) g2.drawString(">", x - game.tileSize, y);
+			if (commandNum == 0) g2.drawString(">", x - TILE_SIZE, y);
 
 			text = "Thief";
 			x = getXForCenteredText(text);
-			y += game.tileSize;
+			y += TILE_SIZE;
 			g2.drawString(text, x, y);
-			if (commandNum == 1) g2.drawString(">", x - game.tileSize, y);
+			if (commandNum == 1) g2.drawString(">", x - TILE_SIZE, y);
 
 			text = "Sorcerer";
 			x = getXForCenteredText(text);
-			y += game.tileSize;
+			y += TILE_SIZE;
 			g2.drawString(text, x, y);
-			if (commandNum == 2) g2.drawString(">", x - game.tileSize, y);
+			if (commandNum == 2) g2.drawString(">", x - TILE_SIZE, y);
 
 			text = "Back";
 			x = getXForCenteredText(text);
-			y += game.tileSize * 2;
+			y += TILE_SIZE * 2;
 			g2.drawString(text, x, y);
-			if (commandNum == 3) g2.drawString(">", x - game.tileSize, y);
+			if (commandNum == 3) g2.drawString(">", x - TILE_SIZE, y);
 		}
 	}
 
 	private void drawMessage() {
-		int messageX = game.tileSize;
-		int messageY = game.tileSize * 4;
+		int messageX = TILE_SIZE;
+		int messageY = TILE_SIZE * 4;
 		g2.setFont(g2.getFont().deriveFont(Font.BOLD, 32f));
 
 		for (int i = 0; i < message.size(); i++) {
@@ -184,20 +184,20 @@ public class UI {
 
 		// game.player.life = 1;
 
-		int x = game.tileSize / 2;
-		int y = game.tileSize / 2;
+		int x = TILE_SIZE / 2;
+		int y = TILE_SIZE / 2;
 		int i = 0;
 
 		// Dibuja el corazon vacio
 		while (i < game.player.maxLife / 2) {
 			g2.drawImage(heartBlank, x, y, null);
 			i++;
-			x += game.tileSize;
+			x += TILE_SIZE;
 		}
 
 		// Reset
-		x = game.tileSize / 2;
-		y = game.tileSize / 2;
+		x = TILE_SIZE / 2;
+		y = TILE_SIZE / 2;
 		i = 0;
 
 		// Dibuja la vida actual
@@ -206,12 +206,12 @@ public class UI {
 			i++;
 			if (i < game.player.life) g2.drawImage(heartFull, x, y, null);
 			i++;
-			x += game.tileSize;
+			x += TILE_SIZE;
 		}
 
 		// Dibuja la mana vacia
-		x = (game.tileSize / 2) - 4;
-		y = (int) (game.tileSize * 1.5);
+		x = (TILE_SIZE / 2) - 4;
+		y = (int) (TILE_SIZE * 1.5);
 		i = 0;
 		while (i < game.player.maxMana) {
 			g2.drawImage(manaBlank, x, y, null);
@@ -220,8 +220,8 @@ public class UI {
 		}
 
 		// Dibuja la mana actual
-		x = (game.tileSize / 2) - 4;
-		y = (int) (game.tileSize * 1.5);
+		x = (TILE_SIZE / 2) - 4;
+		y = (int) (TILE_SIZE * 1.5);
 		i = 0;
 		while (i < game.player.mana) {
 			g2.drawImage(manaFull, x, y, null);
@@ -235,22 +235,22 @@ public class UI {
 		g2.setFont(g2.getFont().deriveFont(80f));
 		String text = "PAUSED";
 		int x = getXForCenteredText(text);
-		int y = game.screenHeight / 2;
+		int y = SCREEN_HEIGHT / 2;
 		g2.drawString(text, x, y);
 	}
 
 	private void drawDialogueScreen() {
 
 		// SubWindow
-		final int frameX = game.tileSize * 2;
-		final int frameY = game.tileSize / 2;
-		final int frameWidth = game.screenWidth - (game.tileSize * 4);
-		final int frameHeight = game.tileSize * 4;
+		final int frameX = TILE_SIZE * 2;
+		final int frameY = TILE_SIZE / 2;
+		final int frameWidth = SCREEN_WIDTH - (TILE_SIZE * 4);
+		final int frameHeight = TILE_SIZE * 4;
 		drawSubWindow(frameX, frameY, frameWidth, frameHeight, 22f);
 
 		// Text
-		int textX = frameX + game.tileSize;
-		int textY = frameY + game.tileSize;
+		int textX = frameX + TILE_SIZE;
+		int textY = frameY + TILE_SIZE;
 
 		for (String line : currentDialogue.split("\n")) {
 			g2.drawString(line, textX, textY);
@@ -261,14 +261,14 @@ public class UI {
 	private void drawCharacterScreen() {
 
 		// SubWindow
-		final int frameX = game.tileSize;
-		final int frameY = game.tileSize - 15;
-		final int frameWidth = game.tileSize * 7;
-		final int frameHeight = game.tileSize * 11;
+		final int frameX = TILE_SIZE;
+		final int frameY = TILE_SIZE - 15;
+		final int frameWidth = TILE_SIZE * 7;
+		final int frameHeight = TILE_SIZE * 11;
 		drawSubWindow(frameX, frameY, frameWidth, frameHeight, 28f);
 
 		int textX = frameX + 20;
-		int textY = frameY + game.tileSize;
+		int textY = frameY + TILE_SIZE;
 		final int gap = 37; // Espacio entre lineas
 
 		// Names
@@ -299,7 +299,7 @@ public class UI {
 		// Values
 		int tailX = (frameX + frameWidth) - 30; // Cola de la posicion x
 		// Reset textY
-		textY = frameY + game.tileSize;
+		textY = frameY + TILE_SIZE;
 		String value;
 
 		value = String.valueOf(game.player.level);
@@ -363,10 +363,10 @@ public class UI {
 
 		// TODO Estas constantes y variables no tendrian que declararse como globales?
 		// SubWindow
-		final int frameX = game.tileSize * 9;
-		final int frameY = game.tileSize - 15;
-		final int frameWidth = game.tileSize * 6;
-		final int frameHeight = game.tileSize * 5;
+		final int frameX = TILE_SIZE * 9;
+		final int frameY = TILE_SIZE - 15;
+		final int frameWidth = TILE_SIZE * 6;
+		final int frameHeight = TILE_SIZE * 5;
 		drawSubWindow(frameX, frameY, frameWidth, frameHeight, 0);
 
 		// Slots
@@ -374,7 +374,7 @@ public class UI {
 		final int slotYStart = frameY + 20;
 		int slotX = slotXStart;
 		int slotY = slotYStart;
-		int gap = game.tileSize + 3;
+		int gap = TILE_SIZE + 3;
 		// TODO Estas constantes y variables no tendrian que declararse como globales?
 
 		// Draw player´s items
@@ -382,7 +382,7 @@ public class UI {
 			// Remarca de color amarillo el arma seleccionada
 			if (game.player.inventory.get(i) == game.player.currentWeapon || game.player.inventory.get(i) == game.player.currentShield) {
 				g2.setColor(new Color(240, 190, 90));
-				g2.fillRoundRect(slotX, slotY, game.tileSize, game.tileSize, 10, 10);
+				g2.fillRoundRect(slotX, slotY, TILE_SIZE, TILE_SIZE, 10, 10);
 			}
 
 			g2.drawImage(game.player.inventory.get(i).movementDown1, slotX, slotY, null);
@@ -400,8 +400,8 @@ public class UI {
 		// Cursor
 		int cursorX = slotXStart + (gap * slotCol);
 		int cursorY = slotYStart + (gap * slotRow);
-		int cursorWidth = game.tileSize;
-		int cursorHeight = game.tileSize;
+		int cursorWidth = TILE_SIZE;
+		int cursorHeight = TILE_SIZE;
 
 		// Draw cursor
 		g2.setColor(Color.white);
@@ -412,11 +412,11 @@ public class UI {
 		final int dFrameX = frameX;
 		final int dFrameY = frameY + frameHeight;
 		final int dFrameWidth = frameWidth;
-		final int dFrameHeight = game.tileSize * 3;
+		final int dFrameHeight = TILE_SIZE * 3;
 
 		// Draw description text
 		int textX = dFrameX + 20;
-		int textY = dFrameY + game.tileSize;
+		int textY = dFrameY + TILE_SIZE;
 		int itemIndex = getItemIndexOnSlot();
 		if (itemIndex < game.player.inventory.size()) {
 			drawSubWindow(dFrameX, dFrameY, dFrameWidth, dFrameHeight, 18f);
@@ -458,7 +458,7 @@ public class UI {
 	 */
 	private int getXForCenteredText(String text) {
 		int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-		return game.screenWidth / 2 - textLength / 2;
+		return SCREEN_WIDTH / 2 - textLength / 2;
 	}
 
 	/**

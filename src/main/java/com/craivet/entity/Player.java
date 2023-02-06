@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.craivet.Game;
+import com.craivet.Sound;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.object.*;
@@ -26,15 +27,14 @@ public class Player extends Entity {
 	public Item currentShield;
 
 	public ArrayList<Item> inventory = new ArrayList<>();
-	public final int maxInventorySize = 20;
 
 	public Player(Game game, KeyHandler key) {
 		super(game);
 
 		this.key = key;
 		// Posiciona al player en el centro de la pantalla
-		screenX = game.screenWidth / 2 - (game.tileSize / 2);
-		screenY = game.screenHeight / 2 - (game.tileSize / 2);
+		screenX = SCREEN_WIDTH / 2 - (TILE_SIZE / 2);
+		screenY = SCREEN_HEIGHT / 2 - (TILE_SIZE / 2);
 
 		setDefaultValues();
 	}
@@ -49,8 +49,8 @@ public class Player extends Entity {
 		maxMana = 4;
 		mana = maxMana;
 		ammo = 5;
-		worldX = game.tileSize * 23;
-		worldY = game.tileSize * 21;
+		worldX = TILE_SIZE * 23;
+		worldY = TILE_SIZE * 21;
 		level = 1;
 		exp = 0;
 		nextLevelExp = 5;
@@ -135,7 +135,7 @@ public class Player extends Entity {
 			projectile.subtractResource(this);
 			game.projectiles.add(projectile);
 			shotAvailableCounter = 0;
-			game.playSound(Assets.burning);
+			Sound.play(Assets.burning);
 		}
 
 		if (invincible) timer.timeInvincible(this, 60);
@@ -155,14 +155,14 @@ public class Player extends Entity {
 				if (!attacking) image = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 				if (attacking) {
 					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
-					tempScreenY -= game.tileSize;
+					tempScreenY -= TILE_SIZE;
 					image = attackNum == 1 ? attackUp1 : attackUp2;
 				}
 				break;
 			case "left":
 				if (!attacking) image = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
 				if (attacking) {
-					tempScreenX -= game.tileSize;
+					tempScreenX -= TILE_SIZE;
 					image = attackNum == 1 ? attackLeft1 : attackLeft2;
 				}
 				break;
@@ -184,7 +184,7 @@ public class Player extends Entity {
 	private void checkAttack() {
 		// Si presiono enter y el ataque no esta cancelado
 		if (key.enter && !attackCanceled) {
-			game.playSound(Assets.swing_weapon_wav);
+			Sound.play(Assets.swing_weapon_wav);
 			attacking = true;
 			attackCounter = 0;
 		}
@@ -215,7 +215,7 @@ public class Player extends Entity {
 			// Ajusta la posicion del player X/Y para el area de ataque
 			switch (direction) {
 				case "down":
-					worldY += game.tileSize;
+					worldY += TILE_SIZE;
 				case "up":
 					worldY -= attackArea.height;
 					break;
@@ -223,7 +223,7 @@ public class Player extends Entity {
 					worldX -= attackArea.width;
 					break;
 				case "right":
-					worldX += game.tileSize;
+					worldX += TILE_SIZE;
 					break;
 			}
 
@@ -251,20 +251,20 @@ public class Player extends Entity {
 	/**
 	 * Recoge un objeto.
 	 *
-	 * <p>Si el inventario no esta lleno, lo agrega al inventario y lo elimina del mundo.
+	 * <p>Si el inventario no esta lleno, lo agrega y lo elimina del mundo.
 	 *
 	 * @param objIndex indice del objeto.
 	 */
 	private void pickUpObject(int objIndex) {
 		if (objIndex != -1) {
 			String text;
-			if (inventory.size() != maxInventorySize) {
+			if (inventory.size() != MAX_INVENTORY_SIZE) {
 				inventory.add(game.objs[objIndex]);
-				game.playSound(Assets.coin);
+				Sound.play(Assets.coin);
 				text = "Got a " + game.objs[objIndex].name + "!";
 			} else text = "You cannot carry any more!";
 			game.ui.addMessage(text);
-			game.objs[objIndex] = null;
+			game.objs[objIndex] = null; // TODO Creo que esto va dentro del if
 		}
 	}
 
@@ -274,12 +274,10 @@ public class Player extends Entity {
 	 * @param npcIndex indice del npc.
 	 */
 	private void interactNPC(int npcIndex) {
-		if (game.keyH.enter) {
-			if (npcIndex != -1) {
-				attackCanceled = true; // No puede atacar si interactua con un npc
-				game.gameState = DIALOGUE_STATE;
-				game.npcs[npcIndex].speak();
-			}
+		if (npcIndex != -1 && game.keyH.enter) {
+			attackCanceled = true; // No puede atacar si interactua con un npc
+			game.gameState = DIALOGUE_STATE;
+			game.npcs[npcIndex].speak();
 		}
 	}
 
@@ -290,28 +288,27 @@ public class Player extends Entity {
 	 * @param attack   el tipo de ataque (sword o fireball).
 	 */
 	public void damageMob(int mobIndex, int attack) {
-		if (mobIndex != -1) {
-			if (!game.mobs[mobIndex].invincible) {
+		if (mobIndex != -1 && !game.mobs[mobIndex].invincible) {
+			// Resta la defensa del mob al ataque del player para calcular el daño justo
+			int damage = attack - game.mobs[mobIndex].defense;
+			if (damage < 0) damage = 0; // TODO No tendria que ser 1 si es 0 o menor a 0?
+			game.mobs[mobIndex].life -= damage;
+			game.ui.addMessage(damage + " damage!");
+			if (game.mobs[mobIndex].life > 0) {
+				Sound.play(Assets.hit_monster);
+			}
 
-				// Resta la defensa del mob al ataque del player para calcular el daño justo
-				int damage = attack - game.mobs[mobIndex].defense;
-				if (damage < 0) damage = 0;
-				game.mobs[mobIndex].life -= damage;
-				game.ui.addMessage(damage + " damage!");
-				if (game.mobs[mobIndex].life > 0) game.playSound(Assets.hit_monster);
+			game.mobs[mobIndex].invincible = true;
+			game.mobs[mobIndex].hpBarOn = true; // Activa la barra
+			game.mobs[mobIndex].damageReaction();
 
-				game.mobs[mobIndex].invincible = true;
-				game.mobs[mobIndex].hpBarOn = true; // Activa la barra
-				game.mobs[mobIndex].damageReaction();
-
-				if (game.mobs[mobIndex].life <= 0) {
-					game.playSound(Assets.mob_death);
-					game.mobs[mobIndex].dead = true;
-					game.ui.addMessage("Killed the " + game.mobs[mobIndex].name + "!");
-					game.ui.addMessage("Exp + " + game.mobs[mobIndex].exp);
-					exp += game.mobs[mobIndex].exp;
-					checkLevelUp();
-				}
+			if (game.mobs[mobIndex].life <= 0) {
+				Sound.play(Assets.mob_death);
+				game.mobs[mobIndex].dead = true;
+				game.ui.addMessage("Killed the " + game.mobs[mobIndex].name + "!");
+				game.ui.addMessage("Exp + " + game.mobs[mobIndex].exp);
+				exp += game.mobs[mobIndex].exp;
+				checkLevelUp();
 			}
 		}
 	}
@@ -322,15 +319,13 @@ public class Player extends Entity {
 	 * @param mobIndex indice del mob.
 	 */
 	private void damagePlayer(int mobIndex) {
-		if (mobIndex != -1) {
-			if (!invincible && !game.mobs[mobIndex].dead) {
-				game.playSound(Assets.receive_damage);
-				// Resta la defensa del player al ataque del mob para calcular el daño justo
-				int damage = game.mobs[mobIndex].attack - defense;
-				if (damage < 0) damage = 0;
-				life -= damage;
-				invincible = true;
-			}
+		if (mobIndex != -1 && !invincible && !game.mobs[mobIndex].dead) {
+			Sound.play(Assets.receive_damage);
+			// Resta la defensa del player al ataque del mob para calcular el daño justo
+			int damage = game.mobs[mobIndex].attack - defense;
+			if (damage < 0) damage = 0;
+			life -= damage;
+			invincible = true;
 		}
 	}
 
@@ -347,7 +342,7 @@ public class Player extends Entity {
 			attack = getAttack();
 			defense = getDefense();
 
-			game.playSound(Assets.level_up);
+			Sound.play(Assets.level_up);
 			game.gameState = DIALOGUE_STATE;
 			game.ui.currentDialogue = "You are level " + level + "!";
 		}

@@ -3,6 +3,7 @@ package com.craivet.input;
 import java.awt.event.*;
 
 import com.craivet.Game;
+import com.craivet.Sound;
 import com.craivet.gfx.Assets;
 
 import static com.craivet.utils.Constants.*;
@@ -49,7 +50,7 @@ public class KeyHandler extends KeyAdapter {
 			}
 			if (code == KeyEvent.VK_ENTER) {
 				if (game.ui.commandNum == 0){
-					game.playSound(Assets.spawn);
+					Sound.play(Assets.spawn);
 					game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
 				}
 				// if (game.ui.commandNum == 1) {}
@@ -102,25 +103,25 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_C) game.gameState = PLAY_STATE;
 		if (code == KeyEvent.VK_W) {
 			if (game.ui.slotRow > 0) {
-				game.playSound(Assets.cursor);
+				Sound.play(Assets.cursor);
 				game.ui.slotRow--;
 			}
 		}
 		if (code == KeyEvent.VK_A) {
 			if (game.ui.slotCol > 0) {
-				game.playSound(Assets.cursor);
+				Sound.play(Assets.cursor);
 				game.ui.slotCol--;
 			}
 		}
 		if (code == KeyEvent.VK_S) {
 			if (game.ui.slotRow < 3) {
-				game.playSound(Assets.cursor);
+				Sound.play(Assets.cursor);
 				game.ui.slotRow++;
 			}
 		}
 		if (code == KeyEvent.VK_D) {
 			if (game.ui.slotCol < 4) {
-				game.playSound(Assets.cursor);
+				Sound.play(Assets.cursor);
 				game.ui.slotCol++;
 			}
 		}

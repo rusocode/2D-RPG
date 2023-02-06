@@ -42,7 +42,7 @@ public class EventHandler {
 		int xDistance = Math.abs(game.player.worldX - previousEventX);
 		int yDistance = Math.abs(game.player.worldY - previousEventY);
 		int distance = Math.max(xDistance, yDistance);
-		if (distance > game.tileSize) canTouchEvent = true;
+		if (distance > TILE_SIZE) canTouchEvent = true;
 
 		if (canTouchEvent) {
 			if (hit(27, 16, "right")) damagePit(27, 16, DIALOGUE_STATE);
@@ -60,8 +60,8 @@ public class EventHandler {
 
 		game.player.bodyArea.x = game.player.worldX + game.player.bodyArea.x;
 		game.player.bodyArea.y = game.player.worldY + game.player.bodyArea.y;
-		eventRect[col][row].x = col * game.tileSize + eventRect[col][row].x;
-		eventRect[col][row].y = row * game.tileSize + eventRect[col][row].y;
+		eventRect[col][row].x = col * TILE_SIZE + eventRect[col][row].x;
+		eventRect[col][row].y = row * TILE_SIZE + eventRect[col][row].y;
 
 		// Si el player colisiona con el evento
 		if (game.player.bodyArea.intersects(eventRect[col][row])) {
@@ -107,9 +107,9 @@ public class EventHandler {
 
 	public void teleport(int gameState) {
 		game.gameState = gameState;
-		game.player.worldX = game.tileSize * 37;
-		game.player.worldY = game.tileSize * 10;
-		game.ui.currentDialogue = "You teleported to position\n x=" + game.player.worldX / game.tileSize + " y=" + game.player.worldY / game.tileSize;
+		game.player.worldX = TILE_SIZE * 37;
+		game.player.worldY = TILE_SIZE * 10;
+		game.ui.currentDialogue = "You teleported to position\n x=" + game.player.worldX / TILE_SIZE + " y=" + game.player.worldY / TILE_SIZE;
 	}
 
 }

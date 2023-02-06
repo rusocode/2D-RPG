@@ -15,7 +15,7 @@ public class ShieldBlue extends Item {
 
 		type = TYPE_SHIELD;
 		name = "Blue Shield";
-		movementDown1 = Utils.scaleImage(Assets.shield_blue, game.tileSize, game.tileSize);
+		movementDown1 = Utils.scaleImage(Assets.shield_blue, TILE_SIZE, TILE_SIZE);
 
 		itemDescription = "[" + name + "]\nA shiny blue shield.";
 		defenseValue = 2;

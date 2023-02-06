@@ -1,19 +1,28 @@
 package com.craivet.utils;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Objects;
 
 public class Utils {
 
+	/**
+	 * Carga la fuente utilizando la ruta especificada.
+	 *
+	 * @param path la ruta del recurso.
+	 * @param size el tamaño de la fuente.
+	 * @return una nueva fuente creada con el tipo de fuente especificado.
+	 */
 	public static Font loadFont(String path, int size) {
 		try {
 			return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path))).deriveFont(Font.PLAIN, size);
-		} catch (FontFormatException | IOException e) {
-			e.printStackTrace();
+		} catch (IOException | FontFormatException | NullPointerException e) {
+			JOptionPane.showMessageDialog(null, "Error durante la carga de fuente " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 		return null;
@@ -33,8 +42,8 @@ public class Utils {
 	public static BufferedImage loadImage(String path) {
 		try {
 			return ImageIO.read(Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path)));
-		} catch (IOException e) {
-			e.printStackTrace();
+		} catch (IOException | NullPointerException e) {
+			JOptionPane.showMessageDialog(null, "Error durante la carga de imagen " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
 			System.exit(1);
 		}
 		return null;

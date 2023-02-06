@@ -15,7 +15,7 @@ public class SwordNormal extends Item {
 
 		type = TYPE_SWORD;
 		name = "Normal Sword";
-		movementDown1 = Utils.scaleImage(Assets.sword_normal, game.tileSize, game.tileSize);
+		movementDown1 = Utils.scaleImage(Assets.sword_normal, TILE_SIZE, TILE_SIZE);
 
 		attackArea.width = 36;
 		attackArea.height = 36;

@@ -15,7 +15,7 @@ public class Axe extends Item {
 
 		type = TYPE_AXE;
 		name = "Woodcutter's Axe";
-		movementDown1 = Utils.scaleImage(Assets.axe, game.tileSize, game.tileSize);
+		movementDown1 = Utils.scaleImage(Assets.axe, TILE_SIZE, TILE_SIZE);
 
 		attackArea.width = 30;
 		attackArea.height = 30;

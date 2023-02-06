@@ -3,6 +3,8 @@ package com.craivet;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
 
+import static com.craivet.utils.Constants.*;
+
 /**
  * Fisica y deteccion de colisiones.
  *
@@ -29,38 +31,38 @@ public class CollisionChecker {
 		int entityLeftWorldX = entity.worldX + entity.bodyArea.x;
 		int entityRightWorldX = entity.worldX + entity.bodyArea.x + entity.bodyArea.width;
 
-		int entityBottomRow = entityBottomWorldY / game.tileSize;
-		int entityTopRow = entityTopWorldY / game.tileSize;
-		int entityLeftCol = entityLeftWorldX / game.tileSize;
-		int entityRightCol = entityRightWorldX / game.tileSize;
+		int entityBottomRow = entityBottomWorldY / TILE_SIZE;
+		int entityTopRow = entityTopWorldY / TILE_SIZE;
+		int entityLeftCol = entityLeftWorldX / TILE_SIZE;
+		int entityRightCol = entityRightWorldX / TILE_SIZE;
 
 		// En caso de que la entidad colisione en el medio de dos tiles
 		int tileNum1, tileNum2;
 
 		switch (entity.direction) {
 			case "down":
-				entityBottomRow = (entityBottomWorldY + entity.speed) / game.tileSize;
+				entityBottomRow = (entityBottomWorldY + entity.speed) / TILE_SIZE;
 				tileNum1 = game.tileManager.map[entityLeftCol][entityBottomRow];
 				tileNum2 = game.tileManager.map[entityRightCol][entityBottomRow];
 				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
 					entity.collisionOn = true;
 				break;
 			case "up":
-				entityTopRow = (entityTopWorldY - entity.speed) / game.tileSize;
+				entityTopRow = (entityTopWorldY - entity.speed) / TILE_SIZE;
 				tileNum1 = game.tileManager.map[entityLeftCol][entityTopRow];
 				tileNum2 = game.tileManager.map[entityRightCol][entityTopRow];
 				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
 					entity.collisionOn = true;
 				break;
 			case "left":
-				entityLeftCol = (entityLeftWorldX - entity.speed) / game.tileSize;
+				entityLeftCol = (entityLeftWorldX - entity.speed) / TILE_SIZE;
 				tileNum1 = game.tileManager.map[entityLeftCol][entityTopRow];
 				tileNum2 = game.tileManager.map[entityLeftCol][entityBottomRow];
 				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
 					entity.collisionOn = true;
 				break;
 			case "right":
-				entityRightCol = (entityRightWorldX + entity.speed) / game.tileSize;
+				entityRightCol = (entityRightWorldX + entity.speed) / TILE_SIZE;
 				tileNum1 = game.tileManager.map[entityRightCol][entityTopRow];
 				tileNum2 = game.tileManager.map[entityRightCol][entityBottomRow];
 				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)

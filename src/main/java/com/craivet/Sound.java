@@ -14,14 +14,14 @@ import java.net.URL;
 
 public class Sound {
 
-	private Clip clip;
+	private static Clip clip;
 
 	/**
 	 * Obtiene, abre y inicia el clip.
 	 *
 	 * @param url la url del audio.
 	 */
-	public void play(URL url) {
+	public static void play(URL url) {
 		try {
 			// Obtiene el clip
 			clip = AudioSystem.getClip();
@@ -37,11 +37,11 @@ public class Sound {
 	/**
 	 * Detiene el clip.
 	 */
-	public void stop() {
+	public static void stop() {
 		clip.stop();
 	}
 
-	public void loop() {
+	public static void loop() {
 		clip.loop(Clip.LOOP_CONTINUOUSLY);
 	}
 
