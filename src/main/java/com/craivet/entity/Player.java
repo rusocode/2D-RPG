@@ -86,7 +86,7 @@ public class Player extends Entity {
 		if (attacking) attack();
 
 		// Evita que el player se mueva cuando no se presiono ninguna tecla
-		if (key.s || key.w || key.a || key.d || key.enter) {
+		if (key.s || key.w || key.a || key.d || key.enter || key.pickup) {
 
 			// Obtiene la direccion dependiendo de la tecla seleccionada
 			if (key.s) direction = "down";
@@ -103,7 +103,7 @@ public class Player extends Entity {
 			game.eHandler.checkEvent();
 
 			// Si no hay colision y si no presiono la tecla enter, el player se puede mover dependiendo de la direccion
-			if (!collisionOn && !key.enter) {
+			if (!collisionOn && !key.enter && !key.pickup) {
 				switch (direction) {
 					case "down":
 						worldY += speed;
@@ -122,7 +122,8 @@ public class Player extends Entity {
 
 			checkAttack();
 
-			game.keyH.enter = false;
+			key.enter = false;
+			key.pickup = false;
 
 			timer.timeMovement(this, 10);
 
@@ -256,16 +257,14 @@ public class Player extends Entity {
 	 * @param objIndex indice del objeto.
 	 */
 	private void pickUpObject(int objIndex) {
-		if (objIndex != -1) {
-			String text;
+		if (objIndex != -1 && key.pickup) {
 			if (inventory.size() != MAX_INVENTORY_SIZE) {
 				inventory.add(game.objs[objIndex]);
 				Sound.play(Assets.coin);
-				text = "Got a " + game.objs[objIndex].name + "!";
-			} else text = "You cannot carry any more!";
-			game.ui.addMessage(text);
-			game.objs[objIndex] = null; // TODO Creo que esto va dentro del if
-		}
+				game.ui.addMessage("Got a " + game.objs[objIndex].name + "!");
+				game.objs[objIndex] = null;
+			} else game.ui.addMessage("You cannot carry any more!");
+		} else if (key.pickup) game.ui.addMessage("There is nothing here");
 	}
 
 	/**
@@ -274,7 +273,7 @@ public class Player extends Entity {
 	 * @param npcIndex indice del npc.
 	 */
 	private void interactNPC(int npcIndex) {
-		if (npcIndex != -1 && game.keyH.enter) {
+		if (npcIndex != -1 && key.enter) {
 			attackCanceled = true; // No puede atacar si interactua con un npc
 			game.gameState = DIALOGUE_STATE;
 			game.npcs[npcIndex].speak();
@@ -355,7 +354,7 @@ public class Player extends Entity {
 		int itemIndex = game.ui.getItemIndexOnSlot();
 		if (itemIndex < inventory.size()) {
 			Item selectedItem = inventory.get(itemIndex);
-			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) { // selectedItem.type == typeSword || selectedItem.type == typeAxe
+			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) {
 				currentWeapon = selectedItem;
 				attack = getAttack();
 				initAttackImages(currentWeapon.type == TYPE_SWORD ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -383,6 +382,21 @@ public class Player extends Entity {
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+		inventory.add(new Key(game));
+
 	}
 
 }

@@ -33,6 +33,7 @@ public class Game extends JPanel implements Runnable {
 
 	// Entities
 	public ArrayList<Entity> entities = new ArrayList<>();
+	public ArrayList<Item> items = new ArrayList<>();
 	public ArrayList<Entity> projectiles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
 	public Item[] objs = new Item[10];
@@ -144,8 +145,8 @@ public class Game extends JPanel implements Runnable {
 			entities.add(player);
 			for (Entity npc : npcs)
 				if (npc != null) entities.add(npc);
-			for (Entity obj : objs)
-				if (obj != null) entities.add(obj);
+			for (Item obj : objs)
+				if (obj != null) items.add(obj);
 			for (Entity mob : mobs)
 				if (mob != null) entities.add(mob);
 			for (Entity projectile : projectiles)
@@ -156,9 +157,11 @@ public class Game extends JPanel implements Runnable {
 			entities.sort(Comparator.comparingInt(o -> o.worldY));
 
 			// Draw
+			for (Item item : items) item.draw(g2);
 			for (Entity entity : entities) entity.draw(g2);
 
 			entities.clear();
+			items.clear();
 
 			ui.draw(g2);
 		}

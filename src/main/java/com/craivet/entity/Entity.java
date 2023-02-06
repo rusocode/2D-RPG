@@ -1,5 +1,8 @@
 package com.craivet.entity;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+
 import com.craivet.Game;
 import com.craivet.Sound;
 import com.craivet.gfx.Assets;
@@ -7,12 +10,10 @@ import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 import static com.craivet.utils.Constants.*;
 
 /**
+ * TODO Los metodos para obtener las subimagenes deberian ir en otra clase
  * <p>TODO Se podria separar los npcs y mobs por package, y por clases abstractas
  * <p>TODO En vez de usar la variable "movementDown1" para representar la imagen de un objeto, se podria usar una
  * var "image"
@@ -163,7 +164,6 @@ public abstract class Entity {
 					break;
 			}
 
-			// TODO Hay un bug con la barra cuando el player tiene mucho damage, la barra del mob se agranda en el ultimo golpe
 			// Si la barra de hp esta activada
 			if (type == TYPE_MOB && hpBarOn) {
 
@@ -198,16 +198,17 @@ public abstract class Entity {
 
 	/**
 	 * Daña al player.
+	 *
+	 * @param contact si el mob hace contacto con el player.
+	 * @param attack  puntos de ataque.
 	 */
 	public void damagePlayer(boolean contact, int attack) {
 		// Si el mob hace contacto con el player que no es invencible
 		if (type == TYPE_MOB && contact && !game.player.invincible) {
 			Sound.play(Assets.receive_damage);
-
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
 			int damage = attack - game.player.defense;
 			if (damage < 0) damage = 0;
-
 			game.player.life -= damage;
 			game.player.invincible = true;
 		}

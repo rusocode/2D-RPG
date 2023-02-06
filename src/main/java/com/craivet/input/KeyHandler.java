@@ -8,14 +8,24 @@ import com.craivet.gfx.Assets;
 
 import static com.craivet.utils.Constants.*;
 
-public class KeyHandler extends KeyAdapter {
+/**
+ * FIXME Hay un problema con mantener presionada una tecla, por ejemplo, la tecla enter. Que genera la animacion
+ * de ataque muy rapido y creo que tiene que ver con del metodo keyPressed().
+ */
+
+public class KeyHandler implements KeyListener {
 
 	private final Game game;
-	public boolean w, a, s, d, enter, shot;
+	public boolean w, a, s, d, enter, shot, pickup;
 	public boolean showDebugText;
 
 	public KeyHandler(Game game) {
 		this.game = game;
+	}
+
+	@Override
+	public void keyTyped(KeyEvent e) {
+
 	}
 
 	@Override
@@ -36,6 +46,7 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_S) s = false;
 		if (code == KeyEvent.VK_D) d = false;
 		if (code == KeyEvent.VK_F) shot = false;
+		if (code == KeyEvent.VK_L) pickup = false;
 	}
 
 	private void titleState(int code) {
@@ -49,7 +60,7 @@ public class KeyHandler extends KeyAdapter {
 				if (game.ui.commandNum > 2) game.ui.commandNum = 0;
 			}
 			if (code == KeyEvent.VK_ENTER) {
-				if (game.ui.commandNum == 0){
+				if (game.ui.commandNum == 0) {
 					Sound.play(Assets.spawn);
 					game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
 				}
@@ -81,11 +92,12 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_A) a = true;
 		if (code == KeyEvent.VK_S) s = true;
 		if (code == KeyEvent.VK_D) d = true;
-		if (code == KeyEvent.VK_P) game.gameState = PAUSE_STATE;
-		if (code == KeyEvent.VK_C) game.gameState = CHARACTER_STATE;
 		if (code == KeyEvent.VK_ENTER) enter = true;
 		if (code == KeyEvent.VK_F) shot = true;
+		if (code == KeyEvent.VK_L) pickup = true;
 		if (code == KeyEvent.VK_T) showDebugText = !showDebugText;
+		if (code == KeyEvent.VK_P) game.gameState = PAUSE_STATE;
+		if (code == KeyEvent.VK_C) game.gameState = CHARACTER_STATE;
 		/* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
 		 * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
 		if (code == KeyEvent.VK_R) game.tileManager.loadMap("maps/worldV2.txt");
