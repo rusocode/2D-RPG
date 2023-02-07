@@ -16,7 +16,7 @@ import static com.craivet.utils.Constants.*;
 public class KeyHandler implements KeyListener {
 
 	private final Game game;
-	public boolean w, a, s, d, enter, shot, pickup;
+	public boolean w, a, s, d, enter, shot, pickup; // TODO enter podria llamarse attack
 	public boolean showDebugText;
 
 	public KeyHandler(Game game) {

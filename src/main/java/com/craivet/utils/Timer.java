@@ -18,6 +18,7 @@ public class Timer {
 	public int directionCounter;
 	public int deadCounter;
 	public int hpBarCounter;
+	public int shotCounter;
 
 	/**
 	 * Temporiza el movimiento.
@@ -104,6 +105,19 @@ public class Timer {
 		if (hpBarCounter > interval) {
 			entity.hpBarOn = false;
 			hpBarCounter = 0;
+		}
+	}
+
+	/**
+	 * Temporiza los disparos.
+	 *
+	 * <p>Si se completo el interval,  y resetea el contador.
+	 * */
+	public void timeShot(Entity entity, final int interval) {
+		shotCounter++;
+		if (shotCounter > interval) {
+			entity.shooting = true;
+			shotCounter = 0;
 		}
 	}
 

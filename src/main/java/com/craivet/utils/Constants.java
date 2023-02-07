@@ -32,6 +32,7 @@ public final class Constants {
 	public static final int INTERVAL_DIRECTION = 120;
 	public static final int INTERVAL_DEAD_ANIMATION = 10;
 	public static final int INTERVAL_HP_BAR = 240;
+	public static final int INTERVAL_PROJECTILE = 80;
 
 	// Game state
 	/* TODO Se podrian separar estas constantes en un enum tal vez? GameState con enums TITLE, PLAY, etc. o en un

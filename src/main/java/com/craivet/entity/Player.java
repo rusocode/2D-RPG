@@ -82,7 +82,7 @@ public class Player extends Entity {
 
 	public void update() {
 
-		if (attacking) attack();
+		if (attacking) attackWithSword();
 
 		// Evita que el player se mueva cuando no se presiono ninguna tecla
 		if (key.s || key.w || key.a || key.d || key.enter || key.pickup) {
@@ -126,20 +126,14 @@ public class Player extends Entity {
 
 			timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 
-		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural)
+		} else movementNum = 1; // Vuelve al sprite inicial (movimiento natural) TODO Hacerlo mas natural con un counter
 
-		/* Si presiono la tecla f, y si el proyectil anterior no sigue vivo, y si ya pasaron 80 frames desde su
-		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
-		if (key.shot && !projectile.alive && shotAvailableCounter == 80 && projectile.haveResource(this)) {
-			projectile.set(worldX, worldY, direction, true, this);
-			projectile.subtractResource(this);
-			game.projectiles.add(projectile);
-			shotAvailableCounter = 0;
-			Sound.play(Assets.burning);
-		}
+		attackWithProjectile();
+
+		// /*if(shooting)*/ timer.timeShot(this, 80);
 
 		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-		if (shotAvailableCounter < 80) shotAvailableCounter++;
+		if (shotCounter < INTERVAL_PROJECTILE) shotCounter++;
 
 	}
 
@@ -200,7 +194,7 @@ public class Player extends Entity {
 	 * <p>En el segundo frame de ataque, la posicion X/Y se ajusta para el area de ataque y verifica si colisiona con un
 	 * mob.
 	 */
-	private void attack() {
+	private void attackWithSword() {
 		attackCounter++;
 		if (attackCounter <= 5) attackNum = 1; // (0-5 frame de ataque 1)
 		if (attackCounter > 5 && attackCounter <= 25) { // (6-25 frame de ataque 2)
@@ -245,6 +239,19 @@ public class Player extends Entity {
 			attackNum = 1;
 			attackCounter = 0;
 			attacking = false;
+		}
+	}
+
+	private void attackWithProjectile() {
+		/* Si presiono la tecla f, y si el proyectil anterior no sigue vivo, y si ya pasaron 80 frames desde su
+		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
+		if (key.shot && !projectile.alive && shotCounter == 80 /* && shooting /* && projectile.haveResource(this) */) {
+			projectile.set(worldX, worldY, direction, true, this);
+			projectile.subtractResource(this);
+			game.projectiles.add(projectile);
+			Sound.play(Assets.burning);
+			shotCounter = 0;
+			// shooting = false;
 		}
 	}
 

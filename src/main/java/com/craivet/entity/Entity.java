@@ -57,13 +57,14 @@ public abstract class Entity {
 	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades
 	public boolean invincible;
 	public boolean attacking;
+	public boolean shooting;
 	public boolean alive = true;
 	public boolean dead;
 	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
 
 	public int attackCounter; // TODO Muevo a timer?
-	public int shotAvailableCounter;
+	public int shotCounter;
 
 	public Entity(Game game) {
 		this.game = game;
@@ -131,7 +132,7 @@ public abstract class Entity {
 
 		timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-		if (shotAvailableCounter < 80) shotAvailableCounter++; // Que hace esto aca?
+		if (shotCounter < 80) shotCounter++; // Que hace esto aca?
 
 	}
 
