@@ -73,7 +73,6 @@ public class Player extends Entity {
 		bodyAreaDefaultY = bodyArea.y;
 
 		projectile = new Fireball(game);
-		// projectile = new Rock(game);
 
 		initMovementImages(Assets.player_movement, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initAttackImages(Assets.player_attack_sword, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -264,7 +263,7 @@ public class Player extends Entity {
 				game.ui.addMessage("Got a " + game.objs[objIndex].name + "!");
 				game.objs[objIndex] = null;
 			} else game.ui.addMessage("You cannot carry any more!");
-		} else if (key.pickup) game.ui.addMessage("There is nothing here");
+		} else if (key.pickup) game.ui.addMessage("Nothing here");
 	}
 
 	/**

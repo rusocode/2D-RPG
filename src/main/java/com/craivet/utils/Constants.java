@@ -25,14 +25,13 @@ public final class Constants {
 	public static final int MAIN_SCREEN = 0;
 	public static final int SELECTION_SCREEN = 1;
 
-	// Intervals en ms
+	// Intervals (ms)
 	public static final int INTERVAL_MOVEMENT_ANIMATION = 10;
 	public static final int INTERVAL_MOVEMENT_PROJECTILE_ANIMATION = 8;
 	public static final int INTERVAL_INVINCIBLE = 60;
 	public static final int INTERVAL_DIRECTION = 120;
 	public static final int INTERVAL_DEAD_ANIMATION = 10;
 	public static final int INTERVAL_HP_BAR = 240;
-
 
 	// Game state
 	/* TODO Se podrian separar estas constantes en un enum tal vez? GameState con enums TITLE, PLAY, etc. o en un
