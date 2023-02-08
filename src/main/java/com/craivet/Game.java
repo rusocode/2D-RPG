@@ -156,6 +156,17 @@ public class Game extends JPanel implements Runnable {
 			 * entonces este se dibuja por debajo. */
 			entities.sort(Comparator.comparingInt(o -> o.worldY));
 
+			// TODO Se podria usar esta forma mas entendible para comparar las entidades
+			/*
+			 * private Comparator<Entity> spriteSorter = new Comparator<Entity>() {
+			 * public int compare(Entity e0, Entity e1) {
+			 * if (e1.y < e0.y) return +1;
+			 * if (e1.y > e0.y) return -1;
+			 * return 0;
+			 * }
+			 * };
+			 * */
+
 			// Draw
 			for (Item item : items) item.draw(g2);
 			for (Entity entity : entities) entity.draw(g2);

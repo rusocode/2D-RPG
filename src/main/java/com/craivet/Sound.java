@@ -7,9 +7,13 @@ import java.net.URL;
 /**
  * Esta clase solo lee audios en formato wav.
  *
- * <p>Java no puede manejar archivos comunes de alta calidad (48000,0 Hz, 32 bits, etc.), si encuentra algo como esto:
+ * <p>
+ * Java no puede manejar archivos comunes de alta calidad (48000,0 Hz, 32 bits, etc.), si encuentra algo como esto:
  * <code>line with format PCM_SIGNED 192000.0 Hz, 24 bit, stereo, 6 bytes/frame, little-endian not supported.</code>
  * Tendra que degradar su archivo, usar el convertidor web y ajustarlo a ~20000.
+ *
+ * <p>
+ * TODO Se podrian guardar los recursos de sonido en esta clase para mas organizacion
  */
 
 public class Sound {

@@ -47,7 +47,7 @@ public class Slime extends Entity {
 		timer.timeDirection(this, INTERVAL_DIRECTION);
 		// TODO Crear metodo
 		int i = new Random().nextInt(100) + 1;
-		if (i > 99 && !projectile.alive && projectileCounter == 80) {
+		if (i > 99 && !projectile.alive && projectileCounter == INTERVAL_PROJECTILE) {
 			projectile.set(worldX, worldY, direction, true, this);
 			game.projectiles.add(projectile);
 			projectileCounter = 0;

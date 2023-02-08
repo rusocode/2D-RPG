@@ -19,6 +19,7 @@ import static com.craivet.utils.Constants.*;
  * var "image"
  * <p>TODO Separar en paquetes por items, objetos y proyectiles
  * <p>TODO Los metodos update() y render() se podrian implementar desde una interfaz
+ * <p>TODO Algun de estos metodos no tendrian que funcionar en sus respectivas clases?
  */
 
 public abstract class Entity {
@@ -132,7 +133,7 @@ public abstract class Entity {
 
 		timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-		if (projectileCounter < 80) projectileCounter++; // Que hace esto aca?
+		if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
 
 	}
 
