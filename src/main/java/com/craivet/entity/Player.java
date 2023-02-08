@@ -130,11 +130,8 @@ public class Player extends Entity {
 
 		attackWithProjectile();
 
-		// /*if(shooting)*/ timer.timeShot(this, 80);
-
 		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-		if (shotCounter < INTERVAL_PROJECTILE) shotCounter++;
-
+		if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
 	}
 
 	public void draw(Graphics2D g2) {
@@ -245,13 +242,12 @@ public class Player extends Entity {
 	private void attackWithProjectile() {
 		/* Si presiono la tecla f, y si el proyectil anterior no sigue vivo, y si ya pasaron 80 frames desde su
 		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
-		if (key.shot && !projectile.alive && shotCounter == 80 /* && shooting /* && projectile.haveResource(this) */) {
+		if (key.shot && !projectile.alive && projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this)) {
 			projectile.set(worldX, worldY, direction, true, this);
 			projectile.subtractResource(this);
 			game.projectiles.add(projectile);
 			Sound.play(Assets.burning);
-			shotCounter = 0;
-			// shooting = false;
+			projectileCounter = 0;
 		}
 	}
 

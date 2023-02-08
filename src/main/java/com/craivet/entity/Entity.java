@@ -64,7 +64,7 @@ public abstract class Entity {
 	public int movementNum = 1, attackNum = 1;
 
 	public int attackCounter; // TODO Muevo a timer?
-	public int shotCounter;
+	public int projectileCounter;
 
 	public Entity(Game game) {
 		this.game = game;
@@ -132,7 +132,7 @@ public abstract class Entity {
 
 		timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-		if (shotCounter < 80) shotCounter++; // Que hace esto aca?
+		if (projectileCounter < 80) projectileCounter++; // Que hace esto aca?
 
 	}
 

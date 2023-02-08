@@ -18,7 +18,6 @@ public class Timer {
 	public int directionCounter;
 	public int deadCounter;
 	public int hpBarCounter;
-	public int shotCounter;
 
 	/**
 	 * Temporiza el movimiento.
@@ -28,8 +27,7 @@ public class Timer {
 	 * de movimiento 1 y resetea el contador.
 	 */
 	public void timeMovement(Entity entity, final int interval) {
-		movementCounter++;
-		if (movementCounter > interval - entity.speed) {
+		if (movementCounter++ > interval - entity.speed) {
 			if (entity.movementNum == 1) entity.movementNum = 2;
 			else if (entity.movementNum == 2) entity.movementNum = 1;
 			movementCounter = 0;
@@ -42,8 +40,7 @@ public class Timer {
 	 * <p>Si se completo el interval, deja de ser invencible y resetea el contador.
 	 */
 	public void timeInvincible(Entity entity, final int interval) {
-		invincibleCounter++;
-		if (invincibleCounter > interval) {
+		if (invincibleCounter++ > interval) {
 			entity.invincible = false;
 			invincibleCounter = 0;
 		}
@@ -58,8 +55,7 @@ public class Timer {
 	 * y resetea el contador. Si el numero es mayor a 75, cambia a "right" y resetea el contador.
 	 */
 	public void timeDirection(Entity entity, final int interval) {
-		directionCounter++;
-		if (directionCounter == interval) {
+		if (directionCounter++ == interval) {
 			Random random = new Random();
 			int i = random.nextInt(100) + 1;
 			if (i <= 25) entity.direction = "down";
@@ -101,23 +97,9 @@ public class Timer {
 	 * <p>Si se completo el interval, desactiva la barra de vida y resetea el contador.
 	 */
 	public void timeHpBar(Entity entity, final int interval) {
-		hpBarCounter++;
-		if (hpBarCounter > interval) {
+		if (hpBarCounter++ > interval) {
 			entity.hpBarOn = false;
 			hpBarCounter = 0;
-		}
-	}
-
-	/**
-	 * Temporiza los disparos.
-	 *
-	 * <p>Si se completo el interval,  y resetea el contador.
-	 * */
-	public void timeShot(Entity entity, final int interval) {
-		shotCounter++;
-		if (shotCounter > interval) {
-			entity.shooting = true;
-			shotCounter = 0;
 		}
 	}
 

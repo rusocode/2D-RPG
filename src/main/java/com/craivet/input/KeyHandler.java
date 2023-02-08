@@ -9,37 +9,36 @@ import com.craivet.gfx.Assets;
 import static com.craivet.utils.Constants.*;
 
 /**
- * FIXME Hay un problema con mantener presionada una tecla, por ejemplo, la tecla enter. Que genera la animacion
- * de ataque muy rapido y creo que tiene que ver con del metodo keyPressed().
+ * <a href="https://stackoverflow.com/questions/23642854/make-a-keyevent-in-java-only-happen-once-even-when-key-is-held">...</a>
  */
 
-public class KeyHandler implements KeyListener {
+public class KeyHandler extends KeyAdapter {
 
 	private final Game game;
-	public boolean w, a, s, d, enter, shot, pickup; // TODO enter podria llamarse attack
+	public boolean w, a, s, d, enter, shot, pickup; // TODO enter podria llamarse attack o f y l para shot y pickup
 	public boolean showDebugText;
+
+	private int lastKey = -1;
 
 	public KeyHandler(Game game) {
 		this.game = game;
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-
-	}
-
-	@Override
 	public void keyPressed(KeyEvent e) {
-		int code = e.getKeyCode();
-		if (game.gameState == TITLE_STATE) titleState(code);
-		else if (game.gameState == PLAY_STATE) playState(code);
-		else if (game.gameState == PAUSE_STATE) pauseState(code);
-		else if (game.gameState == DIALOGUE_STATE) dialogueState(code);
-		else if (game.gameState == CHARACTER_STATE) characterState(code);
+		if (lastKey != e.getKeyCode()) {
+			lastKey = e.getKeyCode();
+			if (game.gameState == TITLE_STATE) titleState(lastKey);
+			else if (game.gameState == PLAY_STATE) playState(lastKey);
+			else if (game.gameState == PAUSE_STATE) pauseState(lastKey);
+			else if (game.gameState == DIALOGUE_STATE) dialogueState(lastKey);
+			else if (game.gameState == CHARACTER_STATE) characterState(lastKey);
+		}
 	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		lastKey = -1;
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_W) w = false;
 		if (code == KeyEvent.VK_A) a = false;
