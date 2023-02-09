@@ -1,5 +1,11 @@
 package com.craivet.utils;
 
+/**
+ * TODO Y si aplico enums?
+ * <p>
+ * <a href="https://github.com/iluwatar/java-design-patterns/tree/master/singleton">...</a>
+ */
+
 public final class Constants {
 
 	public static final int FPS = 60;
