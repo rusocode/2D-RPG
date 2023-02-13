@@ -7,6 +7,7 @@ public class Item extends Entity {
 	public String itemDescription;
 	public int attackValue, defenseValue;
 	public int useCost;
+	public int value;
 
 	public Item(Game game) {
 		super(game);

@@ -2,10 +2,7 @@ package com.craivet;
 
 import com.craivet.entity.Oldman;
 import com.craivet.entity.Slime;
-import com.craivet.object.Axe;
-import com.craivet.object.Key;
-import com.craivet.object.PotionRed;
-import com.craivet.object.ShieldBlue;
+import com.craivet.object.*;
 
 import static com.craivet.utils.Constants.*;
 
@@ -24,15 +21,15 @@ public class AssetSetter {
 
 	public void setObject() {
 		int i = 0;
-		game.objs[i] = new Key(game);
+		game.objs[i] = new Gold(game);
 		game.objs[i].worldX = TILE_SIZE * 25;
 		game.objs[i].worldY = TILE_SIZE * 23;
 		i++;
-		game.objs[i] = new Key(game);
+		game.objs[i] = new Gold(game);
 		game.objs[i].worldX = TILE_SIZE * 21;
 		game.objs[i].worldY = TILE_SIZE * 19;
 		i++;
-		game.objs[i] = new Key(game);
+		game.objs[i] = new Gold(game);
 		game.objs[i].worldX = TILE_SIZE * 26;
 		game.objs[i].worldY = TILE_SIZE * 21;
 		i++;

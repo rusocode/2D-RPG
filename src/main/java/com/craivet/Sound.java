@@ -14,6 +14,9 @@ import java.net.URL;
  *
  * <p>
  * TODO Se podrian guardar los recursos de sonido en esta clase para mas organizacion
+ *
+ * <p>
+ * <a href="https://mvnrepository.com/artifact/com.googlecode.soundlibs/vorbisspi/1.0.3.3">Ogg Vorbis SPI for .ogg support</a>
  */
 
 public class Sound {

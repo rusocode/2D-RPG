@@ -75,6 +75,27 @@ public class Utils {
 		g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
 	}
 
+	/**
+	 * Devuelve un valor pseudoaleatorio entre un minimo y maximo especificado.
+	 *
+	 * @param min el valor minimo.
+	 * @param max el valor maximo.
+	 * @return el valor pseudoaleatorio.
+	 */
+	public static int azar(int min, int max) {
+		return (int) ((Math.random() * (max - min + 1)) + min);
+	}
+
+	/**
+	 * Devuelve un valor pseudoaleatorio entre 1 y el maximo especificado.
+	 *
+	 * @param max el valor maximo.
+	 * @return el valor pseudoaleatorio.
+	 */
+	public static int azar(int max) {
+		return (int) (Math.random() * max + 1);
+	}
+
 	private Utils() {
 	}
 

@@ -2,7 +2,9 @@ package com.craivet.entity;
 
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
+import com.craivet.object.Gold;
 import com.craivet.object.Rock;
+import com.craivet.utils.Utils;
 
 import java.util.Random;
 
@@ -60,6 +62,13 @@ public class Slime extends Entity {
 	public void damageReaction() {
 		timer.directionCounter = 0;
 		direction = game.player.direction;
+	}
+
+	/**
+	 * Comprueba si dropeo un item.
+	 */
+	public void checkDrop() {
+		if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(new Gold(game));
 	}
 
 }

@@ -12,7 +12,6 @@ import static com.craivet.utils.Constants.*;
 public class PotionRed extends Item {
 
 	private final Game game;
-	private final int value = 5;
 
 	public PotionRed(Game game) {
 		super(game);
@@ -24,6 +23,7 @@ public class PotionRed extends Item {
 		movementDown1 = Utils.scaleImage(Assets.potion_red, TILE_SIZE, TILE_SIZE);
 
 		itemDescription = "[Red Potion]\nHeals your life by " + value + ".";
+		value = 5;
 	}
 
 	public void use(Entity entity) {

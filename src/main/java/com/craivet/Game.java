@@ -36,7 +36,7 @@ public class Game extends JPanel implements Runnable {
 	public ArrayList<Item> items = new ArrayList<>();
 	public ArrayList<Entity> projectiles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
-	public Item[] objs = new Item[10];
+	public Item[] objs = new Item[20];
 	public Entity[] npcs = new Entity[10];
 	public Entity[] mobs = new Entity[20];
 
@@ -109,11 +109,14 @@ public class Game extends JPanel implements Runnable {
 				if (npc != null) npc.update();
 			for (int i = 0; i < mobs.length; i++) {
 				if (mobs[i] != null) {
-					/* Cuando muera el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
+					/* Cuando muere el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
 					 * genera la animacion de muerte y al finalizarla, establece alive en false para que no genere
 					 * movimiento y elimine el objeto. */
 					if (mobs[i].alive && !mobs[i].dead) mobs[i].update();
-					if (!mobs[i].alive) mobs[i] = null;
+					if (!mobs[i].alive) {
+						mobs[i].checkDrop();
+						mobs[i] = null;
+					}
 				}
 			}
 			for (int i = 0; i < projectiles.size(); i++) {

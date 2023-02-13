@@ -260,7 +260,10 @@ public class Player extends Entity {
 	 */
 	private void pickUpObject(int objIndex) {
 		if (objIndex != -1 && key.pickup) {
-			if (inventory.size() != MAX_INVENTORY_SIZE) {
+			if (game.objs[objIndex].type == TYPE_PICKUP_ONLY) {
+				game.objs[objIndex].use(this);
+				game.objs[objIndex] = null;
+			} else if (inventory.size() != MAX_INVENTORY_SIZE) {
 				inventory.add(game.objs[objIndex]);
 				Sound.play(Assets.coin);
 				game.ui.addMessage("Got a " + game.objs[objIndex].name + "!");

@@ -102,6 +102,26 @@ public abstract class Entity {
 	public void use(Entity entity) {
 	}
 
+	public void checkDrop() {
+	}
+
+	/**
+	 * Dropea el item.
+	 *
+	 * @param droppedItem el item.
+	 */
+	public void dropItem(Item droppedItem) {
+		for (int i = 0; i < game.objs.length; i++) {
+			if (game.objs[i] == null) {
+				game.objs[i] = droppedItem;
+				game.objs[i].worldX = worldX;
+				game.objs[i].worldY = worldY;
+				break;
+			}
+		}
+
+	}
+
 	public void update() {
 
 		setAction();
