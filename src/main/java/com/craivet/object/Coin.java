@@ -9,24 +9,24 @@ import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
 
-public class Gold extends Item {
+public class Coin extends Item {
 
 	private final Game game;
 
-	public Gold(Game game) {
+	public Coin(Game game) {
 		super(game);
 		this.game = game;
 
 		type = TYPE_PICKUP_ONLY;
-		name = "Gold";
-		movementDown1 = Utils.scaleImage(Assets.gold, TILE_SIZE, TILE_SIZE);
+		name = "Coin";
+		movementDown1 = Utils.scaleImage(Assets.obj_coin, 32, 32);
 
 		value = 1;
 
 	}
 
 	public void use(Entity entity) {
-		Sound.play(Assets.power_up);
+		Sound.play(Assets.coin);
 		game.ui.addMessage("Coin +" + value);
 		game.player.coin += value;
 	}

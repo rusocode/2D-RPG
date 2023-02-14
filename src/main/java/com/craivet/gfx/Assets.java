@@ -50,7 +50,7 @@ public final class Assets {
 	public static final BufferedImage boots = Utils.loadImage("textures/objs/boots.png");
 	public static final BufferedImage chest = Utils.loadImage("textures/objs/chest.png");
 	public static final BufferedImage door = Utils.loadImage("textures/objs/door.png");
-	public static final BufferedImage gold = Utils.loadImage("textures/objs/gold.png");
+	public static final BufferedImage obj_coin = Utils.loadImage("textures/objs/coin.png");
 	public static final BufferedImage heart_blank = Utils.loadImage("textures/objs/heart_blank.png");
 	public static final BufferedImage heart_full = Utils.loadImage("textures/objs/heart_full.png");
 	public static final BufferedImage heart_half = Utils.loadImage("textures/objs/heart_half.png");

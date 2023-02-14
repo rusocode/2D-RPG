@@ -114,8 +114,9 @@ public abstract class Entity {
 		for (int i = 0; i < game.objs.length; i++) {
 			if (game.objs[i] == null) {
 				game.objs[i] = droppedItem;
-				game.objs[i].worldX = worldX;
-				game.objs[i].worldY = worldY;
+				// La imagen Coin al ser de 32x32, tiene que ajustarse al centro de la imagen del Slime
+				game.objs[i].worldX = worldX + (Assets.slime.getWidth() / 2 - Assets.obj_coin.getWidth() / 2);
+				game.objs[i].worldY = worldY + Assets.slime.getHeight();
 				break;
 			}
 		}
@@ -208,6 +209,8 @@ public abstract class Entity {
 			if (dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
 			g2.drawImage(image, screenX, screenY, null);
+			// g2.setColor(Color.red);
+			// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
 			Utils.changeAlpha(g2, 1);
 		}
 	}

@@ -65,6 +65,7 @@ public class Player extends Entity {
 
 		attackArea = currentWeapon.attackArea;
 
+		// Los limites del bodyArea (cuerpo del player) son diferentes a los limites de la imagen escalada
 		bodyArea.x = 8;
 		bodyArea.y = 16;
 		bodyArea.width = 32;
@@ -165,6 +166,8 @@ public class Player extends Entity {
 
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
 		g2.drawImage(image, tempScreenX, tempScreenY, null);
+		// g2.setColor(Color.yellow);
+		// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
 		Utils.changeAlpha(g2, 1);
 
 	}
@@ -265,7 +268,7 @@ public class Player extends Entity {
 				game.objs[objIndex] = null;
 			} else if (inventory.size() != MAX_INVENTORY_SIZE) {
 				inventory.add(game.objs[objIndex]);
-				Sound.play(Assets.coin);
+				Sound.play(Assets.power_up);
 				game.ui.addMessage("Got a " + game.objs[objIndex].name + "!");
 				game.objs[objIndex] = null;
 			} else game.ui.addMessage("You cannot carry any more!");

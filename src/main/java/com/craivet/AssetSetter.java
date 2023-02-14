@@ -21,18 +21,6 @@ public class AssetSetter {
 
 	public void setObject() {
 		int i = 0;
-		game.objs[i] = new Gold(game);
-		game.objs[i].worldX = TILE_SIZE * 25;
-		game.objs[i].worldY = TILE_SIZE * 23;
-		i++;
-		game.objs[i] = new Gold(game);
-		game.objs[i].worldX = TILE_SIZE * 21;
-		game.objs[i].worldY = TILE_SIZE * 19;
-		i++;
-		game.objs[i] = new Gold(game);
-		game.objs[i].worldX = TILE_SIZE * 26;
-		game.objs[i].worldY = TILE_SIZE * 21;
-		i++;
 		game.objs[i] = new Axe(game);
 		game.objs[i].worldX = TILE_SIZE * 33;
 		game.objs[i].worldY = TILE_SIZE * 21;
@@ -56,7 +44,7 @@ public class AssetSetter {
 		int i = 0;
 		game.mobs[i] = new Slime(game);
 		game.mobs[i].worldX = TILE_SIZE * 21;
-		game.mobs[i].worldY = TILE_SIZE * 38;
+		game.mobs[i].worldY = TILE_SIZE * 19;
 		i++;
 		game.mobs[i] = new Slime(game);
 		game.mobs[i].worldX = TILE_SIZE * 23;

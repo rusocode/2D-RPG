@@ -119,6 +119,7 @@ public class TileManager {
 						worldY + TILE_SIZE > game.player.worldY - game.player.screenY &&
 						worldY - TILE_SIZE < game.player.worldY + game.player.screenY) {
 					g2.drawImage(tile[map[col][row]].image, screenX, screenY, null);
+					// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE); // Dibuja una grilla
 				}
 			}
 		}
