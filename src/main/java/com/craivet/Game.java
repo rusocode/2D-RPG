@@ -4,6 +4,7 @@ import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
 import com.craivet.entity.Player;
 import com.craivet.input.KeyHandler;
+import com.craivet.tile.InteractiveTile;
 import com.craivet.tile.TileManager;
 
 import javax.swing.*;
@@ -39,6 +40,7 @@ public class Game extends JPanel implements Runnable {
 	public Item[] objs = new Item[20];
 	public Entity[] npcs = new Entity[10];
 	public Entity[] mobs = new Entity[20];
+	public InteractiveTile[] iTile = new InteractiveTile[50];
 
 	public int gameState;
 	private boolean running;
@@ -93,6 +95,7 @@ public class Game extends JPanel implements Runnable {
 		aSetter.setObject();
 		aSetter.setNPC();
 		aSetter.setMOB();
+		aSetter.setInteractiveTile();
 		/* Cuando balancea la espada o interactua con algo (como tomar una pocion, un hacha, una llave, etc.) por
 		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
 		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
@@ -125,6 +128,9 @@ public class Game extends JPanel implements Runnable {
 					if (!projectiles.get(i).alive) projectiles.remove(i);
 				}
 			}
+			for (int i = 0; i < iTile.length; i++) {
+				if (iTile[i] != null) iTile[i].update();
+			}
 		}
 	}
 
@@ -143,6 +149,10 @@ public class Game extends JPanel implements Runnable {
 			ui.draw(g2);
 		} else {
 			tileManager.draw(g2);
+
+			for (int i = 0; i < iTile.length; i++) {
+				if (iTile[i] != null) iTile[i].draw(g2);
+			}
 
 			// Add entities to the list
 			entities.add(player);

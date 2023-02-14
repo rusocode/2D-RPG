@@ -58,7 +58,7 @@ public class Player extends Entity {
 
 		strength = 1; // Mas fuerza, mas daño
 		dexterity = 1; // Mas destreza, menos daño
-		currentWeapon = new SwordNormal(game);
+		currentWeapon = new Axe(game);
 		currentShield = new ShieldWood(game);
 		attack = getAttack();
 		defense = getDefense();
@@ -76,7 +76,7 @@ public class Player extends Entity {
 		projectile = new Fireball(game);
 
 		initMovementImages(Assets.player_movement, ENTITY_WIDTH, ENTITY_HEIGHT);
-		initAttackImages(Assets.player_attack_sword, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initAttackImages(currentWeapon.type == TYPE_SWORD ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
 		setItems();
 	}
@@ -100,6 +100,7 @@ public class Player extends Entity {
 			pickUpObject(game.cChecker.checkObject(this));
 			interactNPC(game.cChecker.checkEntity(this, game.npcs));
 			damagePlayer(game.cChecker.checkEntity(this, game.mobs));
+			game.cChecker.checkEntity(this, game.iTile);
 			game.eHandler.checkEvent();
 
 			// Si no hay colision y si no presiono la tecla enter, el player se puede mover dependiendo de la direccion
@@ -229,6 +230,9 @@ public class Player extends Entity {
 			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
 			damageMob(mobIndex, attack);
 
+			int iTileIndex = game.cChecker.checkEntity(this, game.iTile);
+			damageInteractiveTile(iTileIndex);
+
 			// Despues de verificar la colision, resetea los datos originales
 			worldX = currentWorldX;
 			worldY = currentWorldY;
@@ -337,6 +341,20 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * Daña al tile interactivo.
+	 *
+	 * @param iTileIndex indice del tile interactivo.
+	 */
+	private void damageInteractiveTile(int iTileIndex) {
+		if (iTileIndex != -1 && game.iTile[iTileIndex].destructible && game.iTile[iTileIndex].isCorrectItem(this) && !game.iTile[iTileIndex].invincible) {
+			Sound.play(Assets.cuttree);
+			game.iTile[iTileIndex].life--;
+			game.iTile[iTileIndex].invincible = true;
+			if (game.iTile[iTileIndex].life == 0) game.iTile[iTileIndex] = game.iTile[iTileIndex].getDestroyedForm();
+		}
+	}
+
+	/**
 	 * Verifica si subio de nivel.
 	 */
 	private void checkLevelUp() {
@@ -389,9 +407,6 @@ public class Player extends Entity {
 	private void setItems() {
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
-		inventory.add(new Key(game));
 		inventory.add(new Key(game));
 	}
 

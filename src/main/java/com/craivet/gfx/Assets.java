@@ -22,6 +22,7 @@ public final class Assets {
 	public static final URL burning = Utils.loadSound("sounds/114.wav");
 	public static final URL coin = Utils.loadSound("sounds/coin.wav");
 	public static final URL cursor = Utils.loadSound("sounds/cursor.wav");
+	public static final URL cuttree = Utils.loadSound("sounds/cuttree.wav");
 	public static final URL fanfare = Utils.loadSound("sounds/fanfare.wav");
 	public static final URL hit_monster = Utils.loadSound("sounds/hit_monster.wav");
 	public static final URL level_up = Utils.loadSound("sounds/level_up.wav");
@@ -98,6 +99,9 @@ public final class Assets {
 	public static final BufferedImage water11 = Utils.loadImage("textures/tiles/water11.png");
 	public static final BufferedImage water12 = Utils.loadImage("textures/tiles/water12.png");
 	public static final BufferedImage water13 = Utils.loadImage("textures/tiles/water13.png");
+	// Interactive tiles
+	public static final BufferedImage drytree = Utils.loadImage("textures/tiles/interactive/drytree.png");
+	public static final BufferedImage trunk = Utils.loadImage("textures/tiles/interactive/trunk.png");
 
 	private Assets() {
 	}

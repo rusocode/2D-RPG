@@ -132,6 +132,7 @@ public abstract class Entity {
 		game.cChecker.checkObject(this);
 		game.cChecker.checkEntity(this, game.npcs);
 		game.cChecker.checkEntity(this, game.mobs);
+		game.cChecker.checkEntity(this, game.iTile);
 		damagePlayer(game.cChecker.checkPlayer(this), attack);
 
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
