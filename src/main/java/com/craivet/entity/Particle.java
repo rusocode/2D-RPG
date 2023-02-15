@@ -6,6 +6,11 @@ import com.craivet.Game;
 
 import static com.craivet.utils.Constants.*;
 
+/**
+ * Las particulas son rectangulos pequeños dibujados con el metodo fillRect(). Esto es opcional, pero tambien se puede
+ * agregar imagenes para este caso.
+ */
+
 public class Particle extends Entity {
 
 	Entity generator; // El generador seria por ejemplo el arbol seco o un proyectil
