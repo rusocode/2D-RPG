@@ -35,7 +35,10 @@ public class Particle extends Entity {
 
 		/* Si la vida de la particula es la mitad de su vida maxima, entonces la posicion y aumenta en 1, generando asi
 		 * un efecto de gravedad. */
-		if (life < maxLife / 3) yd++;
+		if (life < maxLife / 3) {
+			yd++;
+			size--;
+		}
 
 		worldX += xd * speed;
 		worldY += yd * speed;

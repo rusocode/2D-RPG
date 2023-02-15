@@ -142,16 +142,16 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Genera 4 particulas en la entidad especificada.
+	 * Genera 4 particulas en el objetivo.
 	 *
 	 * @param generator la entidad que va a generar las particulas.
-	 * @param target    el objetivo de la entidad que genera las particulas.
+	 * @param target    el objetivo en donde se van a generar las particulas.
 	 */
 	public void generateParticle(Entity generator, Entity target) {
-		game.particles.add(new Particle(game, generator, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
-		game.particles.add(new Particle(game, generator, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
-		game.particles.add(new Particle(game, generator, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
-		game.particles.add(new Particle(game, generator, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
+		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
 	}
 
 	public void update() {
