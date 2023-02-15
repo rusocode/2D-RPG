@@ -350,6 +350,10 @@ public class Player extends Entity {
 			Sound.play(Assets.cuttree);
 			game.iTile[iTileIndex].life--;
 			game.iTile[iTileIndex].invincible = true;
+
+			// Generate particle
+			generateParticle(game.iTile[iTileIndex], game.iTile[iTileIndex]);
+
 			if (game.iTile[iTileIndex].life == 0) game.iTile[iTileIndex] = game.iTile[iTileIndex].getDestroyedForm();
 		}
 	}

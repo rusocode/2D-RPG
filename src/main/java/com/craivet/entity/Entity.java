@@ -7,6 +7,8 @@ import com.craivet.Game;
 import com.craivet.Sound;
 import com.craivet.gfx.Assets;
 import com.craivet.gfx.SpriteSheet;
+import com.craivet.tile.DryTree;
+import com.craivet.tile.InteractiveTile;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
@@ -123,6 +125,35 @@ public abstract class Entity {
 
 	}
 
+	public Color getParticleColor() {
+		return null;
+	}
+
+	public int getParticleSize() {
+		return 0;
+	}
+
+	public int getParticleSpeed() {
+		return 0;
+	}
+
+	public int getParticleMaxLife() {
+		return 0;
+	}
+
+	/**
+	 * Genera 4 particulas en la entidad especificada.
+	 *
+	 * @param generator la entidad que va a generar las particulas.
+	 * @param target    el objetivo de la entidad que genera las particulas.
+	 */
+	public void generateParticle(Entity generator, Entity target) {
+		game.particles.add(new Particle(game, generator, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+		game.particles.add(new Particle(game, generator, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+		game.particles.add(new Particle(game, generator, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+		game.particles.add(new Particle(game, generator, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
+	}
+
 	public void update() {
 
 		setAction();
@@ -204,7 +235,7 @@ public abstract class Entity {
 			if (invincible) {
 				// Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
 				timer.hpBarCounter = 0;
-				Utils.changeAlpha(g2, 0.4f);
+				if (!(this instanceof InteractiveTile)) Utils.changeAlpha(g2, 0.4f);
 			}
 
 			if (dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);

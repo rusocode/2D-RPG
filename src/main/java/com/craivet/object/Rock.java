@@ -5,6 +5,8 @@ import com.craivet.entity.Entity;
 import com.craivet.entity.Projectile;
 import com.craivet.gfx.Assets;
 
+import java.awt.*;
+
 import static com.craivet.utils.Constants.*;
 
 public class Rock extends Projectile {
@@ -33,6 +35,26 @@ public class Rock extends Projectile {
 	@Override
 	public void subtractResource(Entity entity) {
 		entity.ammo -= useCost;
+	}
+
+	@Override
+	public Color getParticleColor() {
+		return new Color(40, 50, 0);
+	}
+
+	@Override
+	public int getParticleSize() {
+		return 10;
+	}
+
+	@Override
+	public int getParticleSpeed() {
+		return 1;
+	}
+
+	@Override
+	public int getParticleMaxLife() {
+		return 20;
 	}
 
 }

@@ -5,6 +5,8 @@ import com.craivet.entity.Player;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
+import java.awt.*;
+
 import static com.craivet.utils.Constants.*;
 
 public class DryTree extends InteractiveTile {
@@ -33,6 +35,22 @@ public class DryTree extends InteractiveTile {
 	 */
 	public InteractiveTile getDestroyedForm() {
 		return new Trunk(game, worldX / TILE_SIZE, worldY / TILE_SIZE);
+	}
+
+	public Color getParticleColor() {
+		return new Color(65, 50, 30);
+	}
+
+	public int getParticleSize() {
+		return 6;
+	}
+
+	public int getParticleSpeed() {
+		return 1;
+	}
+
+	public int getParticleMaxLife() {
+		return 20;
 	}
 
 }

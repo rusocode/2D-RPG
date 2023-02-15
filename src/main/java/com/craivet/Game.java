@@ -36,6 +36,7 @@ public class Game extends JPanel implements Runnable {
 	public ArrayList<Entity> entities = new ArrayList<>();
 	public ArrayList<Item> items = new ArrayList<>();
 	public ArrayList<Entity> projectiles = new ArrayList<>();
+	public ArrayList<Entity> particles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
 	public Item[] objs = new Item[20];
 	public Entity[] npcs = new Entity[10];
@@ -128,6 +129,12 @@ public class Game extends JPanel implements Runnable {
 					if (!projectiles.get(i).alive) projectiles.remove(i);
 				}
 			}
+			for (int i = 0; i < particles.size(); i++) {
+				if (particles.get(i) != null) {
+					if (particles.get(i).alive) particles.get(i).update();
+					if (!particles.get(i).alive) particles.remove(i);
+				}
+			}
 			for (int i = 0; i < iTile.length; i++) {
 				if (iTile[i] != null) iTile[i].update();
 			}
@@ -164,6 +171,8 @@ public class Game extends JPanel implements Runnable {
 				if (mob != null) entities.add(mob);
 			for (Entity projectile : projectiles)
 				if (projectile != null) entities.add(projectile);
+			for (Entity particle : particles)
+				if (particle != null) entities.add(particle);
 
 			/* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
 			 * entonces este se dibuja por debajo. */

@@ -49,6 +49,8 @@ public abstract class Projectile extends Item {
 			collisionOn = false;
 			if (mobIndex != -1) {
 				game.player.damageMob(mobIndex, attack);
+				// En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
+				generateParticle(entity.projectile, game.mobs[mobIndex]);
 				alive = false;
 			}
 		}
@@ -58,6 +60,7 @@ public abstract class Projectile extends Item {
 			boolean contact = game.cChecker.checkPlayer(this);
 			if (contact && !game.player.invincible) {
 				damagePlayer(true, attack);
+				generateParticle(entity.projectile, game.player);
 				alive = false;
 			}
 		}
