@@ -58,7 +58,7 @@ public class Player extends Entity {
 
 		strength = 1; // Mas fuerza, mas daño
 		dexterity = 1; // Mas destreza, menos daño
-		currentWeapon = new Axe(game);
+		currentWeapon = new SwordNormal(game);
 		currentShield = new ShieldWood(game);
 		attack = getAttack();
 		defense = getDefense();

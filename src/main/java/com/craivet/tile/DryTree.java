@@ -14,8 +14,7 @@ public class DryTree extends InteractiveTile {
 	public DryTree(Game game, int col, int row) {
 		super(game);
 
-
-		this.worldX = TILE_SIZE * col;
+		this.worldX = TILE_SIZE * col; // TODO O x?
 		this.worldY = TILE_SIZE * row;
 
 		movementDown1 = Utils.scaleImage(Assets.drytree, TILE_SIZE, TILE_SIZE);

@@ -24,7 +24,7 @@ public final class Constants {
 	public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 px
 
 	// World settings
-	public static final int MAX_WORLD_COL = 50;
+	public static final int MAX_WORLD_COL = 100;
 	public static final int MAX_WORLD_ROW = 50;
 
 	// Title screen
