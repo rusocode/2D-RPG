@@ -261,7 +261,7 @@ public class UI {
 	private void drawCharacterScreen() {
 
 		// SubWindow
-		final int frameX = TILE_SIZE;
+		final int frameX = TILE_SIZE * 2;
 		final int frameY = TILE_SIZE - 15;
 		final int frameWidth = TILE_SIZE * 7;
 		final int frameHeight = TILE_SIZE * 11;
@@ -363,7 +363,7 @@ public class UI {
 
 		// TODO Estas constantes y variables no tendrian que declararse como globales?
 		// SubWindow
-		final int frameX = TILE_SIZE * 9;
+		final int frameX = TILE_SIZE * 12;
 		final int frameY = TILE_SIZE - 15;
 		final int frameWidth = TILE_SIZE * 6;
 		final int frameHeight = TILE_SIZE * 5;

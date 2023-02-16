@@ -18,13 +18,14 @@ public final class Constants {
 	public static final int ORIGINAL_TILE_SIZE = 16;
 	public static final int SCALE = 3;
 	public static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
-	public static final int MAX_SCREEN_COL = 16;
+	// Relacion de aspecto 4:3 = 768 x 576 pixels
+	public static final int MAX_SCREEN_COL = 20;
 	public static final int MAX_SCREEN_ROW = 12;
-	public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // 768 px
-	public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // 576 px
+	public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
+	public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
 
 	// World settings
-	public static final int MAX_WORLD_COL = 100;
+	public static final int MAX_WORLD_COL = 50;
 	public static final int MAX_WORLD_ROW = 50;
 
 	// Title screen

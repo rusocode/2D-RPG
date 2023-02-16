@@ -6,9 +6,11 @@ import com.craivet.entity.Player;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.tile.TileManager;
+import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -46,6 +48,14 @@ public class Game extends JPanel implements Runnable {
 	public int gameState;
 	private boolean running;
 
+	/* La clase Graphics2D extiende la clase Graphics para proporcionar un control mas sofisticado sobre la geometria,
+	 * las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
+	public Graphics2D g2;
+	public BufferedImage tempScree;
+	// For full screen
+	public int screenWidth;
+	public int screenHeight;
+
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		setBackground(Color.black);
@@ -78,7 +88,9 @@ public class Game extends JPanel implements Runnable {
 			if (delta >= 1) {
 				frames++;
 				update();
-				repaint();
+				// repaint();
+				drawToTempScreen();
+				drawToScreen();
 				delta--;
 			}
 
@@ -104,6 +116,47 @@ public class Game extends JPanel implements Runnable {
 		// Sound.loop();
 		gameState = TITLE_STATE;
 
+		/* Hasta ahora dibujamos todo directamente en el JPanel. Pero esta vez seguimos dos pasos:
+		 * 1. Dibujamos todo en la pantalla temporal para la imagen que esta detras de escena.
+		 * 2. Dibujamos la pantalla temporal en el JPanel.
+		 * La razon de esto, es que queremos mostrar el juego en pantalla completa o en otras resoluciones diferentes.
+		 * Eso significa que debemos cambiar el tamaña de todas las imagenes (tiles, entidades, ui, etc.). Y si
+		 * cambiambos el tamaño de cada objeto uno por uno, es mucho trabajo y poco eficiente. Asi que primero dibujamos
+		 * todo en una unica imagen almacenada en buffer y luego cambiamos el tamaño de esta imagen grande para que se
+		 * ajuste a nuestra pantalla completa en cada bucle. */
+
+		// Crea una imagen blanca en el buffer que es tan grande como nuestra pantalla
+		tempScree = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		// Enlaza g2 con la imagen de buffer de pantalla temporal
+		g2 = (Graphics2D) tempScree.getGraphics();
+
+		setFullScreen2();
+
+	}
+
+	public void setFullScreen() {
+		// Obtiene el dispositivo de pantalla local, independientemente de si estas en un portatil o escritorio
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice gd = ge.getDefaultScreenDevice();
+		gd.setFullScreenWindow(Launcher.window); // Establece la ventana en pantalla completa
+
+		// Obtiene el ancho y alto de la pantalla completa para utilizarlos en la pantalla temporal
+		// TODO Esto va aca?
+		screenWidth = Launcher.window.getWidth();
+		screenHeight = Launcher.window.getHeight();
+
+	}
+
+	// Soluciona el problema de la caida de FPS
+	public void setFullScreen2() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		Launcher.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		screenWidth = (int) width;
+		screenHeight = (int) height;
+		// offset factor to be used by mouse listener or mouse motion listener if you are using cursor in your game. Multiply your e.getX()e.getY() by this.
+		// fullScreenOffsetFactor = (float) screenWidth / (float) screenWidth2;
 	}
 
 	public void update() {
@@ -135,31 +188,26 @@ public class Game extends JPanel implements Runnable {
 					if (!particles.get(i).alive) particles.remove(i);
 				}
 			}
-			for (int i = 0; i < iTile.length; i++) {
+			for (int i = 0; i < iTile.length; i++)
 				if (iTile[i] != null) iTile[i].update();
-			}
 		}
 	}
 
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		/* La clase Graphics2D extiende la clase Graphics para proporcionar un control mas sofisticado sobre la
-		 * geometria, las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
-		Graphics2D g2 = (Graphics2D) g;
-
+	/**
+	 * Dibuja todo en la imagen almacenada en el buffer.
+	 */
+	public void drawToTempScreen() {
 		// Debug
 		long drawStart = 0;
 		if (keyH.showDebugText) drawStart = System.nanoTime();
 
-		// Title screen
 		if (gameState == TITLE_STATE) {
 			ui.draw(g2);
 		} else {
 			tileManager.draw(g2);
 
-			for (int i = 0; i < iTile.length; i++) {
-				if (iTile[i] != null) iTile[i].draw(g2);
-			}
+			for (InteractiveTile interactiveTile : iTile)
+				if (interactiveTile != null) interactiveTile.draw(g2);
 
 			// Add entities to the list
 			entities.add(player);
@@ -189,7 +237,6 @@ public class Game extends JPanel implements Runnable {
 			 * };
 			 * */
 
-			// Draw
 			for (Item item : items) item.draw(g2);
 			for (Entity entity : entities) entity.draw(g2);
 
@@ -211,7 +258,16 @@ public class Game extends JPanel implements Runnable {
 			// g2.drawString("Draw time: " + (System.nanoTime() - drawStart), x, y);
 		}
 
-		g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
+		// g2.dispose(); // Desecha este contexto de graficos y libera cualquier recurso del sistema que este utilizando
+	}
+
+	/**
+	 * Dibuja la imagen almacenada en el buffer en la pantalla.
+	 */
+	public void drawToScreen() {
+		Graphics g = getGraphics();
+		g.drawImage(tempScree, 0, 0, screenWidth, screenHeight, null);
+		g.dispose();
 	}
 
 	public synchronized void start() {

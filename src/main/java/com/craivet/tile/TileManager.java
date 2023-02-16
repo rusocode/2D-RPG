@@ -22,7 +22,7 @@ public class TileManager {
 
 	public TileManager(Game game) {
 		this.game = game;
-		tile = new Tile[100];
+		tile = new Tile[50];
 		map = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
 		initTiles();
 		loadMap("maps/worldV3.txt");
@@ -68,6 +68,7 @@ public class TileManager {
 		createTile(39, Assets.earth, false);
 		createTile(40, Assets.wall, true);
 		createTile(41, Assets.tree, true);
+		createTile(42, Assets.hut, true);
 	}
 
 	/**
@@ -89,7 +90,6 @@ public class TileManager {
 	public void loadMap(String path) {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
 			for (int row = 0; row < MAX_WORLD_ROW; row++) {
-				System.out.println(row);
 				String line = br.readLine();
 				String[] numbers = line.split(" ");
 				for (int col = 0; col < MAX_WORLD_COL; col++)
