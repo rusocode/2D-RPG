@@ -32,7 +32,7 @@ public class PotionRed extends Item {
 				+ "Your life has been recovered by " + value + ".";
 		entity.life += value;
 		if (game.player.life > game.player.maxLife) game.player.life = game.player.maxLife;
-		Sound.play(Assets.power_up);
+		game.playSE(Assets.power_up);
 	}
 
 }

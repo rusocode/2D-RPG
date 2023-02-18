@@ -26,7 +26,7 @@ public class Coin extends Item {
 	}
 
 	public void use(Entity entity) {
-		Sound.play(Assets.coin);
+		game.playSE(Assets.coin);
 		game.ui.addMessage("Coin +" + value);
 		game.player.coin += value;
 	}

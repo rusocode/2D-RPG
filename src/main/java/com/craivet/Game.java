@@ -3,6 +3,7 @@ package com.craivet;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
 import com.craivet.entity.Player;
+import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.tile.TileManager;
@@ -11,6 +12,7 @@ import com.sun.tools.javac.Main;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -32,6 +34,8 @@ public class Game extends JPanel implements Runnable {
 	public TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
+	public Sound sound = new Sound();
+	public Sound music = new Sound();
 	public UI ui = new UI(this);
 
 	// Entities
@@ -47,6 +51,7 @@ public class Game extends JPanel implements Runnable {
 
 	public int gameState;
 	private boolean running;
+	public boolean fullScreenOn;
 
 	/* La clase Graphics2D extiende la clase Graphics para proporcionar un control mas sofisticado sobre la geometria,
 	 * las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
@@ -112,8 +117,7 @@ public class Game extends JPanel implements Runnable {
 		/* Cuando balancea la espada o interactua con algo (como tomar una pocion, un hacha, una llave, etc.) por
 		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
 		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
-		// Sound.play(Assets.blue_boy_adventure);
-		// Sound.loop();
+		playMusic(Assets.blue_boy_adventure);
 		gameState = TITLE_STATE;
 
 		/* Hasta ahora dibujamos todo directamente en el JPanel. Pero esta vez seguimos dos pasos:
@@ -130,7 +134,7 @@ public class Game extends JPanel implements Runnable {
 		// Enlaza g2 con la imagen de buffer de pantalla temporal
 		g2 = (Graphics2D) tempScree.getGraphics();
 
-		setFullScreen2();
+		// setFullScreen2();
 
 	}
 
@@ -266,7 +270,7 @@ public class Game extends JPanel implements Runnable {
 	 */
 	public void drawToScreen() {
 		Graphics g = getGraphics();
-		g.drawImage(tempScree, 0, 0, screenWidth, screenHeight, null);
+		g.drawImage(tempScree, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
 		g.dispose();
 	}
 
@@ -279,6 +283,21 @@ public class Game extends JPanel implements Runnable {
 
 	public synchronized boolean isRunning() {
 		return running;
+	}
+
+	public void playMusic(URL url) {
+		music.setFile(url);
+		music.play();
+		music.loop();
+	}
+
+	public void stopMusic() {
+		music.stop();
+	}
+
+	public void playSE(URL url) {
+		sound.setFile(url);
+		sound.play();
 	}
 
 }

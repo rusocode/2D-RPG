@@ -33,6 +33,7 @@ public class KeyHandler extends KeyAdapter {
 			else if (game.gameState == PAUSE_STATE) pauseState(lastKey);
 			else if (game.gameState == DIALOGUE_STATE) dialogueState(lastKey);
 			else if (game.gameState == CHARACTER_STATE) characterState(lastKey);
+			else if (game.gameState == OPTION_STATE) optionState(lastKey);
 		}
 	}
 
@@ -60,8 +61,9 @@ public class KeyHandler extends KeyAdapter {
 			}
 			if (code == KeyEvent.VK_ENTER) {
 				if (game.ui.commandNum == 0) {
-					Sound.play(Assets.spawn);
+					game.playSE(Assets.spawn);
 					game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
+					// game.playMusic(Assets.blue_boy_adventure);
 				}
 				// if (game.ui.commandNum == 1) {}
 				if (game.ui.commandNum == 2) System.exit(0);
@@ -97,6 +99,7 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_T) showDebugText = !showDebugText;
 		if (code == KeyEvent.VK_P) game.gameState = PAUSE_STATE;
 		if (code == KeyEvent.VK_C) game.gameState = CHARACTER_STATE;
+		if (code == KeyEvent.VK_ESCAPE) game.gameState = OPTION_STATE;
 		/* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
 		 * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
 		if (code == KeyEvent.VK_R) game.tileManager.loadMap("maps/worldV3.txt");
@@ -114,29 +117,78 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_C) game.gameState = PLAY_STATE;
 		if (code == KeyEvent.VK_W) {
 			if (game.ui.slotRow > 0) {
-				Sound.play(Assets.cursor);
+				game.playSE(Assets.cursor);
 				game.ui.slotRow--;
 			}
 		}
 		if (code == KeyEvent.VK_A) {
 			if (game.ui.slotCol > 0) {
-				Sound.play(Assets.cursor);
+				game.playSE(Assets.cursor);
 				game.ui.slotCol--;
 			}
 		}
 		if (code == KeyEvent.VK_S) {
 			if (game.ui.slotRow < 3) {
-				Sound.play(Assets.cursor);
+				game.playSE(Assets.cursor);
 				game.ui.slotRow++;
 			}
 		}
 		if (code == KeyEvent.VK_D) {
 			if (game.ui.slotCol < 4) {
-				Sound.play(Assets.cursor);
+				game.playSE(Assets.cursor);
 				game.ui.slotCol++;
 			}
 		}
 		if (code == KeyEvent.VK_ENTER) game.player.selectItem();
+	}
+
+	private void optionState(int code) {
+		if (code == KeyEvent.VK_ESCAPE) game.gameState = PLAY_STATE;
+		if (code == KeyEvent.VK_ENTER) enter = true;
+
+		int maxCommandNum = 0;
+		if (game.ui.subState == 0) maxCommandNum = 5;
+
+		if (code == KeyEvent.VK_W) {
+			game.playSE(Assets.cursor);
+			game.ui.commandNum--;
+			if (game.ui.commandNum < 0) game.ui.commandNum = maxCommandNum;
+		}
+		if (code == KeyEvent.VK_S) {
+			game.playSE(Assets.cursor);
+			game.ui.commandNum++;
+			if (game.ui.commandNum > maxCommandNum) game.ui.commandNum = 0;
+		}
+		// Para bajar el volumen
+		if (code == KeyEvent.VK_A) {
+			if (game.ui.subState == 0) {
+				if (game.ui.commandNum == 1 && game.music.volumeScale > 0) { // Musica
+					game.music.volumeScale--;
+					// TODO Hace falta esto aca?
+					game.music.checkVolume(); // Cambia el volumen de la musica cuando ya se esta reproduciendo
+					game.playSE(Assets.cursor);
+				}
+				if (game.ui.commandNum == 2 && game.sound.volumeScale > 0) { // Sonido
+					game.sound.volumeScale--;
+					game.playSE(Assets.cursor);
+				}
+			}
+		}
+		// Para subir el volumen
+		if (code == KeyEvent.VK_D) {
+			if (game.ui.subState == 0) {
+				if (game.ui.commandNum == 1 && game.music.volumeScale < 5) {
+					game.music.volumeScale++;
+					game.music.checkVolume();
+					game.playSE(Assets.cursor);
+				}
+				if (game.ui.commandNum == 2 && game.sound.volumeScale < 5) { // Sonido
+					game.sound.volumeScale++;
+					game.playSE(Assets.cursor);
+				}
+			}
+		}
+
 	}
 
 }

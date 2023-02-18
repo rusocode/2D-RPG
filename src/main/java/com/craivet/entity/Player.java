@@ -179,7 +179,7 @@ public class Player extends Entity {
 	private void checkAttack() {
 		// Si presiono enter y el ataque no esta cancelado
 		if (key.enter && !attackCanceled) {
-			Sound.play(Assets.swing_weapon_wav);
+			game.playSE(Assets.swing_weapon_wav);
 			attacking = true;
 			attackCounter = 0;
 		}
@@ -253,7 +253,7 @@ public class Player extends Entity {
 			projectile.set(worldX, worldY, direction, true, this);
 			projectile.subtractResource(this);
 			game.projectiles.add(projectile);
-			Sound.play(Assets.burning);
+			game.playSE(Assets.burning);
 			projectileCounter = 0;
 		}
 	}
@@ -272,7 +272,7 @@ public class Player extends Entity {
 				game.objs[objIndex] = null;
 			} else if (inventory.size() != MAX_INVENTORY_SIZE) {
 				inventory.add(game.objs[objIndex]);
-				Sound.play(Assets.power_up);
+				game.playSE(Assets.power_up);
 				game.ui.addMessage("Got a " + game.objs[objIndex].name + "!");
 				game.objs[objIndex] = null;
 			} else game.ui.addMessage("You cannot carry any more!");
@@ -306,7 +306,7 @@ public class Player extends Entity {
 			game.mobs[mobIndex].life -= damage;
 			game.ui.addMessage(damage + " damage!");
 			if (game.mobs[mobIndex].life > 0) {
-				Sound.play(Assets.hit_monster);
+				game.playSE(Assets.hit_monster);
 			}
 
 			game.mobs[mobIndex].invincible = true;
@@ -314,7 +314,7 @@ public class Player extends Entity {
 			game.mobs[mobIndex].damageReaction();
 
 			if (game.mobs[mobIndex].life <= 0) {
-				Sound.play(Assets.mob_death);
+				game.playSE(Assets.mob_death);
 				game.mobs[mobIndex].dead = true;
 				game.ui.addMessage("Killed the " + game.mobs[mobIndex].name + "!");
 				game.ui.addMessage("Exp + " + game.mobs[mobIndex].exp);
@@ -331,7 +331,7 @@ public class Player extends Entity {
 	 */
 	private void damagePlayer(int mobIndex) {
 		if (mobIndex != -1 && !invincible && !game.mobs[mobIndex].dead) {
-			Sound.play(Assets.receive_damage);
+			game.playSE(Assets.receive_damage);
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
 			int damage = game.mobs[mobIndex].attack - defense;
 			if (damage < 0) damage = 0;
@@ -347,7 +347,7 @@ public class Player extends Entity {
 	 */
 	private void damageInteractiveTile(int iTileIndex) {
 		if (iTileIndex != -1 && game.iTile[iTileIndex].destructible && game.iTile[iTileIndex].isCorrectItem(this) && !game.iTile[iTileIndex].invincible) {
-			Sound.play(Assets.cuttree);
+			game.playSE(Assets.cuttree);
 			game.iTile[iTileIndex].life--;
 			game.iTile[iTileIndex].invincible = true;
 
@@ -371,7 +371,7 @@ public class Player extends Entity {
 			attack = getAttack();
 			defense = getDefense();
 
-			Sound.play(Assets.level_up);
+			game.playSE(Assets.level_up);
 			game.gameState = DIALOGUE_STATE;
 			game.ui.currentDialogue = "You are level " + level + "!";
 		}

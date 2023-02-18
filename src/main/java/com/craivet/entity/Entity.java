@@ -256,7 +256,7 @@ public abstract class Entity {
 	public void damagePlayer(boolean contact, int attack) {
 		// Si el mob hace contacto con el player que no es invencible
 		if (type == TYPE_MOB && contact && !game.player.invincible) {
-			Sound.play(Assets.receive_damage);
+			game.playSE(Assets.receive_damage);
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
 			int damage = attack - game.player.defense;
 			if (damage < 0) damage = 0;
