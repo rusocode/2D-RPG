@@ -203,6 +203,8 @@ public class Game extends JPanel implements Runnable {
 		if (keyH.showDebugText) drawStart = System.nanoTime();
 
 		if (gameState == TITLE_STATE) {
+			g2.setColor(Color.black);
+			g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 			ui.draw(g2);
 		} else {
 			tileManager.draw(g2);
