@@ -7,7 +7,6 @@ import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.tile.TileManager;
-import com.sun.tools.javac.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -117,7 +116,7 @@ public class Game extends JPanel implements Runnable {
 		/* Cuando balancea la espada o interactua con algo (como tomar una pocion, un hacha, una llave, etc.) por
 		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
 		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
-		playMusic(Assets.blue_boy_adventure);
+		// playMusic(Assets.blue_boy_adventure);
 		gameState = TITLE_STATE;
 
 		/* Hasta ahora dibujamos todo directamente en el JPanel. Pero esta vez seguimos dos pasos:
@@ -143,12 +142,10 @@ public class Game extends JPanel implements Runnable {
 		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice gd = ge.getDefaultScreenDevice();
 		gd.setFullScreenWindow(Launcher.window); // Establece la ventana en pantalla completa
-
 		// Obtiene el ancho y alto de la pantalla completa para utilizarlos en la pantalla temporal
 		// TODO Esto va aca?
 		screenWidth = Launcher.window.getWidth();
 		screenHeight = Launcher.window.getHeight();
-
 	}
 
 	// Soluciona el problema de la caida de FPS
@@ -286,8 +283,7 @@ public class Game extends JPanel implements Runnable {
 	}
 
 	public void playMusic(URL url) {
-		music.setFile(url);
-		music.play();
+		music.play(url);
 		music.loop();
 	}
 
@@ -295,9 +291,8 @@ public class Game extends JPanel implements Runnable {
 		music.stop();
 	}
 
-	public void playSE(URL url) {
-		sound.setFile(url);
-		sound.play();
+	public void playSound(URL url) {
+		sound.play(url);
 	}
 
 }

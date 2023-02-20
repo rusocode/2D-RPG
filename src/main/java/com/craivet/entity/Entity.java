@@ -4,10 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.craivet.Game;
-import com.craivet.Sound;
 import com.craivet.gfx.Assets;
 import com.craivet.gfx.SpriteSheet;
-import com.craivet.tile.DryTree;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
@@ -66,6 +64,7 @@ public abstract class Entity {
 	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
 
+	public int naturalStopWalkingCounter;
 	public int attackCounter; // TODO Muevo a timer?
 	public int projectileCounter;
 
@@ -256,7 +255,7 @@ public abstract class Entity {
 	public void damagePlayer(boolean contact, int attack) {
 		// Si el mob hace contacto con el player que no es invencible
 		if (type == TYPE_MOB && contact && !game.player.invincible) {
-			game.playSE(Assets.receive_damage);
+			game.playSound(Assets.receive_damage);
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
 			int damage = attack - game.player.defense;
 			if (damage < 0) damage = 0;

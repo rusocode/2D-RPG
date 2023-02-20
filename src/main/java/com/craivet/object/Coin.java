@@ -1,7 +1,6 @@
 package com.craivet.object;
 
 import com.craivet.Game;
-import com.craivet.Sound;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
@@ -26,7 +25,7 @@ public class Coin extends Item {
 	}
 
 	public void use(Entity entity) {
-		game.playSE(Assets.coin);
+		game.playSound(Assets.coin);
 		game.ui.addMessage("Coin +" + value);
 		game.player.coin += value;
 	}

@@ -1,7 +1,6 @@
 package com.craivet.object;
 
 import com.craivet.Game;
-import com.craivet.Sound;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
@@ -32,7 +31,7 @@ public class PotionRed extends Item {
 				+ "Your life has been recovered by " + value + ".";
 		entity.life += value;
 		if (game.player.life > game.player.maxLife) game.player.life = game.player.maxLife;
-		game.playSE(Assets.power_up);
+		game.playSound(Assets.power_up);
 	}
 
 }

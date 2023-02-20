@@ -3,7 +3,6 @@ package com.craivet.input;
 import java.awt.event.*;
 
 import com.craivet.Game;
-import com.craivet.Sound;
 import com.craivet.gfx.Assets;
 
 import static com.craivet.utils.Constants.*;
@@ -61,7 +60,7 @@ public class KeyHandler extends KeyAdapter {
 			}
 			if (code == KeyEvent.VK_ENTER) {
 				if (game.ui.commandNum == 0) {
-					game.playSE(Assets.spawn);
+					game.playSound(Assets.spawn);
 					game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
 					// game.playMusic(Assets.blue_boy_adventure);
 				}
@@ -117,25 +116,25 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_C) game.gameState = PLAY_STATE;
 		if (code == KeyEvent.VK_W) {
 			if (game.ui.slotRow > 0) {
-				game.playSE(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.slotRow--;
 			}
 		}
 		if (code == KeyEvent.VK_A) {
 			if (game.ui.slotCol > 0) {
-				game.playSE(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.slotCol--;
 			}
 		}
 		if (code == KeyEvent.VK_S) {
 			if (game.ui.slotRow < 3) {
-				game.playSE(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.slotRow++;
 			}
 		}
 		if (code == KeyEvent.VK_D) {
 			if (game.ui.slotCol < 4) {
-				game.playSE(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.slotCol++;
 			}
 		}
@@ -147,18 +146,30 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_ENTER) enter = true;
 
 		int maxCommandNum = 0;
-		if (game.ui.subState == 0) maxCommandNum = 5;
+		switch (game.ui.subState) {
+			case 0:
+				maxCommandNum = 5;
+				break;
+			case 3:
+				maxCommandNum = 1;
+				break;
+		}
 
-		if (code == KeyEvent.VK_W) {
-			game.playSE(Assets.cursor);
-			game.ui.commandNum--;
-			if (game.ui.commandNum < 0) game.ui.commandNum = maxCommandNum;
+		/* Si la seleccion de comandos esta en los subestados de fullScreen control, entonces no ejecuta las
+		 * siguientes instrucciones ya que la seleccion solo se mantiene en el back. */
+		if (game.ui.subState == 0 || game.ui.subState == 3) {
+			if (code == KeyEvent.VK_W) {
+				game.playSound(Assets.cursor);
+				game.ui.commandNum--;
+				if (game.ui.commandNum < 0) game.ui.commandNum = maxCommandNum;
+			}
+			if (code == KeyEvent.VK_S) {
+				game.playSound(Assets.cursor);
+				game.ui.commandNum++;
+				if (game.ui.commandNum > maxCommandNum) game.ui.commandNum = 0;
+			}
 		}
-		if (code == KeyEvent.VK_S) {
-			game.playSE(Assets.cursor);
-			game.ui.commandNum++;
-			if (game.ui.commandNum > maxCommandNum) game.ui.commandNum = 0;
-		}
+
 		// Para bajar el volumen
 		if (code == KeyEvent.VK_A) {
 			if (game.ui.subState == 0) {
@@ -166,11 +177,11 @@ public class KeyHandler extends KeyAdapter {
 					game.music.volumeScale--;
 					// TODO Hace falta esto aca?
 					game.music.checkVolume(); // Cambia el volumen de la musica cuando ya se esta reproduciendo
-					game.playSE(Assets.cursor);
+					game.playSound(Assets.cursor);
 				}
 				if (game.ui.commandNum == 2 && game.sound.volumeScale > 0) { // Sonido
 					game.sound.volumeScale--;
-					game.playSE(Assets.cursor);
+					game.playSound(Assets.cursor);
 				}
 			}
 		}
@@ -180,11 +191,11 @@ public class KeyHandler extends KeyAdapter {
 				if (game.ui.commandNum == 1 && game.music.volumeScale < 5) {
 					game.music.volumeScale++;
 					game.music.checkVolume();
-					game.playSE(Assets.cursor);
+					game.playSound(Assets.cursor);
 				}
 				if (game.ui.commandNum == 2 && game.sound.volumeScale < 5) { // Sonido
 					game.sound.volumeScale++;
-					game.playSE(Assets.cursor);
+					game.playSound(Assets.cursor);
 				}
 			}
 		}

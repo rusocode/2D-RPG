@@ -23,11 +23,11 @@ import java.net.URL;
 public class Sound {
 
 	private Clip clip;
-	public FloatControl fc; // Esta clase acepta valores entre -80f y 6f, por lo que 6 es el maximo y -80 no tiene sonido
-	public int volumeScale = 3; // Solo hay 5 escalas de volumen
-	float volume;
+	private FloatControl fc; // Esta clase acepta valores entre -80f y 6f, por lo que 6 es el maximo y -80 no tiene sonido
+	public int volumeScale = 2; // Solo hay 5 escalas de volumen
+	private float volume;
 
-	public void setFile(URL url) {
+	public void play(URL url) {
 		try {
 			// Obtiene el clip
 			clip = AudioSystem.getClip();
@@ -35,14 +35,13 @@ public class Sound {
 			clip.open(AudioSystem.getAudioInputStream(url));
 			// Obtiene el control para poder pasar un valor al clip y cambiar su volumen
 			fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-			checkVolume(); // Comprueba el volumen en caso de que la musica se este reproduciendo, para el sonido no haria falta
+			// Esta comprobacion es necesaria solo si la musica ya se esta reproduciendo
+			checkVolume();
+			// Inicia el clip
+			clip.start();
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	public void play() {
-		clip.start();
 	}
 
 	/**

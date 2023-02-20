@@ -18,7 +18,7 @@ public final class Constants {
 	public static final int ORIGINAL_TILE_SIZE = 16;
 	public static final int SCALE = 3;
 	public static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
-	// Relacion de aspecto 4:3 = 768 x 576 pixels
+	// Relacion de aspecto 4:3 = 960 x 576 pixels
 	public static final int MAX_SCREEN_COL = 20;
 	public static final int MAX_SCREEN_ROW = 12;
 	public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
