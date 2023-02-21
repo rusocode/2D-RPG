@@ -471,7 +471,7 @@ public class UI {
 		if (commandNum == 0) {
 			g2.drawString(">", textX - 25, textY);
 			if (game.keyH.enter) {
-				game.fullScreenOn = !game.fullScreenOn;
+				game.fullScreen = !game.fullScreen;
 				subState = 1;
 			}
 		}
@@ -509,7 +509,7 @@ public class UI {
 		textY = frameY + (TILE_SIZE * 2 + 7);
 		g2.setStroke(new BasicStroke(2));
 		g2.drawRect(textX, textY, 24, 24);
-		if (game.fullScreenOn) g2.fillRect(textX, textY, 24, 24);
+		if (game.fullScreen) g2.fillRect(textX, textY, 24, 24);
 		// Music volume
 		textY += TILE_SIZE;
 		g2.drawRect(textX, textY, 120, 24);
@@ -532,6 +532,8 @@ public class UI {
 				commandNum = 0;
 			}
 		}
+
+		game.config.saveConfig();
 
 	}
 

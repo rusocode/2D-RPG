@@ -3,7 +3,6 @@ package com.craivet;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
 import com.craivet.entity.Player;
-import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.tile.TileManager;
@@ -36,6 +35,7 @@ public class Game extends JPanel implements Runnable {
 	public Sound sound = new Sound();
 	public Sound music = new Sound();
 	public UI ui = new UI(this);
+	public Config config = new Config(this);
 
 	// Entities
 	public ArrayList<Entity> entities = new ArrayList<>();
@@ -50,15 +50,15 @@ public class Game extends JPanel implements Runnable {
 
 	public int gameState;
 	private boolean running;
-	public boolean fullScreenOn;
+	public boolean fullScreen;
 
 	/* La clase Graphics2D extiende la clase Graphics para proporcionar un control mas sofisticado sobre la geometria,
 	 * las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
 	public Graphics2D g2;
 	public BufferedImage tempScree;
 	// For full screen
-	public int screenWidth;
-	public int screenHeight;
+	public int screenWidth = SCREEN_WIDTH;
+	public int screenHeight = SCREEN_HEIGHT;
 
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -133,7 +133,7 @@ public class Game extends JPanel implements Runnable {
 		// Enlaza g2 con la imagen de buffer de pantalla temporal
 		g2 = (Graphics2D) tempScree.getGraphics();
 
-		// setFullScreen2();
+		if (fullScreen) setFullScreen2();
 
 	}
 
@@ -269,7 +269,7 @@ public class Game extends JPanel implements Runnable {
 	 */
 	public void drawToScreen() {
 		Graphics g = getGraphics();
-		g.drawImage(tempScree, 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT, null);
+		g.drawImage(tempScree, 0, 0, screenWidth, screenHeight, null);
 		g.dispose();
 	}
 
