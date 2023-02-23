@@ -137,29 +137,6 @@ public class Game extends JPanel implements Runnable {
 
 	}
 
-	public void setFullScreen() {
-		// Obtiene el dispositivo de pantalla local, independientemente de si estas en un portatil o escritorio
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-		gd.setFullScreenWindow(Launcher.window); // Establece la ventana en pantalla completa
-		// Obtiene el ancho y alto de la pantalla completa para utilizarlos en la pantalla temporal
-		// TODO Esto va aca?
-		screenWidth = Launcher.window.getWidth();
-		screenHeight = Launcher.window.getHeight();
-	}
-
-	// Soluciona el problema de la caida de FPS
-	public void setFullScreen2() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		double width = screenSize.getWidth();
-		double height = screenSize.getHeight();
-		Launcher.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		screenWidth = (int) width;
-		screenHeight = (int) height;
-		// offset factor to be used by mouse listener or mouse motion listener if you are using cursor in your game. Multiply your e.getX()e.getY() by this.
-		// fullScreenOffsetFactor = (float) screenWidth / (float) screenWidth2;
-	}
-
 	public void update() {
 		if (gameState == PLAY_STATE) {
 			player.update();
@@ -295,6 +272,45 @@ public class Game extends JPanel implements Runnable {
 
 	public void playSound(URL url) {
 		sound.play(url);
+	}
+
+	public void setFullScreen() {
+		// Obtiene el dispositivo de pantalla local, independientemente de si estas en un portatil o escritorio
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice gd = ge.getDefaultScreenDevice();
+		gd.setFullScreenWindow(Launcher.window); // Establece la ventana en pantalla completa
+		// Obtiene el ancho y alto de la pantalla completa para utilizarlos en la pantalla temporal
+		// TODO Esto va aca?
+		screenWidth = Launcher.window.getWidth();
+		screenHeight = Launcher.window.getHeight();
+	}
+
+	// Soluciona el problema de la caida de FPS
+	public void setFullScreen2() {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		double width = screenSize.getWidth();
+		double height = screenSize.getHeight();
+		Launcher.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		screenWidth = (int) width;
+		screenHeight = (int) height;
+		// offset factor to be used by mouse listener or mouse motion listener if you are using cursor in your game. Multiply your e.getX()e.getY() by this.
+		// fullScreenOffsetFactor = (float) screenWidth / (float) screenWidth2;
+	}
+
+	public void retry() {
+		player.setDefaultPosition();
+		player.restoreLifeAndMana();
+		aSetter.setNPC();
+		aSetter.setMOB();
+	}
+
+	public void restart() {
+		player.setDefaultValues();
+		player.setItems();
+		aSetter.setObject();
+		aSetter.setNPC();
+		aSetter.setMOB();
+		aSetter.setInteractiveTile();
 	}
 
 }

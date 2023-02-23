@@ -38,7 +38,7 @@ public class Player extends Entity {
 		setDefaultValues();
 	}
 
-	private void setDefaultValues() {
+	public void setDefaultValues() {
 		type = TYPE_PLAYER;
 		name = "Player";
 		direction = "down";
@@ -54,6 +54,8 @@ public class Player extends Entity {
 		exp = 0;
 		nextLevelExp = 5;
 		coin = 0;
+
+		invincible = false;
 
 		strength = 1; // Mas fuerza, mas daño
 		dexterity = 1; // Mas destreza, menos daño
@@ -80,11 +82,23 @@ public class Player extends Entity {
 		setItems();
 	}
 
+	public void setDefaultPosition() {
+		worldX = TILE_SIZE * 23;
+		worldY = TILE_SIZE * 21;
+		direction = "down";
+	}
+
+	public void restoreLifeAndMana() {
+		life = maxLife;
+		mana = maxMana;
+		invincible = false;
+	}
+
 	public void update() {
 
 		if (attacking) attackWithSword();
 
-		// Evita que el player se mueva cuando no se presiono ninguna tecla
+		// Evita que el player se mueva cuando no se presiono ninguna teclaw
 		if (key.s || key.w || key.a || key.d || key.enter || key.pickup) {
 
 			// Obtiene la direccion dependiendo de la tecla seleccionada
@@ -129,7 +143,7 @@ public class Player extends Entity {
 
 		} else {
 			naturalStopWalkingCounter++;
-			if(naturalStopWalkingCounter == 10) {
+			if (naturalStopWalkingCounter == 10) {
 				movementNum = 1;
 				naturalStopWalkingCounter = 0;
 			}
@@ -139,6 +153,12 @@ public class Player extends Entity {
 
 		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
 		if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
+		if (life > maxLife) life = maxLife;
+		if (mana > maxMana) mana = maxMana;
+		if (life <= 0) {
+			game.gameState = GAME_OVER_STATE;
+			game.playSound(Assets.player_die);
+		}
 	}
 
 	public void draw(Graphics2D g2) {
@@ -413,7 +433,8 @@ public class Player extends Entity {
 		return dexterity * currentShield.defenseValue;
 	}
 
-	private void setItems() {
+	public void setItems() {
+		inventory.clear();
 		inventory.add(currentWeapon);
 		inventory.add(currentShield);
 		inventory.add(new Key(game));

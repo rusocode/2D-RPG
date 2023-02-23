@@ -54,6 +54,7 @@ public final class Constants {
 	public static final int DIALOGUE_STATE = 3;
 	public static final int CHARACTER_STATE = 4;
 	public static final int OPTION_STATE = 5;
+	public static final int GAME_OVER_STATE = 6;
 
 	// Entity type
 	public static final int TYPE_PLAYER = 0;

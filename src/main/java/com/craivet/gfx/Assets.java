@@ -27,6 +27,7 @@ public final class Assets {
 	public static final URL hit_monster = Utils.loadSound("sounds/hit_monster.wav");
 	public static final URL level_up = Utils.loadSound("sounds/level_up.wav");
 	public static final URL mob_death = Utils.loadSound("sounds/mob_death.wav");
+	public static final URL player_die = Utils.loadSound("sounds/player_die.wav");
 	public static final URL power_up = Utils.loadSound("sounds/power_up.wav");
 	public static final URL receive_damage = Utils.loadSound("sounds/receive_damage.wav");
 	public static final URL spawn = Utils.loadSound("sounds/spawn.wav");

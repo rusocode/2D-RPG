@@ -76,6 +76,7 @@ public class UI {
 			drawInventoryScreen();
 		}
 		if (game.gameState == OPTION_STATE) drawOptionScreen();
+		if (game.gameState == GAME_OVER_STATE) drawGameOverScreen();
 
 	}
 
@@ -236,7 +237,7 @@ public class UI {
 	}
 
 	private void drawPauseText() {
-		changeFontSize(80f);
+		changeFontSize(80);
 		String text = "PAUSED";
 		int x = getXForCenteredText(text);
 		int y = getYForCenteredText(text);
@@ -645,6 +646,40 @@ public class UI {
 				commandNum = 4;
 			}
 		}
+
+	}
+
+	private void drawGameOverScreen() {
+		g2.setColor(new Color(0, 0, 0, 150));
+		g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+		int x, y;
+		String text;
+
+		changeFontSize(110);
+
+		text = "Game Over";
+		// Sombra
+		g2.setColor(Color.black);
+		x = getXForCenteredText(text);
+		y = TILE_SIZE * 4;
+		g2.drawString(text, x, y);
+		// Principal
+		g2.setColor(Color.white);
+		g2.drawString(text, x - 4, y - 4);
+		// Retry
+		changeFontSize(50);
+		text = "Retry";
+		x = getXForCenteredText(text);
+		y += TILE_SIZE * 4;
+		g2.drawString(text, x, y);
+		if (commandNum == 0) g2.drawString(">", x - 40, y);
+		// Quit
+		text = "Quit";
+		x = getXForCenteredText(text);
+		y += 55;
+		g2.drawString(text, x, y);
+		if (commandNum == 1) g2.drawString(">", x - 40, y);
 
 	}
 

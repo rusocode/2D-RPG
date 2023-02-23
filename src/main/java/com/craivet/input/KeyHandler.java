@@ -33,6 +33,7 @@ public class KeyHandler extends KeyAdapter {
 			else if (game.gameState == DIALOGUE_STATE) dialogueState(lastKey);
 			else if (game.gameState == CHARACTER_STATE) characterState(lastKey);
 			else if (game.gameState == OPTION_STATE) optionState(lastKey);
+			else if (game.gameState == GAME_OVER_STATE) gameOverState(lastKey);
 		}
 	}
 
@@ -200,6 +201,28 @@ public class KeyHandler extends KeyAdapter {
 			}
 		}
 
+	}
+
+	private void gameOverState(int code) {
+		if (code == KeyEvent.VK_W) {
+			game.ui.commandNum--;
+			if (game.ui.commandNum < 0) game.ui.commandNum = 1;
+			game.playSound(Assets.cursor);
+		}
+		if (code == KeyEvent.VK_S) {
+			game.ui.commandNum++;
+			if (game.ui.commandNum > 1) game.ui.commandNum = 0;
+			game.playSound(Assets.cursor);
+		}
+		if (code == KeyEvent.VK_ENTER) {
+			if (game.ui.commandNum == 0) {
+				game.gameState = PLAY_STATE;
+				game.retry();
+			} else if (game.ui.commandNum == 1) {
+				game.gameState = TITLE_STATE;
+				game.restart();
+			}
+		}
 	}
 
 }
