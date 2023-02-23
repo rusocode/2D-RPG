@@ -158,6 +158,7 @@ public class Player extends Entity {
 		if (life <= 0) {
 			game.gameState = GAME_OVER_STATE;
 			game.playSound(Assets.player_die);
+			game.ui.commandNum = -1;
 		}
 	}
 
