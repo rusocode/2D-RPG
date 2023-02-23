@@ -166,8 +166,8 @@ public class Game extends JPanel implements Runnable {
 					if (!particles.get(i).alive) particles.remove(i);
 				}
 			}
-			for (int i = 0; i < iTile.length; i++)
-				if (iTile[i] != null) iTile[i].update();
+			for (InteractiveTile interactiveTile : iTile)
+				if (interactiveTile != null) interactiveTile.update();
 		}
 	}
 
@@ -177,7 +177,7 @@ public class Game extends JPanel implements Runnable {
 	public void drawToTempScreen() {
 		// Debug
 		long drawStart = 0;
-		if (keyH.showDebugText) drawStart = System.nanoTime();
+		if (keyH.t) drawStart = System.nanoTime();
 
 		if (gameState == TITLE_STATE) {
 			g2.setColor(Color.black);
@@ -227,7 +227,7 @@ public class Game extends JPanel implements Runnable {
 		}
 
 		// Debug
-		if (keyH.showDebugText) {
+		if (keyH.t) {
 			g2.setFont(new Font("Arial", Font.PLAIN, 20));
 			g2.setColor(Color.white);
 			int x = 8, y = SCREEN_HEIGHT - 25, gap = 20;

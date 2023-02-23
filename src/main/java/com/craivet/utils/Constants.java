@@ -32,10 +32,10 @@ public final class Constants {
 	public static final int MAIN_SCREEN = 0;
 	public static final int SELECTION_SCREEN = 1;
 
-	// Probabilidades %
+	// Probabilidades
 	public static final int PROBABILIDAD_DROP_ORO = 47;
 
-	// Intervals (ms)
+	// Intervals in ms
 	public static final int INTERVAL_MOVEMENT_ANIMATION = 10;
 	public static final int INTERVAL_MOVEMENT_PROJECTILE_ANIMATION = 8;
 	public static final int INTERVAL_INVINCIBLE = 60;

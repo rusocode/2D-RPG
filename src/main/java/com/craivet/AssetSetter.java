@@ -24,7 +24,7 @@ public class AssetSetter {
 		int i = 0;
 		game.objs[i] = new Axe(game);
 		game.objs[i].worldX = TILE_SIZE * 33;
-		game.objs[i++].worldY = TILE_SIZE * 7;
+		game.objs[i].worldY = TILE_SIZE * 7;
 	}
 
 	public void setNPC() {

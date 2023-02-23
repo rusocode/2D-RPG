@@ -86,6 +86,8 @@ public class TileManager {
 
 	/**
 	 * Carga el mapa utilizando la ruta especificada y almacena cada valor (tile) leido del archivo en la matriz.
+	 *
+	 * @param path la ruta del recurso.
 	 */
 	public void loadMap(String path) {
 		try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
@@ -102,6 +104,8 @@ public class TileManager {
 
 	/**
 	 * Carga los tiles usando la matriz como referencia y los dibuja aplicando el desplazamiento a cada uno.
+	 *
+	 * @param g2 componente grafico.
 	 */
 	public void draw(Graphics2D g2) {
 		for (int row = 0; row < MAX_WORLD_ROW; row++) {

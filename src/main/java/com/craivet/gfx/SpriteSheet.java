@@ -30,10 +30,10 @@ public class SpriteSheet {
 	 * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
 	 * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
 	 *
-	 * @param image  el sprite sheet.
+	 * @param image  el SpriteSheet.
 	 * @param width  el ancho de la subimagen.
 	 * @param height el alto de la subimagen.
-	 * @return una matriz con las subimagenes del sprite sheet.
+	 * @return una matriz con las subimagenes del SpriteSheet.
 	 */
 	public static BufferedImage[] getMovementSubimages(SpriteSheet image, int width, int height) {
 		int col = image.getWidth() / width;

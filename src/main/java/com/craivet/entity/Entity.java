@@ -14,10 +14,10 @@ import static com.craivet.utils.Constants.*;
 
 /**
  * TODO Los metodos para obtener las subimagenes deberian ir en otra clase
- * <p>TODO Se podria separar los npcs y mobs por package, y por clases abstractas
+ * <p>TODO items y objetos son lo mismo?
+ * <p>TODO Se podrian separar los npcs, mobs, items, objetos y proyectiles por paquetes y clases abstractas
  * <p>TODO En vez de usar la variable "movementDown1" para representar la imagen de un objeto, se podria usar una
  * var "image"
- * <p>TODO Separar en paquetes por items, objetos y proyectiles
  * <p>TODO Los metodos update() y render() se podrian implementar desde una interfaz
  * <p>TODO Algun de estos metodos no tendrian que funcionar en sus respectivas clases?
  */
@@ -265,9 +265,9 @@ public abstract class Entity {
 	}
 
 	/**
-	 * Inicializa las subimagenes de movimiento del sprite sheet y escala cada una.
+	 * Inicializa las subimagenes de movimiento del SpriteSheet y escala cada una.
 	 *
-	 * @param image  el sprite sheet.
+	 * @param image  el SpriteSheet.
 	 * @param width  el ancho de la subimagen.
 	 * @param height el alto de la subimagen.
 	 */

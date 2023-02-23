@@ -99,7 +99,7 @@ public class Player extends Entity {
 		if (attacking) attackWithSword();
 
 		// Evita que el player se mueva cuando no se presiono ninguna teclaw
-		if (key.s || key.w || key.a || key.d || key.enter || key.pickup) {
+		if (key.s || key.w || key.a || key.d || key.enter || key.l) {
 
 			// Obtiene la direccion dependiendo de la tecla seleccionada
 			if (key.s) direction = "down";
@@ -117,7 +117,7 @@ public class Player extends Entity {
 			game.eHandler.checkEvent();
 
 			// Si no hay colision y si no presiono la tecla enter, el player se puede mover dependiendo de la direccion
-			if (!collisionOn && !key.enter && !key.pickup) {
+			if (!collisionOn && !key.enter && !key.l) {
 				switch (direction) {
 					case "down":
 						worldY += speed;
@@ -137,7 +137,7 @@ public class Player extends Entity {
 			checkAttack();
 
 			key.enter = false;
-			key.pickup = false;
+			key.l = false;
 
 			timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 
@@ -275,7 +275,7 @@ public class Player extends Entity {
 	private void attackWithProjectile() {
 		/* Si presiono la tecla f, y si el proyectil anterior no sigue vivo, y si ya pasaron 80 frames desde su
 		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
-		if (key.shot && !projectile.alive && projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this)) {
+		if (key.f && !projectile.alive && projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this)) {
 			projectile.set(worldX, worldY, direction, true, this);
 			projectile.subtractResource(this);
 			game.projectiles.add(projectile);
@@ -292,7 +292,7 @@ public class Player extends Entity {
 	 * @param objIndex indice del objeto.
 	 */
 	private void pickUpObject(int objIndex) {
-		if (objIndex != -1 && key.pickup) {
+		if (objIndex != -1 && key.l) {
 			if (game.objs[objIndex].type == TYPE_PICKUP_ONLY) {
 				game.objs[objIndex].use(this);
 				game.objs[objIndex] = null;
@@ -302,7 +302,7 @@ public class Player extends Entity {
 				game.ui.addMessage("Got a " + game.objs[objIndex].name + "!");
 				game.objs[objIndex] = null;
 			} else game.ui.addMessage("You cannot carry any more!");
-		} else if (key.pickup) game.ui.addMessage("Nothing here");
+		} else if (key.l) game.ui.addMessage("Nothing here");
 	}
 
 	/**

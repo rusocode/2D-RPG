@@ -7,15 +7,10 @@ import com.craivet.gfx.Assets;
 
 import static com.craivet.utils.Constants.*;
 
-/**
- * <a href="https://stackoverflow.com/questions/23642854/make-a-keyevent-in-java-only-happen-once-even-when-key-is-held">...</a>
- */
-
 public class KeyHandler extends KeyAdapter {
 
 	private final Game game;
-	public boolean w, a, s, d, enter, shot, pickup; // TODO enter podria llamarse attack o f y l para shot y pickup
-	public boolean showDebugText;
+	public boolean w, a, s, d, enter, f, l, t;
 
 	private int lastKey = -1;
 
@@ -45,8 +40,8 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_A) a = false;
 		if (code == KeyEvent.VK_S) s = false;
 		if (code == KeyEvent.VK_D) d = false;
-		if (code == KeyEvent.VK_F) shot = false;
-		if (code == KeyEvent.VK_L) pickup = false;
+		if (code == KeyEvent.VK_F) f = false;
+		if (code == KeyEvent.VK_L) l = false;
 	}
 
 	private void titleState(int code) {
@@ -94,9 +89,9 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_S) s = true;
 		if (code == KeyEvent.VK_D) d = true;
 		if (code == KeyEvent.VK_ENTER) enter = true;
-		if (code == KeyEvent.VK_F) shot = true;
-		if (code == KeyEvent.VK_L) pickup = true;
-		if (code == KeyEvent.VK_T) showDebugText = !showDebugText;
+		if (code == KeyEvent.VK_F) f = true;
+		if (code == KeyEvent.VK_L) l = true;
+		if (code == KeyEvent.VK_T) t = !t;
 		if (code == KeyEvent.VK_P) game.gameState = PAUSE_STATE;
 		if (code == KeyEvent.VK_C) game.gameState = CHARACTER_STATE;
 		if (code == KeyEvent.VK_ESCAPE) game.gameState = OPTION_STATE;
@@ -205,14 +200,14 @@ public class KeyHandler extends KeyAdapter {
 
 	private void gameOverState(int code) {
 		if (code == KeyEvent.VK_W) {
+			game.playSound(Assets.cursor);
 			game.ui.commandNum--;
 			if (game.ui.commandNum < 0) game.ui.commandNum = 1;
-			game.playSound(Assets.cursor);
 		}
 		if (code == KeyEvent.VK_S) {
+			game.playSound(Assets.cursor);
 			game.ui.commandNum++;
 			if (game.ui.commandNum > 1) game.ui.commandNum = 0;
-			game.playSound(Assets.cursor);
 		}
 		if (code == KeyEvent.VK_ENTER) {
 			if (game.ui.commandNum == 0) {

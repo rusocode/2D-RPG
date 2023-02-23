@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Constants.TILE_SIZE;
+import static com.craivet.utils.Constants.*;
 
 public class Trunk extends InteractiveTile {
 
