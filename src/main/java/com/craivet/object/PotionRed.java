@@ -21,8 +21,8 @@ public class PotionRed extends Item {
 		name = "Red Potion";
 		movementDown1 = Utils.scaleImage(Assets.potion_red, TILE_SIZE, TILE_SIZE);
 
-		itemDescription = "[Red Potion]\nHeals your life by " + value + ".";
 		value = 5;
+		itemDescription = "[Red Potion]\nHeals your life by " + value + ".";
 	}
 
 	public void use(Entity entity) {
@@ -31,7 +31,7 @@ public class PotionRed extends Item {
 				+ "Your life has been recovered by " + value + ".";
 		entity.life += value;
 		if (game.player.life > game.player.maxLife) game.player.life = game.player.maxLife;
-		game.playSound(Assets.power_up);
+		game.playSound(Assets.potion);
 	}
 
 }

@@ -41,13 +41,14 @@ public abstract class Projectile extends Item {
 
 		// Si el player lanza un proyectil
 		if (entity instanceof Player) {
+
 			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
 			/* Cuando el proyectil colisiona con un mob, establece el estado collisionOn en true. Por lo tanto, cuando
 			 * se vuelva a dibujar el proyectil, este se va a mantener en el frame de movimiento 1 ya que en el operador
 			 * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
 			 * movimiento 2. La siguiente linea soluciona este problema. */
 			collisionOn = false;
-			if (mobIndex != -1) {
+			if (mobIndex != -1 && !game.mobs[mobIndex].invincible) {
 				game.player.damageMob(mobIndex, attack);
 				// En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
 				generateParticle(entity.projectile, game.mobs[mobIndex]);

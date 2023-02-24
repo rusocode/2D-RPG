@@ -26,7 +26,7 @@ public class Slime extends Entity {
 		name = "Slime";
 		direction = "down";
 		speed = 1;
-		maxLife = 5;
+		maxLife = 4;
 		life = maxLife;
 		exp = 2;
 

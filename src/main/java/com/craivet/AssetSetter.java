@@ -51,7 +51,15 @@ public class AssetSetter {
 
 	public void setInteractiveTile() {
 		int i = 0;
-		game.iTile[i] = new DryTree(game, 31, 21);
+		// TODO Agregar parametros para las demas entidades
+		game.iTile[i++] = new DryTree(game, 28, 21);
+		game.iTile[i++] = new DryTree(game, 29, 21);
+		game.iTile[i++] = new DryTree(game, 30, 21);
+		game.iTile[i++] = new DryTree(game, 31, 21);
+		game.iTile[i++] = new DryTree(game, 32, 21);
+		game.iTile[i] = new DryTree(game, 33, 21);
+
+
 	}
 
 }

@@ -277,7 +277,7 @@ public class Player extends Entity {
 		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
 		if (key.f && !projectile.alive && projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this)) {
 			projectile.set(worldX, worldY, direction, true, this);
-			projectile.subtractResource(this);
+			// projectile.subtractResource(this);
 			game.projectiles.add(projectile);
 			game.playSound(Assets.burning);
 			projectileCounter = 0;
@@ -412,6 +412,7 @@ public class Player extends Entity {
 			Item selectedItem = inventory.get(itemIndex);
 			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) {
 				currentWeapon = selectedItem;
+				attackArea = currentWeapon.attackArea;
 				attack = getAttack();
 				initAttackImages(currentWeapon.type == TYPE_SWORD ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 			}
@@ -437,8 +438,12 @@ public class Player extends Entity {
 	public void setItems() {
 		inventory.clear();
 		inventory.add(currentWeapon);
+		inventory.add(new Axe(game));
 		inventory.add(currentShield);
 		inventory.add(new Key(game));
+		inventory.add(new PotionRed(game));
+		inventory.add(new PotionRed(game));
+		inventory.add(new PotionRed(game));
 	}
 
 }

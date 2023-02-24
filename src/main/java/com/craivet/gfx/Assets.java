@@ -19,21 +19,20 @@ public final class Assets {
 
 	// Sounds
 	public static final URL blue_boy_adventure = Utils.loadSound("sounds/blue_boy_adventure.wav"); // Music
-	public static final URL burning = Utils.loadSound("sounds/114.wav");
-	public static final URL coin = Utils.loadSound("sounds/coin.wav");
+	public static final URL burning = Utils.loadSound("sounds/burning5.wav");
+	public static final URL coin = Utils.loadSound("sounds/coin_up.wav");
 	public static final URL cursor = Utils.loadSound("sounds/cursor.wav");
-	public static final URL cuttree = Utils.loadSound("sounds/cuttree.wav");
+	public static final URL cuttree = Utils.loadSound("sounds/cuttree2.wav");
 	public static final URL fanfare = Utils.loadSound("sounds/fanfare.wav");
-	public static final URL hit_monster = Utils.loadSound("sounds/hit_monster.wav");
+	public static final URL hit_monster = Utils.loadSound("sounds/hit_monster5.wav");
 	public static final URL level_up = Utils.loadSound("sounds/level_up.wav");
 	public static final URL mob_death = Utils.loadSound("sounds/mob_death.wav");
-	public static final URL player_die = Utils.loadSound("sounds/player_die.wav");
+	public static final URL player_die = Utils.loadSound("sounds/player_die2.wav");
+	public static final URL potion = Utils.loadSound("sounds/potion.wav");
 	public static final URL power_up = Utils.loadSound("sounds/power_up.wav");
 	public static final URL receive_damage = Utils.loadSound("sounds/receive_damage.wav");
 	public static final URL spawn = Utils.loadSound("sounds/spawn.wav");
 	public static final URL swing_weapon_wav = Utils.loadSound("sounds/swing_weapon.wav");
-	public static final URL swing_weapon_ogg = Utils.loadSound("sounds/swing_weapon.ogg");
-	public static final URL swing_weapon2 = Utils.loadSound("sounds/swing_weapon2.wav"); // TODO fix
 	public static final URL unlock = Utils.loadSound("sounds/unlock.wav");
 
 	// Entities
