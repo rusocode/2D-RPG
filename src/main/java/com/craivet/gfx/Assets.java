@@ -20,7 +20,7 @@ public final class Assets {
 	// Sounds
 	public static final URL blue_boy_adventure = Utils.loadSound("sounds/blue_boy_adventure.wav"); // Music
 	public static final URL burning = Utils.loadSound("sounds/burning5.wav");
-	public static final URL coin = Utils.loadSound("sounds/coin_up.wav");
+	public static final URL coin_up = Utils.loadSound("sounds/coin_up.wav");
 	public static final URL cursor = Utils.loadSound("sounds/cursor.wav");
 	public static final URL cuttree = Utils.loadSound("sounds/cuttree.wav");
 	public static final URL draw_sword = Utils.loadSound("sounds/draw_sword2.wav");
@@ -53,7 +53,7 @@ public final class Assets {
 	public static final BufferedImage boots = Utils.loadImage("textures/objs/boots.png");
 	public static final BufferedImage chest = Utils.loadImage("textures/objs/chest.png");
 	public static final BufferedImage door = Utils.loadImage("textures/objs/door.png");
-	public static final BufferedImage obj_coin = Utils.loadImage("textures/objs/coin.png");
+	public static final BufferedImage coin = Utils.loadImage("textures/objs/coin.png");
 	public static final BufferedImage heart_blank = Utils.loadImage("textures/objs/heart_blank.png");
 	public static final BufferedImage heart_full = Utils.loadImage("textures/objs/heart_full.png");
 	public static final BufferedImage heart_half = Utils.loadImage("textures/objs/heart_half.png");

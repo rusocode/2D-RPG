@@ -16,8 +16,10 @@ import static com.craivet.utils.Constants.*;
 
 public class Slime extends Entity {
 
-	public Slime(Game game) {
+	public Slime(Game game, int x, int y) {
 		super(game);
+		worldX = TILE_SIZE * x;
+		worldY = TILE_SIZE * y;
 		setDefaultValues();
 	}
 

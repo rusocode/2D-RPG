@@ -14,15 +14,12 @@ public class PotionRed extends Item {
 
 	public PotionRed(Game game) {
 		super(game);
-
 		this.game = game;
-
-		type = TYPE_CONSUMABLE;
 		name = "Red Potion";
-		movementDown1 = Utils.scaleImage(Assets.potion_red, TILE_SIZE, TILE_SIZE);
-
+		type = TYPE_CONSUMABLE;
+		image = Utils.scaleImage(Assets.potion_red, TILE_SIZE, TILE_SIZE);
 		value = 5;
-		itemDescription = "[Red Potion]\nHeals your life by " + value + ".";
+		itemDescription = "[" + name + "]\nHeals your life by " + value + ".";
 	}
 
 	public void use(Entity entity) {

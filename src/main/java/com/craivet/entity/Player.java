@@ -29,12 +29,13 @@ public class Player extends Entity {
 
 	public Player(Game game, KeyHandler key) {
 		super(game);
-
-		this.key = key;
-		// Posiciona al player en el centro de la pantalla
+		// Posiciona el player en el centro de la pantalla
 		screenX = SCREEN_WIDTH / 2 - (TILE_SIZE / 2);
 		screenY = SCREEN_HEIGHT / 2 - (TILE_SIZE / 2);
-
+		// Posiciona el player en el centro del mundo
+		worldX = TILE_SIZE * 23;
+		worldY = TILE_SIZE * 21;
+		this.key = key;
 		setDefaultValues();
 	}
 
@@ -48,8 +49,6 @@ public class Player extends Entity {
 		maxMana = 4;
 		mana = maxMana;
 		ammo = 5;
-		worldX = TILE_SIZE * 23;
-		worldY = TILE_SIZE * 21;
 		level = 1;
 		exp = 0;
 		nextLevelExp = 5;
@@ -161,36 +160,36 @@ public class Player extends Entity {
 	}
 
 	public void draw(Graphics2D g2) {
-		BufferedImage image = null;
+		BufferedImage auxImage = null;
 		int tempScreenX = screenX, tempScreenY = screenY;
 		switch (direction) {
 			case "down":
-				if (!attacking) image = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
-				if (attacking) image = attackNum == 1 ? attackDown1 : attackDown2;
+				if (!attacking) auxImage = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
+				if (attacking) auxImage = attackNum == 1 ? attackDown1 : attackDown2;
 				break;
 			case "up":
-				if (!attacking) image = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
+				if (!attacking) auxImage = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 				if (attacking) {
 					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
 					tempScreenY -= TILE_SIZE;
-					image = attackNum == 1 ? attackUp1 : attackUp2;
+					auxImage = attackNum == 1 ? attackUp1 : attackUp2;
 				}
 				break;
 			case "left":
-				if (!attacking) image = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
+				if (!attacking) auxImage = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
 				if (attacking) {
 					tempScreenX -= TILE_SIZE;
-					image = attackNum == 1 ? attackLeft1 : attackLeft2;
+					auxImage = attackNum == 1 ? attackLeft1 : attackLeft2;
 				}
 				break;
 			case "right":
-				if (!attacking) image = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
-				if (attacking) image = attackNum == 1 ? attackRight1 : attackRight2;
+				if (!attacking) auxImage = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
+				if (attacking) auxImage = attackNum == 1 ? attackRight1 : attackRight2;
 				break;
 		}
 
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
-		g2.drawImage(image, tempScreenX, tempScreenY, null);
+		g2.drawImage(auxImage, tempScreenX, tempScreenY, null);
 		// g2.setColor(Color.yellow);
 		// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
 		Utils.changeAlpha(g2, 1);
@@ -372,7 +371,7 @@ public class Player extends Entity {
 	 * @param iTileIndex indice del tile interactivo.
 	 */
 	private void damageInteractiveTile(int iTileIndex) {
-		if (iTileIndex != -1 && game.iTile[iTileIndex].destructible && game.iTile[iTileIndex].isCorrectItem(this) && !game.iTile[iTileIndex].invincible) {
+		if (iTileIndex != -1 && game.iTile[iTileIndex].destructible && game.iTile[iTileIndex].isCorrectItem(currentWeapon) && !game.iTile[iTileIndex].invincible) {
 			game.playSound(Assets.cuttree);
 			game.iTile[iTileIndex].life--;
 			game.iTile[iTileIndex].invincible = true;

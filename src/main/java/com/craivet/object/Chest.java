@@ -12,9 +12,8 @@ public class Chest extends Item {
 
 	public Chest(Game game) {
 		super(game);
-
 		name = "Chest";
-		movementDown1 = Utils.scaleImage(Assets.chest, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(Assets.chest, TILE_SIZE, TILE_SIZE);
 	}
 
 }

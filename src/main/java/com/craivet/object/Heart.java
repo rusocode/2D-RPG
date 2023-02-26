@@ -16,7 +16,6 @@ public class Heart extends Item {
 
 	public Heart(Game game) {
 		super(game);
-
 		name = "Heart";
 		heartFull = Utils.scaleImage(Assets.heart_full, TILE_SIZE, TILE_SIZE);
 		heartHalf = Utils.scaleImage(Assets.heart_half, TILE_SIZE, TILE_SIZE);

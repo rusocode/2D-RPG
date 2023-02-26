@@ -12,11 +12,9 @@ public class ShieldWood extends Item {
 
 	public ShieldWood(Game game) {
 		super(game);
-
-		type = TYPE_SHIELD;
 		name = "Wood Shield";
-		movementDown1 = Utils.scaleImage(Assets.shield_wood, TILE_SIZE, TILE_SIZE);
-
+		type = TYPE_SHIELD;
+		image = Utils.scaleImage(Assets.shield_wood, TILE_SIZE, TILE_SIZE);
 		itemDescription = "[" + name + "]\nMade by wood.";
 		defenseValue = 1;
 	}

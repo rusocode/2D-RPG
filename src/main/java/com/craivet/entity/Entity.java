@@ -30,14 +30,15 @@ public abstract class Entity {
 	public int dialogueIndex;
 
 	// Atributes
-	public int type = TYPE_MOB;
+	public int worldX, worldY;
 	public String name;
+	public int type = TYPE_MOB;
+	public BufferedImage image; // Imagenes estaticas
 	public String direction = "down";
 	public int speed;
 	public int maxLife, life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
 	public int maxMana, mana;
 	public int ammo;
-	public int worldX, worldY;
 	public int level, exp, nextLevelExp;
 	public int coin;
 	public int strength, dexterity;
@@ -48,7 +49,7 @@ public abstract class Entity {
 	public int bodyAreaDefaultX, bodyAreaDefaultY;
 	public Projectile projectile;
 
-	// Images
+	// Frames
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
 	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
 	public BufferedImage heartFull, heartHalf, heartBlank;
@@ -111,7 +112,7 @@ public abstract class Entity {
 			if (game.objs[i] == null) {
 				game.objs[i] = droppedItem;
 				// La imagen Coin al ser de 32x32, tiene que ajustarse al centro de la imagen del Slime
-				game.objs[i].worldX = worldX + (Assets.slime.getWidth() / 2 - Assets.obj_coin.getWidth() / 2);
+				game.objs[i].worldX = worldX + (Assets.slime.getWidth() / 2 - Assets.coin.getWidth() / 2);
 				game.objs[i].worldY = worldY + Assets.slime.getHeight();
 				break;
 			}
@@ -185,7 +186,7 @@ public abstract class Entity {
 	}
 
 	public void draw(Graphics2D g2) {
-		BufferedImage image = null;
+		BufferedImage auxImage = null;
 		int screenX = (worldX - game.player.worldX) + game.player.screenX;
 		int screenY = (worldY - game.player.worldY) + game.player.screenY;
 		if (worldX + TILE_SIZE > game.player.worldX - game.player.screenX &&
@@ -194,16 +195,16 @@ public abstract class Entity {
 				worldY - TILE_SIZE < game.player.worldY + game.player.screenY) {
 			switch (direction) {
 				case "down":
-					image = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
+					auxImage = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
 					break;
 				case "up":
-					image = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
+					auxImage = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 					break;
 				case "left":
-					image = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
+					auxImage = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
 					break;
 				case "right":
-					image = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
+					auxImage = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
 					break;
 			}
 
@@ -225,16 +226,15 @@ public abstract class Entity {
 
 				timer.timeHpBar(this, INTERVAL_HP_BAR);
 			}
-
 			if (invincible) {
 				// Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
 				timer.hpBarCounter = 0;
 				if (!(this instanceof InteractiveTile)) Utils.changeAlpha(g2, 0.4f);
 			}
-
 			if (dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
-			g2.drawImage(image, screenX, screenY, null);
+			g2.drawImage(auxImage, screenX, screenY, null);
+			g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
 			// g2.setColor(Color.red);
 			// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
 			Utils.changeAlpha(g2, 1);

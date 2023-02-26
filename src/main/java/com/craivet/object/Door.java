@@ -12,18 +12,15 @@ public class Door extends Item {
 
 	public Door(Game game) {
 		super(game);
-
 		name = "Door";
-		movementDown1 = Utils.scaleImage(Assets.door, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(Assets.door, TILE_SIZE, TILE_SIZE);
 		collision = true;
-
 		bodyArea.x = 0;
 		bodyArea.y = 16;
 		bodyArea.width = 48;
 		bodyArea.height = 32;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
-
 	}
 
 }

@@ -1,37 +1,29 @@
 package com.craivet.tile;
 
+import java.awt.*;
+
 import com.craivet.Game;
-import com.craivet.entity.Player;
+import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
-
-import java.awt.*;
 
 import static com.craivet.utils.Constants.*;
 
 public class DryTree extends InteractiveTile {
 
-	public DryTree(Game game, int col, int row) {
+	public DryTree(Game game, int x, int y) {
 		super(game);
-
-		this.worldX = TILE_SIZE * col; // TODO O x?
-		this.worldY = TILE_SIZE * row;
-
-		movementDown1 = Utils.scaleImage(Assets.drytree, TILE_SIZE, TILE_SIZE);
+		worldX = TILE_SIZE * x;
+		worldY = TILE_SIZE * y;
+		image = Utils.scaleImage(Assets.drytree, TILE_SIZE, TILE_SIZE);
 		destructible = true;
 		life = 3;
-
 	}
 
-	public boolean isCorrectItem(Player player) {
-		return player.currentWeapon.type == TYPE_AXE;
+	public boolean isCorrectItem(Item item) {
+		return item.type == TYPE_AXE;
 	}
 
-	/**
-	 * Reemplaza el arbol seco por el tronco en la misma posicion cuando es destruido.
-	 *
-	 * @return el tronco en la misma posicion que el arbol seco.
-	 */
 	public InteractiveTile getDestroyedForm() {
 		return new Trunk(game, worldX / TILE_SIZE, worldY / TILE_SIZE);
 	}

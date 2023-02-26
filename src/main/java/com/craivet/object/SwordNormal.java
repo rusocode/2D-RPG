@@ -11,16 +11,13 @@ public class SwordNormal extends Item {
 
 	public SwordNormal(Game game) {
 		super(game);
-
-		type = TYPE_SWORD;
 		name = "Normal Sword";
-		movementDown1 = Utils.scaleImage(Assets.sword_normal, TILE_SIZE, TILE_SIZE);
-
+		type = TYPE_SWORD;
+		image = Utils.scaleImage(Assets.sword_normal, TILE_SIZE, TILE_SIZE);
 		attackArea.width = 36;
 		attackArea.height = 36;
-
 		itemDescription = "[" + name + "]\nAn old sword.";
-		attackValue = 1;
+		attackValue = 2;
 	}
 
 }

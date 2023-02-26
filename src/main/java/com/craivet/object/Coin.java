@@ -15,17 +15,14 @@ public class Coin extends Item {
 	public Coin(Game game) {
 		super(game);
 		this.game = game;
-
-		type = TYPE_PICKUP_ONLY;
 		name = "Coin";
-		movementDown1 = Utils.scaleImage(Assets.obj_coin, 32, 32);
-
+		type = TYPE_PICKUP_ONLY;
+		image = Utils.scaleImage(Assets.coin, 32, 32);
 		value = 1;
-
 	}
 
 	public void use(Entity entity) {
-		game.playSound(Assets.coin);
+		game.playSound(Assets.coin_up);
 		game.ui.addMessage("Coin +" + value);
 		game.player.coin += value;
 	}

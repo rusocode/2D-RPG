@@ -11,9 +11,8 @@ public class Boots extends Item {
 
 	public Boots(Game game) {
 		super(game);
-
 		name = "Boots";
-		movementDown1 = Utils.scaleImage(Assets.boots, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(Assets.boots, TILE_SIZE, TILE_SIZE);
 	}
 
 }

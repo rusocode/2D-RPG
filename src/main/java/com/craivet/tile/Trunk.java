@@ -8,14 +8,11 @@ import static com.craivet.utils.Constants.*;
 
 public class Trunk extends InteractiveTile {
 
-	public Trunk(Game game, int col, int row) {
+	public Trunk(Game game, int x, int y) {
 		super(game);
-
-		this.worldX = TILE_SIZE * col;
-		this.worldY = TILE_SIZE * row;
-
-		movementDown1 = Utils.scaleImage(Assets.trunk, TILE_SIZE, TILE_SIZE);
-
+		this.worldX = TILE_SIZE * x;
+		this.worldY = TILE_SIZE * y;
+		image = Utils.scaleImage(Assets.trunk, TILE_SIZE, TILE_SIZE);
 		// Resetea a 0 ya que no se podria caminar sobre el tronco
 		bodyArea.x = 0;
 		bodyArea.y = 0;

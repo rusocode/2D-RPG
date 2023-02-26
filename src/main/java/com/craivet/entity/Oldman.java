@@ -7,8 +7,10 @@ import static com.craivet.utils.Constants.*;
 
 public class Oldman extends Entity {
 
-	public Oldman(Game game) {
+	public Oldman(Game game, int x, int y) {
 		super(game);
+		worldX = TILE_SIZE * x;
+		worldY = TILE_SIZE * y;
 		setDefaultValues();
 	}
 
@@ -17,14 +19,12 @@ public class Oldman extends Entity {
 		name = "Oldman";
 		direction = "down";
 		speed = 1;
-
 		bodyArea.x = 8;
 		bodyArea.y = 16;
 		bodyArea.width = 40;
 		bodyArea.height = 32;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
-
 		initMovementImages(Assets.oldman, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initDialogue();
 	}

@@ -356,10 +356,10 @@ public class UI {
 		g2.drawString(value, textX, textY);
 		textY += gap;
 
-		g2.drawImage(game.player.currentWeapon.movementDown1, tailX - 40, textY - 15, null);
+		g2.drawImage(game.player.currentWeapon.image, tailX - 40, textY - 15, null);
 		textY += gap;
 
-		g2.drawImage(game.player.currentShield.movementDown1, tailX - 40, textY - 5, null);
+		g2.drawImage(game.player.currentShield.image, tailX - 40, textY - 5, null);
 
 	}
 
@@ -386,7 +386,7 @@ public class UI {
 				g2.fillRoundRect(slotX, slotY, TILE_SIZE, TILE_SIZE, 10, 10);
 			}
 
-			g2.drawImage(game.player.inventory.get(i).movementDown1, slotX, slotY, null);
+			g2.drawImage(game.player.inventory.get(i).image, slotX, slotY, null);
 
 			slotX += gap;
 
