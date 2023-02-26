@@ -26,7 +26,7 @@ public class Slime extends Entity {
 		name = "Slime";
 		direction = "down";
 		speed = 1;
-		maxLife = 4;
+		maxLife = 20;
 		life = maxLife;
 		exp = 2;
 
@@ -49,10 +49,10 @@ public class Slime extends Entity {
 		timer.timeDirection(this, INTERVAL_DIRECTION);
 		// TODO Crear metodo
 		int i = new Random().nextInt(100) + 1;
-		if (i > 99 && !projectile.alive && projectileCounter == INTERVAL_PROJECTILE) {
+		if (i > 99 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
 			projectile.set(worldX, worldY, direction, true, this);
 			game.projectiles.add(projectile);
-			projectileCounter = 0;
+			timer.projectileCounter = 0;
 		}
 	}
 

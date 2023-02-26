@@ -5,6 +5,8 @@ import java.util.Random;
 
 import com.craivet.entity.Entity;
 
+import static com.craivet.utils.Constants.INTERVAL_PROJECTILE_ATTACK;
+
 /**
  * Temporiza las acciones del juego.
  *
@@ -14,6 +16,10 @@ import com.craivet.entity.Entity;
 public class Timer {
 
 	public int movementCounter;
+	public int projectileCounter;
+	public int attackCounter;
+	public int attackAnimationCounter;
+	public int naturalStopWalkingCounter;
 	public int invincibleCounter;
 	public int directionCounter;
 	public int deadCounter;
@@ -31,6 +37,14 @@ public class Timer {
 			if (entity.movementNum == 1) entity.movementNum = 2;
 			else if (entity.movementNum == 2) entity.movementNum = 1;
 			movementCounter = 0;
+		}
+	}
+
+	public void timeNaturalStopWalking(Entity entity, final int interval) {
+		naturalStopWalkingCounter++;
+		if (naturalStopWalkingCounter >= interval) {
+			entity.movementNum = 1;
+			naturalStopWalkingCounter = 0;
 		}
 	}
 

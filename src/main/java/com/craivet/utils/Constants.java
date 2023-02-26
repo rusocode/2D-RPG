@@ -35,15 +35,18 @@ public final class Constants {
 	// Probabilidades
 	public static final int PROBABILIDAD_DROP_ORO = 47;
 
-	// Intervals in ms
+	// Interval animation
+	public static final int INTERVAL_DEAD_ANIMATION = 10;
 	public static final int INTERVAL_MOVEMENT_ANIMATION = 10;
-	public static final int INTERVAL_MOVEMENT_PROJECTILE_ANIMATION = 8;
+	public static final int INTERVAL_PROJECTILE_ANIMATION = 10;
+	// Interval attack
+	public static final int INTERVAL_SWORD_ATTACK = 40;
+	public static final int INTERVAL_PROJECTILE_ATTACK = 80;
+	// Interval others
 	public static final int INTERVAL_INVINCIBLE = 60;
 	public static final int INTERVAL_INVINCIBLE_TREE = 20;
 	public static final int INTERVAL_DIRECTION = 120;
-	public static final int INTERVAL_DEAD_ANIMATION = 10;
 	public static final int INTERVAL_HP_BAR = 240;
-	public static final int INTERVAL_PROJECTILE = 80;
 
 	// Game state
 	/* TODO Se podrian separar estas constantes en un enum tal vez? GameState con enums TITLE, PLAY, etc. o en un

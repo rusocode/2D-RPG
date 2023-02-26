@@ -139,20 +139,18 @@ public class Player extends Entity {
 			key.enter = false;
 			key.l = false;
 
-			timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+			// Temporiza la animacion de movimiento solo cuando se presionan las teclas de movimiento
+			if (key.s || key.w || key.a || key.d) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 
-		} else {
-			naturalStopWalkingCounter++;
-			if (naturalStopWalkingCounter == 10) {
-				movementNum = 1;
-				naturalStopWalkingCounter = 0;
-			}
-		}
+		} else timer.timeNaturalStopWalking(this, 10);
 
 		attackWithProjectile();
 
+		// Aplica el timer solo si el player es invencible
 		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-		if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
+		if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
+		if (timer.attackCounter < INTERVAL_SWORD_ATTACK) timer.attackCounter++;
+
 		if (life > maxLife) life = maxLife;
 		if (mana > maxMana) mana = maxMana;
 		if (life <= 0) {
@@ -204,10 +202,12 @@ public class Player extends Entity {
 	 */
 	private void checkAttack() {
 		// Si presiono enter y el ataque no esta cancelado
-		if (key.enter && !attackCanceled) {
-			game.playSound(Assets.swing_weapon_wav);
+		if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_SWORD_ATTACK) {
+			if (currentWeapon.type == TYPE_SWORD) game.playSound(Assets.swing_weapon);
+			if (currentWeapon.type == TYPE_AXE) game.playSound(Assets.swing_axe);
 			attacking = true;
-			attackCounter = 0;
+			timer.attackAnimationCounter = 0;
+			timer.attackCounter = 0;
 		}
 		attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
 	}
@@ -222,9 +222,9 @@ public class Player extends Entity {
 	 * mob.
 	 */
 	private void attackWithSword() {
-		attackCounter++;
-		if (attackCounter <= 5) attackNum = 1; // (0-5 frame de ataque 1)
-		if (attackCounter > 5 && attackCounter <= 25) { // (6-25 frame de ataque 2)
+		timer.attackAnimationCounter++;
+		if (timer.attackAnimationCounter <= 5) attackNum = 1; // (0-5 frame de ataque 1)
+		if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (6-25 frame de ataque 2)
 			attackNum = 2;
 
 			// Guarda la posicion actual de worldX, worldY y bodyArea
@@ -265,9 +265,9 @@ public class Player extends Entity {
 			bodyArea.width = bodyAreaWidth;
 			bodyArea.height = bodyAreaHeight;
 		}
-		if (attackCounter > 25) {
+		if (timer.attackAnimationCounter > 25) {
 			attackNum = 1;
-			attackCounter = 0;
+			timer.attackAnimationCounter = 0;
 			attacking = false;
 		}
 	}
@@ -275,12 +275,12 @@ public class Player extends Entity {
 	private void attackWithProjectile() {
 		/* Si presiono la tecla f, y si el proyectil anterior no sigue vivo, y si ya pasaron 80 frames desde su
 		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
-		if (key.f && !projectile.alive && projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this)) {
+		if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
 			projectile.set(worldX, worldY, direction, true, this);
 			// projectile.subtractResource(this);
 			game.projectiles.add(projectile);
 			game.playSound(Assets.burning);
-			projectileCounter = 0;
+			timer.projectileCounter = 0;
 		}
 	}
 
@@ -293,7 +293,7 @@ public class Player extends Entity {
 	 */
 	private void pickUpObject(int objIndex) {
 		if (objIndex != -1 && key.l) {
-			if (game.objs[objIndex].type == TYPE_PICKUP_ONLY) {
+			if (game.objs[objIndex].type == TYPE_PICKUP_ONLY) { // Coin
 				game.objs[objIndex].use(this);
 				game.objs[objIndex] = null;
 			} else if (inventory.size() != MAX_INVENTORY_SIZE) {
@@ -414,6 +414,7 @@ public class Player extends Entity {
 				currentWeapon = selectedItem;
 				attackArea = currentWeapon.attackArea;
 				attack = getAttack();
+				if (currentWeapon.type == TYPE_SWORD) game.playSound(Assets.draw_sword);
 				initAttackImages(currentWeapon.type == TYPE_SWORD ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 			}
 			if (selectedItem.type == TYPE_SHIELD) {

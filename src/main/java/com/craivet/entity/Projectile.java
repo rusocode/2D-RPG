@@ -83,7 +83,7 @@ public abstract class Projectile extends Item {
 					worldX += speed;
 					break;
 			}
-			timer.timeMovement(this, INTERVAL_MOVEMENT_PROJECTILE_ANIMATION);
+			timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);
 		}
 	}
 

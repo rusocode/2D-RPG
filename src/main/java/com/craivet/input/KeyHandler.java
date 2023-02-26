@@ -41,7 +41,6 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_S) s = false;
 		if (code == KeyEvent.VK_D) d = false;
 		if (code == KeyEvent.VK_F) f = false;
-		if (code == KeyEvent.VK_L) l = false;
 	}
 
 	private void titleState(int code) {
