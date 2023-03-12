@@ -1,55 +1,40 @@
 package com.craivet;
 
+import javax.swing.*;
 import java.io.*;
+
+import static com.craivet.utils.Constants.*;
 
 public class Config {
 
-	Game game;
+	private final Game game;
+	private static final String ON = "On";
+	private static final String OFF = "Off";
 
 	public Config(Game game) {
 		this.game = game;
 	}
 
 	public void saveConfig() {
-		try {
-			BufferedWriter bw = new BufferedWriter(new FileWriter("config.txt"));
-
-			if (game.fullScreen) bw.write("On");
-			if (!game.fullScreen) bw.write("Off");
+		try (BufferedWriter bw = new BufferedWriter(new FileWriter(CONFIG_FILE))) {
+			bw.write(game.fullScreen ? ON : OFF);
 			bw.newLine();
-
 			bw.write(String.valueOf(game.music.volumeScale));
 			bw.newLine();
-
 			bw.write(String.valueOf(game.sound.volumeScale));
 			bw.newLine();
-
-			bw.close();
-
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			JOptionPane.showMessageDialog(null, "Error al guardar la configuración: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
 	public void loadConfig() {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("config.txt"));
-
-			String s = br.readLine();
-
-			if (s.equals("On")) game.fullScreen = true;
-			if (s.equals("Off")) game.fullScreen = false;
-
-			s = br.readLine();
-			game.music.volumeScale = Integer.parseInt(s);
-
-			s = br.readLine();
-			game.sound.volumeScale = Integer.parseInt(s);
-
-			br.close();
-
+		try (BufferedReader br = new BufferedReader(new FileReader(CONFIG_FILE))) {
+			game.fullScreen = ON.equals(br.readLine());
+			game.music.volumeScale = Integer.parseInt(br.readLine());
+			game.sound.volumeScale = Integer.parseInt(br.readLine());
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			JOptionPane.showMessageDialog(null, "Error al cargar la configuración: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 

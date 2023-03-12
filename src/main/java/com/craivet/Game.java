@@ -305,7 +305,7 @@ public class Game extends JPanel implements Runnable {
 	}
 
 	public void restart() {
-		player.setDefaultValues();
+		player.initDefaultValues();
 		player.setItems();
 		aSetter.setObject();
 		aSetter.setNPC();

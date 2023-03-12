@@ -33,13 +33,13 @@ public class Player extends Entity {
 		screenX = SCREEN_WIDTH / 2 - (TILE_SIZE / 2);
 		screenY = SCREEN_HEIGHT / 2 - (TILE_SIZE / 2);
 		// Posiciona el player en el centro del mundo
-		worldX = TILE_SIZE * 23;
-		worldY = TILE_SIZE * 21;
+		worldX = 23 * TILE_SIZE;
+		worldY = 21 * TILE_SIZE;
 		this.key = key;
-		setDefaultValues();
+		initDefaultValues();
 	}
 
-	public void setDefaultValues() {
+	public void initDefaultValues() {
 		type = TYPE_PLAYER;
 		name = "Player";
 		direction = "down";
@@ -143,7 +143,7 @@ public class Player extends Entity {
 
 		} else timer.timeNaturalStopWalking(this, 10);
 
-		attackWithProjectile();
+		shootProjectile();
 
 		// Aplica el timer solo si el player es invencible
 		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
@@ -271,14 +271,14 @@ public class Player extends Entity {
 		}
 	}
 
-	private void attackWithProjectile() {
+	private void shootProjectile() {
 		/* Si presiono la tecla f, y si el proyectil anterior no sigue vivo, y si ya pasaron 80 frames desde su
 		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
 		if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
-			projectile.set(worldX, worldY, direction, true, this);
-			// projectile.subtractResource(this);
-			game.projectiles.add(projectile);
 			game.playSound(Assets.burning);
+			projectile.set(worldX, worldY, direction, true, this);
+			game.projectiles.add(projectile);
+			// projectile.subtractResource(this);
 			timer.projectileCounter = 0;
 		}
 	}

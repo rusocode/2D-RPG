@@ -9,12 +9,12 @@ public class Oldman extends Entity {
 
 	public Oldman(Game game, int x, int y) {
 		super(game);
-		worldX = TILE_SIZE * x;
-		worldY = TILE_SIZE * y;
-		setDefaultValues();
+		worldX = x * TILE_SIZE;
+		worldY = y * TILE_SIZE;
+		initDefaultValues();
 	}
 
-	private void setDefaultValues() {
+	private void initDefaultValues() {
 		type = TYPE_NPC;
 		name = "Oldman";
 		direction = "down";

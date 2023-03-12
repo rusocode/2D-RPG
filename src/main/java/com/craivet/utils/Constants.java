@@ -8,6 +8,7 @@ package com.craivet.utils;
 
 public final class Constants {
 
+	public static final String CONFIG_FILE = "config.txt";
 	public static final int FPS = 60;
 	public static final int MAX_INVENTORY_SIZE = 20;
 	public static final int PLAYER_SPEED = 3;

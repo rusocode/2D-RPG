@@ -6,8 +6,6 @@ import com.craivet.object.Coin;
 import com.craivet.object.Rock;
 import com.craivet.utils.Utils;
 
-import java.util.Random;
-
 import static com.craivet.utils.Constants.*;
 
 /**
@@ -18,12 +16,12 @@ public class Slime extends Entity {
 
 	public Slime(Game game, int x, int y) {
 		super(game);
-		worldX = TILE_SIZE * x;
-		worldY = TILE_SIZE * y;
-		setDefaultValues();
+		worldX = x * TILE_SIZE;
+		worldY = y * TILE_SIZE;
+		initDefaultValues();
 	}
 
-	private void setDefaultValues() {
+	private void initDefaultValues() {
 		type = TYPE_MOB;
 		name = "Slime";
 		direction = "down";
@@ -49,13 +47,7 @@ public class Slime extends Entity {
 
 	public void setAction() {
 		timer.timeDirection(this, INTERVAL_DIRECTION);
-		// TODO Crear metodo
-		int i = new Random().nextInt(100) + 1;
-		if (i > 99 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
-			projectile.set(worldX, worldY, direction, true, this);
-			game.projectiles.add(projectile);
-			timer.projectileCounter = 0;
-		}
+		shootProjectile();
 	}
 
 	/**
@@ -71,6 +63,14 @@ public class Slime extends Entity {
 	 */
 	public void checkDrop() {
 		if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(new Coin(game));
+	}
+
+	private void shootProjectile() {
+		if (Utils.azar(100) > 99 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
+			projectile.set(worldX, worldY, direction, true, this);
+			game.projectiles.add(projectile);
+			timer.projectileCounter = 0;
+		}
 	}
 
 }

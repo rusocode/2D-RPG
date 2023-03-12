@@ -34,6 +34,8 @@ public abstract class Entity {
 	public String name;
 	public int type = TYPE_MOB;
 	public BufferedImage image; // Imagenes estaticas
+	public BufferedImage heartFull, heartHalf, heartBlank;
+	public BufferedImage manaFull, manaBlank;
 	public String direction = "down";
 	public int speed;
 	public int maxLife, life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
@@ -52,8 +54,6 @@ public abstract class Entity {
 	// Frames
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
 	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
-	public BufferedImage heartFull, heartHalf, heartBlank;
-	public BufferedImage manaFull, manaBlank;
 
 	// States
 	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades
