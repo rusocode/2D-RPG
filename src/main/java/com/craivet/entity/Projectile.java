@@ -8,7 +8,7 @@ import static com.craivet.utils.Constants.*;
  * TODO No es logico que un proyectil extienda de un Item...
  */
 
-public abstract class Projectile extends Item {
+public class Projectile extends Item {
 
 	private Entity entity;
 

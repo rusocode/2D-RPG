@@ -1,8 +1,8 @@
 package com.craivet;
 
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.*;
+import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -39,8 +39,12 @@ public class Sound {
 			checkVolume();
 			// Inicia el clip
 			clip.start();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
+		} catch (UnsupportedAudioFileException e) {
+			JOptionPane.showMessageDialog(null, "El formato de audio no es compatible.", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(null, "Error al leer el archivo de audio.", "Error", JOptionPane.ERROR_MESSAGE);
+		} catch (LineUnavailableException e) {
+			JOptionPane.showMessageDialog(null, "No se pudo obtener el clip de audio.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
@@ -59,7 +63,6 @@ public class Sound {
 	 * Comprueba el volumen.
 	 */
 	public void checkVolume() {
-
 		switch (volumeScale) {
 			case 0:
 				volume = -80f;
@@ -80,9 +83,7 @@ public class Sound {
 				volume = 6f;
 				break;
 		}
-
 		fc.setValue(volume);
-
 	}
 
 }

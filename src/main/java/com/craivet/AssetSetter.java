@@ -5,8 +5,6 @@ import com.craivet.entity.Slime;
 import com.craivet.object.*;
 import com.craivet.tile.DryTree;
 
-import static com.craivet.utils.Constants.*;
-
 /**
  * Establece las entidades en posiciones especificas del mundo. Esta es la primer clase que se carga antes de ejecutar
  * el Game Loop, para poder actualizar y dibujar las entidades.
@@ -22,9 +20,9 @@ public class AssetSetter {
 
 	public void setObject() {
 		int i = 0;
-		game.objs[i++] = new Axe(game, 33, 7);
-		game.objs[i++] = new Axe(game, 21, 23);
-		game.objs[i++] = new Axe(game, 22, 24);
+		game.items[i++] = new Axe(game, 33, 7);
+		game.items[i++] = new Axe(game, 21, 23);
+		game.items[i++] = new Axe(game, 22, 24);
 	}
 
 	public void setNPC() {

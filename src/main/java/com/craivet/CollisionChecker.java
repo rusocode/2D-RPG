@@ -40,30 +40,30 @@ public class CollisionChecker {
 		switch (entity.direction) {
 			case DIR_DOWN:
 				entityBottomRow = (entityBottomWorldY + entity.speed) / TILE_SIZE;
-				tileNum1 = game.tileManager.map[entityLeftCol][entityBottomRow];
-				tileNum2 = game.tileManager.map[entityRightCol][entityBottomRow];
-				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
+				tileNum1 = game.tileManager.map[entityBottomRow][entityLeftCol];
+				tileNum2 = game.tileManager.map[entityBottomRow][entityRightCol];
+				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case DIR_UP:
 				entityTopRow = (entityTopWorldY - entity.speed) / TILE_SIZE;
-				tileNum1 = game.tileManager.map[entityLeftCol][entityTopRow];
-				tileNum2 = game.tileManager.map[entityRightCol][entityTopRow];
-				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
+				tileNum1 = game.tileManager.map[entityTopRow][entityLeftCol];
+				tileNum2 = game.tileManager.map[entityTopRow][entityRightCol];
+				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case DIR_LEFT:
 				entityLeftCol = (entityLeftWorldX - entity.speed) / TILE_SIZE;
-				tileNum1 = game.tileManager.map[entityLeftCol][entityTopRow];
-				tileNum2 = game.tileManager.map[entityLeftCol][entityBottomRow];
-				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
+				tileNum1 = game.tileManager.map[entityTopRow][entityLeftCol];
+				tileNum2 = game.tileManager.map[entityBottomRow][entityLeftCol];
+				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case DIR_RIGHT:
 				entityRightCol = (entityRightWorldX + entity.speed) / TILE_SIZE;
-				tileNum1 = game.tileManager.map[entityRightCol][entityTopRow];
-				tileNum2 = game.tileManager.map[entityRightCol][entityBottomRow];
-				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
+				tileNum1 = game.tileManager.map[entityTopRow][entityRightCol];
+				tileNum2 = game.tileManager.map[entityBottomRow][entityRightCol];
+				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 		}
@@ -78,13 +78,13 @@ public class CollisionChecker {
 	 */
 	public int checkObject(Entity entity) {
 		int index = -1;
-		for (int i = 0; i < game.objs.length; i++) {
-			if (game.objs[i] != null) {
+		for (int i = 0; i < game.items.length; i++) {
+			if (game.items[i] != null) {
 				// Obtiene la posicion del area del cuerpo de la entidad y del objeto
 				entity.bodyArea.x += entity.worldX;
 				entity.bodyArea.y += entity.worldY;
-				game.objs[i].bodyArea.x += game.objs[i].worldX;
-				game.objs[i].bodyArea.y += game.objs[i].worldY;
+				game.items[i].bodyArea.x += game.items[i].worldX;
+				game.items[i].bodyArea.y += game.items[i].worldY;
 				switch (entity.direction) {
 					case DIR_DOWN:
 						entity.bodyArea.y += entity.speed;
@@ -100,15 +100,15 @@ public class CollisionChecker {
 						break;
 				}
 
-				if (entity.bodyArea.intersects(game.objs[i].bodyArea)) {
-					if (game.objs[i].collision) entity.collisionOn = true;
+				if (entity.bodyArea.intersects(game.items[i].bodyArea)) {
+					if (game.items[i].collision) entity.collisionOn = true;
 					if (entity instanceof Player) index = i;
 				}
 
 				entity.bodyArea.x = entity.bodyAreaDefaultX;
 				entity.bodyArea.y = entity.bodyAreaDefaultY;
-				game.objs[i].bodyArea.x = game.objs[i].bodyAreaDefaultX;
-				game.objs[i].bodyArea.y = game.objs[i].bodyAreaDefaultY;
+				game.items[i].bodyArea.x = game.items[i].bodyAreaDefaultX;
+				game.items[i].bodyArea.y = game.items[i].bodyAreaDefaultY;
 			}
 		}
 		return index;

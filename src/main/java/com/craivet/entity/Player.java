@@ -236,13 +236,11 @@ public class Player extends Entity {
 	}
 
 	private void shootProjectile() {
-		/* Si presiono la tecla f, y si el proyectil anterior no sigue vivo, y si ya pasaron 80 frames desde su
-		 * lanzamiento y si el proyectil tiene recursos (mana, ammo, etc.) */
 		if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
 			game.playSound(Assets.burning);
 			projectile.set(worldX, worldY, direction, true, this);
 			game.projectiles.add(projectile);
-			// projectile.subtractResource(this);
+			projectile.subtractResource(this);
 			timer.projectileCounter = 0;
 		}
 	}
@@ -255,7 +253,7 @@ public class Player extends Entity {
 	private void pickUpItem(int itemIndex) {
 		if (key.l) {
 			if (itemIndex != -1) {
-				Item item = game.objs[itemIndex];
+				Item item = game.items[itemIndex];
 				if (item.type == TYPE_PICKUP_ONLY) item.use(this); // Coin
 				else if (inventory.size() != MAX_INVENTORY_SIZE) {
 					inventory.add(item);
@@ -265,7 +263,7 @@ public class Player extends Entity {
 					game.ui.addMessage("You cannot carry any more!");
 					return; // En caso de que el inventario este lleno, no elimina el item del mundo
 				}
-				game.objs[itemIndex] = null;
+				game.items[itemIndex] = null;
 			} else game.ui.addMessage("Nothing here");
 		}
 	}

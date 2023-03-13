@@ -631,6 +631,7 @@ public class UI {
 			if (game.keyH.enter) {
 				subState = 0;
 				game.gameState = TITLE_STATE;
+				game.keyH.t = false;
 			}
 		}
 

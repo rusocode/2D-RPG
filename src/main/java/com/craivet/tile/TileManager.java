@@ -16,14 +16,13 @@ import static com.craivet.utils.Constants.*;
 public class TileManager {
 
 	private final Game game;
-	// TODO Nombre world seria mas logico
-	public final int[][] map; // Los tiles se almacenan en esta matriz
 	public final Tile[] tile;
+	public final int[][] map; // TODO Nombre world seria mas logico
 
 	public TileManager(Game game) {
 		this.game = game;
 		tile = new Tile[50];
-		map = new int[MAX_WORLD_COL][MAX_WORLD_ROW];
+		map = new int[MAX_WORLD_ROW][MAX_WORLD_COL];
 		initTiles();
 		loadMap("maps/worldV3.txt");
 	}
@@ -74,14 +73,14 @@ public class TileManager {
 	/**
 	 * Crea el tile.
 	 *
-	 * @param i         el indice del tile.
-	 * @param image     la imagen del tile.
-	 * @param collision la colision del tile.
+	 * @param i       el indice del tile.
+	 * @param texture la imagen del tile.
+	 * @param solid   la colision del tile.
 	 */
-	private void createTile(int i, BufferedImage image, boolean collision) {
+	private void createTile(int i, BufferedImage texture, boolean solid) {
 		tile[i] = new Tile();
-		tile[i].image = Utils.scaleImage(image, TILE_SIZE, TILE_SIZE);
-		tile[i].collision = collision;
+		tile[i].texture = Utils.scaleImage(texture, TILE_SIZE, TILE_SIZE);
+		tile[i].solid = solid;
 	}
 
 	/**
@@ -90,40 +89,53 @@ public class TileManager {
 	 * @param path la ruta del recurso.
 	 */
 	public void loadMap(String path) {
+		int row = 0;
 		try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
-			for (int row = 0; row < MAX_WORLD_ROW; row++) {
+			for (row = 0; row < MAX_WORLD_ROW; row++) {
 				String line = br.readLine();
 				String[] numbers = line.split(" ");
 				for (int col = 0; col < MAX_WORLD_COL; col++)
-					map[col][row] = Integer.parseInt(numbers[col]);
+					map[row][col] = Integer.parseInt(numbers[col]);
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			// throw new RuntimeException(e);
+			throw new RuntimeException("Error al leer el archivo " + path + " en la linea " + (row + 1), e);
 		}
 	}
 
 	/**
-	 * Carga los tiles usando la matriz como referencia y los dibuja aplicando el desplazamiento a cada uno.
+	 * Carga los tiles usando la matriz como referencia y los dibuja (dentro de la camara) aplicando el desplazamiento a
+	 * cada uno.
 	 *
 	 * @param g2 componente grafico.
 	 */
 	public void draw(Graphics2D g2) {
+		final int playerScreenY = game.player.screenY;
+		final int playerScreenX = game.player.screenX;
+		final int playerWorldY = game.player.worldY;
+		final int playerWorldX = game.player.worldX;
 		for (int row = 0; row < MAX_WORLD_ROW; row++) {
 			for (int col = 0; col < MAX_WORLD_COL; col++) {
-				int worldX = col * TILE_SIZE;
-				int worldY = row * TILE_SIZE;
+				final int tileWorldY = row * TILE_SIZE;
+				final int tileWorldX = col * TILE_SIZE;
 				/* Resta la posicion del player (en el mundo) al tile y suma los desplazamientos de la pantalla para que
 				 * quede en el centro de esta. Este desplazamiento compensa la diferencia y obtiene las coordenadas
 				 * correctas para los tiles en la pantalla. Los tiles se dibujan en base al "movimiento" del player. El
 				 * player se mantiene estatico en el centro de la pantalla. */
-				int screenX = (worldX - game.player.worldX) + game.player.screenX;
-				int screenY = (worldY - game.player.worldY) + game.player.screenY;
-				// Dibuja los tiles que estan dentro de la camara para una mejor eficiencia
-				if (worldX + TILE_SIZE > game.player.worldX - game.player.screenX &&
-						worldX - TILE_SIZE < game.player.worldX + game.player.screenX &&
-						worldY + TILE_SIZE > game.player.worldY - game.player.screenY &&
-						worldY - TILE_SIZE < game.player.worldY + game.player.screenY) {
-					g2.drawImage(tile[map[col][row]].image, screenX, screenY, null);
+				final int screenY = (tileWorldY - playerWorldY) + playerScreenY;
+				final int screenX = (tileWorldX - playerWorldX) + playerScreenX;
+
+				final boolean isInCamera =
+						tileWorldX + TILE_SIZE > playerWorldX - playerScreenX &&
+								tileWorldX - TILE_SIZE < playerWorldX + playerScreenX &&
+								tileWorldY + TILE_SIZE > playerWorldY - playerScreenY &&
+								tileWorldY - TILE_SIZE < playerWorldY + playerScreenY;
+
+				// Si el tile se encuentra dentro de la camara
+				if (isInCamera) {
+					final int tileIndex = map[row][col];
+					final BufferedImage tileImage = tile[tileIndex].texture;
+					g2.drawImage(tileImage, screenX, screenY, null);
 					// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE); // Dibuja una grilla
 				}
 			}

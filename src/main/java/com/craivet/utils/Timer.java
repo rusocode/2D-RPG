@@ -60,7 +60,6 @@ public class Timer {
             return;
         }
 		* */
-
 		if (invincibleCounter++ >= interval) {
 			entity.invincible = false;
 			invincibleCounter = 0;
@@ -89,25 +88,12 @@ public class Timer {
 	/**
 	 * Temporiza la animacion de muerte.
 	 *
-	 * <p>Si el contador es menor o igual al interval, cambia la transparencia a 0. Si el contador esta entre el
-	 * interval y el interval * 2, cambia la transparencia a 1. Si el contador esta entre el interval * 2 y el interval
-	 * * 3, cambia la transparencia a 0. Si el contador esta entre el interval * 3 y el interval * 4, cambia la
-	 * transparencia a 1. Si el contador esta entre el interval * 4 y el interval * 5, cambia la transparencia a 0. Si
-	 * el contador esta entre el interval * 5 y el interval * 6, cambia la transparencia a 1. Si el contador esta entre
-	 * el interval * 6 y el interval * 7, cambia la transparencia a 0. Si el contador esta entre el interval * 7 y el
-	 * interval * 8, cambia la transparencia a 1. Si el contador es mayor al interval * 8, establece el estado alive en
-	 * false.
+	 * <p>Calcula la transparencia basandose en el residuo de la division del contador por el intervalo.
 	 */
 	public void timeDeadAnimation(Entity entity, final int interval, Graphics2D g2) {
 		deadCounter++;
-		if (deadCounter <= interval) Utils.changeAlpha(g2, 0);
-		if (deadCounter > interval && deadCounter <= interval * 2) Utils.changeAlpha(g2, 1);
-		if (deadCounter > interval * 2 && deadCounter <= interval * 3) Utils.changeAlpha(g2, 0);
-		if (deadCounter > interval * 3 && deadCounter <= interval * 4) Utils.changeAlpha(g2, 1);
-		if (deadCounter > interval * 4 && deadCounter <= interval * 5) Utils.changeAlpha(g2, 0);
-		if (deadCounter > interval * 5 && deadCounter <= interval * 6) Utils.changeAlpha(g2, 1);
-		if (deadCounter > interval * 6 && deadCounter <= interval * 7) Utils.changeAlpha(g2, 0);
-		if (deadCounter > interval * 7 && deadCounter <= interval * 8) Utils.changeAlpha(g2, 1);
+		int alpha = (deadCounter / interval) % 2 == 0 ? 0 : 1;
+		Utils.changeAlpha(g2, alpha);
 		if (deadCounter > interval * 8) entity.alive = false;
 	}
 
