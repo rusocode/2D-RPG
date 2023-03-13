@@ -17,7 +17,6 @@ public class Oldman extends Entity {
 	private void initDefaultValues() {
 		type = TYPE_NPC;
 		name = "Oldman";
-		direction = "down";
 		speed = 1;
 		bodyArea.x = 8;
 		bodyArea.y = 16;

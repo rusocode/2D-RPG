@@ -12,7 +12,7 @@ import static com.craivet.utils.Constants.*;
  * El Slime usa dos frames para todos los movimientos.
  */
 
-public class Slime extends Entity {
+public class Slime extends Mob {
 
 	public Slime(Game game, int x, int y) {
 		super(game);
@@ -24,9 +24,8 @@ public class Slime extends Entity {
 	private void initDefaultValues() {
 		type = TYPE_MOB;
 		name = "Slime";
-		direction = "down";
 		speed = 1;
-		maxLife = 20;
+		maxLife = 4;
 		life = maxLife;
 		exp = 2;
 

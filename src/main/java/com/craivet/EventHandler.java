@@ -45,9 +45,9 @@ public class EventHandler {
 		if (distance > TILE_SIZE) canTouchEvent = true;
 
 		if (canTouchEvent) {
-			if (hit(27, 16, "right")) damagePit(27, 16, DIALOGUE_STATE);
+			if (hit(27, 16, DIR_RIGHT)) damagePit(27, 16, DIALOGUE_STATE);
 			// if (hit(27, 16, "right")) teleport(game.dialogueState);
-			if (hit(23, 12, "up")) healingPool(23, 12, DIALOGUE_STATE);
+			if (hit(23, 12, DIR_UP)) healingPool(23, 12, DIALOGUE_STATE);
 		}
 
 	}
@@ -55,7 +55,7 @@ public class EventHandler {
 	/**
 	 * Verifica si el area solida del player colisiona con el evento de la posicion especificada.
 	 */
-	public boolean hit(int col, int row, String reqDirection) {
+	public boolean hit(int col, int row, int reqDirection) {
 		boolean hit = false;
 
 		game.player.bodyArea.x = game.player.worldX + game.player.bodyArea.x;
@@ -65,7 +65,7 @@ public class EventHandler {
 
 		// Si el player colisiona con el evento
 		if (game.player.bodyArea.intersects(eventRect[col][row])) {
-			if (game.player.direction.contentEquals(reqDirection) || game.player.direction.contentEquals("any")) {
+			if (game.player.direction == reqDirection || game.player.direction == 5) { // 5 == any
 				hit = true;
 				// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
 				previousEventX = game.player.worldX;

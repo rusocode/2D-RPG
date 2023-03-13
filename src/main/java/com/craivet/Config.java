@@ -22,7 +22,6 @@ public class Config {
 			bw.write(String.valueOf(game.music.volumeScale));
 			bw.newLine();
 			bw.write(String.valueOf(game.sound.volumeScale));
-			bw.newLine();
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Error al guardar la configuración: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}

@@ -23,6 +23,8 @@ public class AssetSetter {
 	public void setObject() {
 		int i = 0;
 		game.objs[i++] = new Axe(game, 33, 7);
+		game.objs[i++] = new Axe(game, 21, 23);
+		game.objs[i++] = new Axe(game, 22, 24);
 	}
 
 	public void setNPC() {

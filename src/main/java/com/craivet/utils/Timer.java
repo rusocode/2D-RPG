@@ -5,7 +5,7 @@ import java.util.Random;
 
 import com.craivet.entity.Entity;
 
-import static com.craivet.utils.Constants.INTERVAL_PROJECTILE_ATTACK;
+import static com.craivet.utils.Constants.*;
 
 /**
  * Temporiza las acciones del juego.
@@ -54,6 +54,13 @@ public class Timer {
 	 * <p>Si se completo el interval, deja de ser invencible y resetea el contador.
 	 */
 	public void timeInvincible(Entity entity, final int interval) {
+		/*
+		*  if (System.currentTimeMillis() - lastDamageTime < DAMAGE_COOLDOWN) {
+            // No hacer nada si todavía está invencible
+            return;
+        }
+		* */
+
 		if (invincibleCounter++ >= interval) {
 			entity.invincible = false;
 			invincibleCounter = 0;
@@ -71,10 +78,10 @@ public class Timer {
 	public void timeDirection(Entity entity, final int interval) {
 		if (directionCounter++ >= interval) {
 			int i = Utils.azar(100);
-			if (i <= 25) entity.direction = "down";
-			if (i > 25 && i <= 50) entity.direction = "up";
-			if (i > 50 && i <= 75) entity.direction = "left";
-			if (i > 75) entity.direction = "right";
+			if (i <= 25) entity.direction = DIR_DOWN;
+			if (i > 25 && i <= 50) entity.direction = DIR_UP;
+			if (i > 50 && i <= 75) entity.direction = DIR_LEFT;
+			if (i > 75) entity.direction = DIR_RIGHT;
 			directionCounter = 0;
 		}
 	}

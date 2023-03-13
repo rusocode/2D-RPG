@@ -38,28 +38,28 @@ public class CollisionChecker {
 		int tileNum1, tileNum2;
 
 		switch (entity.direction) {
-			case "down":
+			case DIR_DOWN:
 				entityBottomRow = (entityBottomWorldY + entity.speed) / TILE_SIZE;
 				tileNum1 = game.tileManager.map[entityLeftCol][entityBottomRow];
 				tileNum2 = game.tileManager.map[entityRightCol][entityBottomRow];
 				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
 					entity.collisionOn = true;
 				break;
-			case "up":
+			case DIR_UP:
 				entityTopRow = (entityTopWorldY - entity.speed) / TILE_SIZE;
 				tileNum1 = game.tileManager.map[entityLeftCol][entityTopRow];
 				tileNum2 = game.tileManager.map[entityRightCol][entityTopRow];
 				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
 					entity.collisionOn = true;
 				break;
-			case "left":
+			case DIR_LEFT:
 				entityLeftCol = (entityLeftWorldX - entity.speed) / TILE_SIZE;
 				tileNum1 = game.tileManager.map[entityLeftCol][entityTopRow];
 				tileNum2 = game.tileManager.map[entityLeftCol][entityBottomRow];
 				if (game.tileManager.tile[tileNum1].collision || game.tileManager.tile[tileNum2].collision)
 					entity.collisionOn = true;
 				break;
-			case "right":
+			case DIR_RIGHT:
 				entityRightCol = (entityRightWorldX + entity.speed) / TILE_SIZE;
 				tileNum1 = game.tileManager.map[entityRightCol][entityTopRow];
 				tileNum2 = game.tileManager.map[entityRightCol][entityBottomRow];
@@ -86,16 +86,16 @@ public class CollisionChecker {
 				game.objs[i].bodyArea.x += game.objs[i].worldX;
 				game.objs[i].bodyArea.y += game.objs[i].worldY;
 				switch (entity.direction) {
-					case "down":
+					case DIR_DOWN:
 						entity.bodyArea.y += entity.speed;
 						break;
-					case "up":
+					case DIR_UP:
 						entity.bodyArea.y -= entity.speed;
 						break;
-					case "left":
+					case DIR_LEFT:
 						entity.bodyArea.x -= entity.speed;
 						break;
-					case "right":
+					case DIR_RIGHT:
 						entity.bodyArea.x += entity.speed;
 						break;
 				}
@@ -131,16 +131,16 @@ public class CollisionChecker {
 				otherEntity[i].bodyArea.x += otherEntity[i].worldX;
 				otherEntity[i].bodyArea.y += otherEntity[i].worldY;
 				switch (entity.direction) {
-					case "down":
+					case DIR_DOWN:
 						entity.bodyArea.y += entity.speed;
 						break;
-					case "up":
+					case DIR_UP:
 						entity.bodyArea.y -= entity.speed;
 						break;
-					case "left":
+					case DIR_LEFT:
 						entity.bodyArea.x -= entity.speed;
 						break;
-					case "right":
+					case DIR_RIGHT:
 						entity.bodyArea.x += entity.speed;
 						break;
 				}
@@ -177,16 +177,16 @@ public class CollisionChecker {
 		game.player.bodyArea.x += game.player.worldX;
 		game.player.bodyArea.y += game.player.worldY;
 		switch (entity.direction) {
-			case "down":
+			case DIR_DOWN:
 				entity.bodyArea.y += entity.speed;
 				break;
-			case "up":
+			case DIR_UP:
 				entity.bodyArea.y -= entity.speed;
 				break;
-			case "left":
+			case DIR_LEFT:
 				entity.bodyArea.x -= entity.speed;
 				break;
-			case "right":
+			case DIR_RIGHT:
 				entity.bodyArea.x += entity.speed;
 				break;
 		}

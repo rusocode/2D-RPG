@@ -23,7 +23,7 @@ public abstract class Projectile extends Item {
 	public void subtractResource(Entity entity) {
 	}
 
-	public void set(int worldX, int worldY, String direction, boolean alive, Entity entity) {
+	public void set(int worldX, int worldY, int direction, boolean alive, Entity entity) {
 		this.worldX = worldX;
 		this.worldY = worldY;
 		this.direction = direction;
@@ -69,16 +69,16 @@ public abstract class Projectile extends Item {
 
 		if (alive) {
 			switch (direction) {
-				case "down":
+				case DIR_DOWN:
 					worldY += speed;
 					break;
-				case "up":
+				case DIR_UP:
 					worldY -= speed;
 					break;
-				case "left":
+				case DIR_LEFT:
 					worldX -= speed;
 					break;
-				case "right":
+				case DIR_RIGHT:
 					worldX += speed;
 					break;
 			}

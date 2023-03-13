@@ -2,6 +2,7 @@ package com.craivet;
 
 import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
+import com.craivet.entity.Mob;
 import com.craivet.entity.Player;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
@@ -43,9 +44,9 @@ public class Game extends JPanel implements Runnable {
 	public ArrayList<Entity> projectiles = new ArrayList<>();
 	public ArrayList<Entity> particles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
-	public Item[] objs = new Item[20];
+	public Item[] objs = new Item[20]; // TODO No se tendria que llamar items?
 	public Entity[] npcs = new Entity[10];
-	public Entity[] mobs = new Entity[20];
+	public Mob[] mobs = new Mob[20];
 	public InteractiveTile[] iTile = new InteractiveTile[50];
 
 	public int gameState;

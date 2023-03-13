@@ -8,6 +8,7 @@ import com.craivet.Game;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.object.*;
+import com.craivet.tile.InteractiveTile;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -22,9 +23,7 @@ public class Player extends Entity {
 	public final int screenX, screenY;
 	public boolean attackCanceled;
 
-	public Item currentWeapon;
-	public Item currentShield;
-
+	public Item currentWeapon, currentShield;
 	public ArrayList<Item> inventory = new ArrayList<>();
 
 	public Player(Game game, KeyHandler key) {
@@ -42,7 +41,6 @@ public class Player extends Entity {
 	public void initDefaultValues() {
 		type = TYPE_PLAYER;
 		name = "Player";
-		direction = "down";
 		speed = PLAYER_SPEED;
 		maxLife = 6;
 		life = maxLife;
@@ -84,7 +82,7 @@ public class Player extends Entity {
 	public void setDefaultPosition() {
 		worldX = TILE_SIZE * 23;
 		worldY = TILE_SIZE * 21;
-		direction = "down";
+		direction = DIR_DOWN;
 	}
 
 	public void restoreLifeAndMana() {
@@ -97,49 +95,19 @@ public class Player extends Entity {
 
 		if (attacking) attackWithSword();
 
-		// Evita que el player se mueva cuando no se presiono ninguna teclaw
-		if (key.s || key.w || key.a || key.d || key.enter || key.l) {
+		if (checkKeys()) {
 
-			// Obtiene la direccion dependiendo de la tecla seleccionada
-			if (key.s) direction = "down";
-			else if (key.w) direction = "up";
-			else if (key.a) direction = "left";
-			else if (key.d) direction = "right";
-
-			// Verifica las colisiones
-			collisionOn = false;
-			game.cChecker.checkTile(this);
-			pickUpObject(game.cChecker.checkObject(this));
-			interactNPC(game.cChecker.checkEntity(this, game.npcs));
-			damagePlayer(game.cChecker.checkEntity(this, game.mobs));
-			game.cChecker.checkEntity(this, game.iTile);
-			game.eHandler.checkEvent();
-
-			// Si no hay colision y si no presiono la tecla enter, el player se puede mover dependiendo de la direccion
-			if (!collisionOn && !key.enter && !key.l) {
-				switch (direction) {
-					case "down":
-						worldY += speed;
-						break;
-					case "up":
-						worldY -= speed;
-						break;
-					case "left":
-						worldX -= speed;
-						break;
-					case "right":
-						worldX += speed;
-						break;
-				}
-			}
-
+			getDirection();
+			checkCollisions();
+			updatePosition();
 			checkAttack();
 
+			// Resetea las teclas de accion
 			key.enter = false;
 			key.l = false;
 
 			// Temporiza la animacion de movimiento solo cuando se presionan las teclas de movimiento
-			if (key.s || key.w || key.a || key.d) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+			if (checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 
 		} else timer.timeNaturalStopWalking(this, 10);
 
@@ -152,44 +120,40 @@ public class Player extends Entity {
 
 		if (life > maxLife) life = maxLife;
 		if (mana > maxMana) mana = maxMana;
-		if (life <= 0) {
-			game.gameState = GAME_OVER_STATE;
-			game.playSound(Assets.player_die);
-			game.ui.commandNum = -1;
-		}
+		if (life <= 0) die();
 	}
 
 	public void draw(Graphics2D g2) {
-		BufferedImage auxImage = null;
+		BufferedImage frame = null;
 		int tempScreenX = screenX, tempScreenY = screenY;
 		switch (direction) {
-			case "down":
-				if (!attacking) auxImage = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
-				if (attacking) auxImage = attackNum == 1 ? attackDown1 : attackDown2;
+			case DIR_DOWN:
+				if (!attacking) frame = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
+				if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
 				break;
-			case "up":
-				if (!attacking) auxImage = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
+			case DIR_UP:
+				if (!attacking) frame = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 				if (attacking) {
 					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
 					tempScreenY -= TILE_SIZE;
-					auxImage = attackNum == 1 ? attackUp1 : attackUp2;
+					frame = attackNum == 1 ? attackUp1 : attackUp2;
 				}
 				break;
-			case "left":
-				if (!attacking) auxImage = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
+			case DIR_LEFT:
+				if (!attacking) frame = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
 				if (attacking) {
 					tempScreenX -= TILE_SIZE;
-					auxImage = attackNum == 1 ? attackLeft1 : attackLeft2;
+					frame = attackNum == 1 ? attackLeft1 : attackLeft2;
 				}
 				break;
-			case "right":
-				if (!attacking) auxImage = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
-				if (attacking) auxImage = attackNum == 1 ? attackRight1 : attackRight2;
+			case DIR_RIGHT:
+				if (!attacking) frame = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
+				if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
 				break;
 		}
 
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
-		g2.drawImage(auxImage, tempScreenX, tempScreenY, null);
+		g2.drawImage(frame, tempScreenX, tempScreenY, null);
 		// g2.setColor(Color.yellow);
 		// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
 		Utils.changeAlpha(g2, 1);
@@ -218,7 +182,7 @@ public class Player extends Entity {
 	 * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
 	 *
 	 * <p>En el segundo frame de ataque, la posicion X/Y se ajusta para el area de ataque y verifica si colisiona con un
-	 * mob.
+	 * mob o tile interactivo.
 	 */
 	private void attackWithSword() {
 		timer.attackAnimationCounter++;
@@ -234,15 +198,15 @@ public class Player extends Entity {
 
 			// Ajusta la posicion del player X/Y para el area de ataque
 			switch (direction) {
-				case "down":
+				case DIR_DOWN:
 					worldY += TILE_SIZE;
-				case "up":
+				case DIR_UP:
 					worldY -= attackArea.height;
 					break;
-				case "left":
+				case DIR_LEFT:
 					worldX -= attackArea.width;
 					break;
-				case "right":
+				case DIR_RIGHT:
 					worldX += TILE_SIZE;
 					break;
 			}
@@ -284,24 +248,26 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Recoge un objeto.
+	 * Recoge un item.
 	 *
-	 * <p>Si el inventario no esta lleno, lo agrega y lo elimina del mundo.
-	 *
-	 * @param objIndex indice del objeto.
+	 * @param itemIndex indice del item.
 	 */
-	private void pickUpObject(int objIndex) {
-		if (objIndex != -1 && key.l) {
-			if (game.objs[objIndex].type == TYPE_PICKUP_ONLY) { // Coin
-				game.objs[objIndex].use(this);
-				game.objs[objIndex] = null;
-			} else if (inventory.size() != MAX_INVENTORY_SIZE) {
-				inventory.add(game.objs[objIndex]);
-				game.playSound(Assets.power_up);
-				game.ui.addMessage("Got a " + game.objs[objIndex].name + "!");
-				game.objs[objIndex] = null;
-			} else game.ui.addMessage("You cannot carry any more!");
-		} else if (key.l) game.ui.addMessage("Nothing here");
+	private void pickUpItem(int itemIndex) {
+		if (key.l) {
+			if (itemIndex != -1) {
+				Item item = game.objs[itemIndex];
+				if (item.type == TYPE_PICKUP_ONLY) item.use(this); // Coin
+				else if (inventory.size() != MAX_INVENTORY_SIZE) {
+					inventory.add(item);
+					game.playSound(Assets.power_up);
+					game.ui.addMessage("Got a " + item.name + "!");
+				} else {
+					game.ui.addMessage("You cannot carry any more!");
+					return; // En caso de que el inventario este lleno, no elimina el item del mundo
+				}
+				game.objs[itemIndex] = null;
+			} else game.ui.addMessage("Nothing here");
+		}
 	}
 
 	/**
@@ -324,27 +290,26 @@ public class Player extends Entity {
 	 * @param attack   el tipo de ataque (sword o fireball).
 	 */
 	public void damageMob(int mobIndex, int attack) {
-		if (mobIndex != -1 && !game.mobs[mobIndex].invincible) {
-			// Resta la defensa del mob al ataque del player para calcular el daño justo
-			int damage = attack - game.mobs[mobIndex].defense;
-			if (damage < 0) damage = 0; // TODO No tendria que ser 1 si es 0 o menor a 0?
-			game.mobs[mobIndex].life -= damage;
-			game.ui.addMessage(damage + " damage!");
-			if (game.mobs[mobIndex].life > 0) {
-				game.playSound(Assets.hit_monster);
-			}
+		if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
+			Mob mob = game.mobs[mobIndex];
+			if (!mob.invincible) {
+				int damage = Math.max(attack - mob.defense, 0); // TODO No tendria que ser 1 si el ataque es 0 o menor?
+				mob.life -= damage;
+				game.ui.addMessage(damage + " damage!");
+				if (mob.life > 0) game.playSound(Assets.hit_monster);
 
-			game.mobs[mobIndex].invincible = true;
-			game.mobs[mobIndex].hpBarOn = true; // Activa la barra
-			game.mobs[mobIndex].damageReaction();
+				mob.invincible = true;
+				mob.hpBarOn = true;
+				mob.damageReaction();
 
-			if (game.mobs[mobIndex].life <= 0) {
-				game.playSound(Assets.mob_death);
-				game.mobs[mobIndex].dead = true;
-				game.ui.addMessage("Killed the " + game.mobs[mobIndex].name + "!");
-				game.ui.addMessage("Exp + " + game.mobs[mobIndex].exp);
-				exp += game.mobs[mobIndex].exp;
-				checkLevelUp();
+				if (mob.life <= 0) {
+					game.playSound(Assets.mob_death);
+					mob.dead = true;
+					game.ui.addMessage("Killed the " + mob.name + "!");
+					game.ui.addMessage("Exp + " + mob.exp);
+					exp += mob.exp;
+					checkLevelUp();
+				}
 			}
 		}
 	}
@@ -355,13 +320,14 @@ public class Player extends Entity {
 	 * @param mobIndex indice del mob.
 	 */
 	private void damagePlayer(int mobIndex) {
-		if (mobIndex != -1 && !invincible && !game.mobs[mobIndex].dead) {
-			game.playSound(Assets.receive_damage);
-			// Resta la defensa del player al ataque del mob para calcular el daño justo
-			int damage = game.mobs[mobIndex].attack - defense;
-			if (damage < 0) damage = 0;
-			life -= damage;
-			invincible = true;
+		if (mobIndex >= 0) {
+			Mob mob = game.mobs[mobIndex];
+			if (!invincible && !mob.dead) {
+				game.playSound(Assets.receive_damage);
+				int damage = Math.max(attack - mob.defense, 0);
+				life -= damage;
+				invincible = true;
+			}
 		}
 	}
 
@@ -371,15 +337,18 @@ public class Player extends Entity {
 	 * @param iTileIndex indice del tile interactivo.
 	 */
 	private void damageInteractiveTile(int iTileIndex) {
-		if (iTileIndex != -1 && game.iTile[iTileIndex].destructible && game.iTile[iTileIndex].isCorrectItem(currentWeapon) && !game.iTile[iTileIndex].invincible) {
-			game.playSound(Assets.cuttree);
-			game.iTile[iTileIndex].life--;
-			game.iTile[iTileIndex].invincible = true;
+		if (iTileIndex != -1) {
+			InteractiveTile iTile = game.iTile[iTileIndex];
+			if (iTile.destructible && iTile.isCorrectItem(currentWeapon) && !iTile.invincible) {
+				game.playSound(Assets.cuttree);
 
-			// Generate particle
-			generateParticle(game.iTile[iTileIndex], game.iTile[iTileIndex]);
+				iTile.life--;
+				iTile.invincible = true;
 
-			if (game.iTile[iTileIndex].life == 0) game.iTile[iTileIndex] = game.iTile[iTileIndex].getDestroyedForm();
+				generateParticle(iTile, iTile);
+
+				if (iTile.life == 0) game.iTile[iTileIndex] = iTile.getDestroyedForm();
+			}
 		}
 	}
 
@@ -425,6 +394,71 @@ public class Player extends Entity {
 				inventory.remove(itemIndex);
 			}
 		}
+	}
+
+	/**
+	 * Obtiene la direccion dependiendo de la tecla seleccionada.
+	 */
+	private void getDirection() {
+		if (key.s) direction = DIR_DOWN;
+		else if (key.w) direction = DIR_UP;
+		else if (key.a) direction = DIR_LEFT;
+		else if (key.d) direction = DIR_RIGHT;
+	}
+
+	/**
+	 * Verifica las colisiones con tiles, objetos, npcs, mobs, tiles interactivos y eventos.
+	 */
+	private void checkCollisions() {
+		collisionOn = false;
+		game.cChecker.checkTile(this);
+		pickUpItem(game.cChecker.checkObject(this));
+		interactNPC(game.cChecker.checkEntity(this, game.npcs));
+		damagePlayer(game.cChecker.checkEntity(this, game.mobs));
+		game.cChecker.checkEntity(this, game.iTile);
+		game.eHandler.checkEvent();
+	}
+
+	/**
+	 * Actualiza la posicion del player.
+	 */
+	private void updatePosition() {
+		/* Si no hay colision y si no presiono ninguna telca de accion, el player se puede mover dependiendo de la
+		 * direccion */
+		if (!collisionOn && !key.enter && !key.l) {
+			switch (direction) {
+				case DIR_DOWN:
+					worldY += speed;
+					break;
+				case DIR_UP:
+					worldY -= speed;
+					break;
+				case DIR_LEFT:
+					worldX -= speed;
+					break;
+				case DIR_RIGHT:
+					worldX += speed;
+					break;
+			}
+		}
+	}
+
+	private boolean checkKeys() {
+		return checkMovementKeys() || checkAccionKeys();
+	}
+
+	private boolean checkMovementKeys() {
+		return key.s || key.w || key.a || key.d;
+	}
+
+	private boolean checkAccionKeys() {
+		return key.enter || key.l;
+	}
+
+	private void die() {
+		game.gameState = GAME_OVER_STATE;
+		game.playSound(Assets.player_die);
+		game.ui.commandNum = -1;
 	}
 
 	private int getAttack() {

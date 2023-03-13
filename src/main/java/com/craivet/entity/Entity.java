@@ -36,7 +36,7 @@ public abstract class Entity {
 	public BufferedImage image; // Imagenes estaticas
 	public BufferedImage heartFull, heartHalf, heartBlank;
 	public BufferedImage manaFull, manaBlank;
-	public String direction = "down";
+	public int direction = DIR_DOWN;
 	public int speed;
 	public int maxLife, life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
 	public int maxMana, mana;
@@ -81,17 +81,17 @@ public abstract class Entity {
 		dialogueIndex++;
 
 		switch (game.player.direction) {
-			case "down":
-				direction = "up";
+			case DIR_DOWN:
+				direction = DIR_UP;
 				break;
-			case "up":
-				direction = "down";
+			case DIR_UP:
+				direction = DIR_DOWN;
 				break;
-			case "left":
-				direction = "right";
+			case DIR_LEFT:
+				direction = DIR_RIGHT;
 				break;
-			case "right":
-				direction = "left";
+			case DIR_RIGHT:
+				direction = DIR_LEFT;
 				break;
 		}
 	}
@@ -164,16 +164,16 @@ public abstract class Entity {
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
 		if (!collisionOn) {
 			switch (direction) {
-				case "down":
+				case DIR_DOWN:
 					worldY += speed;
 					break;
-				case "up":
+				case DIR_UP:
 					worldY -= speed;
 					break;
-				case "left":
+				case DIR_LEFT:
 					worldX -= speed;
 					break;
-				case "right":
+				case DIR_RIGHT:
 					worldX += speed;
 					break;
 			}
@@ -194,16 +194,16 @@ public abstract class Entity {
 				worldY + TILE_SIZE > game.player.worldY - game.player.screenY &&
 				worldY - TILE_SIZE < game.player.worldY + game.player.screenY) {
 			switch (direction) {
-				case "down":
+				case DIR_DOWN:
 					auxImage = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
 					break;
-				case "up":
+				case DIR_UP:
 					auxImage = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 					break;
-				case "left":
+				case DIR_LEFT:
 					auxImage = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
 					break;
-				case "right":
+				case DIR_RIGHT:
 					auxImage = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
 					break;
 			}

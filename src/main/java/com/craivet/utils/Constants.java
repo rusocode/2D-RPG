@@ -15,6 +15,12 @@ public final class Constants {
 	public static final int ENTITY_WIDTH = 16;
 	public static final int ENTITY_HEIGHT = 16;
 
+	// Directions
+	public static final int DIR_DOWN = 0;
+	public static final int DIR_UP = 1;
+	public static final int DIR_LEFT = 2;
+	public static final int DIR_RIGHT = 3;
+
 	// Screen settings
 	public static final int ORIGINAL_TILE_SIZE = 16;
 	public static final int SCALE = 3;
