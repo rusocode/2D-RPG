@@ -14,20 +14,24 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
-
     <dependencies>
 
+        <!--
+        <dependency>
+            <groupId>de.jarnbjo</groupId>
+            <artifactId>vorbis-java-core</artifactId>
+            <version>0.8</version>
+        </dependency>
+        -->
+
+        <!--
+        Un quilombo
         <dependency>
             <groupId>com.github.goxr3plus</groupId>
             <artifactId>java-stream-player</artifactId>
             <version>9.0.4</version>
         </dependency>
+        -->
 
         <!--
         Problema line with format
