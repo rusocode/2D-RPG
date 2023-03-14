@@ -17,24 +17,25 @@ public final class Assets {
 	public static final Font medieval2 = Utils.loadFont("font/KnightsQuest-nvDV.ttf", 32);
 	public static final Font medieval3 = Utils.loadFont("font/Vecna-oppx.ttf", 32);
 
-	// Sounds
-	public static final URL blue_boy_adventure = Utils.loadSound("sounds/blue_boy_adventure.wav"); // Music
-	public static final URL burning = Utils.loadSound("sounds/burning5.wav");
-	public static final URL coin_up = Utils.loadSound("sounds/coin_up.wav");
-	public static final URL cursor = Utils.loadSound("sounds/cursor.wav");
-	public static final URL cuttree = Utils.loadSound("sounds/cuttree.wav");
-	public static final URL draw_sword = Utils.loadSound("sounds/draw_sword.wav");
-	public static final URL hit_monster = Utils.loadSound("sounds/hit_monster5.wav");
-	public static final URL level_up = Utils.loadSound("sounds/level_up.wav");
-	public static final URL mob_death = Utils.loadSound("sounds/mob_death.wav");
-	public static final URL player_die = Utils.loadSound("sounds/player_die.wav");
-	public static final URL potion = Utils.loadSound("sounds/potion2.wav");
-	public static final URL power_up = Utils.loadSound("sounds/power_up.wav");
-	public static final URL receive_damage = Utils.loadSound("sounds/receive_damage.wav");
-	public static final URL spawn = Utils.loadSound("sounds/spawn.wav");
-	public static final URL swing_weapon = Utils.loadSound("sounds/swing_weapon.wav");
-	public static final URL swing_axe = Utils.loadSound("sounds/swing_axe.wav");
-	public static final URL unlock = Utils.loadSound("sounds/unlock.wav");
+	// Audio
+	public static final URL _14 = Utils.loadSound("audio/music/14.ogg");
+	public static final URL _21 = Utils.loadSound("audio/music/21.mid");
+	public static final URL burning = Utils.loadSound("audio/sounds/burning5.wav");
+	public static final URL coin_up = Utils.loadSound("audio/sounds/coin_up.wav");
+	public static final URL cursor = Utils.loadSound("audio/sounds/cursor.wav");
+	public static final URL cuttree = Utils.loadSound("audio/sounds/cuttree.wav");
+	public static final URL draw_sword = Utils.loadSound("audio/sounds/draw_sword.wav");
+	public static final URL hit_monster = Utils.loadSound("audio/sounds/hit_monster5.wav");
+	public static final URL level_up = Utils.loadSound("audio/sounds/level_up.wav");
+	public static final URL mob_death = Utils.loadSound("audio/sounds/mob_death.wav");
+	public static final URL player_die = Utils.loadSound("audio/sounds/player_die.wav");
+	public static final URL potion = Utils.loadSound("audio/sounds/potion2.wav");
+	public static final URL power_up = Utils.loadSound("audio/sounds/power_up.wav");
+	public static final URL receive_damage = Utils.loadSound("audio/sounds/receive_damage.wav");
+	public static final URL spawn = Utils.loadSound("audio/sounds/spawn.wav");
+	public static final URL swing_weapon = Utils.loadSound("audio/sounds/swing_weapon3.ogg");
+	public static final URL swing_axe = Utils.loadSound("audio/sounds/swing_axe.wav");
+	public static final URL unlock = Utils.loadSound("audio/sounds/unlock.wav");
 
 	// Entities
 	public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage("textures/entity/player/movement.png"));

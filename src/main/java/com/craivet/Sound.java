@@ -44,7 +44,7 @@ public class Sound {
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Error al leer el archivo de audio.", "Error", JOptionPane.ERROR_MESSAGE);
 		} catch (LineUnavailableException e) {
-			JOptionPane.showMessageDialog(null, "No se pudo obtener el clip de audio.", "Error", JOptionPane.ERROR_MESSAGE);
+			JOptionPane.showMessageDialog(null, "No se pudo obtener el clip de audio. \n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 
