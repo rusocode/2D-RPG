@@ -1,5 +1,7 @@
 package com.craivet.utils;
 
+import com.craivet.OggPlayer;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -31,6 +33,12 @@ public class Utils {
 	// TODO getResourceAsStream()?
 	public static URL loadSound(String path) {
 		return Utils.class.getClassLoader().getResource(path);
+	}
+
+	public static String loadSound2(String path) {
+		String p = Objects.requireNonNull(OggPlayer.class.getClassLoader().getResource(path)).getPath();
+		String formatPath = p.replace("%20", " ");
+		return formatPath.replaceAll("/", "\\\\");
 	}
 
 	/**

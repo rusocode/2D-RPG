@@ -37,6 +37,8 @@ public final class Assets {
 	public static final URL swing_axe = Utils.loadSound("audio/sounds/swing_axe.wav");
 	public static final URL unlock = Utils.loadSound("audio/sounds/unlock.wav");
 
+	public static final String swing_weapon2 = Utils.loadSound2("audio/sounds/swing_weapon3.ogg");
+
 	// Entities
 	public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage("textures/entity/player/movement.png"));
 	public static final SpriteSheet player_attack_sword = new SpriteSheet(Utils.loadImage("textures/entity/player/attack_sword.png"));
