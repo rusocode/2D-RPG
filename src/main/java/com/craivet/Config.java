@@ -21,7 +21,7 @@ public class Config {
 			bw.newLine();
 			bw.write(String.valueOf(game.music.volumeScale));
 			bw.newLine();
-			bw.write(String.valueOf(game.sound.volumeScale));
+			bw.write(String.valueOf(game.soundVLCJ.volumeScale));
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Error al guardar la configuración: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -31,7 +31,7 @@ public class Config {
 		try (BufferedReader br = new BufferedReader(new FileReader(CONFIG_FILE))) {
 			game.fullScreen = ON.equals(br.readLine());
 			game.music.volumeScale = Integer.parseInt(br.readLine());
-			game.sound.volumeScale = Integer.parseInt(br.readLine());
+			game.soundVLCJ.volumeScale = Integer.parseInt(br.readLine());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar la configuración: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}

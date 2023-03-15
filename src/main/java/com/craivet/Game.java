@@ -4,13 +4,9 @@ import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
 import com.craivet.entity.Mob;
 import com.craivet.entity.Player;
-import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.tile.TileManager;
-import com.sun.jna.NativeLibrary;
-import uk.co.caprica.vlcj.binding.RuntimeUtil;
-import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,8 +18,11 @@ import java.util.Comparator;
 import static com.craivet.utils.Constants.*;
 
 /**
- * TODO Interpolacion de renderizado?
- * TODO Separe los diferentes componentes en clases separadas, como la logica del juego, la logica de dibujo, la logica
+ * TODO Algo que me di cuenta hasta hace poco, es que se nota un pequeño lag al ejecutar una accion (por ejemplo,
+ * pulsar la tecla l constantemente) mientras se camina. Supongo que se tendria que utilizar multiprocesos para
+ * solucionar esto.
+ * TODO Aplico interpolacion de renderizado?
+ * TODO Separar los diferentes componentes en clases separadas, como la logica del juego, la logica de dibujo, la logica
  * de sonido, etc.
  * TODO Use un sistema de eventos para manejar los eventos del juego en lugar de la clase EventHandler.
  */
@@ -37,9 +36,9 @@ public class Game extends JPanel implements Runnable {
 	public TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
-	public Sound2 sound = new Sound2();
-	private final AudioPlayerComponent audioPlayerComponent;
-	public Sound music = new Sound();
+	public SoundVLCJ soundVLCJ = new SoundVLCJ();
+	public SoundJava soundJava = new SoundJava();
+	public SoundJava music = new SoundJava();
 	public UI ui = new UI(this);
 	public Config config = new Config(this);
 
@@ -69,11 +68,9 @@ public class Game extends JPanel implements Runnable {
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		setBackground(Color.black);
-		// Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
-		setDoubleBuffered(true);
+		setDoubleBuffered(true); // Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
 		addKeyListener(keyH);
 		setFocusable(true);
-		audioPlayerComponent = new AudioPlayerComponent();
 	}
 
 	@Override
@@ -278,9 +275,12 @@ public class Game extends JPanel implements Runnable {
 		music.stop();
 	}
 
-	public void playSound(String path) {
-		audioPlayerComponent.mediaPlayer().media().play(path);
-		// sound.play(path);
+	public void playSoundVLCJ(String path) {
+		soundVLCJ.play(path);
+	}
+
+	public void playSoundJava(URL url) {
+		soundJava.play(url);
 	}
 
 	public void setFullScreen() {

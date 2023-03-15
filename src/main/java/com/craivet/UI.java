@@ -519,7 +519,7 @@ public class UI {
 		// Sound volume
 		textY += TILE_SIZE;
 		g2.drawRect(textX, textY, 120, 24);
-		volumeWidth = 24 * game.sound.volumeScale;
+		volumeWidth = 24 * game.soundVLCJ.volumeScale;
 		g2.fillRect(textX, textY, volumeWidth, 24);
 
 		// Back
