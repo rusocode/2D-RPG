@@ -8,6 +8,9 @@ import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.tile.TileManager;
+import com.sun.jna.NativeLibrary;
+import uk.co.caprica.vlcj.binding.RuntimeUtil;
+import uk.co.caprica.vlcj.player.component.AudioPlayerComponent;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +37,8 @@ public class Game extends JPanel implements Runnable {
 	public TileManager tileManager = new TileManager(this);
 	public CollisionChecker cChecker = new CollisionChecker(this);
 	public AssetSetter aSetter = new AssetSetter(this);
-	public Sound sound = new Sound();
+	public Sound2 sound = new Sound2();
+	private final AudioPlayerComponent audioPlayerComponent;
 	public Sound music = new Sound();
 	public UI ui = new UI(this);
 	public Config config = new Config(this);
@@ -69,6 +73,7 @@ public class Game extends JPanel implements Runnable {
 		setDoubleBuffered(true);
 		addKeyListener(keyH);
 		setFocusable(true);
+		audioPlayerComponent = new AudioPlayerComponent();
 	}
 
 	@Override
@@ -111,6 +116,7 @@ public class Game extends JPanel implements Runnable {
 	}
 
 	public void setup() {
+
 		aSetter.setObject();
 		aSetter.setNPC();
 		aSetter.setMOB();
@@ -272,8 +278,9 @@ public class Game extends JPanel implements Runnable {
 		music.stop();
 	}
 
-	public void playSound(URL url) {
-		sound.play(url);
+	public void playSound(String path) {
+		audioPlayerComponent.mediaPlayer().media().play(path);
+		// sound.play(path);
 	}
 
 	public void setFullScreen() {

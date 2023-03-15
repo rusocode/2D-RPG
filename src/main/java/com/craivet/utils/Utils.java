@@ -11,7 +11,10 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class Utils {
+public final class Utils {
+
+	private Utils() {
+	}
 
 	/**
 	 * Carga la fuente utilizando la ruta especificada.
@@ -31,13 +34,9 @@ public class Utils {
 	}
 
 	// TODO getResourceAsStream()?
-	public static URL loadSound(String path) {
-		return Utils.class.getClassLoader().getResource(path);
-	}
-
-	public static String loadSound2(String path) {
-		String p = Objects.requireNonNull(OggPlayer.class.getClassLoader().getResource(path)).getPath();
-		String formatPath = p.replace("%20", " ");
+	public static String loadSound(String path) {
+		String s = Objects.requireNonNull(Utils.class.getClassLoader().getResource(path)).getPath();
+		String formatPath = s.replace("%20", " ");
 		return formatPath.replaceAll("/", "\\\\");
 	}
 
@@ -102,9 +101,6 @@ public class Utils {
 	 */
 	public static int azar(int max) {
 		return (int) (Math.random() * max + 1);
-	}
-
-	private Utils() {
 	}
 
 }

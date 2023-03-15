@@ -22,42 +22,6 @@
             <version>4.7.1</version>
         </dependency>
 
-        <!--
-        <dependency>
-            <groupId>de.jarnbjo</groupId>
-            <artifactId>vorbis-java-core</artifactId>
-            <version>0.8</version>
-        </dependency>
-        -->
-
-        <!--
-        Un quilombo
-        <dependency>
-            <groupId>com.github.goxr3plus</groupId>
-            <artifactId>java-stream-player</artifactId>
-            <version>9.0.4</version>
-        </dependency>
-        -->
-
-        <!--
-        Problema line with format
-        <dependency>
-            <groupId>com.github.trilarion</groupId>
-            <artifactId>java-vorbis-support</artifactId>
-            <version>1.2.1</version>
-        </dependency>
-        -->
-
-        <!--
-        No compatible
-       <dependency>
-           <groupId>org.gagravarr</groupId>
-           <artifactId>vorbis-java-core</artifactId>
-           <version>0.8</version>
-       </dependency>
-        -->
-
-
     </dependencies>
 
 </project>
