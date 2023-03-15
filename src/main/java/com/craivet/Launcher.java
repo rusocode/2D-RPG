@@ -17,19 +17,16 @@ public class Launcher {
 
 	public static void main(String[] args) throws Exception {
 		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		// System.setProperty("sun.java2d.d3d", "false"); // ?
 		window = new JFrame("2D Game");
 		window.setResizable(false);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		Game game = new Game();
 
-		// TODO Es necesario liberar el reproductor al cerrar la ventana?
 		window.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				game.soundVLCJ.getAudioPlayerComponent().release();
-				System.exit(0);
+				game.soundVLCJ.release();
 			}
 		});
 

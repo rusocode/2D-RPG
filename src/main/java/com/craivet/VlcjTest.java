@@ -58,18 +58,20 @@ public class VlcjTest extends JFrame {
 			// Controladores de eventos basicos
 			@Override
 			public void playing(MediaPlayer mediaPlayer) {
+				mediaPlayer.media().play(Assets.swing_weapon);
 				System.out.println("playing");
 			}
 
 			@Override
 			public void finished(MediaPlayer mediaPlayer) {
-				SwingUtilities.invokeLater(new Runnable() {
+				mediaPlayer.media().play(Assets.swing_weapon);
+				/*SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						System.out.println("finished");
 						exit(0);
 					}
-				});
+				}); */
 			}
 
 			@Override
@@ -79,7 +81,7 @@ public class VlcjTest extends JFrame {
 			}
 		});
 
-		audioPlayerComponent.mediaPlayer().media().play(Assets.swing_weapon);
+		// audioPlayerComponent.mediaPlayer().media().play(Assets.swing_weapon);
 
 	}
 
