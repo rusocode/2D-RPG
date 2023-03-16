@@ -252,8 +252,7 @@ public abstract class Entity {
 		if (type == TYPE_MOB && contact && !game.player.invincible) {
 			game.playSound(Assets.receive_damage);
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
-			int damage = attack - game.player.defense;
-			if (damage < 0) damage = 0;
+			int damage = Math.max(attack - game.player.defense, 0);
 			game.player.life -= damage;
 			game.player.invincible = true;
 		}

@@ -322,7 +322,7 @@ public class Player extends Entity {
 			Mob mob = game.mobs[mobIndex];
 			if (!invincible && !mob.dead) {
 				game.playSound(Assets.receive_damage);
-				int damage = Math.max(attack - mob.defense, 0);
+				int damage = Math.max(mob.attack - defense, 0);
 				life -= damage;
 				invincible = true;
 			}
@@ -458,6 +458,7 @@ public class Player extends Entity {
 		game.playSound(Assets.player_die);
 		game.ui.commandNum = -1;
 		game.music.stop();
+		attacking = false;
 	}
 
 	private int getAttack() {

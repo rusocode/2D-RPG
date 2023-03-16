@@ -57,6 +57,7 @@ public class KeyHandler extends KeyAdapter {
 				if (game.ui.commandNum == 0) {
 					game.playSound(Assets.spawn);
 					game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
+					game.restart();
 					// game.playMusic(Assets.blue_boy_adventure);
 				}
 				// if (game.ui.commandNum == 1) {}
@@ -215,7 +216,7 @@ public class KeyHandler extends KeyAdapter {
 				game.playMusic(Assets.blue_boy_adventure);
 			} else if (game.ui.commandNum == 1) {
 				game.gameState = TITLE_STATE;
-				game.restart();
+				game.retry();
 			}
 		}
 	}
