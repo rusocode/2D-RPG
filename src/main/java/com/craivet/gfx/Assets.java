@@ -18,7 +18,6 @@ public final class Assets {
 	public static final Font medieval3 = Utils.loadFont("font/Vecna-oppx.ttf", 32);
 
 	// Audio
-	public static final URL _31 = Utils.loadSound("audio/music/31.wav");
 	public static final URL blue_boy_adventure = Utils.loadSound("audio/music/blue_boy_adventure.wav");
 	public static final URL burning = Utils.loadSound("audio/sounds/burning5.wav");
 	public static final URL coin_up = Utils.loadSound("audio/sounds/coin_up.wav");
