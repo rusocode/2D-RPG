@@ -31,13 +31,7 @@ public final class Utils {
 		return null;
 	}
 
-	public static String loadSoundString(String path) {
-		String s = Objects.requireNonNull(Utils.class.getClassLoader().getResource(path)).getPath();
-		String formatPath = s.replace("%20", " ");
-		return formatPath.replaceAll("/", "\\\\");
-	}
-
-	public static URL loadSoundURL(String path) {
+	public static URL loadSound(String path) {
 		return Objects.requireNonNull(Utils.class.getClassLoader().getResource(path));
 	}
 

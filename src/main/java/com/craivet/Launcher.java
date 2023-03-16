@@ -23,13 +23,6 @@ public class Launcher {
 
 		Game game = new Game();
 
-		window.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(WindowEvent e) {
-				game.soundVLCJ.release();
-			}
-		});
-
 		game.config.loadConfig();
 		window.add(game);
 		window.pack(); // Ajusta el tamaño de la ventana al tamaño y diseño preferidos de sus subcomponentes (=GamePanel)

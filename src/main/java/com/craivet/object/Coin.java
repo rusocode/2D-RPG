@@ -22,7 +22,7 @@ public class Coin extends Item {
 	}
 
 	public void use(Entity entity) {
-		game.playSoundVLCJ(Assets.coin_up);
+		game.playSound(Assets.coin_up);
 		game.ui.addMessage("Coin +" + value);
 		game.player.coin += value;
 	}

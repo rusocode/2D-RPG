@@ -166,8 +166,8 @@ public class Player extends Entity {
 	private void checkAttack() {
 		// Si presiono enter y el ataque no esta cancelado
 		if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_SWORD_ATTACK) {
-			if (currentWeapon.type == TYPE_SWORD) game.playSoundVLCJ(Assets.swing_weapon);
-			if (currentWeapon.type == TYPE_AXE) game.playSoundVLCJ(Assets.swing_axe);
+			if (currentWeapon.type == TYPE_SWORD) game.playSound(Assets.swing_weapon);
+			if (currentWeapon.type == TYPE_AXE) game.playSound(Assets.swing_axe);
 			attacking = true;
 			timer.attackAnimationCounter = 0;
 			timer.attackCounter = 0;
@@ -237,7 +237,7 @@ public class Player extends Entity {
 
 	private void shootProjectile() {
 		if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
-			game.playSoundVLCJ(Assets.burning);
+			game.playSound(Assets.burning);
 			projectile.set(worldX, worldY, direction, true, this);
 			game.projectiles.add(projectile);
 			projectile.subtractResource(this);
@@ -257,7 +257,7 @@ public class Player extends Entity {
 				if (item.type == TYPE_PICKUP_ONLY) item.use(this); // Coin
 				else if (inventory.size() != MAX_INVENTORY_SIZE) {
 					inventory.add(item);
-					game.playSoundVLCJ(Assets.power_up);
+					game.playSound(Assets.power_up);
 					game.ui.addMessage("Got a " + item.name + "!");
 				} else {
 					game.ui.addMessage("You cannot carry any more!");
@@ -294,14 +294,14 @@ public class Player extends Entity {
 				int damage = Math.max(attack - mob.defense, 0); // TODO No tendria que ser 1 si el ataque es 0 o menor?
 				mob.life -= damage;
 				game.ui.addMessage(damage + " damage!");
-				if (mob.life > 0) game.playSoundVLCJ(Assets.hit_monster);
+				if (mob.life > 0) game.playSound(Assets.hit_monster);
 
 				mob.invincible = true;
 				mob.hpBarOn = true;
 				mob.damageReaction();
 
 				if (mob.life <= 0) {
-					game.playSoundVLCJ(Assets.mob_death);
+					game.playSound(Assets.mob_death);
 					mob.dead = true;
 					game.ui.addMessage("Killed the " + mob.name + "!");
 					game.ui.addMessage("Exp + " + mob.exp);
@@ -321,7 +321,7 @@ public class Player extends Entity {
 		if (mobIndex >= 0) {
 			Mob mob = game.mobs[mobIndex];
 			if (!invincible && !mob.dead) {
-				game.playSoundVLCJ(Assets.receive_damage);
+				game.playSound(Assets.receive_damage);
 				int damage = Math.max(attack - mob.defense, 0);
 				life -= damage;
 				invincible = true;
@@ -338,7 +338,7 @@ public class Player extends Entity {
 		if (iTileIndex != -1) {
 			InteractiveTile iTile = game.iTile[iTileIndex];
 			if (iTile.destructible && iTile.isCorrectItem(currentWeapon) && !iTile.invincible) {
-				game.playSoundVLCJ(Assets.cuttree);
+				game.playSound(Assets.cuttree);
 
 				iTile.life--;
 				iTile.invincible = true;
@@ -363,7 +363,7 @@ public class Player extends Entity {
 			attack = getAttack();
 			defense = getDefense();
 
-			game.playSoundVLCJ(Assets.level_up);
+			game.playSound(Assets.level_up);
 			game.gameState = DIALOGUE_STATE;
 			game.ui.currentDialogue = "You are level " + level + "!";
 		}
@@ -380,7 +380,7 @@ public class Player extends Entity {
 				currentWeapon = selectedItem;
 				attackArea = currentWeapon.attackArea;
 				attack = getAttack();
-				if (currentWeapon.type == TYPE_SWORD) game.playSoundVLCJ(Assets.draw_sword);
+				if (currentWeapon.type == TYPE_SWORD) game.playSound(Assets.draw_sword);
 				initAttackImages(currentWeapon.type == TYPE_SWORD ? Assets.player_attack_sword : Assets.player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 			}
 			if (selectedItem.type == TYPE_SHIELD) {
@@ -455,7 +455,7 @@ public class Player extends Entity {
 
 	private void die() {
 		game.gameState = GAME_OVER_STATE;
-		game.playSoundVLCJ(Assets.player_die);
+		game.playSound(Assets.player_die);
 		game.ui.commandNum = -1;
 	}
 

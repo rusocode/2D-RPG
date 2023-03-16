@@ -55,7 +55,7 @@ public class KeyHandler extends KeyAdapter {
 			}
 			if (code == KeyEvent.VK_ENTER) {
 				if (game.ui.commandNum == 0) {
-					game.playSoundVLCJ(Assets.spawn);
+					game.playSound(Assets.spawn);
 					game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
 					// game.playMusic(Assets.blue_boy_adventure);
 				}
@@ -111,25 +111,25 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_C) game.gameState = PLAY_STATE;
 		if (code == KeyEvent.VK_W) {
 			if (game.ui.slotRow > 0) {
-				game.playSoundVLCJ(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.slotRow--;
 			}
 		}
 		if (code == KeyEvent.VK_A) {
 			if (game.ui.slotCol > 0) {
-				game.playSoundVLCJ(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.slotCol--;
 			}
 		}
 		if (code == KeyEvent.VK_S) {
 			if (game.ui.slotRow < 3) {
-				game.playSoundVLCJ(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.slotRow++;
 			}
 		}
 		if (code == KeyEvent.VK_D) {
 			if (game.ui.slotCol < 4) {
-				game.playSoundVLCJ(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.slotCol++;
 			}
 		}
@@ -154,12 +154,12 @@ public class KeyHandler extends KeyAdapter {
 		 * siguientes instrucciones ya que la seleccion solo se mantiene en el back. */
 		if (game.ui.subState == 0 || game.ui.subState == 3) {
 			if (code == KeyEvent.VK_W) {
-				game.playSoundVLCJ(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.commandNum--;
 				if (game.ui.commandNum < 0) game.ui.commandNum = maxCommandNum;
 			}
 			if (code == KeyEvent.VK_S) {
-				game.playSoundVLCJ(Assets.cursor);
+				game.playSound(Assets.cursor);
 				game.ui.commandNum++;
 				if (game.ui.commandNum > maxCommandNum) game.ui.commandNum = 0;
 			}
@@ -172,11 +172,11 @@ public class KeyHandler extends KeyAdapter {
 					game.music.volumeScale--;
 					// TODO Hace falta esto aca?
 					game.music.checkVolume(); // Cambia el volumen de la musica cuando ya se esta reproduciendo
-					game.playSoundVLCJ(Assets.cursor);
+					game.playSound(Assets.cursor);
 				}
-				if (game.ui.commandNum == 2 && game.soundVLCJ.volumeScale > 0) { // Sonido
-					game.soundVLCJ.volumeScale--;
-					game.playSoundVLCJ(Assets.cursor);
+				if (game.ui.commandNum == 2 && game.sound.volumeScale > 0) { // Sonido
+					game.sound.volumeScale--;
+					game.playSound(Assets.cursor);
 				}
 			}
 		}
@@ -186,11 +186,11 @@ public class KeyHandler extends KeyAdapter {
 				if (game.ui.commandNum == 1 && game.music.volumeScale < 5) {
 					game.music.volumeScale++;
 					game.music.checkVolume();
-					game.playSoundVLCJ(Assets.cursor);
+					game.playSound(Assets.cursor);
 				}
-				if (game.ui.commandNum == 2 && game.soundVLCJ.volumeScale < 5) { // Sonido
-					game.soundVLCJ.volumeScale++;
-					game.playSoundVLCJ(Assets.cursor);
+				if (game.ui.commandNum == 2 && game.sound.volumeScale < 5) { // Sonido
+					game.sound.volumeScale++;
+					game.playSound(Assets.cursor);
 				}
 			}
 		}
@@ -199,12 +199,12 @@ public class KeyHandler extends KeyAdapter {
 
 	private void gameOverState(int code) {
 		if (code == KeyEvent.VK_W) {
-			game.playSoundVLCJ(Assets.cursor);
+			game.playSound(Assets.cursor);
 			game.ui.commandNum--;
 			if (game.ui.commandNum < 0) game.ui.commandNum = 1;
 		}
 		if (code == KeyEvent.VK_S) {
-			game.playSoundVLCJ(Assets.cursor);
+			game.playSound(Assets.cursor);
 			game.ui.commandNum++;
 			if (game.ui.commandNum > 1) game.ui.commandNum = 0;
 		}
