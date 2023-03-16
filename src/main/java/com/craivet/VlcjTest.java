@@ -65,7 +65,7 @@ public class VlcjTest extends JFrame {
 			@Override
 			public void finished(MediaPlayer mediaPlayer) {
 				mediaPlayer.media().play(Assets.swing_weapon);
-				/*SwingUtilities.invokeLater(new Runnable() {
+				/* SwingUtilities.invokeLater(new Runnable() {
 					@Override
 					public void run() {
 						System.out.println("finished");

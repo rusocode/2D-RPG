@@ -48,14 +48,14 @@ public class SoundVLCJ {
 			@Override
 			public void finished(MediaPlayer mediaPlayer) {
 				/* De esta manera, se liberan los recursos en un hilo separado sin afectar el rendimiento de la
-				 * aplicacion principal. Ademas, esta opcion aprovecha el pool de hilos interno de vlcj para ejecutar la
-				 * liberacion de recursos en un hilo separado, lo que puede ser mas eficiente que crear un nuevo hilo
-				 * cada vez que se necesita liberar recursos. */
-				mediaPlayer.submit(() -> {
+				 * aplicacion principal. Ademas, esta opcion (submit) aprovecha el pool de hilos interno de vlcj para
+				 * ejecutar la liberacion de recursos en un hilo separado, lo que puede ser mas eficiente que crear un
+				 * nuevo hilo cada vez que se necesita liberar recursos. */
+				/* mediaPlayer.submit(() -> {
 					mediaPlayer.release();
 					mediaPlayers.remove(mediaPlayer);
-					System.out.println("Audio eliminado");
-				});
+					System.out.println("Audio released");
+				}); */
 			}
 
 			@Override
@@ -75,11 +75,11 @@ public class SoundVLCJ {
 	 * Libera los componentes del reproductor multimedia para evitar fugas de recursos nativos.
 	 */
 	public void release() {
-		// Se supone que n
-		/* for (MediaPlayer mediaPlayer : mediaPlayers) {
+		// Se supone que los recursos fueron liberados en el detector de eventos
+		for (MediaPlayer mediaPlayer : mediaPlayers) {
 			mediaPlayer.release();
 			mediaPlayers.remove(mediaPlayer);
-		} */
+		}
 		mediaPlayers.clear();
 		mediaPlayerFactory.release();
 	}
