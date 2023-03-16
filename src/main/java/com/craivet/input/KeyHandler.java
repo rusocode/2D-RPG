@@ -212,6 +212,7 @@ public class KeyHandler extends KeyAdapter {
 			if (game.ui.commandNum == 0) {
 				game.gameState = PLAY_STATE;
 				game.retry();
+				game.playMusic(Assets.blue_boy_adventure);
 			} else if (game.ui.commandNum == 1) {
 				game.gameState = TITLE_STATE;
 				game.restart();

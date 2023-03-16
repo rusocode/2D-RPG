@@ -457,6 +457,7 @@ public class Player extends Entity {
 		game.gameState = GAME_OVER_STATE;
 		game.playSound(Assets.player_die);
 		game.ui.commandNum = -1;
+		game.music.stop();
 	}
 
 	private int getAttack() {
