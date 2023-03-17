@@ -91,7 +91,7 @@ public class Timer {
 	 * <p>Calcula la transparencia basandose en el residuo de la division del contador por el intervalo.
 	 */
 	public void timeDeadAnimation(Entity entity, final int interval, Graphics2D g2) {
-		deadCounter++;
+		deadCounter++; // TODO Nunca se resetea
 		int alpha = (deadCounter / interval) % 2 == 0 ? 0 : 1;
 		Utils.changeAlpha(g2, alpha);
 		if (deadCounter > interval * 8) entity.alive = false;

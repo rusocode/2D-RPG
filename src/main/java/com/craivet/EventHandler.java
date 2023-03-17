@@ -17,11 +17,10 @@ public class EventHandler {
 
 		eventRect = new EventRect[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 
-		// Crea un evento para cada tile
+		// Crea un evento con area solida para cada tile
 		for (int map = 0; map < MAX_MAP; map++) {
 			for (int row = 0; row < MAX_WORLD_ROW; row++) {
 				for (int col = 0; col < MAX_WORLD_COL; col++) {
-					// Ahora cada evento tiene un area solida
 					eventRect[map][row][col] = new EventRect();
 					eventRect[map][row][col].x = 23;
 					eventRect[map][row][col].y = 23;
@@ -50,8 +49,8 @@ public class EventHandler {
 			// El else if se utiliza para evitar que el siguiente if se llame inmediatamente en el caso de la teleport
 			if (hit(0, 27, 16, DIR_RIGHT)) damagePit();
 			else if (hit(0, 23, 12, DIR_UP)) healingPool();
-			else if (hit(0, 10, 39, 4)) teleport(1, 12, 13);
-			else if (hit(1, 12, 13, 4)) teleport(0, 10, 39);
+			else if (hit(0, 10, 39, DIR_ANY)) teleport(1, 12, 13);
+			else if (hit(1, 12, 13, DIR_ANY)) teleport(0, 10, 39);
 		}
 
 	}
@@ -70,7 +69,7 @@ public class EventHandler {
 
 			// Si el player colisiona con el evento
 			if (game.player.bodyArea.intersects(eventRect[map][row][col])) {
-				if (game.player.direction == reqDirection || reqDirection == 4) { // 4 = any
+				if (game.player.direction == reqDirection || reqDirection == DIR_ANY) {
 					hit = true;
 					// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
 					previousEventX = game.player.worldX;
@@ -118,7 +117,7 @@ public class EventHandler {
 		previousEventX = game.player.worldX;
 		previousEventY = game.player.worldY;
 		canTouchEvent = false;
-		game.ui.addMessage("Teleported to\n x=" + game.player.worldX / TILE_SIZE + " y=" + game.player.worldY / TILE_SIZE);
+		// game.ui.addMessage("Teleported to\n x=" + game.player.worldX / TILE_SIZE + " y=" + game.player.worldY / TILE_SIZE);
 	}
 
 }

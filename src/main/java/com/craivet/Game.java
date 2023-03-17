@@ -48,7 +48,7 @@ public class Game extends JPanel implements Runnable {
 	public ArrayList<Entity> projectiles = new ArrayList<>();
 	public ArrayList<Entity> particles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
-	public Item[][] items = new Item[MAX_MAP][20]; // TODO No se tendria que llamar items?
+	public Item[][] items = new Item[MAX_MAP][20];
 	public Entity[][] npcs = new Entity[MAX_MAP][10];
 	public Mob[][] mobs = new Mob[MAX_MAP][20];
 	public InteractiveTile[][] iTile = new InteractiveTile[MAX_MAP][50];

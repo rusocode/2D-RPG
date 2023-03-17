@@ -32,8 +32,8 @@ public class Player extends Entity {
 		screenX = SCREEN_WIDTH / 2 - (TILE_SIZE / 2);
 		screenY = SCREEN_HEIGHT / 2 - (TILE_SIZE / 2);
 		// Posiciona el player en el centro del mundo
-		worldX = 10 * TILE_SIZE;
-		worldY = 40 * TILE_SIZE;
+		worldX = 23 * TILE_SIZE; // 23,21
+		worldY = 21 * TILE_SIZE;
 		this.key = key;
 		initDefaultValues();
 	}
@@ -291,7 +291,7 @@ public class Player extends Entity {
 		if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
 			Mob mob = game.mobs[game.currentMap][mobIndex];
 			if (!mob.invincible) {
-				int damage = Math.max(attack - mob.defense, 0); // TODO No tendria que ser 1 si el ataque es 0 o menor?
+				int damage = Math.max(attack - mob.defense, 0);
 				mob.life -= damage;
 				game.ui.addMessage(damage + " damage!");
 				if (mob.life > 0) game.playSound(Assets.hit_monster);
@@ -322,6 +322,7 @@ public class Player extends Entity {
 			Mob mob = game.mobs[game.currentMap][mobIndex];
 			if (!invincible && !mob.dead) {
 				game.playSound(Assets.receive_damage);
+				// En caso de que el ataque sea menor a la defensa, entonces no hace daño
 				int damage = Math.max(mob.attack - defense, 0);
 				life -= damage;
 				invincible = true;

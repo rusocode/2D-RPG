@@ -20,6 +20,7 @@ public final class Constants {
 	public static final int DIR_UP = 1;
 	public static final int DIR_LEFT = 2;
 	public static final int DIR_RIGHT = 3;
+	public static final int DIR_ANY = 4;
 
 	// Screen settings
 	public static final int ORIGINAL_TILE_SIZE = 16;
