@@ -17,14 +17,15 @@ public class TileManager {
 
 	private final Game game;
 	public final Tile[] tile;
-	public final int[][] map; // TODO Nombre world seria mas logico
+	public final int[][][] tileIndex;
 
 	public TileManager(Game game) {
 		this.game = game;
 		tile = new Tile[50];
-		map = new int[MAX_WORLD_ROW][MAX_WORLD_COL];
+		tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 		initTiles();
-		loadMap("maps/worldV3.txt");
+		loadMap("maps/map3.txt", 0);
+		loadMap("maps/interior1.txt", 1);
 	}
 
 	/**
@@ -68,6 +69,8 @@ public class TileManager {
 		createTile(40, Assets.wall, true);
 		createTile(41, Assets.tree, true);
 		createTile(42, Assets.hut, true);
+		createTile(43, Assets.floor01, false);
+		createTile(44, Assets.table01, true);
 	}
 
 	/**
@@ -75,7 +78,7 @@ public class TileManager {
 	 *
 	 * @param i       el indice del tile.
 	 * @param texture la imagen del tile.
-	 * @param solid   la colision del tile.
+	 * @param solid   si es solido o no.
 	 */
 	private void createTile(int i, BufferedImage texture, boolean solid) {
 		tile[i] = new Tile();
@@ -88,14 +91,14 @@ public class TileManager {
 	 *
 	 * @param path la ruta del recurso.
 	 */
-	public void loadMap(String path) {
+	public void loadMap(String path, int map) {
 		int row = 0;
 		try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
 			for (row = 0; row < MAX_WORLD_ROW; row++) {
 				String line = br.readLine();
 				String[] numbers = line.split(" ");
 				for (int col = 0; col < MAX_WORLD_COL; col++)
-					map[row][col] = Integer.parseInt(numbers[col]);
+					tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
 			}
 		} catch (IOException e) {
 			// throw new RuntimeException(e);
@@ -133,7 +136,7 @@ public class TileManager {
 
 				// Si el tile se encuentra dentro de la camara
 				if (isInCamera) {
-					final int tileIndex = map[row][col];
+					final int tileIndex = this.tileIndex[game.currentMap][row][col];
 					final BufferedImage tileImage = tile[tileIndex].texture;
 					g2.drawImage(tileImage, screenX, screenY, null);
 					// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE); // Dibuja una grilla

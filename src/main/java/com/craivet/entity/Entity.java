@@ -108,12 +108,12 @@ public abstract class Entity {
 	 * @param droppedItem el item.
 	 */
 	public void dropItem(Item droppedItem) {
-		for (int i = 0; i < game.items.length; i++) {
-			if (game.items[i] == null) {
-				game.items[i] = droppedItem;
+		for (int i = 0; i < game.items[1].length; i++) {
+			if (game.items[game.currentMap][i] == null) {
+				game.items[game.currentMap][i] = droppedItem;
 				// La imagen Coin al ser de 32x32, tiene que ajustarse al centro de la imagen del Slime
-				game.items[i].worldX = worldX + (Assets.slime.getWidth() / 2 - Assets.coin.getWidth() / 2);
-				game.items[i].worldY = worldY + Assets.slime.getHeight();
+				game.items[game.currentMap][i].worldX = worldX + (Assets.slime.getWidth() / 2 - Assets.coin.getWidth() / 2);
+				game.items[game.currentMap][i].worldY = worldY + Assets.slime.getHeight();
 				break;
 			}
 		}

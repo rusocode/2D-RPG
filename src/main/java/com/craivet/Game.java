@@ -48,10 +48,10 @@ public class Game extends JPanel implements Runnable {
 	public ArrayList<Entity> projectiles = new ArrayList<>();
 	public ArrayList<Entity> particles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
-	public Item[] items = new Item[20]; // TODO No se tendria que llamar items?
-	public Entity[] npcs = new Entity[10];
-	public Mob[] mobs = new Mob[20];
-	public InteractiveTile[] iTile = new InteractiveTile[50];
+	public Item[][] items = new Item[MAX_MAP][20]; // TODO No se tendria que llamar items?
+	public Entity[][] npcs = new Entity[MAX_MAP][10];
+	public Mob[][] mobs = new Mob[MAX_MAP][20];
+	public InteractiveTile[][] iTile = new InteractiveTile[MAX_MAP][50];
 
 	public int gameState;
 	private boolean running;
@@ -64,6 +64,7 @@ public class Game extends JPanel implements Runnable {
 	// For full screen
 	public int screenWidth = SCREEN_WIDTH;
 	public int screenHeight = SCREEN_HEIGHT;
+	public int currentMap = 1;
 
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -145,17 +146,17 @@ public class Game extends JPanel implements Runnable {
 	public void update() {
 		if (gameState == PLAY_STATE) {
 			player.update();
-			for (Entity npc : npcs)
-				if (npc != null) npc.update();
-			for (int i = 0; i < mobs.length; i++) {
-				if (mobs[i] != null) {
+			for (int i = 0; i < npcs[1].length; i++)
+				if (npcs[currentMap][i] != null) npcs[currentMap][i].update();
+			for (int i = 0; i < mobs[1].length; i++) {
+				if (mobs[currentMap][i] != null) {
 					/* Cuando muere el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
 					 * genera la animacion de muerte y al finalizarla, establece alive en false para que no genere
 					 * movimiento y elimine el objeto. */
-					if (mobs[i].alive && !mobs[i].dead) mobs[i].update();
-					if (!mobs[i].alive) {
-						mobs[i].checkDrop();
-						mobs[i] = null;
+					if (mobs[currentMap][i].alive && !mobs[currentMap][i].dead) mobs[currentMap][i].update();
+					if (!mobs[currentMap][i].alive) {
+						mobs[currentMap][i].checkDrop();
+						mobs[currentMap][i] = null;
 					}
 				}
 			}
@@ -171,8 +172,8 @@ public class Game extends JPanel implements Runnable {
 					if (!particles.get(i).alive) particles.remove(i);
 				}
 			}
-			for (InteractiveTile interactiveTile : iTile)
-				if (interactiveTile != null) interactiveTile.update();
+			for (int i = 0; i < iTile[1].length; i++)
+				if (iTile[currentMap][i] != null) iTile[currentMap][i].update();
 		}
 	}
 
@@ -191,17 +192,17 @@ public class Game extends JPanel implements Runnable {
 		} else {
 			tileManager.draw(g2);
 
-			for (InteractiveTile interactiveTile : iTile)
-				if (interactiveTile != null) interactiveTile.draw(g2);
+			for (int i = 0; i < iTile[1].length; i++)
+				if (iTile[currentMap][i] != null) iTile[currentMap][i].draw(g2);
 
 			// Add entities to the list
 			entities.add(player);
-			for (Entity npc : npcs)
-				if (npc != null) entities.add(npc);
-			for (Item obj : items)
-				if (obj != null) itemList.add(obj);
-			for (Entity mob : mobs)
-				if (mob != null) entities.add(mob);
+			for (int i = 0; i < npcs[1].length; i++)
+				if (npcs[currentMap][i] != null) entities.add(npcs[currentMap][i]);
+			for (int i = 0; i < items[1].length; i++)
+				if (items[currentMap][i] != null) itemList.add(items[currentMap][i]);
+			for (int i = 0; i < mobs[1].length; i++)
+				if (mobs[currentMap][i] != null) entities.add(mobs[currentMap][i]);
 			for (Entity projectile : projectiles)
 				if (projectile != null) entities.add(projectile);
 			for (Entity particle : particles)

@@ -97,7 +97,16 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_ESCAPE) game.gameState = OPTION_STATE;
 		/* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
 		 * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
-		if (code == KeyEvent.VK_R) game.tileManager.loadMap("maps/worldV3.txt");
+		if (code == KeyEvent.VK_R) {
+			switch (game.currentMap) {
+				case 0:
+					game.tileManager.loadMap("maps/map3.txt", 0);
+					break;
+				case 1:
+					game.tileManager.loadMap("maps/interior1.txt", 1);
+					break;
+			}
+		}
 	}
 
 	private void pauseState(int code) {

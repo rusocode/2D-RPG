@@ -19,33 +19,37 @@ public class AssetSetter {
 	}
 
 	public void setObject() {
-		int i = 0;
-		game.items[i++] = new Axe(game, 33, 7);
-		game.items[i++] = new Axe(game, 21, 23);
-		game.items[i++] = new Axe(game, 22, 24);
+		int mapNum = 0, i = 0;
+		game.items[mapNum][i++] = new Axe(game, 33, 7);
+		game.items[mapNum][i++] = new Axe(game, 21, 23);
+		game.items[mapNum][i++] = new Axe(game, 22, 24);
 	}
 
 	public void setNPC() {
-		int i = 0;
-		game.npcs[i++] = new Oldman(game, 21, 21);
+		int mapNum = 0, i = 0;
+		game.npcs[mapNum][i++] = new Oldman(game, 21, 21);
 	}
 
 	public void setMOB() {
-		int i = 0;
-		game.mobs[i++] = new Slime(game, 23, 42);
-		game.mobs[i++] = new Slime(game, 24, 37);
-		game.mobs[i++] = new Slime(game, 34, 42);
-		game.mobs[i++] = new Slime(game, 38, 42);
+		int mapNum = 0, i = 0;
+		game.mobs[mapNum][i++] = new Slime(game, 23, 42);
+		game.mobs[mapNum][i++] = new Slime(game, 24, 37);
+		game.mobs[mapNum][i++] = new Slime(game, 34, 42);
+		game.mobs[mapNum][i++] = new Slime(game, 38, 42);
+
+		// Si quiere poner mobs en interior1.txt
+		// mapNum = 1;
+		// game.mobs[mapNum][i++] = new Slime(game, 23, 42);
 	}
 
 	public void setInteractiveTile() {
-		int i = 0;
-		game.iTile[i++] = new DryTree(game, 28, 21);
-		game.iTile[i++] = new DryTree(game, 29, 21);
-		game.iTile[i++] = new DryTree(game, 30, 21);
-		game.iTile[i++] = new DryTree(game, 31, 21);
-		game.iTile[i++] = new DryTree(game, 32, 21);
-		game.iTile[i++] = new DryTree(game, 33, 21);
+		int mapNum = 0, i = 0;
+		game.iTile[mapNum][i++] = new DryTree(game, 28, 21);
+		game.iTile[mapNum][i++] = new DryTree(game, 29, 21);
+		game.iTile[mapNum][i++] = new DryTree(game, 30, 21);
+		game.iTile[mapNum][i++] = new DryTree(game, 31, 21);
+		game.iTile[mapNum][i++] = new DryTree(game, 32, 21);
+		game.iTile[mapNum][i++] = new DryTree(game, 33, 21);
 	}
 
 }
