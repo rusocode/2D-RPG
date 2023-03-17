@@ -102,8 +102,8 @@ public class EventHandler {
 	 */
 	public void healingPool() {
 		if (game.keyH.enter) {
-			game.player.attackCanceled = true; // No puede atacar si regenera vida
 			game.gameState = DIALOGUE_STATE;
+			game.player.attackCanceled = true; // No puede atacar si regenera vida
 			game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";
 			game.player.life = game.player.maxLife;
 			game.aSetter.setMOB();
