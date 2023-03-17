@@ -700,7 +700,7 @@ public class UI {
 
 	public void addMessage(String text) {
 		message.add(text);
-		messageCounter.add(0); // Cro que evita un IndexOutOfBoundsException
+		messageCounter.add(0); // Creo que evita un IndexOutOfBoundsException
 	}
 
 	/**

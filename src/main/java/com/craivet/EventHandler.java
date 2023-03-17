@@ -5,7 +5,7 @@ import static com.craivet.utils.Constants.*;
 public class EventHandler {
 
 	private final Game game;
-	private final EventRect[][] eventRect;
+	private final EventRect[][][] eventRect;
 
 	/* El evento no sucede de nuevo si el player no se encuentra a 1 tile de distancia. Esta mecanica evita que el
 	 * evento se repita en el mismo lugar. */
@@ -15,19 +15,21 @@ public class EventHandler {
 	public EventHandler(Game game) {
 		this.game = game;
 
-		eventRect = new EventRect[MAX_WORLD_COL][MAX_WORLD_ROW];
+		eventRect = new EventRect[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 
-		// Crea un evento para cada tile del mapa
-		for (int row = 0; row < MAX_WORLD_ROW; row++) {
-			for (int col = 0; col < MAX_WORLD_COL; col++) {
-				// Ahora cada evento tiene un area solida
-				eventRect[col][row] = new EventRect();
-				eventRect[col][row].x = 23;
-				eventRect[col][row].y = 23;
-				eventRect[col][row].width = 2;
-				eventRect[col][row].height = 2;
-				eventRect[col][row].eventRectDefaultX = eventRect[col][row].x;
-				eventRect[col][row].eventRectDefaultY = eventRect[col][row].y;
+		// Crea un evento para cada tile
+		for (int map = 0; map < MAX_MAP; map++) {
+			for (int row = 0; row < MAX_WORLD_ROW; row++) {
+				for (int col = 0; col < MAX_WORLD_COL; col++) {
+					// Ahora cada evento tiene un area solida
+					eventRect[map][row][col] = new EventRect();
+					eventRect[map][row][col].x = 23;
+					eventRect[map][row][col].y = 23;
+					eventRect[map][row][col].width = 2;
+					eventRect[map][row][col].height = 2;
+					eventRect[map][row][col].eventRectDefaultX = eventRect[map][row][col].x;
+					eventRect[map][row][col].eventRectDefaultY = eventRect[map][row][col].y;
+				}
 			}
 		}
 
@@ -45,9 +47,11 @@ public class EventHandler {
 		if (distance > TILE_SIZE) canTouchEvent = true;
 
 		if (canTouchEvent) {
-			if (hit(27, 16, DIR_RIGHT)) damagePit(27, 16, DIALOGUE_STATE);
-			// if (hit(27, 16, "right")) teleport(game.dialogueState);
-			if (hit(23, 12, DIR_UP)) healingPool(23, 12, DIALOGUE_STATE);
+			// El else if se utiliza para evitar que el siguiente if se llame inmediatamente en el caso de la teleport
+			if (hit(0, 27, 16, DIR_RIGHT)) damagePit();
+			else if (hit(0, 23, 12, DIR_UP)) healingPool();
+			else if (hit(0, 10, 39, 4)) teleport(1, 12, 13);
+			else if (hit(1, 12, 13, 4)) teleport(0, 10, 39);
 		}
 
 	}
@@ -55,28 +59,30 @@ public class EventHandler {
 	/**
 	 * Verifica si el area solida del player colisiona con el evento de la posicion especificada.
 	 */
-	public boolean hit(int col, int row, int reqDirection) {
+	public boolean hit(int map, int col, int row, int reqDirection) {
 		boolean hit = false;
 
-		game.player.bodyArea.x = game.player.worldX + game.player.bodyArea.x;
-		game.player.bodyArea.y = game.player.worldY + game.player.bodyArea.y;
-		eventRect[col][row].x = col * TILE_SIZE + eventRect[col][row].x;
-		eventRect[col][row].y = row * TILE_SIZE + eventRect[col][row].y;
+		if (map == game.currentMap) {
+			game.player.bodyArea.x += game.player.worldX;
+			game.player.bodyArea.y += game.player.worldY;
+			eventRect[map][row][col].x += col * TILE_SIZE;
+			eventRect[map][row][col].y += row * TILE_SIZE;
 
-		// Si el player colisiona con el evento
-		if (game.player.bodyArea.intersects(eventRect[col][row])) {
-			if (game.player.direction == reqDirection || game.player.direction == 5) { // 5 == any
-				hit = true;
-				// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
-				previousEventX = game.player.worldX;
-				previousEventY = game.player.worldY;
+			// Si el player colisiona con el evento
+			if (game.player.bodyArea.intersects(eventRect[map][row][col])) {
+				if (game.player.direction == reqDirection || reqDirection == 4) { // 4 = any
+					hit = true;
+					// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
+					previousEventX = game.player.worldX;
+					previousEventY = game.player.worldY;
+				}
 			}
-		}
 
-		game.player.bodyArea.x = game.player.bodyAreaDefaultX;
-		game.player.bodyArea.y = game.player.bodyAreaDefaultY;
-		eventRect[col][row].x = eventRect[col][row].eventRectDefaultX;
-		eventRect[col][row].y = eventRect[col][row].eventRectDefaultY;
+			game.player.bodyArea.x = game.player.bodyAreaDefaultX;
+			game.player.bodyArea.y = game.player.bodyAreaDefaultY;
+			eventRect[map][row][col].x = eventRect[map][row][col].eventRectDefaultX;
+			eventRect[map][row][col].y = eventRect[map][row][col].eventRectDefaultY;
+		}
 
 		return hit;
 
@@ -85,8 +91,8 @@ public class EventHandler {
 	/**
 	 * Resta vida al player si callo en la foza.
 	 */
-	private void damagePit(int col, int row, int gameState) {
-		game.gameState = gameState;
+	private void damagePit() {
+		game.gameState = DIALOGUE_STATE;
 		game.ui.currentDialogue = "You fall into a pit!";
 		game.player.life--;
 		canTouchEvent = false;
@@ -95,21 +101,24 @@ public class EventHandler {
 	/**
 	 * Regenera vida al player si toma agua.
 	 */
-	public void healingPool(int col, int row, int gameState) {
+	public void healingPool() {
 		if (game.keyH.enter) {
 			game.player.attackCanceled = true; // No puede atacar si regenera vida
-			game.gameState = gameState;
+			game.gameState = DIALOGUE_STATE;
 			game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";
 			game.player.life = game.player.maxLife;
 			game.aSetter.setMOB();
 		}
 	}
 
-	public void teleport(int gameState) {
-		game.gameState = gameState;
-		game.player.worldX = TILE_SIZE * 37;
-		game.player.worldY = TILE_SIZE * 10;
-		game.ui.currentDialogue = "You teleported to position\n x=" + game.player.worldX / TILE_SIZE + " y=" + game.player.worldY / TILE_SIZE;
+	public void teleport(int map, int col, int row) {
+		game.currentMap = map;
+		game.player.worldX = TILE_SIZE * col;
+		game.player.worldY = TILE_SIZE * row;
+		previousEventX = game.player.worldX;
+		previousEventY = game.player.worldY;
+		canTouchEvent = false;
+		game.ui.addMessage("Teleported to\n x=" + game.player.worldX / TILE_SIZE + " y=" + game.player.worldY / TILE_SIZE);
 	}
 
 }

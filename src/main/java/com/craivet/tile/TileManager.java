@@ -68,7 +68,7 @@ public class TileManager {
 		createTile(39, Assets.earth, false);
 		createTile(40, Assets.wall, true);
 		createTile(41, Assets.tree, true);
-		createTile(42, Assets.hut, true);
+		createTile(42, Assets.hut, false);
 		createTile(43, Assets.floor01, false);
 		createTile(44, Assets.table01, true);
 	}

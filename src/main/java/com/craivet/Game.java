@@ -64,7 +64,7 @@ public class Game extends JPanel implements Runnable {
 	// For full screen
 	public int screenWidth = SCREEN_WIDTH;
 	public int screenHeight = SCREEN_HEIGHT;
-	public int currentMap = 1;
+	public int currentMap = 0;
 
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
