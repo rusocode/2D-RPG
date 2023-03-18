@@ -14,6 +14,7 @@ public class Key extends Item {
 		name = "Key";
 		image = Utils.scaleImage(Assets.key, TILE_SIZE, TILE_SIZE);
 		itemDescription = "[" + name + "]\nIt opens a door.";
+		price = 100;
 	}
 
 }

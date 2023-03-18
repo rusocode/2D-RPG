@@ -21,6 +21,7 @@ public class Axe extends Item {
 		attackArea.height = 30;
 		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
 		attackValue = 1;
+		price = 75;
 	}
 
 	public Axe(Game game, int x, int y) {

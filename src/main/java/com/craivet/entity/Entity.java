@@ -2,6 +2,7 @@ package com.craivet.entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import com.craivet.Game;
 import com.craivet.gfx.Assets;
@@ -26,6 +27,8 @@ public abstract class Entity {
 
 	public Game game;
 	public Timer timer = new Timer();
+	public ArrayList<Entity> inventory = new ArrayList<>();
+	public Item item;
 	public String[] dialogues = new String[20];
 	public int dialogueIndex;
 
@@ -45,11 +48,15 @@ public abstract class Entity {
 	public int coin;
 	public int strength, dexterity;
 	public int attack, defense;
+	public int attackValue, defenseValue;
 	public boolean collision;
 	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
 	public Rectangle bodyArea = new Rectangle(0, 0, 48, 48);
 	public int bodyAreaDefaultX, bodyAreaDefaultY;
 	public Projectile projectile;
+	public Entity currentWeapon, currentShield;
+	public String itemDescription;
+	public int price;
 
 	// Frames
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -236,7 +243,7 @@ public abstract class Entity {
 			g2.drawImage(auxImage, screenX, screenY, null);
 			g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
 			// g2.setColor(Color.red);
-			// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+			// g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
 			Utils.changeAlpha(g2, 1);
 		}
 	}

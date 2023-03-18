@@ -16,6 +16,7 @@ public class ShieldBlue extends Item {
 		image = Utils.scaleImage(Assets.shield_blue, TILE_SIZE, TILE_SIZE);
 		itemDescription = "[" + name + "]\nA shiny blue shield.";
 		defenseValue = 2;
+		price = 250;
 	}
 
 }

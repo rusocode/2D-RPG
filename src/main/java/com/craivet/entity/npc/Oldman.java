@@ -1,6 +1,7 @@
-package com.craivet.entity;
+package com.craivet.entity.npc;
 
 import com.craivet.Game;
+import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 
 import static com.craivet.utils.Constants.*;
@@ -20,7 +21,7 @@ public class Oldman extends Entity {
 		speed = 1;
 		bodyArea.x = 8;
 		bodyArea.y = 16;
-		bodyArea.width = 40;
+		bodyArea.width = 32;
 		bodyArea.height = 32;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;

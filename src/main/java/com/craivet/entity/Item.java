@@ -4,8 +4,6 @@ import com.craivet.Game;
 
 public class Item extends Entity {
 
-	public String itemDescription;
-	public int attackValue, defenseValue;
 	public int useCost;
 	public int value;
 

@@ -20,6 +20,7 @@ public class PotionRed extends Item {
 		image = Utils.scaleImage(Assets.potion_red, TILE_SIZE, TILE_SIZE);
 		value = 5;
 		itemDescription = "[" + name + "]\nHeals your life by " + value + ".";
+		price = 25;
 	}
 
 	public void use(Entity entity) {

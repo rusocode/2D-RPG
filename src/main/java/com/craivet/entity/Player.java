@@ -23,17 +23,14 @@ public class Player extends Entity {
 	public final int screenX, screenY;
 	public boolean attackCanceled;
 
-	public Item currentWeapon, currentShield;
-	public ArrayList<Item> inventory = new ArrayList<>();
-
 	public Player(Game game, KeyHandler key) {
 		super(game);
 		// Posiciona el player en el centro de la pantalla
 		screenX = SCREEN_WIDTH / 2 - (TILE_SIZE / 2);
 		screenY = SCREEN_HEIGHT / 2 - (TILE_SIZE / 2);
 		// Posiciona el player en el centro del mundo
-		worldX = 23 * TILE_SIZE; // 23,21
-		worldY = 21 * TILE_SIZE;
+		worldX = 12 * TILE_SIZE; // 23,21
+		worldY = 12 * TILE_SIZE;
 		this.key = key;
 		initDefaultValues();
 	}
@@ -50,7 +47,7 @@ public class Player extends Entity {
 		level = 1;
 		exp = 0;
 		nextLevelExp = 5;
-		coin = 0;
+		coin = 500;
 
 		invincible = false;
 
@@ -155,7 +152,7 @@ public class Player extends Entity {
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
 		g2.drawImage(frame, tempScreenX, tempScreenY, null);
 		// g2.setColor(Color.yellow);
-		// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE);
+		// g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
 		Utils.changeAlpha(g2, 1);
 
 	}
@@ -374,9 +371,9 @@ public class Player extends Entity {
 	 * Selecciona el item del array de inventario utilizando el indice del slot del inventario UI.
 	 */
 	public void selectItem() {
-		int itemIndex = game.ui.getItemIndexOnSlot();
+		int itemIndex = game.ui.getItemIndexOnSlot(game.ui.playerSlotCol, game.ui.playerSlotRow);
 		if (itemIndex < inventory.size()) {
-			Item selectedItem = inventory.get(itemIndex);
+			Entity selectedItem = inventory.get(itemIndex);
 			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) {
 				currentWeapon = selectedItem;
 				attackArea = currentWeapon.attackArea;

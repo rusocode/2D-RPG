@@ -1,5 +1,7 @@
 package com.craivet;
 
+import com.craivet.entity.Entity;
+
 import static com.craivet.utils.Constants.*;
 
 public class EventHandler {
@@ -9,8 +11,9 @@ public class EventHandler {
 
 	/* El evento no sucede de nuevo si el player no se encuentra a 1 tile de distancia. Esta mecanica evita que el
 	 * evento se repita en el mismo lugar. */
-	private int previousEventX, previousEventY;
+	public int previousEventX, previousEventY;
 	private boolean canTouchEvent = true;
+	public int tempMap, tempCol, tempRow;
 
 	public EventHandler(Game game) {
 		this.game = game;
@@ -51,6 +54,7 @@ public class EventHandler {
 			else if (hit(0, 23, 12, DIR_UP)) healingPool();
 			else if (hit(0, 10, 39, DIR_ANY)) teleport(1, 12, 13);
 			else if (hit(1, 12, 13, DIR_ANY)) teleport(0, 10, 39);
+			else if (hit(1, 12, 9, DIR_UP)) speak(game.npcs[1][0]);
 		}
 
 	}
@@ -111,13 +115,19 @@ public class EventHandler {
 	}
 
 	public void teleport(int map, int col, int row) {
-		game.currentMap = map;
-		game.player.worldX = TILE_SIZE * col;
-		game.player.worldY = TILE_SIZE * row;
-		previousEventX = game.player.worldX;
-		previousEventY = game.player.worldY;
+		game.gameState = TRANSITION_STATE;
+		tempMap = map;
+		tempCol = col;
+		tempRow = row;
 		canTouchEvent = false;
-		// game.ui.addMessage("Teleported to\n x=" + game.player.worldX / TILE_SIZE + " y=" + game.player.worldY / TILE_SIZE);
+	}
+
+	public void speak(Entity entity) {
+		if (game.keyH.enter) {
+			game.gameState = DIALOGUE_STATE;
+			game.player.attackCanceled = true;
+			entity.speak();
+		}
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.craivet;
 
-import com.craivet.entity.Oldman;
+import com.craivet.entity.npc.Merchant;
+import com.craivet.entity.npc.Oldman;
 import com.craivet.entity.Slime;
 import com.craivet.object.*;
 import com.craivet.tile.DryTree;
@@ -28,6 +29,11 @@ public class AssetSetter {
 	public void setNPC() {
 		int mapNum = 0, i = 0;
 		game.npcs[mapNum][i++] = new Oldman(game, 21, 21);
+
+		mapNum = 1;
+		i = 0;
+		game.npcs[mapNum][i++] = new Merchant(game, 12, 7);
+
 	}
 
 	public void setMOB() {

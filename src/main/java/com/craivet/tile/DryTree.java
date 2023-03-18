@@ -3,6 +3,7 @@ package com.craivet.tile;
 import java.awt.*;
 
 import com.craivet.Game;
+import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
@@ -20,7 +21,7 @@ public class DryTree extends InteractiveTile {
 		life = 3;
 	}
 
-	public boolean isCorrectItem(Item item) {
+	public boolean isCorrectItem(Entity item) {
 		return item.type == TYPE_AXE;
 	}
 

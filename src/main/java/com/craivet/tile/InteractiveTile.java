@@ -20,7 +20,7 @@ public class InteractiveTile extends Entity {
 	 * @param item el item seleccionado.
 	 * @return true si el item seleccionado es el correcto o false.
 	 */
-	public boolean isCorrectItem(Item item) {
+	public boolean isCorrectItem(Entity item) {
 		return false;
 	}
 

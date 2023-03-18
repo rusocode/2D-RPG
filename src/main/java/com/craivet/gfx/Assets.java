@@ -41,6 +41,7 @@ public final class Assets {
 	public static final SpriteSheet player_attack_axe = new SpriteSheet(Utils.loadImage("textures/entity/player/attack_axe.png"));
 	public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage("textures/entity/oldman.png"));
 	public static final SpriteSheet slime = new SpriteSheet(Utils.loadImage("textures/entity/slime.png"));
+	public static final BufferedImage merchant = Utils.loadImage("textures/entity/merchant.png");
 
 	// Projectile
 	public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage("textures/projectile/fireball.png"));
