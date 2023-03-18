@@ -36,12 +36,13 @@ public class Merchant extends Entity {
 
 	public void speak() {
 		super.speak();
+		game.playSound(Assets.trade_open);
 		game.gameState = TRADE_STATE;
 		game.ui.npc = this;
 	}
 
 	private void initDialogue() {
-		dialogues[0] = "He he, so you found me.\nI have some good stuff.\nDo you want to trade?";
+		dialogues[0] = "He he, so you found me. I have some good \nstuff. Do you want to trade?";
 	}
 
 	private void setItems() {

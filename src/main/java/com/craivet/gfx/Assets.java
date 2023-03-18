@@ -12,6 +12,9 @@ import com.craivet.utils.Utils;
 
 public final class Assets {
 
+	private Assets() {
+	}
+
 	// Fonts
 	public static final Font medieval1 = Utils.loadFont("font/Blackpearl-vPxA.ttf", 22);
 	public static final Font medieval2 = Utils.loadFont("font/KnightsQuest-nvDV.ttf", 32);
@@ -34,6 +37,7 @@ public final class Assets {
 	public static final URL spawn = Utils.loadSound("audio/sounds/spawn.wav");
 	public static final URL swing_weapon = Utils.loadSound("audio/sounds/swing_weapon.wav");
 	public static final URL swing_axe = Utils.loadSound("audio/sounds/swing_axe.wav");
+	public static final URL trade_open = Utils.loadSound("audio/sounds/trade_open.wav");
 
 	// Entities
 	public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage("textures/entity/player/movement.png"));
@@ -103,8 +107,5 @@ public final class Assets {
 	// Interactive tiles
 	public static final BufferedImage drytree = Utils.loadImage("textures/tiles/interactive/drytree.png");
 	public static final BufferedImage trunk = Utils.loadImage("textures/tiles/interactive/trunk.png");
-
-	private Assets() {
-	}
 
 }

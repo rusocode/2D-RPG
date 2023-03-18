@@ -8,12 +8,16 @@ package com.craivet.utils;
 
 public final class Constants {
 
+	private Constants() {
+	}
+
 	public static final String CONFIG_FILE = "config.txt";
 	public static final int FPS = 60;
 	public static final int MAX_INVENTORY_SIZE = 20;
 	public static final int PLAYER_SPEED = 3;
 	public static final int ENTITY_WIDTH = 16;
 	public static final int ENTITY_HEIGHT = 16;
+	public static final int SUBWINDOW_ALPHA = 210;
 
 	// Directions
 	public static final int DIR_DOWN = 0;
@@ -79,8 +83,5 @@ public final class Constants {
 	public static final int TYPE_SHIELD = 5;
 	public static final int TYPE_CONSUMABLE = 6;
 	public static final int TYPE_PICKUP_ONLY = 7;
-
-	private Constants() {
-	}
 
 }

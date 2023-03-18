@@ -54,6 +54,9 @@ public final class Utils {
 	/**
 	 * Escala la imagen antes de renderizarla para un mejor rendimiento.
 	 *
+	 * <p>Es importante usar solo valores multiplicados por dos al tamaño original de la imagen (16), ejemplo, 32, 64,
+	 * etc., sino se deforma.
+	 *
 	 * @param image  la imagen.
 	 * @param width  el ancho de la imagen.
 	 * @param height el alto de la imagen.

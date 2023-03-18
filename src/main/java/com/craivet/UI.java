@@ -9,6 +9,8 @@ import com.craivet.gfx.Assets;
 import com.craivet.object.Coin;
 import com.craivet.object.Heart;
 import com.craivet.object.Mana;
+import com.craivet.utils.Utils;
+import jdk.jshell.execution.Util;
 
 import static com.craivet.utils.Constants.*;
 
@@ -23,7 +25,6 @@ public class UI {
 	private final Game game;
 	private final BufferedImage heartFull, heartHalf, heartBlank;
 	private final BufferedImage manaFull, manaBlank;
-	private final BufferedImage coin;
 	private Graphics2D g2;
 	public String currentDialogue;
 	public int commandNum;
@@ -50,10 +51,6 @@ public class UI {
 		Entity mana = new Mana(game);
 		manaFull = mana.manaFull;
 		manaBlank = mana.manaBlank;
-
-		// Coin
-		Entity coin = new Coin(game);
-		this.coin = coin.image;
 	}
 
 	public void draw(Graphics2D g2) {
@@ -255,7 +252,7 @@ public class UI {
 		final int frameY = TILE_SIZE / 2;
 		final int frameWidth = SCREEN_WIDTH - (TILE_SIZE * 6);
 		final int frameHeight = TILE_SIZE * 4;
-		drawSubwindow(frameX, frameY, frameWidth, frameHeight);
+		drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
 
 		changeFontSize(22f);
 
@@ -274,7 +271,7 @@ public class UI {
 		final int frameHeight = TILE_SIZE * 11;
 		final int frameX = (SCREEN_WIDTH / 2 - frameWidth / 2) - TILE_SIZE * 4;
 		final int frameY = TILE_SIZE - 15;
-		drawSubwindow(frameX, frameY, frameWidth, frameHeight);
+		drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
 
 		final int gap = 37; // Espacio entre lineas
 		changeFontSize(28f);
@@ -391,7 +388,7 @@ public class UI {
 			slotRow = npcSlotRow;
 		}
 
-		drawSubwindow(frameX, frameY, frameWidth, frameHeight);
+		drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
 
 		// Slots
 		final int slotXStart = frameX + 20;
@@ -438,10 +435,10 @@ public class UI {
 
 			// Draw description text
 			int textX = frameX + 20;
-			int textY = dFrameY + TILE_SIZE;
+			int textY = dFrameY + TILE_SIZE + 5;
 			int itemIndex = getItemIndexOnSlot(slotCol, slotRow);
 			if (itemIndex < entity.inventory.size()) {
-				drawSubwindow(frameX, dFrameY, frameWidth, dFrameHeight);
+				drawSubwindow(frameX, dFrameY, frameWidth, dFrameHeight, SUBWINDOW_ALPHA);
 				changeFontSize(18f);
 				for (String line : entity.inventory.get(itemIndex).itemDescription.split("\n")) {
 					g2.drawString(line, textX, textY);
@@ -457,7 +454,7 @@ public class UI {
 		int frameHeight = TILE_SIZE * 10;
 		int frameX = (SCREEN_WIDTH / 2 - frameWidth / 2);
 		int frameY = TILE_SIZE;
-		drawSubwindow(frameX, frameY, frameWidth, frameHeight);
+		drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
 
 		switch (subState) {
 			case 0:
@@ -746,11 +743,11 @@ public class UI {
 	private void tradeSelect() {
 		drawDialogueScreen();
 
-		int x = TILE_SIZE * 15;
-		int y = TILE_SIZE * 4;
+		int x = TILE_SIZE * 14;
+		int y = TILE_SIZE * 4 + 32;
 		int width = TILE_SIZE * 3;
 		int height = (int) (TILE_SIZE * 3.5);
-		drawSubwindow(x, y, width, height);
+		drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
 		// Draw texts
 		x += TILE_SIZE;
@@ -781,9 +778,7 @@ public class UI {
 	}
 
 	private void tradeBuy() {
-		// Dibuja el inventario del player
 		drawInventory(game.player, false);
-		// Dibuja el inventario del npc
 		drawInventory(npc, true);
 
 		// Draw hint window
@@ -791,31 +786,28 @@ public class UI {
 		int y = TILE_SIZE * 9;
 		int width = TILE_SIZE * 6;
 		int height = TILE_SIZE * 2;
-		drawSubwindow(x, y, width, height);
+		drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
+		changeFontSize(23f);
 		g2.drawString("[esc] Back", x + 24, y + 60);
 
 		// Draw player coin window
 		x = TILE_SIZE * 12;
-		drawSubwindow(x, y, width, height);
+		drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 		g2.drawString("Your coin: " + game.player.coin, x + 24, y + 60);
 
-		// Draw price window
 		int itemIndex = getItemIndexOnSlot(npcSlotCol, npcSlotRow);
 		if (itemIndex < npc.inventory.size()) {
+			// Draw price window
 			x = (int) (TILE_SIZE * 5.5);
 			y = (int) (TILE_SIZE * 5.2);
 			width = (int) (TILE_SIZE * 2.5);
 			height = TILE_SIZE;
-			// Fondo
-			g2.setColor(new Color(0, 0, 0, 255));
-			g2.fillRoundRect(x, y, width, height, 35, 35);
-			// Borde
-			g2.setColor(new Color(255, 255, 255));
-			g2.setStroke(new BasicStroke(5)); // Grosor del borde
-			g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
+			drawSubwindow(x, y, width, height, 240);
 
-			g2.drawImage(coin, x + 14, y + 16, 18, 18, null);
+			// Draw image coin
+			g2.drawImage(Assets.coin, x + 14, y + 10, 32, 32, null);
 
+			// Draw price item
 			int price = npc.inventory.get(itemIndex).price;
 			String text = "" + price;
 			x = getXforAlignToRightText(text, TILE_SIZE * 8 - 20);
@@ -833,6 +825,7 @@ public class UI {
 					game.gameState = DIALOGUE_STATE;
 					currentDialogue = "You cannot carry any more!";
 				} else {
+					game.playSound(Assets.coin_up);
 					game.player.coin -= npc.inventory.get(itemIndex).price;
 					game.player.inventory.add(npc.inventory.get(itemIndex));
 				}
@@ -850,31 +843,28 @@ public class UI {
 		int y = TILE_SIZE * 9;
 		int width = TILE_SIZE * 6;
 		int height = TILE_SIZE * 2;
-		drawSubwindow(x, y, width, height);
+		drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
+		changeFontSize(23f);
 		g2.drawString("[esc] Back", x + 24, y + 60);
 
 		// Draw player coin window
 		x = TILE_SIZE * 12;
-		drawSubwindow(x, y, width, height);
+		drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 		g2.drawString("Your coin: " + game.player.coin, x + 24, y + 60);
 
-		// Draw price window
 		int itemIndex = getItemIndexOnSlot(playerSlotCol, playerSlotRow);
 		if (itemIndex < game.player.inventory.size()) {
+			// Draw price window
 			x = (int) (TILE_SIZE * 15.5);
 			y = (int) (TILE_SIZE * 5.2);
 			width = (int) (TILE_SIZE * 2.5);
 			height = TILE_SIZE;
-			// Fondo
-			g2.setColor(new Color(0, 0, 0, 255));
-			g2.fillRoundRect(x, y, width, height, 35, 35);
-			// Borde
-			g2.setColor(new Color(255, 255, 255));
-			g2.setStroke(new BasicStroke(5)); // Grosor del borde
-			g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
+			drawSubwindow(x, y, width, height, 255);
 
-			g2.drawImage(coin, x + 14, y + 16, 18, 18, null);
+			// Draw image icon
+			g2.drawImage(Assets.coin, x + 14, y + 10, 32, 32, null);
 
+			// Draw price item
 			int price = game.player.inventory.get(itemIndex).price / 2;
 			String text = "" + price;
 			x = getXforAlignToRightText(text, TILE_SIZE * 18 - 20);
@@ -888,6 +878,7 @@ public class UI {
 					game.gameState = DIALOGUE_STATE;
 					currentDialogue = "You cannot sell an equipped item!";
 				} else {
+					game.playSound(Assets.coin_up);
 					game.player.inventory.remove(itemIndex);
 					game.player.coin += price;
 				}
@@ -897,15 +888,14 @@ public class UI {
 
 	}
 
-	private void drawSubwindow(int x, int y, int width, int height) {
-		// Fondo
-		g2.setColor(new Color(0, 0, 0, 210));
-		g2.fillRoundRect(x, y, width, height, 35, 35);
-		// g2.fillRect(x, y, width, height);
-		// Borde
+	private void drawSubwindow(int x, int y, int width, int height, int alpha) {
+		// Fondo negro
+		g2.setColor(new Color(0, 0, 0, alpha));
+		g2.fillRoundRect(x, y, width, height, 10, 10);
+		// Borde blanco
 		g2.setColor(new Color(255, 255, 255));
-		g2.setStroke(new BasicStroke(5)); // Grosor del borde
-		g2.drawRoundRect(x + 5, y + 5, width - 10, height - 10, 25, 25);
+		g2.setStroke(new BasicStroke(3)); // Grosor del borde
+		g2.drawRoundRect(x, y, width, height, 10, 10);
 	}
 
 	private void changeFontSize(float fontSize) {
