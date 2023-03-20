@@ -1,7 +1,6 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
-import com.craivet.entity.Item;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -12,7 +11,7 @@ public class Door extends Item {
 	public Door(Game game) {
 		super(game);
 		name = "Door";
-		image = Utils.scaleImage(item_door, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(item_door, tile_size, tile_size);
 		collision = true;
 		bodyArea.x = 0;
 		bodyArea.y = 16;

@@ -1,8 +1,7 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.Item;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -24,7 +23,7 @@ public class Coin extends Item {
 	public void use(Entity entity) {
 		game.playSound(sound_coin);
 		game.ui.addMessage("Coin +" + value);
-		game.player.coin += value;
+		entity.coin += value;
 	}
 
 }

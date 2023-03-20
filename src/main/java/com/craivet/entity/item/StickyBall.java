@@ -1,45 +1,53 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Projectile;
+import com.craivet.utils.Utils;
 
 import java.awt.*;
 
-import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
-public class Fireball extends Projectile {
+public class StickyBall extends Projectile {
 
-	public Fireball(Game game) {
+	public StickyBall(Game game) {
 		super(game);
-		setDefaultValues();
+		initDefaultValues();
 	}
 
-	private void setDefaultValues() {
-		name = "Fireball";
-		speed = 7;
-		maxLife = 80;
+	private void initDefaultValues() {
+		name = "Sticky Ball";
+		speed = 5;
+		maxLife = 120;
 		life = maxLife;
-		attack = 2;
+		attack = 3;
 		useCost = 1;
 		alive = false;
-		initMovementImages(entity_fireball, ENTITY_WIDTH, ENTITY_HEIGHT);
+
+		bodyArea.x = 8;
+		bodyArea.y = 8;
+		bodyArea.width = 15;
+		bodyArea.height = 15;
+		bodyAreaDefaultX = bodyArea.x;
+		bodyAreaDefaultY = bodyArea.y;
+
+		image = Utils.scaleImage(entity_sticky_ball, 32, 32);
 	}
 
 	@Override
 	public boolean haveResource(Entity entity) {
-		return entity.mana >= useCost;
+		return entity.ammo >= useCost;
 	}
 
 	@Override
 	public void subtractResource(Entity entity) {
-		entity.mana -= useCost;
+		entity.ammo -= useCost;
 	}
 
 	@Override
 	public Color getParticleColor() {
-		return new Color(240, 50, 0);
+		return new Color(106, 193, 127);
 	}
 
 	@Override

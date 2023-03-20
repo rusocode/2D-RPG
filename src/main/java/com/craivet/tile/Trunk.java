@@ -10,9 +10,9 @@ public class Trunk extends InteractiveTile {
 
 	public Trunk(Game game, int x, int y) {
 		super(game);
-		this.worldX = TILE_SIZE * x;
-		this.worldY = TILE_SIZE * y;
-		image = Utils.scaleImage(Assets.itile_trunk, TILE_SIZE, TILE_SIZE);
+		this.worldX = tile_size * x;
+		this.worldY = tile_size * y;
+		image = Utils.scaleImage(Assets.itile_trunk, tile_size, tile_size);
 		// Resetea a 0 ya que no se podria caminar sobre el tronco
 		bodyArea.x = 0;
 		bodyArea.y = 0;

@@ -29,12 +29,12 @@ public final class Constants {
 	// Screen settings
 	public static final int ORIGINAL_TILE_SIZE = 16;
 	public static final int SCALE = 3;
-	public static final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE;
+	public static final int tile_size = ORIGINAL_TILE_SIZE * SCALE;
 	// Relacion de aspecto 4:3 = 960 x 576 pixels
 	public static final int MAX_SCREEN_COL = 20;
 	public static final int MAX_SCREEN_ROW = 12;
-	public static final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL;
-	public static final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW;
+	public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL;
+	public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW;
 	public static final int MAX_MAP = 10;
 
 	// World settings

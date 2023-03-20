@@ -1,11 +1,15 @@
-package com.craivet.entity;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
-import com.craivet.items.*;
+import com.craivet.entity.Entity;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+
+/**
+ * Crear un texture atlas con todos los items.
+ */
 
 public class Item extends Entity {
 

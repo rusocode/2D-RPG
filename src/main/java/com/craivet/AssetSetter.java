@@ -1,9 +1,9 @@
 package com.craivet;
 
+import com.craivet.entity.item.Axe;
 import com.craivet.entity.npc.Merchant;
 import com.craivet.entity.npc.Oldman;
-import com.craivet.entity.Slime;
-import com.craivet.items.*;
+import com.craivet.entity.mob.Slime;
 import com.craivet.tile.DryTree;
 
 /**
@@ -38,7 +38,7 @@ public class AssetSetter {
 
 	public void setMOB() {
 		int mapNum = 0, i = 0;
-		game.mobs[mapNum][i++] = new Slime(game, 23, 42);
+		game.mobs[mapNum][i++] = new Slime(game, 23, 41);
 		game.mobs[mapNum][i++] = new Slime(game, 24, 37);
 		game.mobs[mapNum][i++] = new Slime(game, 34, 42);
 		game.mobs[mapNum][i++] = new Slime(game, 38, 42);

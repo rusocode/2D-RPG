@@ -2,7 +2,7 @@ package com.craivet.entity.npc;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.items.*;
+import com.craivet.entity.item.*;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -12,21 +12,27 @@ public class Merchant extends Entity {
 
 	public Merchant(Game game, int x, int y) {
 		super(game);
-		worldX = x * TILE_SIZE;
-		worldY = y * TILE_SIZE;
+		worldX = x * tile_size;
+		worldY = y * tile_size;
 		initDefaultValues();
 	}
 
 	private void initDefaultValues() {
 		type = TYPE_NPC;
 		name = "Merchant";
+
+		tileArea.x = 8;
+		tileArea.y = 16;
+		tileArea.width = 32;
+		tileArea.height = 32;
+
 		bodyArea.x = 8;
 		bodyArea.y = 16;
 		bodyArea.width = 32;
 		bodyArea.height = 32;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
-		image = Utils.scaleImage(entity_merchant, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(entity_merchant, tile_size, tile_size);
 		initDialogue();
 		setItems();
 	}

@@ -1,6 +1,7 @@
-package com.craivet.entity;
+package com.craivet.entity.mob;
 
 import com.craivet.Game;
+import com.craivet.entity.Entity;
 
 public class Mob extends Entity {
 

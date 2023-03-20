@@ -1,7 +1,6 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
-import com.craivet.entity.Item;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -16,7 +15,7 @@ public class Axe extends Item {
 		super(game);
 		name = "Axe";
 		type = TYPE_AXE;
-		image = Utils.scaleImage(item_axe, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(item_axe, tile_size, tile_size);
 		attackArea.width = 30;
 		attackArea.height = 30;
 		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
@@ -26,11 +25,11 @@ public class Axe extends Item {
 
 	public Axe(Game game, int x, int y) {
 		super(game);
-		worldX = TILE_SIZE * x;
-		worldY = TILE_SIZE * y;
+		worldX = x * tile_size;
+		worldY = y * tile_size;
 		name = "Axe";
 		type = TYPE_AXE;
-		image = Utils.scaleImage(item_axe, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(item_axe, tile_size, tile_size);
 		attackArea.width = 30;
 		attackArea.height = 30;
 		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";

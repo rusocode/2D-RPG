@@ -46,7 +46,7 @@ public class EventHandler {
 		int xDistance = Math.abs(game.player.worldX - previousEventX);
 		int yDistance = Math.abs(game.player.worldY - previousEventY);
 		int distance = Math.max(xDistance, yDistance);
-		if (distance > TILE_SIZE) canTouchEvent = true;
+		if (distance > tile_size) canTouchEvent = true;
 
 		if (canTouchEvent) {
 			// El else if se utiliza para evitar que el siguiente if se llame inmediatamente en el caso de la teleport
@@ -68,8 +68,8 @@ public class EventHandler {
 		if (map == game.currentMap) {
 			game.player.bodyArea.x += game.player.worldX;
 			game.player.bodyArea.y += game.player.worldY;
-			eventRect[map][row][col].x += col * TILE_SIZE;
-			eventRect[map][row][col].y += row * TILE_SIZE;
+			eventRect[map][row][col].x += col * tile_size;
+			eventRect[map][row][col].y += row * tile_size;
 
 			// Si el player colisiona con el evento
 			if (game.player.bodyArea.intersects(eventRect[map][row][col])) {

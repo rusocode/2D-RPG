@@ -1,46 +1,45 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Projectile;
-import com.craivet.utils.Utils;
 
 import java.awt.*;
 
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
-public class Rock extends Projectile {
+public class Fireball extends Projectile {
 
-	public Rock(Game game) {
+	public Fireball(Game game) {
 		super(game);
-		initDefaultValues();
+		setDefaultValues();
 	}
 
-	private void initDefaultValues() {
-		name = "Rock";
-		speed = 8;
+	private void setDefaultValues() {
+		name = "Fireball";
+		speed = 7;
 		maxLife = 80;
 		life = maxLife;
-		attack = 3;
-		useCost = 1;
+		attack = 2;
+		useCost = 0;
 		alive = false;
-		image = Utils.scaleImage(entity_rock, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initMovementImages(entity_fireball, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 	}
 
 	@Override
 	public boolean haveResource(Entity entity) {
-		return entity.ammo >= useCost;
+		return entity.mana >= useCost;
 	}
 
 	@Override
 	public void subtractResource(Entity entity) {
-		entity.ammo -= useCost;
+		entity.mana -= useCost;
 	}
 
 	@Override
 	public Color getParticleColor() {
-		return new Color(40, 50, 0);
+		return new Color(240, 50, 0);
 	}
 
 	@Override

@@ -1,8 +1,7 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.Item;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -17,18 +16,20 @@ public class PotionRed extends Item {
 		this.game = game;
 		name = "Red Potion";
 		type = TYPE_CONSUMABLE;
-		image = Utils.scaleImage(item_potion_red, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
 		value = 5;
 		itemDescription = "[" + name + "]\nHeals your life by " + value + ".";
 		price = 25;
 	}
 
 	public void use(Entity entity) {
-		game.gameState = DIALOGUE_STATE;
+		/* mgame.gameState = DIALOGUE_STATE;
 		game.ui.currentDialogue = "Your drink the " + name + "!\n"
 				+ "Your life has been recovered by " + value + ".";
+		entity.life += value; */
 		entity.life += value;
-		if (game.player.life > game.player.maxLife) game.player.life = game.player.maxLife;
+		game.ui.addMessage("+" + value + " hp");
+		if (entity.life > entity.maxLife) entity.life = entity.maxLife;
 		game.playSound(sound_potion_red);
 	}
 

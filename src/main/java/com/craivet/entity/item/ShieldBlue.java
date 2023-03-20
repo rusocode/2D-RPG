@@ -1,7 +1,6 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
-import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
@@ -13,7 +12,7 @@ public class ShieldBlue extends Item {
 		super(game);
 		name = "Blue Shield";
 		type = TYPE_SHIELD;
-		image = Utils.scaleImage(Assets.item_shield_blue, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(Assets.item_shield_blue, tile_size, tile_size);
 		itemDescription = "[" + name + "]\nA shiny blue shield.";
 		defenseValue = 2;
 		price = 250;

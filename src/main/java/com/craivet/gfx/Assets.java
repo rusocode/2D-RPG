@@ -49,7 +49,7 @@ public final class Assets {
 	public static final SpriteSheet entity_oldman = new SpriteSheet(Utils.loadImage("textures/entity/oldman.png"));
 	public static final SpriteSheet entity_slime = new SpriteSheet(Utils.loadImage("textures/entity/slime.png"));
 	public static final SpriteSheet entity_fireball = new SpriteSheet(Utils.loadImage("textures/entity/fireball.png"));
-	public static final BufferedImage entity_rock = Utils.loadImage("textures/entity/rock.png");
+	public static final BufferedImage entity_sticky_ball = Utils.loadImage("textures/entity/sticky_ball.png");
 	public static final BufferedImage entity_merchant = Utils.loadImage("textures/entity/merchant.png");
 	// Gui
 	public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));

@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.craivet.Game;
+import com.craivet.entity.item.Item;
 import com.craivet.gfx.Assets;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.tile.InteractiveTile;
@@ -50,8 +51,7 @@ public abstract class Entity {
 	public int attack, defense;
 	public int attackValue, defenseValue;
 	public boolean collision;
-	public Rectangle attackArea = new Rectangle(0, 0, 0, 0);
-	public Rectangle bodyArea = new Rectangle(0, 0, 48, 48);
+	public Rectangle tileArea = new Rectangle(0, 0, 0, 0), attackArea = new Rectangle(0, 0, 0, 0), bodyArea = new Rectangle(0, 0, 48, 48);
 	public int bodyAreaDefaultX, bodyAreaDefaultY;
 	public Projectile projectile;
 	public Entity currentWeapon, currentShield;
@@ -63,7 +63,7 @@ public abstract class Entity {
 	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
 
 	// States
-	public boolean collisionOn; // Estado que depende de las colisiones con tiles, objetos y entidades
+	public boolean collisionOn; // Estado que depende de las colisiones con tiles, items y entidades
 	public boolean invincible;
 	public boolean attacking;
 	public boolean alive = true;
@@ -73,6 +73,7 @@ public abstract class Entity {
 
 	public Entity(Game game) {
 		this.game = game;
+		initIconsImages(icons, 16, 16);
 	}
 
 	public void setAction() {
@@ -196,10 +197,10 @@ public abstract class Entity {
 		BufferedImage auxImage = null;
 		int screenX = (worldX - game.player.worldX) + game.player.screenX;
 		int screenY = (worldY - game.player.worldY) + game.player.screenY;
-		if (worldX + TILE_SIZE > game.player.worldX - game.player.screenX &&
-				worldX - TILE_SIZE < game.player.worldX + game.player.screenX &&
-				worldY + TILE_SIZE > game.player.worldY - game.player.screenY &&
-				worldY - TILE_SIZE < game.player.worldY + game.player.screenY) {
+		if (worldX + tile_size > game.player.worldX - game.player.screenX &&
+				worldX - tile_size < game.player.worldX + game.player.screenX &&
+				worldY + tile_size > game.player.worldY - game.player.screenY &&
+				worldY - tile_size < game.player.worldY + game.player.screenY) {
 			switch (direction) {
 				case DIR_DOWN:
 					auxImage = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
@@ -218,7 +219,7 @@ public abstract class Entity {
 			// Si la barra de hp esta activada
 			if (type == TYPE_MOB && hpBarOn) {
 
-				double oneScale = (double) TILE_SIZE / maxLife;
+				double oneScale = (double) tile_size / maxLife;
 				double hpBarValue = oneScale * life;
 
 				/* En caso de que el valor de la barra de vida calculada sea menor a 0, le asigna 0 para que no se
@@ -226,10 +227,10 @@ public abstract class Entity {
 				if (hpBarValue < 0) hpBarValue = 0;
 
 				g2.setColor(new Color(35, 35, 35));
-				g2.fillRect(screenX - 1, screenY + TILE_SIZE + 4, TILE_SIZE + 2, 7);
+				g2.fillRect(screenX - 1, screenY + tile_size + 4, tile_size + 2, 7);
 
 				g2.setColor(new Color(255, 0, 30));
-				g2.fillRect(screenX, screenY + TILE_SIZE + 5, (int) hpBarValue, 5);
+				g2.fillRect(screenX, screenY + tile_size + 5, (int) hpBarValue, 5);
 
 				timer.timeHpBar(this, INTERVAL_HP_BAR);
 			}
@@ -243,7 +244,7 @@ public abstract class Entity {
 			g2.drawImage(auxImage, screenX, screenY, null);
 			g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
 			// g2.setColor(Color.red);
-			// g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
+			g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
 			Utils.changeAlpha(g2, 1);
 		}
 	}
@@ -265,6 +266,15 @@ public abstract class Entity {
 		}
 	}
 
+	public void initIconsImages(SpriteSheet image, int width, int height) {
+		BufferedImage[] subimages = SpriteSheet.getIconsSubimages(image, width, height);
+		heartFull = Utils.scaleImage(subimages[0], tile_size, tile_size);
+		heartHalf = Utils.scaleImage(subimages[1], tile_size, tile_size);
+		heartBlank = Utils.scaleImage(subimages[2], tile_size, tile_size);
+		manaFull = Utils.scaleImage(subimages[3], tile_size, tile_size);
+		manaBlank = Utils.scaleImage(subimages[4], tile_size, tile_size);
+	}
+
 	/**
 	 * Inicializa las subimagenes de movimiento del SpriteSheet y escala cada una.
 	 *
@@ -272,35 +282,35 @@ public abstract class Entity {
 	 * @param width  el ancho de la subimagen.
 	 * @param height el alto de la subimagen.
 	 */
-	public void initMovementImages(SpriteSheet image, int width, int height) {
+	public void initMovementImages(SpriteSheet image, int width, int height, int scale) {
 		BufferedImage[] subimages = SpriteSheet.getMovementSubimages(image, width, height);
 		if (subimages.length > 2) {
-			movementDown1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementDown2 = Utils.scaleImage(subimages[1], TILE_SIZE, TILE_SIZE);
-			movementUp1 = Utils.scaleImage(subimages[2], TILE_SIZE, TILE_SIZE);
-			movementUp2 = Utils.scaleImage(subimages[3], TILE_SIZE, TILE_SIZE);
-			movementLeft1 = Utils.scaleImage(subimages[4], TILE_SIZE, TILE_SIZE);
-			movementLeft2 = Utils.scaleImage(subimages[5], TILE_SIZE, TILE_SIZE);
-			movementRight1 = Utils.scaleImage(subimages[6], TILE_SIZE, TILE_SIZE);
-			movementRight2 = Utils.scaleImage(subimages[7], TILE_SIZE, TILE_SIZE);
+			movementDown1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementDown2 = Utils.scaleImage(subimages[1], scale, scale);
+			movementUp1 = Utils.scaleImage(subimages[2], scale, scale);
+			movementUp2 = Utils.scaleImage(subimages[3], scale, scale);
+			movementLeft1 = Utils.scaleImage(subimages[4], scale, scale);
+			movementLeft2 = Utils.scaleImage(subimages[5], scale, scale);
+			movementRight1 = Utils.scaleImage(subimages[6], scale, scale);
+			movementRight2 = Utils.scaleImage(subimages[7], scale, scale);
 		} else if (subimages.length == 2) { // Slime
-			movementDown1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementDown2 = Utils.scaleImage(subimages[1], TILE_SIZE, TILE_SIZE);
-			movementUp1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementUp2 = Utils.scaleImage(subimages[1], TILE_SIZE, TILE_SIZE);
-			movementLeft1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementLeft2 = Utils.scaleImage(subimages[1], TILE_SIZE, TILE_SIZE);
-			movementRight1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementRight2 = Utils.scaleImage(subimages[1], TILE_SIZE, TILE_SIZE);
+			movementDown1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementDown2 = Utils.scaleImage(subimages[1], scale, scale);
+			movementUp1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementUp2 = Utils.scaleImage(subimages[1], scale, scale);
+			movementLeft1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementLeft2 = Utils.scaleImage(subimages[1], scale, scale);
+			movementRight1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementRight2 = Utils.scaleImage(subimages[1], scale, scale);
 		} else { // Rock
-			movementDown1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementDown2 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementUp1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementUp2 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementLeft1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementLeft2 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementRight1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
-			movementRight2 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE);
+			movementDown1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementDown2 = Utils.scaleImage(subimages[0], scale, scale);
+			movementUp1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementUp2 = Utils.scaleImage(subimages[0], scale, scale);
+			movementLeft1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementLeft2 = Utils.scaleImage(subimages[0], scale, scale);
+			movementRight1 = Utils.scaleImage(subimages[0], scale, scale);
+			movementRight2 = Utils.scaleImage(subimages[0], scale, scale);
 		}
 	}
 
@@ -313,14 +323,14 @@ public abstract class Entity {
 	 */
 	public void initAttackImages(SpriteSheet image, int width, int height) {
 		BufferedImage[] subimages = SpriteSheet.getAttackSubimages(image, width, height);
-		attackDown1 = Utils.scaleImage(subimages[0], TILE_SIZE, TILE_SIZE * 2);
-		attackDown2 = Utils.scaleImage(subimages[1], TILE_SIZE, TILE_SIZE * 2);
-		attackUp1 = Utils.scaleImage(subimages[2], TILE_SIZE, TILE_SIZE * 2);
-		attackUp2 = Utils.scaleImage(subimages[3], TILE_SIZE, TILE_SIZE * 2);
-		attackLeft1 = Utils.scaleImage(subimages[4], TILE_SIZE * 2, TILE_SIZE);
-		attackLeft2 = Utils.scaleImage(subimages[5], TILE_SIZE * 2, TILE_SIZE);
-		attackRight1 = Utils.scaleImage(subimages[6], TILE_SIZE * 2, TILE_SIZE);
-		attackRight2 = Utils.scaleImage(subimages[7], TILE_SIZE * 2, TILE_SIZE);
+		attackDown1 = Utils.scaleImage(subimages[0], tile_size, tile_size * 2);
+		attackDown2 = Utils.scaleImage(subimages[1], tile_size, tile_size * 2);
+		attackUp1 = Utils.scaleImage(subimages[2], tile_size, tile_size * 2);
+		attackUp2 = Utils.scaleImage(subimages[3], tile_size, tile_size * 2);
+		attackLeft1 = Utils.scaleImage(subimages[4], tile_size * 2, tile_size);
+		attackLeft2 = Utils.scaleImage(subimages[5], tile_size * 2, tile_size);
+		attackRight1 = Utils.scaleImage(subimages[6], tile_size * 2, tile_size);
+		attackRight2 = Utils.scaleImage(subimages[7], tile_size * 2, tile_size);
 	}
 
 }

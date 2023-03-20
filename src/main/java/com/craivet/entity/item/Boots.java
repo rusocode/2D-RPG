@@ -1,7 +1,6 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
-import com.craivet.entity.Item;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -12,7 +11,7 @@ public class Boots extends Item {
 	public Boots(Game game) {
 		super(game);
 		name = "Boots";
-		image = Utils.scaleImage(item_boots, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(item_boots, tile_size, tile_size);
 	}
 
 }

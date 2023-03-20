@@ -24,7 +24,7 @@ public class TileManager {
 		tile = new Tile[50];
 		tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 		initTiles();
-		loadMap("maps/map3.txt", 0);
+		loadMap("maps/map3.txt", 0); // TODO Crear constantes
 		loadMap("maps/interior1.txt", 1);
 	}
 
@@ -82,7 +82,7 @@ public class TileManager {
 	 */
 	private void createTile(int i, BufferedImage texture, boolean solid) {
 		tile[i] = new Tile();
-		tile[i].texture = Utils.scaleImage(texture, TILE_SIZE, TILE_SIZE);
+		tile[i].texture = Utils.scaleImage(texture, tile_size, tile_size);
 		tile[i].solid = solid;
 	}
 
@@ -119,8 +119,8 @@ public class TileManager {
 		final int playerWorldX = game.player.worldX;
 		for (int row = 0; row < MAX_WORLD_ROW; row++) {
 			for (int col = 0; col < MAX_WORLD_COL; col++) {
-				final int tileWorldY = row * TILE_SIZE;
-				final int tileWorldX = col * TILE_SIZE;
+				final int tileWorldY = row * tile_size;
+				final int tileWorldX = col * tile_size;
 				/* Resta la posicion del player (en el mundo) al tile y suma los desplazamientos de la pantalla para que
 				 * quede en el centro de esta. Este desplazamiento compensa la diferencia y obtiene las coordenadas
 				 * correctas para los tiles en la pantalla. Los tiles se dibujan en base al "movimiento" del player. El
@@ -129,17 +129,17 @@ public class TileManager {
 				final int screenX = (tileWorldX - playerWorldX) + playerScreenX;
 
 				final boolean isInCamera =
-						tileWorldX + TILE_SIZE > playerWorldX - playerScreenX &&
-								tileWorldX - TILE_SIZE < playerWorldX + playerScreenX &&
-								tileWorldY + TILE_SIZE > playerWorldY - playerScreenY &&
-								tileWorldY - TILE_SIZE < playerWorldY + playerScreenY;
+						tileWorldX + tile_size > playerWorldX - playerScreenX &&
+								tileWorldX - tile_size < playerWorldX + playerScreenX &&
+								tileWorldY + tile_size > playerWorldY - playerScreenY &&
+								tileWorldY - tile_size < playerWorldY + playerScreenY;
 
 				// Si el tile se encuentra dentro de la camara
 				if (isInCamera) {
 					final int tileIndex = this.tileIndex[game.currentMap][row][col];
 					final BufferedImage tileImage = tile[tileIndex].texture;
 					g2.drawImage(tileImage, screenX, screenY, null);
-					// g2.drawRect(screenX, screenY, TILE_SIZE, TILE_SIZE); // Dibuja una grilla
+					// g2.drawRect(screenX, screenY, tile_size, tile_size); // Dibuja una grilla
 				}
 			}
 		}

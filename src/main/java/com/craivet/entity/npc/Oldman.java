@@ -10,8 +10,8 @@ public class Oldman extends Entity {
 
 	public Oldman(Game game, int x, int y) {
 		super(game);
-		worldX = x * TILE_SIZE;
-		worldY = y * TILE_SIZE;
+		worldX = x * tile_size;
+		worldY = y * tile_size;
 		initDefaultValues();
 	}
 
@@ -19,13 +19,19 @@ public class Oldman extends Entity {
 		type = TYPE_NPC;
 		name = "Oldman";
 		speed = 1;
+
+		tileArea.x = 8;
+		tileArea.y = 16;
+		tileArea.width = 32;
+		tileArea.height = 32;
+
 		bodyArea.x = 8;
 		bodyArea.y = 16;
 		bodyArea.width = 32;
 		bodyArea.height = 32;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
-		initMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 		initDialogue();
 	}
 

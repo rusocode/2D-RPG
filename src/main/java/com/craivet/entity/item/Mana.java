@@ -1,7 +1,6 @@
-package com.craivet.items;
+package com.craivet.entity.item;
 
 import com.craivet.Game;
-import com.craivet.entity.Item;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -12,8 +11,8 @@ public class Mana extends Item {
 	public Mana(Game game) {
 		super(game);
 		name = "Mana";
-		manaFull = Utils.scaleImage(mana_full, TILE_SIZE, TILE_SIZE);
-		manaBlank = Utils.scaleImage(mana_blank, TILE_SIZE, TILE_SIZE);
+		manaFull = Utils.scaleImage(mana_full, tile_size, tile_size);
+		manaBlank = Utils.scaleImage(mana_blank, tile_size, tile_size);
 	}
 
 }

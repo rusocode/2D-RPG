@@ -24,6 +24,17 @@ public class SpriteSheet {
 		return image.getSubimage(x, y, width, height);
 	}
 
+	public static BufferedImage[] getIconsSubimages(SpriteSheet image, int width, int height) {
+		int col = image.getWidth() / width;
+		int row = image.getHeight() / height;
+		BufferedImage[] subimages = new BufferedImage[col * row];
+		int i = 0;
+		for (int y = 0; y < row; y++)
+			for (int x = 0; x < col; x++)
+				subimages[i++] = image.crop(x * width, y * height, width, height);
+		return subimages;
+	}
+
 	/**
 	 * Obtiene las subimagenes de movimiento.
 	 *

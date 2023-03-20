@@ -13,9 +13,9 @@ public class DryTree extends InteractiveTile {
 
 	public DryTree(Game game, int x, int y) {
 		super(game);
-		worldX = TILE_SIZE * x;
-		worldY = TILE_SIZE * y;
-		image = Utils.scaleImage(Assets.itile_drytree, TILE_SIZE, TILE_SIZE);
+		worldX = tile_size * x;
+		worldY = tile_size * y;
+		image = Utils.scaleImage(Assets.itile_drytree, tile_size, tile_size);
 		destructible = true;
 		life = 3;
 	}
@@ -25,7 +25,7 @@ public class DryTree extends InteractiveTile {
 	}
 
 	public InteractiveTile getDestroyedForm() {
-		return new Trunk(game, worldX / TILE_SIZE, worldY / TILE_SIZE);
+		return new Trunk(game, worldX / tile_size, worldY / tile_size);
 	}
 
 	public Color getParticleColor() {

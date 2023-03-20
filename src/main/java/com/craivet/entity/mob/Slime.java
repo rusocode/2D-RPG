@@ -1,8 +1,8 @@
-package com.craivet.entity;
+package com.craivet.entity.mob;
 
 import com.craivet.Game;
-import com.craivet.items.Coin;
-import com.craivet.items.Rock;
+import com.craivet.entity.item.Coin;
+import com.craivet.entity.item.StickyBall;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -16,21 +16,26 @@ public class Slime extends Mob {
 
 	public Slime(Game game, int x, int y) {
 		super(game);
-		worldX = x * TILE_SIZE;
-		worldY = y * TILE_SIZE;
+		worldX = x * tile_size;
+		worldY = y * tile_size;
 		initDefaultValues();
 	}
 
 	private void initDefaultValues() {
 		type = TYPE_MOB;
 		name = "Slime";
-		speed = 1;
-		maxLife = 4;
+		speed = 0;
+		maxLife = 20;
 		life = maxLife;
 		exp = 2;
 
-		attack = 2;
+		attack = 0;
 		defense = 0;
+
+		tileArea.x = 3;
+		tileArea.y = 18;
+		tileArea.width = 42;
+		tileArea.height = 30;
 
 		bodyArea.x = 3;
 		bodyArea.y = 18;
@@ -38,15 +43,14 @@ public class Slime extends Mob {
 		bodyArea.height = 30;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
+		projectile = new StickyBall(game);
 
-		projectile = new Rock(game);
-
-		initMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 	}
 
 	public void setAction() {
 		timer.timeDirection(this, INTERVAL_DIRECTION);
-		shootProjectile();
+		//shootProjectile();
 	}
 
 	/**
@@ -66,7 +70,7 @@ public class Slime extends Mob {
 
 	private void shootProjectile() {
 		if (Utils.azar(100) > 99 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
-			projectile.set(worldX, worldY, direction, true, this);
+			projectile.set(worldX + 8, worldY + 17, direction, true, this);
 			game.projectiles.add(projectile);
 			timer.projectileCounter = 0;
 		}

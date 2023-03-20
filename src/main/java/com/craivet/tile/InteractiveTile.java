@@ -2,7 +2,6 @@ package com.craivet.tile;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.Item;
 
 import static com.craivet.utils.Constants.*;
 

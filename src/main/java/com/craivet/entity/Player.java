@@ -4,8 +4,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.craivet.Game;
+import com.craivet.entity.item.*;
+import com.craivet.entity.mob.Mob;
 import com.craivet.input.KeyHandler;
-import com.craivet.items.*;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.utils.Utils;
 
@@ -25,11 +26,11 @@ public class Player extends Entity {
 	public Player(Game game, KeyHandler key) {
 		super(game);
 		// Posiciona el player en el centro de la pantalla
-		screenX = SCREEN_WIDTH / 2 - (TILE_SIZE / 2);
-		screenY = SCREEN_HEIGHT / 2 - (TILE_SIZE / 2);
+		screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
+		screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
 		// Posiciona el player en el centro del mundo
-		worldX = 12 * TILE_SIZE; // 23,21
-		worldY = 12 * TILE_SIZE;
+		worldX = 12 * tile_size; // 23,21
+		worldY = 12 * tile_size;
 		this.key = key;
 		initDefaultValues();
 	}
@@ -57,27 +58,31 @@ public class Player extends Entity {
 		attack = getAttack();
 		defense = getDefense();
 
+		tileArea.x = 10;
+		tileArea.y = 16;
+		tileArea.width = 30;
+		tileArea.height = 32;
+
 		attackArea = currentWeapon.attackArea;
 
-		// Los limites del bodyArea (cuerpo del player) son diferentes a los limites de la imagen escalada
 		bodyArea.x = 8;
-		bodyArea.y = 16;
+		bodyArea.y = 16; // 0
 		bodyArea.width = 32;
-		bodyArea.height = 32;
+		bodyArea.height = 32; // 32
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
 
 		projectile = new Fireball(game);
 
-		initMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 		initAttackImages(currentWeapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
 		setItems();
 	}
 
 	public void setDefaultPosition() {
-		worldX = TILE_SIZE * 23;
-		worldY = TILE_SIZE * 21;
+		worldX = tile_size * 23;
+		worldY = tile_size * 21;
 		direction = DIR_DOWN;
 	}
 
@@ -131,14 +136,14 @@ public class Player extends Entity {
 				if (!attacking) frame = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 				if (attacking) {
 					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
-					tempScreenY -= TILE_SIZE;
+					tempScreenY -= tile_size;
 					frame = attackNum == 1 ? attackUp1 : attackUp2;
 				}
 				break;
 			case DIR_LEFT:
 				if (!attacking) frame = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
 				if (attacking) {
-					tempScreenX -= TILE_SIZE;
+					tempScreenX -= tile_size;
 					frame = attackNum == 1 ? attackLeft1 : attackLeft2;
 				}
 				break;
@@ -150,8 +155,22 @@ public class Player extends Entity {
 
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
 		g2.drawImage(frame, tempScreenX, tempScreenY, null);
-		// g2.setColor(Color.yellow);
-		// g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
+		if (attacking) {
+			switch (direction) {
+				case DIR_DOWN:
+					g2.drawRect(bodyArea.x + screenX, bodyArea.y + attackArea.height + screenY, attackArea.width , attackArea.height);
+				case DIR_UP:
+					// worldY -= attackArea.height;
+					break;
+				case DIR_LEFT:
+					// worldX -= attackArea.width;
+					break;
+				case DIR_RIGHT:
+					// worldX += tile_size;
+					break;
+			}
+		}
+
 		Utils.changeAlpha(g2, 1);
 
 	}
@@ -195,7 +214,7 @@ public class Player extends Entity {
 			// Ajusta la posicion del player X/Y para el area de ataque
 			switch (direction) {
 				case DIR_DOWN:
-					worldY += TILE_SIZE;
+					worldY += tile_size;
 				case DIR_UP:
 					worldY -= attackArea.height;
 					break;
@@ -203,7 +222,7 @@ public class Player extends Entity {
 					worldX -= attackArea.width;
 					break;
 				case DIR_RIGHT:
-					worldX += TILE_SIZE;
+					worldX += tile_size;
 					break;
 			}
 
@@ -250,7 +269,7 @@ public class Player extends Entity {
 		if (key.l) {
 			if (itemIndex != -1) {
 				Item item = game.items[game.currentMap][itemIndex];
-				if (item.type == TYPE_PICKUP_ONLY) item.use(this); // Coin
+				if (item.type == TYPE_PICKUP_ONLY) item.use(this);
 				else if (inventory.size() != MAX_INVENTORY_SIZE) {
 					inventory.add(item);
 					game.playSound(sound_power_up);

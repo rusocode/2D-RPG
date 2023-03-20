@@ -1,6 +1,7 @@
 package com.craivet.entity;
 
 import com.craivet.Game;
+import com.craivet.entity.item.Item;
 
 import static com.craivet.utils.Constants.*;
 

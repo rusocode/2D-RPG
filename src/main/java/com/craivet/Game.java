@@ -1,8 +1,8 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
-import com.craivet.entity.Item;
-import com.craivet.entity.Mob;
+import com.craivet.entity.item.Item;
+import com.craivet.entity.mob.Mob;
 import com.craivet.entity.Player;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
@@ -237,9 +237,9 @@ public class Game extends JPanel implements Runnable {
 			g2.setFont(new Font("Arial", Font.PLAIN, 20));
 			g2.setColor(Color.white);
 			int x = 8, y = SCREEN_HEIGHT - 25, gap = 20;
-			g2.drawString("X: " + (player.worldX + player.bodyArea.x) / TILE_SIZE, x, y);
+			g2.drawString("X: " + (player.worldX + player.bodyArea.x) / tile_size, x, y);
 			y += gap;
-			g2.drawString("Y: " + (player.worldY + player.bodyArea.y) / TILE_SIZE, x, y);
+			g2.drawString("Y: " + (player.worldY + player.bodyArea.y) / tile_size, x, y);
 			// y += lineHeight;
 			// g2.drawString("Draw time: " + (System.nanoTime() - drawStart), x, y);
 		}
