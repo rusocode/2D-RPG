@@ -2,9 +2,9 @@ package com.craivet.entity.npc;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.gfx.Assets;
 
 import static com.craivet.utils.Constants.*;
+import static com.craivet.gfx.Assets.*;
 
 public class Oldman extends Entity {
 
@@ -25,7 +25,7 @@ public class Oldman extends Entity {
 		bodyArea.height = 32;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
-		initMovementImages(Assets.oldman, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT);
 		initDialogue();
 	}
 

@@ -1,12 +1,12 @@
 package com.craivet.entity;
 
 import com.craivet.Game;
-import com.craivet.gfx.Assets;
-import com.craivet.object.Coin;
-import com.craivet.object.Rock;
+import com.craivet.items.Coin;
+import com.craivet.items.Rock;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
+import static com.craivet.gfx.Assets.*;
 
 /**
  * El Slime usa dos frames para todos los movimientos.
@@ -41,7 +41,7 @@ public class Slime extends Mob {
 
 		projectile = new Rock(game);
 
-		initMovementImages(Assets.slime, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT);
 	}
 
 	public void setAction() {

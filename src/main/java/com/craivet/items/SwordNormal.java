@@ -1,4 +1,4 @@
-package com.craivet.object;
+package com.craivet.items;
 
 import com.craivet.Game;
 import com.craivet.entity.Item;
@@ -13,7 +13,7 @@ public class SwordNormal extends Item {
 		super(game);
 		name = "Normal Sword";
 		type = TYPE_SWORD;
-		image = Utils.scaleImage(Assets.sword_normal, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(Assets.item_sword_normal, TILE_SIZE, TILE_SIZE);
 		attackArea.width = 36;
 		attackArea.height = 36;
 		itemDescription = "[" + name + "]\nAn old sword.";

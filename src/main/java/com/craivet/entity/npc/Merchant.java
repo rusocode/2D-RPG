@@ -2,14 +2,11 @@ package com.craivet.entity.npc;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.Item;
-import com.craivet.gfx.Assets;
-import com.craivet.object.*;
+import com.craivet.items.*;
 import com.craivet.utils.Utils;
 
-import java.util.ArrayList;
-
 import static com.craivet.utils.Constants.*;
+import static com.craivet.gfx.Assets.*;
 
 public class Merchant extends Entity {
 
@@ -29,14 +26,14 @@ public class Merchant extends Entity {
 		bodyArea.height = 32;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
-		image = Utils.scaleImage(Assets.merchant, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(entity_merchant, TILE_SIZE, TILE_SIZE);
 		initDialogue();
 		setItems();
 	}
 
 	public void speak() {
 		super.speak();
-		game.playSound(Assets.trade_open);
+		game.playSound(sound_trade_open);
 		game.gameState = TRADE_STATE;
 		game.ui.npc = this;
 	}

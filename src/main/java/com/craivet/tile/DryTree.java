@@ -4,7 +4,6 @@ import java.awt.*;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.Item;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
@@ -16,7 +15,7 @@ public class DryTree extends InteractiveTile {
 		super(game);
 		worldX = TILE_SIZE * x;
 		worldY = TILE_SIZE * y;
-		image = Utils.scaleImage(Assets.drytree, TILE_SIZE, TILE_SIZE);
+		image = Utils.scaleImage(Assets.itile_drytree, TILE_SIZE, TILE_SIZE);
 		destructible = true;
 		life = 3;
 	}

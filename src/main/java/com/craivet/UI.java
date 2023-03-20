@@ -5,18 +5,16 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.craivet.entity.Entity;
-import com.craivet.gfx.Assets;
-import com.craivet.object.Coin;
-import com.craivet.object.Heart;
-import com.craivet.object.Mana;
-import com.craivet.utils.Utils;
-import jdk.jshell.execution.Util;
+import com.craivet.entity.Item;
+import com.craivet.items.*;
 
 import static com.craivet.utils.Constants.*;
+import static com.craivet.gfx.Assets.*;
 
 /**
  * Interfaz de usuario.
  *
+ * <p>TODO Reemplazar estas UI por GUIS echas como MC
  * <p>TODO Implementar musica para pantalla de titulo (<a href="https://www.youtube.com/watch?v=blyK-QkZkQ8">...</a>)
  */
 
@@ -38,6 +36,7 @@ public class UI {
 	public int subState;
 	public int counter;
 	public Entity npc;
+	public Item item;
 
 	public UI(Game game) {
 		this.game = game;
@@ -51,6 +50,8 @@ public class UI {
 		Entity mana = new Mana(game);
 		manaFull = mana.manaFull;
 		manaBlank = mana.manaBlank;
+
+		item = new Item(game);
 	}
 
 	public void draw(Graphics2D g2) {
@@ -58,7 +59,7 @@ public class UI {
 		this.g2 = g2;
 
 		// Fuente y color por defecto
-		g2.setFont(Assets.medieval1);
+		g2.setFont(font_medieval1);
 		g2.setColor(Color.white);
 		// Suaviza los bordes de la fuente
 		g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -80,7 +81,10 @@ public class UI {
 		if (game.gameState == OPTION_STATE) drawOptionScreen();
 		if (game.gameState == GAME_OVER_STATE) drawGameOverScreen();
 		if (game.gameState == TRANSITION_STATE) drawTransition();
-		if (game.gameState == TRADE_STATE) drawTradeScreen();
+		if (game.gameState == TRADE_STATE) {
+			drawTradeScreen();
+			drawConsole();
+		}
 	}
 
 	private void drawTitleScreen() {
@@ -407,7 +411,6 @@ public class UI {
 			}
 
 			g2.drawImage(entity.inventory.get(i).image, slotX, slotY, null);
-			// g2.fillRect(slotX, slotY, 10, 10); // GRILLA DE SLOTS
 
 			slotX += gap;
 
@@ -746,7 +749,7 @@ public class UI {
 		int x = TILE_SIZE * 14;
 		int y = TILE_SIZE * 4 + 32;
 		int width = TILE_SIZE * 3;
-		int height = (int) (TILE_SIZE * 3.5);
+		int height = (int) (TILE_SIZE * 3);
 		drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
 		// Draw texts
@@ -757,6 +760,7 @@ public class UI {
 			g2.drawString(">", x - 24, y);
 			if (game.keyH.enter) subState = 1;
 		}
+
 		y += TILE_SIZE;
 
 		g2.drawString("Sell", x, y);
@@ -764,17 +768,6 @@ public class UI {
 			g2.drawString(">", x - 24, y);
 			if (game.keyH.enter) subState = 2;
 		}
-		y += TILE_SIZE;
-
-		g2.drawString("Leave", x, y);
-		if (commandNum == 2) {
-			g2.drawString(">", x - 24, y);
-			if (game.keyH.enter) {
-				commandNum = 0;
-				game.gameState = PLAY_STATE;
-			}
-		}
-
 	}
 
 	private void tradeBuy() {
@@ -805,7 +798,7 @@ public class UI {
 			drawSubwindow(x, y, width, height, 240);
 
 			// Draw image coin
-			g2.drawImage(Assets.coin, x + 14, y + 10, 32, 32, null);
+			g2.drawImage(item_coin, x + 14, y + 10, 32, 32, null);
 
 			// Draw price item
 			int price = npc.inventory.get(itemIndex).price;
@@ -815,19 +808,14 @@ public class UI {
 
 			// BUY AN ITEM
 			if (game.keyH.enter) {
-				if (npc.inventory.get(itemIndex).price > game.player.coin) {
-					subState = 0;
-					game.gameState = DIALOGUE_STATE;
-					currentDialogue = "You need more coin to buy that!";
-					drawDialogueScreen();
-				} else if (game.player.inventory.size() == MAX_INVENTORY_SIZE) {
-					subState = 0;
-					game.gameState = DIALOGUE_STATE;
-					currentDialogue = "You cannot carry any more!";
-				} else {
-					game.playSound(Assets.coin_up);
+				if (npc.inventory.get(itemIndex).price > game.player.coin)
+					addMessage("You need more coin to buy that!");
+				else if (game.player.inventory.size() == MAX_INVENTORY_SIZE)
+					addMessage("You cannot carry any more!");
+				else {
+					game.playSound(sound_coin);
 					game.player.coin -= npc.inventory.get(itemIndex).price;
-					game.player.inventory.add(npc.inventory.get(itemIndex));
+					game.player.inventory.add(item.itemMap.get(npc.inventory.get(itemIndex).getClass()).get());
 				}
 			}
 
@@ -862,7 +850,7 @@ public class UI {
 			drawSubwindow(x, y, width, height, 255);
 
 			// Draw image icon
-			g2.drawImage(Assets.coin, x + 14, y + 10, 32, 32, null);
+			g2.drawImage(item_coin, x + 14, y + 10, 32, 32, null);
 
 			// Draw price item
 			int price = game.player.inventory.get(itemIndex).price / 2;
@@ -872,13 +860,10 @@ public class UI {
 
 			// SELL AN ITEM
 			if (game.keyH.enter) {
-				if (game.player.inventory.get(itemIndex) == game.player.currentWeapon || game.player.inventory.get(itemIndex) == game.player.currentShield) {
-					commandNum = 0;
-					subState = 0;
-					game.gameState = DIALOGUE_STATE;
-					currentDialogue = "You cannot sell an equipped item!";
-				} else {
-					game.playSound(Assets.coin_up);
+				if (game.player.inventory.get(itemIndex) == game.player.currentWeapon || game.player.inventory.get(itemIndex) == game.player.currentShield)
+					addMessage("You cannot sell an equipped item!");
+				else {
+					game.playSound(sound_coin);
 					game.player.inventory.remove(itemIndex);
 					game.player.coin += price;
 				}

@@ -12,6 +12,7 @@ import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
+import static com.craivet.gfx.Assets.*;
 
 /**
  * TODO Los metodos para obtener las subimagenes deberian ir en otra clase
@@ -28,7 +29,6 @@ public abstract class Entity {
 	public Game game;
 	public Timer timer = new Timer();
 	public ArrayList<Entity> inventory = new ArrayList<>();
-	public Item item;
 	public String[] dialogues = new String[20];
 	public int dialogueIndex;
 
@@ -119,8 +119,8 @@ public abstract class Entity {
 			if (game.items[game.currentMap][i] == null) {
 				game.items[game.currentMap][i] = droppedItem;
 				// La imagen Coin al ser de 32x32, tiene que ajustarse al centro de la imagen del Slime
-				game.items[game.currentMap][i].worldX = worldX + (Assets.slime.getWidth() / 2 - Assets.coin.getWidth() / 2);
-				game.items[game.currentMap][i].worldY = worldY + Assets.slime.getHeight();
+				game.items[game.currentMap][i].worldX = worldX + (entity_slime.getWidth() / 2 - Assets.item_coin.getWidth() / 2);
+				game.items[game.currentMap][i].worldY = worldY + entity_slime.getHeight();
 				break;
 			}
 		}
@@ -257,7 +257,7 @@ public abstract class Entity {
 	public void damagePlayer(boolean contact, int attack) {
 		// Si el mob hace contacto con el player que no es invencible
 		if (type == TYPE_MOB && contact && !game.player.invincible) {
-			game.playSound(Assets.receive_damage);
+			game.playSound(sound_receive_damage);
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
 			int damage = Math.max(attack - game.player.defense, 0);
 			game.player.life -= damage;

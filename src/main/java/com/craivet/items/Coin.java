@@ -1,12 +1,12 @@
-package com.craivet.object;
+package com.craivet.items;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Item;
-import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
+import static com.craivet.gfx.Assets.*;
 
 public class Coin extends Item {
 
@@ -17,12 +17,12 @@ public class Coin extends Item {
 		this.game = game;
 		name = "Coin";
 		type = TYPE_PICKUP_ONLY;
-		image = Utils.scaleImage(Assets.coin, 32, 32);
+		image = Utils.scaleImage(item_coin, 32, 32);
 		value = 1;
 	}
 
 	public void use(Entity entity) {
-		game.playSound(Assets.coin_up);
+		game.playSound(sound_coin);
 		game.ui.addMessage("Coin +" + value);
 		game.player.coin += value;
 	}

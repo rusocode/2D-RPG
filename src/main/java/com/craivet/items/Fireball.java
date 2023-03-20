@@ -1,13 +1,13 @@
-package com.craivet.object;
+package com.craivet.items;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Projectile;
-import com.craivet.gfx.Assets;
 
 import java.awt.*;
 
 import static com.craivet.utils.Constants.*;
+import static com.craivet.gfx.Assets.*;
 
 public class Fireball extends Projectile {
 
@@ -24,7 +24,7 @@ public class Fireball extends Projectile {
 		attack = 2;
 		useCost = 1;
 		alive = false;
-		initMovementImages(Assets.fireball, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initMovementImages(entity_fireball, ENTITY_WIDTH, ENTITY_HEIGHT);
 	}
 
 	@Override

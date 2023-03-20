@@ -3,7 +3,7 @@ package com.craivet;
 import com.craivet.entity.npc.Merchant;
 import com.craivet.entity.npc.Oldman;
 import com.craivet.entity.Slime;
-import com.craivet.object.*;
+import com.craivet.items.*;
 import com.craivet.tile.DryTree;
 
 /**
