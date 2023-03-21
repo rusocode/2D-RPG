@@ -29,8 +29,8 @@ public class Player extends Entity {
 		screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
 		screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
 		// Posiciona el player en el centro del mundo
-		worldX = 12 * tile_size; // 23,21
-		worldY = 12 * tile_size;
+		worldX = 23 * tile_size; // 23,21
+		worldY = 39 * tile_size;
 		this.key = key;
 		initDefaultValues();
 	}
@@ -63,7 +63,7 @@ public class Player extends Entity {
 		tileArea.width = 30;
 		tileArea.height = 32;
 
-		attackArea = currentWeapon.attackArea;
+		// attackArea = currentWeapon.attackArea;
 
 		bodyArea.x = 8;
 		bodyArea.y = 16; // 0
@@ -156,17 +156,19 @@ public class Player extends Entity {
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
 		g2.drawImage(frame, tempScreenX, tempScreenY, null);
 		if (attacking) {
+			g2.setColor(Color.red);
 			switch (direction) {
 				case DIR_DOWN:
-					g2.drawRect(bodyArea.x + tempScreenX, bodyArea.y + attackArea.height + tempScreenY, attackArea.width , attackArea.height);
+					g2.drawRect(tempScreenX + bodyArea.x + attackArea.x, tempScreenY + bodyArea.y + attackArea.y + attackArea.height, attackArea.width, attackArea.height);
+					break;
 				case DIR_UP:
-					// worldY -= attackArea.height;
+					g2.drawRect(tempScreenX + bodyArea.x + attackArea.x, tempScreenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
 					break;
 				case DIR_LEFT:
-					g2.drawRect(attackArea.width - bodyArea.x + tempScreenX, bodyArea.y + tempScreenY, attackArea.width , attackArea.height);
+					g2.drawRect(tempScreenX + bodyArea.x + attackArea.x + attackArea.width, tempScreenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
 					break;
 				case DIR_RIGHT:
-					// worldX += tile_size;
+					g2.drawRect(tempScreenX + attackArea.x + attackArea.width, tempScreenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
 					break;
 			}
 		}
@@ -205,28 +207,49 @@ public class Player extends Entity {
 		if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (6-25 frame de ataque 2)
 			attackNum = 2;
 
-			// Guarda la posicion actual de worldX, worldY y bodyArea
+			// Guarda la posicion actual de worldX, worldY y el tamaño del body
 			int currentWorldX = worldX;
 			int currentWorldY = worldY;
 			int bodyAreaWidth = bodyArea.width;
 			int bodyAreaHeight = bodyArea.height;
 
-			// Ajusta la posicion del player X/Y para el area de ataque
+			// Ajusta el area de ataque para cada direccion
 			switch (direction) {
 				case DIR_DOWN:
-					worldY += bodyArea.y + attackArea.height;
+					attackArea.x = 9;
+					attackArea.y = 14;
+					attackArea.width = 10;
+					attackArea.height = 22;
+					worldX += attackArea.x;
+					worldY += attackArea.y + attackArea.height;
+					break;
 				case DIR_UP:
-					worldY -= attackArea.height;
+					attackArea.x = 15;
+					attackArea.y = 5;
+					attackArea.width = 10;
+					attackArea.height = 22;
+					worldX += attackArea.x;
+					worldY -= bodyArea.y + attackArea.y + attackArea.height;
 					break;
 				case DIR_LEFT:
-					worldX -= attackArea.width - bodyArea.x;
+					attackArea.x = -3;
+					attackArea.y = 10;
+					attackArea.width = 22;
+					attackArea.height = 10;
+					worldX -= bodyArea.x + attackArea.x + attackArea.width;
+					worldY += attackArea.y;
 					break;
 				case DIR_RIGHT:
-					worldX += attackArea.width;
+					attackArea.x = 17;
+					attackArea.y = 10;
+					attackArea.width = 22;
+					attackArea.height = 10;
+					worldX += attackArea.x + attackArea.width;
+					worldY += attackArea.y;
 					break;
 			}
 
-			// attackArea se convierte en bodyArea
+			// Convierte el area del cuerpo en el area de ataque
 			bodyArea.width = attackArea.width;
 			bodyArea.height = attackArea.height;
 
