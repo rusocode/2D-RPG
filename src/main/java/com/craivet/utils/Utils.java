@@ -57,6 +57,8 @@ public final class Utils {
 	 * <p>Es importante usar solo valores multiplicados por dos al tamaño original de la imagen (16), ejemplo, 32, 64,
 	 * etc., sino se deforma.
 	 *
+	 * <p>TODO En vez de pasar un ancho y alto, solo es suficiente con un valor escalable
+	 *
 	 * @param image  la imagen.
 	 * @param width  el ancho de la imagen.
 	 * @param height el alto de la imagen.

@@ -11,6 +11,7 @@ public class Coin extends Item {
 
 	private final Game game;
 
+	// TODO La moneda no aparece en el medio del Slime
 	public Coin(Game game) {
 		super(game);
 		this.game = game;

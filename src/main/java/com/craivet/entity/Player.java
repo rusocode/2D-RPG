@@ -38,7 +38,7 @@ public class Player extends Entity {
 	public void initDefaultValues() {
 		type = TYPE_PLAYER;
 		name = "Player";
-		speed = PLAYER_SPEED;
+		speed = 3;
 		maxLife = 6;
 		life = maxLife;
 		maxMana = 4;
@@ -158,12 +158,12 @@ public class Player extends Entity {
 		if (attacking) {
 			switch (direction) {
 				case DIR_DOWN:
-					g2.drawRect(bodyArea.x + screenX, bodyArea.y + attackArea.height + screenY, attackArea.width , attackArea.height);
+					g2.drawRect(bodyArea.x + tempScreenX, bodyArea.y + attackArea.height + tempScreenY, attackArea.width , attackArea.height);
 				case DIR_UP:
 					// worldY -= attackArea.height;
 					break;
 				case DIR_LEFT:
-					// worldX -= attackArea.width;
+					g2.drawRect(attackArea.width - bodyArea.x + tempScreenX, bodyArea.y + tempScreenY, attackArea.width , attackArea.height);
 					break;
 				case DIR_RIGHT:
 					// worldX += tile_size;
@@ -214,15 +214,15 @@ public class Player extends Entity {
 			// Ajusta la posicion del player X/Y para el area de ataque
 			switch (direction) {
 				case DIR_DOWN:
-					worldY += tile_size;
+					worldY += bodyArea.y + attackArea.height;
 				case DIR_UP:
 					worldY -= attackArea.height;
 					break;
 				case DIR_LEFT:
-					worldX -= attackArea.width;
+					worldX -= attackArea.width - bodyArea.x;
 					break;
 				case DIR_RIGHT:
-					worldX += tile_size;
+					worldX += attackArea.width;
 					break;
 			}
 
