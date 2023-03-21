@@ -226,12 +226,13 @@ public abstract class Entity {
 				 * dibuje como valor negativo hacia la izquierda. */
 				if (hpBarValue < 0) hpBarValue = 0;
 
+				/*
 				g2.setColor(new Color(35, 35, 35));
 				g2.fillRect(screenX - 1, screenY + tile_size + 4, tile_size + 2, 7);
 
 				g2.setColor(new Color(255, 0, 30));
 				g2.fillRect(screenX, screenY + tile_size + 5, (int) hpBarValue, 5);
-
+				*/
 				timer.timeHpBar(this, INTERVAL_HP_BAR);
 			}
 			if (invincible) {
@@ -243,7 +244,7 @@ public abstract class Entity {
 
 			g2.drawImage(auxImage, screenX, screenY, null);
 			g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
-			// g2.setColor(Color.red);
+			g2.setColor(Color.green);
 			g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
 			Utils.changeAlpha(g2, 1);
 		}

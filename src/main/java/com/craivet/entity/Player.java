@@ -28,8 +28,8 @@ public class Player extends Entity {
 		// Posiciona el player en el centro de la pantalla
 		screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
 		screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
-		// Posiciona el player en el centro del mundo
-		worldX = 23 * tile_size; // 23,21
+		// Posiciona el player en el mundo, 23,21 es el centro
+		worldX = 23 * tile_size;
 		worldY = 39 * tile_size;
 		this.key = key;
 		initDefaultValues();
@@ -52,7 +52,7 @@ public class Player extends Entity {
 		invincible = false;
 
 		strength = 1; // Mas fuerza, mas daño
-		dexterity = 1; // Mas destreza, menos daño
+		dexterity = 1; // Mas destreza, menos daño recibido
 		currentWeapon = new SwordNormal(game);
 		currentShield = new ShieldWood(game);
 		attack = getAttack();
@@ -66,9 +66,9 @@ public class Player extends Entity {
 		// attackArea = currentWeapon.attackArea;
 
 		bodyArea.x = 8;
-		bodyArea.y = 16; // 0
+		bodyArea.y = 16;
 		bodyArea.width = 32;
-		bodyArea.height = 32; // 32
+		bodyArea.height = 32;
 		bodyAreaDefaultX = bodyArea.x;
 		bodyAreaDefaultY = bodyArea.y;
 
@@ -124,6 +124,115 @@ public class Player extends Entity {
 		if (life <= 0) die();
 	}
 
+	/**
+	 * Ataca al mob si el frame de ataque colisiona con el.
+	 *
+	 * <p>De 0 a 5 milisegundos se muestra el primer frame de ataque. De 6 a 25 milisegundos se muestra el segundo frame
+	 * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
+	 *
+	 * <p>En el segundo frame de ataque, la posicion X/Y se ajusta para el area de ataque y verifica si colisiona con un
+	 * mob o tile interactivo.
+	 */
+	private void attackWithSword() {
+		timer.attackAnimationCounter++;
+		if (timer.attackAnimationCounter <= 5) attackNum = 1; // (0-5 frame de ataque 1)
+		if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (6-25 frame de ataque 2)
+			attackNum = 2;
+
+			// Guarda la posicion actual de worldX, worldY y el tamaño del body
+			int currentWorldX = worldX;
+			int currentWorldY = worldY;
+			int bodyAreaWidth = bodyArea.width;
+			int bodyAreaHeight = bodyArea.height;
+
+			// Ajusta el area de ataque para cada direccion
+			switch (direction) {
+				case DIR_DOWN:
+					attackArea.x = 9;
+					attackArea.y = 8;
+					attackArea.width = 10;
+					attackArea.height = 25;
+					worldX += attackArea.x;
+					worldY += attackArea.y + attackArea.height;
+					break;
+				case DIR_UP:
+					attackArea.x = 15;
+					attackArea.y = 5;
+					attackArea.width = 10;
+					attackArea.height = 27;
+					worldX += attackArea.x;
+					worldY -= bodyArea.y + attackArea.height;
+					break;
+				case DIR_LEFT:
+					attackArea.x = -1;
+					attackArea.y = 10;
+					attackArea.width = 24;
+					attackArea.height = 10;
+					worldX -= bodyArea.x + attackArea.x + attackArea.width;
+					worldY += attackArea.y;
+					break;
+				case DIR_RIGHT:
+					attackArea.x = tile_size - bodyArea.width;
+					attackArea.y = 10;
+					// Estos valores no se pueden calcular, ya que van a depender del tamaño de la imagen del arma
+					attackArea.width = 24;
+					attackArea.height = 10;
+					worldX += attackArea.x + attackArea.width;
+					worldY += attackArea.y;
+					break;
+			}
+
+			// Convierte el area del cuerpo en el area de ataque
+			bodyArea.width = attackArea.width;
+			bodyArea.height = attackArea.height;
+
+			// Verifica la colision con el mob con la posicion X/Y y bodyArea actualizados, osea el area de ataque
+			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
+			damageMob(mobIndex, attack);
+
+			int iTileIndex = game.cChecker.checkEntity(this, game.iTile);
+			damageInteractiveTile(iTileIndex);
+
+			// Despues de verificar la colision, resetea los datos originales
+			worldX = currentWorldX;
+			worldY = currentWorldY;
+			bodyArea.width = bodyAreaWidth;
+			bodyArea.height = bodyAreaHeight;
+		}
+		if (timer.attackAnimationCounter > 25) {
+			attackNum = 1;
+			timer.attackAnimationCounter = 0;
+			attacking = false;
+		}
+	}
+
+	private void drawRects(Graphics2D g2) {
+		// Imagen
+		g2.setColor(Color.magenta);
+		g2.drawRect(screenX, screenY, tile_size, tile_size);
+		// Cuerpo
+		g2.setColor(Color.yellow);
+		g2.drawRect(screenX + bodyArea.x, screenY + bodyArea.y, bodyArea.width, bodyArea.height);
+		// Area de ataque
+		if (attacking) {
+			g2.setColor(Color.red);
+			switch (direction) {
+				case DIR_DOWN:
+					g2.drawRect(screenX + bodyArea.x + attackArea.x, screenY + bodyArea.y + attackArea.y + attackArea.height, attackArea.width, attackArea.height);
+					break;
+				case DIR_UP:
+					g2.drawRect(screenX + bodyArea.x + attackArea.x, screenY - attackArea.height, attackArea.width, attackArea.height);
+					break;
+				case DIR_LEFT:
+					g2.drawRect(screenX - attackArea.width, screenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
+					break;
+				case DIR_RIGHT:
+					g2.drawRect(screenX + bodyArea.x + attackArea.x + attackArea.width, screenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
+					break;
+			}
+		}
+	}
+
 	public void draw(Graphics2D g2) {
 		BufferedImage frame = null;
 		int tempScreenX = screenX, tempScreenY = screenY;
@@ -155,23 +264,8 @@ public class Player extends Entity {
 
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
 		g2.drawImage(frame, tempScreenX, tempScreenY, null);
-		if (attacking) {
-			g2.setColor(Color.red);
-			switch (direction) {
-				case DIR_DOWN:
-					g2.drawRect(tempScreenX + bodyArea.x + attackArea.x, tempScreenY + bodyArea.y + attackArea.y + attackArea.height, attackArea.width, attackArea.height);
-					break;
-				case DIR_UP:
-					g2.drawRect(tempScreenX + bodyArea.x + attackArea.x, tempScreenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
-					break;
-				case DIR_LEFT:
-					g2.drawRect(tempScreenX + bodyArea.x + attackArea.x + attackArea.width, tempScreenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
-					break;
-				case DIR_RIGHT:
-					g2.drawRect(tempScreenX + attackArea.x + attackArea.width, tempScreenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
-					break;
-			}
-		}
+
+		drawRects(g2);
 
 		Utils.changeAlpha(g2, 1);
 
@@ -190,87 +284,6 @@ public class Player extends Entity {
 			timer.attackCounter = 0;
 		}
 		attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
-	}
-
-	/**
-	 * Ataca al mob si el frame de ataque colisiona con el.
-	 *
-	 * <p>De 0 a 5 milisegundos se muestra el primer frame de ataque. De 6 a 25 milisegundos se muestra el segundo frame
-	 * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
-	 *
-	 * <p>En el segundo frame de ataque, la posicion X/Y se ajusta para el area de ataque y verifica si colisiona con un
-	 * mob o tile interactivo.
-	 */
-	private void attackWithSword() {
-		timer.attackAnimationCounter++;
-		if (timer.attackAnimationCounter <= 5) attackNum = 1; // (0-5 frame de ataque 1)
-		if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (6-25 frame de ataque 2)
-			attackNum = 2;
-
-			// Guarda la posicion actual de worldX, worldY y el tamaño del body
-			int currentWorldX = worldX;
-			int currentWorldY = worldY;
-			int bodyAreaWidth = bodyArea.width;
-			int bodyAreaHeight = bodyArea.height;
-
-			// Ajusta el area de ataque para cada direccion
-			switch (direction) {
-				case DIR_DOWN:
-					attackArea.x = 9;
-					attackArea.y = 14;
-					attackArea.width = 10;
-					attackArea.height = 22;
-					worldX += attackArea.x;
-					worldY += attackArea.y + attackArea.height;
-					break;
-				case DIR_UP:
-					attackArea.x = 15;
-					attackArea.y = 5;
-					attackArea.width = 10;
-					attackArea.height = 22;
-					worldX += attackArea.x;
-					worldY -= bodyArea.y + attackArea.y + attackArea.height;
-					break;
-				case DIR_LEFT:
-					attackArea.x = -3;
-					attackArea.y = 10;
-					attackArea.width = 22;
-					attackArea.height = 10;
-					worldX -= bodyArea.x + attackArea.x + attackArea.width;
-					worldY += attackArea.y;
-					break;
-				case DIR_RIGHT:
-					attackArea.x = 17;
-					attackArea.y = 10;
-					attackArea.width = 22;
-					attackArea.height = 10;
-					worldX += attackArea.x + attackArea.width;
-					worldY += attackArea.y;
-					break;
-			}
-
-			// Convierte el area del cuerpo en el area de ataque
-			bodyArea.width = attackArea.width;
-			bodyArea.height = attackArea.height;
-
-			// Verifica la colision con el mob con la posicion X/Y y bodyArea actualizados, osea el area de ataque
-			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
-			damageMob(mobIndex, attack);
-
-			int iTileIndex = game.cChecker.checkEntity(this, game.iTile);
-			damageInteractiveTile(iTileIndex);
-
-			// Despues de verificar la colision, resetea los datos originales
-			worldX = currentWorldX;
-			worldY = currentWorldY;
-			bodyArea.width = bodyAreaWidth;
-			bodyArea.height = bodyAreaHeight;
-		}
-		if (timer.attackAnimationCounter > 25) {
-			attackNum = 1;
-			timer.attackAnimationCounter = 0;
-			attacking = false;
-		}
 	}
 
 	private void shootProjectile() {
