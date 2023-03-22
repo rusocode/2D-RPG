@@ -203,7 +203,7 @@ public class KeyHandler extends KeyAdapter {
 				game.playMusic(music_blue_boy_adventure);
 			} else if (game.ui.commandNum == 1) {
 				game.gameState = TITLE_STATE;
-				game.retry();
+				game.restart();
 			}
 		}
 	}

@@ -46,7 +46,7 @@ public final class Constants {
 	public static final int SELECTION_SCREEN = 1;
 
 	// Probabilidades
-	public static final int PROBABILIDAD_DROP_ORO = 100;
+	public static final int PROBABILIDAD_DROP_ORO = 47;
 
 	// Interval animation
 	public static final int INTERVAL_DEAD_ANIMATION = 10;

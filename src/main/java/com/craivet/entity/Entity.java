@@ -243,8 +243,8 @@ public abstract class Entity {
 
 			g2.drawImage(auxImage, screenX, screenY, null);
 			g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
-			g2.setColor(Color.cyan);
-			g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
+			// g2.setColor(Color.cyan);
+			// g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
 			Utils.changeAlpha(g2, 1);
 		}
 	}
