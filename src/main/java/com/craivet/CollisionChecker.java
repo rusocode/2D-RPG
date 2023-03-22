@@ -149,6 +149,7 @@ public class CollisionChecker {
 					if (otherEntity[game.currentMap][i] != entity) { // Evita la colision en si misma
 						entity.collisionOn = true;
 						index = i;
+						// TODO No tendria que romper el bucle una vez que hay colision?
 					}
 				}
 

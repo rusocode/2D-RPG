@@ -15,6 +15,10 @@ import static com.craivet.gfx.Assets.*;
 
 /**
  * El player permanece fijo en el centro de la pantalla dando la sensacion de movimiento aunque no se "mueva".
+ *
+ * <p>Quiero aclarar que con el tema de las colisiones entre dos entidades, en el caso del bodyArea, solo se genera
+ * colision cuando el limite del player por ejemplo, SUPERA el limite del slime. Pero en el caso del attackArea, solo
+ * se genera colision cuando los limites de ambos SE TOCAN.
  */
 
 public class Player extends Entity {
@@ -130,51 +134,52 @@ public class Player extends Entity {
 	 * <p>De 0 a 5 milisegundos se muestra el primer frame de ataque. De 6 a 25 milisegundos se muestra el segundo frame
 	 * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
 	 *
-	 * <p>En el segundo frame de ataque, la posicion X/Y se ajusta para el area de ataque y verifica si colisiona con un
+	 * <p>En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con un
 	 * mob o tile interactivo.
 	 */
 	private void attackWithSword() {
 		timer.attackAnimationCounter++;
-		if (timer.attackAnimationCounter <= 5) attackNum = 1; // (0-5 frame de ataque 1)
-		if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (6-25 frame de ataque 2)
+		if (timer.attackAnimationCounter <= 5) attackNum = 1; // (de 0-5 ms frame de ataque 1)
+		if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (de 6-25 ms frame de ataque 2)
 			attackNum = 2;
 
-			// Guarda la posicion actual de worldX, worldY y el tamaño del body
+			// Guarda la posicion actual de worldX, worldY y el tamaño del bodyArea
 			int currentWorldX = worldX;
 			int currentWorldY = worldY;
 			int bodyAreaWidth = bodyArea.width;
 			int bodyAreaHeight = bodyArea.height;
 
-			// Ajusta el area de ataque para cada direccion
+			/* Ajusta el area de ataque para cada direccion. Para las direcciones down y up el tamaño va a ser el mismo,
+			 * pero el tamaño para las direcciones left y right va a variar. Tambien la posicion varia para cada
+			 * direccion. */
 			switch (direction) {
 				case DIR_DOWN:
 					attackArea.x = 9;
-					attackArea.y = 8;
+					attackArea.y = 5;
 					attackArea.width = 10;
-					attackArea.height = 25;
+					attackArea.height = 27;
 					worldX += attackArea.x;
 					worldY += attackArea.y + attackArea.height;
 					break;
 				case DIR_UP:
 					attackArea.x = 15;
-					attackArea.y = 5;
+					attackArea.y = 4;
 					attackArea.width = 10;
-					attackArea.height = 27;
+					attackArea.height = 28;
 					worldX += attackArea.x;
-					worldY -= bodyArea.y + attackArea.height;
+					worldY -= bodyArea.y + attackArea.height; // TODO Por que se resta bodyArea.y y no attackArea.y?
 					break;
 				case DIR_LEFT:
-					attackArea.x = -1;
+					attackArea.x = 0;
 					attackArea.y = 10;
-					attackArea.width = 24;
+					attackArea.width = 25;
 					attackArea.height = 10;
 					worldX -= bodyArea.x + attackArea.x + attackArea.width;
 					worldY += attackArea.y;
 					break;
 				case DIR_RIGHT:
-					attackArea.x = tile_size - bodyArea.width;
+					attackArea.x = 16;
 					attackArea.y = 10;
-					// Estos valores no se pueden calcular, ya que van a depender del tamaño de la imagen del arma
 					attackArea.width = 24;
 					attackArea.height = 10;
 					worldX += attackArea.x + attackArea.width;
@@ -182,11 +187,11 @@ public class Player extends Entity {
 					break;
 			}
 
-			// Convierte el area del cuerpo en el area de ataque
+			// Convierte el area del cuerpo en el area de ataque para verificar la colision solo con el area de ataque
 			bodyArea.width = attackArea.width;
 			bodyArea.height = attackArea.height;
 
-			// Verifica la colision con el mob con la posicion X/Y y bodyArea actualizados, osea el area de ataque
+			// Verifica la colision con el mob usando la posicion y tamaño del bodyArea actualizados, osea el area de ataque
 			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
 			damageMob(mobIndex, attack);
 
@@ -224,7 +229,7 @@ public class Player extends Entity {
 					g2.drawRect(screenX + bodyArea.x + attackArea.x, screenY - attackArea.height, attackArea.width, attackArea.height);
 					break;
 				case DIR_LEFT:
-					g2.drawRect(screenX - attackArea.width, screenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
+					g2.drawRect(screenX + attackArea.x - attackArea.width, screenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
 					break;
 				case DIR_RIGHT:
 					g2.drawRect(screenX + bodyArea.x + attackArea.x + attackArea.width, screenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
@@ -265,7 +270,7 @@ public class Player extends Entity {
 		if (invincible) Utils.changeAlpha(g2, 0.3f);
 		g2.drawImage(frame, tempScreenX, tempScreenY, null);
 
-		drawRects(g2);
+		// drawRects(g2);
 
 		Utils.changeAlpha(g2, 1);
 

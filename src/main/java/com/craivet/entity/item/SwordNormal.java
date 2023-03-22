@@ -18,7 +18,7 @@ public class SwordNormal extends Item {
 		// attackArea.width = 36;
 		// attackArea.height = 36;
 		itemDescription = "[" + name + "]\nAn old sword.";
-		attackValue = 0;
+		attackValue = 2;
 		price = 20;
 	}
 
