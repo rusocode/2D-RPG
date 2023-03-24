@@ -53,11 +53,6 @@ public final class Assets {
 	public static final BufferedImage entity_merchant = Utils.loadImage("textures/entity/merchant.png");
 	// Gui
 	public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));
-	public static final BufferedImage heart_full = Utils.loadImage("textures/gui/heart_full.png");
-	public static final BufferedImage heart_half = Utils.loadImage("textures/gui/heart_half.png");
-	public static final BufferedImage heart_blank = Utils.loadImage("textures/gui/heart_blank.png");
-	public static final BufferedImage mana_full = Utils.loadImage("textures/gui/mana_full.png");
-	public static final BufferedImage mana_blank = Utils.loadImage("textures/gui/mana_blank.png");
 	// Items
 	public static final BufferedImage item_axe = Utils.loadImage("textures/items/axe.png");
 	public static final BufferedImage item_boots = Utils.loadImage("textures/items/boots.png");

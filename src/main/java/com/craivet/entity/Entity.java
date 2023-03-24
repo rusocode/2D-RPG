@@ -51,6 +51,7 @@ public abstract class Entity {
 	public int attack, defense;
 	public int attackValue, defenseValue;
 	public boolean collision;
+	// TODO El bodyarea se podria llamar hitbox
 	public Rectangle tileArea = new Rectangle(0, 0, 0, 0), attackArea = new Rectangle(0, 0, 0, 0), bodyArea = new Rectangle(0, 0, 48, 48);
 	public int bodyAreaDefaultX, bodyAreaDefaultY;
 	public Projectile projectile;

@@ -123,7 +123,7 @@ public class Game extends JPanel implements Runnable {
 		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
 		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
 		playMusic(Assets.music_blue_boy_adventure);
-		gameState = TITLE_STATE;
+		gameState = PLAY_STATE;
 
 		/* Hasta ahora dibujamos todo directamente en el JPanel. Pero esta vez seguimos dos pasos:
 		 * 1. Dibujamos todo en la pantalla temporal para la imagen que esta detras de escena.

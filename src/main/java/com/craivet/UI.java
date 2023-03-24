@@ -1,7 +1,6 @@
 package com.craivet;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.craivet.entity.Entity;
