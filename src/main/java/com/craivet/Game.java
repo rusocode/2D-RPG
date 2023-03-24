@@ -1,5 +1,6 @@
 package com.craivet;
 
+import com.craivet.ai.AStar;
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.Item;
 import com.craivet.entity.mob.Mob;
@@ -41,6 +42,7 @@ public class Game extends JPanel implements Runnable {
 	public Sound music = new Sound();
 	public UI ui = new UI(this);
 	public Config config = new Config(this);
+	public AStar aStar = new AStar(this);
 
 	// Entities
 	public ArrayList<Entity> entities = new ArrayList<>();

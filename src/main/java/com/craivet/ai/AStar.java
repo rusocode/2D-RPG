@@ -48,7 +48,7 @@ public class AStar {
 					if (openList.get(i).gCost < openList.get(bestNodeIndex).gCost) bestNodeIndex = i;
 			}
 
-			if (openList.size() == 0) break; // TODO Se podria usar el metodo isEmpty()?
+			if (openList.isEmpty()) break;
 
 			currentNode = openList.get(bestNodeIndex);
 
@@ -63,16 +63,21 @@ public class AStar {
 		return goalReached;
 	}
 
+	/**
+	 * Establece el nodo inicial, el nodo objetivo y los nodos solidos.
+	 */
 	public void setNodes(int startRow, int startCol, int goalRow, int goalCol) {
 		resetNodes();
+
 		startNode = node[startRow][startCol];
 		goalNode = node[goalRow][goalCol];
 		currentNode = startNode;
+
 		openList.add(currentNode);
 
+		// Establece los nodos solidos verificando los tiles solidos y los tiles interactivos destructibles
 		for (int row = 0; row < MAX_WORLD_ROW; row++) {
 			for (int col = 0; col < MAX_WORLD_COL; col++) {
-				// Establece los nodos solidos verificando los tiles y los tiles interactivos
 				int tileIndex = game.tileManager.tileIndex[game.currentMap][row][col];
 				if (game.tileManager.tile[tileIndex].solid) node[row][col].solid = true;
 				for (int i = 0; i < game.iTile[1].length; i++) {

@@ -71,6 +71,7 @@ public abstract class Entity {
 	public boolean dead;
 	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
+	public boolean onPath;
 
 	public Entity(Game game) {
 		this.game = game;
@@ -161,14 +162,7 @@ public abstract class Entity {
 	public void update() {
 
 		setAction();
-
-		collisionOn = false;
-		game.cChecker.checkTile(this);
-		game.cChecker.checkObject(this);
-		game.cChecker.checkEntity(this, game.npcs);
-		game.cChecker.checkEntity(this, game.mobs);
-		game.cChecker.checkEntity(this, game.iTile);
-		damagePlayer(game.cChecker.checkPlayer(this), attack);
+		checkCollisions();
 
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
 		if (!collisionOn) {
@@ -332,6 +326,73 @@ public abstract class Entity {
 		attackLeft2 = Utils.scaleImage(subimages[5], tile_size * 2, tile_size);
 		attackRight1 = Utils.scaleImage(subimages[6], tile_size * 2, tile_size);
 		attackRight2 = Utils.scaleImage(subimages[7], tile_size * 2, tile_size);
+	}
+
+	private void checkCollisions() {
+		collisionOn = false;
+		game.cChecker.checkTile(this);
+		game.cChecker.checkObject(this);
+		game.cChecker.checkEntity(this, game.npcs);
+		game.cChecker.checkEntity(this, game.mobs);
+		game.cChecker.checkEntity(this, game.iTile);
+		damagePlayer(game.cChecker.checkPlayer(this), attack);
+	}
+
+	public void searchPath(int goalRow, int goalCol) {
+		int startRow = (worldY + bodyArea.y) / tile_size;
+		int startCol = (worldX + bodyArea.x) / tile_size;
+
+		game.aStar.setNodes(startRow, startCol, goalRow, goalCol);
+
+		// Si devuelve verdadero, significa que ha encontrado un camino para guiar a la entidad hacia la meta
+		if (game.aStar.search()) {
+			// Obtiene la siguiente posicion x/y de la ruta
+			int nextX = game.aStar.pathList.get(0).col * tile_size;
+			int nextY = game.aStar.pathList.get(0).row * tile_size;
+
+			// Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
+			int left = worldX + bodyArea.x;
+			int right = worldX + bodyArea.x + bodyArea.width;
+			int top = worldY + bodyArea.y;
+			int bottom = worldY + bodyArea.y + bodyArea.height;
+
+			if (top > nextY && left >= nextX && right < nextX + tile_size) direction = DIR_UP;
+			else if (top < nextY && left >= nextX && right < nextX + tile_size) direction = DIR_DOWN;
+			else if (top >= nextY && bottom < nextY + tile_size) {
+				// left o right
+				if (left > nextX) direction = DIR_LEFT;
+				if (left < nextX) direction = DIR_RIGHT;
+			}
+
+			/* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
+			 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
+			else if (top > nextY && left > nextX) {
+				// up o left
+				direction = DIR_UP;
+				checkCollisions();
+				if (collisionOn) direction = DIR_LEFT;
+			} else if (top > nextY && left < nextX) {
+				// up o right
+				direction = DIR_UP;
+				checkCollisions();
+				if (collisionOn) direction = DIR_RIGHT;
+			} else if (top < nextY && left > nextX) {
+				// down o left
+				direction = DIR_DOWN;
+				checkCollisions();
+				if (collisionOn) direction = DIR_LEFT;
+			} else if (top < nextY && left < nextX) {
+				// down o right
+				direction = DIR_DOWN;
+				checkCollisions();
+				if (collisionOn) direction = DIR_RIGHT;
+			}
+
+			int nextRow = game.aStar.pathList.get(0).row;
+			int nextCol = game.aStar.pathList.get(0).col;
+			if (nextRow == goalRow && nextCol == goalCol) onPath = false;
+
+		}
 	}
 
 }

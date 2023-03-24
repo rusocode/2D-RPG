@@ -39,11 +39,13 @@ public class Oldman extends Entity {
 	 * Establece la accion especificada.
 	 */
 	public void setAction() {
-		timer.timeDirection(this, INTERVAL_DIRECTION);
+		if (onPath) searchPath(9, 12);
+		else timer.timeDirection(this, INTERVAL_DIRECTION);
 	}
 
 	public void speak() {
 		super.speak();
+		onPath = true;
 	}
 
 	private void initDialogue() {

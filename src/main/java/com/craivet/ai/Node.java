@@ -3,7 +3,7 @@ package com.craivet.ai;
 public class Node {
 
 	Node parent;
-	int row, col;
+	public int row, col;
 	int gCost, hCost, fCost;
 	boolean open, checked, solid;
 
