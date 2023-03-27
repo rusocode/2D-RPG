@@ -28,7 +28,7 @@ public class AssetSetter {
 
 	public void setNPC() {
 		int mapNum = 0, i = 0;
-		game.npcs[mapNum][i++] = new Oldman(game, 21, 21);
+		game.npcs[mapNum][i++] = new Oldman(game, 29, 20);
 
 		mapNum = 1;
 		i = 0;

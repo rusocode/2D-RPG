@@ -101,7 +101,7 @@ public class KeyHandler extends KeyAdapter {
 		if (code == KeyEvent.VK_R) {
 			switch (game.currentMap) {
 				case 0:
-					game.tileManager.loadMap("maps/map3.txt", 0);
+					game.tileManager.loadMap("maps/map1.txt", 0);
 					break;
 				case 1:
 					game.tileManager.loadMap("maps/interior1.txt", 1);

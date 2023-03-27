@@ -34,7 +34,7 @@ public class Player extends Entity {
 		screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
 		// Posiciona el player en el mundo, 23,21 es el centro
 		worldX = 23 * tile_size;
-		worldY = 39 * tile_size;
+		worldY = 21 * tile_size;
 		this.key = key;
 		initDefaultValues();
 	}

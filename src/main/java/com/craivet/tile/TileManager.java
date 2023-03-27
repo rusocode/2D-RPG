@@ -18,13 +18,14 @@ public class TileManager {
 	private final Game game;
 	public final Tile[] tile;
 	public final int[][][] tileIndex;
+	boolean drawPath = true;
 
 	public TileManager(Game game) {
 		this.game = game;
 		tile = new Tile[50];
 		tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 		initTiles();
-		loadMap("maps/map3.txt", 0); // TODO Crear constantes
+		loadMap("maps/map1.txt", 0); // TODO Crear constantes
 		loadMap("maps/interior1.txt", 1);
 	}
 
@@ -143,6 +144,19 @@ public class TileManager {
 				}
 			}
 		}
+
+		// Dibuja la ruta
+		if (drawPath) {
+			g2.setColor(new Color(255, 0, 0, 70));
+			for (int i = 0; i < game.aStar.pathList.size(); i++) {
+				int worldX = game.aStar.pathList.get(i).col * tile_size;
+				int worldY = game.aStar.pathList.get(i).row * tile_size;
+				int screenX = worldX - playerWorldX + playerScreenX;
+				int screenY = worldY - playerWorldY + playerScreenY;
+				g2.fillRect(screenX, screenY, tile_size, tile_size);
+			}
+		}
+
 	}
 
 }

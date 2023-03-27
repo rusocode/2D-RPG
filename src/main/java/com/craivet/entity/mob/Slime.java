@@ -48,9 +48,28 @@ public class Slime extends Mob {
 		initMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 	}
 
+	public void update() {
+		super.update();
+
+		int xDistance = Math.abs(worldX - game.player.worldX);
+		int yDistance = Math.abs(worldY - game.player.worldY);
+		int tileDistance = (xDistance + yDistance) / tile_size;
+
+		/* El slime se vuelve agresivo si todavia no es agresivo y si el player esta a 5 tiles de distancia y si el
+		 * numero random es mayor a 50 (este ultimo, para no hacerlo robotico). */
+		if (!onPath && tileDistance <= 5 && Utils.azar(100) > 50) onPath = true;
+
+		// El slime deja de ser agresivo cuando el player se aleja 20 tiles
+		// if (onPath && tileDistance > 20) onPath = false;
+	}
+
 	public void setAction() {
-		timer.timeDirection(this, INTERVAL_DIRECTION);
-		shootProjectile();
+		if (onPath) {
+			int goalRow = (game.player.worldY + game.player.bodyArea.y) / tile_size;
+			int goalCol = (game.player.worldX + game.player.bodyArea.x) / tile_size;
+			searchPath(goalRow, goalCol);
+			shootProjectile();
+		} else timer.timeDirection(this, INTERVAL_DIRECTION);
 	}
 
 	/**
@@ -58,7 +77,8 @@ public class Slime extends Mob {
 	 */
 	public void damageReaction() {
 		timer.directionCounter = 0;
-		direction = game.player.direction;
+		// direction = game.player.direction;
+		onPath = true;
 	}
 
 	/**
@@ -69,7 +89,7 @@ public class Slime extends Mob {
 	}
 
 	private void shootProjectile() {
-		if (Utils.azar(100) > 99 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
+		if (Utils.azar(100) > 95 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
 			projectile.set(worldX + 8, worldY + 17, direction, true, this);
 			game.projectiles.add(projectile);
 			timer.projectileCounter = 0;

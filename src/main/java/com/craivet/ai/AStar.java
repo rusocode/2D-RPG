@@ -24,6 +24,7 @@ public class AStar {
 		initNodes();
 	}
 
+	// TODO El problema de esto es que la busqueda se actualiza cada 60 segundos
 	public boolean search() {
 		while (!goalReached && step < 500) {
 
@@ -39,7 +40,6 @@ public class AStar {
 
 			int bestNodeIndex = 0;
 			int bestNodefCost = 999;
-
 			for (int i = 0; i < openList.size(); i++) {
 				if (openList.get(i).fCost < bestNodefCost) {
 					bestNodeIndex = i;
@@ -67,7 +67,7 @@ public class AStar {
 	 * Establece el nodo inicial, el nodo objetivo y los nodos solidos.
 	 */
 	public void setNodes(int startRow, int startCol, int goalRow, int goalCol) {
-		resetNodes();
+		resetNodes(); // TODO No haria falta resetear los nodos en caso de que el objetivo sea fijo
 
 		startNode = node[startRow][startCol];
 		goalNode = node[goalRow][goalCol];

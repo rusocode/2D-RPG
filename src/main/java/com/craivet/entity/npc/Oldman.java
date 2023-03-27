@@ -18,7 +18,7 @@ public class Oldman extends Entity {
 	private void initDefaultValues() {
 		type = TYPE_NPC;
 		name = "Oldman";
-		speed = 1;
+		speed = 2;
 
 		tileArea.x = 8;
 		tileArea.y = 16;
@@ -39,8 +39,11 @@ public class Oldman extends Entity {
 	 * Establece la accion especificada.
 	 */
 	public void setAction() {
-		if (onPath) searchPath(9, 12);
-		else timer.timeDirection(this, INTERVAL_DIRECTION);
+		if (onPath) {
+			int goalRow = (game.player.worldY + game.player.bodyArea.y) / tile_size;
+			int goalCol = (game.player.worldX + game.player.bodyArea.x) / tile_size;
+			searchPath(goalRow, goalCol);
+		} else timer.timeDirection(this, INTERVAL_DIRECTION);
 	}
 
 	public void speak() {

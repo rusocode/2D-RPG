@@ -71,6 +71,7 @@ public abstract class Entity {
 	public boolean dead;
 	public boolean hpBarOn;
 	public int movementNum = 1, attackNum = 1;
+	// Indica si la entidad entra en el algoritmo de busqueda
 	public boolean onPath;
 
 	public Entity(Game game) {
@@ -344,29 +345,29 @@ public abstract class Entity {
 
 		game.aStar.setNodes(startRow, startCol, goalRow, goalCol);
 
-		// Si devuelve verdadero, significa que ha encontrado un camino para guiar a la entidad hacia la meta
+		// Si devuelve verdadero, significa que ha encontrado un camino para guiar a la entidad hacia el objetivo
 		if (game.aStar.search()) {
+
 			// Obtiene la siguiente posicion x/y de la ruta
 			int nextX = game.aStar.pathList.get(0).col * tile_size;
 			int nextY = game.aStar.pathList.get(0).row * tile_size;
-
-			// Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
+			// Obtiene la posicion de la entidad
 			int left = worldX + bodyArea.x;
 			int right = worldX + bodyArea.x + bodyArea.width;
 			int top = worldY + bodyArea.y;
 			int bottom = worldY + bodyArea.y + bodyArea.height;
 
-			if (top > nextY && left >= nextX && right < nextX + tile_size) direction = DIR_UP;
-			else if (top < nextY && left >= nextX && right < nextX + tile_size) direction = DIR_DOWN;
-			else if (top >= nextY && bottom < nextY + tile_size) {
-				// left o right
-				if (left > nextX) direction = DIR_LEFT;
-				if (left < nextX) direction = DIR_RIGHT;
-			}
+			// Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
+			/* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces
+			 * se define su movimiento hacia arriba o abajo. */
+			if (left >= nextX && right < nextX + tile_size) direction = top > nextY ? DIR_UP : DIR_DOWN;
+			/* Si el lado superior y inferior de la entidad estan entre la siguiente posicion y de la ruta, entonces
+			 * se define su movimiento hacia la izquierda o derecha. */
+			if (top >= nextY && bottom < nextY + tile_size) direction = left > nextX ? DIR_LEFT : DIR_RIGHT;
 
 			/* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
 			 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
-			else if (top > nextY && left > nextX) {
+			/* else if (top > nextY && left > nextX) {
 				// up o left
 				direction = DIR_UP;
 				checkCollisions();
@@ -386,11 +387,12 @@ public abstract class Entity {
 				direction = DIR_DOWN;
 				checkCollisions();
 				if (collisionOn) direction = DIR_RIGHT;
-			}
+			} */
 
-			int nextRow = game.aStar.pathList.get(0).row;
-			int nextCol = game.aStar.pathList.get(0).col;
-			if (nextRow == goalRow && nextCol == goalCol) onPath = false;
+			// Si la entidad llego al objetivo entonces sale del algoritmo de busqueda
+			// int nextRow = game.aStar.pathList.get(0).row;
+			// int nextCol = game.aStar.pathList.get(0).col;
+			// if (nextRow == goalRow && nextCol == goalCol) onPath = false;
 
 		}
 	}
