@@ -82,7 +82,7 @@ public class Player extends Entity {
 	public void setDefaultPosition() {
 		worldX = tile_size * 23;
 		worldY = tile_size * 21;
-		direction = DIR_DOWN;
+		direction = DOWN;
 	}
 
 	public void restoreLifeAndMana() {
@@ -148,7 +148,7 @@ public class Player extends Entity {
 			 * pero el tamaño para las direcciones left y right va a variar. Tambien la posicion varia para cada
 			 * direccion. */
 			switch (direction) {
-				case DIR_DOWN:
+				case DOWN:
 					attackbox.x = 9;
 					attackbox.y = 5;
 					attackbox.width = 10;
@@ -156,7 +156,7 @@ public class Player extends Entity {
 					worldX += attackbox.x;
 					worldY += attackbox.y + attackbox.height;
 					break;
-				case DIR_UP:
+				case UP:
 					attackbox.x = 15;
 					attackbox.y = 4;
 					attackbox.width = 10;
@@ -164,7 +164,7 @@ public class Player extends Entity {
 					worldX += attackbox.x;
 					worldY -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
 					break;
-				case DIR_LEFT:
+				case LEFT:
 					attackbox.x = 0;
 					attackbox.y = 10;
 					attackbox.width = 25;
@@ -172,7 +172,7 @@ public class Player extends Entity {
 					worldX -= hitbox.x + attackbox.x + attackbox.width;
 					worldY += attackbox.y;
 					break;
-				case DIR_RIGHT:
+				case RIGHT:
 					attackbox.x = 16;
 					attackbox.y = 10;
 					attackbox.width = 24;
@@ -217,16 +217,16 @@ public class Player extends Entity {
 		if (attacking) {
 			g2.setColor(Color.red);
 			switch (direction) {
-				case DIR_DOWN:
+				case DOWN:
 					g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);
 					break;
-				case DIR_UP:
+				case UP:
 					g2.drawRect(screenX + hitbox.x + attackbox.x, screenY - attackbox.height, attackbox.width, attackbox.height);
 					break;
-				case DIR_LEFT:
+				case LEFT:
 					g2.drawRect(screenX + attackbox.x - attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
 					break;
-				case DIR_RIGHT:
+				case RIGHT:
 					g2.drawRect(screenX + hitbox.x + attackbox.x + attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
 					break;
 			}
@@ -237,11 +237,11 @@ public class Player extends Entity {
 		BufferedImage frame = null;
 		int tempScreenX = screenX, tempScreenY = screenY;
 		switch (direction) {
-			case DIR_DOWN:
+			case DOWN:
 				if (!attacking) frame = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
 				if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
 				break;
-			case DIR_UP:
+			case UP:
 				if (!attacking) frame = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 				if (attacking) {
 					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
@@ -249,14 +249,14 @@ public class Player extends Entity {
 					frame = attackNum == 1 ? attackUp1 : attackUp2;
 				}
 				break;
-			case DIR_LEFT:
+			case LEFT:
 				if (!attacking) frame = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
 				if (attacking) {
 					tempScreenX -= tile_size;
 					frame = attackNum == 1 ? attackLeft1 : attackLeft2;
 				}
 				break;
-			case DIR_RIGHT:
+			case RIGHT:
 				if (!attacking) frame = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
 				if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
 				break;
@@ -450,10 +450,10 @@ public class Player extends Entity {
 	 * Obtiene la direccion dependiendo de la tecla seleccionada.
 	 */
 	private void getDirection() {
-		if (key.s) direction = DIR_DOWN;
-		else if (key.w) direction = DIR_UP;
-		else if (key.a) direction = DIR_LEFT;
-		else if (key.d) direction = DIR_RIGHT;
+		if (key.s) direction = DOWN;
+		else if (key.w) direction = UP;
+		else if (key.a) direction = LEFT;
+		else if (key.d) direction = RIGHT;
 	}
 
 	/**
@@ -477,16 +477,16 @@ public class Player extends Entity {
 		 * direccion */
 		if (!collisionOn && !key.enter && !key.l) {
 			switch (direction) {
-				case DIR_DOWN:
+				case DOWN:
 					worldY += speed;
 					break;
-				case DIR_UP:
+				case UP:
 					worldY -= speed;
 					break;
-				case DIR_LEFT:
+				case LEFT:
 					worldX -= speed;
 					break;
-				case DIR_RIGHT:
+				case RIGHT:
 					worldX += speed;
 					break;
 			}

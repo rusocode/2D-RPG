@@ -70,16 +70,16 @@ public class Projectile extends Item {
 
 		if (alive) {
 			switch (direction) {
-				case DIR_DOWN:
+				case DOWN:
 					worldY += speed;
 					break;
-				case DIR_UP:
+				case UP:
 					worldY -= speed;
 					break;
-				case DIR_LEFT:
+				case LEFT:
 					worldX -= speed;
 					break;
-				case DIR_RIGHT:
+				case RIGHT:
 					worldX += speed;
 					break;
 			}

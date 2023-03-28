@@ -1,7 +1,6 @@
 package com.craivet.utils;
 
 import java.awt.*;
-import java.util.Random;
 
 import com.craivet.entity.Entity;
 
@@ -77,10 +76,10 @@ public class Timer {
 	public void timeDirection(Entity entity, final int interval) {
 		if (directionCounter++ >= interval) {
 			int i = Utils.azar(100);
-			if (i <= 25) entity.direction = DIR_DOWN;
-			if (i > 25 && i <= 50) entity.direction = DIR_UP;
-			if (i > 50 && i <= 75) entity.direction = DIR_LEFT;
-			if (i > 75) entity.direction = DIR_RIGHT;
+			if (i <= 25) entity.direction = DOWN;
+			if (i > 25 && i <= 50) entity.direction = UP;
+			if (i > 50 && i <= 75) entity.direction = LEFT;
+			if (i > 75) entity.direction = RIGHT;
 			directionCounter = 0;
 		}
 	}

@@ -38,28 +38,28 @@ public class Collider {
 		int tileNum1, tileNum2;
 
 		switch (entity.direction) {
-			case DIR_DOWN:
+			case DOWN:
 				entityBottomRow = (entityBottomWorldY + entity.speed) / tile_size;
 				tileNum1 = game.tileManager.tileIndex[game.currentMap][entityBottomRow][entityLeftCol];
 				tileNum2 = game.tileManager.tileIndex[game.currentMap][entityBottomRow][entityRightCol];
 				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
-			case DIR_UP:
+			case UP:
 				entityTopRow = (entityTopWorldY - entity.speed) / tile_size;
 				tileNum1 = game.tileManager.tileIndex[game.currentMap][entityTopRow][entityLeftCol];
 				tileNum2 = game.tileManager.tileIndex[game.currentMap][entityTopRow][entityRightCol];
 				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
-			case DIR_LEFT:
+			case LEFT:
 				entityLeftCol = (entityLeftWorldX - entity.speed) / tile_size;
 				tileNum1 = game.tileManager.tileIndex[game.currentMap][entityTopRow][entityLeftCol];
 				tileNum2 = game.tileManager.tileIndex[game.currentMap][entityBottomRow][entityLeftCol];
 				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
-			case DIR_RIGHT:
+			case RIGHT:
 				entityRightCol = (entityRightWorldX + entity.speed) / tile_size;
 				tileNum1 = game.tileManager.tileIndex[game.currentMap][entityTopRow][entityRightCol];
 				tileNum2 = game.tileManager.tileIndex[game.currentMap][entityBottomRow][entityRightCol];
@@ -86,16 +86,16 @@ public class Collider {
 				game.items[game.currentMap][i].hitbox.x += game.items[game.currentMap][i].worldX;
 				game.items[game.currentMap][i].hitbox.y += game.items[game.currentMap][i].worldY;
 				switch (entity.direction) {
-					case DIR_DOWN:
+					case DOWN:
 						entity.hitbox.y += entity.speed;
 						break;
-					case DIR_UP:
+					case UP:
 						entity.hitbox.y -= entity.speed;
 						break;
-					case DIR_LEFT:
+					case LEFT:
 						entity.hitbox.x -= entity.speed;
 						break;
-					case DIR_RIGHT:
+					case RIGHT:
 						entity.hitbox.x += entity.speed;
 						break;
 				}
@@ -131,16 +131,16 @@ public class Collider {
 				otherEntity[game.currentMap][i].hitbox.x += otherEntity[game.currentMap][i].worldX;
 				otherEntity[game.currentMap][i].hitbox.y += otherEntity[game.currentMap][i].worldY;
 				switch (entity.direction) {
-					case DIR_DOWN:
+					case DOWN:
 						entity.hitbox.y += entity.speed;
 						break;
-					case DIR_UP:
+					case UP:
 						entity.hitbox.y -= entity.speed;
 						break;
-					case DIR_LEFT:
+					case LEFT:
 						entity.hitbox.x -= entity.speed;
 						break;
-					case DIR_RIGHT:
+					case RIGHT:
 						entity.hitbox.x += entity.speed;
 						break;
 				}
@@ -178,16 +178,16 @@ public class Collider {
 		game.player.hitbox.x += game.player.worldX;
 		game.player.hitbox.y += game.player.worldY;
 		switch (entity.direction) {
-			case DIR_DOWN:
+			case DOWN:
 				entity.hitbox.y += entity.speed;
 				break;
-			case DIR_UP:
+			case UP:
 				entity.hitbox.y -= entity.speed;
 				break;
-			case DIR_LEFT:
+			case LEFT:
 				entity.hitbox.x -= entity.speed;
 				break;
-			case DIR_RIGHT:
+			case RIGHT:
 				entity.hitbox.x += entity.speed;
 				break;
 		}

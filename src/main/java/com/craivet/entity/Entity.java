@@ -40,7 +40,7 @@ public abstract class Entity {
 	public BufferedImage image; // Imagenes estaticas
 	public BufferedImage heartFull, heartHalf, heartBlank;
 	public BufferedImage manaFull, manaBlank;
-	public int direction = DIR_DOWN;
+	public int direction = DOWN;
 	public int speed;
 	public int maxLife, life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
 	public int maxMana, mana;
@@ -91,17 +91,17 @@ public abstract class Entity {
 		dialogueIndex++;
 
 		switch (game.player.direction) {
-			case DIR_DOWN:
-				direction = DIR_UP;
+			case DOWN:
+				direction = UP;
 				break;
-			case DIR_UP:
-				direction = DIR_DOWN;
+			case UP:
+				direction = DOWN;
 				break;
-			case DIR_LEFT:
-				direction = DIR_RIGHT;
+			case LEFT:
+				direction = RIGHT;
 				break;
-			case DIR_RIGHT:
-				direction = DIR_LEFT;
+			case RIGHT:
+				direction = LEFT;
 				break;
 		}
 	}
@@ -167,16 +167,16 @@ public abstract class Entity {
 		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
 		if (!collisionOn) {
 			switch (direction) {
-				case DIR_DOWN:
+				case DOWN:
 					worldY += speed;
 					break;
-				case DIR_UP:
+				case UP:
 					worldY -= speed;
 					break;
-				case DIR_LEFT:
+				case LEFT:
 					worldX -= speed;
 					break;
-				case DIR_RIGHT:
+				case RIGHT:
 					worldX += speed;
 					break;
 			}
@@ -197,16 +197,16 @@ public abstract class Entity {
 				worldY + tile_size > game.player.worldY - game.player.screenY &&
 				worldY - tile_size < game.player.worldY + game.player.screenY) {
 			switch (direction) {
-				case DIR_DOWN:
+				case DOWN:
 					auxImage = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
 					break;
-				case DIR_UP:
+				case UP:
 					auxImage = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
 					break;
-				case DIR_LEFT:
+				case LEFT:
 					auxImage = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
 					break;
-				case DIR_RIGHT:
+				case RIGHT:
 					auxImage = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
 					break;
 			}
@@ -359,10 +359,10 @@ public abstract class Entity {
 			// Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
 			/* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces
 			 * se define su movimiento hacia arriba o abajo. */
-			if (left >= nextX && right < nextX + tile_size) direction = top > nextY ? DIR_UP : DIR_DOWN;
+			if (left >= nextX && right < nextX + tile_size) direction = top > nextY ? UP : DOWN;
 			/* Si el lado superior y inferior de la entidad estan entre la siguiente posicion y de la ruta, entonces
 			 * se define su movimiento hacia la izquierda o derecha. */
-			if (top >= nextY && bottom < nextY + tile_size) direction = left > nextX ? DIR_LEFT : DIR_RIGHT;
+			if (top >= nextY && bottom < nextY + tile_size) direction = left > nextX ? LEFT : RIGHT;
 
 			/* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
 			 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */

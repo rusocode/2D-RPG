@@ -50,11 +50,11 @@ public class EventHandler {
 
 		if (canTouchEvent) {
 			// El else if se utiliza para evitar que el siguiente if se llame inmediatamente en el caso de la teleport
-			if (hit(0, 27, 16, DIR_RIGHT)) damagePit();
-			else if (hit(0, 23, 12, DIR_UP)) healingPool();
-			else if (hit(0, 10, 39, DIR_ANY)) teleport(1, 12, 13);
-			else if (hit(1, 12, 13, DIR_ANY)) teleport(0, 10, 39);
-			else if (hit(1, 12, 9, DIR_UP)) speak(game.npcs[1][0]);
+			if (hit(0, 27, 16, RIGHT)) damagePit();
+			else if (hit(0, 23, 12, UP)) healingPool();
+			else if (hit(0, 10, 39, ANY)) teleport(1, 12, 13);
+			else if (hit(1, 12, 13, ANY)) teleport(0, 10, 39);
+			else if (hit(1, 12, 9, UP)) speak(game.npcs[1][0]);
 		}
 
 	}
@@ -73,7 +73,7 @@ public class EventHandler {
 
 			// Si el player colisiona con el evento
 			if (game.player.hitbox.intersects(eventRect[map][row][col])) {
-				if (game.player.direction == reqDirection || reqDirection == DIR_ANY) {
+				if (game.player.direction == reqDirection || reqDirection == ANY) {
 					hit = true;
 					// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
 					previousEventX = game.player.worldX;
