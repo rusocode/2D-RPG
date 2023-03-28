@@ -25,12 +25,12 @@ public class StickyBall extends Projectile {
 		useCost = 1;
 		alive = false;
 
-		bodyArea.x = 8;
-		bodyArea.y = 8;
-		bodyArea.width = 15;
-		bodyArea.height = 15;
-		bodyAreaDefaultX = bodyArea.x;
-		bodyAreaDefaultY = bodyArea.y;
+		hitbox.x = 8;
+		hitbox.y = 8;
+		hitbox.width = 15;
+		hitbox.height = 15;
+		hitboxDefaultX = hitbox.x;
+		hitboxDefaultY = hitbox.y;
 
 		image = Utils.scaleImage(entity_sticky_ball, 32, 32);
 	}

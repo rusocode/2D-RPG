@@ -12,7 +12,7 @@ import java.net.URL;
  * TODO Se podrian guardar los recursos de sonido en esta clase para mas organizacion
  */
 
-public class Sound {
+public class AudioManager {
 
 	private Clip clip;
 	private FloatControl fc; // Esta clase acepta valores entre -80f y 6f, por lo que 6 es el maximo y -80 no tiene sonido

@@ -14,12 +14,12 @@ public class Trunk extends InteractiveTile {
 		this.worldY = tile_size * y;
 		image = Utils.scaleImage(Assets.itile_trunk, tile_size, tile_size);
 		// Resetea a 0 ya que no se podria caminar sobre el tronco
-		bodyArea.x = 0;
-		bodyArea.y = 0;
-		bodyArea.width = 0;
-		bodyArea.height = 0;
-		bodyAreaDefaultX = bodyArea.x;
-		bodyAreaDefaultY = bodyArea.y;
+		hitbox.x = 0;
+		hitbox.y = 0;
+		hitbox.width = 0;
+		hitbox.height = 0;
+		hitboxDefaultX = hitbox.x;
+		hitboxDefaultY = hitbox.y;
 
 	}
 

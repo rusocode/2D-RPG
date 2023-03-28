@@ -16,7 +16,7 @@ import static com.craivet.gfx.Assets.*;
 /**
  * El player permanece fijo en el centro de la pantalla dando la sensacion de movimiento aunque no se "mueva".
  *
- * <p>Quiero aclarar que con el tema de las colisiones entre dos entidades, en el caso del bodyArea, solo se genera
+ * <p>Quiero aclarar que con el tema de las colisiones entre dos entidades, en el caso del hitbox, solo se genera
  * colision cuando el limite del player por ejemplo, SUPERA el limite del slime. Pero en el caso del attackArea, solo
  * se genera colision cuando los limites de ambos SE TOCAN.
  */
@@ -62,19 +62,14 @@ public class Player extends Entity {
 		attack = getAttack();
 		defense = getDefense();
 
-		tileArea.x = 10;
-		tileArea.y = 16;
-		tileArea.width = 30;
-		tileArea.height = 32;
-
 		// attackArea = currentWeapon.attackArea;
 
-		bodyArea.x = 8;
-		bodyArea.y = 16;
-		bodyArea.width = 32;
-		bodyArea.height = 32;
-		bodyAreaDefaultX = bodyArea.x;
-		bodyAreaDefaultY = bodyArea.y;
+		hitbox.x = 8;
+		hitbox.y = 16;
+		hitbox.width = 32;
+		hitbox.height = 32;
+		hitboxDefaultX = hitbox.x;
+		hitboxDefaultY = hitbox.y;
 
 		projectile = new Fireball(game);
 
@@ -143,66 +138,66 @@ public class Player extends Entity {
 		if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (de 6-25 ms frame de ataque 2)
 			attackNum = 2;
 
-			// Guarda la posicion actual de worldX, worldY y el tamaño del bodyArea
+			// Guarda la posicion actual de worldX, worldY y el tamaño del hitbox
 			int currentWorldX = worldX;
 			int currentWorldY = worldY;
-			int bodyAreaWidth = bodyArea.width;
-			int bodyAreaHeight = bodyArea.height;
+			int hitboxWidth = hitbox.width;
+			int hitboxHeight = hitbox.height;
 
 			/* Ajusta el area de ataque para cada direccion. Para las direcciones down y up el tamaño va a ser el mismo,
 			 * pero el tamaño para las direcciones left y right va a variar. Tambien la posicion varia para cada
 			 * direccion. */
 			switch (direction) {
 				case DIR_DOWN:
-					attackArea.x = 9;
-					attackArea.y = 5;
-					attackArea.width = 10;
-					attackArea.height = 27;
-					worldX += attackArea.x;
-					worldY += attackArea.y + attackArea.height;
+					attackbox.x = 9;
+					attackbox.y = 5;
+					attackbox.width = 10;
+					attackbox.height = 27;
+					worldX += attackbox.x;
+					worldY += attackbox.y + attackbox.height;
 					break;
 				case DIR_UP:
-					attackArea.x = 15;
-					attackArea.y = 4;
-					attackArea.width = 10;
-					attackArea.height = 28;
-					worldX += attackArea.x;
-					worldY -= bodyArea.y + attackArea.height; // TODO Por que se resta bodyArea.y y no attackArea.y?
+					attackbox.x = 15;
+					attackbox.y = 4;
+					attackbox.width = 10;
+					attackbox.height = 28;
+					worldX += attackbox.x;
+					worldY -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
 					break;
 				case DIR_LEFT:
-					attackArea.x = 0;
-					attackArea.y = 10;
-					attackArea.width = 25;
-					attackArea.height = 10;
-					worldX -= bodyArea.x + attackArea.x + attackArea.width;
-					worldY += attackArea.y;
+					attackbox.x = 0;
+					attackbox.y = 10;
+					attackbox.width = 25;
+					attackbox.height = 10;
+					worldX -= hitbox.x + attackbox.x + attackbox.width;
+					worldY += attackbox.y;
 					break;
 				case DIR_RIGHT:
-					attackArea.x = 16;
-					attackArea.y = 10;
-					attackArea.width = 24;
-					attackArea.height = 10;
-					worldX += attackArea.x + attackArea.width;
-					worldY += attackArea.y;
+					attackbox.x = 16;
+					attackbox.y = 10;
+					attackbox.width = 24;
+					attackbox.height = 10;
+					worldX += attackbox.x + attackbox.width;
+					worldY += attackbox.y;
 					break;
 			}
 
 			// Convierte el area del cuerpo en el area de ataque para verificar la colision solo con el area de ataque
-			bodyArea.width = attackArea.width;
-			bodyArea.height = attackArea.height;
+			hitbox.width = attackbox.width;
+			hitbox.height = attackbox.height;
 
-			// Verifica la colision con el mob usando la posicion y tamaño del bodyArea actualizados, osea el area de ataque
-			int mobIndex = game.cChecker.checkEntity(this, game.mobs);
+			// Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
+			int mobIndex = game.collider.checkEntity(this, game.mobs);
 			damageMob(mobIndex, attack);
 
-			int iTileIndex = game.cChecker.checkEntity(this, game.iTile);
+			int iTileIndex = game.collider.checkEntity(this, game.iTile);
 			damageInteractiveTile(iTileIndex);
 
 			// Despues de verificar la colision, resetea los datos originales
 			worldX = currentWorldX;
 			worldY = currentWorldY;
-			bodyArea.width = bodyAreaWidth;
-			bodyArea.height = bodyAreaHeight;
+			hitbox.width = hitboxWidth;
+			hitbox.height = hitboxHeight;
 		}
 		if (timer.attackAnimationCounter > 25) {
 			attackNum = 1;
@@ -217,22 +212,22 @@ public class Player extends Entity {
 		g2.drawRect(screenX, screenY, tile_size, tile_size);
 		// Cuerpo
 		g2.setColor(Color.yellow);
-		g2.drawRect(screenX + bodyArea.x, screenY + bodyArea.y, bodyArea.width, bodyArea.height);
+		g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
 		// Area de ataque
 		if (attacking) {
 			g2.setColor(Color.red);
 			switch (direction) {
 				case DIR_DOWN:
-					g2.drawRect(screenX + bodyArea.x + attackArea.x, screenY + bodyArea.y + attackArea.y + attackArea.height, attackArea.width, attackArea.height);
+					g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);
 					break;
 				case DIR_UP:
-					g2.drawRect(screenX + bodyArea.x + attackArea.x, screenY - attackArea.height, attackArea.width, attackArea.height);
+					g2.drawRect(screenX + hitbox.x + attackbox.x, screenY - attackbox.height, attackbox.width, attackbox.height);
 					break;
 				case DIR_LEFT:
-					g2.drawRect(screenX + attackArea.x - attackArea.width, screenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
+					g2.drawRect(screenX + attackbox.x - attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
 					break;
 				case DIR_RIGHT:
-					g2.drawRect(screenX + bodyArea.x + attackArea.x + attackArea.width, screenY + bodyArea.y + attackArea.y, attackArea.width, attackArea.height);
+					g2.drawRect(screenX + hitbox.x + attackbox.x + attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
 					break;
 			}
 		}
@@ -320,7 +315,7 @@ public class Player extends Entity {
 					return; // En caso de que el inventario este lleno, no elimina el item del mundo
 				}
 				game.items[game.currentMap][itemIndex] = null;
-			} else game.ui.addMessage("Nothing here");
+			}
 		}
 	}
 
@@ -435,7 +430,7 @@ public class Player extends Entity {
 			Entity selectedItem = inventory.get(itemIndex);
 			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) {
 				currentWeapon = selectedItem;
-				attackArea = currentWeapon.attackArea;
+				attackbox = currentWeapon.attackbox;
 				attack = getAttack();
 				if (currentWeapon.type == TYPE_SWORD) game.playSound(sound_draw_sword);
 				initAttackImages(currentWeapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -466,11 +461,11 @@ public class Player extends Entity {
 	 */
 	private void checkCollisions() {
 		collisionOn = false;
-		game.cChecker.checkTile(this);
-		pickUpItem(game.cChecker.checkObject(this));
-		interactNPC(game.cChecker.checkEntity(this, game.npcs));
-		damagePlayer(game.cChecker.checkEntity(this, game.mobs));
-		game.cChecker.checkEntity(this, game.iTile);
+		game.collider.checkTile(this);
+		pickUpItem(game.collider.checkObject(this));
+		interactNPC(game.collider.checkEntity(this, game.npcs));
+		damagePlayer(game.collider.checkEntity(this, game.mobs));
+		game.collider.checkEntity(this, game.iTile);
 		game.eHandler.checkEvent();
 	}
 

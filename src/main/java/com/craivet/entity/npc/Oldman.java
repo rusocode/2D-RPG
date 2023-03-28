@@ -18,19 +18,14 @@ public class Oldman extends Entity {
 	private void initDefaultValues() {
 		type = TYPE_NPC;
 		name = "Oldman";
-		speed = 2;
+		speed = 1;
 
-		tileArea.x = 8;
-		tileArea.y = 16;
-		tileArea.width = 32;
-		tileArea.height = 32;
-
-		bodyArea.x = 8;
-		bodyArea.y = 16;
-		bodyArea.width = 32;
-		bodyArea.height = 32;
-		bodyAreaDefaultX = bodyArea.x;
-		bodyAreaDefaultY = bodyArea.y;
+		hitbox.x = 8;
+		hitbox.y = 16;
+		hitbox.width = 32;
+		hitbox.height = 32;
+		hitboxDefaultX = hitbox.x;
+		hitboxDefaultY = hitbox.y;
 		initMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 		initDialogue();
 	}
@@ -40,8 +35,8 @@ public class Oldman extends Entity {
 	 */
 	public void setAction() {
 		if (onPath) {
-			int goalRow = (game.player.worldY + game.player.bodyArea.y) / tile_size;
-			int goalCol = (game.player.worldX + game.player.bodyArea.x) / tile_size;
+			int goalRow = (game.player.worldY + game.player.hitbox.y) / tile_size;
+			int goalCol = (game.player.worldX + game.player.hitbox.x) / tile_size;
 			searchPath(goalRow, goalCol);
 		} else timer.timeDirection(this, INTERVAL_DIRECTION);
 	}

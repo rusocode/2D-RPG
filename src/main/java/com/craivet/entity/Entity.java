@@ -51,9 +51,8 @@ public abstract class Entity {
 	public int attack, defense;
 	public int attackValue, defenseValue;
 	public boolean collision;
-	// TODO El bodyarea se podria llamar hitbox
-	public Rectangle tileArea = new Rectangle(0, 0, 0, 0), attackArea = new Rectangle(0, 0, 0, 0), bodyArea = new Rectangle(0, 0, 48, 48);
-	public int bodyAreaDefaultX, bodyAreaDefaultY;
+	public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
+	public int hitboxDefaultX, hitboxDefaultY;
 	public Projectile projectile;
 	public Entity currentWeapon, currentShield;
 	public String itemDescription;
@@ -240,7 +239,7 @@ public abstract class Entity {
 			g2.drawImage(auxImage, screenX, screenY, null);
 			g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
 			// g2.setColor(Color.cyan);
-			// g2.drawRect(bodyArea.x + screenX, bodyArea.y + screenY, bodyArea.width, bodyArea.height);
+			// g2.drawRect(hitbox.x + screenX, hitbox.y + screenY, hitbox.width, hitbox.height);
 			Utils.changeAlpha(g2, 1);
 		}
 	}
@@ -331,17 +330,17 @@ public abstract class Entity {
 
 	private void checkCollisions() {
 		collisionOn = false;
-		game.cChecker.checkTile(this);
-		game.cChecker.checkObject(this);
-		game.cChecker.checkEntity(this, game.npcs);
-		game.cChecker.checkEntity(this, game.mobs);
-		game.cChecker.checkEntity(this, game.iTile);
-		damagePlayer(game.cChecker.checkPlayer(this), attack);
+		game.collider.checkTile(this);
+		game.collider.checkObject(this);
+		game.collider.checkEntity(this, game.npcs);
+		game.collider.checkEntity(this, game.mobs);
+		game.collider.checkEntity(this, game.iTile);
+		damagePlayer(game.collider.checkPlayer(this), attack);
 	}
 
 	public void searchPath(int goalRow, int goalCol) {
-		int startRow = (worldY + bodyArea.y) / tile_size;
-		int startCol = (worldX + bodyArea.x) / tile_size;
+		int startRow = (worldY + hitbox.y) / tile_size;
+		int startCol = (worldX + hitbox.x) / tile_size;
 
 		game.aStar.setNodes(startRow, startCol, goalRow, goalCol);
 
@@ -352,10 +351,10 @@ public abstract class Entity {
 			int nextX = game.aStar.pathList.get(0).col * tile_size;
 			int nextY = game.aStar.pathList.get(0).row * tile_size;
 			// Obtiene la posicion de la entidad
-			int left = worldX + bodyArea.x;
-			int right = worldX + bodyArea.x + bodyArea.width;
-			int top = worldY + bodyArea.y;
-			int bottom = worldY + bodyArea.y + bodyArea.height;
+			int left = worldX + hitbox.x;
+			int right = worldX + hitbox.x + hitbox.width;
+			int top = worldY + hitbox.y;
+			int bottom = worldY + hitbox.y + hitbox.height;
 
 			// Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
 			/* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces
@@ -367,7 +366,7 @@ public abstract class Entity {
 
 			/* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
 			 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
-			/* else if (top > nextY && left > nextX) {
+			/*else if (top > nextY && left > nextX) {
 				// up o left
 				direction = DIR_UP;
 				checkCollisions();

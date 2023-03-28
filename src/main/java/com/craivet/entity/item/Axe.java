@@ -16,8 +16,8 @@ public class Axe extends Item {
 		name = "Axe";
 		type = TYPE_AXE;
 		image = Utils.scaleImage(item_axe, tile_size, tile_size);
-		attackArea.width = 30;
-		attackArea.height = 30;
+		attackbox.width = 30;
+		attackbox.height = 30;
 		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
 		attackValue = 1;
 		price = 75;
@@ -30,8 +30,8 @@ public class Axe extends Item {
 		name = "Axe";
 		type = TYPE_AXE;
 		image = Utils.scaleImage(item_axe, tile_size, tile_size);
-		attackArea.width = 30;
-		attackArea.height = 30;
+		attackbox.width = 30;
+		attackbox.height = 30;
 		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
 		attackValue = 1;
 		price = 75;

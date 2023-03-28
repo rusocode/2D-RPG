@@ -23,10 +23,6 @@ public class PotionRed extends Item {
 	}
 
 	public void use(Entity entity) {
-		/* mgame.gameState = DIALOGUE_STATE;
-		game.ui.currentDialogue = "Your drink the " + name + "!\n"
-				+ "Your life has been recovered by " + value + ".";
-		entity.life += value; */
 		entity.life += value;
 		game.ui.addMessage("+" + value + " hp");
 		if (entity.life > entity.maxLife) entity.life = entity.maxLife;

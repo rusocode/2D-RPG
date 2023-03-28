@@ -36,10 +36,10 @@ public class Game extends JPanel implements Runnable {
 	public KeyHandler keyH = new KeyHandler(this);
 	public EventHandler eHandler = new EventHandler(this);
 	public TileManager tileManager = new TileManager(this);
-	public CollisionChecker cChecker = new CollisionChecker(this);
+	public Collider collider = new Collider(this);
 	public AssetSetter aSetter = new AssetSetter(this);
-	public Sound sound = new Sound();
-	public Sound music = new Sound();
+	public AudioManager sound = new AudioManager();
+	public AudioManager music = new AudioManager();
 	public UI ui = new UI(this);
 	public Config config = new Config(this);
 	public AStar aStar = new AStar(this);
@@ -239,9 +239,9 @@ public class Game extends JPanel implements Runnable {
 			g2.setFont(new Font("Arial", Font.PLAIN, 20));
 			g2.setColor(Color.white);
 			int x = 8, y = SCREEN_HEIGHT - 25, gap = 20;
-			g2.drawString("X: " + (player.worldX + player.bodyArea.x) / tile_size, x, y);
+			g2.drawString("X: " + (player.worldX + player.hitbox.x) / tile_size, x, y);
 			y += gap;
-			g2.drawString("Y: " + (player.worldY + player.bodyArea.y) / tile_size, x, y);
+			g2.drawString("Y: " + (player.worldY + player.hitbox.y) / tile_size, x, y);
 			// y += lineHeight;
 			// g2.drawString("Draw time: " + (System.nanoTime() - drawStart), x, y);
 		}

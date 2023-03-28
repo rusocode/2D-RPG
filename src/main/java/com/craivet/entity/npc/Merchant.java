@@ -21,17 +21,12 @@ public class Merchant extends Entity {
 		type = TYPE_NPC;
 		name = "Merchant";
 
-		tileArea.x = 8;
-		tileArea.y = 16;
-		tileArea.width = 32;
-		tileArea.height = 32;
-
-		bodyArea.x = 8;
-		bodyArea.y = 16;
-		bodyArea.width = 32;
-		bodyArea.height = 32;
-		bodyAreaDefaultX = bodyArea.x;
-		bodyAreaDefaultY = bodyArea.y;
+		hitbox.x = 8;
+		hitbox.y = 16;
+		hitbox.width = 32;
+		hitbox.height = 32;
+		hitboxDefaultX = hitbox.x;
+		hitboxDefaultY = hitbox.y;
 		image = Utils.scaleImage(entity_merchant, tile_size, tile_size);
 		initDialogue();
 		setItems();

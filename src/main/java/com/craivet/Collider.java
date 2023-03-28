@@ -9,11 +9,11 @@ import static com.craivet.utils.Constants.*;
  * Fisica y deteccion de colisiones.
  */
 
-public class CollisionChecker {
+public class Collider {
 
 	private final Game game;
 
-	public CollisionChecker(Game game) {
+	public Collider(Game game) {
 		this.game = game;
 	}
 
@@ -24,10 +24,10 @@ public class CollisionChecker {
 	 */
 	public void checkTile(Entity entity) {
 
-		int entityBottomWorldY = entity.worldY + entity.bodyArea.y + entity.bodyArea.height;
-		int entityTopWorldY = entity.worldY + entity.bodyArea.y;
-		int entityLeftWorldX = entity.worldX + entity.bodyArea.x;
-		int entityRightWorldX = entity.worldX + entity.bodyArea.x + entity.bodyArea.width;
+		int entityBottomWorldY = entity.worldY + entity.hitbox.y + entity.hitbox.height;
+		int entityTopWorldY = entity.worldY + entity.hitbox.y;
+		int entityLeftWorldX = entity.worldX + entity.hitbox.x;
+		int entityRightWorldX = entity.worldX + entity.hitbox.x + entity.hitbox.width;
 
 		int entityBottomRow = entityBottomWorldY / tile_size;
 		int entityTopRow = entityTopWorldY / tile_size;
@@ -81,34 +81,34 @@ public class CollisionChecker {
 		for (int i = 0; i < game.items[1].length; i++) {
 			if (game.items[game.currentMap][i] != null) {
 				// Obtiene la posicion del area del cuerpo de la entidad y del objeto
-				entity.bodyArea.x += entity.worldX;
-				entity.bodyArea.y += entity.worldY;
-				game.items[game.currentMap][i].bodyArea.x += game.items[game.currentMap][i].worldX;
-				game.items[game.currentMap][i].bodyArea.y += game.items[game.currentMap][i].worldY;
+				entity.hitbox.x += entity.worldX;
+				entity.hitbox.y += entity.worldY;
+				game.items[game.currentMap][i].hitbox.x += game.items[game.currentMap][i].worldX;
+				game.items[game.currentMap][i].hitbox.y += game.items[game.currentMap][i].worldY;
 				switch (entity.direction) {
 					case DIR_DOWN:
-						entity.bodyArea.y += entity.speed;
+						entity.hitbox.y += entity.speed;
 						break;
 					case DIR_UP:
-						entity.bodyArea.y -= entity.speed;
+						entity.hitbox.y -= entity.speed;
 						break;
 					case DIR_LEFT:
-						entity.bodyArea.x -= entity.speed;
+						entity.hitbox.x -= entity.speed;
 						break;
 					case DIR_RIGHT:
-						entity.bodyArea.x += entity.speed;
+						entity.hitbox.x += entity.speed;
 						break;
 				}
 
-				if (entity.bodyArea.intersects(game.items[game.currentMap][i].bodyArea)) {
+				if (entity.hitbox.intersects(game.items[game.currentMap][i].hitbox)) {
 					if (game.items[game.currentMap][i].collision) entity.collisionOn = true;
 					if (entity instanceof Player) index = i;
 				}
 
-				entity.bodyArea.x = entity.bodyAreaDefaultX;
-				entity.bodyArea.y = entity.bodyAreaDefaultY;
-				game.items[game.currentMap][i].bodyArea.x = game.items[game.currentMap][i].bodyAreaDefaultX;
-				game.items[game.currentMap][i].bodyArea.y = game.items[game.currentMap][i].bodyAreaDefaultY;
+				entity.hitbox.x = entity.hitboxDefaultX;
+				entity.hitbox.y = entity.hitboxDefaultY;
+				game.items[game.currentMap][i].hitbox.x = game.items[game.currentMap][i].hitboxDefaultX;
+				game.items[game.currentMap][i].hitbox.y = game.items[game.currentMap][i].hitboxDefaultY;
 			}
 		}
 		return index;
@@ -126,26 +126,26 @@ public class CollisionChecker {
 		for (int i = 0; i < otherEntity[1].length; i++) {
 			if (otherEntity[game.currentMap][i] != null) {
 				// Obtiene la posicion del area del cuerpo de la entidad y de la otra entidad
-				entity.bodyArea.x += entity.worldX;
-				entity.bodyArea.y += entity.worldY;
-				otherEntity[game.currentMap][i].bodyArea.x += otherEntity[game.currentMap][i].worldX;
-				otherEntity[game.currentMap][i].bodyArea.y += otherEntity[game.currentMap][i].worldY;
+				entity.hitbox.x += entity.worldX;
+				entity.hitbox.y += entity.worldY;
+				otherEntity[game.currentMap][i].hitbox.x += otherEntity[game.currentMap][i].worldX;
+				otherEntity[game.currentMap][i].hitbox.y += otherEntity[game.currentMap][i].worldY;
 				switch (entity.direction) {
 					case DIR_DOWN:
-						entity.bodyArea.y += entity.speed;
+						entity.hitbox.y += entity.speed;
 						break;
 					case DIR_UP:
-						entity.bodyArea.y -= entity.speed;
+						entity.hitbox.y -= entity.speed;
 						break;
 					case DIR_LEFT:
-						entity.bodyArea.x -= entity.speed;
+						entity.hitbox.x -= entity.speed;
 						break;
 					case DIR_RIGHT:
-						entity.bodyArea.x += entity.speed;
+						entity.hitbox.x += entity.speed;
 						break;
 				}
 
-				if (entity.bodyArea.intersects(otherEntity[game.currentMap][i].bodyArea)) {
+				if (entity.hitbox.intersects(otherEntity[game.currentMap][i].hitbox)) {
 					if (otherEntity[game.currentMap][i] != entity) { // Evita la colision en si misma
 						entity.collisionOn = true;
 						index = i;
@@ -153,10 +153,10 @@ public class CollisionChecker {
 					}
 				}
 
-				entity.bodyArea.x = entity.bodyAreaDefaultX;
-				entity.bodyArea.y = entity.bodyAreaDefaultY;
-				otherEntity[game.currentMap][i].bodyArea.x = otherEntity[game.currentMap][i].bodyAreaDefaultX;
-				otherEntity[game.currentMap][i].bodyArea.y = otherEntity[game.currentMap][i].bodyAreaDefaultY;
+				entity.hitbox.x = entity.hitboxDefaultX;
+				entity.hitbox.y = entity.hitboxDefaultY;
+				otherEntity[game.currentMap][i].hitbox.x = otherEntity[game.currentMap][i].hitboxDefaultX;
+				otherEntity[game.currentMap][i].hitbox.y = otherEntity[game.currentMap][i].hitboxDefaultY;
 			}
 		}
 		return index;
@@ -173,34 +173,34 @@ public class CollisionChecker {
 	public boolean checkPlayer(Entity entity) {
 		boolean contact = false;
 		// Obtiene la posicion del area solida de la entidad y del player
-		entity.bodyArea.x += entity.worldX;
-		entity.bodyArea.y += entity.worldY;
-		game.player.bodyArea.x += game.player.worldX;
-		game.player.bodyArea.y += game.player.worldY;
+		entity.hitbox.x += entity.worldX;
+		entity.hitbox.y += entity.worldY;
+		game.player.hitbox.x += game.player.worldX;
+		game.player.hitbox.y += game.player.worldY;
 		switch (entity.direction) {
 			case DIR_DOWN:
-				entity.bodyArea.y += entity.speed;
+				entity.hitbox.y += entity.speed;
 				break;
 			case DIR_UP:
-				entity.bodyArea.y -= entity.speed;
+				entity.hitbox.y -= entity.speed;
 				break;
 			case DIR_LEFT:
-				entity.bodyArea.x -= entity.speed;
+				entity.hitbox.x -= entity.speed;
 				break;
 			case DIR_RIGHT:
-				entity.bodyArea.x += entity.speed;
+				entity.hitbox.x += entity.speed;
 				break;
 		}
 
-		if (entity.bodyArea.intersects(game.player.bodyArea)) {
+		if (entity.hitbox.intersects(game.player.hitbox)) {
 			entity.collisionOn = true;
 			contact = true;
 		}
 
-		entity.bodyArea.x = entity.bodyAreaDefaultX;
-		entity.bodyArea.y = entity.bodyAreaDefaultY;
-		game.player.bodyArea.x = game.player.bodyAreaDefaultX;
-		game.player.bodyArea.y = game.player.bodyAreaDefaultY;
+		entity.hitbox.x = entity.hitboxDefaultX;
+		entity.hitbox.y = entity.hitboxDefaultY;
+		game.player.hitbox.x = game.player.hitboxDefaultX;
+		game.player.hitbox.y = game.player.hitboxDefaultY;
 
 		return contact;
 

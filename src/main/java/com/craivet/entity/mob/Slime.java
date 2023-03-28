@@ -32,17 +32,12 @@ public class Slime extends Mob {
 		attack = 2;
 		defense = 1;
 
-		tileArea.x = 3;
-		tileArea.y = 18;
-		tileArea.width = 42;
-		tileArea.height = 30;
-
-		bodyArea.x = 3;
-		bodyArea.y = 18;
-		bodyArea.width = 42;
-		bodyArea.height = 30;
-		bodyAreaDefaultX = bodyArea.x;
-		bodyAreaDefaultY = bodyArea.y;
+		hitbox.x = 3;
+		hitbox.y = 18;
+		hitbox.width = 42;
+		hitbox.height = 30;
+		hitboxDefaultX = hitbox.x;
+		hitboxDefaultY = hitbox.y;
 		projectile = new StickyBall(game);
 
 		initMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
@@ -57,7 +52,7 @@ public class Slime extends Mob {
 
 		/* El slime se vuelve agresivo si todavia no es agresivo y si el player esta a 5 tiles de distancia y si el
 		 * numero random es mayor a 50 (este ultimo, para no hacerlo robotico). */
-		if (!onPath && tileDistance <= 5 && Utils.azar(100) > 50) onPath = true;
+		if (!onPath && tileDistance < 5 && Utils.azar(100) < 50) onPath = true;
 
 		// El slime deja de ser agresivo cuando el player se aleja 20 tiles
 		// if (onPath && tileDistance > 20) onPath = false;
@@ -65,19 +60,15 @@ public class Slime extends Mob {
 
 	public void setAction() {
 		if (onPath) {
-			int goalRow = (game.player.worldY + game.player.bodyArea.y) / tile_size;
-			int goalCol = (game.player.worldX + game.player.bodyArea.x) / tile_size;
+			int goalRow = (game.player.worldY + game.player.hitbox.y) / tile_size;
+			int goalCol = (game.player.worldX + game.player.hitbox.x) / tile_size;
 			searchPath(goalRow, goalCol);
 			shootProjectile();
 		} else timer.timeDirection(this, INTERVAL_DIRECTION);
 	}
 
-	/**
-	 * Pequeña IA en donde el Slime "huye" (cambia a la direccion actual del player) del Player cuando es atacado.
-	 */
 	public void damageReaction() {
 		timer.directionCounter = 0;
-		// direction = game.player.direction;
 		onPath = true;
 	}
 

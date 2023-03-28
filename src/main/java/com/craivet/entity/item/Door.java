@@ -13,12 +13,12 @@ public class Door extends Item {
 		name = "Door";
 		image = Utils.scaleImage(item_door, tile_size, tile_size);
 		collision = true;
-		bodyArea.x = 0;
-		bodyArea.y = 16;
-		bodyArea.width = 48;
-		bodyArea.height = 32;
-		bodyAreaDefaultX = bodyArea.x;
-		bodyAreaDefaultY = bodyArea.y;
+		hitbox.x = 0;
+		hitbox.y = 16;
+		hitbox.width = 48;
+		hitbox.height = 32;
+		hitboxDefaultX = hitbox.x;
+		hitboxDefaultY = hitbox.y;
 	}
 
 }

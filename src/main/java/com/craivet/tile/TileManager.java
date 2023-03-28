@@ -18,7 +18,7 @@ public class TileManager {
 	private final Game game;
 	public final Tile[] tile;
 	public final int[][][] tileIndex;
-	boolean drawPath = true;
+	boolean drawPath = false;
 
 	public TileManager(Game game) {
 		this.game = game;
