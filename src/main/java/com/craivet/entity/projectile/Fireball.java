@@ -1,8 +1,7 @@
-package com.craivet.entity.item;
+package com.craivet.entity.projectile;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.Projectile;
 
 import java.awt.*;
 

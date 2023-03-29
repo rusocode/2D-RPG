@@ -5,6 +5,8 @@ import com.craivet.entity.Entity;
 import com.craivet.entity.item.Item;
 import com.craivet.entity.mob.Mob;
 import com.craivet.entity.Player;
+import com.craivet.entity.npc.Npc;
+import com.craivet.entity.projectile.Projectile;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
@@ -45,15 +47,16 @@ public class Game extends JPanel implements Runnable {
 	public AStar aStar = new AStar(this);
 
 	// Entities
-	public ArrayList<Entity> entities = new ArrayList<>();
-	public ArrayList<Item> itemList = new ArrayList<>();
-	public ArrayList<Entity> projectiles = new ArrayList<>();
-	public ArrayList<Entity> particles = new ArrayList<>();
 	public Player player = new Player(this, keyH);
-	public Item[][] items = new Item[MAX_MAP][20];
-	public Entity[][] npcs = new Entity[MAX_MAP][10];
-	public Mob[][] mobs = new Mob[MAX_MAP][20];
+	public Entity[][] items = new Item[MAX_MAP][20];
+	public Entity[][] npcs = new Npc[MAX_MAP][10];
+	public Entity[][] mobs = new Mob[MAX_MAP][20];
+	public Entity[][] projectiles = new Projectile[MAX_MAP][20];
 	public InteractiveTile[][] iTile = new InteractiveTile[MAX_MAP][50];
+	public ArrayList<Entity> entities = new ArrayList<>();
+	public ArrayList<Entity> itemList = new ArrayList<>();
+	// public ArrayList<Entity> projectiles = new ArrayList<>();
+	public ArrayList<Entity> particles = new ArrayList<>();
 
 	public int gameState;
 	private boolean running;
@@ -162,10 +165,10 @@ public class Game extends JPanel implements Runnable {
 					}
 				}
 			}
-			for (int i = 0; i < projectiles.size(); i++) {
-				if (projectiles.get(i) != null) {
-					if (projectiles.get(i).alive) projectiles.get(i).update();
-					if (!projectiles.get(i).alive) projectiles.remove(i);
+			for (int i = 0; i < projectiles[1].length; i++) {
+				if (projectiles[currentMap][i] != null) {
+					if (projectiles[currentMap][i].alive) projectiles[currentMap][i].update();
+					if (!projectiles[currentMap][i].alive) projectiles[currentMap][i] = null;
 				}
 			}
 			for (int i = 0; i < particles.size(); i++) {
@@ -197,16 +200,16 @@ public class Game extends JPanel implements Runnable {
 			for (int i = 0; i < iTile[1].length; i++)
 				if (iTile[currentMap][i] != null) iTile[currentMap][i].draw(g2);
 
-			// Add entities to the list
+			// Agrega las entidades a la lista de entidades
 			entities.add(player);
-			for (int i = 0; i < npcs[1].length; i++)
-				if (npcs[currentMap][i] != null) entities.add(npcs[currentMap][i]);
 			for (int i = 0; i < items[1].length; i++)
 				if (items[currentMap][i] != null) itemList.add(items[currentMap][i]);
+			for (int i = 0; i < npcs[1].length; i++)
+				if (npcs[currentMap][i] != null) entities.add(npcs[currentMap][i]);
 			for (int i = 0; i < mobs[1].length; i++)
 				if (mobs[currentMap][i] != null) entities.add(mobs[currentMap][i]);
-			for (Entity projectile : projectiles)
-				if (projectile != null) entities.add(projectile);
+			for (int i = 0; i < projectiles[1].length; i++)
+				if (projectiles[currentMap][i] != null) entities.add(projectiles[currentMap][i]);
 			for (Entity particle : particles)
 				if (particle != null) entities.add(particle);
 
@@ -225,7 +228,7 @@ public class Game extends JPanel implements Runnable {
 			 * };
 			 * */
 
-			for (Item item : itemList) item.draw(g2);
+			for (Entity item : itemList) item.draw(g2);
 			for (Entity entity : entities) entity.draw(g2);
 
 			entities.clear();

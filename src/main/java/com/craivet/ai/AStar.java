@@ -80,6 +80,7 @@ public class AStar {
 			for (int col = 0; col < MAX_WORLD_COL; col++) {
 				int tileIndex = game.tileManager.tileIndex[game.currentMap][row][col];
 				if (game.tileManager.tile[tileIndex].solid) node[row][col].solid = true;
+
 				for (int i = 0; i < game.iTile[1].length; i++) {
 					if (game.iTile[game.currentMap][i] != null && game.iTile[game.currentMap][i].destructible) {
 						int itRow = game.iTile[game.currentMap][i].worldY / tile_size;

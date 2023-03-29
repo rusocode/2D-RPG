@@ -6,7 +6,7 @@ import com.craivet.entity.Entity;
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
-public class Oldman extends Entity {
+public class Oldman extends Npc {
 
 	public Oldman(Game game, int x, int y) {
 		super(game);

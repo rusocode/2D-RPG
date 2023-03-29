@@ -1,17 +1,15 @@
-package com.craivet.entity;
+package com.craivet.entity.projectile;
 
 import com.craivet.Game;
-import com.craivet.entity.item.Item;
+import com.craivet.entity.Entity;
+import com.craivet.entity.Player;
 
 import static com.craivet.utils.Constants.*;
 
-/**
- * TODO No es logico que un proyectil extienda de un Item...
- */
-
-public class Projectile extends Item {
+public class Projectile extends Entity {
 
 	private Entity entity;
+	protected int useCost;
 
 	public Projectile(Game game) {
 		super(game);
@@ -49,7 +47,7 @@ public class Projectile extends Item {
 			 * movimiento 2. La siguiente linea soluciona este problema. */
 			collisionOn = false;
 			if (mobIndex != -1 && !game.mobs[game.currentMap][mobIndex].invincible) {
-				game.player.damageMob(mobIndex, attack);
+				game.player.damageMob(mobIndex, attack, knockBackPower, direction);
 				// En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
 				generateParticle(entity.projectile, game.mobs[game.currentMap][mobIndex]);
 				alive = false;

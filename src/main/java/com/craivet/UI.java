@@ -357,10 +357,10 @@ public class UI {
 		g2.drawString(value, textX, textY);
 		textY += gap;
 
-		g2.drawImage(game.player.currentWeapon.image, tailX - 40, textY - 15, null);
+		g2.drawImage(game.player.weapon.image, tailX - 40, textY - 15, null);
 		textY += gap;
 
-		g2.drawImage(game.player.currentShield.image, tailX - 40, textY - 5, null);
+		g2.drawImage(game.player.shield.image, tailX - 40, textY - 5, null);
 
 	}
 
@@ -399,7 +399,7 @@ public class UI {
 		// Draw player´s items
 		for (int i = 0; i < entity.inventory.size(); i++) {
 			// Remarca de color amarillo el item seleccionado
-			if (entity.inventory.get(i) == entity.currentWeapon || entity.inventory.get(i) == entity.currentShield) {
+			if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield) {
 				g2.setColor(new Color(240, 190, 90));
 				g2.fillRoundRect(slotX, slotY, tile_size, tile_size, 10, 10);
 			}
@@ -854,7 +854,7 @@ public class UI {
 
 			// SELL AN ITEM
 			if (game.keyH.enter) {
-				if (game.player.inventory.get(itemIndex) == game.player.currentWeapon || game.player.inventory.get(itemIndex) == game.player.currentShield)
+				if (game.player.inventory.get(itemIndex) == game.player.weapon || game.player.inventory.get(itemIndex) == game.player.shield)
 					addMessage("You cannot sell an equipped item!");
 				else {
 					game.playSound(sound_coin);

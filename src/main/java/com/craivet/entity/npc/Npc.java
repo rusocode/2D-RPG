@@ -1,4 +1,11 @@
 package com.craivet.entity.npc;
 
-public class Npc {
+import com.craivet.Game;
+import com.craivet.entity.Entity;
+
+public class Npc extends Entity {
+
+	public Npc(Game game) {
+		super(game);
+	}
 }

@@ -5,7 +5,8 @@ import java.awt.image.BufferedImage;
 
 import com.craivet.Game;
 import com.craivet.entity.item.*;
-import com.craivet.entity.mob.Mob;
+import com.craivet.entity.projectile.Fireball;
+import com.craivet.entity.projectile.Projectile;
 import com.craivet.input.KeyHandler;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.utils.Utils;
@@ -14,11 +15,10 @@ import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
- * El player permanece fijo en el centro de la pantalla dando la sensacion de movimiento aunque no se "mueva".
+ * El player permanece fijo en el centro de la pantalla dando la sensacion de movimiento.
  *
- * <p>Quiero aclarar que con el tema de las colisiones entre dos entidades, en el caso del hitbox, solo se genera
- * colision cuando el limite del player por ejemplo, SUPERA el limite del slime. Pero en el caso del attackArea, solo
- * se genera colision cuando los limites de ambos SE TOCAN.
+ * <p>La colision entre dos entidades, solo se genera cuando el limite de la hitbox del player SUPERA el limite de la
+ * hitbox del slime. Pero en el caso del attackbox, solo se genera colision cuando los limites de ambos SE TOCAN.
  */
 
 public class Player extends Entity {
@@ -42,7 +42,8 @@ public class Player extends Entity {
 	public void initDefaultValues() {
 		type = TYPE_PLAYER;
 		name = "Player";
-		speed = 3;
+		defaultSpeed = 4;
+		speed = defaultSpeed;
 		maxLife = 6;
 		life = maxLife;
 		maxMana = 4;
@@ -55,14 +56,13 @@ public class Player extends Entity {
 
 		invincible = false;
 
-		strength = 1; // Mas fuerza, mas daño
-		dexterity = 1; // Mas destreza, menos daño recibido
-		currentWeapon = new SwordNormal(game);
-		currentShield = new ShieldWood(game);
+		strength = 1;
+		dexterity = 1;
+		weapon = new SwordNormal(game);
+		shield = new ShieldWood(game);
 		attack = getAttack();
 		defense = getDefense();
-
-		// attackArea = currentWeapon.attackArea;
+		projectile = new Fireball(game);
 
 		hitbox.x = 8;
 		hitbox.y = 16;
@@ -71,10 +71,8 @@ public class Player extends Entity {
 		hitboxDefaultX = hitbox.x;
 		hitboxDefaultY = hitbox.y;
 
-		projectile = new Fireball(game);
-
 		initMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-		initAttackImages(currentWeapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+		initAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
 		setItems();
 	}
@@ -99,7 +97,7 @@ public class Player extends Entity {
 
 			getDirection();
 			checkCollisions();
-			updatePosition();
+			if (!collisionOn && !key.enter && !key.l) updatePosition();
 			checkAttack();
 
 			// Resetea las teclas de accion
@@ -121,6 +119,44 @@ public class Player extends Entity {
 		if (life > maxLife) life = maxLife;
 		if (mana > maxMana) mana = maxMana;
 		if (life <= 0) die();
+	}
+
+	public void draw(Graphics2D g2) {
+		BufferedImage frame = null;
+		int tempScreenX = screenX, tempScreenY = screenY;
+		switch (direction) {
+			case DOWN:
+				if (!attacking) frame = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
+				if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
+				break;
+			case UP:
+				if (!attacking) frame = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
+				if (attacking) {
+					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
+					tempScreenY -= tile_size;
+					frame = attackNum == 1 ? attackUp1 : attackUp2;
+				}
+				break;
+			case LEFT:
+				if (!attacking) frame = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
+				if (attacking) {
+					tempScreenX -= tile_size;
+					frame = attackNum == 1 ? attackLeft1 : attackLeft2;
+				}
+				break;
+			case RIGHT:
+				if (!attacking) frame = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
+				if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
+				break;
+		}
+
+		if (invincible) Utils.changeAlpha(g2, 0.3f);
+		g2.drawImage(frame, tempScreenX, tempScreenY, null);
+
+		// drawRects(g2);
+
+		Utils.changeAlpha(g2, 1);
+
 	}
 
 	/**
@@ -188,10 +224,13 @@ public class Player extends Entity {
 
 			// Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
 			int mobIndex = game.collider.checkEntity(this, game.mobs);
-			damageMob(mobIndex, attack);
+			damageMob(mobIndex, attack, weapon.knockBackPower, direction);
 
 			int iTileIndex = game.collider.checkEntity(this, game.iTile);
 			damageInteractiveTile(iTileIndex);
+
+			int projectileIndex = game.collider.checkEntity(this, game.projectiles);
+			damageProjectile(projectileIndex);
 
 			// Despues de verificar la colision, resetea los datos originales
 			worldX = currentWorldX;
@@ -206,79 +245,14 @@ public class Player extends Entity {
 		}
 	}
 
-	private void drawRects(Graphics2D g2) {
-		// Imagen
-		g2.setColor(Color.magenta);
-		g2.drawRect(screenX, screenY, tile_size, tile_size);
-		// Cuerpo
-		g2.setColor(Color.yellow);
-		g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
-		// Area de ataque
-		if (attacking) {
-			g2.setColor(Color.red);
-			switch (direction) {
-				case DOWN:
-					g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);
-					break;
-				case UP:
-					g2.drawRect(screenX + hitbox.x + attackbox.x, screenY - attackbox.height, attackbox.width, attackbox.height);
-					break;
-				case LEFT:
-					g2.drawRect(screenX + attackbox.x - attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
-					break;
-				case RIGHT:
-					g2.drawRect(screenX + hitbox.x + attackbox.x + attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
-					break;
-			}
-		}
-	}
-
-	public void draw(Graphics2D g2) {
-		BufferedImage frame = null;
-		int tempScreenX = screenX, tempScreenY = screenY;
-		switch (direction) {
-			case DOWN:
-				if (!attacking) frame = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
-				if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
-				break;
-			case UP:
-				if (!attacking) frame = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
-				if (attacking) {
-					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
-					tempScreenY -= tile_size;
-					frame = attackNum == 1 ? attackUp1 : attackUp2;
-				}
-				break;
-			case LEFT:
-				if (!attacking) frame = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
-				if (attacking) {
-					tempScreenX -= tile_size;
-					frame = attackNum == 1 ? attackLeft1 : attackLeft2;
-				}
-				break;
-			case RIGHT:
-				if (!attacking) frame = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
-				if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
-				break;
-		}
-
-		if (invincible) Utils.changeAlpha(g2, 0.3f);
-		g2.drawImage(frame, tempScreenX, tempScreenY, null);
-
-		// drawRects(g2);
-
-		Utils.changeAlpha(g2, 1);
-
-	}
-
 	/**
 	 * Verifica si puede atacar. No puede atacar si interactua con un npc o bebe agua.
 	 */
 	private void checkAttack() {
 		// Si presiono enter y el ataque no esta cancelado
 		if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_SWORD_ATTACK) {
-			if (currentWeapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
-			if (currentWeapon.type == TYPE_AXE) game.playSound(sound_swing_axe);
+			if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
+			if (weapon.type == TYPE_AXE) game.playSound(sound_swing_axe);
 			attacking = true;
 			timer.attackAnimationCounter = 0;
 			timer.attackCounter = 0;
@@ -290,7 +264,13 @@ public class Player extends Entity {
 		if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
 			game.playSound(sound_burning);
 			projectile.set(worldX, worldY, direction, true, this);
-			game.projectiles.add(projectile);
+			// Comprueba vacante para agregar el proyectil
+			for (int i = 0; i < game.projectiles[1].length; i++) {
+				if (game.projectiles[game.currentMap][i] == null) {
+					game.projectiles[game.currentMap][i] = projectile;
+					break;
+				}
+			}
 			projectile.subtractResource(this);
 			timer.projectileCounter = 0;
 		}
@@ -304,7 +284,7 @@ public class Player extends Entity {
 	private void pickUpItem(int itemIndex) {
 		if (key.l) {
 			if (itemIndex != -1) {
-				Item item = game.items[game.currentMap][itemIndex];
+				Entity item = game.items[game.currentMap][itemIndex];
 				if (item.type == TYPE_PICKUP_ONLY) item.use(this);
 				else if (inventory.size() != MAX_INVENTORY_SIZE) {
 					inventory.add(item);
@@ -333,15 +313,36 @@ public class Player extends Entity {
 	}
 
 	/**
+	 * El player recibe daño si colisiona con un mob.
+	 *
+	 * @param mobIndex indice del mob.
+	 */
+	private void damagePlayer(int mobIndex) {
+		if (mobIndex >= 0) {
+			Entity mob = game.mobs[game.currentMap][mobIndex];
+			if (!invincible && !mob.dead) {
+				game.playSound(sound_receive_damage);
+				// En caso de que el ataque sea menor a la defensa, entonces no hace daño
+				int damage = Math.max(mob.attack - defense, 0);
+				life -= damage;
+				invincible = true;
+			}
+		}
+	}
+
+	/**
 	 * Daña al mob.
 	 *
 	 * @param mobIndex indice del mob.
 	 * @param attack   el tipo de ataque (sword o fireball).
 	 */
-	public void damageMob(int mobIndex, int attack) {
+	public void damageMob(int mobIndex, int attack, int knockBackPower, int direction) {
 		if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
-			Mob mob = game.mobs[game.currentMap][mobIndex];
+			Entity mob = game.mobs[game.currentMap][mobIndex];
 			if (!mob.invincible) {
+
+				if (knockBackPower > 0) knockBack(mob, knockBackPower, direction);
+
 				int damage = Math.max(attack - mob.defense, 0);
 				mob.life -= damage;
 				game.ui.addMessage(damage + " damage!");
@@ -364,24 +365,6 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * El player recibe daño si colisiona con un mob.
-	 *
-	 * @param mobIndex indice del mob.
-	 */
-	private void damagePlayer(int mobIndex) {
-		if (mobIndex >= 0) {
-			Mob mob = game.mobs[game.currentMap][mobIndex];
-			if (!invincible && !mob.dead) {
-				game.playSound(sound_receive_damage);
-				// En caso de que el ataque sea menor a la defensa, entonces no hace daño
-				int damage = Math.max(mob.attack - defense, 0);
-				life -= damage;
-				invincible = true;
-			}
-		}
-	}
-
-	/**
 	 * Daña al tile interactivo.
 	 *
 	 * @param iTileIndex indice del tile interactivo.
@@ -389,7 +372,7 @@ public class Player extends Entity {
 	private void damageInteractiveTile(int iTileIndex) {
 		if (iTileIndex != -1) {
 			InteractiveTile iTile = game.iTile[game.currentMap][iTileIndex];
-			if (iTile.destructible && iTile.isCorrectItem(currentWeapon) && !iTile.invincible) {
+			if (iTile.destructible && iTile.isCorrectItem(weapon) && !iTile.invincible) {
 				game.playSound(sound_cut_tree);
 
 				iTile.life--;
@@ -400,6 +383,27 @@ public class Player extends Entity {
 				if (iTile.life == 0) game.iTile[game.currentMap][iTileIndex] = iTile.getDestroyedForm();
 			}
 		}
+	}
+
+	private void damageProjectile(int projectileIndex) {
+		if (projectileIndex != -1) {
+			game.playSound(sound_receive_damage);
+			Entity projectile = game.projectiles[game.currentMap][projectileIndex];
+			projectile.alive = false;
+			generateParticle(projectile, projectile);
+		}
+	}
+
+	/**
+	 * Retrocede a la entidad.
+	 *
+	 * @param entity         la entidad.
+	 * @param knockBackPower el poder de retroceso.
+	 */
+	private void knockBack(Entity entity, int knockBackPower, int direction) {
+		entity.direction = direction;
+		entity.speed += knockBackPower;
+		entity.knockBack = true;
 	}
 
 	/**
@@ -429,14 +433,14 @@ public class Player extends Entity {
 		if (itemIndex < inventory.size()) {
 			Entity selectedItem = inventory.get(itemIndex);
 			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) {
-				currentWeapon = selectedItem;
-				attackbox = currentWeapon.attackbox;
+				weapon = selectedItem;
+				attackbox = weapon.attackbox;
 				attack = getAttack();
-				if (currentWeapon.type == TYPE_SWORD) game.playSound(sound_draw_sword);
-				initAttackImages(currentWeapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+				if (weapon.type == TYPE_SWORD) game.playSound(sound_draw_sword);
+				initAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 			}
 			if (selectedItem.type == TYPE_SHIELD) {
-				currentShield = selectedItem;
+				shield = selectedItem;
 				defense = getDefense();
 			}
 			if (selectedItem.type == TYPE_CONSUMABLE) {
@@ -473,23 +477,19 @@ public class Player extends Entity {
 	 * Actualiza la posicion del player.
 	 */
 	private void updatePosition() {
-		/* Si no hay colision y si no presiono ninguna telca de accion, el player se puede mover dependiendo de la
-		 * direccion */
-		if (!collisionOn && !key.enter && !key.l) {
-			switch (direction) {
-				case DOWN:
-					worldY += speed;
-					break;
-				case UP:
-					worldY -= speed;
-					break;
-				case LEFT:
-					worldX -= speed;
-					break;
-				case RIGHT:
-					worldX += speed;
-					break;
-			}
+		switch (direction) {
+			case DOWN:
+				worldY += speed;
+				break;
+			case UP:
+				worldY -= speed;
+				break;
+			case LEFT:
+				worldX -= speed;
+				break;
+			case RIGHT:
+				worldX += speed;
+				break;
 		}
 	}
 
@@ -514,21 +514,48 @@ public class Player extends Entity {
 	}
 
 	private int getAttack() {
-		return strength * currentWeapon.attackValue;
+		return strength * weapon.attackValue;
 	}
 
 	private int getDefense() {
-		return dexterity * currentShield.defenseValue;
+		return dexterity * shield.defenseValue;
 	}
 
 	public void setItems() {
 		inventory.clear();
-		inventory.add(currentWeapon);
+		inventory.add(weapon);
 		inventory.add(new Axe(game));
-		inventory.add(currentShield);
+		inventory.add(shield);
 		inventory.add(new PotionRed(game));
 		inventory.add(new PotionRed(game));
 		inventory.add(new PotionRed(game));
+	}
+
+	private void drawRects(Graphics2D g2) {
+		// Imagen
+		g2.setColor(Color.magenta);
+		g2.drawRect(screenX, screenY, tile_size, tile_size);
+		// Cuerpo
+		g2.setColor(Color.yellow);
+		g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
+		// Area de ataque
+		if (attacking) {
+			g2.setColor(Color.red);
+			switch (direction) {
+				case DOWN:
+					g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);
+					break;
+				case UP:
+					g2.drawRect(screenX + hitbox.x + attackbox.x, screenY - attackbox.height, attackbox.width, attackbox.height);
+					break;
+				case LEFT:
+					g2.drawRect(screenX + attackbox.x - attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
+					break;
+				case RIGHT:
+					g2.drawRect(screenX + hitbox.x + attackbox.x + attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
+					break;
+			}
+		}
 	}
 
 }

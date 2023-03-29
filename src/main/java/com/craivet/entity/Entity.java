@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.craivet.Game;
 import com.craivet.entity.item.Item;
+import com.craivet.entity.projectile.Projectile;
 import com.craivet.gfx.Assets;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.tile.InteractiveTile;
@@ -42,6 +43,7 @@ public abstract class Entity {
 	public BufferedImage manaFull, manaBlank;
 	public int direction = DOWN;
 	public int speed;
+	public int defaultSpeed;
 	public int maxLife, life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
 	public int maxMana, mana;
 	public int ammo;
@@ -53,10 +55,13 @@ public abstract class Entity {
 	public boolean collision;
 	public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
 	public int hitboxDefaultX, hitboxDefaultY;
-	public Projectile projectile;
-	public Entity currentWeapon, currentShield;
+	public Projectile projectile; // TODO Es necesario declarar este objeto aca?
+	public Entity weapon, shield;
 	public String itemDescription;
 	public int price;
+
+	// Item attributes
+	public int knockBackPower;
 
 	// Frames
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -72,10 +77,39 @@ public abstract class Entity {
 	public int movementNum = 1, attackNum = 1;
 	// Indica si la entidad entra en el algoritmo de busqueda
 	public boolean onPath;
+	public boolean knockBack;
+	public int knockBackCounter;
 
 	public Entity(Game game) {
 		this.game = game;
 		initIconsImages(icons, 16, 16);
+	}
+
+	public void update() {
+		if (knockBack) {
+			checkCollisions();
+			if (collisionOn) {
+				knockBackCounter = 0;
+				knockBack = false;
+				speed = defaultSpeed;
+			} else updatePosition();
+			knockBackCounter++;
+			if (knockBackCounter == 10) {
+				knockBackCounter = 0;
+				knockBack = false;
+				speed = defaultSpeed;
+			}
+		} else {
+			setAction();
+			checkCollisions();
+
+			// Si no hay colision, la entidad se puede mover dependiendo de la direccion
+			if (!collisionOn) updatePosition();
+
+			timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+			if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
+			if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
+		}
 	}
 
 	public void setAction() {
@@ -146,6 +180,8 @@ public abstract class Entity {
 		return 0;
 	}
 
+	// TODO Este metodo no tendria que ir en la clase Projectile?
+
 	/**
 	 * Genera 4 particulas en el objetivo.
 	 *
@@ -157,35 +193,6 @@ public abstract class Entity {
 		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
 		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
 		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
-	}
-
-	public void update() {
-
-		setAction();
-		checkCollisions();
-
-		// Si no hay colision, la entidad se puede mover dependiendo de la direccion
-		if (!collisionOn) {
-			switch (direction) {
-				case DOWN:
-					worldY += speed;
-					break;
-				case UP:
-					worldY -= speed;
-					break;
-				case LEFT:
-					worldX -= speed;
-					break;
-				case RIGHT:
-					worldX += speed;
-					break;
-			}
-		}
-
-		timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
-		if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-		if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
-
 	}
 
 	public void draw(Graphics2D g2) {
@@ -336,6 +343,23 @@ public abstract class Entity {
 		game.collider.checkEntity(this, game.mobs);
 		game.collider.checkEntity(this, game.iTile);
 		damagePlayer(game.collider.checkPlayer(this), attack);
+	}
+
+	private void updatePosition() {
+		switch (direction) {
+			case DOWN:
+				worldY += speed;
+				break;
+			case UP:
+				worldY -= speed;
+				break;
+			case LEFT:
+				worldX -= speed;
+				break;
+			case RIGHT:
+				worldX += speed;
+				break;
+		}
 	}
 
 	public void searchPath(int goalRow, int goalCol) {

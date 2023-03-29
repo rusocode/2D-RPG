@@ -8,7 +8,7 @@ import com.craivet.utils.Utils;
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
-public class Merchant extends Entity {
+public class Merchant extends Npc {
 
 	public Merchant(Game game, int x, int y) {
 		super(game);
