@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import com.craivet.Game;
 import com.craivet.entity.item.Item;
 import com.craivet.entity.projectile.Projectile;
-import com.craivet.gfx.Assets;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.utils.Timer;
@@ -38,7 +37,8 @@ public abstract class Entity {
 	public int worldX, worldY;
 	public String name;
 	public int type = TYPE_MOB;
-	public BufferedImage image; // Imagenes estaticas
+	// Imagenes estaticas para los items y mobs
+	public BufferedImage image, mobImage;
 	public BufferedImage heartFull, heartHalf, heartBlank;
 	public BufferedImage manaFull, manaBlank;
 	public int direction = DOWN;
@@ -112,89 +112,6 @@ public abstract class Entity {
 		}
 	}
 
-	public void setAction() {
-
-	}
-
-	public void damageReaction() {
-	}
-
-	public void speak() {
-		if (dialogues[dialogueIndex] == null) dialogueIndex = 0;
-		game.ui.currentDialogue = dialogues[dialogueIndex];
-		dialogueIndex++;
-
-		switch (game.player.direction) {
-			case DOWN:
-				direction = UP;
-				break;
-			case UP:
-				direction = DOWN;
-				break;
-			case LEFT:
-				direction = RIGHT;
-				break;
-			case RIGHT:
-				direction = LEFT;
-				break;
-		}
-	}
-
-	public void use(Entity entity) {
-	}
-
-	public void checkDrop() {
-	}
-
-	/**
-	 * Dropea el item.
-	 *
-	 * @param droppedItem el item.
-	 */
-	public void dropItem(Item droppedItem) {
-		for (int i = 0; i < game.items[1].length; i++) {
-			if (game.items[game.currentMap][i] == null) {
-				game.items[game.currentMap][i] = droppedItem;
-				// La imagen Coin al ser de 32x32, tiene que ajustarse al centro de la imagen del Slime
-				game.items[game.currentMap][i].worldX = worldX + (entity_slime.getWidth() / 2 - Assets.item_coin.getWidth() / 2);
-				game.items[game.currentMap][i].worldY = worldY + entity_slime.getHeight();
-				break;
-			}
-		}
-
-	}
-
-	public Color getParticleColor() {
-		return null;
-	}
-
-	public int getParticleSize() {
-		return 0;
-	}
-
-	public int getParticleSpeed() {
-		return 0;
-	}
-
-	public int getParticleMaxLife() {
-		return 0;
-	}
-
-	// TODO Este metodo no tendria que ir en la clase Projectile?
-
-	/**
-	 * Genera 4 particulas en el objetivo.
-	 *
-	 * @param generator la entidad que va a generar las particulas.
-	 * @param target    el objetivo en donde se van a generar las particulas.
-	 */
-	public void generateParticle(Entity generator, Entity target) {
-		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
-		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
-		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
-		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
-	}
-
 	public void draw(Graphics2D g2) {
 		BufferedImage auxImage = null;
 		int screenX = (worldX - game.player.worldX) + game.player.screenX;
@@ -247,8 +164,90 @@ public abstract class Entity {
 			g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
 			// g2.setColor(Color.cyan);
 			// g2.drawRect(hitbox.x + screenX, hitbox.y + screenY, hitbox.width, hitbox.height);
+			// g2.drawRect(screenX, screenY, tile_size, tile_size);
 			Utils.changeAlpha(g2, 1);
 		}
+	}
+
+	public void setAction() {
+
+	}
+
+	public void damageReaction() {
+	}
+
+	public void speak() {
+		if (dialogues[dialogueIndex] == null) dialogueIndex = 0;
+		game.ui.currentDialogue = dialogues[dialogueIndex];
+		dialogueIndex++;
+
+		switch (game.player.direction) {
+			case DOWN:
+				direction = UP;
+				break;
+			case UP:
+				direction = DOWN;
+				break;
+			case LEFT:
+				direction = RIGHT;
+				break;
+			case RIGHT:
+				direction = LEFT;
+				break;
+		}
+	}
+
+	public void use(Entity entity) {
+	}
+
+	public void checkDrop() {
+	}
+
+	/**
+	 * Dropea el item.
+	 *
+	 * @param item el item.
+	 */
+	public void dropItem(Item item) {
+		for (int i = 0; i < game.items[1].length; i++) {
+			if (game.items[game.currentMap][i] == null) {
+				game.items[game.currentMap][i] = item;
+				game.items[game.currentMap][i].worldX = worldX + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
+				game.items[game.currentMap][i].worldY = worldY + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
+				break;
+			}
+		}
+	}
+
+	public Color getParticleColor() {
+		return null;
+	}
+
+	public int getParticleSize() {
+		return 0;
+	}
+
+	public int getParticleSpeed() {
+		return 0;
+	}
+
+	public int getParticleMaxLife() {
+		return 0;
+	}
+
+	// TODO Este metodo no tendria que ir en la clase Projectile?
+
+	/**
+	 * Genera 4 particulas en el objetivo.
+	 *
+	 * @param generator la entidad que va a generar las particulas.
+	 * @param target    el objetivo en donde se van a generar las particulas.
+	 */
+	public void generateParticle(Entity generator, Entity target) {
+		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
 	}
 
 	/**
