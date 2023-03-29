@@ -388,29 +388,29 @@ public abstract class Entity {
 			 * se define su movimiento hacia la izquierda o derecha. */
 			if (top >= nextY && bottom < nextY + tile_size) direction = left > nextX ? LEFT : RIGHT;
 
-			/* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
-			 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
-			/*else if (top > nextY && left > nextX) {
+				/* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
+				 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
+			else if (top > nextY && left > nextX) {
 				// up o left
-				direction = DIR_UP;
+				direction = UP;
 				checkCollisions();
-				if (collisionOn) direction = DIR_LEFT;
+				if (collisionOn) direction = LEFT;
 			} else if (top > nextY && left < nextX) {
 				// up o right
-				direction = DIR_UP;
+				direction = UP;
 				checkCollisions();
-				if (collisionOn) direction = DIR_RIGHT;
+				if (collisionOn) direction = RIGHT;
 			} else if (top < nextY && left > nextX) {
 				// down o left
-				direction = DIR_DOWN;
+				direction = DOWN;
 				checkCollisions();
-				if (collisionOn) direction = DIR_LEFT;
+				if (collisionOn) direction = LEFT;
 			} else if (top < nextY && left < nextX) {
 				// down o right
-				direction = DIR_DOWN;
+				direction = DOWN;
 				checkCollisions();
-				if (collisionOn) direction = DIR_RIGHT;
-			} */
+				if (collisionOn) direction = RIGHT;
+			}
 
 			// Si la entidad llego al objetivo entonces sale del algoritmo de busqueda
 			// int nextRow = game.aStar.pathList.get(0).row;
