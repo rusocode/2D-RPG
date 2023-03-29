@@ -14,8 +14,8 @@ public class ShieldWood extends Item {
 		type = TYPE_SHIELD;
 		image = Utils.scaleImage(item_shield_wood, tile_size, tile_size);
 		itemDescription = "[" + name + "]\nMade by wood.";
-		defenseValue = 1;
 		price = 25;
+		defenseValue = 1;
 	}
 
 }

@@ -33,72 +33,62 @@ public abstract class Entity {
 	public String[] dialogues = new String[20];
 	public int dialogueIndex;
 
-	// Atributes
+	// General attributes
 	public int worldX, worldY;
 	public String name;
 	public int type = TYPE_MOB;
 	// Imagenes estaticas para los items y mobs
 	public BufferedImage image, mobImage;
-	public BufferedImage heartFull, heartHalf, heartBlank;
-	public BufferedImage manaFull, manaBlank;
 	public int direction = DOWN;
-	public int speed;
-	public int defaultSpeed;
-	public int maxLife, life; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
-	public int maxMana, mana;
+	public int speed, defaultSpeed;
+	public int life, maxLife; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+	public int mana, maxMana;
 	public int ammo;
 	public int level, exp, nextLevelExp;
 	public int coin;
 	public int strength, dexterity;
 	public int attack, defense;
-	public int attackValue, defenseValue;
 	public boolean collision;
 	public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
 	public int hitboxDefaultX, hitboxDefaultY;
 	public Projectile projectile; // TODO Es necesario declarar este objeto aca?
 	public Entity weapon, shield;
-	public String itemDescription;
-	public int price;
 
 	// Item attributes
+	public String itemDescription;
+	public int price;
+	public int attackValue, defenseValue;
 	public int knockBackPower;
 
-	// Frames
+	// Frames (movimiento, ataque)
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
 	public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+	public int movementNum = 1, attackNum = 1;
 
 	// States
-	public boolean collisionOn; // Estado que depende de las colisiones con tiles, items y entidades
-	public boolean invincible;
 	public boolean attacking;
 	public boolean alive = true;
+	public boolean collisionOn;
 	public boolean dead;
 	public boolean hpBarOn;
-	public int movementNum = 1, attackNum = 1;
-	// Indica si la entidad entra en el algoritmo de busqueda
-	public boolean onPath;
+	public boolean invincible;
 	public boolean knockBack;
-	public int knockBackCounter;
+	public boolean onPath;
 
 	public Entity(Game game) {
 		this.game = game;
-		initIconsImages(icons, 16, 16);
 	}
 
 	public void update() {
+		// TODO checkCollisions(); afuera?
 		if (knockBack) {
 			checkCollisions();
 			if (collisionOn) {
-				knockBackCounter = 0;
+				timer.knockBackCounter = 0;
 				knockBack = false;
 				speed = defaultSpeed;
 			} else updatePosition();
-			knockBackCounter++;
-			if (knockBackCounter == 10) {
-				knockBackCounter = 0;
-				knockBack = false;
-				speed = defaultSpeed;
-			}
+			timer.timerKnockBack(this, INTERVAL_KNOCKBACK);
 		} else {
 			setAction();
 			checkCollisions();
@@ -180,7 +170,6 @@ public abstract class Entity {
 		if (dialogues[dialogueIndex] == null) dialogueIndex = 0;
 		game.ui.currentDialogue = dialogues[dialogueIndex];
 		dialogueIndex++;
-
 		switch (game.player.direction) {
 			case DOWN:
 				direction = UP;
@@ -265,15 +254,6 @@ public abstract class Entity {
 			game.player.life -= damage;
 			game.player.invincible = true;
 		}
-	}
-
-	public void initIconsImages(SpriteSheet image, int width, int height) {
-		BufferedImage[] subimages = SpriteSheet.getIconsSubimages(image, width, height);
-		heartFull = Utils.scaleImage(subimages[0], tile_size, tile_size);
-		heartHalf = Utils.scaleImage(subimages[1], tile_size, tile_size);
-		heartBlank = Utils.scaleImage(subimages[2], tile_size, tile_size);
-		manaFull = Utils.scaleImage(subimages[3], tile_size, tile_size);
-		manaBlank = Utils.scaleImage(subimages[4], tile_size, tile_size);
 	}
 
 	/**

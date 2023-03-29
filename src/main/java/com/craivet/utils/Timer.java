@@ -23,6 +23,7 @@ public class Timer {
 	public int directionCounter;
 	public int deadCounter;
 	public int hpBarCounter;
+	public int knockBackCounter;
 
 	/**
 	 * Temporiza el movimiento.
@@ -105,6 +106,14 @@ public class Timer {
 		if (hpBarCounter++ >= interval) {
 			entity.hpBarOn = false;
 			hpBarCounter = 0;
+		}
+	}
+
+	public void timerKnockBack(Entity entity, final int interval) {
+		if (knockBackCounter++ >= interval) {
+			knockBackCounter = 0;
+			entity.knockBack = false;
+			entity.speed = entity.defaultSpeed;
 		}
 	}
 

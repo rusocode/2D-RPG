@@ -14,8 +14,8 @@ public class SwordNormal extends Item {
 		type = TYPE_SWORD;
 		image = Utils.scaleImage(item_sword_normal, tile_size, tile_size);
 		itemDescription = "[" + name + "]\nAn old sword.";
-		attackValue = 2;
 		price = 20;
+		attackValue = 2;
 		knockBackPower = 2;
 	}
 

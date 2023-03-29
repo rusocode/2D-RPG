@@ -6,8 +6,7 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.entity.item.*;
 import com.craivet.entity.projectile.Fireball;
-import com.craivet.entity.projectile.Projectile;
-import com.craivet.input.KeyHandler;
+import com.craivet.input.KeyManager;
 import com.craivet.tile.InteractiveTile;
 import com.craivet.utils.Utils;
 
@@ -23,11 +22,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class Player extends Entity {
 
-	private final KeyHandler key;
+	private final KeyManager key;
 	public final int screenX, screenY;
 	public boolean attackCanceled;
 
-	public Player(Game game, KeyHandler key) {
+	public Player(Game game, KeyManager key) {
 		super(game);
 		// Posiciona el player en el centro de la pantalla
 		screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
@@ -40,14 +39,9 @@ public class Player extends Entity {
 	}
 
 	public void initDefaultValues() {
-		type = TYPE_PLAYER;
-		name = "Player";
-		defaultSpeed = 4;
-		speed = defaultSpeed;
-		maxLife = 6;
-		life = maxLife;
-		maxMana = 4;
-		mana = maxMana;
+		speed = defaultSpeed = 4;
+		life = maxLife = 6;
+		mana = maxMana = 4;
 		ammo = 5;
 		level = 1;
 		exp = 0;
@@ -323,7 +317,7 @@ public class Player extends Entity {
 			if (!invincible && !mob.dead) {
 				game.playSound(sound_receive_damage);
 				// En caso de que el ataque sea menor a la defensa, entonces no hace daño
-				int damage = Math.max(mob.attack - defense, 0);
+				int damage = Math.max(mob.attack - defense, 1);
 				life -= damage;
 				invincible = true;
 			}
@@ -343,7 +337,7 @@ public class Player extends Entity {
 
 				if (knockBackPower > 0) knockBack(mob, knockBackPower, direction);
 
-				int damage = Math.max(attack - mob.defense, 0);
+				int damage = Math.max(attack - mob.defense, 1);
 				mob.life -= damage;
 				game.ui.addMessage(damage + " damage!");
 				if (mob.life > 0) game.playSound(sound_hit_monster);
@@ -434,7 +428,7 @@ public class Player extends Entity {
 			Entity selectedItem = inventory.get(itemIndex);
 			if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) {
 				weapon = selectedItem;
-				attackbox = weapon.attackbox;
+				attackbox = weapon.attackbox; // TODO Hace falta esto aca?
 				attack = getAttack();
 				if (weapon.type == TYPE_SWORD) game.playSound(sound_draw_sword);
 				initAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -470,7 +464,7 @@ public class Player extends Entity {
 		interactNPC(game.collider.checkEntity(this, game.npcs));
 		damagePlayer(game.collider.checkEntity(this, game.mobs));
 		game.collider.checkEntity(this, game.iTile);
-		game.eHandler.checkEvent();
+		game.event.checkEvent();
 	}
 
 	/**

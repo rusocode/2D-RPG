@@ -19,8 +19,8 @@ public class Axe extends Item {
 		attackbox.width = 30;
 		attackbox.height = 30;
 		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
-		attackValue = 1;
 		price = 75;
+		attackValue = 1;
 		knockBackPower = 10;
 	}
 
@@ -34,8 +34,9 @@ public class Axe extends Item {
 		attackbox.width = 30;
 		attackbox.height = 30;
 		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
-		attackValue = 1;
 		price = 75;
+		attackValue = 1;
+		knockBackPower = 10;
 	}
 
 }

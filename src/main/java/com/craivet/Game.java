@@ -4,13 +4,12 @@ import com.craivet.ai.AStar;
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.Item;
 import com.craivet.entity.mob.Mob;
-import com.craivet.entity.Player;
 import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Projectile;
+import com.craivet.entity.Player;
 import com.craivet.gfx.Assets;
-import com.craivet.input.KeyHandler;
-import com.craivet.tile.InteractiveTile;
-import com.craivet.tile.TileManager;
+import com.craivet.input.KeyManager;
+import com.craivet.tile.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -35,8 +34,8 @@ public class Game extends JPanel implements Runnable {
 
 	// System
 	public Thread thread;
-	public KeyHandler keyH = new KeyHandler(this);
-	public EventHandler eHandler = new EventHandler(this);
+	public KeyManager key = new KeyManager(this);
+	public EventHandler event = new EventHandler(this);
 	public TileManager tileManager = new TileManager(this);
 	public Collider collider = new Collider(this);
 	public AssetSetter aSetter = new AssetSetter(this);
@@ -47,18 +46,19 @@ public class Game extends JPanel implements Runnable {
 	public AStar aStar = new AStar(this);
 
 	// Entities
-	public Player player = new Player(this, keyH);
+	public Player player = new Player(this, key);
 	public Entity[][] items = new Item[MAX_MAP][20];
-	public Entity[][] npcs = new Npc[MAX_MAP][10];
 	public Entity[][] mobs = new Mob[MAX_MAP][20];
+	public Entity[][] npcs = new Npc[MAX_MAP][10];
 	public Entity[][] projectiles = new Projectile[MAX_MAP][20];
-	public InteractiveTile[][] iTile = new InteractiveTile[MAX_MAP][50];
 	public ArrayList<Entity> entities = new ArrayList<>();
 	public ArrayList<Entity> itemList = new ArrayList<>();
-	// public ArrayList<Entity> projectiles = new ArrayList<>();
 	public ArrayList<Entity> particles = new ArrayList<>();
+	// Interactive tiles
+	public InteractiveTile[][] iTile = new InteractiveTile[MAX_MAP][50];
 
 	public int gameState;
+	public int currentMap;
 	private boolean running;
 	public boolean fullScreen;
 
@@ -66,16 +66,15 @@ public class Game extends JPanel implements Runnable {
 	 * las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
 	public Graphics2D g2;
 	public BufferedImage tempScree;
-	// For full screen
+	// Para pantalla completa
 	public int screenWidth = SCREEN_WIDTH;
 	public int screenHeight = SCREEN_HEIGHT;
-	public int currentMap = 0;
 
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		setBackground(Color.black);
 		setDoubleBuffered(true); // Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
-		addKeyListener(keyH);
+		addKeyListener(key);
 		setFocusable(true);
 	}
 
@@ -188,7 +187,7 @@ public class Game extends JPanel implements Runnable {
 	public void drawToTempScreen() {
 		// Debug
 		long drawStart = 0;
-		if (keyH.t) drawStart = System.nanoTime();
+		if (key.t) drawStart = System.nanoTime();
 
 		if (gameState == TITLE_STATE) {
 			g2.setColor(Color.black);
@@ -238,7 +237,7 @@ public class Game extends JPanel implements Runnable {
 		}
 
 		// Debug
-		if (keyH.t) {
+		if (key.t) {
 			g2.setFont(new Font("Arial", Font.PLAIN, 20));
 			g2.setColor(Color.white);
 			int x = 8, y = SCREEN_HEIGHT - 25, gap = 20;

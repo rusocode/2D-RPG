@@ -1,12 +1,13 @@
 package com.craivet;
 
-import java.awt.*;
-import java.util.ArrayList;
-
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.Item;
-import com.craivet.entity.item.Heart;
-import com.craivet.entity.item.Mana;
+import com.craivet.gfx.SpriteSheet;
+import com.craivet.utils.Utils;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
@@ -21,31 +22,38 @@ import static com.craivet.gfx.Assets.*;
 public class UI {
 
 	private final Game game;
-	private final Heart heart;
-	private final Mana mana;
+	private final Item item;
+	public Entity npc;
 	private Graphics2D g2;
 	public String currentDialogue;
-	public int commandNum;
-	public int titleScreenState;
 
 	private final ArrayList<String> message = new ArrayList<>();
 	private final ArrayList<Integer> messageCounter = new ArrayList<>();
 
 	public int playerSlotCol, playerSlotRow;
 	public int npcSlotCol, npcSlotRow;
+	public int titleScreenState;
 	public int subState;
+	public int commandNum;
 	private int counter;
-	public Entity npc;
-	private final Item item;
+
+	// Icons
+	private BufferedImage heartFull, heartHalf, heartBlank;
+	private BufferedImage manaFull, manaBlank;
 
 	public UI(Game game) {
 		this.game = game;
-
-		// HUD
-		heart = new Heart(game);
-		mana = new Mana(game);
-
 		item = new Item(game);
+		initHUD();
+	}
+
+	private void initHUD() {
+		BufferedImage[] subimages = SpriteSheet.getIconsSubimages(icons, 16, 16);
+		heartFull = Utils.scaleImage(subimages[0], tile_size, tile_size);
+		heartHalf = Utils.scaleImage(subimages[1], tile_size, tile_size);
+		heartBlank = Utils.scaleImage(subimages[2], tile_size, tile_size);
+		manaFull = Utils.scaleImage(subimages[3], tile_size, tile_size);
+		manaBlank = Utils.scaleImage(subimages[4], tile_size, tile_size);
 	}
 
 	public void draw(Graphics2D g2) {
@@ -196,7 +204,7 @@ public class UI {
 
 		// Dibuja el corazon vacio
 		while (i < game.player.maxLife / 2) {
-			g2.drawImage(heart.heartBlank, x, y, null);
+			g2.drawImage(heartBlank, x, y, null);
 			i++;
 			x += tile_size;
 		}
@@ -208,9 +216,9 @@ public class UI {
 
 		// Dibuja la vida actual
 		while (i < game.player.life) {
-			g2.drawImage(heart.heartHalf, x, y, null);
+			g2.drawImage(heartHalf, x, y, null);
 			i++;
-			if (i < game.player.life) g2.drawImage(heart.heartFull, x, y, null);
+			if (i < game.player.life) g2.drawImage(heartFull, x, y, null);
 			i++;
 			x += tile_size;
 		}
@@ -220,7 +228,7 @@ public class UI {
 		y = (int) (tile_size * 1.5);
 		i = 0;
 		while (i < game.player.maxMana) {
-			g2.drawImage(mana.manaBlank, x, y, null);
+			g2.drawImage(manaBlank, x, y, null);
 			i++;
 			x += 35;
 		}
@@ -230,7 +238,7 @@ public class UI {
 		y = (int) (tile_size * 1.5);
 		i = 0;
 		while (i < game.player.mana) {
-			g2.drawImage(mana.manaFull, x, y, null);
+			g2.drawImage(manaFull, x, y, null);
 			i++;
 			x += 35;
 		}
@@ -468,7 +476,7 @@ public class UI {
 				break;
 		}
 
-		game.keyH.enter = false;
+		game.key.enter = false;
 
 	}
 
@@ -491,7 +499,7 @@ public class UI {
 		g2.drawString("Full Screen", textX, textY);
 		if (commandNum == 0) {
 			g2.drawString(">", textX - 25, textY);
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				game.fullScreen = !game.fullScreen;
 				subState = 1;
 			}
@@ -509,7 +517,7 @@ public class UI {
 		g2.drawString("Control", textX, textY);
 		if (commandNum == 3) {
 			g2.drawString(">", textX - 25, textY);
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				subState = 2;
 				commandNum = 0;
 			}
@@ -519,7 +527,7 @@ public class UI {
 		g2.drawString("End Game", textX, textY);
 		if (commandNum == 4) {
 			g2.drawString(">", textX - 25, textY);
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				subState = 3;
 				commandNum = 0;
 			}
@@ -548,7 +556,7 @@ public class UI {
 		g2.drawString("Back", textX, textY);
 		if (commandNum == 5) {
 			g2.drawString(">", textX - 25, textY);
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				game.gameState = PLAY_STATE;
 				commandNum = 0;
 			}
@@ -573,7 +581,7 @@ public class UI {
 		textY = frameHeight;
 		g2.drawString("Back", textX, textY);
 		g2.drawString(">", textX - 25, textY);
-		if (game.keyH.enter) subState = 0;
+		if (game.key.enter) subState = 0;
 
 	}
 
@@ -624,7 +632,7 @@ public class UI {
 		g2.drawString("Back", textX, textY);
 		if (commandNum == 0) {
 			g2.drawString(">", textX - 25, textY);
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				subState = 0;
 				commandNum = 3;
 			}
@@ -648,10 +656,10 @@ public class UI {
 		g2.drawString(text, textX, textY);
 		if (commandNum == 0) {
 			g2.drawString(">", textX - 25, textY);
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				subState = 0;
 				game.gameState = TITLE_STATE;
-				game.keyH.t = false;
+				game.key.t = false;
 			}
 		}
 
@@ -662,7 +670,7 @@ public class UI {
 		g2.drawString(text, textX, textY);
 		if (commandNum == 1) {
 			g2.drawString(">", textX - 25, textY);
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				subState = 0;
 				commandNum = 4;
 			}
@@ -711,14 +719,14 @@ public class UI {
 		counter++;
 		g2.setColor(new Color(0, 0, 0, counter * 5));
 		g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-		if (counter == 50) {
+		if (counter >= INTERVAL_TRANSITION) {
 			counter = 0;
 			game.gameState = PLAY_STATE;
-			game.currentMap = game.eHandler.tempMap;
-			game.player.worldX = tile_size * game.eHandler.tempCol;
-			game.player.worldY = tile_size * game.eHandler.tempRow;
-			game.eHandler.previousEventX = game.player.worldX;
-			game.eHandler.previousEventY = game.player.worldY;
+			game.currentMap = game.event.tempMap;
+			game.player.worldX = tile_size * game.event.tempCol;
+			game.player.worldY = tile_size * game.event.tempRow;
+			game.event.previousEventX = game.player.worldX;
+			game.event.previousEventY = game.player.worldY;
 		}
 	}
 
@@ -734,7 +742,7 @@ public class UI {
 				tradeSell();
 				break;
 		}
-		game.keyH.enter = false; // Reinicia la entrada de teclado
+		game.key.enter = false; // Reinicia la entrada de teclado
 	}
 
 	private void tradeSelect() {
@@ -752,7 +760,7 @@ public class UI {
 		g2.drawString("Buy", x, y);
 		if (commandNum == 0) {
 			g2.drawString(">", x - 24, y);
-			if (game.keyH.enter) subState = 1;
+			if (game.key.enter) subState = 1;
 		}
 
 		y += tile_size;
@@ -760,7 +768,7 @@ public class UI {
 		g2.drawString("Sell", x, y);
 		if (commandNum == 1) {
 			g2.drawString(">", x - 24, y);
-			if (game.keyH.enter) subState = 2;
+			if (game.key.enter) subState = 2;
 		}
 	}
 
@@ -801,7 +809,7 @@ public class UI {
 			g2.drawString(text, x, y + 32);
 
 			// BUY AN ITEM
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				if (npc.inventory.get(itemIndex).price > game.player.coin)
 					addMessage("You need more coin to buy that!");
 				else if (game.player.inventory.size() == MAX_INVENTORY_SIZE)
@@ -853,7 +861,7 @@ public class UI {
 			g2.drawString(text, x, y + 32);
 
 			// SELL AN ITEM
-			if (game.keyH.enter) {
+			if (game.key.enter) {
 				if (game.player.inventory.get(itemIndex) == game.player.weapon || game.player.inventory.get(itemIndex) == game.player.shield)
 					addMessage("You cannot sell an equipped item!");
 				else {

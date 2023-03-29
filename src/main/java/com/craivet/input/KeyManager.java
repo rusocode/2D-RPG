@@ -1,25 +1,30 @@
 package com.craivet.input;
 
-import java.awt.event.*;
-
 import com.craivet.Game;
+
+import java.awt.event.*;
 
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
-public class KeyHandler extends KeyAdapter {
+public class KeyManager extends KeyAdapter {
 
 	private final Game game;
 	public boolean w, a, s, d, enter, f, l, t;
 
 	private int lastKey = -1;
+	public static final int MAX_KEYCODE = 255;
 
-	public KeyHandler(Game game) {
+	public KeyManager(Game game) {
 		this.game = game;
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
+		if (e.getKeyCode() < 0)
+			throw new IllegalArgumentException("keycode cannot be negative, keycode: " + e.getKeyCode());
+		if (e.getKeyCode() > MAX_KEYCODE)
+			throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
 		if (lastKey != e.getKeyCode()) {
 			lastKey = e.getKeyCode();
 			if (game.gameState == TITLE_STATE) titleState(lastKey);
@@ -35,6 +40,10 @@ public class KeyHandler extends KeyAdapter {
 
 	@Override
 	public void keyReleased(KeyEvent e) {
+		if (e.getKeyCode() < 0)
+			throw new IllegalArgumentException("keycode cannot be negative, keycode: " + e.getKeyCode());
+		if (e.getKeyCode() > MAX_KEYCODE)
+			throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
 		lastKey = -1;
 		int code = e.getKeyCode();
 		if (code == KeyEvent.VK_W) w = false;
@@ -221,18 +230,18 @@ public class KeyHandler extends KeyAdapter {
 				game.ui.commandNum++;
 				if (game.ui.commandNum > 1) game.ui.commandNum = 0;
 			}
-			if(code == KeyEvent.VK_ESCAPE) {
+			if (code == KeyEvent.VK_ESCAPE) {
 				game.ui.commandNum = 0;
 				game.gameState = PLAY_STATE;
 			}
 		}
 		if (game.ui.subState == 1) {
 			npcInventory(code);
-			if(code == KeyEvent.VK_ESCAPE) game.ui.subState = 0;
+			if (code == KeyEvent.VK_ESCAPE) game.ui.subState = 0;
 		}
 		if (game.ui.subState == 2) {
 			playerInventory(code);
-			if(code == KeyEvent.VK_ESCAPE) game.ui.subState = 0;
+			if (code == KeyEvent.VK_ESCAPE) game.ui.subState = 0;
 		}
 	}
 

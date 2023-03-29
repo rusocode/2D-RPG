@@ -23,11 +23,8 @@ public class Slime extends Mob {
 
 	private void initDefaultValues() {
 		type = TYPE_MOB;
-		name = "Slime";
-		defaultSpeed = 1;
-		speed = defaultSpeed;
-		maxLife = 4;
-		life = maxLife;
+		speed = defaultSpeed = 1;
+		life = maxLife = 4;
 		exp = 2;
 
 		attack = 2;
@@ -57,8 +54,8 @@ public class Slime extends Mob {
 		 * numero random es mayor a 50 (este ultimo, para no hacerlo robotico). */
 		if (!onPath && tileDistance < 5 && Utils.azar(100) < 50) onPath = true;
 
-		// El slime deja de ser agresivo cuando el player se aleja 20 tiles
-		// if (onPath && tileDistance > 20) onPath = false;
+		// El slime deja de ser agresivo cuando el player se aleja 15 tiles
+		if (onPath && tileDistance > 15) onPath = false;
 	}
 
 	public void setAction() {
@@ -66,7 +63,7 @@ public class Slime extends Mob {
 			int goalRow = (game.player.worldY + game.player.hitbox.y) / tile_size;
 			int goalCol = (game.player.worldX + game.player.hitbox.x) / tile_size;
 			searchPath(goalRow, goalCol);
-			// shootProjectile();
+			shootProjectile();
 		} else timer.timeDirection(this, INTERVAL_DIRECTION);
 	}
 

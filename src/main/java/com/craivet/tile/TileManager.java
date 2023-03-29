@@ -102,7 +102,6 @@ public class TileManager {
 					tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
 			}
 		} catch (IOException e) {
-			// throw new RuntimeException(e);
 			throw new RuntimeException("Error al leer el archivo " + path + " en la linea " + (row + 1), e);
 		}
 	}
