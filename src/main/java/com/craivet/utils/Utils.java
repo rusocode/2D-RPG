@@ -32,6 +32,7 @@ public final class Utils {
 	}
 
 	public static URL loadAudio(String path) {
+		System.out.println("Loading audio...");
 		return Objects.requireNonNull(Utils.class.getClassLoader().getResource(path));
 	}
 

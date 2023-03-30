@@ -7,7 +7,9 @@ import java.net.URL;
 import com.craivet.utils.Utils;
 
 /**
- * TODO Los metodos loadFont, loadSound y loadImage pueden ser llamados desde un AssetsManager
+ * Esta clase carga los recursos solo una vez cuando se inicia la aplicacion.
+ *
+ * <p>TODO Los metodos loadFont, loadSound y loadImage pueden ser llamados desde un AssetsManager
  */
 
 public final class Assets {

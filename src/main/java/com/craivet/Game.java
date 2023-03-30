@@ -118,7 +118,6 @@ public class Game extends JPanel implements Runnable {
 	}
 
 	public void setup() {
-
 		aSetter.setObject();
 		aSetter.setNPC();
 		aSetter.setMOB();
