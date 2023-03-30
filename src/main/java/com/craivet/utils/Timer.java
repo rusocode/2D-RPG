@@ -1,8 +1,8 @@
 package com.craivet.utils;
 
-import java.awt.*;
-
 import com.craivet.entity.Entity;
+
+import java.awt.*;
 
 import static com.craivet.utils.Constants.*;
 
@@ -54,12 +54,6 @@ public class Timer {
 	 * <p>Si se completo el interval, deja de ser invencible y resetea el contador.
 	 */
 	public void timeInvincible(Entity entity, final int interval) {
-		/*
-		*  if (System.currentTimeMillis() - lastDamageTime < DAMAGE_COOLDOWN) {
-            // No hacer nada si todavía está invencible
-            return;
-        }
-		* */
 		if (invincibleCounter++ >= interval) {
 			entity.invincible = false;
 			invincibleCounter = 0;
