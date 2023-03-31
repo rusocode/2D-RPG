@@ -18,7 +18,7 @@ public class TileManager {
 	private final Game game;
 	public final Tile[] tile;
 	public final int[][][] tileIndex;
-	boolean drawPath = false;
+	private boolean drawPath = false;
 
 	public TileManager(Game game) {
 		this.game = game;
@@ -107,12 +107,11 @@ public class TileManager {
 	}
 
 	/**
-	 * Carga los tiles usando la matriz como referencia y los dibuja (dentro de la camara) aplicando el desplazamiento a
-	 * cada uno.
+	 * Renderiza los tiles dentro de la vista de la camara aplicando los desplazamientos a cada uno.
 	 *
 	 * @param g2 componente grafico.
 	 */
-	public void draw(Graphics2D g2) {
+	public void render(Graphics2D g2) {
 		// long drawStart = System.nanoTime();
 
 		// Calcula los desplazamientos

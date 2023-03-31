@@ -193,7 +193,7 @@ public class Game extends JPanel implements Runnable {
 			g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 			ui.draw(g2);
 		} else {
-			tileManager.draw(g2);
+			tileManager.render(g2);
 
 			for (int i = 0; i < iTile[1].length; i++)
 				if (iTile[currentMap][i] != null) iTile[currentMap][i].render(g2);
