@@ -24,7 +24,6 @@ import static com.craivet.utils.Constants.*;
  * TODO Algo que me di cuenta hasta hace poco, es que se nota un pequeño lag al ejecutar una accion (por ejemplo,
  * pulsar la tecla l constantemente) mientras se camina. Supongo que se tendria que utilizar multiprocesos para
  * solucionar esto.
- * TODO Aplico interpolacion de renderizado?
  * TODO Separar los diferentes componentes en clases separadas, como la logica del juego, la logica de dibujo, la logica
  * de sonido, etc.
  * TODO Use un sistema de eventos para manejar los eventos del juego en lugar de la clase EventHandler.
@@ -81,47 +80,46 @@ public class Game extends JPanel implements Runnable {
 	@Override
 	public void run() {
 
-		setup();
+		init();
 
-		// Intervalo de tiempo entre cada frame aplicando la unidad de tiempo en nanosegundos y 60 fps
-		double drawInterval = 1e9 / FPS;
+		double nsPerTick = 1e9 / TICKS; // Intervalo de tiempo entre cada frame aplicando la unidad de tiempo en nanosegundos y 60 ticks
+		long lastTick = System.nanoTime();
+		long lastRender = System.nanoTime();
 		double delta = 0;
-		long lastTime = System.nanoTime();
-		long currentTime;
 		long timer = 0;
-		int frames = 0;
+		int ticks = 0, frames = 0;
 
 		while (isRunning()) {
-
-			currentTime = System.nanoTime();
-			delta += (currentTime - lastTime) / drawInterval;
-			timer += currentTime - lastTime;
-			lastTime = currentTime;
+			long now = System.nanoTime();
+			delta += (now - lastTick) / nsPerTick;
+			timer += now - lastTick;
+			lastTick = now;
 
 			if (delta >= 1) {
-				frames++;
+				ticks++;
 				update();
-				// repaint();
-				drawToTempScreen();
-				drawToScreen();
 				delta--;
 			}
 
-			if (timer >= 1e9) {
-				System.out.println(frames + " fps");
-				timer = 0;
-				frames = 0;
+			if (FPS_UNLIMITED || now - lastRender >= 1e9 / MAX_FPS) {
+				frames++;
+				lastRender = System.nanoTime();
+				renderToTempScreen();
+				renderToScreen();
 			}
 
+			if (timer >= 1e9) {
+				System.out.println(ticks + " ticks, " + frames + " fps");
+				timer = 0;
+				ticks = 0;
+				frames = 0;
+			}
 		}
 
 	}
 
-	public void setup() {
-		aSetter.setObject();
-		aSetter.setNPC();
-		aSetter.setMOB();
-		aSetter.setInteractiveTile();
+	public void init() {
+		setAssets();
 		/* Cuando balancea la espada o interactua con algo (como tomar una pocion, un hacha, una llave, etc.) por
 		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
 		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
@@ -183,7 +181,7 @@ public class Game extends JPanel implements Runnable {
 	/**
 	 * Dibuja todo en la imagen almacenada en el buffer.
 	 */
-	public void drawToTempScreen() {
+	public void renderToTempScreen() {
 		// Debug
 		long drawStart = 0;
 		if (key.t) drawStart = System.nanoTime();
@@ -253,7 +251,7 @@ public class Game extends JPanel implements Runnable {
 	/**
 	 * Dibuja la imagen almacenada en el buffer en la pantalla.
 	 */
-	public void drawToScreen() {
+	public void renderToScreen() {
 		Graphics g = getGraphics();
 		g.drawImage(tempScree, 0, 0, screenWidth, screenHeight, null);
 		g.dispose();
@@ -268,6 +266,13 @@ public class Game extends JPanel implements Runnable {
 
 	public synchronized boolean isRunning() {
 		return running;
+	}
+
+	private void setAssets() {
+		aSetter.setObject();
+		aSetter.setNPC();
+		aSetter.setMOB();
+		aSetter.setInteractiveTile();
 	}
 
 	public void playMusic(URL url) {

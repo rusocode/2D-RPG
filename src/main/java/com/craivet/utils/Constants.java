@@ -12,7 +12,11 @@ public final class Constants {
 	}
 
 	public static final String CONFIG_FILE = "config.txt";
-	public static final int FPS = 60;
+	public static final int TICKS = 60; // Cantidad de veces que el GameLoop actualiza la fisica por segundo
+	// TIP: Para saber que seccion del juego puede llegar a causar bajones de FPS, entonces se aumenta este valor
+	public static final int MAX_FPS = 60; // Cantidad maxima de veces que el GameLoop PUEDE llegar a renderizan la pantalla por segundo (esto depende del poder de computo)
+	// En caso de activar la ilimitacion de fps, el renderizado se va a realizar la mayor cantidad de veces que pueda dependiendo del poder de computo en el que se este ejecutando el juego
+	public static final boolean FPS_UNLIMITED = false;
 	public static final int MAX_INVENTORY_SIZE = 20;
 	public static final int PLAYER_SPEED = 3;
 	public static final int ENTITY_WIDTH = 16;
