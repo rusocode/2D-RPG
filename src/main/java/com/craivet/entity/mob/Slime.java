@@ -22,6 +22,7 @@ public class Slime extends Mob {
 	}
 
 	private void initDefaultValues() {
+		name = "Slime";
 		type = TYPE_MOB;
 		speed = defaultSpeed = 1;
 		life = maxLife = 4;

@@ -102,7 +102,7 @@ public abstract class Entity {
 		}
 	}
 
-	public void draw(Graphics2D g2) {
+	public void render(Graphics2D g2) {
 		BufferedImage auxImage = null;
 		int screenX = (worldX - game.player.worldX) + game.player.screenX;
 		int screenY = (worldY - game.player.worldY) + game.player.screenY;

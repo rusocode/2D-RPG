@@ -31,7 +31,7 @@ public class Player extends Entity {
 		// Posiciona el player en el centro de la pantalla
 		screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
 		screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
-		// Posiciona el player en el mundo, 23,21 es el centro
+		// Posiciona el player en el mundo
 		worldX = 23 * tile_size;
 		worldY = 21 * tile_size;
 		this.key = key;
@@ -115,7 +115,7 @@ public class Player extends Entity {
 		if (life <= 0) die();
 	}
 
-	public void draw(Graphics2D g2) {
+	public void render(Graphics2D g2) {
 		BufferedImage frame = null;
 		int tempScreenX = screenX, tempScreenY = screenY;
 		switch (direction) {

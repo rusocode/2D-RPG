@@ -10,6 +10,7 @@ import com.craivet.entity.Player;
 import com.craivet.gfx.Assets;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.*;
+import com.craivet.utils.TimeUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,28 +83,29 @@ public class Game extends JPanel implements Runnable {
 
 		init();
 
-		double nsPerTick = 1e9 / TICKS; // Intervalo de tiempo entre cada frame aplicando la unidad de tiempo en nanosegundos y 60 ticks
-		long lastTick = System.nanoTime();
-		long lastRender = System.nanoTime();
-		double delta = 0;
+		double deltaTime = 0;
+		double nsPerTick = 1E9 / TICKS;
+		double nsPerFrame = 1E9 / MAX_FPS;
+		long lastTick = TimeUtils.nanoTime();
+		long lastRender = TimeUtils.nanoTime();
 		long timer = 0;
 		int ticks = 0, frames = 0;
 
 		while (isRunning()) {
-			long now = System.nanoTime();
-			delta += (now - lastTick) / nsPerTick;
+			long now = TimeUtils.nanoTime();
+			deltaTime += (now - lastTick) / nsPerTick;
 			timer += now - lastTick;
 			lastTick = now;
 
-			if (delta >= 1) {
+			if (deltaTime >= 1) {
 				ticks++;
 				update();
-				delta--;
+				deltaTime--;
 			}
 
-			if (FPS_UNLIMITED || now - lastRender >= 1e9 / MAX_FPS) {
+			if (FPS_UNLIMITED || now - lastRender >= nsPerFrame) {
 				frames++;
-				lastRender = System.nanoTime();
+				lastRender = TimeUtils.nanoTime();
 				renderToTempScreen();
 				renderToScreen();
 			}
@@ -194,7 +196,7 @@ public class Game extends JPanel implements Runnable {
 			tileManager.draw(g2);
 
 			for (int i = 0; i < iTile[1].length; i++)
-				if (iTile[currentMap][i] != null) iTile[currentMap][i].draw(g2);
+				if (iTile[currentMap][i] != null) iTile[currentMap][i].render(g2);
 
 			// Agrega las entidades a la lista de entidades
 			entities.add(player);
@@ -224,8 +226,8 @@ public class Game extends JPanel implements Runnable {
 			 * };
 			 * */
 
-			for (Entity item : itemList) item.draw(g2);
-			for (Entity entity : entities) entity.draw(g2);
+			for (Entity item : itemList) item.render(g2);
+			for (Entity entity : entities) entity.render(g2);
 
 			entities.clear();
 			itemList.clear();
