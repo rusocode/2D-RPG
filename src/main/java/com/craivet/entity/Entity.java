@@ -80,9 +80,8 @@ public abstract class Entity {
 	}
 
 	public void update() {
-		// TODO checkCollisions(); afuera?
+		checkCollisions();
 		if (knockBack) {
-			checkCollisions();
 			if (collisionOn) {
 				timer.knockBackCounter = 0;
 				knockBack = false;
@@ -91,9 +90,7 @@ public abstract class Entity {
 			timer.timerKnockBack(this, INTERVAL_KNOCKBACK);
 		} else {
 			setAction();
-			checkCollisions();
 
-			// Si no hay colision, la entidad se puede mover dependiendo de la direccion
 			if (!collisionOn) updatePosition();
 
 			timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
@@ -199,10 +196,10 @@ public abstract class Entity {
 	 */
 	public void dropItem(Item item) {
 		for (int i = 0; i < game.items[1].length; i++) {
-			if (game.items[game.currentMap][i] == null) {
-				game.items[game.currentMap][i] = item;
-				game.items[game.currentMap][i].worldX = worldX + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
-				game.items[game.currentMap][i].worldY = worldY + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
+			if (game.items[game.map][i] == null) {
+				game.items[game.map][i] = item;
+				game.items[game.map][i].worldX = worldX + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
+				game.items[game.map][i].worldY = worldY + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
 				break;
 			}
 		}

@@ -40,29 +40,29 @@ public class Collider {
 		switch (entity.direction) {
 			case DOWN:
 				entityBottomRow = (entityBottomWorldY + entity.speed) / tile_size;
-				tileNum1 = game.tileManager.tileIndex[game.currentMap][entityBottomRow][entityLeftCol];
-				tileNum2 = game.tileManager.tileIndex[game.currentMap][entityBottomRow][entityRightCol];
+				tileNum1 = game.tileManager.tileIndex[game.map][entityBottomRow][entityLeftCol];
+				tileNum2 = game.tileManager.tileIndex[game.map][entityBottomRow][entityRightCol];
 				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case UP:
 				entityTopRow = (entityTopWorldY - entity.speed) / tile_size;
-				tileNum1 = game.tileManager.tileIndex[game.currentMap][entityTopRow][entityLeftCol];
-				tileNum2 = game.tileManager.tileIndex[game.currentMap][entityTopRow][entityRightCol];
+				tileNum1 = game.tileManager.tileIndex[game.map][entityTopRow][entityLeftCol];
+				tileNum2 = game.tileManager.tileIndex[game.map][entityTopRow][entityRightCol];
 				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case LEFT:
 				entityLeftCol = (entityLeftWorldX - entity.speed) / tile_size;
-				tileNum1 = game.tileManager.tileIndex[game.currentMap][entityTopRow][entityLeftCol];
-				tileNum2 = game.tileManager.tileIndex[game.currentMap][entityBottomRow][entityLeftCol];
+				tileNum1 = game.tileManager.tileIndex[game.map][entityTopRow][entityLeftCol];
+				tileNum2 = game.tileManager.tileIndex[game.map][entityBottomRow][entityLeftCol];
 				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case RIGHT:
 				entityRightCol = (entityRightWorldX + entity.speed) / tile_size;
-				tileNum1 = game.tileManager.tileIndex[game.currentMap][entityTopRow][entityRightCol];
-				tileNum2 = game.tileManager.tileIndex[game.currentMap][entityBottomRow][entityRightCol];
+				tileNum1 = game.tileManager.tileIndex[game.map][entityTopRow][entityRightCol];
+				tileNum2 = game.tileManager.tileIndex[game.map][entityBottomRow][entityRightCol];
 				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
@@ -79,12 +79,12 @@ public class Collider {
 	public int checkObject(Entity entity) {
 		int index = -1;
 		for (int i = 0; i < game.items[1].length; i++) {
-			if (game.items[game.currentMap][i] != null) {
+			if (game.items[game.map][i] != null) {
 				// Obtiene la posicion del area del cuerpo de la entidad y del objeto
 				entity.hitbox.x += entity.worldX;
 				entity.hitbox.y += entity.worldY;
-				game.items[game.currentMap][i].hitbox.x += game.items[game.currentMap][i].worldX;
-				game.items[game.currentMap][i].hitbox.y += game.items[game.currentMap][i].worldY;
+				game.items[game.map][i].hitbox.x += game.items[game.map][i].worldX;
+				game.items[game.map][i].hitbox.y += game.items[game.map][i].worldY;
 				switch (entity.direction) {
 					case DOWN:
 						entity.hitbox.y += entity.speed;
@@ -100,15 +100,15 @@ public class Collider {
 						break;
 				}
 
-				if (entity.hitbox.intersects(game.items[game.currentMap][i].hitbox)) {
-					if (game.items[game.currentMap][i].collision) entity.collisionOn = true;
+				if (entity.hitbox.intersects(game.items[game.map][i].hitbox)) {
+					if (game.items[game.map][i].collision) entity.collisionOn = true;
 					if (entity instanceof Player) index = i;
 				}
 
 				entity.hitbox.x = entity.hitboxDefaultX;
 				entity.hitbox.y = entity.hitboxDefaultY;
-				game.items[game.currentMap][i].hitbox.x = game.items[game.currentMap][i].hitboxDefaultX;
-				game.items[game.currentMap][i].hitbox.y = game.items[game.currentMap][i].hitboxDefaultY;
+				game.items[game.map][i].hitbox.x = game.items[game.map][i].hitboxDefaultX;
+				game.items[game.map][i].hitbox.y = game.items[game.map][i].hitboxDefaultY;
 			}
 		}
 		return index;
@@ -124,12 +124,12 @@ public class Collider {
 	public int checkEntity(Entity entity, Entity[][] otherEntity) {
 		int index = -1;
 		for (int i = 0; i < otherEntity[1].length; i++) {
-			if (otherEntity[game.currentMap][i] != null) {
+			if (otherEntity[game.map][i] != null) {
 				// Obtiene la posicion del area del cuerpo de la entidad y de la otra entidad
 				entity.hitbox.x += entity.worldX;
 				entity.hitbox.y += entity.worldY;
-				otherEntity[game.currentMap][i].hitbox.x += otherEntity[game.currentMap][i].worldX;
-				otherEntity[game.currentMap][i].hitbox.y += otherEntity[game.currentMap][i].worldY;
+				otherEntity[game.map][i].hitbox.x += otherEntity[game.map][i].worldX;
+				otherEntity[game.map][i].hitbox.y += otherEntity[game.map][i].worldY;
 				switch (entity.direction) {
 					case DOWN:
 						entity.hitbox.y += entity.speed;
@@ -145,8 +145,8 @@ public class Collider {
 						break;
 				}
 
-				if (entity.hitbox.intersects(otherEntity[game.currentMap][i].hitbox)) {
-					if (otherEntity[game.currentMap][i] != entity) { // Evita la colision en si misma
+				if (entity.hitbox.intersects(otherEntity[game.map][i].hitbox)) {
+					if (otherEntity[game.map][i] != entity) { // Evita la colision en si misma
 						entity.collisionOn = true;
 						index = i;
 						// TODO No tendria que romper el bucle una vez que hay colision?
@@ -155,8 +155,8 @@ public class Collider {
 
 				entity.hitbox.x = entity.hitboxDefaultX;
 				entity.hitbox.y = entity.hitboxDefaultY;
-				otherEntity[game.currentMap][i].hitbox.x = otherEntity[game.currentMap][i].hitboxDefaultX;
-				otherEntity[game.currentMap][i].hitbox.y = otherEntity[game.currentMap][i].hitboxDefaultY;
+				otherEntity[game.map][i].hitbox.x = otherEntity[game.map][i].hitboxDefaultX;
+				otherEntity[game.map][i].hitbox.y = otherEntity[game.map][i].hitboxDefaultY;
 			}
 		}
 		return index;

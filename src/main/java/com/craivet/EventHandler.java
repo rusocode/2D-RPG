@@ -65,7 +65,7 @@ public class EventHandler {
 	public boolean hit(int map, int col, int row, int reqDirection) {
 		boolean hit = false;
 
-		if (map == game.currentMap) {
+		if (map == game.map) {
 			game.player.hitbox.x += game.player.worldX;
 			game.player.hitbox.y += game.player.worldY;
 			eventRect[map][row][col].x += col * tile_size;

@@ -18,8 +18,7 @@ public class StickyBall extends Projectile {
 	private void initDefaultValues() {
 		name = "Sticky Ball";
 		speed = 5;
-		maxLife = 120;
-		life = maxLife;
+		life = maxLife = 120;
 		attack = 3;
 		useCost = 1;
 		alive = false;

@@ -101,7 +101,7 @@ public class Player extends Entity {
 			// Temporiza la animacion de movimiento solo cuando se presionan las teclas de movimiento
 			if (checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 
-		} else timer.timeNaturalStopWalking(this, 10);
+		} else timer.timeNaturalStopWalking(this, 20);
 
 		shootProjectile();
 
@@ -260,8 +260,8 @@ public class Player extends Entity {
 			projectile.set(worldX, worldY, direction, true, this);
 			// Comprueba vacante para agregar el proyectil
 			for (int i = 0; i < game.projectiles[1].length; i++) {
-				if (game.projectiles[game.currentMap][i] == null) {
-					game.projectiles[game.currentMap][i] = projectile;
+				if (game.projectiles[game.map][i] == null) {
+					game.projectiles[game.map][i] = projectile;
 					break;
 				}
 			}
@@ -278,7 +278,7 @@ public class Player extends Entity {
 	private void pickUpItem(int itemIndex) {
 		if (key.l) {
 			if (itemIndex != -1) {
-				Entity item = game.items[game.currentMap][itemIndex];
+				Entity item = game.items[game.map][itemIndex];
 				if (item.type == TYPE_PICKUP_ONLY) item.use(this);
 				else if (inventory.size() != MAX_INVENTORY_SIZE) {
 					inventory.add(item);
@@ -288,7 +288,7 @@ public class Player extends Entity {
 					game.ui.addMessage("You cannot carry any more!");
 					return; // En caso de que el inventario este lleno, no elimina el item del mundo
 				}
-				game.items[game.currentMap][itemIndex] = null;
+				game.items[game.map][itemIndex] = null;
 			}
 		}
 	}
@@ -302,7 +302,7 @@ public class Player extends Entity {
 		if (npcIndex != -1 && key.enter) {
 			attackCanceled = true; // No puede atacar si interactua con un npc
 			game.gameState = DIALOGUE_STATE;
-			game.npcs[game.currentMap][npcIndex].speak();
+			game.npcs[game.map][npcIndex].speak();
 		}
 	}
 
@@ -313,7 +313,7 @@ public class Player extends Entity {
 	 */
 	private void damagePlayer(int mobIndex) {
 		if (mobIndex >= 0) {
-			Entity mob = game.mobs[game.currentMap][mobIndex];
+			Entity mob = game.mobs[game.map][mobIndex];
 			if (!invincible && !mob.dead) {
 				game.playSound(sound_receive_damage);
 				// En caso de que el ataque sea menor a la defensa, entonces no hace daño
@@ -332,7 +332,7 @@ public class Player extends Entity {
 	 */
 	public void damageMob(int mobIndex, int attack, int knockBackPower, int direction) {
 		if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
-			Entity mob = game.mobs[game.currentMap][mobIndex];
+			Entity mob = game.mobs[game.map][mobIndex];
 			if (!mob.invincible) {
 
 				if (knockBackPower > 0) knockBack(mob, knockBackPower, direction);
@@ -365,7 +365,7 @@ public class Player extends Entity {
 	 */
 	private void damageInteractiveTile(int iTileIndex) {
 		if (iTileIndex != -1) {
-			InteractiveTile iTile = game.iTile[game.currentMap][iTileIndex];
+			InteractiveTile iTile = game.iTile[game.map][iTileIndex];
 			if (iTile.destructible && iTile.isCorrectItem(weapon) && !iTile.invincible) {
 				game.playSound(sound_cut_tree);
 
@@ -374,7 +374,7 @@ public class Player extends Entity {
 
 				generateParticle(iTile, iTile);
 
-				if (iTile.life == 0) game.iTile[game.currentMap][iTileIndex] = iTile.getDestroyedForm();
+				if (iTile.life == 0) game.iTile[game.map][iTileIndex] = iTile.getDestroyedForm();
 			}
 		}
 	}
@@ -382,7 +382,7 @@ public class Player extends Entity {
 	private void damageProjectile(int projectileIndex) {
 		if (projectileIndex != -1) {
 			game.playSound(sound_receive_damage);
-			Entity projectile = game.projectiles[game.currentMap][projectileIndex];
+			Entity projectile = game.projectiles[game.map][projectileIndex];
 			projectile.alive = false;
 			generateParticle(projectile, projectile);
 		}

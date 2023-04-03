@@ -78,13 +78,13 @@ public class AStar {
 		// Establece los nodos solidos verificando los tiles solidos y los tiles interactivos destructibles
 		for (int row = 0; row < MAX_WORLD_ROW; row++) {
 			for (int col = 0; col < MAX_WORLD_COL; col++) {
-				int tileIndex = game.tileManager.tileIndex[game.currentMap][row][col];
+				int tileIndex = game.tileManager.tileIndex[game.map][row][col];
 				if (game.tileManager.tile[tileIndex].solid) node[row][col].solid = true;
 
 				for (int i = 0; i < game.iTile[1].length; i++) {
-					if (game.iTile[game.currentMap][i] != null && game.iTile[game.currentMap][i].destructible) {
-						int itRow = game.iTile[game.currentMap][i].worldY / tile_size;
-						int itCol = game.iTile[game.currentMap][i].worldX / tile_size;
+					if (game.iTile[game.map][i] != null && game.iTile[game.map][i].destructible) {
+						int itRow = game.iTile[game.map][i].worldY / tile_size;
+						int itCol = game.iTile[game.map][i].worldX / tile_size;
 						node[itRow][itCol].solid = true;
 					}
 				}

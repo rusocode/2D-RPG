@@ -126,7 +126,7 @@ public class TileManager {
 
 		for (int y = yStart; y < yEnd; y++) {
 			for (int x = xStart; x < xEnd; x++) {
-				final int tileIndex = this.tileIndex[game.currentMap][y][x];
+				final int tileIndex = this.tileIndex[game.map][y][x];
 				final BufferedImage tileImage = tile[tileIndex].texture;
 				g2.drawImage(tileImage, x * tile_size - xOffset, y * tile_size - yOffset, null);
 				// g2.drawRect(x * tile_size - xOffset, y * tile_size - yOffset, tile_size, tile_size); // Dibuja una grilla

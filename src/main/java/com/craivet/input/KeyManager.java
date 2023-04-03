@@ -108,7 +108,7 @@ public class KeyManager extends KeyAdapter {
 		/* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
 		 * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
 		if (code == KeyEvent.VK_R) {
-			switch (game.currentMap) {
+			switch (game.map) {
 				case 0:
 					game.tileManager.loadMap("maps/map1.txt", 0);
 					break;

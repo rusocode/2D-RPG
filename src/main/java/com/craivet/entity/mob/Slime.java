@@ -84,8 +84,8 @@ public class Slime extends Mob {
 		if (Utils.azar(100) > 95 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
 			projectile.set(worldX + 8, worldY + 17, direction, true, this);
 			for (int i = 0; i < game.projectiles[1].length; i++) {
-				if (game.projectiles[game.currentMap][i] == null) {
-					game.projectiles[game.currentMap][i] = projectile;
+				if (game.projectiles[game.map][i] == null) {
+					game.projectiles[game.map][i] = projectile;
 					break;
 				}
 			}

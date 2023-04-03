@@ -722,7 +722,7 @@ public class UI {
 		if (counter >= INTERVAL_TRANSITION) {
 			counter = 0;
 			game.gameState = PLAY_STATE;
-			game.currentMap = game.event.tempMap;
+			game.map = game.event.tempMap;
 			game.player.worldX = tile_size * game.event.tempCol;
 			game.player.worldY = tile_size * game.event.tempRow;
 			game.event.previousEventX = game.player.worldX;
