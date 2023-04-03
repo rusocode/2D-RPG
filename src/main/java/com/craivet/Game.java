@@ -7,7 +7,6 @@ import com.craivet.entity.mob.Mob;
 import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Projectile;
 import com.craivet.entity.Player;
-import com.craivet.gfx.Assets;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.*;
 import com.craivet.utils.TimeUtils;
@@ -20,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 import static com.craivet.utils.Constants.*;
+import static com.craivet.gfx.Assets.*;
 
 /**
  * TODO Algo que me di cuenta hasta hace poco, es que se nota un pequeño lag al ejecutar una accion (por ejemplo,
@@ -62,11 +62,8 @@ public class Game extends JPanel implements Runnable {
 	private boolean running;
 	public boolean fullScreen;
 
-	/* La clase Graphics2D extiende la clase Graphics para proporcionar un control mas sofisticado sobre la geometria,
-	 * las transformaciones de coordenadas, la gestion del color y el diseño del texto. */
 	public Graphics2D g2;
-	public BufferedImage tempScree;
-	// Para pantalla completa
+	public BufferedImage tempScreen;
 	public int screenWidth = SCREEN_WIDTH;
 	public int screenHeight = SCREEN_HEIGHT;
 
@@ -110,7 +107,7 @@ public class Game extends JPanel implements Runnable {
 				renderToScreen();
 			}
 
-			if (timer >= 1e9) {
+			if (timer >= 1E9) {
 				System.out.println(ticks + " ticks, " + frames + " fps");
 				timer = 0;
 				ticks = 0;
@@ -125,7 +122,7 @@ public class Game extends JPanel implements Runnable {
 		/* Cuando balancea la espada o interactua con algo (como tomar una pocion, un hacha, una llave, etc.) por
 		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
 		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
-		playMusic(Assets.music_blue_boy_adventure);
+		playMusic(music_blue_boy_adventure);
 		gameState = PLAY_STATE;
 
 		/* Hasta ahora dibujamos todo directamente en el JPanel. Pero esta vez seguimos dos pasos:
@@ -138,9 +135,9 @@ public class Game extends JPanel implements Runnable {
 		 * ajuste a nuestra pantalla completa en cada bucle. */
 
 		// Crea una imagen blanca en el buffer que es tan grande como nuestra pantalla
-		tempScree = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		tempScreen = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		// Enlaza g2 con la imagen de buffer de pantalla temporal
-		g2 = (Graphics2D) tempScree.getGraphics();
+		g2 = (Graphics2D) tempScreen.getGraphics();
 
 		if (fullScreen) setFullScreen2();
 
@@ -255,7 +252,7 @@ public class Game extends JPanel implements Runnable {
 	 */
 	public void renderToScreen() {
 		Graphics g = getGraphics();
-		g.drawImage(tempScree, 0, 0, screenWidth, screenHeight, null);
+		g.drawImage(tempScreen, 0, 0, screenWidth, screenHeight, null);
 		g.dispose();
 	}
 
@@ -292,25 +289,19 @@ public class Game extends JPanel implements Runnable {
 
 	public void setFullScreen() {
 		// Obtiene el dispositivo de pantalla local, independientemente de si estas en un portatil o escritorio
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice gd = ge.getDefaultScreenDevice();
-		gd.setFullScreenWindow(Launcher.window); // Establece la ventana en pantalla completa
+		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+		gd.setFullScreenWindow(Launcher.display);
 		// Obtiene el ancho y alto de la pantalla completa para utilizarlos en la pantalla temporal
-		// TODO Esto va aca?
-		screenWidth = Launcher.window.getWidth();
-		screenHeight = Launcher.window.getHeight();
+		screenWidth = Launcher.display.getWidth();
+		screenHeight = Launcher.display.getHeight();
 	}
 
 	// Soluciona el problema de la caida de FPS
 	public void setFullScreen2() {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		double width = screenSize.getWidth();
-		double height = screenSize.getHeight();
-		Launcher.window.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		screenWidth = (int) width;
-		screenHeight = (int) height;
-		// offset factor to be used by mouse listener or mouse motion listener if you are using cursor in your game. Multiply your e.getX()e.getY() by this.
-		// fullScreenOffsetFactor = (float) screenWidth / (float) screenWidth2;
+		Launcher.display.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		screenWidth = (int) screenSize.getWidth();
+		screenHeight = (int) screenSize.getHeight();
 	}
 
 	public void retry() {

@@ -13,6 +13,7 @@ public class Config {
 
 	public Config(Game game) {
 		this.game = game;
+		loadConfig();
 	}
 
 	public void saveConfig() {
@@ -27,7 +28,7 @@ public class Config {
 		}
 	}
 
-	public void loadConfig() {
+	private void loadConfig() {
 		try (BufferedReader br = new BufferedReader(new FileReader(CONFIG_FILE))) {
 			game.fullScreen = ON.equals(br.readLine());
 			game.music.volumeScale = Integer.parseInt(br.readLine());
