@@ -1,8 +1,10 @@
 package com.craivet.entity.mob;
 
 import com.craivet.Game;
+import com.craivet.entity.EntityManager;
 import com.craivet.entity.item.Coin;
 import com.craivet.entity.projectile.StickyBall;
+import com.craivet.tile.World;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -14,8 +16,8 @@ import static com.craivet.gfx.Assets.*;
 
 public class Slime extends Mob {
 
-	public Slime(Game game, int x, int y) {
-		super(game);
+	public Slime(Game game, World world, EntityManager entityManager, int x, int y) {
+		super(game, world, entityManager);
 		worldX = x * tile_size;
 		worldY = y * tile_size;
 		initDefaultValues();
@@ -38,7 +40,7 @@ public class Slime extends Mob {
 		hitboxDefaultX = hitbox.x;
 		hitboxDefaultY = hitbox.y;
 
-		projectile = new StickyBall(entityManager);
+		projectile = new StickyBall(game, world, entityManager);
 
 		initMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 		mobImage = movementDown1;
@@ -77,15 +79,15 @@ public class Slime extends Mob {
 	 * Comprueba si dropeo un item.
 	 */
 	public void checkDrop() {
-		if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(new Coin(entityManager));
+		if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(new Coin(game, world, entityManager));
 	}
 
 	private void shootProjectile() {
 		if (Utils.azar(100) > 95 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
 			projectile.set(worldX + 8, worldY + 17, direction, true, this);
 			for (int i = 0; i < entityManager.projectiles[1].length; i++) {
-				if (entityManager.projectiles[entityManager.map][i] == null) {
-					entityManager.projectiles[entityManager.map][i] = projectile;
+				if (entityManager.projectiles[world.map][i] == null) {
+					entityManager.projectiles[world.map][i] = projectile;
 					break;
 				}
 			}

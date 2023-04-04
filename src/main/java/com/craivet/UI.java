@@ -4,6 +4,7 @@ import com.craivet.entity.Entity;
 import com.craivet.entity.EntityManager;
 import com.craivet.entity.item.Item;
 import com.craivet.gfx.SpriteSheet;
+import com.craivet.tile.World;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -23,6 +24,7 @@ import static com.craivet.gfx.Assets.*;
 public class UI {
 
 	private final Game game;
+	private final World world;
 	private final EntityManager entityManager;
 	private final Item item;
 	public Entity npc;
@@ -43,10 +45,11 @@ public class UI {
 	private BufferedImage heartFull, heartHalf, heartBlank;
 	private BufferedImage manaFull, manaBlank;
 
-	public UI(Game game, EntityManager entityManager) {
+	public UI(Game game) {
 		this.game = game;
-		this.entityManager = entityManager;
-		item = new Item(entityManager);
+		world = this.game.gState.world;
+		entityManager = world.entityManager;
+		item = new Item(game, world, entityManager);
 		initHUD();
 	}
 
@@ -499,14 +502,14 @@ public class UI {
 		// Full Screen ON/OFF
 		textX = frameX + tile_size;
 		textY += tile_size + 24;
-		g2.drawString("Full Screen", textX, textY);
+		/* g2.drawString("Full Screen", textX, textY);
 		if (commandNum == 0) {
 			g2.drawString(">", textX - 25, textY);
 			if (game.key.enter) {
 				game.fullScreen = !game.fullScreen;
 				subState = 1;
 			}
-		}
+		} */
 		// Music
 		textY += tile_size;
 		g2.drawString("Music", textX, textY);
@@ -541,7 +544,7 @@ public class UI {
 		textY = frameY + (tile_size * 2 + 7);
 		g2.setStroke(new BasicStroke(2));
 		g2.drawRect(textX, textY, 24, 24);
-		if (game.fullScreen) g2.fillRect(textX, textY, 24, 24);
+		// if (game.fullScreen) g2.fillRect(textX, textY, 24, 24);
 		// Music volume
 		textY += tile_size;
 		g2.drawRect(textX, textY, 120, 24);
@@ -725,7 +728,7 @@ public class UI {
 		if (counter >= INTERVAL_TRANSITION) {
 			counter = 0;
 			game.gameState = PLAY_STATE;
-			game.map = entityManager.event.tempMap;
+			world.map = entityManager.event.tempMap;
 			entityManager.player.worldX = tile_size * entityManager.event.tempCol;
 			entityManager.player.worldY = tile_size * entityManager.event.tempRow;
 			entityManager.event.previousEventX = entityManager.player.worldX;

@@ -2,6 +2,7 @@ package com.craivet.tile;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
+import com.craivet.entity.EntityManager;
 
 import static com.craivet.utils.Constants.*;
 
@@ -9,8 +10,8 @@ public class InteractiveTile extends Entity {
 
 	public boolean destructible;
 
-	public InteractiveTile(Game game) {
-		super(game);
+	public InteractiveTile(Game game, World world, EntityManager entityManager) {
+		super(game, world, entityManager);
 	}
 
 	/**

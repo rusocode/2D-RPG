@@ -2,6 +2,7 @@ package com.craivet.input;
 
 import com.craivet.Game;
 import com.craivet.entity.EntityManager;
+import com.craivet.tile.World;
 
 import java.awt.event.*;
 
@@ -10,6 +11,7 @@ import static com.craivet.utils.Constants.*;
 public class KeyManager extends KeyAdapter {
 
 	private final Game game;
+	private final World world;
 	private final EntityManager entityManager;
 
 	public boolean w, a, s, d, enter, f, l, t;
@@ -17,9 +19,10 @@ public class KeyManager extends KeyAdapter {
 	private int lastKey = -1;
 	public static final int MAX_KEYCODE = 255;
 
-	public KeyManager(Game game, EntityManager entityManager) {
+	public KeyManager(Game game) {
 		this.game = game;
-		this.entityManager = entityManager;
+		this.world = this.game.gState.world;
+		this.entityManager = this.world.entityManager;
 	}
 
 	@Override
@@ -111,12 +114,12 @@ public class KeyManager extends KeyAdapter {
 		/* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
 		 * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
 		if (code == KeyEvent.VK_R) {
-			switch (game.map) {
+			switch (world.map) {
 				case 0:
-					entityManager.world.loadMap("maps/map1.txt", 0);
+					world.loadMap("maps/map1.txt", 0);
 					break;
 				case 1:
-					entityManager.world.loadMap("maps/interior1.txt", 1);
+					world.loadMap("maps/interior1.txt", 1);
 					break;
 			}
 		}

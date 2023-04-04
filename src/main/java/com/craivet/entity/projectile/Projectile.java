@@ -1,8 +1,10 @@
 package com.craivet.entity.projectile;
 
+import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.entity.EntityManager;
 import com.craivet.entity.Player;
+import com.craivet.tile.World;
 
 import static com.craivet.utils.Constants.*;
 
@@ -11,8 +13,8 @@ public class Projectile extends Entity {
 	private Entity entity;
 	protected int useCost;
 
-	public Projectile(EntityManager game) {
-		super(game);
+	public Projectile(Game game, World world, EntityManager entityManager) {
+		super(game, world, entityManager);
 	}
 
 	public boolean haveResource(Entity entity) {
@@ -46,10 +48,10 @@ public class Projectile extends Entity {
 			 * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
 			 * movimiento 2. La siguiente linea soluciona este problema. */
 			collisionOn = false;
-			if (mobIndex != -1 && !entityManager.mobs[entityManager.map][mobIndex].invincible) {
+			if (mobIndex != -1 && !entityManager.mobs[world.map][mobIndex].invincible) {
 				entityManager.player.damageMob(mobIndex, attack, knockBackPower, direction);
 				// En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
-				generateParticle(entity.projectile, entityManager.mobs[entityManager.map][mobIndex]);
+				generateParticle(entity.projectile, entityManager.mobs[world.map][mobIndex]);
 				alive = false;
 			}
 		}

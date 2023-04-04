@@ -1,5 +1,8 @@
 package com.craivet.entity;
 
+import com.craivet.Game;
+import com.craivet.tile.World;
+
 import java.awt.*;
 
 import static com.craivet.utils.Constants.*;
@@ -16,8 +19,8 @@ public class Particle extends Entity {
 	int size;
 	int xd, yd;
 
-	public Particle(EntityManager game, Entity generator, Color color, int size, int speed, int maxLife, int xd, int yd) {
-		super(game);
+	public Particle(Game game, World world, EntityManager entityManager, Entity generator, Color color, int size, int speed, int maxLife, int xd, int yd) {
+		super(game, world, entityManager);
 		this.generator = generator;
 		this.color = color;
 		this.size = size;

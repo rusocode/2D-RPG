@@ -11,7 +11,6 @@ import com.craivet.tile.InteractiveTile;
 import com.craivet.tile.World;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -21,12 +20,11 @@ import static com.craivet.utils.Constants.*;
 public class EntityManager {
 
 	private final Game game;
+	private final World world;
+
 	public AssetSetter aSetter;
 	public EventHandler event;
-
-	public World world;
 	public Collider collider;
-	// public AssetSetter aSetter = new AssetSetter(this);
 	public Config config;
 	public AStar aStar;
 
@@ -42,18 +40,15 @@ public class EntityManager {
 	// Interactive tiles
 	public InteractiveTile[][] iTile = new InteractiveTile[MAX_MAP][50];
 
-	public int map;
-	public int gameState;
-
-	public EntityManager(Game game, KeyManager key) {
+	public EntityManager(Game game, World world) {
 		this.game = game;
-		event = new EventHandler(game, this);
-		world = new World(game, key);
-		player = new Player(this, game, key);
-		collider = new Collider(this);
+		this.world = world;
+		event = new EventHandler(game,world, this);
+		collider = new Collider(world, this);
 		config = new Config(game);
-		aSetter = new AssetSetter(this);
-		aStar = new AStar(game, this);
+		aSetter = new AssetSetter(game, world, this);
+		aStar = new AStar(game, world, this);
+		player = new Player(game, world, this);
 		setAssets();
 	}
 
@@ -61,23 +56,23 @@ public class EntityManager {
 		if (game.gameState == PLAY_STATE) {
 			player.update();
 			for (int i = 0; i < npcs[1].length; i++)
-				if (npcs[map][i] != null) npcs[map][i].update();
+				if (npcs[world.map][i] != null) npcs[world.map][i].update();
 			for (int i = 0; i < mobs[1].length; i++) {
-				if (mobs[map][i] != null) {
+				if (mobs[world.map][i] != null) {
 					/* Cuando muere el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
 					 * genera la animacion de muerte y al finalizarla, establece alive en false para que no genere
 					 * movimiento y elimine el objeto. */
-					if (mobs[map][i].alive && !mobs[map][i].dead) mobs[map][i].update();
-					if (!mobs[map][i].alive) {
-						mobs[map][i].checkDrop();
-						mobs[map][i] = null;
+					if (mobs[world.map][i].alive && !mobs[world.map][i].dead) mobs[world.map][i].update();
+					if (!mobs[world.map][i].alive) {
+						mobs[world.map][i].checkDrop();
+						mobs[world.map][i] = null;
 					}
 				}
 			}
 			for (int i = 0; i < projectiles[1].length; i++) {
-				if (projectiles[map][i] != null) {
-					if (projectiles[map][i].alive) projectiles[map][i].update();
-					if (!projectiles[map][i].alive) projectiles[map][i] = null;
+				if (projectiles[world.map][i] != null) {
+					if (projectiles[world.map][i].alive) projectiles[world.map][i].update();
+					if (!projectiles[world.map][i].alive) projectiles[world.map][i] = null;
 				}
 			}
 			for (int i = 0; i < particles.size(); i++) {
@@ -87,7 +82,7 @@ public class EntityManager {
 				}
 			}
 			for (int i = 0; i < iTile[1].length; i++)
-				if (iTile[map][i] != null) iTile[map][i].update();
+				if (iTile[world.map][i] != null) iTile[world.map][i].update();
 		}
 	}
 
@@ -99,35 +94,24 @@ public class EntityManager {
 		} else {
 
 			for (int i = 0; i < iTile[1].length; i++)
-				if (iTile[map][i] != null) iTile[map][i].render(g2);
+				if (iTile[world.map][i] != null) iTile[world.map][i].render(g2);
 
 			// Agrega las entidades a la lista de entidades
 			entities.add(player);
 			for (int i = 0; i < items[1].length; i++)
-				if (items[map][i] != null) itemList.add(items[map][i]);
+				if (items[world.map][i] != null) itemList.add(items[world.map][i]);
 			for (int i = 0; i < npcs[1].length; i++)
-				if (npcs[map][i] != null) entities.add(npcs[map][i]);
+				if (npcs[world.map][i] != null) entities.add(npcs[world.map][i]);
 			for (int i = 0; i < mobs[1].length; i++)
-				if (mobs[map][i] != null) entities.add(mobs[map][i]);
+				if (mobs[world.map][i] != null) entities.add(mobs[world.map][i]);
 			for (int i = 0; i < projectiles[1].length; i++)
-				if (projectiles[map][i] != null) entities.add(projectiles[map][i]);
+				if (projectiles[world.map][i] != null) entities.add(projectiles[world.map][i]);
 			for (Entity particle : particles)
 				if (particle != null) entities.add(particle);
 
 			/* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
 			 * entonces este se dibuja por debajo. */
 			entities.sort(Comparator.comparingInt(o -> o.worldY));
-
-			// TODO Se podria usar esta forma mas entendible para comparar las entidades
-			/*
-			 * private Comparator<Entity> spriteSorter = new Comparator<Entity>() {
-			 * public int compare(Entity e0, Entity e1) {
-			 * if (e1.y < e0.y) return +1;
-			 * if (e1.y > e0.y) return -1;
-			 * return 0;
-			 * }
-			 * };
-			 * */
 
 			for (Entity item : itemList) item.render(g2);
 			for (Entity entity : entities) entity.render(g2);

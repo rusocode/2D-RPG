@@ -2,6 +2,9 @@ package com.craivet.entity.projectile;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
+import com.craivet.entity.EntityManager;
+import com.craivet.entity.item.SwordNormal;
+import com.craivet.tile.World;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -10,8 +13,8 @@ import static com.craivet.gfx.Assets.*;
 
 public class StickyBall extends Projectile {
 
-	public StickyBall(Game game) {
-		super(game);
+	public StickyBall(Game game, World world, EntityManager entityManager) {
+		super(game, world, entityManager);
 		initDefaultValues();
 	}
 

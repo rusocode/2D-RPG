@@ -2,12 +2,14 @@ package com.craivet;
 
 import com.craivet.entity.Entity;
 import com.craivet.entity.EntityManager;
+import com.craivet.tile.World;
 
 import static com.craivet.utils.Constants.*;
 
 public class EventHandler {
 
 	private final Game game;
+	private final World world;
 	private final EntityManager entityManager;
 	private final EventRect[][][] eventRect;
 
@@ -17,8 +19,9 @@ public class EventHandler {
 	private boolean canTouchEvent = true;
 	public int tempMap, tempCol, tempRow;
 
-	public EventHandler(Game game, EntityManager entityManager) {
+	public EventHandler(Game game, World world, EntityManager entityManager) {
 		this.game = game;
+		this.world = world;
 		this.entityManager = entityManager;
 		eventRect = new EventRect[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 
@@ -67,7 +70,7 @@ public class EventHandler {
 	public boolean hit(int map, int col, int row, int reqDirection) {
 		boolean hit = false;
 
-		if (map == game.map) {
+		if (map == world.map) {
 			entityManager.player.hitbox.x += entityManager.player.worldX;
 			entityManager.player.hitbox.y += entityManager.player.worldY;
 			eventRect[map][row][col].x += col * tile_size;

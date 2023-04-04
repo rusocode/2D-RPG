@@ -2,14 +2,15 @@ package com.craivet.entity.npc;
 
 import com.craivet.Game;
 import com.craivet.entity.EntityManager;
+import com.craivet.tile.World;
 
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Oldman extends Npc {
 
-	public Oldman(EntityManager game, int x, int y) {
-		super(game);
+	public Oldman(Game game, World world, EntityManager entityManager, int x, int y) {
+		super(game, world, entityManager);
 		worldX = x * tile_size;
 		worldY = y * tile_size;
 		initDefaultValues();

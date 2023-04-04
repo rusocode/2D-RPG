@@ -17,23 +17,22 @@ import static com.craivet.utils.Constants.*;
 
 public class World {
 
-	private final Game game;
 	public EntityManager entityManager;
 
 	public final Tile[] tile;
 	public final int[][][] tileIndex;
 	private boolean drawPath = false;
 
+	public int map;
 
-	public World(Game game, KeyManager key) {
+	public World(Game game) {
 		tile = new Tile[50];
 		tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 		initTiles();
 		loadMap("maps/map1.txt", 0); // TODO Crear constantes
 		loadMap("maps/interior1.txt", 1);
 
-		this.game = game;
-		entityManager = new EntityManager(game, key);
+		entityManager = new EntityManager(game, this);
 
 	}
 
@@ -62,7 +61,7 @@ public class World {
 
 		for (int y = yStart; y < yEnd; y++) {
 			for (int x = xStart; x < xEnd; x++) {
-				final int tileIndex = this.tileIndex[game.map][y][x];
+				final int tileIndex = this.tileIndex[map][y][x];
 				final BufferedImage tileImage = tile[tileIndex].texture;
 				g2.drawImage(tileImage, x * tile_size - xOffset, y * tile_size - yOffset, null);
 				// g2.drawRect(x * tile_size - xOffset, y * tile_size - yOffset, tile_size, tile_size); // Dibuja una grilla

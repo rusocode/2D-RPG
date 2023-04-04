@@ -8,6 +8,7 @@ import com.craivet.entity.item.*;
 import com.craivet.entity.projectile.Fireball;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.InteractiveTile;
+import com.craivet.tile.World;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -26,12 +27,8 @@ public class Player extends Entity {
 	public final int screenX, screenY;
 	public boolean attackCanceled;
 
-	private final Game game;
-
-	public Player(EntityManager entityManager, Game game, KeyManager key) {
-		super(game, entityManager);
-		this.game = game;
-
+	public Player(Game game, World world, EntityManager entityManager) {
+		super(game, world, entityManager);
 
 		// Posiciona el player en el centro de la pantalla
 		screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
@@ -39,7 +36,7 @@ public class Player extends Entity {
 		// Posiciona el player en el mundo
 		worldX = 23 * tile_size;
 		worldY = 21 * tile_size;
-		this.key = key;
+		key = game.key;
 		initDefaultValues();
 	}
 
@@ -57,11 +54,11 @@ public class Player extends Entity {
 
 		strength = 1;
 		dexterity = 1;
-		weapon = new SwordNormal(entityManager);
-		shield = new ShieldWood(entityManager);
+		weapon = new SwordNormal(game, world, entityManager);
+		shield = new ShieldWood(game, world, entityManager);
 		attack = getAttack();
 		defense = getDefense();
-		projectile = new Fireball(entityManager);
+		projectile = new Fireball(game, world, entityManager);
 
 		hitbox.x = 8;
 		hitbox.y = 16;
@@ -265,8 +262,8 @@ public class Player extends Entity {
 			projectile.set(worldX, worldY, direction, true, this);
 			// Comprueba vacante para agregar el proyectil
 			for (int i = 0; i < entityManager.projectiles[1].length; i++) {
-				if (entityManager.projectiles[entityManager.map][i] == null) {
-					entityManager.projectiles[game.map][i] = projectile;
+				if (entityManager.projectiles[world.map][i] == null) {
+					entityManager.projectiles[world.map][i] = projectile;
 					break;
 				}
 			}
@@ -283,7 +280,7 @@ public class Player extends Entity {
 	private void pickUpItem(int itemIndex) {
 		if (key.l) {
 			if (itemIndex != -1) {
-				Entity item = entityManager.items[game.map][itemIndex];
+				Entity item = entityManager.items[world.map][itemIndex];
 				if (item.type == TYPE_PICKUP_ONLY) item.use(this);
 				else if (inventory.size() != MAX_INVENTORY_SIZE) {
 					inventory.add(item);
@@ -293,7 +290,7 @@ public class Player extends Entity {
 					game.ui.addMessage("You cannot carry any more!");
 					return; // En caso de que el inventario este lleno, no elimina el item del mundo
 				}
-				entityManager.items[game.map][itemIndex] = null;
+				entityManager.items[world.map][itemIndex] = null;
 			}
 		}
 	}
@@ -307,7 +304,7 @@ public class Player extends Entity {
 		if (npcIndex != -1 && key.enter) {
 			attackCanceled = true; // No puede atacar si interactua con un npc
 			game.gameState = DIALOGUE_STATE;
-			entityManager.npcs[game.map][npcIndex].speak();
+			entityManager.npcs[world.map][npcIndex].speak();
 		}
 	}
 
@@ -318,7 +315,7 @@ public class Player extends Entity {
 	 */
 	private void damagePlayer(int mobIndex) {
 		if (mobIndex >= 0) {
-			Entity mob = entityManager.mobs[game.map][mobIndex];
+			Entity mob = entityManager.mobs[world.map][mobIndex];
 			if (!invincible && !mob.dead) {
 				game.playSound(sound_receive_damage);
 				// En caso de que el ataque sea menor a la defensa, entonces no hace daño
@@ -337,7 +334,7 @@ public class Player extends Entity {
 	 */
 	public void damageMob(int mobIndex, int attack, int knockBackPower, int direction) {
 		if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
-			Entity mob = entityManager.mobs[game.map][mobIndex];
+			Entity mob = entityManager.mobs[world.map][mobIndex];
 			if (!mob.invincible) {
 
 				if (knockBackPower > 0) knockBack(mob, knockBackPower, direction);
@@ -370,7 +367,7 @@ public class Player extends Entity {
 	 */
 	private void damageInteractiveTile(int iTileIndex) {
 		if (iTileIndex != -1) {
-			InteractiveTile iTile = entityManager.iTile[game.map][iTileIndex];
+			InteractiveTile iTile = entityManager.iTile[world.map][iTileIndex];
 			if (iTile.destructible && iTile.isCorrectItem(weapon) && !iTile.invincible) {
 				game.playSound(sound_cut_tree);
 
@@ -379,7 +376,7 @@ public class Player extends Entity {
 
 				generateParticle(iTile, iTile);
 
-				if (iTile.life == 0) entityManager.iTile[game.map][iTileIndex] = iTile.getDestroyedForm();
+				if (iTile.life == 0) entityManager.iTile[world.map][iTileIndex] = iTile.getDestroyedForm();
 			}
 		}
 	}
@@ -387,7 +384,7 @@ public class Player extends Entity {
 	private void damageProjectile(int projectileIndex) {
 		if (projectileIndex != -1) {
 			game.playSound(sound_receive_damage);
-			Entity projectile = entityManager.projectiles[game.map][projectileIndex];
+			Entity projectile = entityManager.projectiles[world.map][projectileIndex];
 			projectile.alive = false;
 			generateParticle(projectile, projectile);
 		}
@@ -523,11 +520,11 @@ public class Player extends Entity {
 	public void setItems() {
 		inventory.clear();
 		inventory.add(weapon);
-		inventory.add(new Axe(entityManager));
+		inventory.add(new Axe(game, world, entityManager));
 		inventory.add(shield);
-		inventory.add(new PotionRed(game, entityManager));
-		inventory.add(new PotionRed(entityManager));
-		inventory.add(new PotionRed(entityManager));
+		inventory.add(new PotionRed(game,world, entityManager));
+		inventory.add(new PotionRed(game, world,entityManager));
+		inventory.add(new PotionRed(game, world, entityManager));
 	}
 
 	private void drawRects(Graphics2D g2) {

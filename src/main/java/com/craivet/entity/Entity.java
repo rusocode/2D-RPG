@@ -9,6 +9,7 @@ import com.craivet.entity.item.Item;
 import com.craivet.entity.projectile.Projectile;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.tile.InteractiveTile;
+import com.craivet.tile.World;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
@@ -27,8 +28,10 @@ import static com.craivet.gfx.Assets.*;
 
 public abstract class Entity {
 
-	private final Game game;
-	public EntityManager entityManager;
+	public final Game game;
+	public final World world;
+	public final EntityManager entityManager;
+
 	public Timer timer = new Timer();
 	public ArrayList<Entity> inventory = new ArrayList<>();
 	public String[] dialogues = new String[20];
@@ -76,8 +79,9 @@ public abstract class Entity {
 	public boolean knockBack;
 	public boolean onPath;
 
-	public Entity(Game game, EntityManager entityManager) {
+	public Entity(Game game, World world, EntityManager entityManager) {
 		this.game = game;
+		this.world = world;
 		this.entityManager = entityManager;
 	}
 
@@ -198,10 +202,10 @@ public abstract class Entity {
 	 */
 	public void dropItem(Item item) {
 		for (int i = 0; i < entityManager.items[1].length; i++) {
-			if (entityManager.items[entityManager.map][i] == null) {
-				entityManager.items[entityManager.map][i] = item;
-				entityManager.items[entityManager.map][i].worldX = worldX + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
-				entityManager.items[entityManager.map][i].worldY = worldY + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
+			if (entityManager.items[world.map][i] == null) {
+				entityManager.items[world.map][i] = item;
+				entityManager.items[world.map][i].worldX = worldX + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
+				entityManager.items[world.map][i].worldY = worldY + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
 				break;
 			}
 		}
@@ -232,10 +236,10 @@ public abstract class Entity {
 	 * @param target    el objetivo en donde se van a generar las particulas.
 	 */
 	public void generateParticle(Entity generator, Entity target) {
-		entityManager.particles.add(new Particle(entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
-		entityManager.particles.add(new Particle(entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
-		entityManager.particles.add(new Particle(entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
-		entityManager.particles.add(new Particle(entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
+		entityManager.particles.add(new Particle(game, world, entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+		entityManager.particles.add(new Particle(game, world, entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+		entityManager.particles.add(new Particle(game, world, entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+		entityManager.particles.add(new Particle(game, world, entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
 	}
 
 	/**

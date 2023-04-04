@@ -1,16 +1,12 @@
 package com.craivet;
 
-import com.craivet.ai.AStar;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
-import com.craivet.states.State;
 import com.craivet.states.StateManager;
-import com.craivet.tile.*;
 import com.craivet.utils.TimeUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import static com.craivet.utils.Constants.*;
@@ -29,25 +25,18 @@ public class Game extends JPanel implements Runnable {
 
 	// System
 	public Thread thread;
-	public KeyManager key;
 	public UI ui;
+	public KeyManager key;
 	public AudioManager sound = new AudioManager();
 	public AudioManager music = new AudioManager();
 
-
-	public GameState gState;
 	public StateManager stateManager;
+	public GameState gState;
 
 	public int gameState;
-	public int map;
 	private boolean running;
 
-	public Graphics2D g2;
-	public BufferedImage tempScreen;
-	public int screenWidth = SCREEN_WIDTH;
-	public int screenHeight = SCREEN_HEIGHT;
 	public boolean fullScreen;
-
 
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -55,6 +44,10 @@ public class Game extends JPanel implements Runnable {
 		setDoubleBuffered(true); // Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
 		// addKeyListener(key);
 		setFocusable(true);
+
+		stateManager = new StateManager();
+		gState = new GameState(this);
+		stateManager.setState(gState);
 	}
 
 	@Override
@@ -87,7 +80,6 @@ public class Game extends JPanel implements Runnable {
 				lastRender = TimeUtils.nanoTime();
 				// renderToTempScreen();
 				// renderToScreen();
-				// render();
 				repaint();
 			}
 
@@ -102,12 +94,13 @@ public class Game extends JPanel implements Runnable {
 	}
 
 	public void init() {
-		// setAssets();
-		/* Cuando balancea la espada o interactua con algo (como tomar una pocion, un hacha, una llave, etc.) por
-		 * primera vez despues de que comienza el juego, este se congela durante 0,5 a 1 segundo. Para evitar este
-		 * retraso, reproduzca la musica o use un archivo de audio en blanco si no desea reproducir musica. */
+
 		playMusic(music_blue_boy_adventure);
 		gameState = PLAY_STATE;
+
+		ui = new UI(this);
+		key = new KeyManager(this);
+		addKeyListener(key);
 
 		/* Hasta ahora dibujamos todo directamente en el JPanel. Pero esta vez seguimos dos pasos:
 		 * 1. Dibujamos todo en la pantalla temporal para la imagen que esta detras de escena.
@@ -117,22 +110,6 @@ public class Game extends JPanel implements Runnable {
 		 * cambiambos el tamaño de cada objeto uno por uno, es mucho trabajo y poco eficiente. Asi que primero dibujamos
 		 * todo en una unica imagen almacenada en buffer y luego cambiamos el tamaño de esta imagen grande para que se
 		 * ajuste a nuestra pantalla completa en cada bucle. */
-
-		stateManager = new StateManager();
-		gState = new GameState(this, key);
-
-
-		ui = new UI(this, gState.world.entityManager);
-		key = new KeyManager(this, gState.world.entityManager);
-
-		stateManager.setState(gState);
-
-		// Crea una imagen blanca en el buffer que es tan grande como nuestra pantalla
-		// tempScreen = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		// Enlaza g2 con la imagen de buffer de pantalla temporal
-		// g2 = (Graphics2D) tempScreen.getGraphics();
-
-		// if (fullScreen) setFullScreen2();
 
 	}
 
@@ -174,21 +151,10 @@ public class Game extends JPanel implements Runnable {
 
 	}
 
-
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		if (stateManager.getState() != null) stateManager.getState().render(g2);
-	}
-
-
-	/**
-	 * Dibuja la imagen almacenada en el buffer en la pantalla.
-	 */
-	public void renderToScreen() {
-		Graphics g = getGraphics();
-		g.drawImage(tempScreen, 0, 0, screenWidth, screenHeight, null);
-		g.dispose();
 	}
 
 	public synchronized void start() {
@@ -202,13 +168,6 @@ public class Game extends JPanel implements Runnable {
 		return running;
 	}
 
-	/* private void setAssets() {
-		aSetter.setObject();
-		aSetter.setNPC();
-		aSetter.setMOB();
-		aSetter.setInteractiveTile();
-	} */
-
 	public void playMusic(URL url) {
 		music.play(url);
 		music.loop();
@@ -220,23 +179,6 @@ public class Game extends JPanel implements Runnable {
 
 	public void playSound(URL url) {
 		sound.play(url);
-	}
-
-	public void setFullScreen() {
-		// Obtiene el dispositivo de pantalla local, independientemente de si estas en un portatil o escritorio
-		GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-		gd.setFullScreenWindow(Launcher.display);
-		// Obtiene el ancho y alto de la pantalla completa para utilizarlos en la pantalla temporal
-		screenWidth = Launcher.display.getWidth();
-		screenHeight = Launcher.display.getHeight();
-	}
-
-	// Soluciona el problema de la caida de FPS
-	public void setFullScreen2() {
-		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		Launcher.display.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		screenWidth = (int) screenSize.getWidth();
-		screenHeight = (int) screenSize.getHeight();
 	}
 
 	/* public void retry() {
