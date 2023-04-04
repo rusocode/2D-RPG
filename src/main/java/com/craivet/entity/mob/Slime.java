@@ -1,10 +1,9 @@
 package com.craivet.entity.mob;
 
 import com.craivet.Game;
-import com.craivet.entity.EntityManager;
 import com.craivet.entity.item.Coin;
 import com.craivet.entity.projectile.StickyBall;
-import com.craivet.tile.World;
+import com.craivet.World;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -16,8 +15,8 @@ import static com.craivet.gfx.Assets.*;
 
 public class Slime extends Mob {
 
-	public Slime(Game game, World world, EntityManager entityManager, int x, int y) {
-		super(game, world, entityManager);
+	public Slime(Game game, World world, int x, int y) {
+		super(game, world);
 		worldX = x * tile_size;
 		worldY = y * tile_size;
 		initDefaultValues();
@@ -40,7 +39,7 @@ public class Slime extends Mob {
 		hitboxDefaultX = hitbox.x;
 		hitboxDefaultY = hitbox.y;
 
-		projectile = new StickyBall(game, world, entityManager);
+		projectile = new StickyBall(game, world);
 
 		initMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 		mobImage = movementDown1;
@@ -49,8 +48,8 @@ public class Slime extends Mob {
 	public void update() {
 		super.update();
 
-		int xDistance = Math.abs(worldX - entityManager.player.worldX);
-		int yDistance = Math.abs(worldY - entityManager.player.worldY);
+		int xDistance = Math.abs(worldX - game.player.worldX);
+		int yDistance = Math.abs(worldY - game.player.worldY);
 		int tileDistance = (xDistance + yDistance) / tile_size;
 
 		/* El slime se vuelve agresivo si todavia no es agresivo y si el player esta a 5 tiles de distancia y si el
@@ -63,8 +62,8 @@ public class Slime extends Mob {
 
 	public void setAction() {
 		if (onPath) {
-			int goalRow = (entityManager.player.worldY + entityManager.player.hitbox.y) / tile_size;
-			int goalCol = (entityManager.player.worldX + entityManager.player.hitbox.x) / tile_size;
+			int goalRow = (game.player.worldY + game.player.hitbox.y) / tile_size;
+			int goalCol = (game.player.worldX + game.player.hitbox.x) / tile_size;
 			searchPath(goalRow, goalCol);
 			shootProjectile();
 		} else timer.timeDirection(this, INTERVAL_DIRECTION);
@@ -79,15 +78,15 @@ public class Slime extends Mob {
 	 * Comprueba si dropeo un item.
 	 */
 	public void checkDrop() {
-		if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(new Coin(game, world, entityManager));
+		if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(new Coin(game, world));
 	}
 
 	private void shootProjectile() {
 		if (Utils.azar(100) > 95 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
 			projectile.set(worldX + 8, worldY + 17, direction, true, this);
-			for (int i = 0; i < entityManager.projectiles[1].length; i++) {
-				if (entityManager.projectiles[world.map][i] == null) {
-					entityManager.projectiles[world.map][i] = projectile;
+			for (int i = 0; i < world.projectiles[1].length; i++) {
+				if (world.projectiles[world.map][i] == null) {
+					world.projectiles[world.map][i] = projectile;
 					break;
 				}
 			}

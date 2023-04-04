@@ -1,9 +1,7 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
-import com.craivet.entity.EntityManager;
 import com.craivet.entity.Player;
-import com.craivet.tile.World;
 
 import static com.craivet.utils.Constants.*;
 
@@ -13,12 +11,12 @@ import static com.craivet.utils.Constants.*;
 
 public class Collider {
 
+	private final Game game;
 	private final World world;
-	private final EntityManager entityManager;
 
-	public Collider(World world, EntityManager entityManager) {
+	public Collider(Game game, World world) {
+		this.game = game;
 		this.world = world;
-		this.entityManager = entityManager;
 	}
 
 	/**
@@ -82,13 +80,13 @@ public class Collider {
 	 */
 	public int checkObject(Entity entity) {
 		int index = -1;
-		for (int i = 0; i < entityManager.items[1].length; i++) {
-			if (entityManager.items[world.map][i] != null) {
+		for (int i = 0; i < world.items[1].length; i++) {
+			if (world.items[world.map][i] != null) {
 				// Obtiene la posicion del area del cuerpo de la entidad y del objeto
 				entity.hitbox.x += entity.worldX;
 				entity.hitbox.y += entity.worldY;
-				entityManager.items[world.map][i].hitbox.x += entityManager.items[world.map][i].worldX;
-				entityManager.items[world.map][i].hitbox.y += entityManager.items[world.map][i].worldY;
+				world.items[world.map][i].hitbox.x += world.items[world.map][i].worldX;
+				world.items[world.map][i].hitbox.y += world.items[world.map][i].worldY;
 				switch (entity.direction) {
 					case DOWN:
 						entity.hitbox.y += entity.speed;
@@ -104,15 +102,15 @@ public class Collider {
 						break;
 				}
 
-				if (entity.hitbox.intersects(entityManager.items[world.map][i].hitbox)) {
-					if (entityManager.items[world.map][i].collision) entity.collisionOn = true;
+				if (entity.hitbox.intersects(world.items[world.map][i].hitbox)) {
+					if (world.items[world.map][i].collision) entity.collisionOn = true;
 					if (entity instanceof Player) index = i;
 				}
 
 				entity.hitbox.x = entity.hitboxDefaultX;
 				entity.hitbox.y = entity.hitboxDefaultY;
-				entityManager.items[world.map][i].hitbox.x = entityManager.items[world.map][i].hitboxDefaultX;
-				entityManager.items[world.map][i].hitbox.y = entityManager.items[world.map][i].hitboxDefaultY;
+				world.items[world.map][i].hitbox.x = world.items[world.map][i].hitboxDefaultX;
+				world.items[world.map][i].hitbox.y = world.items[world.map][i].hitboxDefaultY;
 			}
 		}
 		return index;
@@ -179,8 +177,8 @@ public class Collider {
 		// Obtiene la posicion del area solida de la entidad y del player
 		entity.hitbox.x += entity.worldX;
 		entity.hitbox.y += entity.worldY;
-		entityManager.player.hitbox.x += entityManager.player.worldX;
-		entityManager.player.hitbox.y += entityManager.player.worldY;
+		game.player.hitbox.x += game.player.worldX;
+		game.player.hitbox.y += game.player.worldY;
 		switch (entity.direction) {
 			case DOWN:
 				entity.hitbox.y += entity.speed;
@@ -196,15 +194,15 @@ public class Collider {
 				break;
 		}
 
-		if (entity.hitbox.intersects(entityManager.player.hitbox)) {
+		if (entity.hitbox.intersects(game.player.hitbox)) {
 			entity.collisionOn = true;
 			contact = true;
 		}
 
 		entity.hitbox.x = entity.hitboxDefaultX;
 		entity.hitbox.y = entity.hitboxDefaultY;
-		entityManager.player.hitbox.x = entityManager.player.hitboxDefaultX;
-		entityManager.player.hitbox.y = entityManager.player.hitboxDefaultY;
+		game.player.hitbox.x = game.player.hitboxDefaultX;
+		game.player.hitbox.y = game.player.hitboxDefaultY;
 
 		return contact;
 

@@ -1,9 +1,8 @@
 package com.craivet.entity.npc;
 
 import com.craivet.Game;
-import com.craivet.entity.EntityManager;
 import com.craivet.entity.item.*;
-import com.craivet.tile.World;
+import com.craivet.World;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -11,8 +10,8 @@ import static com.craivet.gfx.Assets.*;
 
 public class Merchant extends Npc {
 
-	public Merchant(Game game, World world, EntityManager entityManager, int x, int y) {
-		super(game, world, entityManager);
+	public Merchant(Game game, World world, int x, int y) {
+		super(game, world);
 		worldX = x * tile_size;
 		worldY = y * tile_size;
 		initDefaultValues();
@@ -45,12 +44,12 @@ public class Merchant extends Npc {
 	}
 
 	private void setItems() {
-		inventory.add(new PotionRed(game, world, entityManager));
-		inventory.add(new Key(game, world, entityManager));
-		inventory.add(new SwordNormal(game, world, entityManager));
-		inventory.add(new Axe(game, world, entityManager));
-		inventory.add(new ShieldWood(game, world, entityManager));
-		inventory.add(new ShieldBlue(game, world, entityManager));
+		inventory.add(new PotionRed(game, world));
+		inventory.add(new Key(game, world));
+		inventory.add(new SwordNormal(game, world));
+		inventory.add(new Axe(game, world));
+		inventory.add(new ShieldWood(game, world));
+		inventory.add(new ShieldBlue(game, world));
 	}
 
 }

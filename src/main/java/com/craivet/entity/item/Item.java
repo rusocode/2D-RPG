@@ -2,8 +2,7 @@ package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.EntityManager;
-import com.craivet.tile.World;
+import com.craivet.World;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,15 +22,15 @@ public class Item extends Entity {
 	 * clase Item. La sintaxis <? extends Item> indica que la clave puede ser cualquier subclase de Item. */
 	public Map<Class<? extends Item>, Supplier<Item>> itemMap;
 
-	public Item(Game game, World world, EntityManager entityManager) {
-		super(game, world, entityManager);
+	public Item(Game game, World world) {
+		super(game, world);
 		itemMap = new HashMap<>();
-		itemMap.put(Axe.class, () -> new Axe(game, world, entityManager));
-		itemMap.put(Key.class, () -> new Key(game, world, entityManager));
-		itemMap.put(PotionRed.class, () -> new PotionRed(game, world, entityManager));
-		itemMap.put(ShieldBlue.class, () -> new ShieldBlue(game, world, entityManager));
-		itemMap.put(ShieldWood.class, () -> new ShieldWood(game, world, entityManager));
-		itemMap.put(SwordNormal.class, () -> new SwordNormal(game, world, entityManager));
+		itemMap.put(Axe.class, () -> new Axe(game, world));
+		itemMap.put(Key.class, () -> new Key(game, world));
+		itemMap.put(PotionRed.class, () -> new PotionRed(game, world));
+		itemMap.put(ShieldBlue.class, () -> new ShieldBlue(game, world));
+		itemMap.put(ShieldWood.class, () -> new ShieldWood(game, world));
+		itemMap.put(SwordNormal.class, () -> new SwordNormal(game, world));
 	}
 
 }

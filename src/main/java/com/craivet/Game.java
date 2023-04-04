@@ -1,5 +1,7 @@
 package com.craivet;
 
+import com.craivet.ai.AStar;
+import com.craivet.entity.Player;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
@@ -25,14 +27,19 @@ public class Game extends JPanel implements Runnable {
 
 	// System
 	public Thread thread;
-	public UI ui;
-	public KeyManager key;
 	public AudioManager sound = new AudioManager();
 	public AudioManager music = new AudioManager();
+	public World world = new World(this);
+	public EventHandler event = new EventHandler(this, world);
+	public Collider collider = new Collider(this, world);
+	public Config config = new Config(this);
+	public AStar aStar = new AStar(world);
+	public UI ui = new UI(this, world);
+	public KeyManager key = new KeyManager(this, world);
+	public Player player = new Player(this, world);
 
-	public StateManager stateManager;
+	public StateManager stateManager = new StateManager();
 	public GameState gState;
-
 	public int gameState;
 	private boolean running;
 
@@ -44,10 +51,6 @@ public class Game extends JPanel implements Runnable {
 		setDoubleBuffered(true); // Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
 		// addKeyListener(key);
 		setFocusable(true);
-
-		stateManager = new StateManager();
-		gState = new GameState(this);
-		stateManager.setState(gState);
 	}
 
 	@Override
@@ -98,9 +101,10 @@ public class Game extends JPanel implements Runnable {
 		playMusic(music_blue_boy_adventure);
 		gameState = PLAY_STATE;
 
-		ui = new UI(this);
-		key = new KeyManager(this);
 		addKeyListener(key);
+
+		gState = new GameState(world);
+		stateManager.setState(gState);
 
 		/* Hasta ahora dibujamos todo directamente en el JPanel. Pero esta vez seguimos dos pasos:
 		 * 1. Dibujamos todo en la pantalla temporal para la imagen que esta detras de escena.
@@ -162,6 +166,21 @@ public class Game extends JPanel implements Runnable {
 		running = true;
 		thread = new Thread(this, "Game Thread");
 		thread.start();
+	}
+
+	public synchronized void stop() {
+		if (!running) return;
+		running = false;
+
+		System.out.println("Se detuvo el game loop!");
+
+		try {
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		if (!thread.isAlive()) System.out.println("Se mato al subproceso " + thread.getName());
 	}
 
 	public synchronized boolean isRunning() {

@@ -2,8 +2,7 @@ package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.EntityManager;
-import com.craivet.tile.World;
+import com.craivet.World;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -11,8 +10,8 @@ import static com.craivet.gfx.Assets.*;
 
 public class PotionRed extends Item {
 
-	public PotionRed(Game game, World world, EntityManager entityManager) {
-		super(game, world, entityManager);
+	public PotionRed(Game game, World world) {
+		super(game, world);
 		name = "Red Potion";
 		type = TYPE_CONSUMABLE;
 		image = Utils.scaleImage(item_potion_red, tile_size, tile_size);

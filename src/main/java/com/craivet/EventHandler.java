@@ -1,8 +1,6 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
-import com.craivet.entity.EntityManager;
-import com.craivet.tile.World;
 
 import static com.craivet.utils.Constants.*;
 
@@ -10,7 +8,6 @@ public class EventHandler {
 
 	private final Game game;
 	private final World world;
-	private final EntityManager entityManager;
 	private final EventRect[][][] eventRect;
 
 	/* El evento no sucede de nuevo si el player no se encuentra a 1 tile de distancia. Esta mecanica evita que el
@@ -19,10 +16,9 @@ public class EventHandler {
 	private boolean canTouchEvent = true;
 	public int tempMap, tempCol, tempRow;
 
-	public EventHandler(Game game, World world, EntityManager entityManager) {
+	public EventHandler(Game game, World world) {
 		this.game = game;
 		this.world = world;
-		this.entityManager = entityManager;
 		eventRect = new EventRect[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 
 		// Crea un evento con area solida para cada tile
@@ -48,8 +44,8 @@ public class EventHandler {
 	public void checkEvent() {
 
 		// Verifica si el player esta a mas de 1 tile de distancia del ultimo evento
-		int xDistance = Math.abs(entityManager.player.worldX - previousEventX);
-		int yDistance = Math.abs(entityManager.player.worldY - previousEventY);
+		int xDistance = Math.abs(game.player.worldX - previousEventX);
+		int yDistance = Math.abs(game.player.worldY - previousEventY);
 		int distance = Math.max(xDistance, yDistance);
 		if (distance > tile_size) canTouchEvent = true;
 
@@ -59,7 +55,7 @@ public class EventHandler {
 			else if (hit(0, 23, 12, UP)) healingPool();
 			else if (hit(0, 10, 39, ANY)) teleport(1, 12, 13);
 			else if (hit(1, 12, 13, ANY)) teleport(0, 10, 39);
-			else if (hit(1, 12, 9, UP)) speak(entityManager.npcs[1][0]);
+			else if (hit(1, 12, 9, UP)) speak(world.npcs[1][0]);
 		}
 
 	}
@@ -71,23 +67,23 @@ public class EventHandler {
 		boolean hit = false;
 
 		if (map == world.map) {
-			entityManager.player.hitbox.x += entityManager.player.worldX;
-			entityManager.player.hitbox.y += entityManager.player.worldY;
+			game.player.hitbox.x += game.player.worldX;
+			game.player.hitbox.y += game.player.worldY;
 			eventRect[map][row][col].x += col * tile_size;
 			eventRect[map][row][col].y += row * tile_size;
 
 			// Si el player colisiona con el evento
-			if (entityManager.player.hitbox.intersects(eventRect[map][row][col])) {
-				if (entityManager.player.direction == reqDirection || reqDirection == ANY) {
+			if (game.player.hitbox.intersects(eventRect[map][row][col])) {
+				if (game.player.direction == reqDirection || reqDirection == ANY) {
 					hit = true;
 					// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
-					previousEventX = entityManager.player.worldX;
-					previousEventY = entityManager.player.worldY;
+					previousEventX = game.player.worldX;
+					previousEventY = game.player.worldY;
 				}
 			}
 
-			entityManager.player.hitbox.x = entityManager.player.hitboxDefaultX;
-			entityManager.player.hitbox.y = entityManager.player.hitboxDefaultY;
+			game.player.hitbox.x = game.player.hitboxDefaultX;
+			game.player.hitbox.y = game.player.hitboxDefaultY;
 			eventRect[map][row][col].x = eventRect[map][row][col].eventRectDefaultX;
 			eventRect[map][row][col].y = eventRect[map][row][col].eventRectDefaultY;
 		}
@@ -102,7 +98,7 @@ public class EventHandler {
 	private void damagePit() {
 		game.gameState = DIALOGUE_STATE;
 		game.ui.currentDialogue = "You fall into a pit!";
-		entityManager.player.life--;
+		game.player.life--;
 		canTouchEvent = false;
 	}
 
@@ -112,10 +108,10 @@ public class EventHandler {
 	public void healingPool() {
 		if (game.key.enter) {
 			game.gameState = DIALOGUE_STATE;
-			entityManager.player.attackCanceled = true; // No puede atacar si regenera vida
+			game.player.attackCanceled = true; // No puede atacar si regenera vida
 			game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";
-			entityManager.player.life = entityManager.player.maxLife;
-			entityManager.aSetter.setMOB();
+			game.player.life = game.player.maxLife;
+			world.aSetter.setMOB();
 		}
 	}
 
@@ -130,7 +126,7 @@ public class EventHandler {
 	public void speak(Entity entity) {
 		if (game.key.enter) {
 			game.gameState = DIALOGUE_STATE;
-			entityManager.player.attackCanceled = true;
+			game.player.attackCanceled = true;
 			entity.speak();
 		}
 	}

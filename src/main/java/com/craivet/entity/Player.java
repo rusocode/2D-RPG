@@ -8,7 +8,7 @@ import com.craivet.entity.item.*;
 import com.craivet.entity.projectile.Fireball;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.InteractiveTile;
-import com.craivet.tile.World;
+import com.craivet.World;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -27,8 +27,8 @@ public class Player extends Entity {
 	public final int screenX, screenY;
 	public boolean attackCanceled;
 
-	public Player(Game game, World world, EntityManager entityManager) {
-		super(game, world, entityManager);
+	public Player(Game game, World world) {
+		super(game, world);
 
 		// Posiciona el player en el centro de la pantalla
 		screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
@@ -54,11 +54,11 @@ public class Player extends Entity {
 
 		strength = 1;
 		dexterity = 1;
-		weapon = new SwordNormal(game, world, entityManager);
-		shield = new ShieldWood(game, world, entityManager);
+		weapon = new SwordNormal(game, world);
+		shield = new ShieldWood(game, world);
 		attack = getAttack();
 		defense = getDefense();
-		projectile = new Fireball(game, world, entityManager);
+		projectile = new Fireball(game, world);
 
 		hitbox.x = 8;
 		hitbox.y = 16;
@@ -219,13 +219,13 @@ public class Player extends Entity {
 			hitbox.height = attackbox.height;
 
 			// Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
-			int mobIndex = entityManager.collider.checkEntity(this, entityManager.mobs);
+			int mobIndex = game.collider.checkEntity(this, world.mobs);
 			damageMob(mobIndex, attack, weapon.knockBackPower, direction);
 
-			int iTileIndex = entityManager.collider.checkEntity(this, entityManager.iTile);
+			int iTileIndex = game.collider.checkEntity(this, world.iTile);
 			damageInteractiveTile(iTileIndex);
 
-			int projectileIndex = entityManager.collider.checkEntity(this, entityManager.projectiles);
+			int projectileIndex = game.collider.checkEntity(this, world.projectiles);
 			damageProjectile(projectileIndex);
 
 			// Despues de verificar la colision, resetea los datos originales
@@ -261,9 +261,9 @@ public class Player extends Entity {
 			game.playSound(sound_burning);
 			projectile.set(worldX, worldY, direction, true, this);
 			// Comprueba vacante para agregar el proyectil
-			for (int i = 0; i < entityManager.projectiles[1].length; i++) {
-				if (entityManager.projectiles[world.map][i] == null) {
-					entityManager.projectiles[world.map][i] = projectile;
+			for (int i = 0; i < world.projectiles[1].length; i++) {
+				if (world.projectiles[world.map][i] == null) {
+					world.projectiles[world.map][i] = projectile;
 					break;
 				}
 			}
@@ -280,7 +280,7 @@ public class Player extends Entity {
 	private void pickUpItem(int itemIndex) {
 		if (key.l) {
 			if (itemIndex != -1) {
-				Entity item = entityManager.items[world.map][itemIndex];
+				Entity item = world.items[world.map][itemIndex];
 				if (item.type == TYPE_PICKUP_ONLY) item.use(this);
 				else if (inventory.size() != MAX_INVENTORY_SIZE) {
 					inventory.add(item);
@@ -290,7 +290,7 @@ public class Player extends Entity {
 					game.ui.addMessage("You cannot carry any more!");
 					return; // En caso de que el inventario este lleno, no elimina el item del mundo
 				}
-				entityManager.items[world.map][itemIndex] = null;
+				world.items[world.map][itemIndex] = null;
 			}
 		}
 	}
@@ -304,7 +304,7 @@ public class Player extends Entity {
 		if (npcIndex != -1 && key.enter) {
 			attackCanceled = true; // No puede atacar si interactua con un npc
 			game.gameState = DIALOGUE_STATE;
-			entityManager.npcs[world.map][npcIndex].speak();
+			world.npcs[world.map][npcIndex].speak();
 		}
 	}
 
@@ -315,7 +315,7 @@ public class Player extends Entity {
 	 */
 	private void damagePlayer(int mobIndex) {
 		if (mobIndex >= 0) {
-			Entity mob = entityManager.mobs[world.map][mobIndex];
+			Entity mob = world.mobs[world.map][mobIndex];
 			if (!invincible && !mob.dead) {
 				game.playSound(sound_receive_damage);
 				// En caso de que el ataque sea menor a la defensa, entonces no hace daño
@@ -334,7 +334,7 @@ public class Player extends Entity {
 	 */
 	public void damageMob(int mobIndex, int attack, int knockBackPower, int direction) {
 		if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
-			Entity mob = entityManager.mobs[world.map][mobIndex];
+			Entity mob = world.mobs[world.map][mobIndex];
 			if (!mob.invincible) {
 
 				if (knockBackPower > 0) knockBack(mob, knockBackPower, direction);
@@ -367,7 +367,7 @@ public class Player extends Entity {
 	 */
 	private void damageInteractiveTile(int iTileIndex) {
 		if (iTileIndex != -1) {
-			InteractiveTile iTile = entityManager.iTile[world.map][iTileIndex];
+			InteractiveTile iTile = world.iTile[world.map][iTileIndex];
 			if (iTile.destructible && iTile.isCorrectItem(weapon) && !iTile.invincible) {
 				game.playSound(sound_cut_tree);
 
@@ -376,7 +376,7 @@ public class Player extends Entity {
 
 				generateParticle(iTile, iTile);
 
-				if (iTile.life == 0) entityManager.iTile[world.map][iTileIndex] = iTile.getDestroyedForm();
+				if (iTile.life == 0) world.iTile[world.map][iTileIndex] = iTile.getDestroyedForm();
 			}
 		}
 	}
@@ -384,7 +384,7 @@ public class Player extends Entity {
 	private void damageProjectile(int projectileIndex) {
 		if (projectileIndex != -1) {
 			game.playSound(sound_receive_damage);
-			Entity projectile = entityManager.projectiles[world.map][projectileIndex];
+			Entity projectile = world.projectiles[world.map][projectileIndex];
 			projectile.alive = false;
 			generateParticle(projectile, projectile);
 		}
@@ -461,12 +461,12 @@ public class Player extends Entity {
 	 */
 	private void checkCollisions() {
 		collisionOn = false;
-		entityManager.collider.checkTile(this);
-		pickUpItem(entityManager.collider.checkObject(this));
-		interactNPC(entityManager.collider.checkEntity(this, entityManager.npcs));
-		damagePlayer(entityManager.collider.checkEntity(this, entityManager.mobs));
-		entityManager.collider.checkEntity(this, entityManager.iTile);
-		entityManager.event.checkEvent();
+		game.collider.checkTile(this);
+		pickUpItem(game.collider.checkObject(this));
+		interactNPC(game.collider.checkEntity(this, world.npcs));
+		damagePlayer(game.collider.checkEntity(this, world.mobs));
+		game.collider.checkEntity(this, world.iTile);
+		game.event.checkEvent();
 	}
 
 	/**
@@ -520,11 +520,11 @@ public class Player extends Entity {
 	public void setItems() {
 		inventory.clear();
 		inventory.add(weapon);
-		inventory.add(new Axe(game, world, entityManager));
+		inventory.add(new Axe(game, world));
 		inventory.add(shield);
-		inventory.add(new PotionRed(game,world, entityManager));
-		inventory.add(new PotionRed(game, world,entityManager));
-		inventory.add(new PotionRed(game, world, entityManager));
+		inventory.add(new PotionRed(game,world));
+		inventory.add(new PotionRed(game, world));
+		inventory.add(new PotionRed(game, world));
 	}
 
 	private void drawRects(Graphics2D g2) {
