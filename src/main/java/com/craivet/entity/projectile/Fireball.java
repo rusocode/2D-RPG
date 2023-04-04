@@ -2,6 +2,7 @@ package com.craivet.entity.projectile;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
+import com.craivet.entity.EntityManager;
 
 import java.awt.*;
 
@@ -10,7 +11,7 @@ import static com.craivet.gfx.Assets.*;
 
 public class Fireball extends Projectile {
 
-	public Fireball(Game game) {
+	public Fireball(EntityManager game) {
 		super(game);
 		setDefaultValues();
 	}

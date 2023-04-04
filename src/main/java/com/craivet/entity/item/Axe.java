@@ -1,6 +1,7 @@
 package com.craivet.entity.item;
 
 import com.craivet.Game;
+import com.craivet.entity.EntityManager;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -11,7 +12,7 @@ public class Axe extends Item {
 	/**
 	 * Constructor solo para agregar Axe al inventario.
 	 */
-	public Axe(Game game) {
+	public Axe(EntityManager game) {
 		super(game);
 		name = "Axe";
 		type = TYPE_AXE;
@@ -24,7 +25,7 @@ public class Axe extends Item {
 		knockBackPower = 10;
 	}
 
-	public Axe(Game game, int x, int y) {
+	public Axe(EntityManager game, int x, int y) {
 		super(game);
 		worldX = x * tile_size;
 		worldY = y * tile_size;

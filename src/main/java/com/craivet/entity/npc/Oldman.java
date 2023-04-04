@@ -1,14 +1,14 @@
 package com.craivet.entity.npc;
 
 import com.craivet.Game;
-import com.craivet.entity.Entity;
+import com.craivet.entity.EntityManager;
 
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Oldman extends Npc {
 
-	public Oldman(Game game, int x, int y) {
+	public Oldman(EntityManager game, int x, int y) {
 		super(game);
 		worldX = x * tile_size;
 		worldY = y * tile_size;
@@ -35,8 +35,8 @@ public class Oldman extends Npc {
 	 */
 	public void setAction() {
 		if (onPath) {
-			int goalRow = (game.player.worldY + game.player.hitbox.y) / tile_size;
-			int goalCol = (game.player.worldX + game.player.hitbox.x) / tile_size;
+			int goalRow = (entityManager.player.worldY + entityManager.player.hitbox.y) / tile_size;
+			int goalCol = (entityManager.player.worldX + entityManager.player.hitbox.x) / tile_size;
 			searchPath(goalRow, goalCol);
 		} else timer.timeDirection(this, INTERVAL_DIRECTION);
 	}

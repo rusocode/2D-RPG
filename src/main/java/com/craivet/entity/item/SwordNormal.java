@@ -1,6 +1,7 @@
 package com.craivet.entity.item;
 
 import com.craivet.Game;
+import com.craivet.entity.EntityManager;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -8,7 +9,7 @@ import static com.craivet.gfx.Assets.*;
 
 public class SwordNormal extends Item {
 
-	public SwordNormal(Game game) {
+	public SwordNormal(EntityManager game) {
 		super(game);
 		name = "Normal Sword";
 		type = TYPE_SWORD;

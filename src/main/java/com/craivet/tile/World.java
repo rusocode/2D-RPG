@@ -1,7 +1,9 @@
 package com.craivet.tile;
 
 import com.craivet.Game;
+import com.craivet.entity.EntityManager;
 import com.craivet.gfx.Assets;
+import com.craivet.input.KeyManager;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -13,20 +15,75 @@ import java.util.Objects;
 
 import static com.craivet.utils.Constants.*;
 
-public class TileManager {
+public class World {
 
 	private final Game game;
+	public EntityManager entityManager;
+
 	public final Tile[] tile;
 	public final int[][][] tileIndex;
 	private boolean drawPath = false;
 
-	public TileManager(Game game) {
-		this.game = game;
+
+	public World(Game game, KeyManager key) {
 		tile = new Tile[50];
 		tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 		initTiles();
 		loadMap("maps/map1.txt", 0); // TODO Crear constantes
 		loadMap("maps/interior1.txt", 1);
+
+		this.game = game;
+		entityManager = new EntityManager(game, key);
+
+	}
+
+	public void update() {
+		entityManager.update();
+	}
+
+	/**
+	 * Renderiza los tiles dentro de la vista de la camara aplicando los desplazamientos a cada uno.
+	 *
+	 * @param g2 componente grafico.
+	 */
+	public void render(Graphics2D g2) {
+		// TODO Se podria reemplazar llamada a la actualizacion de la clase Tile
+		// long drawStart = System.nanoTime();
+
+		// Calcula los desplazamientos
+		int xOffset = entityManager.player.worldX - entityManager.player.screenX; // 1104 - 456 = 648
+		int yOffset = entityManager.player.worldY - entityManager.player.screenY;
+
+		// Calcula los tiles que estan dentro de la vista de la camara
+		int yStart = Math.max(0, yOffset / tile_size);
+		int yEnd = Math.min(MAX_WORLD_ROW, (yOffset + SCREEN_HEIGHT) / tile_size + 1);
+		int xStart = Math.max(0, xOffset / tile_size); // 648 / 48 = 13
+		int xEnd = Math.min(MAX_WORLD_COL, (xOffset + SCREEN_WIDTH) / tile_size + 1);
+
+		for (int y = yStart; y < yEnd; y++) {
+			for (int x = xStart; x < xEnd; x++) {
+				final int tileIndex = this.tileIndex[game.map][y][x];
+				final BufferedImage tileImage = tile[tileIndex].texture;
+				g2.drawImage(tileImage, x * tile_size - xOffset, y * tile_size - yOffset, null);
+				// g2.drawRect(x * tile_size - xOffset, y * tile_size - yOffset, tile_size, tile_size); // Dibuja una grilla
+			}
+		}
+
+		// System.out.println("Draw time: " + (System.nanoTime() - drawStart) / 1_000_000 + " ms");
+
+		if (drawPath) {
+			g2.setColor(new Color(255, 0, 0, 70));
+			for (int i = 0; i < entityManager.aStar.pathList.size(); i++) {
+				int worldX = entityManager.aStar.pathList.get(i).col * tile_size;
+				int worldY = entityManager.aStar.pathList.get(i).row * tile_size;
+				int screenX = worldX - entityManager.player.worldX + entityManager.player.screenX;
+				int screenY = worldY - entityManager.player.worldY + entityManager.player.screenY;
+				g2.fillRect(screenX, screenY, tile_size, tile_size);
+			}
+		}
+
+		entityManager.render(g2);
+
 	}
 
 	/**
@@ -104,48 +161,6 @@ public class TileManager {
 		} catch (IOException e) {
 			throw new RuntimeException("Error al leer el archivo " + path + " en la linea " + (row + 1), e);
 		}
-	}
-
-	/**
-	 * Renderiza los tiles dentro de la vista de la camara aplicando los desplazamientos a cada uno.
-	 *
-	 * @param g2 componente grafico.
-	 */
-	public void render(Graphics2D g2) {
-		// long drawStart = System.nanoTime();
-
-		// Calcula los desplazamientos
-		int xOffset = game.player.worldX - game.player.screenX; // 1104 - 456 = 648
-		int yOffset = game.player.worldY - game.player.screenY;
-
-		// Calcula los tiles que estan dentro de la vista de la camara
-		int yStart = Math.max(0, yOffset / tile_size);
-		int yEnd = Math.min(MAX_WORLD_ROW, (yOffset + SCREEN_HEIGHT) / tile_size + 1);
-		int xStart = Math.max(0, xOffset / tile_size); // 648 / 48 = 13
-		int xEnd = Math.min(MAX_WORLD_COL, (xOffset + SCREEN_WIDTH) / tile_size + 1);
-
-		for (int y = yStart; y < yEnd; y++) {
-			for (int x = xStart; x < xEnd; x++) {
-				final int tileIndex = this.tileIndex[game.map][y][x];
-				final BufferedImage tileImage = tile[tileIndex].texture;
-				g2.drawImage(tileImage, x * tile_size - xOffset, y * tile_size - yOffset, null);
-				// g2.drawRect(x * tile_size - xOffset, y * tile_size - yOffset, tile_size, tile_size); // Dibuja una grilla
-			}
-		}
-
-		// System.out.println("Draw time: " + (System.nanoTime() - drawStart) / 1_000_000 + " ms");
-
-		if (drawPath) {
-			g2.setColor(new Color(255, 0, 0, 70));
-			for (int i = 0; i < game.aStar.pathList.size(); i++) {
-				int worldX = game.aStar.pathList.get(i).col * tile_size;
-				int worldY = game.aStar.pathList.get(i).row * tile_size;
-				int screenX = worldX - game.player.worldX + game.player.screenX;
-				int screenY = worldY - game.player.worldY + game.player.screenY;
-				g2.fillRect(screenX, screenY, tile_size, tile_size);
-			}
-		}
-
 	}
 
 }

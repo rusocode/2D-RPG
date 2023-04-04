@@ -1,6 +1,7 @@
 package com.craivet.ai;
 
 import com.craivet.Game;
+import com.craivet.entity.EntityManager;
 
 import java.util.ArrayList;
 
@@ -9,6 +10,7 @@ import static com.craivet.utils.Constants.*;
 public class AStar {
 
 	private final Game game;
+	private final EntityManager entityManager;
 
 	Node[][] node;
 	Node startNode, goalNode, currentNode;
@@ -19,8 +21,9 @@ public class AStar {
 	boolean goalReached;
 	int step;
 
-	public AStar(Game game) {
+	public AStar(Game game, EntityManager entityManager) {
 		this.game = game;
+		this.entityManager = entityManager;
 		initNodes();
 	}
 
@@ -78,13 +81,13 @@ public class AStar {
 		// Establece los nodos solidos verificando los tiles solidos y los tiles interactivos destructibles
 		for (int row = 0; row < MAX_WORLD_ROW; row++) {
 			for (int col = 0; col < MAX_WORLD_COL; col++) {
-				int tileIndex = game.tileManager.tileIndex[game.map][row][col];
-				if (game.tileManager.tile[tileIndex].solid) node[row][col].solid = true;
+				int tileIndex = entityManager.world.tileIndex[game.map][row][col];
+				if (entityManager.world.tile[tileIndex].solid) node[row][col].solid = true;
 
-				for (int i = 0; i < game.iTile[1].length; i++) {
-					if (game.iTile[game.map][i] != null && game.iTile[game.map][i].destructible) {
-						int itRow = game.iTile[game.map][i].worldY / tile_size;
-						int itCol = game.iTile[game.map][i].worldX / tile_size;
+				for (int i = 0; i < entityManager.iTile[1].length; i++) {
+					if (entityManager.iTile[game.map][i] != null && entityManager.iTile[game.map][i].destructible) {
+						int itRow = entityManager.iTile[game.map][i].worldY / tile_size;
+						int itCol = entityManager.iTile[game.map][i].worldX / tile_size;
 						node[itRow][itCol].solid = true;
 					}
 				}

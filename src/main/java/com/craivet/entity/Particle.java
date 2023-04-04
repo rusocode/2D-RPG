@@ -2,8 +2,6 @@ package com.craivet.entity;
 
 import java.awt.*;
 
-import com.craivet.Game;
-
 import static com.craivet.utils.Constants.*;
 
 /**
@@ -18,7 +16,7 @@ public class Particle extends Entity {
 	int size;
 	int xd, yd;
 
-	public Particle(Game game, Entity generator, Color color, int size, int speed, int maxLife, int xd, int yd) {
+	public Particle(EntityManager game, Entity generator, Color color, int size, int speed, int maxLife, int xd, int yd) {
 		super(game);
 		this.generator = generator;
 		this.color = color;
@@ -53,8 +51,8 @@ public class Particle extends Entity {
 	}
 
 	public void render(Graphics2D g2) {
-		int screenX = worldX - game.player.worldX + game.player.screenX;
-		int screenY = worldY - game.player.worldY + game.player.screenY;
+		int screenX = worldX - entityManager.player.worldX + entityManager.player.screenX;
+		int screenY = worldY - entityManager.player.worldY + entityManager.player.screenY;
 		g2.setColor(color);
 		g2.fillRect(screenX, screenY, size, size); // Dibuja un rectangulo como una particula
 	}

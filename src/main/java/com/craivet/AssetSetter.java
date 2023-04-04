@@ -1,5 +1,6 @@
 package com.craivet;
 
+import com.craivet.entity.EntityManager;
 import com.craivet.entity.item.Axe;
 import com.craivet.entity.npc.Merchant;
 import com.craivet.entity.npc.Oldman;
@@ -12,17 +13,17 @@ import com.craivet.tile.DryTree;
 
 public class AssetSetter {
 
-	private final Game game;
+	private final EntityManager game;
 
-	public AssetSetter(Game game) {
+	public AssetSetter(EntityManager game) {
 		this.game = game;
 	}
 
 	public void setObject() {
 		int map = 0, i = 0;
 		game.items[map][i++] = new Axe(game, 33, 7);
-		game.items[map][i++] = new Axe(game, 21, 23);
-		game.items[map][i++] = new Axe(game, 22, 24);
+		// game.items[map][i++] = new Axe(game, 21, 23);
+		// game.items[map][i++] = new Axe(game, 22, 24);
 	}
 
 	public void setNPC() {
@@ -31,16 +32,16 @@ public class AssetSetter {
 
 		map = 1;
 		i = 0;
-		game.npcs[map][i++] = new Merchant(game, 12, 7);
+		// game.npcs[map][i++] = new Merchant(game, 12, 7);
 
 	}
 
 	public void setMOB() {
 		int map = 0, i = 0;
-		game.mobs[map][i++] = new Slime(game, 23, 41);
-		game.mobs[map][i++] = new Slime(game, 24, 37);
-		game.mobs[map][i++] = new Slime(game, 34, 42);
-		game.mobs[map][i++] = new Slime(game, 38, 42);
+		// game.mobs[map][i++] = new Slime(game, 23, 41);
+		// game.mobs[map][i++] = new Slime(game, 24, 37);
+		// game.mobs[map][i++] = new Slime(game, 34, 42);
+		// game.mobs[map][i++] = new Slime(game, 38, 42);
 
 		// Si quiere poner mobs en interior1.txt
 		// mapNum = 1;
@@ -49,12 +50,12 @@ public class AssetSetter {
 
 	public void setInteractiveTile() {
 		int map = 0, i = 0;
-		game.iTile[map][i++] = new DryTree(game, 28, 21);
-		game.iTile[map][i++] = new DryTree(game, 29, 21);
-		game.iTile[map][i++] = new DryTree(game, 30, 21);
-		game.iTile[map][i++] = new DryTree(game, 31, 21);
-		game.iTile[map][i++] = new DryTree(game, 32, 21);
-		game.iTile[map][i++] = new DryTree(game, 33, 21);
+		// game.iTile[map][i++] = new DryTree(game, 28, 21);
+		// game.iTile[map][i++] = new DryTree(game, 29, 21);
+		// game.iTile[map][i++] = new DryTree(game, 30, 21);
+		// game.iTile[map][i++] = new DryTree(game, 31, 21);
+		// game.iTile[map][i++] = new DryTree(game, 32, 21);
+		//game.iTile[map][i++] = new DryTree(game, 33, 21);
 	}
 
 }

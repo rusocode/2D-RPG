@@ -1,7 +1,6 @@
 package com.craivet.entity.npc;
 
 import com.craivet.Game;
-import com.craivet.entity.Entity;
 import com.craivet.entity.item.*;
 import com.craivet.utils.Utils;
 
@@ -34,9 +33,9 @@ public class Merchant extends Npc {
 
 	public void speak() {
 		super.speak();
-		game.playSound(sound_trade_open);
-		game.gameState = TRADE_STATE;
-		game.ui.npc = this;
+		entityManager.playSound(sound_trade_open);
+		entityManager.gameState = TRADE_STATE;
+		entityManager.ui.npc = this;
 	}
 
 	private void initDialogue() {
@@ -44,12 +43,12 @@ public class Merchant extends Npc {
 	}
 
 	private void setItems() {
-		inventory.add(new PotionRed(game));
-		inventory.add(new Key(game));
-		inventory.add(new SwordNormal(game));
-		inventory.add(new Axe(game));
-		inventory.add(new ShieldWood(game));
-		inventory.add(new ShieldBlue(game));
+		inventory.add(new PotionRed(entityManager));
+		inventory.add(new Key(entityManager));
+		inventory.add(new SwordNormal(entityManager));
+		inventory.add(new Axe(entityManager));
+		inventory.add(new ShieldWood(entityManager));
+		inventory.add(new ShieldBlue(entityManager));
 	}
 
 }

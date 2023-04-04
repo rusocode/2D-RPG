@@ -27,7 +27,8 @@ import static com.craivet.gfx.Assets.*;
 
 public abstract class Entity {
 
-	public Game game;
+	private final Game game;
+	public EntityManager entityManager;
 	public Timer timer = new Timer();
 	public ArrayList<Entity> inventory = new ArrayList<>();
 	public String[] dialogues = new String[20];
@@ -75,8 +76,9 @@ public abstract class Entity {
 	public boolean knockBack;
 	public boolean onPath;
 
-	public Entity(Game game) {
+	public Entity(Game game, EntityManager entityManager) {
 		this.game = game;
+		this.entityManager = entityManager;
 	}
 
 	public void update() {
@@ -101,12 +103,12 @@ public abstract class Entity {
 
 	public void render(Graphics2D g2) {
 		BufferedImage auxImage = null;
-		int screenX = (worldX - game.player.worldX) + game.player.screenX;
-		int screenY = (worldY - game.player.worldY) + game.player.screenY;
-		if (worldX + tile_size > game.player.worldX - game.player.screenX &&
-				worldX - tile_size < game.player.worldX + game.player.screenX &&
-				worldY + tile_size > game.player.worldY - game.player.screenY &&
-				worldY - tile_size < game.player.worldY + game.player.screenY) {
+		int screenX = (worldX - entityManager.player.worldX) + entityManager.player.screenX;
+		int screenY = (worldY - entityManager.player.worldY) + entityManager.player.screenY;
+		if (worldX + tile_size > entityManager.player.worldX - entityManager.player.screenX &&
+				worldX - tile_size < entityManager.player.worldX + entityManager.player.screenX &&
+				worldY + tile_size > entityManager.player.worldY - entityManager.player.screenY &&
+				worldY - tile_size < entityManager.player.worldY + entityManager.player.screenY) {
 			switch (direction) {
 				case DOWN:
 					auxImage = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
@@ -167,7 +169,7 @@ public abstract class Entity {
 		if (dialogues[dialogueIndex] == null) dialogueIndex = 0;
 		game.ui.currentDialogue = dialogues[dialogueIndex];
 		dialogueIndex++;
-		switch (game.player.direction) {
+		switch (entityManager.player.direction) {
 			case DOWN:
 				direction = UP;
 				break;
@@ -195,11 +197,11 @@ public abstract class Entity {
 	 * @param item el item.
 	 */
 	public void dropItem(Item item) {
-		for (int i = 0; i < game.items[1].length; i++) {
-			if (game.items[game.map][i] == null) {
-				game.items[game.map][i] = item;
-				game.items[game.map][i].worldX = worldX + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
-				game.items[game.map][i].worldY = worldY + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
+		for (int i = 0; i < entityManager.items[1].length; i++) {
+			if (entityManager.items[entityManager.map][i] == null) {
+				entityManager.items[entityManager.map][i] = item;
+				entityManager.items[entityManager.map][i].worldX = worldX + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
+				entityManager.items[entityManager.map][i].worldY = worldY + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
 				break;
 			}
 		}
@@ -230,10 +232,10 @@ public abstract class Entity {
 	 * @param target    el objetivo en donde se van a generar las particulas.
 	 */
 	public void generateParticle(Entity generator, Entity target) {
-		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
-		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
-		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
-		game.particles.add(new Particle(game, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
+		entityManager.particles.add(new Particle(entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+		entityManager.particles.add(new Particle(entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+		entityManager.particles.add(new Particle(entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+		entityManager.particles.add(new Particle(entityManager, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
 	}
 
 	/**
@@ -244,12 +246,12 @@ public abstract class Entity {
 	 */
 	public void damagePlayer(boolean contact, int attack) {
 		// Si el mob hace contacto con el player que no es invencible
-		if (type == TYPE_MOB && contact && !game.player.invincible) {
-			game.playSound(sound_receive_damage);
+		if (type == TYPE_MOB && contact && !entityManager.player.invincible) {
+			// game.playSound(sound_receive_damage);
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
-			int damage = Math.max(attack - game.player.defense, 0);
-			game.player.life -= damage;
-			game.player.invincible = true;
+			int damage = Math.max(attack - entityManager.player.defense, 0);
+			entityManager.player.life -= damage;
+			entityManager.player.invincible = true;
 		}
 	}
 
@@ -313,12 +315,12 @@ public abstract class Entity {
 
 	private void checkCollisions() {
 		collisionOn = false;
-		game.collider.checkTile(this);
-		game.collider.checkObject(this);
-		game.collider.checkEntity(this, game.npcs);
-		game.collider.checkEntity(this, game.mobs);
-		game.collider.checkEntity(this, game.iTile);
-		damagePlayer(game.collider.checkPlayer(this), attack);
+		entityManager.collider.checkTile(this);
+		entityManager.collider.checkObject(this);
+		entityManager.collider.checkEntity(this, entityManager.npcs);
+		entityManager.collider.checkEntity(this, entityManager.mobs);
+		entityManager.collider.checkEntity(this, entityManager.iTile);
+		damagePlayer(entityManager.collider.checkPlayer(this), attack);
 	}
 
 	private void updatePosition() {
@@ -342,14 +344,14 @@ public abstract class Entity {
 		int startRow = (worldY + hitbox.y) / tile_size;
 		int startCol = (worldX + hitbox.x) / tile_size;
 
-		game.aStar.setNodes(startRow, startCol, goalRow, goalCol);
+		entityManager.aStar.setNodes(startRow, startCol, goalRow, goalCol);
 
 		// Si devuelve verdadero, significa que ha encontrado un camino para guiar a la entidad hacia el objetivo
-		if (game.aStar.search()) {
+		if (entityManager.aStar.search()) {
 
 			// Obtiene la siguiente posicion x/y de la ruta
-			int nextX = game.aStar.pathList.get(0).col * tile_size;
-			int nextY = game.aStar.pathList.get(0).row * tile_size;
+			int nextX = entityManager.aStar.pathList.get(0).col * tile_size;
+			int nextY = entityManager.aStar.pathList.get(0).row * tile_size;
 			// Obtiene la posicion de la entidad
 			int left = worldX + hitbox.x;
 			int right = worldX + hitbox.x + hitbox.width;

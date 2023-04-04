@@ -2,6 +2,7 @@ package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
+import com.craivet.entity.EntityManager;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
@@ -9,11 +10,9 @@ import static com.craivet.gfx.Assets.*;
 
 public class PotionRed extends Item {
 
-	private final Game game;
-
-	public PotionRed(Game game) {
-		super(game);
-		this.game = game;
+	public PotionRed(Game game, EntityManager entityManager) {
+		super(game, entityManager);
+		this.entityManager = entityManager;
 		name = "Red Potion";
 		type = TYPE_CONSUMABLE;
 		image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
@@ -26,7 +25,7 @@ public class PotionRed extends Item {
 		entity.life += value;
 		game.ui.addMessage("+" + value + " hp");
 		if (entity.life > entity.maxLife) entity.life = entity.maxLife;
-		game.playSound(sound_potion_red);
+		// game.playSound(sound_potion_red);
 	}
 
 }

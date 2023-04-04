@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
+import com.craivet.entity.EntityManager;
 import com.craivet.entity.Player;
 
 import static com.craivet.utils.Constants.*;
@@ -11,9 +12,9 @@ import static com.craivet.utils.Constants.*;
 
 public class Collider {
 
-	private final Game game;
+	private final EntityManager game;
 
-	public Collider(Game game) {
+	public Collider(EntityManager game) {
 		this.game = game;
 	}
 
@@ -40,30 +41,30 @@ public class Collider {
 		switch (entity.direction) {
 			case DOWN:
 				entityBottomRow = (entityBottomWorldY + entity.speed) / tile_size;
-				tileNum1 = game.tileManager.tileIndex[game.map][entityBottomRow][entityLeftCol];
-				tileNum2 = game.tileManager.tileIndex[game.map][entityBottomRow][entityRightCol];
-				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
+				tileNum1 = game.world.tileIndex[game.map][entityBottomRow][entityLeftCol];
+				tileNum2 = game.world.tileIndex[game.map][entityBottomRow][entityRightCol];
+				if (game.world.tile[tileNum1].solid || game.world.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case UP:
 				entityTopRow = (entityTopWorldY - entity.speed) / tile_size;
-				tileNum1 = game.tileManager.tileIndex[game.map][entityTopRow][entityLeftCol];
-				tileNum2 = game.tileManager.tileIndex[game.map][entityTopRow][entityRightCol];
-				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
+				tileNum1 = game.world.tileIndex[game.map][entityTopRow][entityLeftCol];
+				tileNum2 = game.world.tileIndex[game.map][entityTopRow][entityRightCol];
+				if (game.world.tile[tileNum1].solid || game.world.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case LEFT:
 				entityLeftCol = (entityLeftWorldX - entity.speed) / tile_size;
-				tileNum1 = game.tileManager.tileIndex[game.map][entityTopRow][entityLeftCol];
-				tileNum2 = game.tileManager.tileIndex[game.map][entityBottomRow][entityLeftCol];
-				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
+				tileNum1 = game.world.tileIndex[game.map][entityTopRow][entityLeftCol];
+				tileNum2 = game.world.tileIndex[game.map][entityBottomRow][entityLeftCol];
+				if (game.world.tile[tileNum1].solid || game.world.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 			case RIGHT:
 				entityRightCol = (entityRightWorldX + entity.speed) / tile_size;
-				tileNum1 = game.tileManager.tileIndex[game.map][entityTopRow][entityRightCol];
-				tileNum2 = game.tileManager.tileIndex[game.map][entityBottomRow][entityRightCol];
-				if (game.tileManager.tile[tileNum1].solid || game.tileManager.tile[tileNum2].solid)
+				tileNum1 = game.world.tileIndex[game.map][entityTopRow][entityRightCol];
+				tileNum2 = game.world.tileIndex[game.map][entityBottomRow][entityRightCol];
+				if (game.world.tile[tileNum1].solid || game.world.tile[tileNum2].solid)
 					entity.collisionOn = true;
 				break;
 		}

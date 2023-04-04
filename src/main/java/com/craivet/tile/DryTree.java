@@ -25,7 +25,7 @@ public class DryTree extends InteractiveTile {
 	}
 
 	public InteractiveTile getDestroyedForm() {
-		return new Trunk(game, worldX / tile_size, worldY / tile_size);
+		return new Trunk(entityManager, worldX / tile_size, worldY / tile_size);
 	}
 
 	public Color getParticleColor() {
