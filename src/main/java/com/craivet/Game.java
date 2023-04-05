@@ -2,13 +2,14 @@ package com.craivet;
 
 import com.craivet.ai.AStar;
 import com.craivet.entity.Player;
+import com.craivet.gfx.Display;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
 import com.craivet.utils.TimeUtils;
 
-import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
@@ -24,10 +25,10 @@ import static com.craivet.gfx.Assets.*;
  * TODO Use un sistema de eventos para manejar los eventos del juego en lugar de la clase EventHandler.
  */
 
-public class Game extends JPanel implements Runnable {
+public class Game extends Canvas implements Runnable {
 
 	// System
-	public Thread thread;
+	private Thread thread;
 	public AudioManager sound = new AudioManager();
 	public AudioManager music = new AudioManager();
 	public World world = new World(this);
@@ -40,24 +41,19 @@ public class Game extends JPanel implements Runnable {
 	public KeyManager key = new KeyManager(this, world);
 	public Player player = new Player(this, world);
 
+	// Game state
 	public StateManager stateManager = new StateManager();
 	public GameState gState;
 	public int gameState;
 	private boolean running;
 
+	public Graphics2D g2; // Pincel
 	public boolean fullScreen;
-
-	public Graphics2D g2;
-	public BufferedImage tempScreen;
-	public int screenWidth = SCREEN_WIDTH;
-	public int screenHeight = SCREEN_HEIGHT;
 
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-		setBackground(Color.black);
-		setDoubleBuffered(true); // Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
-		addKeyListener(key);
 		setFocusable(true);
+		addKeyListener(key);
 	}
 
 	@Override
@@ -88,8 +84,7 @@ public class Game extends JPanel implements Runnable {
 			if (FPS_UNLIMITED || now - lastRender >= nsPerFrame) {
 				frames++;
 				lastRender = TimeUtils.nanoTime();
-				renderToTempScreen();
-				renderToScreen();
+				render();
 			}
 
 			if (timer >= 1E9) {
@@ -100,45 +95,51 @@ public class Game extends JPanel implements Runnable {
 			}
 		}
 
+		stop();
+
 	}
 
-	public void init() {
+	private void init() {
 		setAssets();
 
 		playMusic(music_blue_boy_adventure);
 		gameState = PLAY_STATE;
 
+		// Crea la ventana y agrega el Canvas
+		new Display(this);
+
 		gState = new GameState(world);
 		stateManager.setState(gState);
 
-		/* Hasta ahora dibujamos todo directamente en el JPanel. Pero esta vez seguimos dos pasos:
-		 * 1. Dibujamos todo en la pantalla temporal para la imagen que esta detras de escena.
-		 * 2. Dibujamos la pantalla temporal en el JPanel.
-		 * La razon de esto, es que queremos mostrar el juego en pantalla completa o en otras resoluciones diferentes.
-		 * Eso significa que debemos cambiar el tamaña de todas las imagenes (tiles, entidades, ui, etc.). Y si
-		 * cambiambos el tamaño de cada objeto uno por uno, es mucho trabajo y poco eficiente. Asi que primero dibujamos
-		 * todo en una unica imagen almacenada en buffer y luego cambiamos el tamaño de esta imagen grande para que se
-		 * ajuste a nuestra pantalla completa en cada bucle. Ademas, parece que dibujando directamente en el JPanel
-		 * desde el metodo repaint(), se generaban algunos efectos extranios en el renderizado (cortes, pantalla negra). */
-		// Crea una imagen blanca en el buffer que es tan grande como nuestra pantalla
-		tempScreen = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		// Enlaza g2 con la imagen de buffer de pantalla temporal
-		g2 = (Graphics2D) tempScreen.getGraphics();
-
 	}
 
-	public void update() {
+	private void update() {
 		if (stateManager.getState() != null) stateManager.getState().update();
 	}
 
-	public void renderToTempScreen() {
+	private void render() {
+		// Obtiene el buffer del Canvas
+		BufferStrategy buffer = getBufferStrategy();
+		/* Crea 3 buffers para el Canvas en caso de que no haya uno. Tenga en cuenta que cuanto mas alto vaya, mas
+		 * potencia de procesamiento necesitara, por lo que 10k seria un buffer muy malo. */
+		if (buffer == null) {
+			createBufferStrategy(3);
+			return;
+		}
+		// Obtiene el pincel a partir del buffer
+		g2 = (Graphics2D) buffer.getDrawGraphics();
+		// Limpia la ventana usando el color de fondo actual
+		g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		// Dibuja las imagenes en pantalla
 		if (stateManager.getState() != null) stateManager.getState().render(g2);
+		// Hace visible el buffer
+		buffer.show();
+		// Elimina este contexto de graficos y libera cualquier recurso del sistema que este utilizando
+		g2.dispose();
 	}
 
-	private void renderToScreen() {
-		Graphics g = getGraphics();
-		g.drawImage(tempScreen, 0, 0, screenWidth, screenHeight, null);
-		g.dispose();
+	public synchronized boolean isRunning() {
+		return running;
 	}
 
 	public synchronized void start() {
@@ -161,10 +162,6 @@ public class Game extends JPanel implements Runnable {
 		}
 
 		if (!thread.isAlive()) System.out.println("Se mato al subproceso " + thread.getName());
-	}
-
-	public synchronized boolean isRunning() {
-		return running;
 	}
 
 	public void playMusic(URL url) {
