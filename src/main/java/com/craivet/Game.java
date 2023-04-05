@@ -9,6 +9,7 @@ import com.craivet.utils.TimeUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import static com.craivet.utils.Constants.*;
@@ -46,6 +47,11 @@ public class Game extends JPanel implements Runnable {
 
 	public boolean fullScreen;
 
+	public Graphics2D g2;
+	public BufferedImage tempScreen;
+	public int screenWidth = SCREEN_WIDTH;
+	public int screenHeight = SCREEN_HEIGHT;
+
 	public Game() {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		setBackground(Color.black);
@@ -82,9 +88,8 @@ public class Game extends JPanel implements Runnable {
 			if (FPS_UNLIMITED || now - lastRender >= nsPerFrame) {
 				frames++;
 				lastRender = TimeUtils.nanoTime();
-				// renderToTempScreen();
-				// renderToScreen();
-				repaint();
+				renderToTempScreen();
+				renderToScreen();
 			}
 
 			if (timer >= 1E9) {
@@ -113,7 +118,12 @@ public class Game extends JPanel implements Runnable {
 		 * Eso significa que debemos cambiar el tamaña de todas las imagenes (tiles, entidades, ui, etc.). Y si
 		 * cambiambos el tamaño de cada objeto uno por uno, es mucho trabajo y poco eficiente. Asi que primero dibujamos
 		 * todo en una unica imagen almacenada en buffer y luego cambiamos el tamaño de esta imagen grande para que se
-		 * ajuste a nuestra pantalla completa en cada bucle. */
+		 * ajuste a nuestra pantalla completa en cada bucle. Ademas, parece que dibujando directamente en el JPanel
+		 * desde el metodo repaint(), se generaban algunos efectos extranios en el renderizado (cortes, pantalla negra). */
+		// Crea una imagen blanca en el buffer que es tan grande como nuestra pantalla
+		tempScreen = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		// Enlaza g2 con la imagen de buffer de pantalla temporal
+		g2 = (Graphics2D) tempScreen.getGraphics();
 
 	}
 
@@ -121,11 +131,14 @@ public class Game extends JPanel implements Runnable {
 		if (stateManager.getState() != null) stateManager.getState().update();
 	}
 
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		Graphics2D g2 = (Graphics2D) g;
+	public void renderToTempScreen() {
 		if (stateManager.getState() != null) stateManager.getState().render(g2);
-		// g2.dispose();
+	}
+
+	private void renderToScreen() {
+		Graphics g = getGraphics();
+		g.drawImage(tempScreen, 0, 0, screenWidth, screenHeight, null);
+		g.dispose();
 	}
 
 	public synchronized void start() {

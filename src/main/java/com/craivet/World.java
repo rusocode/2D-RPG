@@ -48,6 +48,7 @@ public class World {
 	public Interactive[][] interactives = new Interactive[MAX_MAP][50];
 
 	public boolean drawPath;
+	private long renderStart;
 
 	public World(Game game) {
 		tile = new Tile[50];
@@ -73,9 +74,8 @@ public class World {
 	 */
 	public void render(Graphics2D g2) {
 
-		// Debug
-		long drawStart = 0;
-		if (game.key.t) drawStart = System.nanoTime();
+		// Debug mode
+		if (game.key.t) renderStart = System.nanoTime();
 
 		tileManager.render(g2);
 		entityManager.render(g2);
@@ -88,7 +88,7 @@ public class World {
 			y += gap;
 			g2.drawString("Y: " + (game.player.worldY + game.player.hitbox.y) / tile_size, x, y);
 			y += gap;
-			g2.drawString("Draw time: " + (System.nanoTime() - drawStart) / 1_000_000 + " ms", x, y);
+			g2.drawString("Draw time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
 		}
 
 	}

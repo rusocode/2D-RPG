@@ -28,8 +28,6 @@ public class TileManager {
 	 * @param g2 componente grafico.
 	 */
 	public void render(Graphics2D g2) {
-		// long drawStart = System.nanoTime();
-
 		// Calcula los desplazamientos
 		int xOffset = game.player.worldX - game.player.screenX; // 1104 - 456 = 648
 		int yOffset = game.player.worldY - game.player.screenY;
@@ -48,8 +46,6 @@ public class TileManager {
 				// g2.drawRect(x * tile_size - xOffset, y * tile_size - yOffset, tile_size, tile_size); // Dibuja una grilla
 			}
 		}
-
-		// System.out.println("Draw time: " + (System.nanoTime() - drawStart) / 1_000_000 + " ms");
 
 		if (world.drawPath) {
 			g2.setColor(new Color(255, 0, 0, 70));

@@ -1,15 +1,15 @@
 package com.craivet.states;
 
-
 public class StateManager {
 
-	private GameState state;
+	private State state;
 
-	public GameState getState() {
+	public State getState() {
 		return state;
 	}
 
-	public void setState(GameState state) {
+	public void setState(State state) {
 		this.state = state;
 	}
+
 }
