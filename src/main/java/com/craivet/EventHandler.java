@@ -111,7 +111,7 @@ public class EventHandler {
 			game.player.attackCanceled = true; // No puede atacar si regenera vida
 			game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";
 			game.player.life = game.player.maxLife;
-			world.aSetter.setMOB();
+			game.aSetter.setMOB();
 		}
 	}
 

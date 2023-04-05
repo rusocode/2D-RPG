@@ -5,6 +5,7 @@ import com.craivet.World;
 
 import java.awt.event.*;
 
+import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Constants.*;
 
 public class KeyManager extends KeyAdapter {
@@ -58,37 +59,37 @@ public class KeyManager extends KeyAdapter {
 	private void titleState(int code) {
 		if (game.ui.titleScreenState == MAIN_SCREEN) {
 			if (code == KeyEvent.VK_W) {
-				game.ui.commandNum--;
-				if (game.ui.commandNum < 0) game.ui.commandNum = 2;
+				game.ui.command--;
+				if (game.ui.command < 0) game.ui.command = 2;
 			}
 			if (code == KeyEvent.VK_S) {
-				game.ui.commandNum++;
-				if (game.ui.commandNum > 2) game.ui.commandNum = 0;
+				game.ui.command++;
+				if (game.ui.command > 2) game.ui.command = 0;
 			}
 			if (code == KeyEvent.VK_ENTER) {
-				if (game.ui.commandNum == 0) {
-					// game.playSound(sound_spawn);
+				if (game.ui.command == 0) {
+					game.playSound(sound_spawn);
 					game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
 					// game.restart();
 					// game.playMusic(blue_boy_adventure);
 				}
 				// if (game.ui.commandNum == 1) {}
-				if (game.ui.commandNum == 2) System.exit(0);
+				if (game.ui.command == 2) System.exit(0);
 			}
 		} else if (game.ui.titleScreenState == SELECTION_SCREEN) {
 			if (code == KeyEvent.VK_W) {
-				game.ui.commandNum--;
-				if (game.ui.commandNum < 0) game.ui.commandNum = 3;
+				game.ui.command--;
+				if (game.ui.command < 0) game.ui.command = 3;
 			}
 			if (code == KeyEvent.VK_S) {
-				game.ui.commandNum++;
-				if (game.ui.commandNum > 3) game.ui.commandNum = 0;
+				game.ui.command++;
+				if (game.ui.command > 3) game.ui.command = 0;
 			}
 			if (code == KeyEvent.VK_ENTER) {
-				if (game.ui.commandNum == 0 || game.ui.commandNum == 1 || game.ui.commandNum == 2)
+				if (game.ui.command == 0 || game.ui.command == 1 || game.ui.command == 2)
 					game.gameState = PLAY_STATE;
-				if (game.ui.commandNum == 3) {
-					game.ui.commandNum = 0;
+				if (game.ui.command == 3) {
+					game.ui.command = 0;
 					game.ui.titleScreenState = MAIN_SCREEN;
 				}
 			}
@@ -112,10 +113,10 @@ public class KeyManager extends KeyAdapter {
 		if (code == KeyEvent.VK_R) {
 			switch (world.map) {
 				case 0:
-					world.loadMap("maps/map1.txt", 0);
+					world.loadMap("maps/nix.txt", 0);
 					break;
 				case 1:
-					world.loadMap("maps/interior1.txt", 1);
+					world.loadMap("maps/nix_trade.txt", 1);
 					break;
 			}
 		}
@@ -153,43 +154,43 @@ public class KeyManager extends KeyAdapter {
 		 * siguientes instrucciones ya que la seleccion solo se mantiene en el back. */
 		if (game.ui.subState == 0 || game.ui.subState == 3) {
 			if (code == KeyEvent.VK_W) {
-				// game.playSound(sound_cursor);
-				game.ui.commandNum--;
-				if (game.ui.commandNum < 0) game.ui.commandNum = maxCommandNum;
+				game.playSound(sound_cursor);
+				game.ui.command--;
+				if (game.ui.command < 0) game.ui.command = maxCommandNum;
 			}
 			if (code == KeyEvent.VK_S) {
-				// game.playSound(sound_cursor);
-				game.ui.commandNum++;
-				if (game.ui.commandNum > maxCommandNum) game.ui.commandNum = 0;
+				game.playSound(sound_cursor);
+				game.ui.command++;
+				if (game.ui.command > maxCommandNum) game.ui.command = 0;
 			}
 		}
 
 		// Para bajar el volumen
 		if (code == KeyEvent.VK_A) {
 			if (game.ui.subState == 0) {
-				if (game.ui.commandNum == 1 && game.music.volumeScale > 0) { // Musica
+				if (game.ui.command == 1 && game.music.volumeScale > 0) { // Musica
 					game.music.volumeScale--;
 					// TODO Hace falta esto aca?
 					game.music.checkVolume(); // Cambia el volumen de la musica cuando ya se esta reproduciendo
-					// game.playSound(sound_cursor);
+					game.playSound(sound_cursor);
 				}
-				if (game.ui.commandNum == 2 && game.sound.volumeScale > 0) { // Sonido
+				if (game.ui.command == 2 && game.sound.volumeScale > 0) { // Sonido
 					game.sound.volumeScale--;
-					// game.playSound(sound_cursor);
+					game.playSound(sound_cursor);
 				}
 			}
 		}
 		// Para subir el volumen
 		if (code == KeyEvent.VK_D) {
 			if (game.ui.subState == 0) {
-				if (game.ui.commandNum == 1 && game.music.volumeScale < 5) {
+				if (game.ui.command == 1 && game.music.volumeScale < 5) {
 					game.music.volumeScale++;
 					game.music.checkVolume();
-					// game.playSound(sound_cursor);
+					game.playSound(sound_cursor);
 				}
-				if (game.ui.commandNum == 2 && game.sound.volumeScale < 5) { // Sonido
+				if (game.ui.command == 2 && game.sound.volumeScale < 5) { // Sonido
 					game.sound.volumeScale++;
-					// game.playSound(sound_cursor);
+					game.playSound(sound_cursor);
 				}
 			}
 		}
@@ -198,23 +199,23 @@ public class KeyManager extends KeyAdapter {
 
 	private void gameOverState(int code) {
 		if (code == KeyEvent.VK_W) {
-			// game.playSound(sound_cursor);
-			game.ui.commandNum--;
-			if (game.ui.commandNum < 0) game.ui.commandNum = 1;
+			game.playSound(sound_cursor);
+			game.ui.command--;
+			if (game.ui.command < 0) game.ui.command = 1;
 		}
 		if (code == KeyEvent.VK_S) {
-			// game.playSound(sound_cursor);
-			game.ui.commandNum++;
-			if (game.ui.commandNum > 1) game.ui.commandNum = 0;
+			game.playSound(sound_cursor);
+			game.ui.command++;
+			if (game.ui.command > 1) game.ui.command = 0;
 		}
 		if (code == KeyEvent.VK_ENTER) {
-			if (game.ui.commandNum == 0) {
+			if (game.ui.command == 0) {
 				game.gameState = PLAY_STATE;
-				// game.retry();
-				// game.playMusic(music_blue_boy_adventure);
-			} else if (game.ui.commandNum == 1) {
+				game.retry();
+				game.playMusic(music_blue_boy_adventure);
+			} else if (game.ui.command == 1) {
 				game.gameState = TITLE_STATE;
-				// game.restart();
+				game.restart();
 			}
 		}
 	}
@@ -223,17 +224,17 @@ public class KeyManager extends KeyAdapter {
 		if (code == KeyEvent.VK_ENTER) enter = true;
 		if (game.ui.subState == 0) {
 			if (code == KeyEvent.VK_W) {
-				// game.playSound(sound_cursor);
-				game.ui.commandNum--;
-				if (game.ui.commandNum < 0) game.ui.commandNum = 1;
+				game.playSound(sound_cursor);
+				game.ui.command--;
+				if (game.ui.command < 0) game.ui.command = 1;
 			}
 			if (code == KeyEvent.VK_S) {
-				// game.playSound(sound_cursor);
-				game.ui.commandNum++;
-				if (game.ui.commandNum > 1) game.ui.commandNum = 0;
+				game.playSound(sound_cursor);
+				game.ui.command++;
+				if (game.ui.command > 1) game.ui.command = 0;
 			}
 			if (code == KeyEvent.VK_ESCAPE) {
-				game.ui.commandNum = 0;
+				game.ui.command = 0;
 				game.gameState = PLAY_STATE;
 			}
 		}
@@ -250,25 +251,25 @@ public class KeyManager extends KeyAdapter {
 	private void playerInventory(int code) {
 		if (code == KeyEvent.VK_W) {
 			if (game.ui.playerSlotRow > 0) {
-				// game.playSound(sound_cursor);
+				game.playSound(sound_cursor);
 				game.ui.playerSlotRow--;
 			}
 		}
 		if (code == KeyEvent.VK_A) {
 			if (game.ui.playerSlotCol > 0) {
-				// game.playSound(sound_cursor);
+				game.playSound(sound_cursor);
 				game.ui.playerSlotCol--;
 			}
 		}
 		if (code == KeyEvent.VK_S) {
 			if (game.ui.playerSlotRow < 3) {
-				// game.playSound(sound_cursor);
+				game.playSound(sound_cursor);
 				game.ui.playerSlotRow++;
 			}
 		}
 		if (code == KeyEvent.VK_D) {
 			if (game.ui.playerSlotCol < 4) {
-				// game.playSound(sound_cursor);
+				game.playSound(sound_cursor);
 				game.ui.playerSlotCol++;
 			}
 		}
@@ -277,25 +278,25 @@ public class KeyManager extends KeyAdapter {
 	private void npcInventory(int code) {
 		if (code == KeyEvent.VK_W) {
 			if (game.ui.npcSlotRow > 0) {
-				// game.playSound(sound_cursor);
+				game.playSound(sound_cursor);
 				game.ui.npcSlotRow--;
 			}
 		}
 		if (code == KeyEvent.VK_A) {
 			if (game.ui.npcSlotCol > 0) {
-				// game.playSound(sound_cursor);
+				game.playSound(sound_cursor);
 				game.ui.npcSlotCol--;
 			}
 		}
 		if (code == KeyEvent.VK_S) {
 			if (game.ui.npcSlotRow < 3) {
-				// game.playSound(sound_cursor);
+				game.playSound(sound_cursor);
 				game.ui.npcSlotRow++;
 			}
 		}
 		if (code == KeyEvent.VK_D) {
 			if (game.ui.npcSlotCol < 4) {
-				// game.playSound(sound_cursor);
+				game.playSound(sound_cursor);
 				game.ui.npcSlotCol++;
 			}
 		}

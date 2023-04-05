@@ -6,11 +6,11 @@ import com.craivet.entity.Entity;
 
 import static com.craivet.utils.Constants.*;
 
-public class InteractiveTile extends Entity {
+public class Interactive extends Entity {
 
 	public boolean destructible;
 
-	public InteractiveTile(Game game, World world) {
+	public Interactive(Game game, World world) {
 		super(game, world);
 	}
 
@@ -29,7 +29,7 @@ public class InteractiveTile extends Entity {
 	 *
 	 * @return el nuevo tile interactivo en la misma posicion.
 	 */
-	public InteractiveTile getDestroyedForm() {
+	public Interactive getDestroyedForm() {
 		return null;
 	}
 

@@ -7,7 +7,7 @@ import com.craivet.Game;
 import com.craivet.entity.item.*;
 import com.craivet.entity.projectile.Fireball;
 import com.craivet.input.KeyManager;
-import com.craivet.tile.InteractiveTile;
+import com.craivet.tile.Interactive;
 import com.craivet.World;
 import com.craivet.utils.Utils;
 
@@ -222,9 +222,10 @@ public class Player extends Entity {
 			int mobIndex = game.collider.checkEntity(this, world.mobs);
 			damageMob(mobIndex, attack, weapon.knockBackPower, direction);
 
-			int iTileIndex = game.collider.checkEntity(this, world.iTile);
+			int iTileIndex = game.collider.checkEntity(this, world.interactives);
 			damageInteractiveTile(iTileIndex);
 
+			// TODO Hay un bug que cuando lanza una bola de fuego y ataca al mimso tiempo la dania
 			int projectileIndex = game.collider.checkEntity(this, world.projectiles);
 			damageProjectile(projectileIndex);
 
@@ -367,7 +368,7 @@ public class Player extends Entity {
 	 */
 	private void damageInteractiveTile(int iTileIndex) {
 		if (iTileIndex != -1) {
-			InteractiveTile iTile = world.iTile[world.map][iTileIndex];
+			Interactive iTile = world.interactives[world.map][iTileIndex];
 			if (iTile.destructible && iTile.isCorrectItem(weapon) && !iTile.invincible) {
 				game.playSound(sound_cut_tree);
 
@@ -376,7 +377,7 @@ public class Player extends Entity {
 
 				generateParticle(iTile, iTile);
 
-				if (iTile.life == 0) world.iTile[world.map][iTileIndex] = iTile.getDestroyedForm();
+				if (iTile.life == 0) world.interactives[world.map][iTileIndex] = iTile.getDestroyedForm();
 			}
 		}
 	}
@@ -465,7 +466,7 @@ public class Player extends Entity {
 		pickUpItem(game.collider.checkObject(this));
 		interactNPC(game.collider.checkEntity(this, world.npcs));
 		damagePlayer(game.collider.checkEntity(this, world.mobs));
-		game.collider.checkEntity(this, world.iTile);
+		game.collider.checkEntity(this, world.interactives);
 		game.event.checkEvent();
 	}
 
@@ -504,7 +505,7 @@ public class Player extends Entity {
 	private void die() {
 		game.gameState = GAME_OVER_STATE;
 		game.playSound(sound_player_die);
-		game.ui.commandNum = -1;
+		game.ui.command = -1;
 		game.music.stop();
 		attacking = false;
 	}
@@ -522,7 +523,7 @@ public class Player extends Entity {
 		inventory.add(weapon);
 		inventory.add(new Axe(game, world));
 		inventory.add(shield);
-		inventory.add(new PotionRed(game,world));
+		inventory.add(new PotionRed(game, world));
 		inventory.add(new PotionRed(game, world));
 		inventory.add(new PotionRed(game, world));
 	}

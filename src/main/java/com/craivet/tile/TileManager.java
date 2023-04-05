@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Constants.*;
-import static com.craivet.utils.Constants.tile_size;
 
 /**
  * Adminstra los tiles actualizandolos y renderizandolos.

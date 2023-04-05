@@ -10,7 +10,7 @@ import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
 
-public class DryTree extends InteractiveTile {
+public class DryTree extends Interactive {
 
 	public DryTree(Game game, World world, int x, int y) {
 		super(game, world);
@@ -25,7 +25,7 @@ public class DryTree extends InteractiveTile {
 		return item.type == TYPE_AXE;
 	}
 
-	public InteractiveTile getDestroyedForm() {
+	public Interactive getDestroyedForm() {
 		return new Trunk(game, world, worldX / tile_size, worldY / tile_size);
 	}
 

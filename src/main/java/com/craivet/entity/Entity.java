@@ -8,15 +8,18 @@ import com.craivet.Game;
 import com.craivet.entity.item.Item;
 import com.craivet.entity.projectile.Projectile;
 import com.craivet.gfx.SpriteSheet;
-import com.craivet.tile.InteractiveTile;
+import com.craivet.tile.Interactive;
 import com.craivet.World;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
+import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Constants.*;
 
 /**
- * TODO Los metodos para obtener las subimagenes deberian ir en otra clase
+ * Crea los componentes para cada entidad.
+ *
+ * <p>TODO Los metodos para obtener las subimagenes deberian ir en otra clase
  * <p>TODO items y objetos son lo mismo?
  * <p>TODO Se podrian separar los npcs, mobs, items, objetos y proyectiles por paquetes y clases abstractas
  * <p>TODO En vez de usar la variable "movementDown1" para representar la imagen de un objeto, se podria usar una
@@ -83,8 +86,8 @@ public abstract class Entity {
 	}
 
 	public void update() {
-		checkCollisions();
 		if (knockBack) {
+			checkCollisions();
 			if (collisionOn) {
 				timer.knockBackCounter = 0;
 				knockBack = false;
@@ -92,8 +95,8 @@ public abstract class Entity {
 			} else updatePosition();
 			timer.timerKnockBack(this, INTERVAL_KNOCKBACK);
 		} else {
-			setAction();
-
+			setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
+			checkCollisions();
 			if (!collisionOn) updatePosition();
 
 			timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
@@ -146,7 +149,7 @@ public abstract class Entity {
 			if (invincible) {
 				// Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
 				timer.hpBarCounter = 0;
-				if (!(this instanceof InteractiveTile)) Utils.changeAlpha(g2, 0.4f);
+				if (!(this instanceof Interactive)) Utils.changeAlpha(g2, 0.4f);
 			}
 			if (dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
@@ -248,7 +251,7 @@ public abstract class Entity {
 	public void damagePlayer(boolean contact, int attack) {
 		// Si el mob hace contacto con el player que no es invencible
 		if (type == TYPE_MOB && contact && !game.player.invincible) {
-			// game.playSound(sound_receive_damage);
+			game.playSound(sound_receive_damage);
 			// Resta la defensa del player al ataque del mob para calcular el daño justo
 			int damage = Math.max(attack - game.player.defense, 0);
 			game.player.life -= damage;
@@ -320,7 +323,7 @@ public abstract class Entity {
 		game.collider.checkObject(this);
 		game.collider.checkEntity(this, world.npcs);
 		game.collider.checkEntity(this, world.mobs);
-		game.collider.checkEntity(this, world.iTile);
+		game.collider.checkEntity(this, world.interactives);
 		damagePlayer(game.collider.checkPlayer(this), attack);
 	}
 

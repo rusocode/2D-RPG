@@ -2,7 +2,8 @@ package com.craivet.utils;
 
 /**
  * TODO Y si aplico enums?
- * <p>
+ *
+ * <br><br>
  * <a href="https://github.com/iluwatar/java-design-patterns/tree/master/singleton">...</a>
  */
 
@@ -39,11 +40,13 @@ public final class Constants {
 	public static final int MAX_SCREEN_ROW = 12;
 	public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL;
 	public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW;
-	public static final int MAX_MAP = 10;
 
 	// World settings
 	public static final int MAX_WORLD_ROW = 50;
 	public static final int MAX_WORLD_COL = 50;
+	public static final int MAX_MAP = 10;
+	public static final int NIX = 0;
+	public static final int NIX_TRADE = 1;
 
 	// Title screen
 	public static final int MAIN_SCREEN = 0;

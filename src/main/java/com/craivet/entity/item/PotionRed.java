@@ -21,10 +21,10 @@ public class PotionRed extends Item {
 	}
 
 	public void use(Entity entity) {
-		entity.life += value;
+		game.playSound(sound_potion_red);
 		game.ui.addMessage("+" + value + " hp");
+		entity.life += value;
 		if (entity.life > entity.maxLife) entity.life = entity.maxLife;
-		// game.playSound(sound_potion_red);
 	}
 
 }

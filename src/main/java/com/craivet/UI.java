@@ -35,7 +35,7 @@ public class UI {
 	public int npcSlotCol, npcSlotRow;
 	public int titleScreenState;
 	public int subState;
-	public int commandNum;
+	public int command;
 	private int counter;
 
 	// Icons
@@ -119,19 +119,19 @@ public class UI {
 			x = getXForCenteredText(text);
 			y += tile_size * 3.5;
 			g2.drawString(text, x, y);
-			if (commandNum == 0) g2.drawString(">", x - tile_size, y);
+			if (command == 0) g2.drawString(">", x - tile_size, y);
 
 			text = "LOAD GAME";
 			x = getXForCenteredText(text);
 			y += tile_size;
 			g2.drawString(text, x, y);
-			if (commandNum == 1) g2.drawString(">", x - tile_size, y);
+			if (command == 1) g2.drawString(">", x - tile_size, y);
 
 			text = "QUIT";
 			x = getXForCenteredText(text);
 			y += tile_size;
 			g2.drawString(text, x, y);
-			if (commandNum == 2) g2.drawString(">", x - tile_size, y);
+			if (command == 2) g2.drawString(">", x - tile_size, y);
 		} else if (titleScreenState == SELECTION_SCREEN) {
 			g2.setColor(Color.white);
 			changeFontSize(42f);
@@ -145,25 +145,25 @@ public class UI {
 			x = getXForCenteredText(text);
 			y += tile_size * 3;
 			g2.drawString(text, x, y);
-			if (commandNum == 0) g2.drawString(">", x - tile_size, y);
+			if (command == 0) g2.drawString(">", x - tile_size, y);
 
 			text = "Thief";
 			x = getXForCenteredText(text);
 			y += tile_size;
 			g2.drawString(text, x, y);
-			if (commandNum == 1) g2.drawString(">", x - tile_size, y);
+			if (command == 1) g2.drawString(">", x - tile_size, y);
 
 			text = "Sorcerer";
 			x = getXForCenteredText(text);
 			y += tile_size;
 			g2.drawString(text, x, y);
-			if (commandNum == 2) g2.drawString(">", x - tile_size, y);
+			if (command == 2) g2.drawString(">", x - tile_size, y);
 
 			text = "Back";
 			x = getXForCenteredText(text);
 			y += tile_size * 2;
 			g2.drawString(text, x, y);
-			if (commandNum == 3) g2.drawString(">", x - tile_size, y);
+			if (command == 3) g2.drawString(">", x - tile_size, y);
 		}
 	}
 
@@ -509,29 +509,29 @@ public class UI {
 		// Music
 		textY += tile_size;
 		g2.drawString("Music", textX, textY);
-		if (commandNum == 1) g2.drawString(">", textX - 25, textY);
+		if (command == 1) g2.drawString(">", textX - 25, textY);
 		// Sound
 		textY += tile_size;
 		g2.drawString("Sound", textX, textY);
-		if (commandNum == 2) g2.drawString(">", textX - 25, textY);
+		if (command == 2) g2.drawString(">", textX - 25, textY);
 		// Control
 		textY += tile_size;
 		g2.drawString("Control", textX, textY);
-		if (commandNum == 3) {
+		if (command == 3) {
 			g2.drawString(">", textX - 25, textY);
 			if (game.key.enter) {
 				subState = 2;
-				commandNum = 0;
+				command = 0;
 			}
 		}
 		// End Game
 		textY += tile_size;
 		g2.drawString("End Game", textX, textY);
-		if (commandNum == 4) {
+		if (command == 4) {
 			g2.drawString(">", textX - 25, textY);
 			if (game.key.enter) {
 				subState = 3;
-				commandNum = 0;
+				command = 0;
 			}
 		}
 
@@ -556,11 +556,11 @@ public class UI {
 		textX = frameX + tile_size;
 		textY = frameHeight;
 		g2.drawString("Back", textX, textY);
-		if (commandNum == 5) {
+		if (command == 5) {
 			g2.drawString(">", textX - 25, textY);
 			if (game.key.enter) {
 				game.gameState = PLAY_STATE;
-				commandNum = 0;
+				command = 0;
 			}
 		}
 
@@ -632,11 +632,11 @@ public class UI {
 		textX = frameX + tile_size;
 		textY = frameHeight;
 		g2.drawString("Back", textX, textY);
-		if (commandNum == 0) {
+		if (command == 0) {
 			g2.drawString(">", textX - 25, textY);
 			if (game.key.enter) {
 				subState = 0;
-				commandNum = 3;
+				command = 3;
 			}
 		}
 	}
@@ -656,7 +656,7 @@ public class UI {
 		textX = getXForCenteredText(text);
 		textY += tile_size * 3;
 		g2.drawString(text, textX, textY);
-		if (commandNum == 0) {
+		if (command == 0) {
 			g2.drawString(">", textX - 25, textY);
 			if (game.key.enter) {
 				subState = 0;
@@ -670,11 +670,11 @@ public class UI {
 		textX = getXForCenteredText(text);
 		textY += tile_size;
 		g2.drawString(text, textX, textY);
-		if (commandNum == 1) {
+		if (command == 1) {
 			g2.drawString(">", textX - 25, textY);
 			if (game.key.enter) {
 				subState = 0;
-				commandNum = 4;
+				command = 4;
 			}
 		}
 
@@ -704,13 +704,13 @@ public class UI {
 		x = getXForCenteredText(text);
 		y += tile_size * 4;
 		g2.drawString(text, x, y);
-		if (commandNum == 0) g2.drawString(">", x - 40, y);
+		if (command == 0) g2.drawString(">", x - 40, y);
 		// Quit
 		text = "Quit";
 		x = getXForCenteredText(text);
 		y += 55;
 		g2.drawString(text, x, y);
-		if (commandNum == 1) g2.drawString(">", x - 40, y);
+		if (command == 1) g2.drawString(">", x - 40, y);
 
 	}
 
@@ -760,7 +760,7 @@ public class UI {
 		x += tile_size;
 		y += tile_size;
 		g2.drawString("Buy", x, y);
-		if (commandNum == 0) {
+		if (command == 0) {
 			g2.drawString(">", x - 24, y);
 			if (game.key.enter) subState = 1;
 		}
@@ -768,7 +768,7 @@ public class UI {
 		y += tile_size;
 
 		g2.drawString("Sell", x, y);
-		if (commandNum == 1) {
+		if (command == 1) {
 			g2.drawString(">", x - 24, y);
 			if (game.key.enter) subState = 2;
 		}

@@ -7,7 +7,7 @@ import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Constants.*;
 
-public class Trunk extends InteractiveTile {
+public class Trunk extends Interactive {
 
 	public Trunk(Game game, World world, int x, int y) {
 		super(game, world);

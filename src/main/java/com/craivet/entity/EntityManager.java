@@ -52,8 +52,8 @@ public class EntityManager {
 					if (!world.particles.get(i).alive) world.particles.remove(i);
 				}
 			}
-			for (int i = 0; i < world.iTile[1].length; i++)
-				if (world.iTile[world.map][i] != null) world.iTile[world.map][i].update();
+			for (int i = 0; i < world.interactives[1].length; i++)
+				if (world.interactives[world.map][i] != null) world.interactives[world.map][i].update();
 		}
 	}
 
@@ -63,13 +63,13 @@ public class EntityManager {
 			g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
 			game.ui.draw(g2);
 		} else {
-			for (int i = 0; i < world.iTile[1].length; i++)
-				if (world.iTile[world.map][i] != null) world.iTile[world.map][i].render(g2);
+			for (int i = 0; i < world.interactives[1].length; i++)
+				if (world.interactives[world.map][i] != null) world.interactives[world.map][i].render(g2);
 
 			// Agrega las entidades a la lista de entidades
 			world.entities.add(game.player);
 			for (int i = 0; i < world.items[1].length; i++)
-				if (world.items[world.map][i] != null) world.itemList.add(world.items[world.map][i]);
+				if (world.items[world.map][i] != null) world.itemsList.add(world.items[world.map][i]);
 			for (int i = 0; i < world.npcs[1].length; i++)
 				if (world.npcs[world.map][i] != null) world.entities.add(world.npcs[world.map][i]);
 			for (int i = 0; i < world.mobs[1].length; i++)
@@ -83,11 +83,11 @@ public class EntityManager {
 			 * entonces este se dibuja por debajo. */
 			world.entities.sort(Comparator.comparingInt(o -> o.worldY));
 
-			for (Entity item : world.itemList) item.render(g2);
+			for (Entity item : world.itemsList) item.render(g2);
 			for (Entity entity : world.entities) entity.render(g2);
 
 			world.entities.clear();
-			world.itemList.clear();
+			world.itemsList.clear();
 
 			game.ui.draw(g2);
 		}

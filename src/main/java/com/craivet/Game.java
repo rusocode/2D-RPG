@@ -31,10 +31,11 @@ public class Game extends JPanel implements Runnable {
 	public AudioManager music = new AudioManager();
 	public World world = new World(this);
 	public EventHandler event = new EventHandler(this, world);
+	public AssetSetter aSetter = new AssetSetter(this, world);
 	public Collider collider = new Collider(this, world);
+	public UI ui = new UI(this, world);
 	public Config config = new Config(this);
 	public AStar aStar = new AStar(world);
-	public UI ui = new UI(this, world);
 	public KeyManager key = new KeyManager(this, world);
 	public Player player = new Player(this, world);
 
@@ -49,7 +50,7 @@ public class Game extends JPanel implements Runnable {
 		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 		setBackground(Color.black);
 		setDoubleBuffered(true); // Mejora el rendimiento de representacion (es algo parecido al metodo getBufferStrategy() de Canvas)
-		// addKeyListener(key);
+		addKeyListener(key);
 		setFocusable(true);
 	}
 
@@ -97,11 +98,10 @@ public class Game extends JPanel implements Runnable {
 	}
 
 	public void init() {
+		setAssets();
 
 		playMusic(music_blue_boy_adventure);
 		gameState = PLAY_STATE;
-
-		addKeyListener(key);
 
 		gState = new GameState(world);
 		stateManager.setState(gState);
@@ -118,47 +118,14 @@ public class Game extends JPanel implements Runnable {
 	}
 
 	public void update() {
-
 		if (stateManager.getState() != null) stateManager.getState().update();
-
-		/* if (gameState == PLAY_STATE) {
-			player.update();
-			for (int i = 0; i < npcs[1].length; i++)
-				if (npcs[map][i] != null) npcs[map][i].update();
-			for (int i = 0; i < mobs[1].length; i++) {
-				if (mobs[map][i] != null) {
-					// Cuando muere el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
-					// genera la animacion de muerte y al finalizarla, establece alive en false para que no genere
-					// movimiento y elimine el objeto.
-					if (mobs[map][i].alive && !mobs[map][i].dead) mobs[map][i].update();
-					if (!mobs[map][i].alive) {
-						mobs[map][i].checkDrop();
-						mobs[map][i] = null;
-					}
-				}
-			}
-			for (int i = 0; i < projectiles[1].length; i++) {
-				if (projectiles[map][i] != null) {
-					if (projectiles[map][i].alive) projectiles[map][i].update();
-					if (!projectiles[map][i].alive) projectiles[map][i] = null;
-				}
-			}
-			for (int i = 0; i < particles.size(); i++) {
-				if (particles.get(i) != null) {
-					if (particles.get(i).alive) particles.get(i).update();
-					if (!particles.get(i).alive) particles.remove(i);
-				}
-			}
-			for (int i = 0; i < iTile[1].length; i++)
-				if (iTile[map][i] != null) iTile[map][i].update();
-		} */
-
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		if (stateManager.getState() != null) stateManager.getState().render(g2);
+		// g2.dispose();
 	}
 
 	public synchronized void start() {
@@ -200,7 +167,14 @@ public class Game extends JPanel implements Runnable {
 		sound.play(url);
 	}
 
-	/* public void retry() {
+	private void setAssets() {
+		aSetter.setObject();
+		aSetter.setNPC();
+		aSetter.setMOB();
+		aSetter.setInteractiveTile();
+	}
+
+	public void retry() {
 		player.setDefaultPosition();
 		player.restoreLifeAndMana();
 		aSetter.setNPC();
@@ -215,7 +189,7 @@ public class Game extends JPanel implements Runnable {
 		aSetter.setNPC();
 		aSetter.setMOB();
 		aSetter.setInteractiveTile();
-	} */
+	}
 
 }
 

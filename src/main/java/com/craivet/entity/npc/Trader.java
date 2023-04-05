@@ -8,9 +8,9 @@ import com.craivet.utils.Utils;
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
-public class Merchant extends Npc {
+public class Trader extends Npc {
 
-	public Merchant(Game game, World world, int x, int y) {
+	public Trader(Game game, World world, int x, int y) {
 		super(game, world);
 		worldX = x * tile_size;
 		worldY = y * tile_size;
