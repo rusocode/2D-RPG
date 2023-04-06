@@ -10,41 +10,35 @@ import com.craivet.utils.TimeUtils;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import static com.craivet.utils.Constants.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
- * TODO Algo que me di cuenta hasta hace poco, es que se nota un pequeño lag al ejecutar una accion (por ejemplo,
- * pulsar la tecla l constantemente) mientras se camina. Supongo que se tendria que utilizar multiprocesos para
- * solucionar esto.
- * TODO Separar los diferentes componentes en clases separadas, como la logica del juego, la logica de dibujo, la logica
- * de sonido, etc.
- * TODO Use un sistema de eventos para manejar los eventos del juego en lugar de la clase EventHandler.
+ * TODO Se podria crear un paquete que contenga todos los sistemas, de audio, eventos, etc. para mejor organizacion.
  */
 
 public class Game extends Canvas implements Runnable {
 
 	// System
-	private Thread thread;
+	public World world = new World(this);
 	public AudioManager sound = new AudioManager();
 	public AudioManager music = new AudioManager();
-	public World world = new World(this);
-	public EventHandler event = new EventHandler(this, world);
+	public EventManager event = new EventManager(this, world);
 	public AssetSetter aSetter = new AssetSetter(this, world);
+	public KeyManager key = new KeyManager(this, world);
 	public Collider collider = new Collider(this, world);
 	public UI ui = new UI(this, world);
 	public Config config = new Config(this);
 	public AStar aStar = new AStar(world);
-	public KeyManager key = new KeyManager(this, world);
 	public Player player = new Player(this, world);
 
 	// Game state
 	public StateManager stateManager = new StateManager();
 	public GameState gState;
 	public int gameState;
+	private Thread thread;
 	private boolean running;
 
 	public Graphics2D g2; // Pincel
@@ -56,6 +50,9 @@ public class Game extends Canvas implements Runnable {
 		addKeyListener(key);
 	}
 
+	/**
+	 * Desde aca se bombea toda la sangre.
+	 */
 	@Override
 	public void run() {
 
@@ -94,8 +91,6 @@ public class Game extends Canvas implements Runnable {
 				frames = 0;
 			}
 		}
-
-		stop();
 
 	}
 

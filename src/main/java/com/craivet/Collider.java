@@ -20,7 +20,7 @@ public class Collider {
 	}
 
 	/**
-	 * Verifica si la entidad colisiona con el tile.
+	 * Verifica si la entidad colisiona con un tile solido.
 	 *
 	 * @param entity la entidad.
 	 */
@@ -36,53 +36,53 @@ public class Collider {
 		int entityLeftCol = entityLeftWorldX / tile_size;
 		int entityRightCol = entityRightWorldX / tile_size;
 
-		// En caso de que la entidad colisione en el medio de dos tiles
-		int tileNum1, tileNum2;
+		// En caso de que la entidad colisione en el medio de dos tiles solidos
+		int tile1, tile2;
 
 		switch (entity.direction) {
 			case DOWN:
 				entityBottomRow = (entityBottomWorldY + entity.speed) / tile_size;
-				tileNum1 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
-				tileNum2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
-				if (world.tile[tileNum1].solid || world.tile[tileNum2].solid)
-					entity.collisionOn = true;
+				tile1 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
+				tile2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
+				if (world.tile[tile1].solid || world.tile[tile2].solid)
+					entity.collision = true;
 				break;
 			case UP:
 				entityTopRow = (entityTopWorldY - entity.speed) / tile_size;
-				tileNum1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
-				tileNum2 = world.tileIndex[world.map][entityTopRow][entityRightCol];
-				if (world.tile[tileNum1].solid || world.tile[tileNum2].solid)
-					entity.collisionOn = true;
+				tile1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
+				tile2 = world.tileIndex[world.map][entityTopRow][entityRightCol];
+				if (world.tile[tile1].solid || world.tile[tile2].solid)
+					entity.collision = true;
 				break;
 			case LEFT:
 				entityLeftCol = (entityLeftWorldX - entity.speed) / tile_size;
-				tileNum1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
-				tileNum2 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
-				if (world.tile[tileNum1].solid || world.tile[tileNum2].solid)
-					entity.collisionOn = true;
+				tile1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
+				tile2 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
+				if (world.tile[tile1].solid || world.tile[tile2].solid)
+					entity.collision = true;
 				break;
 			case RIGHT:
 				entityRightCol = (entityRightWorldX + entity.speed) / tile_size;
-				tileNum1 = world.tileIndex[world.map][entityTopRow][entityRightCol];
-				tileNum2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
-				if (world.tile[tileNum1].solid || world.tile[tileNum2].solid)
-					entity.collisionOn = true;
+				tile1 = world.tileIndex[world.map][entityTopRow][entityRightCol];
+				tile2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
+				if (world.tile[tile1].solid || world.tile[tile2].solid)
+					entity.collision = true;
 				break;
 		}
 
 	}
 
 	/**
-	 * Verifica si la entidad colisiona con el objeto.
+	 * Verifica si la entidad colisiona con un item.
 	 *
 	 * @param entity la entidad.
-	 * @return el indice del objeto en caso de que el player colisione con este.
+	 * @return el indice del item en caso de que el player colisione con este.
 	 */
 	public int checkObject(Entity entity) {
 		int index = -1;
 		for (int i = 0; i < world.items[1].length; i++) {
 			if (world.items[world.map][i] != null) {
-				// Obtiene la posicion del area del cuerpo de la entidad y del objeto
+				// Obtiene la posicion del hitbox y del item
 				entity.hitbox.x += entity.worldX;
 				entity.hitbox.y += entity.worldY;
 				world.items[world.map][i].hitbox.x += world.items[world.map][i].worldX;
@@ -103,7 +103,7 @@ public class Collider {
 				}
 
 				if (entity.hitbox.intersects(world.items[world.map][i].hitbox)) {
-					if (world.items[world.map][i].collision) entity.collisionOn = true;
+					if (world.items[world.map][i].solid) entity.collision = true;
 					if (entity instanceof Player) index = i;
 				}
 
@@ -149,7 +149,7 @@ public class Collider {
 
 				if (entity.hitbox.intersects(otherEntity[world.map][i].hitbox)) {
 					if (otherEntity[world.map][i] != entity) { // Evita la colision en si misma
-						entity.collisionOn = true;
+						entity.collision = true;
 						index = i;
 						// TODO No tendria que romper el bucle una vez que hay colision?
 					}
@@ -174,7 +174,6 @@ public class Collider {
 	 */
 	public boolean checkPlayer(Entity entity) {
 		boolean contact = false;
-		// Obtiene la posicion del area solida de la entidad y del player
 		entity.hitbox.x += entity.worldX;
 		entity.hitbox.y += entity.worldY;
 		game.player.hitbox.x += game.player.worldX;
@@ -195,7 +194,7 @@ public class Collider {
 		}
 
 		if (entity.hitbox.intersects(game.player.hitbox)) {
-			entity.collisionOn = true;
+			entity.collision = true;
 			contact = true;
 		}
 

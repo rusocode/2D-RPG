@@ -4,7 +4,7 @@ import com.craivet.entity.Entity;
 
 import static com.craivet.utils.Constants.*;
 
-public class EventHandler {
+public class EventManager {
 
 	private final Game game;
 	private final World world;
@@ -16,7 +16,7 @@ public class EventHandler {
 	private boolean canTouchEvent = true;
 	public int tempMap, tempCol, tempRow;
 
-	public EventHandler(Game game, World world) {
+	public EventManager(Game game, World world) {
 		this.game = game;
 		this.world = world;
 		eventRect = new EventRect[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];

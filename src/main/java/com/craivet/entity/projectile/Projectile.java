@@ -46,7 +46,7 @@ public class Projectile extends Entity {
 			 * se vuelva a dibujar el proyectil, este se va a mantener en el frame de movimiento 1 ya que en el operador
 			 * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
 			 * movimiento 2. La siguiente linea soluciona este problema. */
-			collisionOn = false;
+			collision = false;
 			if (mobIndex != -1 && !world.mobs[world.map][mobIndex].invincible) {
 				game.player.damageMob(mobIndex, attack, knockBackPower, direction);
 				// En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob

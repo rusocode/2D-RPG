@@ -13,7 +13,7 @@ public class Door extends Item {
 		super(game, world);
 		name = "Door";
 		image = Utils.scaleImage(item_door, tile_size, tile_size);
-		collision = true;
+		solid = true;
 		hitbox.x = 0;
 		hitbox.y = 16;
 		hitbox.width = 48;

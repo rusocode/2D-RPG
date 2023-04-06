@@ -20,12 +20,7 @@ import static com.craivet.utils.Constants.*;
  * Crea los componentes para cada entidad.
  *
  * <p>TODO Los metodos para obtener las subimagenes deberian ir en otra clase
- * <p>TODO items y objetos son lo mismo?
- * <p>TODO Se podrian separar los npcs, mobs, items, objetos y proyectiles por paquetes y clases abstractas
- * <p>TODO En vez de usar la variable "movementDown1" para representar la imagen de un objeto, se podria usar una
- * var "image"
  * <p>TODO Los metodos update() y render() se podrian implementar desde una interfaz
- * <p>TODO Algun de estos metodos no tendrian que funcionar en sus respectivas clases?
  */
 
 public abstract class Entity {
@@ -53,7 +48,7 @@ public abstract class Entity {
 	public int coin;
 	public int strength, dexterity;
 	public int attack, defense;
-	public boolean collision;
+	public boolean solid;
 	public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
 	public int hitboxDefaultX, hitboxDefaultY;
 	public Projectile projectile; // TODO Es necesario declarar este objeto aca?
@@ -73,9 +68,9 @@ public abstract class Entity {
 	// States
 	public boolean attacking;
 	public boolean alive = true;
-	public boolean collisionOn;
+	public boolean collision;
 	public boolean dead;
-	public boolean hpBarOn;
+	public boolean hpBar;
 	public boolean invincible;
 	public boolean knockBack;
 	public boolean onPath;
@@ -88,7 +83,7 @@ public abstract class Entity {
 	public void update() {
 		if (knockBack) {
 			checkCollisions();
-			if (collisionOn) {
+			if (collision) {
 				timer.knockBackCounter = 0;
 				knockBack = false;
 				speed = defaultSpeed;
@@ -97,7 +92,7 @@ public abstract class Entity {
 		} else {
 			setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
 			checkCollisions();
-			if (!collisionOn) updatePosition();
+			if (!collision) updatePosition();
 
 			timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
 			if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
@@ -115,21 +110,21 @@ public abstract class Entity {
 				worldY - tile_size < game.player.worldY + game.player.screenY) {
 			switch (direction) {
 				case DOWN:
-					auxImage = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
+					auxImage = movementNum == 1 || collision ? movementDown1 : movementDown2;
 					break;
 				case UP:
-					auxImage = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
+					auxImage = movementNum == 1 || collision ? movementUp1 : movementUp2;
 					break;
 				case LEFT:
-					auxImage = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
+					auxImage = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
 					break;
 				case RIGHT:
-					auxImage = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
+					auxImage = movementNum == 1 || collision ? movementRight1 : movementRight2;
 					break;
 			}
 
 			// Si la barra de hp esta activada
-			if (type == TYPE_MOB && hpBarOn) {
+			if (type == TYPE_MOB && hpBar) {
 
 				double oneScale = (double) tile_size / maxLife;
 				double hpBarValue = oneScale * life;
@@ -318,7 +313,7 @@ public abstract class Entity {
 	}
 
 	private void checkCollisions() {
-		collisionOn = false;
+		collision = false;
 		game.collider.checkTile(this);
 		game.collider.checkObject(this);
 		game.collider.checkEntity(this, world.npcs);
@@ -376,22 +371,22 @@ public abstract class Entity {
 				// up o left
 				direction = UP;
 				checkCollisions();
-				if (collisionOn) direction = LEFT;
+				if (collision) direction = LEFT;
 			} else if (top > nextY && left < nextX) {
 				// up o right
 				direction = UP;
 				checkCollisions();
-				if (collisionOn) direction = RIGHT;
+				if (collision) direction = RIGHT;
 			} else if (top < nextY && left > nextX) {
 				// down o left
 				direction = DOWN;
 				checkCollisions();
-				if (collisionOn) direction = LEFT;
+				if (collision) direction = LEFT;
 			} else if (top < nextY && left < nextX) {
 				// down o right
 				direction = DOWN;
 				checkCollisions();
-				if (collisionOn) direction = RIGHT;
+				if (collision) direction = RIGHT;
 			}
 
 			// Si la entidad llego al objetivo entonces sale del algoritmo de busqueda

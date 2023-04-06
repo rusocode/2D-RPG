@@ -98,7 +98,7 @@ public class Timer {
 	 */
 	public void timeHpBar(Entity entity, final int interval) {
 		if (hpBarCounter++ >= interval) {
-			entity.hpBarOn = false;
+			entity.hpBar = false;
 			hpBarCounter = 0;
 		}
 	}

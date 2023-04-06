@@ -29,7 +29,6 @@ public class Player extends Entity {
 
 	public Player(Game game, World world) {
 		super(game, world);
-
 		// Posiciona el player en el centro de la pantalla
 		screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
 		screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
@@ -49,16 +48,15 @@ public class Player extends Entity {
 		exp = 0;
 		nextLevelExp = 5;
 		coin = 500;
-
-		invincible = false;
-
 		strength = 1;
 		dexterity = 1;
+		invincible = false;
+
+		projectile = new Fireball(game, world);
 		weapon = new SwordNormal(game, world);
 		shield = new ShieldWood(game, world);
 		attack = getAttack();
 		defense = getDefense();
-		projectile = new Fireball(game, world);
 
 		hitbox.x = 8;
 		hitbox.y = 16;
@@ -93,7 +91,7 @@ public class Player extends Entity {
 
 			getDirection();
 			checkCollisions();
-			if (!collisionOn && !key.enter && !key.l) updatePosition();
+			if (!collision && !key.enter && !key.l) updatePosition();
 			checkAttack();
 
 			// Resetea las teclas de accion
@@ -122,11 +120,11 @@ public class Player extends Entity {
 		int tempScreenX = screenX, tempScreenY = screenY;
 		switch (direction) {
 			case DOWN:
-				if (!attacking) frame = movementNum == 1 || collisionOn ? movementDown1 : movementDown2;
+				if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
 				if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
 				break;
 			case UP:
-				if (!attacking) frame = movementNum == 1 || collisionOn ? movementUp1 : movementUp2;
+				if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
 				if (attacking) {
 					// Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
 					tempScreenY -= tile_size;
@@ -134,14 +132,14 @@ public class Player extends Entity {
 				}
 				break;
 			case LEFT:
-				if (!attacking) frame = movementNum == 1 || collisionOn ? movementLeft1 : movementLeft2;
+				if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
 				if (attacking) {
 					tempScreenX -= tile_size;
 					frame = attackNum == 1 ? attackLeft1 : attackLeft2;
 				}
 				break;
 			case RIGHT:
-				if (!attacking) frame = movementNum == 1 || collisionOn ? movementRight1 : movementRight2;
+				if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
 				if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
 				break;
 		}
@@ -346,7 +344,7 @@ public class Player extends Entity {
 				if (mob.life > 0) game.playSound(sound_hit_monster);
 
 				mob.invincible = true;
-				mob.hpBarOn = true;
+				mob.hpBar = true;
 				mob.damageReaction();
 
 				if (mob.life <= 0) {
@@ -458,10 +456,10 @@ public class Player extends Entity {
 	}
 
 	/**
-	 * Verifica las colisiones con tiles, objetos, npcs, mobs, tiles interactivos y eventos.
+	 * Verifica las colisiones con tiles, items, npcs, mobs, tiles interactivos y eventos.
 	 */
 	private void checkCollisions() {
-		collisionOn = false;
+		collision = false;
 		game.collider.checkTile(this);
 		pickUpItem(game.collider.checkObject(this));
 		interactNPC(game.collider.checkEntity(this, world.npcs));

@@ -25,6 +25,9 @@ import static com.craivet.utils.Constants.*;
 
 /**
  * En el mundo se crean los tiles y las entidades que lo componen.
+ * <p>
+ * TODO Realmente se crean las entidades aca o en la clase Entity?. Logicamente la clase Entity declara los componentes
+ * que componen cada entidad y el mundo las crea.
  */
 
 public class World {
