@@ -20,159 +20,166 @@ import static com.craivet.gfx.Assets.*;
 
 public class Game extends Canvas implements Runnable {
 
-	// System
-	private final World world = new World(this);
-	public AudioManager sound = new AudioManager();
-	public AudioManager music = new AudioManager();
-	public EventManager event = new EventManager(this, world);
-	public AssetSetter aSetter = new AssetSetter(this, world);
-	public KeyManager key = new KeyManager(this, world);
-	public Collider collider = new Collider(this, world);
-	public UI ui = new UI(this, world);
-	public Config config = new Config(this);
-	public AStar aStar = new AStar(world);
-	public Player player = new Player(this, world);
+    // System
+    private final World world = new World(this);
+    public AudioManager sound = new AudioManager();
+    public AudioManager music = new AudioManager();
+    public EventManager event = new EventManager(this, world);
+    public AssetSetter aSetter = new AssetSetter(this, world);
+    public KeyManager key = new KeyManager(this, world);
+    public Collider collider = new Collider(this, world);
+    public UI ui = new UI(this, world);
+    public Config config = new Config(this);
+    public AStar aStar = new AStar(world);
+    public Player player = new Player(this, world);
 
-	// Game state
-	public StateManager stateManager = new StateManager();
-	public GameState gState;
-	public int gameState;
-	private boolean running;
+    // Game state
+    public StateManager stateManager = new StateManager();
+    public GameState gState;
+    public int gameState;
+    private boolean running;
 
-	private BufferStrategy buffer;
+    private BufferStrategy buffer;
 
-	public boolean fullScreen;
+    // Para mostrar los fps en pantalla
+    public int framesInRender;
+    public boolean showFPS;
 
-	public Game() {
-		setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-		setFocusable(true);
-		addKeyListener(key);
-	}
+    public boolean fullScreen;
 
-	/**
-	 * Desde aca se bombea toda la sangre.
-	 */
-	@Override
-	public void run() {
+    public Game() {
+        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        setFocusable(true);
+        addKeyListener(key);
+    }
 
-		init();
+    /**
+     * Desde aca se bombea toda la sangre.
+     */
+    @Override
+    public void run() {
 
-		double deltaTime = 0;
-		double nsPerTick = 1E9 / TICKS;
-		double nsPerFrame = 1E9 / MAX_FPS;
-		long lastTick = TimeUtils.nanoTime();
-		long lastRender = TimeUtils.nanoTime();
-		long timer = 0, frames = 0;
-		int ticks = 0;
+        init();
 
-		while (isRunning()) {
-			long now = TimeUtils.nanoTime();
-			deltaTime += (now - lastTick) / nsPerTick;
-			timer += now - lastTick;
-			lastTick = now;
+        double deltaTime = 0;
+        double nsPerTick = 1E9 / TICKS;
+        double nsPerFrame = 1E9 / MAX_FPS;
+        long lastTick = TimeUtils.nanoTime();
+        long lastRender = TimeUtils.nanoTime();
+        long timer = 0;
+        int ticks = 0, framesInConsole = 0;
 
-			if (deltaTime >= 1) {
-				ticks++;
-				update();
-				deltaTime--;
-			}
+        while (isRunning()) {
+            long now = TimeUtils.nanoTime();
+            deltaTime += (now - lastTick) / nsPerTick;
+            timer += now - lastTick;
+            lastTick = now;
 
-			if (FPS_UNLIMITED || now - lastRender >= nsPerFrame) {
-				frames++;
-				lastRender = TimeUtils.nanoTime();
-				render();
-			}
+            if (deltaTime >= 1) {
+                update();
+                ticks++;
+                deltaTime--;
+            }
 
-			if (timer >= 1E9) {
-				System.out.println(ticks + " ticks, " + frames + " fps");
-				timer = 0;
-				ticks = 0;
-				frames = 0;
-			}
-		}
+            if (FPS_UNLIMITED || now - lastRender >= nsPerFrame) {
+                lastRender = TimeUtils.nanoTime();
+                render();
+                framesInConsole++;
+            }
 
-	}
+            if (timer >= 1E9) {
+                System.out.println(ticks + " ticks, " + framesInConsole + " fps");
+                timer = 0;
+                ticks = 0;
+                framesInRender = framesInConsole;
+                framesInConsole = 0;
+                showFPS = true;
+            }
 
-	private void init() {
-		setAssets();
+        }
 
-		playMusic(music_blue_boy_adventure);
-		gameState = PLAY_STATE;
+    }
 
-		gState = new GameState(world);
-		stateManager.setState(gState);
+    private void init() {
+        setAssets();
 
-	}
+        playMusic(music_blue_boy_adventure);
+        gameState = PLAY_STATE;
 
-	private void update() {
-		if (stateManager.getState() != null) stateManager.getState().update();
-	}
+        gState = new GameState(world);
+        stateManager.setState(gState);
 
-	private void render() {
-		// Obtiene un nuevo contexto de graficos en cada iteracion para asegurarse de que la estrategia este validada
-		Graphics2D g2 = (Graphics2D) buffer.getDrawGraphics(); // Pincel
-		// Limpia la ventana usando el color de fondo actual
-		g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-		// Renderiza los graficos en pantalla
-		if (stateManager.getState() != null) stateManager.getState().render(g2);
-		// Hace visible el buffer
-		buffer.show();
-		// Elimina este contexto de graficos y libera cualquier recurso del sistema que este utilizando
-		g2.dispose();
-		// TODO Primero se muestra el buffer o se elimina el contexto grafico? https://docs.oracle.com/javase/8/docs/api/index.html
-	}
+    }
 
-	private synchronized boolean isRunning() {
-		return running;
-	}
+    private void update() {
+        if (stateManager.getState() != null) stateManager.getState().update();
+    }
 
-	public synchronized void start() {
-		if (running) return;
-		/* Crear una estrategia general de triple buffer. Tenga en cuenta que cuanto mas alto sea, mas potencia de
-		 * procesamiento necesitara. */
-		createBufferStrategy(3);
-		// Obtiene el buffer del Canvas
-		buffer = getBufferStrategy();
-		running = true;
-		new Thread(this, "Game Thread").start();
-	}
+    private void render() {
+        // Obtiene un nuevo contexto de graficos en cada iteracion para asegurarse de que la estrategia este validada
+        Graphics2D g2 = (Graphics2D) buffer.getDrawGraphics(); // Pincel
+        // Limpia la ventana usando el color de fondo actual
+        g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        // Renderiza los graficos en pantalla
+        if (stateManager.getState() != null) stateManager.getState().render(g2);
+        // Hace visible el buffer
+        buffer.show();
+        // Elimina este contexto de graficos y libera cualquier recurso del sistema que este utilizando
+        g2.dispose();
+        // TODO Primero se muestra el buffer o se elimina el contexto grafico? https://docs.oracle.com/javase/8/docs/api/index.html
+    }
 
-	public void playMusic(URL url) {
-		music.play(url);
-		music.loop();
-	}
+    private synchronized boolean isRunning() {
+        return running;
+    }
 
-	public void stopMusic() {
-		music.stop();
-	}
+    public synchronized void start() {
+        if (running) return;
+        /* Crear una estrategia general de triple buffer. Tenga en cuenta que cuanto mas alto sea, mas potencia de
+         * procesamiento necesitara. */
+        createBufferStrategy(3);
+        // Obtiene el buffer del Canvas
+        buffer = getBufferStrategy();
+        running = true;
+        new Thread(this, "Game Thread").start();
+    }
 
-	public void playSound(URL url) {
-		sound.play(url);
-	}
+    public void playMusic(URL url) {
+        music.play(url);
+        music.loop();
+    }
 
-	private void setAssets() {
-		aSetter.setObject();
-		aSetter.setNPC();
-		aSetter.setMOB();
-		aSetter.setInteractiveTile();
-	}
+    public void stopMusic() {
+        music.stop();
+    }
 
-	public void retry() {
-		player.setDefaultPosition();
-		player.restoreLifeAndMana();
-		aSetter.setNPC();
-		aSetter.setMOB();
-	}
+    public void playSound(URL url) {
+        sound.play(url);
+    }
 
-	public void restart() {
-		player.initDefaultValues();
-		player.setDefaultPosition();
-		player.setItems();
-		aSetter.setObject();
-		aSetter.setNPC();
-		aSetter.setMOB();
-		aSetter.setInteractiveTile();
-	}
+    private void setAssets() {
+        aSetter.setObject();
+        aSetter.setNPC();
+        aSetter.setMOB();
+        aSetter.setInteractiveTile();
+    }
+
+    public void retry() {
+        player.setDefaultPosition();
+        player.restoreLifeAndMana();
+        aSetter.setNPC();
+        aSetter.setMOB();
+    }
+
+    public void restart() {
+        player.initDefaultValues();
+        player.setDefaultPosition();
+        player.setItems();
+        aSetter.setObject();
+        aSetter.setNPC();
+        aSetter.setMOB();
+        aSetter.setInteractiveTile();
+    }
 
 }
 
