@@ -10,6 +10,7 @@ import com.craivet.gfx.Assets;
 import com.craivet.tile.Interactive;
 import com.craivet.tile.Tile;
 import com.craivet.tile.TileManager;
+import com.craivet.utils.TimeUtils;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -91,7 +92,7 @@ public class World {
 			y += gap;
 			g2.drawString("Y: " + (game.player.worldY + game.player.hitbox.y) / tile_size, x, y);
 			y += gap;
-			g2.drawString("Draw time: " + (System.nanoTime() - renderStart) / 1_000 + " microsegundos", x, y);
+			g2.drawString("Draw time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
 		}
 
 	}
