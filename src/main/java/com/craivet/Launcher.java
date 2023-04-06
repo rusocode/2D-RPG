@@ -1,5 +1,7 @@
 package com.craivet;
 
+import com.craivet.gfx.Display;
+
 import javax.swing.*;
 
 /**
@@ -12,9 +14,9 @@ import javax.swing.*;
 
 public class Launcher {
 
-	public static void main(String[] args) throws Exception {
-		UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		new Game().start();
-	}
+    public static void main(String[] args) throws Exception {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        new Display(new Game()).startGame();
+    }
 
 }

@@ -6,13 +6,20 @@ import javax.swing.*;
 
 public class Display extends JFrame {
 
-	public Display(Game game) {
-		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		add(game);
-		pack();
-		setLocationRelativeTo(null);
-		setVisible(true);
-	}
+    private final Game game;
+
+    public Display(Game game) {
+        this.game = game;
+        setResizable(false);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        add(game);
+        pack();
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void startGame() {
+        game.start();
+    }
 
 }

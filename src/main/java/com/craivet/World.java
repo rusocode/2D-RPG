@@ -91,7 +91,7 @@ public class World {
 			y += gap;
 			g2.drawString("Y: " + (game.player.worldY + game.player.hitbox.y) / tile_size, x, y);
 			y += gap;
-			g2.drawString("Draw time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
+			g2.drawString("Draw time: " + (System.nanoTime() - renderStart) / 1_000 + " microsegundos", x, y);
 		}
 
 	}
