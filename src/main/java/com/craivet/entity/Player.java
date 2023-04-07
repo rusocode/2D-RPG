@@ -40,7 +40,7 @@ public class Player extends Entity {
 	}
 
 	public void initDefaultValues() {
-		speed = defaultSpeed = 4;
+		speed = defaultSpeed = 3;
 		life = maxLife = 6;
 		mana = maxMana = 4;
 		ammo = 5;

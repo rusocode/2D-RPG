@@ -12,12 +12,21 @@ public final class Constants {
 	private Constants() {
 	}
 
-	public static final String CONFIG_FILE = "config.txt";
-	public static final int TICKS = 60; // Cantidad de veces que el GameLoop actualiza la fisica por segundo
-	// TIP: Para saber que seccion del juego puede llegar a causar bajones de FPS, entonces se aumenta este valor
-	public static final int MAX_FPS = 130; // Cantidad maxima de veces que el GameLoop PUEDE llegar a renderizan la pantalla por segundo (esto depende del poder de computo)
-	// En caso de activar la ilimitacion de fps, el renderizado se va a realizar la mayor cantidad de veces que pueda dependiendo del poder de computo en el que se este ejecutando el juego
+	/* Cantidad de veces que el GameLoop actualiza la fisica por segundo. En general, muchos juegos RPG en 2D utilizan
+	 * una frecuencia de 60 "ticks". */
+	public static final int TICKS = 60;
+	/* Cantidad maxima de veces que el GameLoop PUEDE llegar a renderizar la pantalla por segundo. Cuando digo "puede",
+	 * significa que no siempre puede llegar al maximo especificado.
+	 * TIP: Sincronizar la cantidad de fps con los Hz del monitor para evitar un posible "tearing" o "stuttering". */
+	public static final int MAX_FPS = 60;
+	/* En caso de activar la ilimitacion de fps, el renderizado se va a realizar la mayor cantidad de veces que pueda.
+	 * A diferencia de MAX_FPS, los limites para la cantidad de fps son el poder de procesamiento de la computadora, el
+	 * rendimiento del juego, la cantidad de objetos que se renderizan en pantalla, el uso de la CPU, entre otros.
+	 * TIP: Activa esta opcion para testear bajones de fps en diferentes areas del juego. */
 	public static final boolean FPS_UNLIMITED = false;
+
+	// Otros
+	public static final String CONFIG_FILE = "config.txt";
 	public static final int MAX_INVENTORY_SIZE = 20;
 	public static final int PLAYER_SPEED = 3;
 	public static final int ENTITY_WIDTH = 16;
