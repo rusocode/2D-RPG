@@ -161,7 +161,7 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void setAssets() {
-		aSetter.setObject();
+		aSetter.setItem();
 		aSetter.setNPC();
 		aSetter.setMOB();
 		aSetter.setInteractiveTile();
@@ -178,7 +178,7 @@ public class Game extends Canvas implements Runnable {
 		player.initDefaultValues();
 		player.setDefaultPosition();
 		player.setItems();
-		aSetter.setObject();
+		aSetter.setItem();
 		aSetter.setNPC();
 		aSetter.setMOB();
 		aSetter.setInteractiveTile();

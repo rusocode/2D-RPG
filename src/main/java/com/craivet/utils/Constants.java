@@ -101,5 +101,6 @@ public final class Constants {
 	public static final int TYPE_SHIELD = 5;
 	public static final int TYPE_CONSUMABLE = 6;
 	public static final int TYPE_PICKUP_ONLY = 7;
+	public static final int TYPE_OBSTACLE = 8;
 
 }

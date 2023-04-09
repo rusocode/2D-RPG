@@ -18,10 +18,11 @@ public class Coin extends Item {
 		value = 1;
 	}
 
-	public void use(Entity entity) {
+	public boolean use(Entity entity) {
 		game.playSound(sound_coin);
 		game.ui.addMessage("Coin +" + value);
 		entity.coin += value;
+		return true;
 	}
 
 }

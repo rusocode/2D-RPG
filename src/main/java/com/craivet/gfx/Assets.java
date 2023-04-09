@@ -22,9 +22,11 @@ public final class Assets {
 	public static final URL music_blue_boy_adventure = Utils.loadAudio("audio/music/blue_boy_adventure.wav");
 	// Sounds
 	public static final URL sound_burning = Utils.loadAudio("audio/sounds/burning5.wav");
+	public static final URL sound_chest_opening = Utils.loadAudio("audio/sounds/chest_opening.wav");
 	public static final URL sound_coin = Utils.loadAudio("audio/sounds/coin.wav");
 	public static final URL sound_cursor = Utils.loadAudio("audio/sounds/cursor.wav");
 	public static final URL sound_cut_tree = Utils.loadAudio("audio/sounds/cut_tree.wav");
+	public static final URL sound_door_opening = Utils.loadAudio("audio/sounds/door_opening.wav");
 	public static final URL sound_draw_sword = Utils.loadAudio("audio/sounds/draw_sword.wav");
 	public static final URL sound_hit_monster = Utils.loadAudio("audio/sounds/hit_monster5.wav");
 	public static final URL sound_level_up = Utils.loadAudio("audio/sounds/level_up.wav");
@@ -59,6 +61,7 @@ public final class Assets {
 	public static final BufferedImage item_axe = Utils.loadImage("textures/items/axe.png");
 	public static final BufferedImage item_boots = Utils.loadImage("textures/items/boots.png");
 	public static final BufferedImage item_chest = Utils.loadImage("textures/items/chest.png");
+	public static final BufferedImage item_chest_opened = Utils.loadImage("textures/items/chest_opened.png");
 	public static final BufferedImage item_door = Utils.loadImage("textures/items/door.png");
 	public static final BufferedImage item_coin = Utils.loadImage("textures/items/coin.png");
 	public static final BufferedImage item_key = Utils.loadImage("textures/items/key.png");
