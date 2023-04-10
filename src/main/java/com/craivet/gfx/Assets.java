@@ -24,7 +24,7 @@ public final class Assets {
 	public static final URL sound_burning = Utils.loadAudio("audio/sounds/burning5.wav");
 	public static final URL sound_chest_opening = Utils.loadAudio("audio/sounds/chest_opening.wav");
 	public static final URL sound_coin = Utils.loadAudio("audio/sounds/coin.wav");
-	public static final URL sound_cursor = Utils.loadAudio("audio/sounds/cursor.wav");
+	public static final URL sound_cursor = Utils.loadAudio("audio/sounds/501.wav");
 	public static final URL sound_cut_tree = Utils.loadAudio("audio/sounds/cut_tree.wav");
 	public static final URL sound_door_opening = Utils.loadAudio("audio/sounds/door_opening.wav");
 	public static final URL sound_draw_sword = Utils.loadAudio("audio/sounds/draw_sword.wav");
@@ -33,11 +33,12 @@ public final class Assets {
 	public static final URL sound_mob_death = Utils.loadAudio("audio/sounds/mob_death.wav");
 	public static final URL sound_player_die = Utils.loadAudio("audio/sounds/player_die.wav");
 	public static final URL sound_potion_red = Utils.loadAudio("audio/sounds/potion2.wav");
-	public static final URL sound_power_up = Utils.loadAudio("audio/sounds/power_up.wav");
+	public static final URL sound_pick_up = Utils.loadAudio("audio/sounds/472.wav");
 	public static final URL sound_receive_damage = Utils.loadAudio("audio/sounds/receive_damage.wav");
 	public static final URL sound_spawn = Utils.loadAudio("audio/sounds/spawn.wav");
 	public static final URL sound_swing_weapon = Utils.loadAudio("audio/sounds/swing_weapon.wav");
 	public static final URL sound_swing_axe = Utils.loadAudio("audio/sounds/swing_axe.wav");
+	public static final URL sound_trade = Utils.loadAudio("audio/sounds/trade.wav");
 	public static final URL sound_trade_open = Utils.loadAudio("audio/sounds/trade_open.wav");
 
 	// FONT

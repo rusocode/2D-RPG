@@ -58,7 +58,9 @@ public abstract class Entity {
 	public int price;
 	public int attackValue, defenseValue;
 	public int knockBackPower;
+	public int amount = 1;
 	public boolean solid;
+	public boolean stackable;
 	
 	// Frames (movimiento, ataque)
 	public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;

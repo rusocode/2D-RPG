@@ -14,7 +14,7 @@ import java.util.function.Supplier;
 
 public class Item extends Entity {
 
-	public int value;
+	protected int value;
 	/* Se utiliza la estructura de datos de tipo Map para almacenar instancias de tipo Item. Esto se hace utilizando la
 	 * interfaz Supplier como proveedor de valor para crear una instancia de tipo Item usando la expresion lambda. La
 	 * expresion () -> new Axe(game) implementa el metodo get() de la interfaz Supplier para devolver una nueva

@@ -19,7 +19,7 @@ public class Trader extends Npc {
 
 	private void initDefaultValues() {
 		type = TYPE_NPC;
-		name = "Merchant";
+		name = "Trader";
 
 		hitbox.x = 8;
 		hitbox.y = 16;

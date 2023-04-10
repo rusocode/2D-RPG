@@ -17,6 +17,7 @@ public class Key extends Item {
 		image = Utils.scaleImage(item_key, tile_size, tile_size);
 		itemDescription = "[" + name + "]\nIt opens a door.";
 		price = 100;
+		stackable = true;
 	}
 	
 	public boolean use(Entity entity) {
