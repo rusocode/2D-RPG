@@ -460,7 +460,7 @@ public class Player extends Entity {
         boolean canObtain = false;
         // Verifica si es stackable
         if (item.stackable) {
-            // Verifica si ya existe en el inventario, y en caso de qua ya exista aumenta la cantidad
+            // Verifica si ya existe en el inventario, y en caso de que ya exista aumenta la cantidad
             int itemIndex = searchItemInInventory(item.name);
             if (itemIndex != -1) {
                 inventory.get(itemIndex).amount++;

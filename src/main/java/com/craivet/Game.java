@@ -144,7 +144,7 @@ public class Game extends Canvas implements Runnable {
 		// Obtiene el buffer del Canvas
 		buffer = getBufferStrategy();
 		running = true;
-		new Thread(this, "Game Thread").start();
+		new Thread(this).start();
 	}
 
 	public void playMusic(URL url) {

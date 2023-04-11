@@ -24,7 +24,7 @@ public final class Assets {
 	public static final URL sound_burning = Utils.loadAudio("audio/sounds/burning5.wav");
 	public static final URL sound_chest_opening = Utils.loadAudio("audio/sounds/chest_opening.wav");
 	public static final URL sound_coin = Utils.loadAudio("audio/sounds/coin.wav");
-	public static final URL sound_cursor = Utils.loadAudio("audio/sounds/501.wav");
+	public static final URL sound_cursor = Utils.loadAudio("audio/sounds/500.wav");
 	public static final URL sound_cut_tree = Utils.loadAudio("audio/sounds/cut_tree.wav");
 	public static final URL sound_door_opening = Utils.loadAudio("audio/sounds/door_opening.wav");
 	public static final URL sound_draw_sword = Utils.loadAudio("audio/sounds/draw_sword.wav");
@@ -38,7 +38,7 @@ public final class Assets {
 	public static final URL sound_spawn = Utils.loadAudio("audio/sounds/spawn.wav");
 	public static final URL sound_swing_weapon = Utils.loadAudio("audio/sounds/swing_weapon.wav");
 	public static final URL sound_swing_axe = Utils.loadAudio("audio/sounds/swing_axe.wav");
-	public static final URL sound_trade = Utils.loadAudio("audio/sounds/trade.wav");
+	public static final URL sound_trade = Utils.loadAudio("audio/sounds/485.wav");
 	public static final URL sound_trade_open = Utils.loadAudio("audio/sounds/trade_open.wav");
 
 	// FONT
@@ -61,7 +61,7 @@ public final class Assets {
 	// Items
 	public static final BufferedImage item_axe = Utils.loadImage("textures/items/axe.png");
 	public static final BufferedImage item_boots = Utils.loadImage("textures/items/boots.png");
-	public static final BufferedImage item_chest = Utils.loadImage("textures/items/chest.png");
+	public static final BufferedImage item_chest_closed = Utils.loadImage("textures/items/chest_closed.png");
 	public static final BufferedImage item_chest_opened = Utils.loadImage("textures/items/chest_opened.png");
 	public static final BufferedImage item_door = Utils.loadImage("textures/items/door.png");
 	public static final BufferedImage item_coin = Utils.loadImage("textures/items/coin.png");

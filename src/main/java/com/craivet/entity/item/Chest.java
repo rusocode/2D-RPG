@@ -20,7 +20,7 @@ public class Chest extends Item {
         worldY = y * tile_size;
         name = "Chest";
         type = TYPE_OBSTACLE;
-        image = Utils.scaleImage(item_chest, tile_size, tile_size);
+        image = Utils.scaleImage(item_chest_closed, tile_size, tile_size);
         image2 = Utils.scaleImage(item_chest_opened, tile_size, tile_size);
         solid = true;
         hitbox.x = 4;

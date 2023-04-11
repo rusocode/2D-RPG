@@ -419,16 +419,16 @@ public class UI {
             if (entity.inventory.get(i).amount > 1) {
                 changeFontSize(32);
                 int amountX, amountY;
-                String s = "" + entity.inventory.get(i).amount;
-                amountX = getXforAlignToRightText(s, slotX + 44);
+                String amount = "" + entity.inventory.get(i).amount;
+                amountX = getXforAlignToRightText(amount, slotX + 44);
                 amountY = slotY + tile_size;
 
                 // Shadow
                 g2.setColor(new Color(60, 60, 60));
-                g2.drawString(s, amountX, amountY);
+                g2.drawString(amount, amountX, amountY);
                 // Number
                 g2.setColor(Color.white);
-                g2.drawString(s, amountX - 3, amountY - 3);
+                g2.drawString(amount, amountX - 3, amountY - 3);
 
             }
 
