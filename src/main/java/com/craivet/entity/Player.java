@@ -283,7 +283,7 @@ public class Player extends Entity {
                 if (item.type == TYPE_PICKUP_ONLY) item.use(this);
                 else if (canObtainItem(item)) {
                     game.playSound(sound_pick_up);
-                    game.ui.addMessage("Got a " + item.name + "!");
+                    // game.ui.addMessage("Got a " + item.name + "!");
                 } else {
                     game.ui.addMessage("You cannot carry any more!");
                     return;

@@ -94,7 +94,9 @@ public class EntityManager {
 			
 			world.entities.clear();
 			world.itemsList.clear();
-			
+
+			game.eManager.draw(g2);
+
 			game.ui.draw(g2);
 		}
 	}

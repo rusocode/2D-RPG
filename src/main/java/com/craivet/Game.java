@@ -2,6 +2,7 @@ package com.craivet;
 
 import com.craivet.ai.AStar;
 import com.craivet.entity.Player;
+import com.craivet.environment.EnvironmentManager;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
@@ -32,6 +33,7 @@ public class Game extends Canvas implements Runnable {
 	public Config config = new Config(this);
 	public AStar aStar = new AStar(world);
 	public Player player = new Player(this, world);
+	public EnvironmentManager eManager = new EnvironmentManager(this);
 
 	// Game state
 	public StateManager stateManager = new StateManager();
@@ -105,6 +107,8 @@ public class Game extends Canvas implements Runnable {
 
 	private void init() {
 		setAssets();
+
+		eManager.setup();
 
 		playMusic(music_blue_boy_adventure);
 		gameState = PLAY_STATE;
