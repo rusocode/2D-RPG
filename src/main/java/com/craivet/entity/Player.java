@@ -25,7 +25,7 @@ public class Player extends Entity {
 
     private final KeyManager key;
     public final int screenX, screenY;
-    public boolean attackCanceled;
+    public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
         super(game, world);
@@ -440,6 +440,10 @@ public class Player extends Entity {
             if (selectedItem.type == TYPE_SHIELD) {
                 shield = selectedItem;
                 defense = getDefense();
+            }
+            if (selectedItem.type == TYPE_LIGHT) {
+                light = light == selectedItem ? null : selectedItem;
+                lightUpdate = true;
             }
             if (selectedItem.type == TYPE_CONSUMABLE) {
                 if (selectedItem.use(this)) {

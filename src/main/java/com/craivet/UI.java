@@ -409,7 +409,7 @@ public class UI {
         // Draw player´s items
         for (int i = 0; i < entity.inventory.size(); i++) {
             // Remarca de color amarillo el item seleccionado
-            if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield) {
+            if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield || entity.inventory.get(i) == entity.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRoundRect(slotX, slotY, tile_size, tile_size, 10, 10);
             }

@@ -84,6 +84,7 @@ public class World {
         tileManager.render(g2);
         entityManager.render(g2);
 
+
         // TODO Agrega mapa
         if (game.key.t) {
             g2.setFont(new Font("Arial", Font.PLAIN, 20));

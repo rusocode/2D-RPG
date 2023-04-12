@@ -102,5 +102,6 @@ public final class Constants {
 	public static final int TYPE_CONSUMABLE = 6; // TODO Se podria combinar, ya que una pocion es agarrable y consumible
 	public static final int TYPE_PICKUP_ONLY = 7;
 	public static final int TYPE_OBSTACLE = 8;
+	public static final int TYPE_LIGHT = 9;
 
 }
