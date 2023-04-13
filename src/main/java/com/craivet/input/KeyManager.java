@@ -68,7 +68,6 @@ public class KeyManager extends KeyAdapter {
                     game.playSound(sound_spawn);
                     game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
                     game.restart();
-                    // game.restart();
                     // game.playMusic(blue_boy_adventure);
                 }
                 // if (game.ui.commandNum == 1) {}

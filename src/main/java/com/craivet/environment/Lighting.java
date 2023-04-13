@@ -96,7 +96,7 @@ public class Lighting {
             world.player.lightUpdate = false;
         }
 
-        cycleDay();
+        // cycleDay();
 
     }
 
@@ -104,28 +104,7 @@ public class Lighting {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-
-        // Debug
-        String situation = "";
-        switch (dayState) {
-            case day:
-                situation = "Day";
-                break;
-            case dusk:
-                situation = "Dusk";
-                break;
-            case night:
-                situation = "Night";
-                break;
-            case dawn:
-                situation = "Dawn";
-                break;
-        }
-        g2.setFont(font_medieval1);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2.setColor(Color.white);
-        g2.setFont(g2.getFont().deriveFont(50f));
-        g2.drawString(situation, 750, 500);
+        // debug(g2);
     }
 
     /**
@@ -168,6 +147,30 @@ public class Lighting {
                 dayState = day;
             }
         }
+    }
+
+    private void debug(Graphics2D g2) {
+        // Debug
+        String situation = "";
+        switch (dayState) {
+            case day:
+                situation = "Day";
+                break;
+            case dusk:
+                situation = "Dusk";
+                break;
+            case night:
+                situation = "Night";
+                break;
+            case dawn:
+                situation = "Dawn";
+                break;
+        }
+        g2.setFont(font_medieval1);
+        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(50f));
+        g2.drawString(situation, 750, 500);
     }
 
 }
