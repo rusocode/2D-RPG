@@ -9,7 +9,6 @@ import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Projectile;
 import com.craivet.environment.EnvironmentManager;
 import com.craivet.gfx.Assets;
-import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
 import com.craivet.tile.Tile;
 import com.craivet.tile.TileManager;
@@ -27,7 +26,7 @@ import java.util.Objects;
 import static com.craivet.utils.Constants.*;
 
 /**
- * En el mundo se crean los tiles y las entidades que lo componen.
+ * En el mundo se crean los tiles, las entidades que lo componen y el entorno.
  * <p>
  * TODO Realmente se crean las entidades aca o en la clase Entity?. Logicamente la clase Entity declara los componentes
  * que componen cada entidad y el mundo las crea.
@@ -35,14 +34,15 @@ import static com.craivet.utils.Constants.*;
 
 public class World {
 
-    private final Game game;
+    // Managers
     private final TileManager tileManager;
     private final EntityManager entityManager;
     private final EnvironmentManager environmentManager;
 
+    // Tiles
     public int map;
-    public Tile[] tile;
-    public int[][][] tileIndex;
+    public Tile[] tile = new Tile[50];
+    public int[][][] tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 
     // Entities
     public Player player;
@@ -56,24 +56,18 @@ public class World {
     public Interactive[][] interactives = new Interactive[MAX_MAP][50];
 
     public boolean drawPath;
-    private long renderStart;
-    private int lastFrames;
 
     public World(Game game) {
-        this.game = game;
-        player = new Player(game, this); // TODO En vez de pasarle el objeto key, podrias crear un metodo en game que devuelva este objeto
+        loadTiles();
+        loadMaps();
+        player = new Player(game, this);
         tileManager = new TileManager(game, this);
         entityManager = new EntityManager(game, this);
         environmentManager = new EnvironmentManager(this);
-
-        tile = new Tile[50];
-        tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
-        loadTiles();
-        loadMaps();
     }
 
     /**
-     * Actualiza las entidades y la iluminacion.
+     * Actualiza las entidades y el entorno.
      */
     public void update() {
         entityManager.update();
@@ -86,33 +80,9 @@ public class World {
      * @param g2 componente grafico.
      */
     public void render(Graphics2D g2) {
-
-        // Debug mode
-        if (game.key.t) renderStart = System.nanoTime();
-
         tileManager.render(g2);
         entityManager.render(g2);
         environmentManager.render(g2);
-
-        // TODO Agrega mapa
-        if (game.key.t) {
-            g2.setFont(new Font("Arial", Font.PLAIN, 20));
-            g2.setColor(Color.white);
-            int x = 8, y = SCREEN_HEIGHT - 65, gap = 20;
-            if (game.showFPS) {
-                g2.drawString("FPS: " + game.framesInRender, x, y);
-                lastFrames = game.framesInRender;
-                game.showFPS = false;
-            } else
-                g2.drawString("FPS: " + lastFrames, x, y); // Muestra los ultimos fps hasta que se complete el segundo
-            y += gap;
-            g2.drawString("X: " + (player.worldX + player.hitbox.x) / tile_size, x, y);
-            y += gap;
-            g2.drawString("Y: " + (player.worldY + player.hitbox.y) / tile_size, x, y);
-            y += gap;
-            g2.drawString("Draw time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
-        }
-
     }
 
     /**

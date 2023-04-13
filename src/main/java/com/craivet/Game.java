@@ -1,8 +1,6 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
-import com.craivet.entity.Player;
-import com.craivet.environment.EnvironmentManager;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
@@ -45,7 +43,6 @@ public class Game extends Canvas implements Runnable {
     // Para mostrar los fps en pantalla
     public int framesInRender;
     public boolean showFPS;
-
     public boolean fullScreen;
 
     public Game() {
@@ -110,7 +107,7 @@ public class Game extends Canvas implements Runnable {
         playMusic(music_blue_boy_adventure);
         gameState = PLAY_STATE;
 
-        gState = new GameState(world, ui);
+        gState = new GameState(this, world, ui);
         stateManager.setState(gState);
 
     }
