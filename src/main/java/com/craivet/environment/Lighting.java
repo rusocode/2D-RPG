@@ -17,19 +17,19 @@ public class Lighting {
     private final World world;
     private BufferedImage darknessFilter;
 
-    int dayCounter;
-    float filterAlpha;
+    public int dayCounter;
+    public float filterAlpha;
 
     // Day state
-    final int day = 0;
-    final int dusk = 1;
-    final int night = 2;
-    final int dawn = 3;
-    int dayState = day;
+    public final int day = 0;
+    public final int dusk = 1;
+    public final int night = 2;
+    public final int dawn = 3;
+    public int dayState = day;
 
     public Lighting(World world) {
         this.world = world;
-        illuminate();
+        illuminate(); // TOOD Por que se llama desde aca este metodo?
     }
 
     /**
@@ -96,38 +96,8 @@ public class Lighting {
             world.player.lightUpdate = false;
         }
 
-        /* Actualiza el ciclo del dia cada un cierto tiempo. El ciclo del dia cuenta con 4 estados: dia, oscuridad,
-         * noche y amanecer. Para determinar el tiempo que dura cada estado es necesario multiplicar la cantidad de
-         * segundos por la cantidad de veces que se actualiza el Game Loop. Por ejemplo, si el Game Loop se ejecuta a 60
-         * ticks y el dia dura 10 segundos, entonces esto equivale a sumar 600 veces el contador. */
-        if (dayState == day) {
-            if (++dayCounter >= 600) {
-                dayState = dusk;
-                dayCounter = 0;
-            }
-        }
-        if (dayState == dusk) {
-            filterAlpha += 0.001f;
-            // Evita que el valor alpha supere el maximo (1f) para evitar errores
-            if (filterAlpha > 1f) {
-                filterAlpha = 1f;
-                dayState = night;
-            }
-        }
-        if (dayState == night) {
-            dayCounter++;
-            if (dayCounter > 600) {
-                dayState = dawn;
-                dayCounter = 0;
-            }
-        }
-        if (dayState == dawn) {
-            filterAlpha -= 0.001f;
-            if (filterAlpha < 0f) {
-                filterAlpha = 0f;
-                dayState = day;
-            }
-        }
+        cycleDay();
+
     }
 
     public void render(Graphics2D g2) {
@@ -156,6 +126,48 @@ public class Lighting {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(50f));
         g2.drawString(situation, 750, 500);
+    }
+
+    /**
+     * Cicla el dia cada un cierto tiempo. El ciclo del dia cuenta con 4 estados: dia, oscuridad, noche y amanecer.
+     * <p>
+     * Para determinar el tiempo que duran los estados dia y noche, es necesario multiplicar la cantidad de segundos por
+     * la cantidad de veces que se actualiza el Game Loop. Por ejemplo, si el Game Loop se ejecuta a 60 ticks y el dia
+     * dura 10 segundos, entonces esto equivale a sumar 600 veces el contador.
+     * <p>
+     * Para determinar la velocidad de transicion entre la oscuridad y la noche, y entre la noche y el amanecer, es
+     * necesario modificar el valor alpha. Por ejemplo, usando el valor 0,0001f se necesitan 10.000 fps para completar
+     * el maximo valor alpha (1f). Por lo que el tiempo que tarda en completarse es de 166 segundos.
+     */
+    private void cycleDay() {
+        if (dayState == day) {
+            if (++dayCounter >= 600) {
+                dayState = dusk;
+                dayCounter = 0;
+            }
+        }
+        if (dayState == dusk) {
+            filterAlpha += 0.001f;
+            // Evita que el valor alpha supere el maximo (1f) para evitar errores
+            if (filterAlpha > 1f) {
+                filterAlpha = 1f;
+                dayState = night;
+            }
+        }
+        if (dayState == night) {
+            dayCounter++;
+            if (dayCounter > 600) {
+                dayState = dawn;
+                dayCounter = 0;
+            }
+        }
+        if (dayState == dawn) {
+            filterAlpha -= 0.001f;
+            if (filterAlpha < 0f) {
+                filterAlpha = 0f;
+                dayState = day;
+            }
+        }
     }
 
 }

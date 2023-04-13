@@ -20,13 +20,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
 import static com.craivet.utils.Constants.*;
 
 /**
- * En el mundo se crean los tiles, las entidades que lo componen y el entorno.
+ * En el mundo se crean los tiles, las entidades y el entorno.
  * <p>
  * TODO Realmente se crean las entidades aca o en la clase Entity?. Logicamente la clase Entity declara los componentes
  * que componen cada entidad y el mundo las crea.
@@ -37,10 +38,11 @@ public class World {
     // Managers
     private final TileManager tileManager;
     private final EntityManager entityManager;
-    private final EnvironmentManager environmentManager;
+    public final EnvironmentManager environmentManager;
 
     // Tiles
     public int map;
+    public HashMap<Integer, String> maps = new HashMap<>();
     public Tile[] tile = new Tile[50];
     public int[][][] tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
 
@@ -134,8 +136,8 @@ public class World {
      * Carga los mapas.
      */
     private void loadMaps() {
-        loadMap("maps/nix.txt", NIX);
-        loadMap("maps/nix_trade.txt", NIX_TRADE);
+        loadMap("maps/nix.txt", NIX, "Nix");
+        loadMap("maps/nix_trade.txt", NIX_TRADE, "Nix trade");
     }
 
     /**
@@ -156,7 +158,8 @@ public class World {
      *
      * @param path la ruta del recurso.
      */
-    public void loadMap(String path, int map) {
+    public void loadMap(String path, int map, String name) {
+        maps.put(map, name);
         int row = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
             for (row = 0; row < MAX_WORLD_ROW; row++) {

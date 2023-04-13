@@ -26,24 +26,22 @@ public class Game extends Canvas implements Runnable {
     public AudioManager sound = new AudioManager();
     public AudioManager music = new AudioManager();
     public EventManager event = new EventManager(this, world);
-    public AssetSetter aSetter = new AssetSetter(this, world);
+    public AssetSetter setter = new AssetSetter(this, world);
     public Collider collider = new Collider(this, world);
     public UI ui = new UI(this, world);
     public Config config = new Config(this);
     public AStar aStar = new AStar(world);
 
-    // Game state
+    // States
     public StateManager stateManager = new StateManager();
-    public GameState gState;
     public int gameState;
-    private boolean running;
 
+    // Otros
     private BufferStrategy buffer;
-
-    // Para mostrar los fps en pantalla
     public int framesInRender;
     public boolean showFPS;
     public boolean fullScreen;
+    private boolean running;
 
     public Game() {
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -103,13 +101,8 @@ public class Game extends Canvas implements Runnable {
 
     private void init() {
         setAssets();
-
         playMusic(music_blue_boy_adventure);
-        gameState = PLAY_STATE;
-
-        gState = new GameState(this, world, ui);
-        stateManager.setState(gState);
-
+        stateManager.setState(new GameState(this, world, ui));
     }
 
     private void update() {
@@ -159,17 +152,17 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void setAssets() {
-        aSetter.setItem();
-        aSetter.setNPC();
-        aSetter.setMOB();
-        aSetter.setInteractiveTile();
+        setter.setItem();
+        setter.setNPC();
+        setter.setMOB();
+        setter.setInteractiveTile();
     }
 
     public void retry() {
         world.player.setDefaultPosition();
         world.player.restoreLifeAndMana();
-        aSetter.setNPC();
-        aSetter.setMOB();
+        setter.setNPC();
+        setter.setMOB();
     }
 
     public void restart() {
@@ -177,10 +170,10 @@ public class Game extends Canvas implements Runnable {
         world.player.initDefaultValues();
         world.player.restoreLifeAndMana();
         world.player.setItems();
-        aSetter.setItem();
-        aSetter.setNPC();
-        aSetter.setMOB();
-        aSetter.setInteractiveTile();
+        setter.setItem();
+        setter.setNPC();
+        setter.setMOB();
+        setter.setInteractiveTile();
     }
 
     public World getWorld() {

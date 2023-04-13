@@ -34,6 +34,7 @@ public final class Assets {
     public static final URL sound_potion_red = Utils.loadAudio(sounds_path + "potion2.wav");
     public static final URL sound_pick_up = Utils.loadAudio(sounds_path + "472.wav");
     public static final URL sound_receive_damage = Utils.loadAudio(sounds_path + "receive_damage.wav");
+    public static final URL sound_sleep = Utils.loadAudio(sounds_path + "sleep.wav");
     public static final URL sound_spawn = Utils.loadAudio(sounds_path + "spawn.wav");
     public static final URL sound_swing_weapon = Utils.loadAudio(sounds_path + "swing_weapon.wav");
     public static final URL sound_swing_axe = Utils.loadAudio(sounds_path + "swing_axe.wav");
@@ -73,6 +74,7 @@ public final class Assets {
     public static final BufferedImage item_shield_blue = Utils.loadImage(textures_items_path + "shield_blue.png");
     public static final BufferedImage item_shield_wood = Utils.loadImage(textures_items_path + "shield_wood.png");
     public static final BufferedImage item_sword_normal = Utils.loadImage(textures_items_path + "sword_normal.png");
+    public static final BufferedImage item_tent = Utils.loadImage(textures_items_path + "tent.png");
     // Tiles
     private static final String textures_tiles_path = "textures/tiles/";
     public static final BufferedImage tile_earth = Utils.loadImage(textures_tiles_path + "earth.png");

@@ -568,6 +568,17 @@ public class Player extends Entity {
         return dexterity * shield.defenseValue;
     }
 
+    public void initSleepImage(BufferedImage image) {
+        movementDown1 = image;
+        movementDown2 = image;
+        movementUp1 = image;
+        movementUp2 = image;
+        movementLeft1 = image;
+        movementLeft2 = image;
+        movementRight1 = image;
+        movementRight2 = image;
+    }
+
     public void setItems() {
         inventory.clear();
         inventory.add(weapon);

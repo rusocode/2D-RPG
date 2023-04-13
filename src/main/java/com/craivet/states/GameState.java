@@ -21,6 +21,7 @@ public class GameState implements State {
         this.game = game;
         this.world = world;
         this.ui = ui;
+        game.gameState = PLAY_STATE;
     }
 
     public void update() {
@@ -35,19 +36,20 @@ public class GameState implements State {
 
         // Debug mode
         if (game.getKey().t) {
-            g2.setFont(new Font("Arial", Font.PLAIN, 20));
+            g2.setFont(new Font("Consolas", Font.ITALIC, 20));
             g2.setColor(Color.white);
-            int x = 8, y = SCREEN_HEIGHT - 65, gap = 20;
+            int x = 8, y = SCREEN_HEIGHT - 55, gap = 25;
+            String map = game.getWorld().maps.get(game.getWorld().map);
+            int posX = (game.getWorld().player.worldX + game.getWorld().player.hitbox.x) / tile_size;
+            int posY = (game.getWorld().player.worldY + game.getWorld().player.hitbox.y) / tile_size;
+            g2.drawString(map + " (" + posX + ", " + posY + ")", x, y);
+            y += gap;
             if (game.showFPS) {
                 g2.drawString("FPS: " + game.framesInRender, x, y);
                 lastFrames = game.framesInRender;
                 game.showFPS = false;
             } else
                 g2.drawString("FPS: " + lastFrames, x, y); // Muestra los ultimos fps hasta que se complete el segundo
-            y += gap;
-            g2.drawString("X: " + (game.getWorld().player.worldX + game.getWorld().player.hitbox.x) / tile_size, x, y);
-            y += gap;
-            g2.drawString("Y: " + (game.getWorld().player.worldY + game.getWorld().player.hitbox.y) / tile_size, x, y);
             y += gap;
             g2.drawString("Draw time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
         }

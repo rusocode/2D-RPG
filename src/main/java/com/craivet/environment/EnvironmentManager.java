@@ -10,7 +10,7 @@ import java.awt.*;
 
 public class EnvironmentManager {
 
-    private final Lighting lighting;
+    public final Lighting lighting;
 
     public EnvironmentManager(World world) {
         lighting = new Lighting(world);

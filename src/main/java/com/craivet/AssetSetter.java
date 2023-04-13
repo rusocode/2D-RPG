@@ -24,6 +24,7 @@ public class AssetSetter {
 
     public void setItem() {
         int i = 0;
+        world.items[NIX][i++] = new Tent(game, world, 19, 20);
         world.items[NIX][i++] = new Lantern(game, world, 18, 20);
         world.items[NIX][i++] = new Axe(game, world, 20, 21);
         world.items[NIX][i++] = new Door(game, world, 14, 28);

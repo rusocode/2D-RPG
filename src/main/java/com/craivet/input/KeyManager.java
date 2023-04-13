@@ -111,10 +111,10 @@ public class KeyManager extends KeyAdapter {
         if (code == KeyEvent.VK_R) {
             switch (game.getWorld().map) {
                 case 0:
-                    game.getWorld().loadMap("maps/nix.txt", NIX);
+                    game.getWorld().loadMap("maps/nix.txt", NIX, "Nix");
                     break;
                 case 1:
-                    game.getWorld().loadMap("maps/nix_trade.txt", NIX_TRADE);
+                    game.getWorld().loadMap("maps/nix_trade.txt", NIX_TRADE, "Nix trade");
                     break;
             }
         }

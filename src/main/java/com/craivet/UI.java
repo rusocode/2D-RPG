@@ -89,6 +89,8 @@ public class UI {
             drawTradeScreen();
             drawConsole();
         }
+        if (game.gameState == SLEEP_STATE) drawSleepScreen();
+
     }
 
     private void drawTitleScreen() {
@@ -890,13 +892,37 @@ public class UI {
                     addMessage("You cannot sell an equipped item!");
                 else {
                     game.playSound(sound_trade);
-                    if (world.player.inventory.get(itemIndex).amount > 1) world.player.inventory.get(itemIndex).amount--;
+                    if (world.player.inventory.get(itemIndex).amount > 1)
+                        world.player.inventory.get(itemIndex).amount--;
                     else world.player.inventory.remove(itemIndex);
                     world.player.coin += price;
                 }
             }
         }
 
+    }
+
+    /**
+     * Genera un efecto de transicion que va desde lo mas oscuro a lo mas luminoso.
+     */
+    private void drawSleepScreen() {
+        counter++;
+        if (counter < 120) {
+            world.environmentManager.lighting.filterAlpha += 0.01f;
+            if (world.environmentManager.lighting.filterAlpha > 1f) world.environmentManager.lighting.filterAlpha = 1f;
+        }
+        if (counter >= 120) {
+            world.environmentManager.lighting.filterAlpha -= 0.01f;
+            if (world.environmentManager.lighting.filterAlpha <= 0f) {
+                world.environmentManager.lighting.filterAlpha = 0f;
+                counter = 0;
+                world.environmentManager.lighting.dayState = world.environmentManager.lighting.day;
+                world.environmentManager.lighting.dayCounter = 0;
+                game.gameState = PLAY_STATE;
+                world.player.initMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+                world.player.initAttackImages(world.player.weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+            }
+        }
     }
 
     private void drawSubwindow(int x, int y, int width, int height, int alpha) {
