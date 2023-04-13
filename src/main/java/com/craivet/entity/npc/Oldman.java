@@ -35,8 +35,8 @@ public class Oldman extends Npc {
 	 */
 	public void setAction() {
 		if (onPath) {
-			int goalRow = (game.player.worldY + game.player.hitbox.y) / tile_size;
-			int goalCol = (game.player.worldX + game.player.hitbox.x) / tile_size;
+			int goalRow = (world.player.worldY + world.player.hitbox.y) / tile_size;
+			int goalCol = (world.player.worldX + world.player.hitbox.x) / tile_size;
 			searchPath(goalRow, goalCol);
 		} else timer.timeDirection(this, INTERVAL_DIRECTION);
 	}

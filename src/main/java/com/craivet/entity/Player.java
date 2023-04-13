@@ -35,7 +35,7 @@ public class Player extends Entity {
         // Posiciona el player en el mundo
         worldX = 23 * tile_size;
         worldY = 21 * tile_size;
-        key = game.key;
+        key = game.getKey();
         initDefaultValues();
     }
 

@@ -48,7 +48,7 @@ public class Projectile extends Entity {
 			 * movimiento 2. La siguiente linea soluciona este problema. */
 			collision = false;
 			if (mobIndex != -1 && !world.mobs[world.map][mobIndex].invincible) {
-				game.player.damageMob(mobIndex, attack, knockBackPower, direction);
+				world.player.damageMob(mobIndex, attack, knockBackPower, direction);
 				// En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
 				generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
 				alive = false;
@@ -58,9 +58,9 @@ public class Projectile extends Entity {
 		// Si el mob lanza un proyectil
 		if (!(entity instanceof Player)) {
 			boolean contact = game.collider.checkPlayer(this);
-			if (contact && !game.player.invincible) {
+			if (contact && !world.player.invincible) {
 				damagePlayer(true, attack);
-				generateParticle(entity.projectile, game.player);
+				generateParticle(entity.projectile, world.player);
 				alive = false;
 			}
 		}

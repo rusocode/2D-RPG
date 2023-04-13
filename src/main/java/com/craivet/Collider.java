@@ -176,8 +176,8 @@ public class Collider {
 		boolean contact = false;
 		entity.hitbox.x += entity.worldX;
 		entity.hitbox.y += entity.worldY;
-		game.player.hitbox.x += game.player.worldX;
-		game.player.hitbox.y += game.player.worldY;
+		world.player.hitbox.x += world.player.worldX;
+		world.player.hitbox.y += world.player.worldY;
 		switch (entity.direction) {
 			case DOWN:
 				entity.hitbox.y += entity.speed;
@@ -193,15 +193,15 @@ public class Collider {
 				break;
 		}
 
-		if (entity.hitbox.intersects(game.player.hitbox)) {
+		if (entity.hitbox.intersects(world.player.hitbox)) {
 			entity.collision = true;
 			contact = true;
 		}
 
 		entity.hitbox.x = entity.hitboxDefaultX;
 		entity.hitbox.y = entity.hitboxDefaultY;
-		game.player.hitbox.x = game.player.hitboxDefaultX;
-		game.player.hitbox.y = game.player.hitboxDefaultY;
+		world.player.hitbox.x = world.player.hitboxDefaultX;
+		world.player.hitbox.y = world.player.hitboxDefaultY;
 
 		return contact;
 

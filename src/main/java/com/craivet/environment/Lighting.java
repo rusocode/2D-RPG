@@ -1,6 +1,6 @@
 package com.craivet.environment;
 
-import com.craivet.Game;
+import com.craivet.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,7 +14,7 @@ import static com.craivet.utils.Constants.*;
 
 public class Lighting {
 
-    private final Game game;
+    private final World world;
     private BufferedImage darknessFilter;
 
     int dayCounter;
@@ -22,13 +22,13 @@ public class Lighting {
 
     // Day state
     final int day = 0;
-    final int dusk = 1; // Oscureciendo
+    final int dusk = 1;
     final int night = 2;
-    final int dawn = 3; // Amaneciendo
+    final int dawn = 3;
     int dayState = day;
 
-    public Lighting(Game game) {
-        this.game = game;
+    public Lighting(World world) {
+        this.world = world;
         illuminate();
     }
 
@@ -40,12 +40,12 @@ public class Lighting {
         darknessFilter = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
-        if (game.player.light == null) g2.setColor(new Color(0, 0, 0, 0.98f));
+        if (world.player.light == null) g2.setColor(new Color(0, 0, 0, 0.98f));
         else { // Si el player selecciono la linterna
 
             // Obtiene el centro del player
-            int centerX = game.player.screenX + (tile_size / 2);
-            int centerY = game.player.screenY + (tile_size / 2);
+            int centerX = world.player.screenX + (tile_size / 2);
+            int centerY = world.player.screenY + (tile_size / 2);
 
             // Crea un efecto de gradacion para el circulo de luz
             Color[] color = new Color[12];
@@ -78,7 +78,7 @@ public class Lighting {
             fraction[11] = 1f;
 
             // Crea el efecto de gradacion usando la posicion del player, el radio, los datos de fraccion y color
-            RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, (game.player.light.lightRadius / 2), fraction, color);
+            RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, (world.player.light.lightRadius / 2), fraction, color);
 
             // Establece los datos de gradacion en g2
             g2.setPaint(gPaint);
@@ -88,21 +88,20 @@ public class Lighting {
         g2.dispose();
     }
 
-    /**
-     * Actualiza la iluminacion solo cuando el player enciende o apaga (selecciona) la luz del item especificado,
-     * evitando que el metodo illuminate() se llame 60 veces por segundo afectando el rendimiemto del juego.
-     */
     public void update() {
-
-        if (game.player.lightUpdate) {
+        /* Actualiza la iluminacion del item solo cuando el player selecciona el item especificado, evitando que el
+         * metodo illuminate() se llame 60 veces por segundo afectando el rendimiemto del juego. */
+        if (world.player.lightUpdate) {
             illuminate();
-            game.player.lightUpdate = false;
+            world.player.lightUpdate = false;
         }
 
-        // Verifica el estado del dia
+        /* Actualiza el ciclo del dia cada un cierto tiempo. El ciclo del dia cuenta con 4 estados: dia, oscuridad,
+         * noche y amanecer. Para determinar el tiempo que dura cada estado es necesario multiplicar la cantidad de
+         * segundos por la cantidad de veces que se actualiza el Game Loop. Por ejemplo, si el Game Loop se ejecuta a 60
+         * ticks y el dia dura 10 segundos, entonces esto equivale a sumar 600 veces el contador. */
         if (dayState == day) {
-            dayCounter++;
-            if (dayCounter > 600) { // 600 = 10s ya que el juego se actualiza 60 veces por segundo (60 x 10)
+            if (++dayCounter >= 600) {
                 dayState = dusk;
                 dayCounter = 0;
             }
@@ -131,7 +130,7 @@ public class Lighting {
         }
     }
 
-    public void draw(Graphics2D g2) {
+    public void render(Graphics2D g2) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

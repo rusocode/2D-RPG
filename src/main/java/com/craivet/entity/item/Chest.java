@@ -39,12 +39,12 @@ public class Chest extends Item {
             sb.append("You open the chest and find a ").append(loot.name).append("!");
             image = image2;
             opened = true;
-            if (game.player.canObtainItem(loot)) {
+            if (world.player.canObtainItem(loot)) {
                 sb.append("\nYou obtain the ").append(loot.name).append("!");
                 empty = true;
             } else sb.append("\n...But you cannot carry any more!");
         } else if (!empty) {
-            if (game.player.canObtainItem(loot)) {
+            if (world.player.canObtainItem(loot)) {
                 sb.append("You obtain the ").append(loot.name).append("!");
                 empty = true;
             } else sb.append("You cannot carry any more!");

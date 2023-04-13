@@ -106,12 +106,12 @@ public abstract class Entity {
 
     public void render(Graphics2D g2) {
         BufferedImage auxImage = null;
-        int screenX = (worldX - game.player.worldX) + game.player.screenX;
-        int screenY = (worldY - game.player.worldY) + game.player.screenY;
-        if (worldX + tile_size > game.player.worldX - game.player.screenX &&
-                worldX - tile_size < game.player.worldX + game.player.screenX &&
-                worldY + tile_size > game.player.worldY - game.player.screenY &&
-                worldY - tile_size < game.player.worldY + game.player.screenY) {
+        int screenX = (worldX - world.player.worldX) + world.player.screenX;
+        int screenY = (worldY - world.player.worldY) + world.player.screenY;
+        if (worldX + tile_size > world.player.worldX - world.player.screenX &&
+                worldX - tile_size < world.player.worldX + world.player.screenX &&
+                worldY + tile_size > world.player.worldY - world.player.screenY &&
+                worldY - tile_size < world.player.worldY + world.player.screenY) {
             switch (direction) {
                 case DOWN:
                     auxImage = movementNum == 1 || collision ? movementDown1 : movementDown2;
@@ -172,7 +172,7 @@ public abstract class Entity {
         if (dialogues[dialogueIndex] == null) dialogueIndex = 0;
         game.ui.currentDialogue = dialogues[dialogueIndex];
         dialogueIndex++;
-        switch (game.player.direction) {
+        switch (world.player.direction) {
             case DOWN:
                 direction = UP;
                 break;
@@ -299,12 +299,12 @@ public abstract class Entity {
      */
     public void damagePlayer(boolean contact, int attack) {
         // Si el mob hace contacto con el player que no es invencible
-        if (type == TYPE_MOB && contact && !game.player.invincible) {
+        if (type == TYPE_MOB && contact && !world.player.invincible) {
             game.playSound(sound_receive_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
-            int damage = Math.max(attack - game.player.defense, 0);
-            game.player.life -= damage;
-            game.player.invincible = true;
+            int damage = Math.max(attack - world.player.defense, 0);
+            world.player.life -= damage;
+            world.player.invincible = true;
         }
     }
 

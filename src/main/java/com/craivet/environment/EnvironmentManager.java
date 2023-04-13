@@ -1,27 +1,26 @@
 package com.craivet.environment;
 
-import com.craivet.Game;
+import com.craivet.World;
 
 import java.awt.*;
 
+/**
+ * Administrador del ambiente.
+ */
+
 public class EnvironmentManager {
 
-    private final Game game;
-    private Lighting lighting;
+    private final Lighting lighting;
 
-    public EnvironmentManager(Game game) {
-        this.game = game;
-    }
-
-    public void setup() {
-        lighting = new Lighting(game);
+    public EnvironmentManager(World world) {
+        lighting = new Lighting(world);
     }
 
     public void update() {
         lighting.update();
     }
 
-    public void draw(Graphics2D g2) {
-        lighting.draw(g2);
+    public void render(Graphics2D g2) {
+        lighting.render(g2);
     }
 }

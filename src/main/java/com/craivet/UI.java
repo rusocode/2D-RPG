@@ -58,7 +58,7 @@ public class UI {
         manaBlank = Utils.scaleImage(subimages[4], tile_size, tile_size);
     }
 
-    public void draw(Graphics2D g2) {
+    public void render(Graphics2D g2) {
 
         this.g2 = g2;
 
@@ -80,7 +80,7 @@ public class UI {
         if (game.gameState == DIALOGUE_STATE) drawDialogueScreen();
         if (game.gameState == CHARACTER_STATE) {
             drawCharacterScreen();
-            drawInventory(game.player, true);
+            drawInventory(world.player, true);
         }
         if (game.gameState == OPTION_STATE) drawOptionScreen();
         if (game.gameState == GAME_OVER_STATE) drawGameOverScreen();
@@ -111,7 +111,7 @@ public class UI {
             // Image
             x = SCREEN_WIDTH / 2 - (tile_size * 2) / 2;
             y += tile_size * 2;
-            g2.drawImage(game.player.movementDown1, x, y, tile_size * 2, tile_size * 2, null);
+            g2.drawImage(world.player.movementDown1, x, y, tile_size * 2, tile_size * 2, null);
 
             // Menu
             changeFontSize(48f);
@@ -198,14 +198,14 @@ public class UI {
 
     private void drawPlayerLife() {
 
-        // game.player.life = 1;
+        // world.player.life = 1;
 
         int x = tile_size / 2;
         int y = tile_size / 2;
         int i = 0;
 
         // Dibuja el corazon vacio
-        while (i < game.player.maxLife / 2) {
+        while (i < world.player.maxLife / 2) {
             g2.drawImage(heartBlank, x, y, null);
             i++;
             x += tile_size;
@@ -217,10 +217,10 @@ public class UI {
         i = 0;
 
         // Dibuja la vida actual
-        while (i < game.player.life) {
+        while (i < world.player.life) {
             g2.drawImage(heartHalf, x, y, null);
             i++;
-            if (i < game.player.life) g2.drawImage(heartFull, x, y, null);
+            if (i < world.player.life) g2.drawImage(heartFull, x, y, null);
             i++;
             x += tile_size;
         }
@@ -229,7 +229,7 @@ public class UI {
         x = (tile_size / 2) - 4;
         y = (int) (tile_size * 1.5);
         i = 0;
-        while (i < game.player.maxMana) {
+        while (i < world.player.maxMana) {
             g2.drawImage(manaBlank, x, y, null);
             i++;
             x += 35;
@@ -239,7 +239,7 @@ public class UI {
         x = (tile_size / 2) - 4;
         y = (int) (tile_size * 1.5);
         i = 0;
-        while (i < game.player.mana) {
+        while (i < world.player.mana) {
             g2.drawImage(manaFull, x, y, null);
             i++;
             x += 35;
@@ -317,60 +317,60 @@ public class UI {
         textY = frameY + tile_size;
         String value;
 
-        value = String.valueOf(game.player.level);
+        value = String.valueOf(world.player.level);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.life + "/" + game.player.maxLife);
+        value = String.valueOf(world.player.life + "/" + world.player.maxLife);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.mana + "/" + game.player.maxMana);
+        value = String.valueOf(world.player.mana + "/" + world.player.maxMana);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.strength);
+        value = String.valueOf(world.player.strength);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.dexterity);
+        value = String.valueOf(world.player.dexterity);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.attack);
+        value = String.valueOf(world.player.attack);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.defense);
+        value = String.valueOf(world.player.defense);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.exp);
+        value = String.valueOf(world.player.exp);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.nextLevelExp);
+        value = String.valueOf(world.player.nextLevelExp);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(game.player.coin);
+        value = String.valueOf(world.player.coin);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        g2.drawImage(game.player.weapon.image, tailX - 40, textY - 15, null);
+        g2.drawImage(world.player.weapon.image, tailX - 40, textY - 15, null);
         textY += gap;
 
-        g2.drawImage(game.player.shield.image, tailX - 40, textY - 5, null);
+        g2.drawImage(world.player.shield.image, tailX - 40, textY - 5, null);
 
     }
 
@@ -380,7 +380,7 @@ public class UI {
         int slotCol, slotRow;
 
         // Inventario del lado derecho (player)
-        if (entity == game.player) {
+        if (entity == world.player) {
             frameWidth = tile_size * 6;
             frameHeight = tile_size * 5;
             frameX = (SCREEN_WIDTH / 2 - frameWidth / 2) + tile_size * 5;
@@ -741,10 +741,10 @@ public class UI {
             counter = 0;
             game.gameState = PLAY_STATE;
             world.map = game.event.tempMap;
-            game.player.worldX = tile_size * game.event.tempCol;
-            game.player.worldY = tile_size * game.event.tempRow;
-            game.event.previousEventX = game.player.worldX;
-            game.event.previousEventY = game.player.worldY;
+            world.player.worldX = tile_size * game.event.tempCol;
+            world.player.worldY = tile_size * game.event.tempRow;
+            game.event.previousEventX = world.player.worldX;
+            game.event.previousEventY = world.player.worldY;
         }
     }
 
@@ -791,7 +791,7 @@ public class UI {
     }
 
     private void tradeBuy() {
-        drawInventory(game.player, false);
+        drawInventory(world.player, false);
         drawInventory(npc, true);
 
         // Draw hint window
@@ -806,7 +806,7 @@ public class UI {
         // Draw player coin window
         x = tile_size * 12;
         drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Your coin: " + game.player.coin, x + 24, y + 60);
+        g2.drawString("Your coin: " + world.player.coin, x + 24, y + 60);
 
         int itemIndex = getItemIndexOnSlot(npcSlotCol, npcSlotRow);
         if (itemIndex < npc.inventory.size()) {
@@ -828,20 +828,20 @@ public class UI {
 
             // BUY AN ITEM
             if (game.key.enter) {
-                if (npc.inventory.get(itemIndex).price > game.player.coin)
+                if (npc.inventory.get(itemIndex).price > world.player.coin)
                     addMessage("You need more coin to buy that!");
                 else {
-                    if (game.player.canObtainItem(item.itemMap.get(npc.inventory.get(itemIndex).getClass()).get())) {
+                    if (world.player.canObtainItem(item.itemMap.get(npc.inventory.get(itemIndex).getClass()).get())) {
                         game.playSound(sound_trade);
-                        game.player.coin -= npc.inventory.get(itemIndex).price;
+                        world.player.coin -= npc.inventory.get(itemIndex).price;
                     } else addMessage("You cannot carry any more!");
                 }
-                /* else if (game.player.inventory.size() == MAX_INVENTORY_SIZE)
+                /* else if (world.player.inventory.size() == MAX_INVENTORY_SIZE)
                     addMessage("You cannot carry any more!");
                 else {
                     game.playSound(sound_trade);
-                    game.player.coin -= npc.inventory.get(itemIndex).price;
-                    game.player.inventory.add(item.itemMap.get(npc.inventory.get(itemIndex).getClass()).get());
+                    world.player.coin -= npc.inventory.get(itemIndex).price;
+                    world.player.inventory.add(item.itemMap.get(npc.inventory.get(itemIndex).getClass()).get());
                 } */
             }
 
@@ -850,7 +850,7 @@ public class UI {
     }
 
     private void tradeSell() {
-        drawInventory(game.player, true);
+        drawInventory(world.player, true);
 
         // Draw hint window
         int x = tile_size * 2;
@@ -864,10 +864,10 @@ public class UI {
         // Draw player coin window
         x = tile_size * 12;
         drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Your coin: " + game.player.coin, x + 24, y + 60);
+        g2.drawString("Your coin: " + world.player.coin, x + 24, y + 60);
 
         int itemIndex = getItemIndexOnSlot(playerSlotCol, playerSlotRow);
-        if (itemIndex < game.player.inventory.size()) {
+        if (itemIndex < world.player.inventory.size()) {
             // Draw price window
             x = (int) (tile_size * 15.5);
             y = (int) (tile_size * 5.2);
@@ -879,20 +879,20 @@ public class UI {
             g2.drawImage(item_coin, x + 14, y + 10, 32, 32, null);
 
             // Draw price item
-            int price = game.player.inventory.get(itemIndex).price / 2;
+            int price = world.player.inventory.get(itemIndex).price / 2;
             String text = "" + price;
             x = getXforAlignToRightText(text, tile_size * 18 - 20);
             g2.drawString(text, x, y + 32);
 
             // SELL AN ITEM
             if (game.key.enter) {
-                if (game.player.inventory.get(itemIndex) == game.player.weapon || game.player.inventory.get(itemIndex) == game.player.shield)
+                if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
                     addMessage("You cannot sell an equipped item!");
                 else {
                     game.playSound(sound_trade);
-                    if (game.player.inventory.get(itemIndex).amount > 1) game.player.inventory.get(itemIndex).amount--;
-                    else game.player.inventory.remove(itemIndex);
-                    game.player.coin += price;
+                    if (world.player.inventory.get(itemIndex).amount > 1) world.player.inventory.get(itemIndex).amount--;
+                    else world.player.inventory.remove(itemIndex);
+                    world.player.coin += price;
                 }
             }
         }

@@ -48,8 +48,8 @@ public class Slime extends Mob {
 	public void update() {
 		super.update();
 
-		int xDistance = Math.abs(worldX - game.player.worldX);
-		int yDistance = Math.abs(worldY - game.player.worldY);
+		int xDistance = Math.abs(worldX - world.player.worldX);
+		int yDistance = Math.abs(worldY - world.player.worldY);
 		int tileDistance = (xDistance + yDistance) / tile_size;
 
 		/* El slime se vuelve agresivo si todavia no es agresivo y si el player esta a 5 tiles de distancia y si el
@@ -62,8 +62,8 @@ public class Slime extends Mob {
 
 	public void setAction() {
 		if (onPath) {
-			int goalRow = (game.player.worldY + game.player.hitbox.y) / tile_size;
-			int goalCol = (game.player.worldX + game.player.hitbox.x) / tile_size;
+			int goalRow = (world.player.worldY + world.player.hitbox.y) / tile_size;
+			int goalCol = (world.player.worldX + world.player.hitbox.x) / tile_size;
 			searchPath(goalRow, goalCol);
 			shootProjectile();
 		} else timer.timeDirection(this, INTERVAL_DIRECTION);

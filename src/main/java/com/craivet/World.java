@@ -2,11 +2,14 @@ package com.craivet;
 
 import com.craivet.entity.Entity;
 import com.craivet.entity.EntityManager;
+import com.craivet.entity.Player;
 import com.craivet.entity.item.Item;
 import com.craivet.entity.mob.Mob;
 import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Projectile;
+import com.craivet.environment.EnvironmentManager;
 import com.craivet.gfx.Assets;
+import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
 import com.craivet.tile.Tile;
 import com.craivet.tile.TileManager;
@@ -35,12 +38,14 @@ public class World {
     private final Game game;
     private final TileManager tileManager;
     private final EntityManager entityManager;
+    private final EnvironmentManager environmentManager;
 
     public int map;
     public Tile[] tile;
     public int[][][] tileIndex;
 
     // Entities
+    public Player player;
     public List<Entity> entities = new ArrayList<>();
     public List<Entity> itemsList = new ArrayList<>();
     public List<Entity> particles = new ArrayList<>();
@@ -55,24 +60,28 @@ public class World {
     private int lastFrames;
 
     public World(Game game) {
-        tile = new Tile[50];
-        tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
         this.game = game;
+        player = new Player(game, this); // TODO En vez de pasarle el objeto key, podrias crear un metodo en game que devuelva este objeto
         tileManager = new TileManager(game, this);
         entityManager = new EntityManager(game, this);
+        environmentManager = new EnvironmentManager(this);
+
+        tile = new Tile[50];
+        tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
         loadTiles();
         loadMaps();
     }
 
     /**
-     * Actualiza las entidades.
+     * Actualiza las entidades y la iluminacion.
      */
     public void update() {
         entityManager.update();
+        environmentManager.update();
     }
 
     /**
-     * Renderiza los tiles y las entidades.
+     * Renderiza los tiles, las entidades y el entorno.
      *
      * @param g2 componente grafico.
      */
@@ -83,7 +92,7 @@ public class World {
 
         tileManager.render(g2);
         entityManager.render(g2);
-
+        environmentManager.render(g2);
 
         // TODO Agrega mapa
         if (game.key.t) {
@@ -97,9 +106,9 @@ public class World {
             } else
                 g2.drawString("FPS: " + lastFrames, x, y); // Muestra los ultimos fps hasta que se complete el segundo
             y += gap;
-            g2.drawString("X: " + (game.player.worldX + game.player.hitbox.x) / tile_size, x, y);
+            g2.drawString("X: " + (player.worldX + player.hitbox.x) / tile_size, x, y);
             y += gap;
-            g2.drawString("Y: " + (game.player.worldY + game.player.hitbox.y) / tile_size, x, y);
+            g2.drawString("Y: " + (player.worldY + player.hitbox.y) / tile_size, x, y);
             y += gap;
             g2.drawString("Draw time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
         }
