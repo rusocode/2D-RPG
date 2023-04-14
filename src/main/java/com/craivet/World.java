@@ -47,8 +47,8 @@ public class World {
     public HashMap<Integer, String> maps = new HashMap<>();
     public Tile[] tile;
     public int[][][] tileIndex;
-    ArrayList<String> fileNames = new ArrayList<>();
-    ArrayList<String> collisionStatus = new ArrayList<>();
+    ArrayList<String> names = new ArrayList<>();
+    ArrayList<String> solids = new ArrayList<>();
 
     // Entities
     public Player player;
@@ -64,34 +64,26 @@ public class World {
     public boolean drawPath;
 
     public World(Game game) {
-        is = getClass().getClassLoader().getResourceAsStream("maps/testdata.txt");
-        br = new BufferedReader(new InputStreamReader(is));
-
-        getTiles();
-        loadTiles();
-
-        // Obtiene la cantidad de filas y columnas del mapa
-        is = getClass().getClassLoader().getResourceAsStream("maps/test.txt");
-        br = new BufferedReader(new InputStreamReader(is));
-
-        try {
-            String line2 = br.readLine();
-            String[] maxTile = line2.split(" ");
-            MAX_WORLD_ROW = maxTile.length;
-            MAX_WORLD_COL = maxTile.length;
-            tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
-            br.close();
-        } catch (IOException e) {
-            System.out.println("Exception!");
-        }
-
-        // loadMaps();
-        loadMap("maps/test.txt", NIX, "Nix");
-
         player = new Player(game, this);
         tileManager = new TileManager(game, this);
         entityManager = new EntityManager(game, this);
         environmentManager = new EnvironmentManager(this);
+
+        loadTiles("maps/testdata.txt");
+
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("maps/test.txt"))))) {
+            String[] maxTile = br.readLine().split(" ");
+            MAX_WORLD_ROW = maxTile.length;
+            MAX_WORLD_COL = maxTile.length;
+            tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer el archivo maps/test.txt", e);
+        }
+
+        // loadMap("maps/nix.txt", NIX, "Nix");
+        // loadMap("maps/nix_trade.txt", NIX_TRADE, "Nix trade");
+        loadMap("maps/test.txt", 0, "Abandoned Island");
+
     }
 
     /**
@@ -113,55 +105,37 @@ public class World {
         environmentManager.render(g2);
     }
 
-    private void getTiles() {
-         String line;
-        try {
-            while ((line = br.readLine()) != null) {
-                fileNames.add(line);
-                collisionStatus.add(br.readLine());
-            }
-            br.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        tile = new Tile[fileNames.size()];
-    }
-
     /**
-     * Carga los tiles.
+     * Lee los valores de cada tile del mapa (nombre y estado solido) y los agrega a sus respectivas listas. Luego
+     * utiliza esos valores para cargar todos los tiles del mapa dentro de un array.
      *
-     * <p>Los primeros 10 tiles definen el marcador de posicion (utilizando el tile grass00) para poder trabajar con
-     * numeros de dos digitos y mejorar la lectura del archivo world.txt.
+     * @param path la ruta del recurso.
      */
-    private void loadTiles() {
-        for (int i = 0; i < fileNames.size(); i++) {
-            String fileName;
-            boolean solid;
-            fileName = fileNames.get(i);
-            solid = Boolean.parseBoolean(collisionStatus.get(i));
-            loadTile(i, fileName, solid);
+    private void loadTiles(String path) {
+        String line;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path))))) {
+            while ((line = br.readLine()) != null) {
+                names.add(line);
+                solids.add(br.readLine());
+            }
+            tile = new Tile[names.size()]; // Crea un array con la cantidad de tiles del mapa
+            for (int i = 0; i < names.size(); i++)
+                loadTile(i, names.get(i), Boolean.parseBoolean(solids.get(i)));
+        } catch (IOException e) {
+            throw new RuntimeException("Error al leer el archivo " + path, e);
         }
-    }
-
-    /**
-     * Carga los mapas.
-     */
-    private void loadMaps() {
-        loadMap("maps/nix.txt", NIX, "Nix");
-        loadMap("maps/nix_trade.txt", NIX_TRADE, "Nix trade");
     }
 
     /**
      * Carga el tile.
      *
-     * @param i        el indice del tile.
-     * @param fileName el nombre del tile.
-     * @param solid    si es solido o no.
+     * @param i     el indice del tile.
+     * @param name  el nombre del tile.
+     * @param solid si es solido o no.
      */
-    private void loadTile(int i, String fileName, boolean solid) {
+    private void loadTile(int i, String name, boolean solid) {
         tile[i] = new Tile();
-        tile[i].texture = Utils.loadImage("textures/tiles/" + fileName);
-        tile[i].texture = Utils.scaleImage(tile[i].texture, tile_size, tile_size);
+        tile[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile_size, tile_size);
         tile[i].solid = solid;
     }
 
