@@ -33,8 +33,8 @@ public class Player extends Entity {
         screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
         screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
         // Posiciona el player en el mundo
-        worldX = 23 * tile_size;
-        worldY = 21 * tile_size;
+        worldX = 45 * tile_size;
+        worldY = 49 * tile_size;
         key = game.getKey();
         initDefaultValues();
     }
@@ -72,8 +72,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultPosition() {
-        worldX = tile_size * 23;
-        worldY = tile_size * 21;
+        worldX = tile_size * 45;
+        worldY = tile_size * 49;
         direction = DOWN;
     }
 

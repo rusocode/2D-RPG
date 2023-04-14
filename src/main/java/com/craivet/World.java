@@ -8,16 +8,15 @@ import com.craivet.entity.mob.Mob;
 import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Projectile;
 import com.craivet.environment.EnvironmentManager;
-import com.craivet.gfx.Assets;
 import com.craivet.tile.Interactive;
 import com.craivet.tile.Tile;
 import com.craivet.tile.TileManager;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,11 +39,16 @@ public class World {
     private final EntityManager entityManager;
     public final EnvironmentManager environmentManager;
 
+    private InputStream is;
+    private BufferedReader br;
+
     // Tiles
     public int map;
     public HashMap<Integer, String> maps = new HashMap<>();
-    public Tile[] tile = new Tile[50];
-    public int[][][] tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
+    public Tile[] tile;
+    public int[][][] tileIndex;
+    ArrayList<String> fileNames = new ArrayList<>();
+    ArrayList<String> collisionStatus = new ArrayList<>();
 
     // Entities
     public Player player;
@@ -60,8 +64,30 @@ public class World {
     public boolean drawPath;
 
     public World(Game game) {
+        is = getClass().getClassLoader().getResourceAsStream("maps/testdata.txt");
+        br = new BufferedReader(new InputStreamReader(is));
+
+        getTiles();
         loadTiles();
-        loadMaps();
+
+        // Obtiene la cantidad de filas y columnas del mapa
+        is = getClass().getClassLoader().getResourceAsStream("maps/test.txt");
+        br = new BufferedReader(new InputStreamReader(is));
+
+        try {
+            String line2 = br.readLine();
+            String[] maxTile = line2.split(" ");
+            MAX_WORLD_ROW = maxTile.length;
+            MAX_WORLD_COL = maxTile.length;
+            tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
+            br.close();
+        } catch (IOException e) {
+            System.out.println("Exception!");
+        }
+
+        // loadMaps();
+        loadMap("maps/test.txt", NIX, "Nix");
+
         player = new Player(game, this);
         tileManager = new TileManager(game, this);
         entityManager = new EntityManager(game, this);
@@ -87,6 +113,20 @@ public class World {
         environmentManager.render(g2);
     }
 
+    private void getTiles() {
+         String line;
+        try {
+            while ((line = br.readLine()) != null) {
+                fileNames.add(line);
+                collisionStatus.add(br.readLine());
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        tile = new Tile[fileNames.size()];
+    }
+
     /**
      * Carga los tiles.
      *
@@ -94,42 +134,13 @@ public class World {
      * numeros de dos digitos y mejorar la lectura del archivo world.txt.
      */
     private void loadTiles() {
-        for (int i = 0; i < 10; i++) loadTile(i, Assets.tile_grass00, false);
-        loadTile(10, Assets.tile_grass00, false);
-        loadTile(11, Assets.tile_grass01, false);
-        loadTile(12, Assets.tile_water00, true);
-        loadTile(13, Assets.tile_water01, true);
-        loadTile(14, Assets.tile_water02, true);
-        loadTile(15, Assets.tile_water03, true);
-        loadTile(16, Assets.tile_water04, true);
-        loadTile(17, Assets.tile_water05, true);
-        loadTile(18, Assets.tile_water06, true);
-        loadTile(19, Assets.tile_water07, true);
-        loadTile(20, Assets.tile_water08, true);
-        loadTile(21, Assets.tile_water09, true);
-        loadTile(22, Assets.tile_water10, true);
-        loadTile(23, Assets.tile_water11, true);
-        loadTile(24, Assets.tile_water12, true);
-        loadTile(25, Assets.tile_water13, true);
-        loadTile(26, Assets.tile_road00, false);
-        loadTile(27, Assets.tile_road01, false);
-        loadTile(28, Assets.tile_road02, false);
-        loadTile(29, Assets.tile_road03, false);
-        loadTile(30, Assets.tile_road04, false);
-        loadTile(31, Assets.tile_road05, false);
-        loadTile(32, Assets.tile_road06, false);
-        loadTile(33, Assets.tile_road07, false);
-        loadTile(34, Assets.tile_road08, false);
-        loadTile(35, Assets.tile_road09, false);
-        loadTile(36, Assets.tile_road10, false);
-        loadTile(37, Assets.tile_road11, false);
-        loadTile(38, Assets.tile_road12, false);
-        loadTile(39, Assets.tile_earth, false);
-        loadTile(40, Assets.tile_wall, true);
-        loadTile(41, Assets.tile_tree, true);
-        loadTile(42, Assets.tile_hut, false);
-        loadTile(43, Assets.tile_floor01, false);
-        loadTile(44, Assets.tile_table01, true);
+        for (int i = 0; i < fileNames.size(); i++) {
+            String fileName;
+            boolean solid;
+            fileName = fileNames.get(i);
+            solid = Boolean.parseBoolean(collisionStatus.get(i));
+            loadTile(i, fileName, solid);
+        }
     }
 
     /**
@@ -143,13 +154,14 @@ public class World {
     /**
      * Carga el tile.
      *
-     * @param i       el indice del tile.
-     * @param texture la imagen del tile.
-     * @param solid   si es solido o no.
+     * @param i        el indice del tile.
+     * @param fileName el nombre del tile.
+     * @param solid    si es solido o no.
      */
-    private void loadTile(int i, BufferedImage texture, boolean solid) {
+    private void loadTile(int i, String fileName, boolean solid) {
         tile[i] = new Tile();
-        tile[i].texture = Utils.scaleImage(texture, tile_size, tile_size);
+        tile[i].texture = Utils.loadImage("textures/tiles/" + fileName);
+        tile[i].texture = Utils.scaleImage(tile[i].texture, tile_size, tile_size);
         tile[i].solid = solid;
     }
 

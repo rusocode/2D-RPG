@@ -75,45 +75,9 @@ public final class Assets {
     public static final BufferedImage item_shield_wood = Utils.loadImage(textures_items_path + "shield_wood.png");
     public static final BufferedImage item_sword_normal = Utils.loadImage(textures_items_path + "sword_normal.png");
     public static final BufferedImage item_tent = Utils.loadImage(textures_items_path + "tent.png");
-    // Tiles
-    private static final String textures_tiles_path = "textures/tiles/";
-    public static final BufferedImage tile_earth = Utils.loadImage(textures_tiles_path + "earth.png");
-    public static final BufferedImage tile_floor01 = Utils.loadImage(textures_tiles_path + "floor01.png");
-    public static final BufferedImage tile_grass00 = Utils.loadImage(textures_tiles_path + "grass00.png");
-    public static final BufferedImage tile_grass01 = Utils.loadImage(textures_tiles_path + "grass01.png");
-    public static final BufferedImage tile_hut = Utils.loadImage(textures_tiles_path + "hut.png");
-    public static final BufferedImage tile_road00 = Utils.loadImage(textures_tiles_path + "road00.png");
-    public static final BufferedImage tile_road01 = Utils.loadImage(textures_tiles_path + "road01.png");
-    public static final BufferedImage tile_road02 = Utils.loadImage(textures_tiles_path + "road02.png");
-    public static final BufferedImage tile_road03 = Utils.loadImage(textures_tiles_path + "road03.png");
-    public static final BufferedImage tile_road04 = Utils.loadImage(textures_tiles_path + "road04.png");
-    public static final BufferedImage tile_road05 = Utils.loadImage(textures_tiles_path + "road05.png");
-    public static final BufferedImage tile_road06 = Utils.loadImage(textures_tiles_path + "road06.png");
-    public static final BufferedImage tile_road07 = Utils.loadImage(textures_tiles_path + "road07.png");
-    public static final BufferedImage tile_road08 = Utils.loadImage(textures_tiles_path + "road08.png");
-    public static final BufferedImage tile_road09 = Utils.loadImage(textures_tiles_path + "road09.png");
-    public static final BufferedImage tile_road10 = Utils.loadImage(textures_tiles_path + "road10.png");
-    public static final BufferedImage tile_road11 = Utils.loadImage(textures_tiles_path + "road11.png");
-    public static final BufferedImage tile_road12 = Utils.loadImage(textures_tiles_path + "road12.png");
-    public static final BufferedImage tile_table01 = Utils.loadImage(textures_tiles_path + "table01.png");
-    public static final BufferedImage tile_tree = Utils.loadImage(textures_tiles_path + "tree.png");
-    public static final BufferedImage tile_wall = Utils.loadImage(textures_tiles_path + "wall.png");
-    public static final BufferedImage tile_water00 = Utils.loadImage(textures_tiles_path + "water00.png");
-    public static final BufferedImage tile_water01 = Utils.loadImage(textures_tiles_path + "water01.png");
-    public static final BufferedImage tile_water02 = Utils.loadImage(textures_tiles_path + "water02.png");
-    public static final BufferedImage tile_water03 = Utils.loadImage(textures_tiles_path + "water03.png");
-    public static final BufferedImage tile_water04 = Utils.loadImage(textures_tiles_path + "water04.png");
-    public static final BufferedImage tile_water05 = Utils.loadImage(textures_tiles_path + "water05.png");
-    public static final BufferedImage tile_water06 = Utils.loadImage(textures_tiles_path + "water06.png");
-    public static final BufferedImage tile_water07 = Utils.loadImage(textures_tiles_path + "water07.png");
-    public static final BufferedImage tile_water08 = Utils.loadImage(textures_tiles_path + "water08.png");
-    public static final BufferedImage tile_water09 = Utils.loadImage(textures_tiles_path + "water09.png");
-    public static final BufferedImage tile_water10 = Utils.loadImage(textures_tiles_path + "water10.png");
-    public static final BufferedImage tile_water11 = Utils.loadImage(textures_tiles_path + "water11.png");
-    public static final BufferedImage tile_water12 = Utils.loadImage(textures_tiles_path + "water12.png");
-    public static final BufferedImage tile_water13 = Utils.loadImage(textures_tiles_path + "water13.png");
     // Interactive tiles
-    public static final BufferedImage itile_drytree = Utils.loadImage(textures_tiles_path + "interactive/drytree.png");
-    public static final BufferedImage itile_trunk = Utils.loadImage(textures_tiles_path + "interactive/trunk.png");
+    private static final String textures_tiles_path = "textures/tiles/interactive/";
+    public static final BufferedImage itile_drytree = Utils.loadImage(textures_tiles_path + "drytree.png");
+    public static final BufferedImage itile_trunk = Utils.loadImage(textures_tiles_path + "trunk.png");
 
 }

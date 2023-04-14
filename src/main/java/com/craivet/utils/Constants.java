@@ -51,11 +51,12 @@ public final class Constants {
 	public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW;
 
 	// World settings
-	public static final int MAX_WORLD_ROW = 50;
-	public static final int MAX_WORLD_COL = 50;
+	public static int MAX_WORLD_ROW = 50;
+	public static int MAX_WORLD_COL = 50;
 	public static final int MAX_MAP = 10;
 	public static final int NIX = 0;
 	public static final int NIX_TRADE = 1;
+	public static final int ABANDONED_ISLAND = 2;
 
 	// Title screen
 	public static final int MAIN_SCREEN = 0;
