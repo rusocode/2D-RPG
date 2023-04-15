@@ -369,7 +369,7 @@ public abstract class Entity {
     private void checkCollisions() {
         collision = false;
         game.collider.checkTile(this);
-        game.collider.checkObject(this);
+        game.collider.checkItem(this);
         game.collider.checkEntity(this, world.npcs);
         game.collider.checkEntity(this, world.mobs);
         game.collider.checkEntity(this, world.interactives);

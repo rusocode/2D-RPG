@@ -513,7 +513,7 @@ public class Player extends Entity {
     private void checkCollisions() {
         collision = false;
         game.collider.checkTile(this);
-        pickUpItem(game.collider.checkObject(this));
+        pickUpItem(game.collider.checkItem(this));
         interactNPC(game.collider.checkEntity(this, world.npcs));
         damagePlayer(game.collider.checkEntity(this, world.mobs));
         game.collider.checkEntity(this, world.interactives);
@@ -583,7 +583,7 @@ public class Player extends Entity {
         inventory.clear();
         inventory.add(weapon);
         inventory.add(shield);
-        inventory.add(new PotionRed(game, world, 4));
+        inventory.add(new PotionRed(game, world, 67));
     }
 
     private void drawRects(Graphics2D g2) {

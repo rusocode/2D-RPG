@@ -419,7 +419,7 @@ public class UI {
             g2.drawImage(entity.inventory.get(i).image, slotX, slotY, null);
 
             if (entity.inventory.get(i).amount > 1) {
-                changeFontSize(32);
+                changeFontSize(24);
                 int amountX, amountY;
                 String amount = "" + entity.inventory.get(i).amount;
                 amountX = getXforAlignToRightText(amount, slotX + 44);

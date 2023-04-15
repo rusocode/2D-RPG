@@ -22,7 +22,7 @@ public class PotionRed extends Item {
         stackable = true;
     }
 
-    public PotionRed(Game game, World world, int x, int y) {
+    public PotionRed(Game game, World world, int x, int y, int amount) {
         super(game, world);
         worldX = x * tile_size;
         worldY = y * tile_size;
@@ -32,6 +32,7 @@ public class PotionRed extends Item {
         value = 5;
         itemDescription = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;
+        this.amount = amount;
         stackable = true;
     }
 

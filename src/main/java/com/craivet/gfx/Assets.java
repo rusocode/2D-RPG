@@ -57,7 +57,6 @@ public final class Assets {
     public static final SpriteSheet entity_slime = new SpriteSheet(Utils.loadImage(textures_entity_path + "slime.png"));
     public static final BufferedImage entity_sticky_ball = Utils.loadImage(textures_entity_path + "sticky_ball.png");
     public static final BufferedImage entity_trader = Utils.loadImage(textures_entity_path + "trader.png");
-
     // Gui
     public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));
     // Items

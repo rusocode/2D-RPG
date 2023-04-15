@@ -104,7 +104,7 @@ public class World {
             for (int i = 0; i < names.size(); i++)
                 loadTile(i, names.get(i), Boolean.parseBoolean(solids.get(i)));
         } catch (IOException e) {
-            throw new RuntimeException("Error al leer el archivo " + "maps/tile_data.txt", e);
+            throw new RuntimeException("Error al leer el archivo tile_data.txt", e);
         }
     }
 

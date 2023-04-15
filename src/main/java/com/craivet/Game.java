@@ -27,7 +27,7 @@ public class Game extends Canvas implements Runnable {
     public AudioManager music = new AudioManager();
     public EventManager event = new EventManager(this, world);
     public AssetSetter setter = new AssetSetter(this, world);
-    public Collider collider = new Collider(this, world);
+    public Collider collider = new Collider(world);
     public UI ui = new UI(this, world);
     public Config config = new Config(this);
     public AStar aStar = new AStar(world);

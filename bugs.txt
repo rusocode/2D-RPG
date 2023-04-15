@@ -1,0 +1,4 @@
+# Al lanzar un proyectil y atacar al instante, el proyectil desaparece ya que el area de ataque colisiona con este.
+# Rara vez sucede que al navegar por el inventario del player lanza un ArrayIndexOutOfBoundsException que lo genera el 
+cuadro de descripcion del item.
+# El mundo no se limpia al reiniciar el juego.
