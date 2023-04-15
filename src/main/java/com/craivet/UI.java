@@ -419,18 +419,17 @@ public class UI {
             g2.drawImage(entity.inventory.get(i).image, slotX, slotY, null);
 
             if (entity.inventory.get(i).amount > 1) {
-                changeFontSize(24);
+                g2.setFont(new Font("Consolas", Font.BOLD, 18));
                 int amountX, amountY;
                 String amount = "" + entity.inventory.get(i).amount;
                 amountX = getXforAlignToRightText(amount, slotX + 44);
                 amountY = slotY + tile_size;
 
-                // Shadow
-                g2.setColor(new Color(60, 60, 60));
-                g2.drawString(amount, amountX, amountY);
                 // Number
                 g2.setColor(Color.white);
-                g2.drawString(amount, amountX - 3, amountY - 3);
+                g2.drawString(amount, amountX, amountY);
+
+                g2.setFont(font_medieval1);
 
             }
 

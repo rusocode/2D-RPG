@@ -583,7 +583,7 @@ public class Player extends Entity {
         inventory.clear();
         inventory.add(weapon);
         inventory.add(shield);
-        inventory.add(new PotionRed(game, world, 67));
+        inventory.add(new PotionRed(game, world, 15));
     }
 
     private void drawRects(Graphics2D g2) {
