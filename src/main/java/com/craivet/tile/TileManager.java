@@ -41,7 +41,7 @@ public class TileManager {
 		for (int y = yStart; y < yEnd; y++) {
 			for (int x = xStart; x < xEnd; x++) {
 				final int tileIndex = world.tileIndex[world.map][y][x];
-				final BufferedImage tileImage = world.tile[tileIndex].texture;
+				final BufferedImage tileImage = world.tileData[tileIndex].texture;
 				g2.drawImage(tileImage, x * tile_size - xOffset, y * tile_size - yOffset, null);
 				// g2.drawRect(x * tile_size - xOffset, y * tile_size - yOffset, tile_size, tile_size); // Dibuja una grilla
 			}

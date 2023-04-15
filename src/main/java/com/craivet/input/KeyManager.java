@@ -113,7 +113,7 @@ public class KeyManager extends KeyAdapter {
                     game.getWorld().loadMap("maps/nix.txt", NIX, "Nix");
                     break;
                 case 1:
-                    game.getWorld().loadMap("maps/nix_trade.txt", NIX_TRADE, "Nix trade");
+                    game.getWorld().loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
                     break;
             }
         }

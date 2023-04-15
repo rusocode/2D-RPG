@@ -16,7 +16,6 @@ import com.craivet.utils.Utils;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,33 +25,31 @@ import java.util.Objects;
 import static com.craivet.utils.Constants.*;
 
 /**
- * En el mundo se crean los tiles, las entidades y el entorno.
+ * En el mundo se crean los tiles, las entidades y el entorno que son actualizados y dibujados por sus respectivos
+ * administradores.
  * <p>
- * TODO Realmente se crean las entidades aca o en la clase Entity?. Logicamente la clase Entity declara los componentes
- * que componen cada entidad y el mundo las crea.
+ * El tamaño de cada mapa es el mismo para todos. Cada mapa tiene un tamaño de 50x50 tiles y este valor es fijo hasta
+ * que se aplique una forma de utilizar diferentes dimensiones.
  */
 
 public class World {
 
     // Managers
-    private final TileManager tileManager;
-    private final EntityManager entityManager;
-    public final EnvironmentManager environmentManager;
-
-    private InputStream is;
-    private BufferedReader br;
+    private final TileManager tiles;
+    private final EntityManager entitites;
+    public final EnvironmentManager environment;
 
     // Tiles
     public int map;
     public HashMap<Integer, String> maps = new HashMap<>();
-    public Tile[] tile;
-    public int[][][] tileIndex;
+    public Tile[] tileData;
+    public int[][][] tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
+    // TODO Creo que se podria reemplazar por un HashMap
     ArrayList<String> names = new ArrayList<>();
     ArrayList<String> solids = new ArrayList<>();
 
     // Entities
     public Player player;
-    public List<Entity> entities = new ArrayList<>();
     public List<Entity> itemsList = new ArrayList<>();
     public List<Entity> particles = new ArrayList<>();
     public Entity[][] items = new Item[MAX_MAP][20];
@@ -65,33 +62,20 @@ public class World {
 
     public World(Game game) {
         player = new Player(game, this);
-        tileManager = new TileManager(game, this);
-        entityManager = new EntityManager(game, this);
-        environmentManager = new EnvironmentManager(this);
+        tiles = new TileManager(game, this);
+        entitites = new EntityManager(game, this);
+        environment = new EnvironmentManager(this);
 
-        loadTiles("maps/testdata.txt");
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("maps/test.txt"))))) {
-            String[] maxTile = br.readLine().split(" ");
-            MAX_WORLD_ROW = maxTile.length;
-            MAX_WORLD_COL = maxTile.length;
-            tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
-        } catch (IOException e) {
-            throw new RuntimeException("Error al leer el archivo maps/test.txt", e);
-        }
-
-        // loadMap("maps/nix.txt", NIX, "Nix");
-        // loadMap("maps/nix_trade.txt", NIX_TRADE, "Nix trade");
-        loadMap("maps/test.txt", 0, "Abandoned Island");
-
+        loadTiles();
+        loadMaps();
     }
 
     /**
      * Actualiza las entidades y el entorno.
      */
     public void update() {
-        entityManager.update();
-        environmentManager.update();
+        entitites.update();
+        environment.update();
     }
 
     /**
@@ -100,29 +84,27 @@ public class World {
      * @param g2 componente grafico.
      */
     public void render(Graphics2D g2) {
-        tileManager.render(g2);
-        entityManager.render(g2);
-        environmentManager.render(g2);
+        tiles.render(g2);
+        entitites.render(g2);
+        environment.render(g2);
     }
 
     /**
-     * Lee los valores de cada tile del mapa (nombre y estado solido) y los agrega a sus respectivas listas. Luego
-     * utiliza esos valores para cargar todos los tiles del mapa dentro de un array.
-     *
-     * @param path la ruta del recurso.
+     * Lee los datos de cada tile (nombre y estado solido) desde el archivo "tile_data.txt" y los agrega a sus
+     * respectivas listas. Luego utiliza esos datos para cargar (crear) todos los tiles dentro de un array.
      */
-    private void loadTiles(String path) {
+    private void loadTiles() {
         String line;
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path))))) {
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("maps/tile_data.txt"))))) {
             while ((line = br.readLine()) != null) {
                 names.add(line);
                 solids.add(br.readLine());
             }
-            tile = new Tile[names.size()]; // Crea un array con la cantidad de tiles del mapa
+            tileData = new Tile[names.size()];
             for (int i = 0; i < names.size(); i++)
                 loadTile(i, names.get(i), Boolean.parseBoolean(solids.get(i)));
         } catch (IOException e) {
-            throw new RuntimeException("Error al leer el archivo " + path, e);
+            throw new RuntimeException("Error al leer el archivo " + "maps/tile_data.txt", e);
         }
     }
 
@@ -134,15 +116,25 @@ public class World {
      * @param solid si es solido o no.
      */
     private void loadTile(int i, String name, boolean solid) {
-        tile[i] = new Tile();
-        tile[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile_size, tile_size);
-        tile[i].solid = solid;
+        tileData[i] = new Tile();
+        tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile_size, tile_size);
+        tileData[i].solid = solid;
+    }
+
+    /**
+     * Carga todos los mapas que componen al mundo.
+     */
+    private void loadMaps() {
+        loadMap("maps/nix.txt", NIX, "Nix");
+        loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
     }
 
     /**
      * Carga el mapa utilizando la ruta especificada y almacena cada valor (tile) leido del archivo en la matriz.
      *
      * @param path la ruta del recurso.
+     * @param map  el numero del mapa como clave.
+     * @param name el nombre del mapa como valor.
      */
     public void loadMap(String path, int map, String name) {
         maps.put(map, name);

@@ -1,5 +1,5 @@
 000.png
-false
+true
 001.png
 false
 002.png
@@ -65,7 +65,7 @@ true
 032.png
 true
 033.png
-true
+false
 034.png
 false
 035.png

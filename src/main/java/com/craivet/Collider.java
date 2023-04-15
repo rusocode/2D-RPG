@@ -44,28 +44,28 @@ public class Collider {
 				entityBottomRow = (entityBottomWorldY + entity.speed) / tile_size;
 				tile1 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
 				tile2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
-				if (world.tile[tile1].solid || world.tile[tile2].solid)
+				if (world.tileData[tile1].solid || world.tileData[tile2].solid)
 					entity.collision = true;
 				break;
 			case UP:
 				entityTopRow = (entityTopWorldY - entity.speed) / tile_size;
 				tile1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
 				tile2 = world.tileIndex[world.map][entityTopRow][entityRightCol];
-				if (world.tile[tile1].solid || world.tile[tile2].solid)
+				if (world.tileData[tile1].solid || world.tileData[tile2].solid)
 					entity.collision = true;
 				break;
 			case LEFT:
 				entityLeftCol = (entityLeftWorldX - entity.speed) / tile_size;
 				tile1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
 				tile2 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
-				if (world.tile[tile1].solid || world.tile[tile2].solid)
+				if (world.tileData[tile1].solid || world.tileData[tile2].solid)
 					entity.collision = true;
 				break;
 			case RIGHT:
 				entityRightCol = (entityRightWorldX + entity.speed) / tile_size;
 				tile1 = world.tileIndex[world.map][entityTopRow][entityRightCol];
 				tile2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
-				if (world.tile[tile1].solid || world.tile[tile2].solid)
+				if (world.tileData[tile1].solid || world.tileData[tile2].solid)
 					entity.collision = true;
 				break;
 		}

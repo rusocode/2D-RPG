@@ -24,15 +24,12 @@ public class AssetSetter {
 
     public void setItem() {
         int i = 0;
-        world.items[NIX][i++] = new Tent(game, world, 19, 20);
-        world.items[NIX][i++] = new Lantern(game, world, 18, 20);
-        world.items[NIX][i++] = new Axe(game, world, 20, 21);
+        world.items[NIX][i++] = new Tent(game, world, 12, 31);
+        world.items[NIX][i++] = new Lantern(game, world, 13, 31);
+        world.items[NIX][i++] = new Axe(game, world, 33, 7);
         world.items[NIX][i++] = new Door(game, world, 14, 28);
         world.items[NIX][i++] = new Door(game, world, 12, 12);
-        world.items[NIX][i++] = new Chest(game, world, new Key(game, world), 24, 28);
-        world.items[NIX][i++] = new PotionRed(game, world, 21, 20);
-        world.items[NIX][i++] = new PotionRed(game, world, 20, 20);
-        world.items[NIX][i++] = new PotionRed(game, world, 17, 21);
+        world.items[NIX][i++] = new Chest(game, world, new Key(game, world), 30, 29);
     }
 
     public void setNPC() {
@@ -40,7 +37,7 @@ public class AssetSetter {
         world.npcs[NIX][i++] = new Oldman(game, world, 23, 18);
 
         i = 0;
-        world.npcs[NIX_TRADE][i++] = new Trader(game, world, 12, 7);
+        world.npcs[NIX_INDOOR_01][i++] = new Trader(game, world, 12, 7);
 
     }
 
@@ -54,12 +51,17 @@ public class AssetSetter {
 
     public void setInteractiveTile() {
         int i = 0;
-        world.interactives[NIX][i++] = new DryTree(game, world, 28, 21);
-        world.interactives[NIX][i++] = new DryTree(game, world, 29, 21);
-        world.interactives[NIX][i++] = new DryTree(game, world, 30, 21);
-        world.interactives[NIX][i++] = new DryTree(game, world, 31, 21);
-        world.interactives[NIX][i++] = new DryTree(game, world, 32, 21);
-        world.interactives[NIX][i++] = new DryTree(game, world, 33, 21);
+
+        world.interactives[NIX][i++] = new DryTree(game, world, 25, 27);
+        world.interactives[NIX][i++] = new DryTree(game, world, 26, 27);
+        world.interactives[NIX][i++] = new DryTree(game, world, 27, 27);
+        world.interactives[NIX][i++] = new DryTree(game, world, 27, 28);
+        world.interactives[NIX][i++] = new DryTree(game, world, 27, 29);
+        world.interactives[NIX][i++] = new DryTree(game, world, 27, 30);
+        world.interactives[NIX][i++] = new DryTree(game, world, 27, 31);
+        world.interactives[NIX][i++] = new DryTree(game, world, 28, 31);
+        world.interactives[NIX][i++] = new DryTree(game, world, 29, 31);
+        world.interactives[NIX][i++] = new DryTree(game, world, 30, 31);
     }
 
 }

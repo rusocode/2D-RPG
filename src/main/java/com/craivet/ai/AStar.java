@@ -79,7 +79,7 @@ public class AStar {
 		for (int row = 0; row < MAX_WORLD_ROW; row++) {
 			for (int col = 0; col < MAX_WORLD_COL; col++) {
 				int tileIndex = world.tileIndex[world.map][row][col];
-				if (world.tile[tileIndex].solid) node[row][col].solid = true;
+				if (world.tileData[tileIndex].solid) node[row][col].solid = true;
 
 				for (int i = 0; i < world.interactives[1].length; i++) {
 					if (world.interactives[world.map][i] != null && world.interactives[world.map][i].destructible) {

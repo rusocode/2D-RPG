@@ -908,16 +908,16 @@ public class UI {
     private void drawSleepScreen() {
         counter++;
         if (counter < 120) {
-            world.environmentManager.lighting.filterAlpha += 0.01f;
-            if (world.environmentManager.lighting.filterAlpha > 1f) world.environmentManager.lighting.filterAlpha = 1f;
+            world.environment.lighting.filterAlpha += 0.01f;
+            if (world.environment.lighting.filterAlpha > 1f) world.environment.lighting.filterAlpha = 1f;
         }
         if (counter >= 120) {
-            world.environmentManager.lighting.filterAlpha -= 0.01f;
-            if (world.environmentManager.lighting.filterAlpha <= 0f) {
-                world.environmentManager.lighting.filterAlpha = 0f;
+            world.environment.lighting.filterAlpha -= 0.01f;
+            if (world.environment.lighting.filterAlpha <= 0f) {
+                world.environment.lighting.filterAlpha = 0f;
                 counter = 0;
-                world.environmentManager.lighting.dayState = world.environmentManager.lighting.day;
-                world.environmentManager.lighting.dayCounter = 0;
+                world.environment.lighting.dayState = world.environment.lighting.day;
+                world.environment.lighting.dayCounter = 0;
                 game.gameState = PLAY_STATE;
                 world.player.initMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
                 world.player.initAttackImages(world.player.weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);

@@ -4,7 +4,9 @@ import com.craivet.*;
 import com.craivet.World;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 import static com.craivet.utils.Constants.*;
 
@@ -16,6 +18,8 @@ public class EntityManager {
 
     private final Game game;
     private final World world;
+
+    private final List<Entity> entities = new ArrayList<>();
 
     public EntityManager(Game game, World world) {
         this.game = game;
@@ -68,31 +72,31 @@ public class EntityManager {
             if (world.interactives[world.map][i] != null) world.interactives[world.map][i].render(g2);
 
         // Agrega las entidades a la lista de entidades
-        world.entities.add(world.player);
+        entities.add(world.player);
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] != null) {
                 if (!world.items[world.map][i].solid) world.itemsList.add(world.items[world.map][i]);
                     // Agrega la puerta a la lista de entidades para poder ordenarla con respecto a la posicion Y del player
-                else world.entities.add(world.items[world.map][i]);
+                else entities.add(world.items[world.map][i]);
             }
         }
         for (int i = 0; i < world.npcs[1].length; i++)
-            if (world.npcs[world.map][i] != null) world.entities.add(world.npcs[world.map][i]);
+            if (world.npcs[world.map][i] != null) entities.add(world.npcs[world.map][i]);
         for (int i = 0; i < world.mobs[1].length; i++)
-            if (world.mobs[world.map][i] != null) world.entities.add(world.mobs[world.map][i]);
+            if (world.mobs[world.map][i] != null) entities.add(world.mobs[world.map][i]);
         for (int i = 0; i < world.projectiles[1].length; i++)
-            if (world.projectiles[world.map][i] != null) world.entities.add(world.projectiles[world.map][i]);
+            if (world.projectiles[world.map][i] != null) entities.add(world.projectiles[world.map][i]);
         for (Entity particle : world.particles)
-            if (particle != null) world.entities.add(particle);
+            if (particle != null) entities.add(particle);
 
         /* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
          * entonces este se dibuja por debajo. */
-        world.entities.sort(Comparator.comparingInt(o -> o.worldY));
+        entities.sort(Comparator.comparingInt(o -> o.worldY));
 
         for (Entity item : world.itemsList) item.render(g2);
-        for (Entity entity : world.entities) entity.render(g2);
+        for (Entity entity : entities) entity.render(g2);
 
-        world.entities.clear();
+        entities.clear();
         world.itemsList.clear();
 
         // }

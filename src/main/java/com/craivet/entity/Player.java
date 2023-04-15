@@ -33,8 +33,8 @@ public class Player extends Entity {
         screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
         screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
         // Posiciona el player en el mundo
-        worldX = 45 * tile_size;
-        worldY = 49 * tile_size;
+        worldX = 23 * tile_size;
+        worldY = 21 * tile_size;
         key = game.getKey();
         initDefaultValues();
     }
@@ -583,8 +583,7 @@ public class Player extends Entity {
         inventory.clear();
         inventory.add(weapon);
         inventory.add(shield);
-        inventory.add(new PotionRed(game, world));
-        inventory.add(new Key(game, world));
+        inventory.add(new PotionRed(game, world, 4));
     }
 
     private void drawRects(Graphics2D g2) {

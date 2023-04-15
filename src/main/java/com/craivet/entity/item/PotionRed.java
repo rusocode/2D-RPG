@@ -10,7 +10,7 @@ import static com.craivet.gfx.Assets.*;
 
 public class PotionRed extends Item {
 
-    public PotionRed(Game game, World world) {
+    public PotionRed(Game game, World world, int amount) {
         super(game, world);
         name = "Red Potion";
         type = TYPE_CONSUMABLE;
@@ -18,6 +18,7 @@ public class PotionRed extends Item {
         value = 5;
         itemDescription = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;
+        this.amount = amount;
         stackable = true;
     }
 

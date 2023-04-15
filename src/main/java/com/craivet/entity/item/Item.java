@@ -27,7 +27,7 @@ public class Item extends Entity {
 		itemMap = new HashMap<>();
 		itemMap.put(Axe.class, () -> new Axe(game, world));
 		itemMap.put(Key.class, () -> new Key(game, world));
-		itemMap.put(PotionRed.class, () -> new PotionRed(game, world));
+		itemMap.put(PotionRed.class, () -> new PotionRed(game, world, 1));
 		itemMap.put(ShieldBlue.class, () -> new ShieldBlue(game, world));
 		itemMap.put(ShieldWood.class, () -> new ShieldWood(game, world));
 		itemMap.put(SwordNormal.class, () -> new SwordNormal(game, world));
