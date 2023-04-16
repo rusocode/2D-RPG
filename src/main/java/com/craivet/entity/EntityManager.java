@@ -62,44 +62,44 @@ public class EntityManager {
     }
 
     public void render(Graphics2D g2) {
-        // if (game.gameState == TITLE_STATE) {
-        // Creo que evitaba un mal renderizado cuando estaba en pantalla completa
-        // g2.setColor(Color.black);
-        // g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        // game.ui.render(g2);
-        // } else {
-        for (int i = 0; i < world.interactives[1].length; i++)
-            if (world.interactives[world.map][i] != null) world.interactives[world.map][i].render(g2);
+        if (game.gameState == TITLE_STATE) {
+            // Creo que evitaba un mal renderizado cuando estaba en pantalla completa
+            g2.setColor(Color.black);
+            g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            game.ui.render(g2);
+        } else {
+            for (int i = 0; i < world.interactives[1].length; i++)
+                if (world.interactives[world.map][i] != null) world.interactives[world.map][i].render(g2);
 
-        // Agrega las entidades a la lista de entidades
-        entities.add(world.player);
-        for (int i = 0; i < world.items[1].length; i++) {
-            if (world.items[world.map][i] != null) {
-                if (!world.items[world.map][i].solid) world.itemsList.add(world.items[world.map][i]);
-                    // Agrega la puerta a la lista de entidades para poder ordenarla con respecto a la posicion Y del player
-                else entities.add(world.items[world.map][i]);
+            // Agrega las entidades a la lista de entidades
+            entities.add(world.player);
+            for (int i = 0; i < world.items[1].length; i++) {
+                if (world.items[world.map][i] != null) {
+                    if (!world.items[world.map][i].solid) world.itemsList.add(world.items[world.map][i]);
+                        // Agrega la puerta a la lista de entidades para poder ordenarla con respecto a la posicion Y del player
+                    else entities.add(world.items[world.map][i]);
+                }
             }
+            for (int i = 0; i < world.npcs[1].length; i++)
+                if (world.npcs[world.map][i] != null) entities.add(world.npcs[world.map][i]);
+            for (int i = 0; i < world.mobs[1].length; i++)
+                if (world.mobs[world.map][i] != null) entities.add(world.mobs[world.map][i]);
+            for (int i = 0; i < world.projectiles[1].length; i++)
+                if (world.projectiles[world.map][i] != null) entities.add(world.projectiles[world.map][i]);
+            for (Entity particle : world.particles)
+                if (particle != null) entities.add(particle);
+
+            /* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
+             * entonces este se dibuja por debajo. */
+            entities.sort(Comparator.comparingInt(o -> o.worldY));
+
+            for (Entity item : world.itemsList) item.render(g2);
+            for (Entity entity : entities) entity.render(g2);
+
+            entities.clear();
+            world.itemsList.clear();
+
         }
-        for (int i = 0; i < world.npcs[1].length; i++)
-            if (world.npcs[world.map][i] != null) entities.add(world.npcs[world.map][i]);
-        for (int i = 0; i < world.mobs[1].length; i++)
-            if (world.mobs[world.map][i] != null) entities.add(world.mobs[world.map][i]);
-        for (int i = 0; i < world.projectiles[1].length; i++)
-            if (world.projectiles[world.map][i] != null) entities.add(world.projectiles[world.map][i]);
-        for (Entity particle : world.particles)
-            if (particle != null) entities.add(particle);
-
-        /* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
-         * entonces este se dibuja por debajo. */
-        entities.sort(Comparator.comparingInt(o -> o.worldY));
-
-        for (Entity item : world.itemsList) item.render(g2);
-        for (Entity entity : entities) entity.render(g2);
-
-        entities.clear();
-        world.itemsList.clear();
-
-        // }
     }
 
 }

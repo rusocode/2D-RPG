@@ -3,6 +3,7 @@ package com.craivet.states;
 import com.craivet.Game;
 import com.craivet.UI;
 import com.craivet.World;
+import com.craivet.tile.Minimap;
 
 import java.awt.*;
 
@@ -13,14 +14,16 @@ public class GameState implements State {
     private final Game game;
     private final World world;
     private final UI ui;
+    private final Minimap minimap;
 
     private long renderStart;
     private int lastFrames;
 
-    public GameState(Game game, World world, UI ui) {
+    public GameState(Game game, World world, UI ui, Minimap minimap) {
         this.game = game;
         this.world = world;
         this.ui = ui;
+        this.minimap =  minimap;
         game.gameState = PLAY_STATE;
     }
 
@@ -32,6 +35,7 @@ public class GameState implements State {
         if (game.getKey().t) renderStart = System.nanoTime();
 
         world.render(g2);
+        minimap.render(g2);
         ui.render(g2);
 
         // Debug mode

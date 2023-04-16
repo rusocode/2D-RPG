@@ -15,7 +15,7 @@ import static com.craivet.utils.Constants.*;
 public class TileManager {
 
 	private final Game game;
-	private final World world;
+	protected final World world;
 
 	public TileManager(Game game, World world) {
 		this.game = game;

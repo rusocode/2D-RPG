@@ -4,6 +4,7 @@ import com.craivet.ai.AStar;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
+import com.craivet.tile.Minimap;
 import com.craivet.utils.TimeUtils;
 
 import java.awt.*;
@@ -23,12 +24,13 @@ public class Game extends Canvas implements Runnable {
     // System
     public KeyManager key = new KeyManager(this);
     private final World world = new World(this);
+    public UI ui = new UI(this, world);
+    public Minimap minimap = new Minimap(world);
     public AudioManager sound = new AudioManager();
     public AudioManager music = new AudioManager();
     public EventManager event = new EventManager(this, world);
     public AssetSetter setter = new AssetSetter(this, world);
     public Collider collider = new Collider(world);
-    public UI ui = new UI(this, world);
     public Config config = new Config(this);
     public AStar aStar = new AStar(world);
 
@@ -102,7 +104,7 @@ public class Game extends Canvas implements Runnable {
     private void init() {
         setAssets();
         playMusic(music_blue_boy_adventure);
-        stateManager.setState(new GameState(this, world, ui));
+        stateManager.setState(new GameState(this, world, ui, minimap));
     }
 
     private void update() {

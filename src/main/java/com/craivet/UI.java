@@ -413,7 +413,7 @@ public class UI {
             // Remarca de color amarillo el item seleccionado
             if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield || entity.inventory.get(i) == entity.light) {
                 g2.setColor(new Color(240, 190, 90));
-                g2.fillRoundRect(slotX, slotY, tile_size, tile_size, 10, 10);
+                g2.fillRect(slotX, slotY, tile_size, tile_size);
             }
 
             g2.drawImage(entity.inventory.get(i).image, slotX, slotY, null);
@@ -423,7 +423,7 @@ public class UI {
                 int amountX, amountY;
                 String amount = "" + entity.inventory.get(i).amount;
                 amountX = getXforAlignToRightText(amount, slotX + 44);
-                amountY = slotY + tile_size;
+                amountY = slotY + tile_size - 2;
 
                 // Number
                 g2.setColor(Color.white);
@@ -450,8 +450,8 @@ public class UI {
 
             // Draw cursor
             g2.setColor(Color.white);
-            g2.setStroke(new BasicStroke(3));
-            g2.drawRoundRect(cursorX, cursorY, tile_size, tile_size, 10, 10);
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRect(cursorX, cursorY, tile_size, tile_size);
 
             // Description frame
             int dFrameY = frameY + frameHeight;

@@ -105,6 +105,7 @@ public class KeyManager extends KeyAdapter {
         if (code == KeyEvent.VK_P) game.gameState = PAUSE_STATE;
         if (code == KeyEvent.VK_C) game.gameState = CHARACTER_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.gameState = OPTION_STATE;
+        if (code == KeyEvent.VK_M) game.minimap.miniMapOn = !game.minimap.miniMapOn;
         /* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
          * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
         if (code == KeyEvent.VK_R) {
