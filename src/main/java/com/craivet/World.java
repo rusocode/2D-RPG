@@ -22,7 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * En el mundo se crean los tiles, las entidades y el entorno que son actualizados y dibujados por sus respectivos

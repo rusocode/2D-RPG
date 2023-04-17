@@ -5,7 +5,7 @@ import com.craivet.World;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class Minimap {
 
@@ -34,6 +34,7 @@ public class Minimap {
                     g2.drawImage(world.tileData[tileIndex].texture, x, y, null);
                 }
             }
+            g2.dispose();
         }
     }
 
@@ -54,7 +55,7 @@ public class Minimap {
             int playerSize = (int) (tile_size / scale);
             g2.setColor(Color.red);
             g2.fillRect(playerX, playerY, playerSize, playerSize);
-           // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Restablece el valor alpha
+            // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Restablece el valor alpha
         }
     }
 

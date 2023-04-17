@@ -11,7 +11,7 @@ import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.net.URL;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
@@ -36,7 +36,7 @@ public class Game extends Canvas implements Runnable {
 
     // States
     public StateManager stateManager = new StateManager();
-    public int gameState;
+    public int state;
 
     // Otros
     private BufferStrategy buffer;

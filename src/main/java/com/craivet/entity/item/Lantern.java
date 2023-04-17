@@ -5,7 +5,7 @@ import com.craivet.World;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class Lantern extends Item {
 

@@ -7,7 +7,7 @@ import java.net.URL;
 import com.craivet.utils.Utils;
 
 /**
- * Esta clase carga los recursos solo una vez cuando se inicia la aplicacion.
+ * Esta clase carga los recursos solo una vez al iniciar el juego.
  */
 
 public final class Assets {

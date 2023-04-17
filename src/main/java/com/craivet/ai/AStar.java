@@ -4,7 +4,7 @@ import com.craivet.World;
 
 import java.util.ArrayList;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class AStar {
 

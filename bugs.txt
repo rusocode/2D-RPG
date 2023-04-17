@@ -3,3 +3,4 @@
 cuadro de descripcion del item.
 # El mundo no se limpia al reiniciar el juego.
 # El bola de fuego pasa por debajo del npc cuando es lanzada desde arriba.
+# A veces al iniciar el dialogo con el Trader, la flecha para indicar las opciones Buy o Sell ">" no aparece.

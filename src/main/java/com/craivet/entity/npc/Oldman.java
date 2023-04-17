@@ -3,7 +3,7 @@ package com.craivet.entity.npc;
 import com.craivet.Game;
 import com.craivet.World;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Oldman extends Npc {

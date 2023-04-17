@@ -11,7 +11,7 @@ import com.craivet.tile.Interactive;
 import com.craivet.World;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
@@ -310,7 +310,7 @@ public class Player extends Entity {
     private void interactNPC(int npcIndex) {
         if (npcIndex != -1 && key.enter) {
             attackCanceled = true; // No puede atacar si interactua con un npc
-            game.gameState = DIALOGUE_STATE;
+            game.state = DIALOGUE_STATE;
             world.npcs[world.map][npcIndex].speak();
         }
     }
@@ -423,7 +423,7 @@ public class Player extends Entity {
             defense = getDefense();
 
             game.playSound(sound_level_up);
-            game.gameState = DIALOGUE_STATE;
+            game.state = DIALOGUE_STATE;
             game.ui.currentDialogue = "You are level " + level + "!";
         }
     }
@@ -558,7 +558,7 @@ public class Player extends Entity {
     }
 
     private void die() {
-        game.gameState = GAME_OVER_STATE;
+        game.state = GAME_OVER_STATE;
         game.playSound(sound_player_die);
         game.ui.command = -1;
         game.music.stop();

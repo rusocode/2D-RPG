@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Adminstra las entidades actualizandolas y renderizandolas.
@@ -27,7 +27,7 @@ public class EntityManager {
     }
 
     public void update() {
-        if (game.gameState == PLAY_STATE) {
+        if (game.state == PLAY_STATE) {
             world.player.update();
             for (int i = 0; i < world.npcs[1].length; i++)
                 if (world.npcs[world.map][i] != null) world.npcs[world.map][i].update();
@@ -62,7 +62,7 @@ public class EntityManager {
     }
 
     public void render(Graphics2D g2) {
-        if (game.gameState == TITLE_STATE) {
+        if (game.state == TITLE_STATE) {
             // Creo que evitaba un mal renderizado cuando estaba en pantalla completa
             g2.setColor(Color.black);
             g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);

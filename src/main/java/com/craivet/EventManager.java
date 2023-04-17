@@ -2,7 +2,7 @@ package com.craivet;
 
 import com.craivet.entity.Entity;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class EventManager {
 
@@ -96,7 +96,7 @@ public class EventManager {
 	 * Resta vida al player si callo en la foza.
 	 */
 	private void damagePit() {
-		game.gameState = DIALOGUE_STATE;
+		game.state = DIALOGUE_STATE;
 		game.ui.currentDialogue = "You fall into a pit!";
 		world.player.life--;
 		canTouchEvent = false;
@@ -107,7 +107,7 @@ public class EventManager {
 	 */
 	public void healingPool() {
 		if (game.key.enter) {
-			game.gameState = DIALOGUE_STATE;
+			game.state = DIALOGUE_STATE;
 			world.player.attackCanceled = true; // No puede atacar si regenera vida
 			game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";
 			world.player.life = world.player.maxLife;
@@ -116,7 +116,7 @@ public class EventManager {
 	}
 
 	public void teleport(int map, int col, int row) {
-		game.gameState = TRANSITION_STATE;
+		game.state = TRANSITION_STATE;
 		tempMap = map;
 		tempCol = col;
 		tempRow = row;
@@ -125,7 +125,7 @@ public class EventManager {
 
 	public void speak(Entity entity) {
 		if (game.key.enter) {
-			game.gameState = DIALOGUE_STATE;
+			game.state = DIALOGUE_STATE;
 			world.player.attackCanceled = true;
 			entity.speak();
 		}

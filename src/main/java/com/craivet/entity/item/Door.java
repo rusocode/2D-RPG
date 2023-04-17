@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Door extends Item {
@@ -26,7 +26,7 @@ public class Door extends Item {
 	}
 	
 	public void interact() {
-		game.gameState = DIALOGUE_STATE;
+		game.state = DIALOGUE_STATE;
 		game.ui.currentDialogue = "You need a key to open this";
 	}
 

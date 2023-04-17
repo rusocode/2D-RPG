@@ -6,7 +6,7 @@ import com.craivet.World;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Adminstra los tiles actualizandolos y renderizandolos.

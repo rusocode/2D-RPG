@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
@@ -68,28 +68,28 @@ public class UI {
         // Suaviza los bordes de la fuente
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        if (game.gameState == TITLE_STATE) drawTitleScreen();
-        if (game.gameState == PLAY_STATE) {
+        if (game.state == TITLE_STATE) drawTitleScreen();
+        if (game.state == PLAY_STATE) {
             drawPlayerLife();
             drawConsole();
         }
-        if (game.gameState == PAUSE_STATE) {
+        if (game.state == PAUSE_STATE) {
             drawPlayerLife();
             drawPauseText();
         }
-        if (game.gameState == DIALOGUE_STATE) drawDialogueScreen();
-        if (game.gameState == CHARACTER_STATE) {
+        if (game.state == DIALOGUE_STATE) drawDialogueScreen();
+        if (game.state == CHARACTER_STATE) {
             drawCharacterScreen();
             drawInventory(world.player, true);
         }
-        if (game.gameState == OPTION_STATE) drawOptionScreen();
-        if (game.gameState == GAME_OVER_STATE) drawGameOverScreen();
-        if (game.gameState == TRANSITION_STATE) drawTransition();
-        if (game.gameState == TRADE_STATE) {
+        if (game.state == OPTION_STATE) drawOptionScreen();
+        if (game.state == GAME_OVER_STATE) drawGameOverScreen();
+        if (game.state == TRANSITION_STATE) drawTransition();
+        if (game.state == TRADE_STATE) {
             drawTradeScreen();
             drawConsole();
         }
-        if (game.gameState == SLEEP_STATE) drawSleepScreen();
+        if (game.state == SLEEP_STATE) drawSleepScreen();
 
     }
 
@@ -576,7 +576,7 @@ public class UI {
         if (command == 5) {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
-                game.gameState = PLAY_STATE;
+                game.state = PLAY_STATE;
                 command = 0;
             }
         }
@@ -677,7 +677,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 subState = 0;
-                game.gameState = TITLE_STATE;
+                game.state = TITLE_STATE;
                 game.key.t = false;
             }
         }
@@ -740,7 +740,7 @@ public class UI {
         g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         if (counter >= INTERVAL_TRANSITION) {
             counter = 0;
-            game.gameState = PLAY_STATE;
+            game.state = PLAY_STATE;
             world.map = game.event.tempMap;
             world.player.worldX = tile_size * game.event.tempCol;
             world.player.worldY = tile_size * game.event.tempRow;
@@ -917,7 +917,7 @@ public class UI {
                 counter = 0;
                 world.environment.lighting.dayState = world.environment.lighting.day;
                 world.environment.lighting.dayCounter = 0;
-                game.gameState = PLAY_STATE;
+                game.state = PLAY_STATE;
                 world.player.initMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
                 world.player.initAttackImages(world.player.weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
             }

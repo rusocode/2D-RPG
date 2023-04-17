@@ -5,7 +5,7 @@ import com.craivet.entity.item.*;
 import com.craivet.World;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Trader extends Npc {
@@ -35,7 +35,7 @@ public class Trader extends Npc {
 	public void speak() {
 		super.speak();
 		game.playSound(sound_trade_open);
-		game.gameState = TRADE_STATE;
+		game.state = TRADE_STATE;
 		game.ui.npc = this;
 	}
 

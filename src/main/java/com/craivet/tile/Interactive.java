@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class Interactive extends Entity {
 

@@ -8,7 +8,7 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.Assets;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class DryTree extends Interactive {
 

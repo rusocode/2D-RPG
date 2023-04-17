@@ -7,9 +7,9 @@ package com.craivet.utils;
  * <a href="https://github.com/iluwatar/java-design-patterns/tree/master/singleton">...</a>
  */
 
-public final class Constants {
+public final class Global {
 
-    private Constants() {
+    private Global() {
     }
 
     /* Cantidad de veces que el GameLoop actualiza la fisica por segundo. En general, muchos juegos RPG en 2D utilizan
@@ -28,7 +28,6 @@ public final class Constants {
     // Otros
     public static final String CONFIG_FILE = "config.txt";
     public static final int MAX_INVENTORY_SIZE = 20;
-    public static final int PLAYER_SPEED = 3;
     public static final int ENTITY_WIDTH = 16;
     public static final int ENTITY_HEIGHT = 16;
     public static final int SUBWINDOW_ALPHA = 210;
@@ -62,7 +61,7 @@ public final class Constants {
     public static final int SELECTION_SCREEN = 1;
 
     // Probabilidades
-    public static final int PROBABILIDAD_DROP_ORO = 47;
+    public static final int PROBABILIDAD_DROP_ORO = 47; // 47%
 
     // Interval animation
     public static final int INTERVAL_DEAD_ANIMATION = 10;

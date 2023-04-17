@@ -3,7 +3,7 @@ package com.craivet;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Deteccion de colisiones.

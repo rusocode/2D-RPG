@@ -5,7 +5,7 @@ import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
 import com.craivet.World;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class Projectile extends Entity {
 

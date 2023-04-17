@@ -6,7 +6,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.gfx.Assets.font_medieval1;
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Activa la iluminacion.

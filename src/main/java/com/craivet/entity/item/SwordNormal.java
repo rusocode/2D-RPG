@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class SwordNormal extends Item {

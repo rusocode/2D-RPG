@@ -5,7 +5,7 @@ import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Key extends Item {

@@ -4,7 +4,7 @@ import com.craivet.entity.Entity;
 
 import java.awt.*;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Temporiza las acciones del juego.
@@ -62,7 +62,7 @@ public class Timer {
     /**
      * Temporiza la direccion.
      *
-     * <p>Si se completo el interval, calcula un numero aleatorio entre 1 y 100 para determinar la nueva direccion. Si
+     * <p>Si se completo el intervalo, calcula un numero aleatorio entre 1 y 100 para determinar la nueva direccion. Si
      * el numero es menor o igual a 25, cambia a "down" y resetea el contador. Si el numero esta entre 26 y 50, ambos
      * incluidos, cambia a "up" y resetea el contador. Si el numero esta entre 51 y 75, ambos incluidos, cambia a "left"
      * y resetea el contador. Si el numero es mayor a 75, cambia a "right" y resetea el contador.

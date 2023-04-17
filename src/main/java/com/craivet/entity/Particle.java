@@ -5,7 +5,7 @@ import com.craivet.World;
 
 import java.awt.*;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Las particulas son rectangulos pequeños dibujados con el metodo fillRect(). Esto es opcional, pero tambien se puede

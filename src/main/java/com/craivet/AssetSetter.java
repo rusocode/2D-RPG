@@ -6,7 +6,7 @@ import com.craivet.entity.npc.Trader;
 import com.craivet.entity.npc.Oldman;
 import com.craivet.tile.DryTree;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Establece las entidades en el mundo.

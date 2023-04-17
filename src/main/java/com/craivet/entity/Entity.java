@@ -14,7 +14,7 @@ import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Crea los componentes para cada entidad.
@@ -391,6 +391,53 @@ public abstract class Entity {
                 worldX += speed;
                 break;
         }
+    }
+
+    /**
+     * Comprueba si deja de seguir al objetivo.
+     *
+     * @param target   el objetivo.
+     * @param distance la distancia en tiles.
+     */
+    public void checkUnfollow(Entity target, int distance) {
+        if (getTileDistance(target) > distance) onPath = false;
+    }
+
+    /**
+     * Comprueba si empieza a seguir al objetivo.
+     *
+     * @param target   el objetivo.
+     * @param distance la distancia en tiles.
+     * @param rate     la tasa que determina si sigue al objetivo.
+     */
+    public void checkFollow(Entity target, int distance, int rate) {
+        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) onPath = true;
+    }
+
+    public int getXDistance(Entity target) {
+        return Math.abs(worldX - target.worldX);
+    }
+
+    public int getYDistance(Entity target) {
+        return Math.abs(worldY - target.worldY);
+    }
+
+    /**
+     * Obtiene la distancia del objetivo en tiles.
+     *
+     * @param target el objetivo.
+     * @return la distancia en tiles del objetivo.
+     */
+    public int getTileDistance(Entity target) {
+        return (getXDistance(target) + getYDistance(target)) / tile_size;
+    }
+
+    public int getGoalRow(Entity target) {
+        return (target.worldY + target.hitbox.y) / tile_size;
+    }
+
+    public int getGoalCol(Entity target) {
+        return (target.worldX + target.hitbox.x) / tile_size;
     }
 
     public int getLeft() {

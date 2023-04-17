@@ -5,7 +5,7 @@ import com.craivet.Game;
 import java.awt.event.*;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class KeyManager extends KeyAdapter {
 
@@ -27,14 +27,14 @@ public class KeyManager extends KeyAdapter {
             throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
         if (lastKey != e.getKeyCode()) {
             lastKey = e.getKeyCode();
-            if (game.gameState == TITLE_STATE) titleState(lastKey);
-            else if (game.gameState == PLAY_STATE) playState(lastKey);
-            else if (game.gameState == PAUSE_STATE) pauseState(lastKey);
-            else if (game.gameState == DIALOGUE_STATE) dialogueState(lastKey);
-            else if (game.gameState == CHARACTER_STATE) characterState(lastKey);
-            else if (game.gameState == OPTION_STATE) optionState(lastKey);
-            else if (game.gameState == GAME_OVER_STATE) gameOverState(lastKey);
-            else if (game.gameState == TRADE_STATE) tradeState(lastKey);
+            if (game.state == TITLE_STATE) titleState(lastKey);
+            else if (game.state == PLAY_STATE) playState(lastKey);
+            else if (game.state == PAUSE_STATE) pauseState(lastKey);
+            else if (game.state == DIALOGUE_STATE) dialogueState(lastKey);
+            else if (game.state == CHARACTER_STATE) characterState(lastKey);
+            else if (game.state == OPTION_STATE) optionState(lastKey);
+            else if (game.state == GAME_OVER_STATE) gameOverState(lastKey);
+            else if (game.state == TRADE_STATE) tradeState(lastKey);
         }
     }
 
@@ -66,7 +66,7 @@ public class KeyManager extends KeyAdapter {
             if (code == KeyEvent.VK_ENTER) {
                 if (game.ui.command == 0) {
                     game.playSound(sound_spawn);
-                    game.gameState = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
+                    game.state = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
                     game.restart();
                     // game.playMusic(blue_boy_adventure);
                 }
@@ -84,7 +84,7 @@ public class KeyManager extends KeyAdapter {
             }
             if (code == KeyEvent.VK_ENTER) {
                 if (game.ui.command == 0 || game.ui.command == 1 || game.ui.command == 2)
-                    game.gameState = PLAY_STATE;
+                    game.state = PLAY_STATE;
                 if (game.ui.command == 3) {
                     game.ui.command = 0;
                     game.ui.titleScreenState = MAIN_SCREEN;
@@ -102,9 +102,9 @@ public class KeyManager extends KeyAdapter {
         if (code == KeyEvent.VK_F) f = true;
         if (code == KeyEvent.VK_L) l = true;
         if (code == KeyEvent.VK_T) t = !t;
-        if (code == KeyEvent.VK_P) game.gameState = PAUSE_STATE;
-        if (code == KeyEvent.VK_C) game.gameState = CHARACTER_STATE;
-        if (code == KeyEvent.VK_ESCAPE) game.gameState = OPTION_STATE;
+        if (code == KeyEvent.VK_P) game.state = PAUSE_STATE;
+        if (code == KeyEvent.VK_C) game.state = CHARACTER_STATE;
+        if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;
         if (code == KeyEvent.VK_M) game.minimap.miniMapOn = !game.minimap.miniMapOn;
         /* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
          * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
@@ -121,21 +121,21 @@ public class KeyManager extends KeyAdapter {
     }
 
     private void pauseState(int code) {
-        if (code == KeyEvent.VK_P) game.gameState = PLAY_STATE;
+        if (code == KeyEvent.VK_P) game.state = PLAY_STATE;
     }
 
     private void dialogueState(int code) {
-        if (code == KeyEvent.VK_ENTER) game.gameState = PLAY_STATE;
+        if (code == KeyEvent.VK_ENTER) game.state = PLAY_STATE;
     }
 
     private void characterState(int code) {
-        if (code == KeyEvent.VK_C || code == KeyEvent.VK_ESCAPE) game.gameState = PLAY_STATE;
+        if (code == KeyEvent.VK_C || code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
         playerInventory(code);
         if (code == KeyEvent.VK_ENTER) game.getWorld().player.selectItem();
     }
 
     private void optionState(int code) {
-        if (code == KeyEvent.VK_ESCAPE) game.gameState = PLAY_STATE;
+        if (code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
         if (code == KeyEvent.VK_ENTER) enter = true;
 
         int maxCommandNum = 0;
@@ -208,11 +208,11 @@ public class KeyManager extends KeyAdapter {
         }
         if (code == KeyEvent.VK_ENTER) {
             if (game.ui.command == 0) {
-                game.gameState = PLAY_STATE;
+                game.state = PLAY_STATE;
                 game.retry();
                 game.playMusic(music_blue_boy_adventure);
             } else if (game.ui.command == 1) {
-                game.gameState = TITLE_STATE;
+                game.state = TITLE_STATE;
                 game.restart();
             }
         }
@@ -233,7 +233,7 @@ public class KeyManager extends KeyAdapter {
             }
             if (code == KeyEvent.VK_ESCAPE) {
                 game.ui.command = 0;
-                game.gameState = PLAY_STATE;
+                game.state = PLAY_STATE;
             }
         }
         if (game.ui.subState == 1) {

@@ -3,7 +3,7 @@ package com.craivet;
 import javax.swing.*;
 import java.io.*;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class Config {
 

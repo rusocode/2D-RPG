@@ -7,7 +7,7 @@ import com.craivet.tile.Minimap;
 
 import java.awt.*;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class GameState implements State {
 
@@ -24,7 +24,7 @@ public class GameState implements State {
         this.world = world;
         this.ui = ui;
         this.minimap =  minimap;
-        game.gameState = PLAY_STATE;
+        game.state = PLAY_STATE;
     }
 
     public void update() {

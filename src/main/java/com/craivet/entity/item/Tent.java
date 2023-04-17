@@ -6,7 +6,7 @@ import com.craivet.entity.Entity;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 
 public class Tent extends Item {
 
@@ -23,7 +23,7 @@ public class Tent extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        game.gameState = SLEEP_STATE;
+        game.state = SLEEP_STATE;
         game.playSound(sound_sleep);
         world.player.life = world.player.maxLife;
         world.player.mana = world.player.maxMana;

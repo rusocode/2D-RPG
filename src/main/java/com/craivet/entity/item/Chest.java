@@ -5,7 +5,7 @@ import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Constants.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Chest extends Item {
@@ -32,7 +32,7 @@ public class Chest extends Item {
     }
 
     public void interact() {
-        game.gameState = DIALOGUE_STATE;
+        game.state = DIALOGUE_STATE;
         StringBuilder sb = new StringBuilder();
         if (!opened) {
             game.playSound(sound_chest_opening);
