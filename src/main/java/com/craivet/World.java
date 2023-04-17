@@ -43,7 +43,7 @@ public class World {
     public int map;
     public HashMap<Integer, String> maps = new HashMap<>();
     public Tile[] tileData;
-    public int[][][] tileIndex = new int[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
+    public int[][][] tileIndex = new int[MAX_MAP][MAX_MAP_ROW][MAX_MAP_COL];
     // TODO Creo que se podria reemplazar por un HashMap
     ArrayList<String> names = new ArrayList<>();
     ArrayList<String> solids = new ArrayList<>();
@@ -140,10 +140,10 @@ public class World {
         maps.put(map, name);
         int row = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
-            for (row = 0; row < MAX_WORLD_ROW; row++) {
+            for (row = 0; row < MAX_MAP_ROW; row++) {
                 String line = br.readLine();
                 String[] numbers = line.split(" ");
-                for (int col = 0; col < MAX_WORLD_COL; col++)
+                for (int col = 0; col < MAX_MAP_COL; col++)
                     tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
             }
         } catch (IOException e) {

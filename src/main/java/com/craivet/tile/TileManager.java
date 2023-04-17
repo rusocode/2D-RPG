@@ -34,9 +34,9 @@ public class TileManager {
 
 		// Calcula los tiles que estan dentro de la vista de la camara
 		int yStart = Math.max(0, yOffset / tile_size);
-		int yEnd = Math.min(MAX_WORLD_ROW, (yOffset + SCREEN_HEIGHT) / tile_size + 1);
+		int yEnd = Math.min(MAX_MAP_ROW, (yOffset + SCREEN_HEIGHT) / tile_size + 1);
 		int xStart = Math.max(0, xOffset / tile_size); // 648 / 48 = 13
-		int xEnd = Math.min(MAX_WORLD_COL, (xOffset + SCREEN_WIDTH) / tile_size + 1);
+		int xEnd = Math.min(MAX_MAP_COL, (xOffset + SCREEN_WIDTH) / tile_size + 1);
 
 		for (int y = yStart; y < yEnd; y++) {
 			for (int x = xStart; x < xEnd; x++) {

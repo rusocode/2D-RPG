@@ -50,10 +50,10 @@ public final class Constants {
     public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL;
     public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW;
 
-    // World settings
+    // Map settings
     public static final int MAX_MAP = 10;
-    public static final int MAX_WORLD_ROW = 50;
-    public static final int MAX_WORLD_COL = 50;
+    public static final int MAX_MAP_ROW = 50;
+    public static final int MAX_MAP_COL = 50;
     public static final int NIX = 0;
     public static final int NIX_INDOOR_01 = 1;
 

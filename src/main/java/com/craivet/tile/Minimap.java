@@ -21,13 +21,13 @@ public class Minimap {
 
     public void createMinimap() {
         minimap = new BufferedImage[MAX_MAP];
-        int worldMapWidth = tile_size * MAX_WORLD_COL;
-        int worldMapHeight = tile_size * MAX_WORLD_ROW;
+        int width = tile_size * MAX_MAP_COL;
+        int height = tile_size * MAX_MAP_ROW;
         for (int map = 0; map < MAX_MAP; map++) {
-            minimap[map] = new BufferedImage(worldMapWidth, worldMapHeight, BufferedImage.TYPE_INT_ARGB);
+            minimap[map] = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = minimap[map].createGraphics();
-            for (int row = 0; row < MAX_WORLD_ROW; row++) {
-                for (int col = 0; col < MAX_WORLD_COL; col++) {
+            for (int row = 0; row < MAX_MAP_ROW; row++) {
+                for (int col = 0; col < MAX_MAP_COL; col++) {
                     int tileIndex = world.tileIndex[map][row][col];
                     int x = tile_size * col;
                     int y = tile_size * row;
@@ -44,10 +44,11 @@ public class Minimap {
             int x = SCREEN_WIDTH - width - 20;
             int y = 20;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
+            g2.drawRect(x - 1, y - 1, width + 1, height + 1);
             g2.drawImage(minimap[world.map], x, y, width, height, null);
 
             // Dibuja un cuadrado rojo que representa la posicion del player
-            double scale = (double) (tile_size * MAX_WORLD_COL) / width;
+            double scale = (double) (tile_size * MAX_MAP_COL) / width;
             int playerX = (int) (x + world.player.worldX / scale);
             int playerY = (int) (y + world.player.worldY / scale);
             int playerSize = (int) (tile_size / scale);

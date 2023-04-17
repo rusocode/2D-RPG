@@ -33,6 +33,11 @@ public class Player extends Entity {
         screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
         screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
         // Posiciona el player en el mundo
+        // TODO Implementar metodo para verificar posicion valida
+        // public static boolean isValid(short x, short y) {
+        //        return (x > 0) && (y > 0) && (x <= MAPA_ANCHO) && (y <= MAPA_ALTO);
+        //    }
+        // Y tile no solido..
         worldX = 23 * tile_size;
         worldY = 21 * tile_size;
         key = game.getKey();

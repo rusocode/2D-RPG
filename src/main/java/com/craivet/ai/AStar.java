@@ -35,8 +35,8 @@ public class AStar {
 			int col = currentNode.col;
 			if (row - 1 >= 0) openNode(node[row - 1][col]);
 			if (col - 1 >= 0) openNode(node[row][col - 1]);
-			if (row + 1 < MAX_WORLD_ROW) openNode(node[row + 1][col]);
-			if (col + 1 < MAX_WORLD_COL) openNode(node[row][col + 1]);
+			if (row + 1 < MAX_MAP_ROW) openNode(node[row + 1][col]);
+			if (col + 1 < MAX_MAP_COL) openNode(node[row][col + 1]);
 
 			int bestNodeIndex = 0;
 			int bestNodefCost = 999;
@@ -76,8 +76,8 @@ public class AStar {
 		openList.add(currentNode);
 
 		// Establece los nodos solidos verificando los tiles solidos y los tiles interactivos destructibles
-		for (int row = 0; row < MAX_WORLD_ROW; row++) {
-			for (int col = 0; col < MAX_WORLD_COL; col++) {
+		for (int row = 0; row < MAX_MAP_ROW; row++) {
+			for (int col = 0; col < MAX_MAP_COL; col++) {
 				int tileIndex = world.tileIndex[world.map][row][col];
 				if (world.tileData[tileIndex].solid) node[row][col].solid = true;
 
@@ -95,15 +95,15 @@ public class AStar {
 	}
 
 	private void initNodes() {
-		node = new Node[MAX_WORLD_ROW][MAX_WORLD_COL];
-		for (int row = 0; row < MAX_WORLD_ROW; row++)
-			for (int col = 0; col < MAX_WORLD_COL; col++)
+		node = new Node[MAX_MAP_ROW][MAX_MAP_COL];
+		for (int row = 0; row < MAX_MAP_ROW; row++)
+			for (int col = 0; col < MAX_MAP_COL; col++)
 				node[row][col] = new Node(row, col);
 	}
 
 	private void resetNodes() {
-		for (int row = 0; row < MAX_WORLD_ROW; row++) {
-			for (int col = 0; col < MAX_WORLD_COL; col++) {
+		for (int row = 0; row < MAX_MAP_ROW; row++) {
+			for (int col = 0; col < MAX_MAP_COL; col++) {
 				node[row][col].open = false;
 				node[row][col].checked = false;
 				node[row][col].solid = false;

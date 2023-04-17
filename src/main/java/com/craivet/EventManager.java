@@ -19,12 +19,12 @@ public class EventManager {
 	public EventManager(Game game, World world) {
 		this.game = game;
 		this.world = world;
-		eventRect = new EventRect[MAX_MAP][MAX_WORLD_ROW][MAX_WORLD_COL];
+		eventRect = new EventRect[MAX_MAP][MAX_MAP_ROW][MAX_MAP_COL];
 
 		// Crea un evento con area solida para cada tile
 		for (int map = 0; map < MAX_MAP; map++) {
-			for (int row = 0; row < MAX_WORLD_ROW; row++) {
-				for (int col = 0; col < MAX_WORLD_COL; col++) {
+			for (int row = 0; row < MAX_MAP_ROW; row++) {
+				for (int col = 0; col < MAX_MAP_COL; col++) {
 					eventRect[map][row][col] = new EventRect();
 					eventRect[map][row][col].x = 23;
 					eventRect[map][row][col].y = 23;
