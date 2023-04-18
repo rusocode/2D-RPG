@@ -45,7 +45,7 @@ public class Trader extends Npc {
 
 	private void setItems() {
 		inventory.add(new PotionRed(game, world, 1));
-		inventory.add(new Key(game, world));
+		inventory.add(new Key(game, world, 1));
 		inventory.add(new SwordNormal(game, world));
 		inventory.add(new Axe(game, world));
 		inventory.add(new ShieldWood(game, world));

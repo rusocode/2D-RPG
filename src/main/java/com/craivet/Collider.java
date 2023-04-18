@@ -37,7 +37,12 @@ public class Collider {
         // En caso de que la entidad colisione en el medio de dos tiles solidos
         int tile1, tile2;
 
-        switch (entity.direction) {
+        // Direccion temporal de la entidad
+        int direction = entity.direction;
+        // Obtiene la direccion del atacante si la entidad es retrocedida
+        if (entity.knockBack) direction = entity.knockBackDirection;
+
+        switch (direction) {
             case DOWN:
                 entityBottomRow = (entityBottomWorldY + entity.speed) / tile_size;
                 tile1 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
@@ -123,6 +128,12 @@ public class Collider {
      */
     public int checkEntity(Entity entity, Entity[][] otherEntity) {
         int index = -1;
+
+        // Direccion temporal de la entidad
+        int direction = entity.direction;
+        // Obtiene la direccion del atacante si la entidad es retrocedida
+        if (entity.knockBack) direction = entity.knockBackDirection;
+
         for (int i = 0; i < otherEntity[1].length; i++) {
             if (otherEntity[world.map][i] != null) {
                 // Obtiene la posicion del area del cuerpo de la entidad y de la otra entidad
@@ -130,7 +141,7 @@ public class Collider {
                 entity.hitbox.y += entity.worldY;
                 otherEntity[world.map][i].hitbox.x += otherEntity[world.map][i].worldX;
                 otherEntity[world.map][i].hitbox.y += otherEntity[world.map][i].worldY;
-                switch (entity.direction) {
+                switch (direction) {
                     case DOWN:
                         entity.hitbox.y += entity.speed;
                         break;

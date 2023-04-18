@@ -53,6 +53,7 @@ public abstract class Entity {
     public Projectile projectile; // TODO Es necesario declarar este objeto aca?
     public Entity weapon, shield;
     public Entity light; // linterna, antorcha, etc.
+    public Entity attacker;
 
     // Item attributes
     public String itemDescription;
@@ -61,13 +62,7 @@ public abstract class Entity {
     public int knockBackPower;
     public int amount = 1;
     public int lightRadius;
-    public boolean solid;
-    public boolean stackable;
-
-    // Frames (movimiento, ataque)
-    public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
-    public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
-    public int movementNum = 1, attackNum = 1;
+    public boolean solid, stackable;
 
     // States
     public boolean attacking;
@@ -78,9 +73,12 @@ public abstract class Entity {
     public boolean invincible;
     public boolean knockBack;
     public boolean onPath;
-    public boolean sticky;
+    public int knockBackDirection;
 
-    public int stickyCounter;
+    // Frames (movimiento, ataque)
+    public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
+    public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public int movementNum = 1, attackNum = 1;
 
     public Entity(Game game, World world) {
         this.game = game;
@@ -94,7 +92,22 @@ public abstract class Entity {
                 timer.knockBackCounter = 0;
                 knockBack = false;
                 speed = defaultSpeed;
-            } else updatePosition();
+            } else {
+                switch (knockBackDirection) {
+                    case DOWN:
+                        worldY += speed;
+                        break;
+                    case UP:
+                        worldY -= speed;
+                        break;
+                    case LEFT:
+                        worldX -= speed;
+                        break;
+                    case RIGHT:
+                        worldX += speed;
+                        break;
+                }
+            }
             timer.timerKnockBack(this, INTERVAL_KNOCKBACK);
         } else {
             setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
@@ -317,6 +330,7 @@ public abstract class Entity {
      * @param image  el SpriteSheet.
      * @param width  el ancho de la subimagen.
      * @param height el alto de la subimagen.
+     * @param scale  el valor de scala.
      */
     public void initMovementImages(SpriteSheet image, int width, int height, int scale) {
         BufferedImage[] subimages = SpriteSheet.getMovementSubimages(image, width, height);
@@ -338,7 +352,7 @@ public abstract class Entity {
             movementLeft2 = Utils.scaleImage(subimages[1], scale, scale);
             movementRight1 = Utils.scaleImage(subimages[0], scale, scale);
             movementRight2 = Utils.scaleImage(subimages[1], scale, scale);
-        } else { // Rock
+        } else { // SickyBall
             movementDown1 = Utils.scaleImage(subimages[0], scale, scale);
             movementDown2 = Utils.scaleImage(subimages[0], scale, scale);
             movementUp1 = Utils.scaleImage(subimages[0], scale, scale);
@@ -394,6 +408,19 @@ public abstract class Entity {
                 worldX += speed;
                 break;
         }
+    }
+
+    /**
+     * Establece el retroceso a la entidad.
+     *
+     * @param target         la entidad.
+     * @param knockBackPower el poder de retroceso.
+     */
+    public void setKnockBack(Entity target, Entity attacker, int knockBackPower) {
+        this.attacker = attacker;
+        target.knockBackDirection = attacker.direction;
+        target.speed += knockBackPower;
+        target.knockBack = true;
     }
 
     /**

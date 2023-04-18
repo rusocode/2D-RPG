@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.entity.item.*;
+import com.craivet.entity.mob.Orc;
 import com.craivet.entity.mob.Slime;
 import com.craivet.entity.npc.Trader;
 import com.craivet.entity.npc.Oldman;
@@ -24,12 +25,12 @@ public class AssetSetter {
 
     public void setItem() {
         int i = 0;
-        world.items[NIX][i++] = new Tent(game, world, 12, 31);
-        world.items[NIX][i++] = new Lantern(game, world, 13, 31);
+        // world.items[NIX][i++] = new Tent(game, world, 12, 31);
+        // world.items[NIX][i++] = new Lantern(game, world, 13, 31);
         world.items[NIX][i++] = new Axe(game, world, 33, 7);
         world.items[NIX][i++] = new Door(game, world, 14, 28);
         world.items[NIX][i++] = new Door(game, world, 12, 12);
-        world.items[NIX][i++] = new Chest(game, world, new Key(game, world), 30, 29);
+        world.items[NIX][i++] = new Chest(game, world, new Key(game, world, 1), 30, 29);
     }
 
     public void setNPC() {
@@ -46,6 +47,7 @@ public class AssetSetter {
         world.mobs[NIX][i++] = new Slime(game, world, 24, 37);
         world.mobs[NIX][i++] = new Slime(game, world, 34, 42);
         world.mobs[NIX][i++] = new Slime(game, world, 38, 42);
+        world.mobs[NIX][i++] = new Orc(game, world, 12, 33);
     }
 
     public void setInteractiveTile() {

@@ -14,16 +14,16 @@ import static com.craivet.utils.Global.*;
 
 public class Timer {
 
-    public int movementCounter;
-    public int projectileCounter;
-    public int attackCounter;
     public int attackAnimationCounter;
-    public int naturalStopWalkingCounter;
-    public int invincibleCounter;
-    public int directionCounter;
+    public int attackCounter;
     public int deadCounter;
+    public int directionCounter;
     public int hpBarCounter;
+    public int invincibleCounter;
     public int knockBackCounter;
+    public int movementCounter;
+    public int naturalStopWalkingCounter;
+    public int projectileCounter;
 
     /**
      * Temporiza el movimiento.

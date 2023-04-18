@@ -10,13 +10,14 @@ import static com.craivet.gfx.Assets.*;
 
 public class Key extends Item {
 	
-	public Key(Game game, World world) {
+	public Key(Game game, World world, int amount) {
 		super(game, world);
 		name = "Key";
 		type = TYPE_CONSUMABLE;
 		image = Utils.scaleImage(item_key, tile_size, tile_size);
 		itemDescription = "[" + name + "]\nIt opens a door.";
 		price = 100;
+		this.amount = amount;
 		stackable = true;
 	}
 	

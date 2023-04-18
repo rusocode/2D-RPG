@@ -5,6 +5,8 @@ import java.awt.image.BufferedImage;
 
 import com.craivet.Game;
 import com.craivet.entity.item.*;
+import com.craivet.entity.mob.Orc;
+import com.craivet.entity.mob.Slime;
 import com.craivet.entity.projectile.Fireball;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
@@ -108,21 +110,12 @@ public class Player extends Entity {
 
         } else timer.timeNaturalStopWalking(this, 20);
 
-        shootProjectile();
+        checkShoot();
 
         // Aplica el timer solo si el player es invencible
         if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
         if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
         if (timer.attackCounter < INTERVAL_SWORD_ATTACK) timer.attackCounter++;
-
-        if (sticky) {
-            projectile.stickyCounter++;
-            if (projectile.stickyCounter >= 120) {
-                sticky = false;
-                projectile.stickyCounter = 0;
-                speed = defaultSpeed;
-            }
-        }
 
         if (life > maxLife) life = maxLife;
         if (mana > maxMana) mana = maxMana;
@@ -232,7 +225,7 @@ public class Player extends Entity {
 
             // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
             int mobIndex = game.collider.checkEntity(this, world.mobs);
-            damageMob(mobIndex, attack, weapon.knockBackPower, direction);
+            damageMob(mobIndex, this, attack, weapon.knockBackPower);
 
             int iTileIndex = game.collider.checkEntity(this, world.interactives);
             damageInteractiveTile(iTileIndex);
@@ -269,7 +262,7 @@ public class Player extends Entity {
         attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
     }
 
-    private void shootProjectile() {
+    private void checkShoot() {
         if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
             game.playSound(sound_burning);
             projectile.set(worldX, worldY, direction, true, this);
@@ -348,17 +341,23 @@ public class Player extends Entity {
      * @param mobIndex indice del mob.
      * @param attack   el tipo de ataque (sword o fireball).
      */
-    public void damageMob(int mobIndex, int attack, int knockBackPower, int direction) {
+    public void damageMob(int mobIndex, Entity attacker, int attack, int knockBackPower) {
         if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
             Entity mob = world.mobs[world.map][mobIndex];
             if (!mob.invincible) {
 
-                if (knockBackPower > 0) knockBack(mob, knockBackPower, direction);
+                if (knockBackPower > 0) setKnockBack(mob, attacker, knockBackPower);
 
-                int damage = Math.max(attack - mob.defense, 1);
+                int damage = Math.max(attack - mob.defense, 0);
                 mob.life -= damage;
                 game.ui.addMessage(damage + " damage!");
-                if (mob.life > 0) game.playSound(sound_hit_monster);
+                if (mob.life > 0) {
+                    if (mob instanceof Slime) game.playSound(sound_hit_slime);
+                    if (mob instanceof Orc) {
+                        game.playSound(sound_hit_monster);
+                        game.playSound(sound_hit_orc);
+                    }
+                }
 
                 mob.invincible = true;
                 mob.hpBar = true;
@@ -404,18 +403,6 @@ public class Player extends Entity {
             projectile.alive = false;
             generateParticle(projectile, projectile);
         }
-    }
-
-    /**
-     * Retrocede a la entidad.
-     *
-     * @param entity         la entidad.
-     * @param knockBackPower el poder de retroceso.
-     */
-    private void knockBack(Entity entity, int knockBackPower, int direction) {
-        entity.direction = direction;
-        entity.speed += knockBackPower;
-        entity.knockBack = true;
     }
 
     /**
@@ -598,6 +585,7 @@ public class Player extends Entity {
         inventory.add(weapon);
         inventory.add(shield);
         inventory.add(new PotionRed(game, world, 15));
+        inventory.add(new Key(game, world, 1));
     }
 
     private void drawRects(Graphics2D g2) {
