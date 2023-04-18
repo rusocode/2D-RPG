@@ -60,6 +60,9 @@ public class Projectile extends Entity {
 			boolean contact = game.collider.checkPlayer(this);
 			if (contact && !world.player.invincible) {
 				damagePlayer(true, attack);
+				// stickyCounter = 0;
+				world.player.speed = 2;
+				sticky = true;
 				generateParticle(entity.projectile, world.player);
 				alive = false;
 			}

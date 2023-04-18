@@ -78,6 +78,9 @@ public abstract class Entity {
     public boolean invincible;
     public boolean knockBack;
     public boolean onPath;
+    public boolean sticky;
+
+    public int stickyCounter;
 
     public Entity(Game game, World world) {
         this.game = game;

@@ -115,6 +115,15 @@ public class Player extends Entity {
         if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
         if (timer.attackCounter < INTERVAL_SWORD_ATTACK) timer.attackCounter++;
 
+        if (sticky) {
+            projectile.stickyCounter++;
+            if (projectile.stickyCounter >= 120) {
+                sticky = false;
+                projectile.stickyCounter = 0;
+                speed = defaultSpeed;
+            }
+        }
+
         if (life > maxLife) life = maxLife;
         if (mana > maxMana) mana = maxMana;
         if (life <= 0) die();
