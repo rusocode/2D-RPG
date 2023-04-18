@@ -86,7 +86,11 @@ public class Collider {
                 entity.hitbox.y += entity.y;
                 world.items[world.map][i].hitbox.x += world.items[world.map][i].x;
                 world.items[world.map][i].hitbox.y += world.items[world.map][i].y;
-                switch (entity.direction) {
+
+                int direction = entity.direction;
+                if (entity.knockback) direction = entity.knockbackDirection;
+
+                switch (direction) {
                     case DOWN -> entity.hitbox.y += entity.speed;
                     case UP -> entity.hitbox.y -= entity.speed;
                     case LEFT -> entity.hitbox.x -= entity.speed;

@@ -92,7 +92,7 @@ public class Player extends Entity {
 
     public void update() {
 
-        if (attacking) attackWithSword();
+        if (attacking) attack();
 
         if (checkKeys()) {
 
@@ -161,94 +161,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Ataca al mob si el frame de ataque colisiona con el.
-     *
-     * <p>De 0 a 5 milisegundos se muestra el primer frame de ataque. De 6 a 25 milisegundos se muestra el segundo frame
-     * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
-     *
-     * <p>En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con un
-     * mob o tile interactivo.
-     */
-    private void attackWithSword() {
-        timer.attackAnimationCounter++;
-        if (timer.attackAnimationCounter <= 5) attackNum = 1; // (de 0-5 ms frame de ataque 1)
-        if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (de 6-25 ms frame de ataque 2)
-            attackNum = 2;
-
-            // Guarda la posicion actual de worldX, worldY y el tamaño del hitbox
-            int currentWorldX = x;
-            int currentWorldY = y;
-            int hitboxWidth = hitbox.width;
-            int hitboxHeight = hitbox.height;
-
-            /* Ajusta el area de ataque para cada direccion. Para las direcciones down y up el tamaño va a ser el mismo,
-             * pero el tamaño para las direcciones left y right va a variar. Tambien la posicion varia para cada
-             * direccion. */
-            switch (direction) {
-                case DOWN -> {
-                    attackbox.x = 9;
-                    attackbox.y = 5;
-                    attackbox.width = 10;
-                    attackbox.height = 27;
-                    x += attackbox.x;
-                    y += attackbox.y + attackbox.height;
-                }
-                case UP -> {
-                    attackbox.x = 15;
-                    attackbox.y = 4;
-                    attackbox.width = 10;
-                    attackbox.height = 28;
-                    x += attackbox.x;
-                    y -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
-                }
-                case LEFT -> {
-                    attackbox.x = 0;
-                    attackbox.y = 10;
-                    attackbox.width = 25;
-                    attackbox.height = 10;
-                    x -= hitbox.x + attackbox.x + attackbox.width;
-                    y += attackbox.y;
-                }
-                case RIGHT -> {
-                    attackbox.x = 16;
-                    attackbox.y = 10;
-                    attackbox.width = 24;
-                    attackbox.height = 10;
-                    x += attackbox.x + attackbox.width;
-                    y += attackbox.y;
-                }
-            }
-
-            // Convierte el area del cuerpo en el area de ataque para verificar la colision solo con el area de ataque
-            hitbox.width = attackbox.width;
-            hitbox.height = attackbox.height;
-
-            // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
-            int mobIndex = game.collider.checkEntity(this, world.mobs);
-            damageMob(mobIndex, this, weapon.knockbackValue, attack);
-
-            int iTileIndex = game.collider.checkEntity(this, world.interactives);
-            damageInteractiveTile(iTileIndex);
-
-            // TODO Hay un bug que cuando lanza una bola de fuego y ataca al mimso tiempo la dania
-            int projectileIndex = game.collider.checkEntity(this, world.projectiles);
-            damageProjectile(projectileIndex);
-
-            // Despues de verificar la colision, resetea los datos originales
-            x = currentWorldX;
-            y = currentWorldY;
-            hitbox.width = hitboxWidth;
-            hitbox.height = hitboxHeight;
-        }
-        if (timer.attackAnimationCounter > 25) {
-            attackNum = 1;
-            timer.attackAnimationCounter = 0;
-            attacking = false;
-        }
-    }
-
-    /**
-     * Verifica si puede atacar. No puede atacar si interactua con un npc o bebe agua.
+     * Comprueba si puede atacar. No puede atacar si interactua con un npc o bebe agua.
      */
     private void checkAttack() {
         // Si presiono enter y el ataque no esta cancelado
@@ -262,6 +175,9 @@ public class Player extends Entity {
         attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
     }
 
+    /**
+     * Comprueba si puede lanzar un proyectil.
+     */
     private void checkShoot() {
         if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
             game.playSound(sound_burning);
@@ -382,7 +298,7 @@ public class Player extends Entity {
      *
      * @param iTileIndex indice del tile interactivo.
      */
-    private void damageInteractiveTile(int iTileIndex) {
+    protected void damageInteractiveTile(int iTileIndex) {
         if (iTileIndex != -1) {
             Interactive iTile = world.interactives[world.map][iTileIndex];
             if (iTile.destructible && iTile.isCorrectItem(weapon) && !iTile.invincible) {
@@ -398,7 +314,7 @@ public class Player extends Entity {
         }
     }
 
-    private void damageProjectile(int projectileIndex) {
+    protected void damageProjectile(int projectileIndex) {
         if (projectileIndex != -1) {
             game.playSound(sound_receive_damage);
             Entity projectile = world.projectiles[world.map][projectileIndex];

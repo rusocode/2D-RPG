@@ -36,7 +36,7 @@ public abstract class Entity {
     // General attributes
     public int x, y;
     public String name;
-    public int type = TYPE_MOB;
+    public int type;
     // Imagenes estaticas para los items y mobs
     public BufferedImage image, image2, mobImage;
     public int direction = DOWN;
@@ -88,8 +88,9 @@ public abstract class Entity {
     /**
      * En caso de que se haya aplicado knockback a la entidad, comprueba las colisiones y en base a eso determina si se
      * detiene el knockback o se actualiza la posicion de la entidad utilizando la variable temporal knockbackDirection.
-     * En caso contrario, la entidad realiza una accion y comprueba las colisiones para determinar si se actualiza la
-     * posicion o no.
+     * En caso contrario, comprueba si la entidad esta atacando y si es verdadero ataca. Si ninguna de las dos
+     * condiciones anteriores se cumple (knockback o attacking), entonces la entidad realiza una accion y comprueba las
+     * colisiones para determinar si se actualiza la posicion o no aplicando el intervalo de movimiento.
      */
     public void update() {
         if (knockback) {
@@ -100,11 +101,14 @@ public abstract class Entity {
                 timer.knockbackCounter = 0;
             } else updatePosition(knockbackDirection);
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
-        } else {
+        } else if (attacking) attack();
+        else {
             setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
             checkCollisions();
             if (!collision) updatePosition(direction);
 
+            /* TODO Estos timers deberian ir fuera del else? Al usar un timer para el movimiento y otro para la
+             * animacion, creo que no interrumpiria el tiempo en el cambio de frames. */
             timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
             if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
             if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
@@ -112,18 +116,40 @@ public abstract class Entity {
     }
 
     public void render(Graphics2D g2) {
-        BufferedImage auxImage = null;
+        BufferedImage frame = null;
         int screenX = (x - world.player.x) + world.player.screenX;
         int screenY = (y - world.player.y) + world.player.screenY;
         if (x + tile_size > world.player.x - world.player.screenX &&
                 x - tile_size < world.player.x + world.player.screenX &&
                 y + tile_size > world.player.y - world.player.screenY &&
                 y - tile_size < world.player.y + world.player.screenY) {
+
+
+            int tempScreenX = screenX, tempScreenY = screenY;
             switch (direction) {
-                case DOWN -> auxImage = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                case UP -> auxImage = movementNum == 1 || collision ? movementUp1 : movementUp2;
-                case LEFT -> auxImage = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
-                case RIGHT -> auxImage = movementNum == 1 || collision ? movementRight1 : movementRight2;
+                case DOWN -> {
+                    if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                    if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
+                }
+                case UP -> {
+                    if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
+                    if (attacking) {
+                        // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
+                        tempScreenY -= tile_size;
+                        frame = attackNum == 1 ? attackUp1 : attackUp2;
+                    }
+                }
+                case LEFT -> {
+                    if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
+                    if (attacking) {
+                        tempScreenX -= tile_size;
+                        frame = attackNum == 1 ? attackLeft1 : attackLeft2;
+                    }
+                }
+                case RIGHT -> {
+                    if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
+                    if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
+                }
             }
 
             // Si la barra de hp esta activada
@@ -151,7 +177,7 @@ public abstract class Entity {
             }
             if (dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
-            g2.drawImage(auxImage, screenX, screenY, null);
+            g2.drawImage(frame, tempScreenX, tempScreenY, null);
             g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
             // g2.setColor(Color.cyan);
             // g2.drawRect(hitbox.x + screenX, hitbox.y + screenY, hitbox.width, hitbox.height);
@@ -275,6 +301,97 @@ public abstract class Entity {
     }
 
     /**
+     * Ataca al mob si el frame de ataque colisiona con el.
+     *
+     * <p>De 0 a 5 milisegundos se muestra el primer frame de ataque. De 6 a 25 milisegundos se muestra el segundo frame
+     * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
+     *
+     * <p>En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con un
+     * mob o tile interactivo.
+     */
+    public void attack() {
+        timer.attackAnimationCounter++;
+        if (timer.attackAnimationCounter <= 5) attackNum = 1; // (de 0-5 ms frame de ataque 1)
+        if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (de 6-25 ms frame de ataque 2)
+            attackNum = 2;
+
+            // Guarda la posicion actual de worldX, worldY y el tamaño del hitbox
+            int currentWorldX = x;
+            int currentWorldY = y;
+            int hitboxWidth = hitbox.width;
+            int hitboxHeight = hitbox.height;
+
+            /* Ajusta el area de ataque para cada direccion. Para las direcciones down y up el tamaño va a ser el mismo,
+             * pero el tamaño para las direcciones left y right va a variar. Tambien la posicion varia para cada
+             * direccion. */
+            switch (direction) {
+                case DOWN -> {
+                    attackbox.x = 9;
+                    attackbox.y = 5;
+                    attackbox.width = 10;
+                    attackbox.height = 27;
+                    x += attackbox.x;
+                    y += attackbox.y + attackbox.height;
+                }
+                case UP -> {
+                    attackbox.x = 15;
+                    attackbox.y = 4;
+                    attackbox.width = 10;
+                    attackbox.height = 28;
+                    x += attackbox.x;
+                    y -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
+                }
+                case LEFT -> {
+                    attackbox.x = 0;
+                    attackbox.y = 10;
+                    attackbox.width = 25;
+                    attackbox.height = 10;
+                    x -= hitbox.x + attackbox.x + attackbox.width;
+                    y += attackbox.y;
+                }
+                case RIGHT -> {
+                    attackbox.x = 16;
+                    attackbox.y = 10;
+                    attackbox.width = 24;
+                    attackbox.height = 10;
+                    x += attackbox.x + attackbox.width;
+                    y += attackbox.y;
+                }
+            }
+
+            // Convierte el area del cuerpo en el area de ataque para verificar la colision solo con el area de ataque
+            hitbox.width = attackbox.width;
+            hitbox.height = attackbox.height;
+
+            if (type == TYPE_MOB) {
+                damagePlayer(game.collider.checkPlayer(this), attack);
+            } else {
+                // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
+                int mobIndex = game.collider.checkEntity(this, world.mobs);
+                world.player.damageMob(mobIndex, this, weapon.knockbackValue, attack);
+
+                int iTileIndex = game.collider.checkEntity(this, world.interactives);
+                world.player.damageInteractiveTile(iTileIndex);
+
+                // TODO Hay un bug que cuando lanza una bola de fuego y ataca al mimso tiempo la dania
+                int projectileIndex = game.collider.checkEntity(this, world.projectiles);
+                world.player.damageProjectile(projectileIndex);
+            }
+
+            // Despues de verificar la colision, resetea los datos originales
+            x = currentWorldX;
+            y = currentWorldY;
+            hitbox.width = hitboxWidth;
+            hitbox.height = hitboxHeight;
+        }
+        if (timer.attackAnimationCounter > 25) {
+            attackNum = 1;
+            timer.attackAnimationCounter = 0;
+            attacking = false;
+        }
+    }
+
+    /**
      * Daña al player.
      *
      * @param contact si el mob hace contacto con el player.
@@ -348,6 +465,42 @@ public abstract class Entity {
         attackLeft2 = Utils.scaleImage(subimages[5], tile_size * 2, tile_size);
         attackRight1 = Utils.scaleImage(subimages[6], tile_size * 2, tile_size);
         attackRight2 = Utils.scaleImage(subimages[7], tile_size * 2, tile_size);
+    }
+
+    /**
+     * Comprueba si puede atacar o no verificando si el objetivo esta dentro del rango especificado.
+     *
+     * @param rate       probabilidad de que el mob ataque.
+     * @param vertical   indica la distancia vertical.
+     * @param horizontal indica la distancia horizontal.
+     */
+    public void checkAttackOrNot(int rate, int vertical, int horizontal) {
+        boolean targetInRage = false;
+        int xDis = getXDistance(world.player);
+        int yDis = getYDistance(world.player);
+        switch (direction) {
+            case DOWN -> {
+                if (world.player.y > y && yDis < vertical && xDis < horizontal) targetInRage = true;
+            }
+            case UP -> {
+                if (world.player.y < y && yDis < vertical && xDis < horizontal) targetInRage = true;
+            }
+            case LEFT -> {
+                if (world.player.x < x && xDis < vertical && yDis < horizontal) targetInRage = true;
+            }
+            case RIGHT -> {
+                if (world.player.x > x && xDis < vertical && yDis < horizontal) targetInRage = true;
+            }
+        }
+        // Calcula la probabilidad de atacar si el objetivo esta en el rango especificado
+        if (targetInRage) {
+            if (Utils.azar(rate) == 1) {
+                attacking = true;
+                movementNum = 1;
+                timer.movementCounter = 0; // TODO O se referia al contador de ataque?
+                timer.projectileCounter = 0;
+            }
+        }
     }
 
     private void checkCollisions() {

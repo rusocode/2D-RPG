@@ -5,3 +5,4 @@ cuadro de descripcion del item.
 # El bola de fuego pasa por debajo del npc cuando es lanzada desde arriba.
 # A veces al iniciar el dialogo con el Trader, la flecha para indicar las opciones Buy o Sell ">" no aparece.
 # Al dañar a un mob el borde del minimap se vuelve rojo.
+# Cuando la entidad sigue al player y colisiona con un item solido no lo esquiva.

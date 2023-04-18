@@ -49,6 +49,9 @@ public class Orc extends Mob {
             checkFollow(world.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
+
+        if (!attacking) checkAttackOrNot(30, tile_size * 4, tile_size);
+
     }
 
     public void damageReaction() {
