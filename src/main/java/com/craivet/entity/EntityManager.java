@@ -91,7 +91,7 @@ public class EntityManager {
 
             /* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
              * entonces este se dibuja por debajo. */
-            entities.sort(Comparator.comparingInt(o -> o.worldY));
+            entities.sort(Comparator.comparingInt(o -> o.y));
 
             for (Entity item : world.itemsList) item.render(g2);
             for (Entity entity : entities) entity.render(g2);

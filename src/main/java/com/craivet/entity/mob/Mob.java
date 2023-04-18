@@ -4,10 +4,10 @@ import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.World;
 
-public class Mob extends Entity {
+public abstract class Mob extends Entity {
 
-	public Mob(Game game, World world) {
-		super(game, world);
-	}
+    public Mob(Game game, World world) {
+        super(game, world);
+    }
 
 }

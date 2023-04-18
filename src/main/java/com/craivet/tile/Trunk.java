@@ -11,8 +11,8 @@ public class Trunk extends Interactive {
 
 	public Trunk(Game game, World world, int x, int y) {
 		super(game, world);
-		this.worldX = tile_size * x;
-		this.worldY = tile_size * y;
+		this.x = tile_size * x;
+		this.y = tile_size * y;
 		image = Utils.scaleImage(Assets.itile_trunk, tile_size, tile_size);
 		// Resetea a 0 ya que no se podria caminar sobre el tronco
 		hitbox.x = 0;

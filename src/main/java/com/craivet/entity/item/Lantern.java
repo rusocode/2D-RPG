@@ -11,12 +11,12 @@ public class Lantern extends Item {
 
     public Lantern(Game game, World world, int x, int y) {
         super(game, world);
-        worldX = x * tile_size;
-        worldY = y * tile_size;
+        this.x = x * tile_size;
+        this.y = y * tile_size;
         name = "Lantern";
         type = TYPE_LIGHT;
         image = Utils.scaleImage(item_lantern, tile_size, tile_size);
-        itemDescription = "[" + name + "]\nIlluminaties your \nsurroundings.";
+        description = "[" + name + "]\nIlluminaties your \nsurroundings.";
         price = 200;
         lightRadius = 250;
     }

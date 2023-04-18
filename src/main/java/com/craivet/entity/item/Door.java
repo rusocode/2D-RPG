@@ -11,8 +11,8 @@ public class Door extends Item {
 
 	public Door(Game game, World world, int x, int y) {
 		super(game, world);
-		worldX = x * tile_size;
-		worldY = y * tile_size;
+		this.x = x * tile_size;
+		this.y = y * tile_size;
 		name = "Door";
 		type = TYPE_OBSTACLE;
 		image = Utils.scaleImage(item_door, tile_size, tile_size);

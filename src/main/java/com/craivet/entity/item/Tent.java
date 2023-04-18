@@ -12,12 +12,12 @@ public class Tent extends Item {
 
     public Tent(Game game, World world, int x, int y) {
         super(game, world);
-        worldX = x * tile_size;
-        worldY = y * tile_size;
+        this.x = x * tile_size;
+        this.y = y * tile_size;
         type = TYPE_CONSUMABLE;
         name = "Tent";
         image = Utils.scaleImage(item_tent, tile_size, tile_size);
-        itemDescription = "[" + name + "]\nYou can sleep until\nnext morning.";
+        description = "[" + name + "]\nYou can sleep until\nnext morning.";
         price = 1200;
     }
 

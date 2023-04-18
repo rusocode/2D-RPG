@@ -25,8 +25,8 @@ import static com.craivet.utils.Global.*;
 
 public abstract class Entity {
 
-    public final Game game;
-    public final World world;
+    protected final Game game;
+    protected final World world;
 
     public Timer timer = new Timer();
     public ArrayList<Entity> inventory = new ArrayList<>();
@@ -34,7 +34,7 @@ public abstract class Entity {
     public int dialogueIndex;
 
     // General attributes
-    public int worldX, worldY;
+    public int x, y;
     public String name;
     public int type = TYPE_MOB;
     // Imagenes estaticas para los items y mobs
@@ -44,7 +44,7 @@ public abstract class Entity {
     public int life, maxLife; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
     public int mana, maxMana;
     public int ammo;
-    public int level, exp, nextLevelExp;
+    public int lvl, exp, nextLvlExp;
     public int coin;
     public int strength, dexterity;
     public int attack, defense;
@@ -53,13 +53,12 @@ public abstract class Entity {
     public Projectile projectile; // TODO Es necesario declarar este objeto aca?
     public Entity weapon, shield;
     public Entity light; // linterna, antorcha, etc.
-    public Entity attacker;
 
     // Item attributes
-    public String itemDescription;
+    public String description;
     public int price;
     public int attackValue, defenseValue;
-    public int knockBackPower;
+    public int knockbackValue;
     public int amount = 1;
     public int lightRadius;
     public boolean solid, stackable;
@@ -71,11 +70,12 @@ public abstract class Entity {
     public boolean dead;
     public boolean hpBar;
     public boolean invincible;
-    public boolean knockBack;
+    public boolean knockback;
     public boolean onPath;
-    public int knockBackDirection;
 
-    // Frames (movimiento, ataque)
+    public int knockbackDirection;
+
+    // Frames
     public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
     public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
     public int movementNum = 1, attackNum = 1;
@@ -85,34 +85,25 @@ public abstract class Entity {
         this.world = world;
     }
 
+    /**
+     * En caso de que se haya aplicado knockback a la entidad, comprueba las colisiones y en base a eso determina si se
+     * detiene el knockback o se actualiza la posicion de la entidad utilizando la variable temporal knockbackDirection.
+     * En caso contrario, la entidad realiza una accion y comprueba las colisiones para determinar si se actualiza la
+     * posicion o no.
+     */
     public void update() {
-        if (knockBack) {
+        if (knockback) {
             checkCollisions();
             if (collision) {
-                timer.knockBackCounter = 0;
-                knockBack = false;
+                knockback = false;
                 speed = defaultSpeed;
-            } else {
-                switch (knockBackDirection) {
-                    case DOWN:
-                        worldY += speed;
-                        break;
-                    case UP:
-                        worldY -= speed;
-                        break;
-                    case LEFT:
-                        worldX -= speed;
-                        break;
-                    case RIGHT:
-                        worldX += speed;
-                        break;
-                }
-            }
-            timer.timerKnockBack(this, INTERVAL_KNOCKBACK);
+                timer.knockbackCounter = 0;
+            } else updatePosition(knockbackDirection);
+            timer.timerKnockback(this, INTERVAL_KNOCKBACK);
         } else {
             setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
             checkCollisions();
-            if (!collision) updatePosition();
+            if (!collision) updatePosition(direction);
 
             timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
             if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
@@ -122,25 +113,17 @@ public abstract class Entity {
 
     public void render(Graphics2D g2) {
         BufferedImage auxImage = null;
-        int screenX = (worldX - world.player.worldX) + world.player.screenX;
-        int screenY = (worldY - world.player.worldY) + world.player.screenY;
-        if (worldX + tile_size > world.player.worldX - world.player.screenX &&
-                worldX - tile_size < world.player.worldX + world.player.screenX &&
-                worldY + tile_size > world.player.worldY - world.player.screenY &&
-                worldY - tile_size < world.player.worldY + world.player.screenY) {
+        int screenX = (x - world.player.x) + world.player.screenX;
+        int screenY = (y - world.player.y) + world.player.screenY;
+        if (x + tile_size > world.player.x - world.player.screenX &&
+                x - tile_size < world.player.x + world.player.screenX &&
+                y + tile_size > world.player.y - world.player.screenY &&
+                y - tile_size < world.player.y + world.player.screenY) {
             switch (direction) {
-                case DOWN:
-                    auxImage = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                    break;
-                case UP:
-                    auxImage = movementNum == 1 || collision ? movementUp1 : movementUp2;
-                    break;
-                case LEFT:
-                    auxImage = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
-                    break;
-                case RIGHT:
-                    auxImage = movementNum == 1 || collision ? movementRight1 : movementRight2;
-                    break;
+                case DOWN -> auxImage = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                case UP -> auxImage = movementNum == 1 || collision ? movementUp1 : movementUp2;
+                case LEFT -> auxImage = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
+                case RIGHT -> auxImage = movementNum == 1 || collision ? movementRight1 : movementRight2;
             }
 
             // Si la barra de hp esta activada
@@ -189,18 +172,10 @@ public abstract class Entity {
         game.ui.currentDialogue = dialogues[dialogueIndex];
         dialogueIndex++;
         switch (world.player.direction) {
-            case DOWN:
-                direction = UP;
-                break;
-            case UP:
-                direction = DOWN;
-                break;
-            case LEFT:
-                direction = RIGHT;
-                break;
-            case RIGHT:
-                direction = LEFT;
-                break;
+            case DOWN -> direction = UP;
+            case UP -> direction = DOWN;
+            case LEFT -> direction = RIGHT;
+            case RIGHT -> direction = LEFT;
         }
     }
 
@@ -220,8 +195,8 @@ public abstract class Entity {
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] == null) {
                 world.items[world.map][i] = item;
-                world.items[world.map][i].worldX = worldX + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
-                world.items[world.map][i].worldY = worldY + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
+                world.items[world.map][i].x = x + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
+                world.items[world.map][i].y = y + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
                 break;
             }
         }
@@ -251,8 +226,8 @@ public abstract class Entity {
      * Detecta si el item especificado se encuentra en la posicion adyacente del player.
      *
      * @param user       el player.
-     * @param target     la lista de items.
-     * @param targetName el nombre del item especificado.
+     * @param target     lista de items.
+     * @param targetName nombre del item especificado.
      * @return el indice del item especificado a la posicion adyacente del player.
      */
     public int getDetected(Entity user, Entity[][] target, String targetName) {
@@ -263,18 +238,10 @@ public abstract class Entity {
         int nextWorldY = user.getTop();
 
         switch (user.direction) {
-            case DOWN:
-                nextWorldY = user.getBottom() + user.speed;
-                break;
-            case UP:
-                nextWorldY = user.getTop() - user.speed;
-                break;
-            case LEFT:
-                nextWorldX = user.getLeft() - user.speed;
-                break;
-            case RIGHT:
-                nextWorldX = user.getRight() + user.speed;
-                break;
+            case DOWN -> nextWorldY = user.getBottom() + user.speed;
+            case UP -> nextWorldY = user.getTop() - user.speed;
+            case LEFT -> nextWorldX = user.getLeft() - user.speed;
+            case RIGHT -> nextWorldX = user.getRight() + user.speed;
         }
 
         int row = nextWorldY / tile_size;
@@ -393,34 +360,33 @@ public abstract class Entity {
         damagePlayer(game.collider.checkPlayer(this), attack);
     }
 
-    private void updatePosition() {
+    /**
+     * Actualiza la posicion de la entidad dependiendo de la direccion.
+     *
+     * @param direction direccion.
+     */
+    private void updatePosition(int direction) {
         switch (direction) {
-            case DOWN:
-                worldY += speed;
-                break;
-            case UP:
-                worldY -= speed;
-                break;
-            case LEFT:
-                worldX -= speed;
-                break;
-            case RIGHT:
-                worldX += speed;
-                break;
+            case DOWN -> y += speed;
+            case UP -> y -= speed;
+            case LEFT -> x -= speed;
+            case RIGHT -> x += speed;
         }
     }
 
     /**
-     * Establece el retroceso a la entidad.
+     * Establece el retroceso al objetivo del atacante.
      *
-     * @param target         la entidad.
-     * @param knockBackPower el poder de retroceso.
+     * @param target         objetivo del atacante.
+     * @param attacker       atacante de la entidad.
+     * @param knockbackValue valor de knockback.
      */
-    public void setKnockBack(Entity target, Entity attacker, int knockBackPower) {
-        this.attacker = attacker;
-        target.knockBackDirection = attacker.direction;
-        target.speed += knockBackPower;
-        target.knockBack = true;
+    protected void setKnockback(Entity target, Entity attacker, int knockbackValue) {
+        /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
+         * ataque para actualizar la posicion de la entidad mientras el frame de esta se mantiene en la misma direccion. */
+        target.knockbackDirection = attacker.direction;
+        target.speed += knockbackValue;
+        target.knockback = true;
     }
 
     /**
@@ -445,11 +411,11 @@ public abstract class Entity {
     }
 
     public int getXDistance(Entity target) {
-        return Math.abs(worldX - target.worldX);
+        return Math.abs(x - target.x);
     }
 
     public int getYDistance(Entity target) {
-        return Math.abs(worldY - target.worldY);
+        return Math.abs(y - target.y);
     }
 
     /**
@@ -463,40 +429,40 @@ public abstract class Entity {
     }
 
     public int getGoalRow(Entity target) {
-        return (target.worldY + target.hitbox.y) / tile_size;
+        return (target.y + target.hitbox.y) / tile_size;
     }
 
     public int getGoalCol(Entity target) {
-        return (target.worldX + target.hitbox.x) / tile_size;
+        return (target.x + target.hitbox.x) / tile_size;
     }
 
     public int getLeft() {
-        return worldX + hitbox.x;
+        return x + hitbox.x;
     }
 
     public int getRight() {
-        return worldX + hitbox.x + hitbox.width;
+        return x + hitbox.x + hitbox.width;
     }
 
     public int getTop() {
-        return worldY + hitbox.y;
+        return y + hitbox.y;
     }
 
     public int getBottom() {
-        return worldY + hitbox.y + hitbox.height;
+        return y + hitbox.y + hitbox.height;
     }
 
     public int getCol() {
-        return (worldX + hitbox.x) / tile_size;
+        return (x + hitbox.x) / tile_size;
     }
 
     public int getRow() {
-        return (worldY + hitbox.y) / tile_size;
+        return (y + hitbox.y) / tile_size;
     }
 
     public void searchPath(int goalRow, int goalCol) {
-        int startRow = (worldY + hitbox.y) / tile_size;
-        int startCol = (worldX + hitbox.x) / tile_size;
+        int startRow = (y + hitbox.y) / tile_size;
+        int startCol = (x + hitbox.x) / tile_size;
 
         game.aStar.setNodes(startRow, startCol, goalRow, goalCol);
 
@@ -507,10 +473,10 @@ public abstract class Entity {
             int nextX = game.aStar.pathList.get(0).col * tile_size;
             int nextY = game.aStar.pathList.get(0).row * tile_size;
             // Obtiene la posicion de la entidad
-            int left = worldX + hitbox.x;
-            int right = worldX + hitbox.x + hitbox.width;
-            int top = worldY + hitbox.y;
-            int bottom = worldY + hitbox.y + hitbox.height;
+            int left = x + hitbox.x;
+            int right = x + hitbox.x + hitbox.width;
+            int top = y + hitbox.y;
+            int bottom = y + hitbox.y + hitbox.height;
 
             // Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
             /* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces

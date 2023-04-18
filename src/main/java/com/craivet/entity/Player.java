@@ -40,8 +40,8 @@ public class Player extends Entity {
         //        return (x > 0) && (y > 0) && (x <= MAPA_ANCHO) && (y <= MAPA_ALTO);
         //    }
         // Y tile no solido..
-        worldX = 23 * tile_size;
-        worldY = 21 * tile_size;
+        x = 23 * tile_size;
+        y = 21 * tile_size;
         key = game.getKey();
         initDefaultValues();
     }
@@ -51,9 +51,9 @@ public class Player extends Entity {
         life = maxLife = 6;
         mana = maxMana = 4;
         ammo = 5;
-        level = 1;
+        lvl = 1;
         exp = 0;
-        nextLevelExp = 5;
+        nextLvlExp = 5;
         coin = 500;
         strength = 1;
         dexterity = 1;
@@ -79,8 +79,8 @@ public class Player extends Entity {
     }
 
     public void setDefaultPosition() {
-        worldX = tile_size * 23;
-        worldY = tile_size * 21;
+        x = tile_size * 23;
+        y = tile_size * 21;
         direction = DOWN;
     }
 
@@ -126,29 +126,29 @@ public class Player extends Entity {
         BufferedImage frame = null;
         int tempScreenX = screenX, tempScreenY = screenY;
         switch (direction) {
-            case DOWN:
+            case DOWN -> {
                 if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
                 if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
-                break;
-            case UP:
+            }
+            case UP -> {
                 if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
                 if (attacking) {
                     // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                     tempScreenY -= tile_size;
                     frame = attackNum == 1 ? attackUp1 : attackUp2;
                 }
-                break;
-            case LEFT:
+            }
+            case LEFT -> {
                 if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
                 if (attacking) {
                     tempScreenX -= tile_size;
                     frame = attackNum == 1 ? attackLeft1 : attackLeft2;
                 }
-                break;
-            case RIGHT:
+            }
+            case RIGHT -> {
                 if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
                 if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
-                break;
+            }
         }
 
         if (invincible) Utils.changeAlpha(g2, 0.3f);
@@ -176,8 +176,8 @@ public class Player extends Entity {
             attackNum = 2;
 
             // Guarda la posicion actual de worldX, worldY y el tamaño del hitbox
-            int currentWorldX = worldX;
-            int currentWorldY = worldY;
+            int currentWorldX = x;
+            int currentWorldY = y;
             int hitboxWidth = hitbox.width;
             int hitboxHeight = hitbox.height;
 
@@ -185,38 +185,38 @@ public class Player extends Entity {
              * pero el tamaño para las direcciones left y right va a variar. Tambien la posicion varia para cada
              * direccion. */
             switch (direction) {
-                case DOWN:
+                case DOWN -> {
                     attackbox.x = 9;
                     attackbox.y = 5;
                     attackbox.width = 10;
                     attackbox.height = 27;
-                    worldX += attackbox.x;
-                    worldY += attackbox.y + attackbox.height;
-                    break;
-                case UP:
+                    x += attackbox.x;
+                    y += attackbox.y + attackbox.height;
+                }
+                case UP -> {
                     attackbox.x = 15;
                     attackbox.y = 4;
                     attackbox.width = 10;
                     attackbox.height = 28;
-                    worldX += attackbox.x;
-                    worldY -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
-                    break;
-                case LEFT:
+                    x += attackbox.x;
+                    y -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
+                }
+                case LEFT -> {
                     attackbox.x = 0;
                     attackbox.y = 10;
                     attackbox.width = 25;
                     attackbox.height = 10;
-                    worldX -= hitbox.x + attackbox.x + attackbox.width;
-                    worldY += attackbox.y;
-                    break;
-                case RIGHT:
+                    x -= hitbox.x + attackbox.x + attackbox.width;
+                    y += attackbox.y;
+                }
+                case RIGHT -> {
                     attackbox.x = 16;
                     attackbox.y = 10;
                     attackbox.width = 24;
                     attackbox.height = 10;
-                    worldX += attackbox.x + attackbox.width;
-                    worldY += attackbox.y;
-                    break;
+                    x += attackbox.x + attackbox.width;
+                    y += attackbox.y;
+                }
             }
 
             // Convierte el area del cuerpo en el area de ataque para verificar la colision solo con el area de ataque
@@ -225,7 +225,7 @@ public class Player extends Entity {
 
             // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
             int mobIndex = game.collider.checkEntity(this, world.mobs);
-            damageMob(mobIndex, this, attack, weapon.knockBackPower);
+            damageMob(mobIndex, this, weapon.knockbackValue, attack);
 
             int iTileIndex = game.collider.checkEntity(this, world.interactives);
             damageInteractiveTile(iTileIndex);
@@ -235,8 +235,8 @@ public class Player extends Entity {
             damageProjectile(projectileIndex);
 
             // Despues de verificar la colision, resetea los datos originales
-            worldX = currentWorldX;
-            worldY = currentWorldY;
+            x = currentWorldX;
+            y = currentWorldY;
             hitbox.width = hitboxWidth;
             hitbox.height = hitboxHeight;
         }
@@ -265,7 +265,7 @@ public class Player extends Entity {
     private void checkShoot() {
         if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
             game.playSound(sound_burning);
-            projectile.set(worldX, worldY, direction, true, this);
+            projectile.set(x, y, direction, true, this);
             // Comprueba vacante para agregar el proyectil
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {
@@ -338,15 +338,17 @@ public class Player extends Entity {
     /**
      * Daña al mob.
      *
-     * @param mobIndex indice del mob.
-     * @param attack   el tipo de ataque (sword o fireball).
+     * @param mobIndex       indice del mob.
+     * @param attacker       atacante del mob.
+     * @param knockbackValue valor de knockback.
+     * @param attack         tipo de ataque (sword o fireball).
      */
-    public void damageMob(int mobIndex, Entity attacker, int attack, int knockBackPower) {
+    public void damageMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
         if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
             Entity mob = world.mobs[world.map][mobIndex];
             if (!mob.invincible) {
 
-                if (knockBackPower > 0) setKnockBack(mob, attacker, knockBackPower);
+                if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
                 int damage = Math.max(attack - mob.defense, 0);
                 mob.life -= damage;
@@ -409,9 +411,9 @@ public class Player extends Entity {
      * Verifica si subio de nivel.
      */
     private void checkLevelUp() {
-        if (exp >= nextLevelExp) {
-            level++;
-            nextLevelExp *= 2;
+        if (exp >= nextLvlExp) {
+            lvl++;
+            nextLvlExp *= 2;
             maxLife += 2;
             strength++;
             dexterity++;
@@ -420,7 +422,7 @@ public class Player extends Entity {
 
             game.playSound(sound_level_up);
             game.state = DIALOGUE_STATE;
-            game.ui.currentDialogue = "You are level " + level + "!";
+            game.ui.currentDialogue = "You are level " + lvl + "!";
         }
     }
 
@@ -526,18 +528,10 @@ public class Player extends Entity {
      */
     private void updatePosition() {
         switch (direction) {
-            case DOWN:
-                worldY += speed;
-                break;
-            case UP:
-                worldY -= speed;
-                break;
-            case LEFT:
-                worldX -= speed;
-                break;
-            case RIGHT:
-                worldX += speed;
-                break;
+            case DOWN -> y += speed;
+            case UP -> y -= speed;
+            case LEFT -> x -= speed;
+            case RIGHT -> x += speed;
         }
     }
 
@@ -599,18 +593,14 @@ public class Player extends Entity {
         if (attacking) {
             g2.setColor(Color.red);
             switch (direction) {
-                case DOWN:
-                    g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);
-                    break;
-                case UP:
-                    g2.drawRect(screenX + hitbox.x + attackbox.x, screenY - attackbox.height, attackbox.width, attackbox.height);
-                    break;
-                case LEFT:
-                    g2.drawRect(screenX + attackbox.x - attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
-                    break;
-                case RIGHT:
-                    g2.drawRect(screenX + hitbox.x + attackbox.x + attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
-                    break;
+                case DOWN ->
+                        g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);
+                case UP ->
+                        g2.drawRect(screenX + hitbox.x + attackbox.x, screenY - attackbox.height, attackbox.width, attackbox.height);
+                case LEFT ->
+                        g2.drawRect(screenX + attackbox.x - attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
+                case RIGHT ->
+                        g2.drawRect(screenX + hitbox.x + attackbox.x + attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
             }
         }
     }

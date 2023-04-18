@@ -83,8 +83,8 @@ public class AStar {
 
 				for (int i = 0; i < world.interactives[1].length; i++) {
 					if (world.interactives[world.map][i] != null && world.interactives[world.map][i].destructible) {
-						int itRow = world.interactives[world.map][i].worldY / tile_size;
-						int itCol = world.interactives[world.map][i].worldX / tile_size;
+						int itRow = world.interactives[world.map][i].y / tile_size;
+						int itCol = world.interactives[world.map][i].x / tile_size;
 						node[itRow][itCol].solid = true;
 					}
 				}

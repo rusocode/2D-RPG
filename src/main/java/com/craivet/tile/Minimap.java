@@ -50,8 +50,8 @@ public class Minimap {
 
             // Dibuja un cuadrado rojo que representa la posicion del player
             double scale = (double) (tile_size * MAX_MAP_COL) / width;
-            int playerX = (int) (x + world.player.worldX / scale);
-            int playerY = (int) (y + world.player.worldY / scale);
+            int playerX = (int) (x + world.player.x / scale);
+            int playerY = (int) (y + world.player.y / scale);
             int playerSize = (int) (tile_size / scale);
             g2.setColor(Color.red);
             g2.fillRect(playerX, playerY, playerSize, playerSize);

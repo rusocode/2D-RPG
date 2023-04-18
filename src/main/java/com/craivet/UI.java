@@ -319,7 +319,7 @@ public class UI {
         textY = frameY + tile_size;
         String value;
 
-        value = String.valueOf(world.player.level);
+        value = String.valueOf(world.player.lvl);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
@@ -359,7 +359,7 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.nextLevelExp);
+        value = String.valueOf(world.player.nextLvlExp);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
@@ -464,7 +464,7 @@ public class UI {
             if (itemIndex < entity.inventory.size()) {
                 drawSubwindow(frameX, dFrameY, frameWidth, dFrameHeight, SUBWINDOW_ALPHA);
                 changeFontSize(18f);
-                for (String line : entity.inventory.get(itemIndex).itemDescription.split("\n")) {
+                for (String line : entity.inventory.get(itemIndex).description.split("\n")) {
                     g2.drawString(line, textX, textY);
                     textY += 32;
                 }
@@ -742,10 +742,10 @@ public class UI {
             counter = 0;
             game.state = PLAY_STATE;
             world.map = game.event.tempMap;
-            world.player.worldX = tile_size * game.event.tempCol;
-            world.player.worldY = tile_size * game.event.tempRow;
-            game.event.previousEventX = world.player.worldX;
-            game.event.previousEventY = world.player.worldY;
+            world.player.x = tile_size * game.event.tempCol;
+            world.player.y = tile_size * game.event.tempRow;
+            game.event.previousEventX = world.player.x;
+            game.event.previousEventY = world.player.y;
         }
     }
 

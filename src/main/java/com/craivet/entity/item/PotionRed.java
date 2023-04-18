@@ -16,7 +16,7 @@ public class PotionRed extends Item {
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
         value = 5;
-        itemDescription = "[" + name + "]\nHeals your life by " + value + ".";
+        description = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;
         this.amount = amount;
         stackable = true;
@@ -24,13 +24,13 @@ public class PotionRed extends Item {
 
     public PotionRed(Game game, World world, int x, int y, int amount) {
         super(game, world);
-        worldX = x * tile_size;
-        worldY = y * tile_size;
+        this.x = x * tile_size;
+        this.y = y * tile_size;
         name = "Red Potion";
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
         value = 5;
-        itemDescription = "[" + name + "]\nHeals your life by " + value + ".";
+        description = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;
         this.amount = amount;
         stackable = true;

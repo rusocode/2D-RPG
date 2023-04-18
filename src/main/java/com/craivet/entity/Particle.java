@@ -31,8 +31,8 @@ public class Particle extends Entity {
 
 		life = maxLife;
 		int offset = (tile_size / 2) - (size - 2);
-		worldX = generator.worldX + offset;
-		worldY = generator.worldY + offset;
+		x = generator.x + offset;
+		y = generator.y + offset;
 
 	}
 
@@ -46,16 +46,16 @@ public class Particle extends Entity {
 			size--;
 		}
 
-		worldX += xd * speed;
-		worldY += yd * speed;
+		x += xd * speed;
+		y += yd * speed;
 
 		if (life == 0) alive = false;
 
 	}
 
 	public void render(Graphics2D g2) {
-		int screenX = worldX - world.player.worldX + world.player.screenX;
-		int screenY = worldY - world.player.worldY + world.player.screenY;
+		int screenX = x - world.player.x + world.player.screenX;
+		int screenY = y - world.player.y + world.player.screenY;
 		g2.setColor(color);
 		g2.fillRect(screenX, screenY, size, size); // Dibuja un rectangulo como una particula
 	}

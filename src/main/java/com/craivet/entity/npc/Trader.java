@@ -12,8 +12,8 @@ public class Trader extends Npc {
 
 	public Trader(Game game, World world, int x, int y) {
 		super(game, world);
-		worldX = x * tile_size;
-		worldY = y * tile_size;
+		this.x = x * tile_size;
+		this.y = y * tile_size;
 		initDefaultValues();
 	}
 

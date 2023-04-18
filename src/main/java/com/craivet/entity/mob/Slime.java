@@ -17,8 +17,8 @@ public class Slime extends Mob {
 
     public Slime(Game game, World world, int x, int y) {
         super(game, world);
-        worldX = x * tile_size;
-        worldY = y * tile_size;
+        this.x = x * tile_size;
+        this.y = y * tile_size;
         initDefaultValues();
     }
 
@@ -71,7 +71,7 @@ public class Slime extends Mob {
 
     private void checkShoot() {
         if (Utils.azar(100) == 1 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
-            projectile.set(worldX + 8, worldY + 17, direction, true, this);
+            projectile.set(x + 8, y + 17, direction, true, this);
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {
                     world.projectiles[world.map][i] = projectile;

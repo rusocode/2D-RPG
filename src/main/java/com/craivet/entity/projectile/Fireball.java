@@ -21,7 +21,7 @@ public class Fireball extends Projectile {
 		speed = 7;
 		life = maxLife = 80;
 		attack = 2;
-		knockBackPower = 5;
+		knockbackValue = 5;
 		useCost = 1;
 		alive = false;
 		initMovementImages(entity_fireball, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);

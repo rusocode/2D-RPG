@@ -14,10 +14,10 @@ public class SwordNormal extends Item {
 		name = "Normal Sword";
 		type = TYPE_SWORD;
 		image = Utils.scaleImage(item_sword_normal, tile_size, tile_size);
-		itemDescription = "[" + name + "]\nAn old sword.";
+		description = "[" + name + "]\nAn old sword.";
 		price = 20;
 		attackValue = 2;
-		knockBackPower = 2;
+		knockbackValue = 2;
 	}
 
 }

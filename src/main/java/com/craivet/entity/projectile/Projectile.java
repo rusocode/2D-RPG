@@ -4,7 +4,6 @@ import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
 import com.craivet.World;
-import com.craivet.entity.mob.Slime;
 
 import static com.craivet.utils.Global.*;
 
@@ -25,8 +24,8 @@ public class Projectile extends Entity {
     }
 
     public void set(int worldX, int worldY, int direction, boolean alive, Entity entity) {
-        this.worldX = worldX;
-        this.worldY = worldY;
+        this.x = worldX;
+        this.y = worldY;
         this.direction = direction;
         this.alive = alive;
         this.entity = entity;
@@ -49,7 +48,7 @@ public class Projectile extends Entity {
              * movimiento 2. La siguiente linea soluciona este problema. */
             collision = false;
             if (mobIndex != -1 && !world.mobs[world.map][mobIndex].invincible) {
-                world.player.damageMob(mobIndex, this, attack, knockBackPower);
+                world.player.damageMob(mobIndex, this, knockbackValue, attack);
                 // En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
                 generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
                 alive = false;
@@ -71,16 +70,16 @@ public class Projectile extends Entity {
         if (alive) {
             switch (direction) {
                 case DOWN:
-                    worldY += speed;
+                    y += speed;
                     break;
                 case UP:
-                    worldY -= speed;
+                    y -= speed;
                     break;
                 case LEFT:
-                    worldX -= speed;
+                    x -= speed;
                     break;
                 case RIGHT:
-                    worldX += speed;
+                    x += speed;
                     break;
             }
             timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);

@@ -44,8 +44,8 @@ public class EventManager {
 	public void checkEvent() {
 
 		// Verifica si el player esta a mas de 1 tile de distancia del ultimo evento
-		int xDistance = Math.abs(world.player.worldX - previousEventX);
-		int yDistance = Math.abs(world.player.worldY - previousEventY);
+		int xDistance = Math.abs(world.player.x - previousEventX);
+		int yDistance = Math.abs(world.player.y - previousEventY);
 		int distance = Math.max(xDistance, yDistance);
 		if (distance > tile_size) canTouchEvent = true;
 
@@ -67,8 +67,8 @@ public class EventManager {
 		boolean hit = false;
 
 		if (map == world.map) {
-			world.player.hitbox.x += world.player.worldX;
-			world.player.hitbox.y += world.player.worldY;
+			world.player.hitbox.x += world.player.x;
+			world.player.hitbox.y += world.player.y;
 			eventRect[map][row][col].x += col * tile_size;
 			eventRect[map][row][col].y += row * tile_size;
 
@@ -77,8 +77,8 @@ public class EventManager {
 				if (world.player.direction == reqDirection || reqDirection == ANY) {
 					hit = true;
 					// En base a esta informacion, podemos verificar la distancia entre el player y el ultimo evento
-					previousEventX = world.player.worldX;
-					previousEventY = world.player.worldY;
+					previousEventX = world.player.x;
+					previousEventY = world.player.y;
 				}
 			}
 

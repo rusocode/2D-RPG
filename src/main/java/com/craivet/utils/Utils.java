@@ -59,9 +59,9 @@ public final class Utils {
 	 *
 	 * <p>TODO En vez de pasar un ancho y alto, solo es suficiente con un valor escalable
 	 *
-	 * @param image  la imagen.
-	 * @param width  el ancho de la imagen.
-	 * @param height el alto de la imagen.
+	 * @param image  imagen.
+	 * @param width  ancho de la imagen.
+	 * @param height alto de la imagen.
 	 * @return la imagen escalada.
 	 */
 	public static BufferedImage scaleImage(BufferedImage image, int width, int height) {

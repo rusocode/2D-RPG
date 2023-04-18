@@ -19,25 +19,28 @@ public class Axe extends Item {
 		image = Utils.scaleImage(item_axe, tile_size, tile_size);
 		attackbox.width = 30;
 		attackbox.height = 30;
-		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
+		description = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
 		price = 75;
 		attackValue = 1;
-		knockBackPower = 10;
+		knockbackValue = 8;
 	}
 
+	/**
+	 * Constructor solo para agregar Axe al World.
+	 */
 	public Axe(Game game, World world, int x, int y) {
 		super(game, world);
-		worldX = x * tile_size;
-		worldY = y * tile_size;
+		this.x = x * tile_size;
+		this.y = y * tile_size;
 		name = "Axe";
 		type = TYPE_AXE;
 		image = Utils.scaleImage(item_axe, tile_size, tile_size);
 		attackbox.width = 30;
 		attackbox.height = 30;
-		itemDescription = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
+		description = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
 		price = 75;
 		attackValue = 1;
-		knockBackPower = 10;
+		knockbackValue = 10;
 	}
 
 }

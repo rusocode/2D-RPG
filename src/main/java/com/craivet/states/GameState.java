@@ -44,8 +44,8 @@ public class GameState implements State {
             g2.setColor(Color.white);
             int x = 8, y = SCREEN_HEIGHT - 55, gap = 25;
             String map = game.getWorld().maps.get(game.getWorld().map);
-            int posX = (game.getWorld().player.worldX + game.getWorld().player.hitbox.x) / tile_size;
-            int posY = (game.getWorld().player.worldY + game.getWorld().player.hitbox.y) / tile_size;
+            int posX = (game.getWorld().player.x + game.getWorld().player.hitbox.x) / tile_size;
+            int posY = (game.getWorld().player.y + game.getWorld().player.hitbox.y) / tile_size;
             g2.drawString(map + " (" + posX + ", " + posY + ")", x, y);
             y += gap;
             if (game.showFPS) {

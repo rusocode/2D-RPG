@@ -29,8 +29,8 @@ public class TileManager {
 	 */
 	public void render(Graphics2D g2) {
 		// Calcula los desplazamientos
-		int xOffset = world.player.worldX - world.player.screenX; // 1104 - 456 = 648
-		int yOffset = world.player.worldY - world.player.screenY;
+		int xOffset = world.player.x - world.player.screenX; // 1104 - 456 = 648
+		int yOffset = world.player.y - world.player.screenY;
 
 		// Calcula los tiles que estan dentro de la vista de la camara
 		int yStart = Math.max(0, yOffset / tile_size);
@@ -52,8 +52,8 @@ public class TileManager {
 			for (int i = 0; i < game.aStar.pathList.size(); i++) {
 				int worldX = game.aStar.pathList.get(i).col * tile_size;
 				int worldY = game.aStar.pathList.get(i).row * tile_size;
-				int screenX = worldX - world.player.worldX + world.player.screenX;
-				int screenY = worldY - world.player.worldY + world.player.screenY;
+				int screenX = worldX - world.player.x + world.player.screenX;
+				int screenY = worldY - world.player.y + world.player.screenY;
 				g2.fillRect(screenX, screenY, tile_size, tile_size);
 			}
 		}

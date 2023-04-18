@@ -20,7 +20,7 @@ public class Timer {
     public int directionCounter;
     public int hpBarCounter;
     public int invincibleCounter;
-    public int knockBackCounter;
+    public int knockbackCounter;
     public int movementCounter;
     public int naturalStopWalkingCounter;
     public int projectileCounter;
@@ -101,11 +101,11 @@ public class Timer {
         }
     }
 
-    public void timerKnockBack(Entity entity, final int interval) {
-        if (++knockBackCounter >= interval) {
-            knockBackCounter = 0;
-            entity.knockBack = false;
+    public void timerKnockback(Entity entity, final int interval) {
+        if (++knockbackCounter >= interval) {
+            entity.knockback = false;
             entity.speed = entity.defaultSpeed;
+            knockbackCounter = 0;
         }
     }
 
