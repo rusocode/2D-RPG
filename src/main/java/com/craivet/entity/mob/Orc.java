@@ -38,8 +38,8 @@ public class Orc extends Mob {
         motion1 = 15;
         motion2 = 30;
 
-        initMovementImages(entity_orc_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-        initAttackImages(entity_orc_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
+        loadMovementImages(entity_orc_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        loadAttackImages(entity_orc_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
 
     }
 

@@ -75,8 +75,8 @@ public class Player extends Entity {
         motion1 = 5;
         motion2 = 25;
 
-        initMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-        initAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+        loadMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        loadAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
         setItems();
     }
@@ -357,7 +357,7 @@ public class Player extends Entity {
                 attackbox = weapon.attackbox; // TODO Hace falta esto aca?
                 attack = getAttack();
                 if (weapon.type == TYPE_SWORD) game.playSound(sound_draw_sword);
-                initAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+                loadAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
             }
             if (selectedItem.type == TYPE_SHIELD) {
                 shield = selectedItem;

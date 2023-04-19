@@ -125,7 +125,6 @@ public abstract class Entity {
                 y + tile_size > world.player.y - world.player.screenY &&
                 y - tile_size < world.player.y + world.player.screenY) {
 
-
             int tempScreenX = screenX, tempScreenY = screenY;
             switch (direction) {
                 case DOWN -> {
@@ -252,7 +251,7 @@ public abstract class Entity {
     /**
      * Detecta si el item especificado se encuentra en la posicion adyacente del player.
      *
-     * @param user       el player.
+     * @param user       player.
      * @param target     lista de items.
      * @param targetName nombre del item especificado.
      * @return el indice del item especificado a la posicion adyacente del player.
@@ -261,18 +260,18 @@ public abstract class Entity {
         int index = -1;
 
         // Verifica el item adyacente al usuario
-        int nextWorldX = user.getLeft();
-        int nextWorldY = user.getTop();
+        int nextX = user.getLeft();
+        int nextY = user.getTop();
 
         switch (user.direction) {
-            case DOWN -> nextWorldY = user.getBottom() + user.speed;
-            case UP -> nextWorldY = user.getTop() - user.speed;
-            case LEFT -> nextWorldX = user.getLeft() - user.speed;
-            case RIGHT -> nextWorldX = user.getRight() + user.speed;
+            case DOWN -> nextY = user.getBottom() + user.speed;
+            case UP -> nextY = user.getTop() - user.speed;
+            case LEFT -> nextX = user.getLeft() - user.speed;
+            case RIGHT -> nextX = user.getRight() + user.speed;
         }
 
-        int row = nextWorldY / tile_size;
-        int col = nextWorldX / tile_size;
+        int row = nextY / tile_size;
+        int col = nextX / tile_size;
 
         // Si el item iterado es igual a la posicion adyacente del usuario
         for (int i = 0; i < target[1].length; i++) {
@@ -291,8 +290,8 @@ public abstract class Entity {
     /**
      * Genera 4 particulas en el objetivo.
      *
-     * @param generator la entidad que va a generar las particulas.
-     * @param target    el objetivo en donde se van a generar las particulas.
+     * @param generator entidad que va a generar las particulas.
+     * @param target    objetivo en donde se van a generar las particulas.
      */
     public void generateParticle(Entity generator, Entity target) {
         world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
@@ -302,18 +301,18 @@ public abstract class Entity {
     }
 
     /**
-     * Ataca a la entidad si el frame de ataque colisiona con la hitbox del objetivo.
-     *
-     * <p>De 0 a 5 milisegundos se muestra el primer frame de ataque. De 6 a 25 milisegundos se muestra el segundo frame
-     * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
-     *
-     * <p>En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con
-     * una entidad.
+     * Daña la entidad si el frame de ataque colisiona con la hitbox del objetivo.
+     * <p>
+     * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
+     * ataque. Despues de motion2 vuelve al frame de movimiento.
+     * <p>
+     * En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con una
+     * entidad.
      */
     public void attack() {
         timer.attackAnimationCounter++;
-        if (timer.attackAnimationCounter <= motion1) attackNum = 1; // (de 0-5 ms frame de ataque 1)
-        if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de 6-25 ms frame de ataque 2)
+        if (timer.attackAnimationCounter <= motion1) attackNum = 1; // (de 0-motion1 ms frame de ataque 1)
+        if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de motion1-motion2 ms frame de ataque 2)
             attackNum = 2;
 
             // Guarda la posicion actual de worldX, worldY y el tamaño del hitbox
@@ -417,54 +416,54 @@ public abstract class Entity {
     }
 
     /**
-     * Inicializa las subimagenes de movimiento del SpriteSheet y escala cada una.
+     * Carga las subimagenes de movimiento.
      *
-     * @param image  el SpriteSheet.
-     * @param width  el ancho de la subimagen.
-     * @param height el alto de la subimagen.
-     * @param scale  el valor de scala.
+     * @param ss SpriteSheet con todas las subimages de movimiento.
+     * @param w  ancho de la subimagen.
+     * @param h  alto de la subimagen.
+     * @param s  valor de escala.
      */
-    public void initMovementImages(SpriteSheet image, int width, int height, int scale) {
-        BufferedImage[] subimages = SpriteSheet.getMovementSubimages(image, width, height);
-        if (subimages.length > 2) {
-            movementDown1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementDown2 = Utils.scaleImage(subimages[1], scale, scale);
-            movementUp1 = Utils.scaleImage(subimages[2], scale, scale);
-            movementUp2 = Utils.scaleImage(subimages[3], scale, scale);
-            movementLeft1 = Utils.scaleImage(subimages[4], scale, scale);
-            movementLeft2 = Utils.scaleImage(subimages[5], scale, scale);
-            movementRight1 = Utils.scaleImage(subimages[6], scale, scale);
-            movementRight2 = Utils.scaleImage(subimages[7], scale, scale);
-        } else if (subimages.length == 2) { // Slime
-            movementDown1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementDown2 = Utils.scaleImage(subimages[1], scale, scale);
-            movementUp1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementUp2 = Utils.scaleImage(subimages[1], scale, scale);
-            movementLeft1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementLeft2 = Utils.scaleImage(subimages[1], scale, scale);
-            movementRight1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementRight2 = Utils.scaleImage(subimages[1], scale, scale);
-        } else { // SickyBall
-            movementDown1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementDown2 = Utils.scaleImage(subimages[0], scale, scale);
-            movementUp1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementUp2 = Utils.scaleImage(subimages[0], scale, scale);
-            movementLeft1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementLeft2 = Utils.scaleImage(subimages[0], scale, scale);
-            movementRight1 = Utils.scaleImage(subimages[0], scale, scale);
-            movementRight2 = Utils.scaleImage(subimages[0], scale, scale);
+    public void loadMovementImages(SpriteSheet ss, int w, int h, int s) {
+        BufferedImage[] subimages = SpriteSheet.getMovementSubimages(ss, w, h);
+        if (subimages.length > 2) { // Orc (8 frames)
+            movementDown1 = Utils.scaleImage(subimages[0], s, s);
+            movementDown2 = Utils.scaleImage(subimages[1], s, s);
+            movementUp1 = Utils.scaleImage(subimages[2], s, s);
+            movementUp2 = Utils.scaleImage(subimages[3], s, s);
+            movementLeft1 = Utils.scaleImage(subimages[4], s, s);
+            movementLeft2 = Utils.scaleImage(subimages[5], s, s);
+            movementRight1 = Utils.scaleImage(subimages[6], s, s);
+            movementRight2 = Utils.scaleImage(subimages[7], s, s);
+        } else if (subimages.length == 2) { // Slime (2 frames)
+            movementDown1 = Utils.scaleImage(subimages[0], s, s);
+            movementDown2 = Utils.scaleImage(subimages[1], s, s);
+            movementUp1 = Utils.scaleImage(subimages[0], s, s);
+            movementUp2 = Utils.scaleImage(subimages[1], s, s);
+            movementLeft1 = Utils.scaleImage(subimages[0], s, s);
+            movementLeft2 = Utils.scaleImage(subimages[1], s, s);
+            movementRight1 = Utils.scaleImage(subimages[0], s, s);
+            movementRight2 = Utils.scaleImage(subimages[1], s, s);
+        } else { // StickyBall (1 frame)
+            movementDown1 = Utils.scaleImage(subimages[0], s, s);
+            movementDown2 = Utils.scaleImage(subimages[0], s, s);
+            movementUp1 = Utils.scaleImage(subimages[0], s, s);
+            movementUp2 = Utils.scaleImage(subimages[0], s, s);
+            movementLeft1 = Utils.scaleImage(subimages[0], s, s);
+            movementLeft2 = Utils.scaleImage(subimages[0], s, s);
+            movementRight1 = Utils.scaleImage(subimages[0], s, s);
+            movementRight2 = Utils.scaleImage(subimages[0], s, s);
         }
     }
 
     /**
-     * Inicializa las subimagenes de ataque del sprite sheet y escala cada una.
+     * Carga las subimagenes de ataque.
      *
-     * @param image  el sprite sheet.
-     * @param width  el ancho de la subimagen.
-     * @param height el alto de la subimagen.
+     * @param ss SpriteSheet con todas las subimages de ataque.
+     * @param w  ancho de la subimagen.
+     * @param h  alto de la subimagen.
      */
-    public void initAttackImages(SpriteSheet image, int width, int height) {
-        BufferedImage[] subimages = SpriteSheet.getAttackSubimages(image, width, height);
+    public void loadAttackImages(SpriteSheet ss, int w, int h) {
+        BufferedImage[] subimages = SpriteSheet.getAttackSubimages(ss, w, h);
         attackDown1 = Utils.scaleImage(subimages[0], tile_size, tile_size * 2);
         attackDown2 = Utils.scaleImage(subimages[1], tile_size, tile_size * 2);
         attackUp1 = Utils.scaleImage(subimages[2], tile_size, tile_size * 2);
@@ -511,6 +510,9 @@ public abstract class Entity {
         }
     }
 
+    /**
+     * Comprueba las colisiones.
+     */
     private void checkCollisions() {
         collision = false;
         game.collider.checkTile(this);
@@ -522,9 +524,9 @@ public abstract class Entity {
     }
 
     /**
-     * Actualiza la posicion de la entidad dependiendo de la direccion.
+     * Actualiza la posicion de la entidad.
      *
-     * @param direction direccion.
+     * @param direction direccion de la entidad.
      */
     private void updatePosition(int direction) {
         switch (direction) {
@@ -572,67 +574,11 @@ public abstract class Entity {
     }
 
     /**
-     * Obtiene la diferencia entre la posicion x del mob y la posicion x del objetivo.
+     * Busca la mejor ruta para la entidad.
      *
-     * @param target objetivo.
-     * @return la diferencia entre la posicion x del mob y la posicion x del objetivo.
+     * @param goalRow fila objetivo.
+     * @param goalCol columna objetivo.
      */
-    public int getXDistance(Entity target) {
-        return Math.abs(x - target.x);
-    }
-
-    /**
-     * Obtiene la diferencia entre la posicion y del mob y la posicion y del objetivo.
-     *
-     * @param target objetivo.
-     * @return la diferencia entre la posicion y del mob y la posicion y del objetivo.
-     */
-    public int getYDistance(Entity target) {
-        return Math.abs(y - target.y);
-    }
-
-    /**
-     * Obtiene la distancia del objetivo en tiles.
-     *
-     * @param target el objetivo.
-     * @return la distancia en tiles del objetivo.
-     */
-    public int getTileDistance(Entity target) {
-        return (getXDistance(target) + getYDistance(target)) / tile_size;
-    }
-
-    public int getGoalRow(Entity target) {
-        return (target.y + target.hitbox.y) / tile_size;
-    }
-
-    public int getGoalCol(Entity target) {
-        return (target.x + target.hitbox.x) / tile_size;
-    }
-
-    public int getLeft() {
-        return x + hitbox.x;
-    }
-
-    public int getRight() {
-        return x + hitbox.x + hitbox.width;
-    }
-
-    public int getTop() {
-        return y + hitbox.y;
-    }
-
-    public int getBottom() {
-        return y + hitbox.y + hitbox.height;
-    }
-
-    public int getCol() {
-        return (x + hitbox.x) / tile_size;
-    }
-
-    public int getRow() {
-        return (y + hitbox.y) / tile_size;
-    }
-
     public void searchPath(int goalRow, int goalCol) {
         int startRow = (y + hitbox.y) / tile_size;
         int startCol = (x + hitbox.x) / tile_size;
@@ -683,12 +629,69 @@ public abstract class Entity {
                 if (collision) direction = RIGHT;
             }
 
-            // Si la entidad llego al objetivo entonces sale del algoritmo de busqueda
-            // int nextRow = game.aStar.pathList.get(0).row;
-            // int nextCol = game.aStar.pathList.get(0).col;
-            // if (nextRow == goalRow && nextCol == goalCol) onPath = false;
-
         }
+    }
+
+    /**
+     * Obtiene la diferencia entre la posicion x del mob y la posicion x del objetivo.
+     *
+     * @param target objetivo.
+     * @return la diferencia entre la posicion x del mob y la posicion x del objetivo.
+     */
+    public int getXDistance(Entity target) {
+        return Math.abs(x - target.x);
+    }
+
+    /**
+     * Obtiene la diferencia entre la posicion y del mob y la posicion y del objetivo.
+     *
+     * @param target objetivo.
+     * @return la diferencia entre la posicion y del mob y la posicion y del objetivo.
+     */
+    public int getYDistance(Entity target) {
+        return Math.abs(y - target.y);
+    }
+
+    /**
+     * Obtiene la distancia del objetivo en tiles.
+     *
+     * @param target objetivo.
+     * @return la distancia en tiles del objetivo.
+     */
+    public int getTileDistance(Entity target) {
+        return (getXDistance(target) + getYDistance(target)) / tile_size;
+    }
+
+    public int getGoalRow(Entity target) {
+        return (target.y + target.hitbox.y) / tile_size;
+    }
+
+    public int getGoalCol(Entity target) {
+        return (target.x + target.hitbox.x) / tile_size;
+    }
+
+    public int getTop() {
+        return y + hitbox.y;
+    }
+
+    public int getBottom() {
+        return y + hitbox.y + hitbox.height;
+    }
+
+    public int getLeft() {
+        return x + hitbox.x;
+    }
+
+    public int getRight() {
+        return x + hitbox.x + hitbox.width;
+    }
+
+    public int getCol() {
+        return (x + hitbox.x) / tile_size;
+    }
+
+    public int getRow() {
+        return (y + hitbox.y) / tile_size;
     }
 
 }

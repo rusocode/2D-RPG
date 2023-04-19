@@ -26,7 +26,7 @@ public class Oldman extends Npc {
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        initMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        loadMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         initDialogue();
     }
 

@@ -41,7 +41,7 @@ public class Slime extends Mob {
 
         projectile = new StickyBall(game, world);
 
-        initMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        loadMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         mobImage = movementDown1;
     }
 
