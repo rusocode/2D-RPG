@@ -69,18 +69,10 @@ public class Projectile extends Entity {
 
         if (alive) {
             switch (direction) {
-                case DOWN:
-                    y += speed;
-                    break;
-                case UP:
-                    y -= speed;
-                    break;
-                case LEFT:
-                    x -= speed;
-                    break;
-                case RIGHT:
-                    x += speed;
-                    break;
+                case DOWN -> y += speed;
+                case UP -> y -= speed;
+                case LEFT -> x -= speed;
+                case RIGHT -> x += speed;
             }
             timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);
         }

@@ -30,11 +30,13 @@ public class Orc extends Mob {
         hitbox.x = 4;
         hitbox.y = 4;
         hitbox.width = 40;
-        hitbox.height = 44;
+        hitbox.height = 46;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        attackbox.width = 48;
+        attackbox.width = 44;
         attackbox.height = 48;
+        motion1 = 15;
+        motion2 = 30;
 
         initMovementImages(entity_orc_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         initAttackImages(entity_orc_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -50,7 +52,7 @@ public class Orc extends Mob {
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
 
-        if (!attacking) checkAttackOrNot(30, tile_size * 4, tile_size);
+        if (!attacking) checkAttackOrNot(30, tile_size * 2, tile_size);
 
     }
 

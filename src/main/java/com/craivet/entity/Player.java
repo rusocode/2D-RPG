@@ -47,6 +47,7 @@ public class Player extends Entity {
     }
 
     public void initDefaultValues() {
+        type = TYPE_PLAYER;
         speed = defaultSpeed = 3;
         life = maxLife = 6;
         mana = maxMana = 4;
@@ -71,6 +72,8 @@ public class Player extends Entity {
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
+        motion1 = 5;
+        motion2 = 25;
 
         initMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         initAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);

@@ -36,9 +36,8 @@ public abstract class Entity {
     // General attributes
     public int x, y;
     public String name;
-    public int type;
-    // Imagenes estaticas para los items y mobs
-    public BufferedImage image, image2, mobImage;
+    public int type = TYPE_MOB;
+    public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
     public int direction = DOWN;
     public int speed, defaultSpeed;
     public int life, maxLife; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
@@ -48,6 +47,7 @@ public abstract class Entity {
     public int coin;
     public int strength, dexterity;
     public int attack, defense;
+    public int motion1, motion2;
     public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
     public Projectile projectile; // TODO Es necesario declarar este objeto aca?
@@ -93,6 +93,7 @@ public abstract class Entity {
      * colisiones para determinar si se actualiza la posicion o no aplicando el intervalo de movimiento.
      */
     public void update() {
+        // TODO Se podria separar en metodos
         if (knockback) {
             checkCollisions();
             if (collision) {
@@ -108,7 +109,7 @@ public abstract class Entity {
             if (!collision) updatePosition(direction);
 
             /* TODO Estos timers deberian ir fuera del else? Al usar un timer para el movimiento y otro para la
-             * animacion, creo que no interrumpiria el tiempo en el cambio de frames. */
+             * animacion de ataque, creo que no interrumpiria el tiempo en el cambio de frames. */
             timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
             if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
             if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
@@ -301,61 +302,68 @@ public abstract class Entity {
     }
 
     /**
-     * Ataca al mob si el frame de ataque colisiona con el.
+     * Ataca a la entidad si el frame de ataque colisiona con la hitbox del objetivo.
      *
      * <p>De 0 a 5 milisegundos se muestra el primer frame de ataque. De 6 a 25 milisegundos se muestra el segundo frame
      * de ataque. Despues de 25 milisegundos vuelve al frame de movimiento.
      *
-     * <p>En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con un
-     * mob o tile interactivo.
+     * <p>En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con
+     * una entidad.
      */
     public void attack() {
         timer.attackAnimationCounter++;
-        if (timer.attackAnimationCounter <= 5) attackNum = 1; // (de 0-5 ms frame de ataque 1)
-        if (timer.attackAnimationCounter > 5 && timer.attackAnimationCounter <= 25) { // (de 6-25 ms frame de ataque 2)
+        if (timer.attackAnimationCounter <= motion1) attackNum = 1; // (de 0-5 ms frame de ataque 1)
+        if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de 6-25 ms frame de ataque 2)
             attackNum = 2;
 
             // Guarda la posicion actual de worldX, worldY y el tamaño del hitbox
-            int currentWorldX = x;
-            int currentWorldY = y;
+            int currentX = x;
+            int currentY = y;
             int hitboxWidth = hitbox.width;
             int hitboxHeight = hitbox.height;
 
-            /* Ajusta el area de ataque para cada direccion. Para las direcciones down y up el tamaño va a ser el mismo,
-             * pero el tamaño para las direcciones left y right va a variar. Tambien la posicion varia para cada
-             * direccion. */
-            switch (direction) {
-                case DOWN -> {
-                    attackbox.x = 9;
-                    attackbox.y = 5;
-                    attackbox.width = 10;
-                    attackbox.height = 27;
-                    x += attackbox.x;
-                    y += attackbox.y + attackbox.height;
+            // Ajusta el area de ataque del player para cada direccion
+            if (type == TYPE_PLAYER) {
+                switch (direction) {
+                    case DOWN -> {
+                        attackbox.x = 9;
+                        attackbox.y = 5;
+                        attackbox.width = 10;
+                        attackbox.height = 27;
+                        x += attackbox.x;
+                        y += attackbox.y + attackbox.height;
+                    }
+                    case UP -> {
+                        attackbox.x = 15;
+                        attackbox.y = 4;
+                        attackbox.width = 10;
+                        attackbox.height = 28;
+                        x += attackbox.x;
+                        y -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
+                    }
+                    case LEFT -> {
+                        attackbox.x = 0;
+                        attackbox.y = 10;
+                        attackbox.width = 25;
+                        attackbox.height = 10;
+                        x -= hitbox.x + attackbox.x + attackbox.width;
+                        y += attackbox.y;
+                    }
+                    case RIGHT -> {
+                        attackbox.x = 16;
+                        attackbox.y = 10;
+                        attackbox.width = 24;
+                        attackbox.height = 10;
+                        x += attackbox.x + attackbox.width;
+                        y += attackbox.y;
+                    }
                 }
-                case UP -> {
-                    attackbox.x = 15;
-                    attackbox.y = 4;
-                    attackbox.width = 10;
-                    attackbox.height = 28;
-                    x += attackbox.x;
-                    y -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
-                }
-                case LEFT -> {
-                    attackbox.x = 0;
-                    attackbox.y = 10;
-                    attackbox.width = 25;
-                    attackbox.height = 10;
-                    x -= hitbox.x + attackbox.x + attackbox.width;
-                    y += attackbox.y;
-                }
-                case RIGHT -> {
-                    attackbox.x = 16;
-                    attackbox.y = 10;
-                    attackbox.width = 24;
-                    attackbox.height = 10;
-                    x += attackbox.x + attackbox.width;
-                    y += attackbox.y;
+            } else if (type == TYPE_MOB) {
+                switch (direction) {
+                    case DOWN -> y += attackbox.height;
+                    case UP -> y -= attackbox.height;
+                    case LEFT -> x -= attackbox.width;
+                    case RIGHT -> x += attackbox.width;
                 }
             }
 
@@ -379,12 +387,12 @@ public abstract class Entity {
             }
 
             // Despues de verificar la colision, resetea los datos originales
-            x = currentWorldX;
-            y = currentWorldY;
+            x = currentX;
+            y = currentY;
             hitbox.width = hitboxWidth;
             hitbox.height = hitboxHeight;
         }
-        if (timer.attackAnimationCounter > 25) {
+        if (timer.attackAnimationCounter > motion2) {
             attackNum = 1;
             timer.attackAnimationCounter = 0;
             attacking = false;
@@ -492,7 +500,7 @@ public abstract class Entity {
                 if (world.player.x > x && xDis < vertical && yDis < horizontal) targetInRage = true;
             }
         }
-        // Calcula la probabilidad de atacar si el objetivo esta en el rango especificado
+        // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
         if (targetInRage) {
             if (Utils.azar(rate) == 1) {
                 attacking = true;
@@ -563,10 +571,22 @@ public abstract class Entity {
         if (getTileDistance(target) < distance && Utils.azar(rate) == 1) onPath = true;
     }
 
+    /**
+     * Obtiene la diferencia entre la posicion x del mob y la posicion x del objetivo.
+     *
+     * @param target objetivo.
+     * @return la diferencia entre la posicion x del mob y la posicion x del objetivo.
+     */
     public int getXDistance(Entity target) {
         return Math.abs(x - target.x);
     }
 
+    /**
+     * Obtiene la diferencia entre la posicion y del mob y la posicion y del objetivo.
+     *
+     * @param target objetivo.
+     * @return la diferencia entre la posicion y del mob y la posicion y del objetivo.
+     */
     public int getYDistance(Entity target) {
         return Math.abs(y - target.y);
     }
