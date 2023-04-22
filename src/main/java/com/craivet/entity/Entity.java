@@ -55,6 +55,7 @@ public abstract class Entity {
     public Entity light; // linterna, antorcha, etc.
 
     // Item attributes
+    public Entity loot;
     public String description;
     public int price;
     public int attackValue, defenseValue;
@@ -62,6 +63,7 @@ public abstract class Entity {
     public int amount = 1;
     public int lightRadius;
     public boolean solid, stackable;
+    public boolean opened, empty; // chest
 
     // States
     public boolean attacking;
@@ -189,6 +191,8 @@ public abstract class Entity {
     public void setAction() {
 
     }
+
+    public void setLoot(Entity loot) {}
 
     public void damageReaction() {
     }

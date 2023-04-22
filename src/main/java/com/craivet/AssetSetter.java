@@ -28,9 +28,18 @@ public class AssetSetter {
         // world.items[NIX][i++] = new Tent(game, world, 12, 31);
         // world.items[NIX][i++] = new Lantern(game, world, 13, 31);
         world.items[NIX][i++] = new Axe(game, world, 33, 7);
+        world.items[NIX][i++] = new Axe(game, world, 20, 21);
         world.items[NIX][i++] = new Door(game, world, 14, 28);
         world.items[NIX][i++] = new Door(game, world, 12, 12);
-        world.items[NIX][i++] = new Chest(game, world, new Key(game, world, 1), 30, 29);
+
+        world.items[NIX][i] = new Chest(game, world, 30, 29);
+        world.items[NIX][i++].setLoot(new Key(game, world, 1));
+
+        world.items[NIX][i] = new Chest(game, world, 17, 21);
+        world.items[NIX][i++].setLoot(new Tent(game, world));
+        world.items[NIX][i] = new Chest(game, world, 16, 21);
+        world.items[NIX][i].setLoot(new PotionRed(game, world, 5));
+
     }
 
     public void setNPC() {

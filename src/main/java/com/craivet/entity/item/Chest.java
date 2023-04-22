@@ -10,12 +10,23 @@ import static com.craivet.gfx.Assets.*;
 
 public class Chest extends Item {
 
-    private final Entity loot;
-    private boolean opened, empty;
-
-    public Chest(Game game, World world, Entity loot, int x, int y) {
+    public Chest(Game game, World world) {
         super(game, world);
-        this.loot = loot;
+        name = "Chest";
+        type = TYPE_OBSTACLE;
+        image = Utils.scaleImage(item_chest_closed, tile_size, tile_size);
+        image2 = Utils.scaleImage(item_chest_opened, tile_size, tile_size);
+        solid = true;
+        hitbox.x = 4;
+        hitbox.y = 16;
+        hitbox.width = 40;
+        hitbox.height = 32;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
+    }
+
+    public Chest(Game game, World world, int x, int y) {
+        super(game, world);
         this.x = x * tile_size;
         this.y = y * tile_size;
         name = "Chest";
@@ -50,6 +61,10 @@ public class Chest extends Item {
             } else sb.append("You cannot carry any more!");
         } else sb.append("It's empty");
         game.ui.currentDialogue = sb.toString();
+    }
+
+    public void setLoot(Entity loot) {
+        this.loot = loot;
     }
 
 }

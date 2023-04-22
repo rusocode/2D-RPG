@@ -40,7 +40,7 @@ public class Axe extends Item {
 		description = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
 		price = 75;
 		attackValue = 1;
-		knockbackValue = 10;
+		knockbackValue = 8;
 	}
 
 }

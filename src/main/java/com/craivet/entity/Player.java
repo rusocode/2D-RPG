@@ -43,10 +43,10 @@ public class Player extends Entity {
         x = 23 * tile_size;
         y = 21 * tile_size;
         key = game.getKey();
-        initDefaultValues();
+        setDefaultValues();
     }
 
-    public void initDefaultValues() {
+    public void setDefaultValues() {
         type = TYPE_PLAYER;
         speed = defaultSpeed = 3;
         life = maxLife = 6;
@@ -63,6 +63,7 @@ public class Player extends Entity {
         projectile = new Fireball(game, world);
         weapon = new SwordNormal(game, world);
         shield = new ShieldWood(game, world);
+        light = null;
         attack = getAttack();
         defense = getDefense();
 
@@ -77,20 +78,22 @@ public class Player extends Entity {
 
         loadMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         loadAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
-
         setItems();
     }
 
     public void setDefaultPosition() {
-        x = tile_size * 23;
-        y = tile_size * 21;
+        x = 23 * tile_size;
+        y = 21 * tile_size;
         direction = DOWN;
     }
 
-    public void restoreLifeAndMana() {
+    public void restoreStatus() {
         life = maxLife;
         mana = maxMana;
         invincible = false;
+        attacking = false;
+        knockback = false;
+        lightUpdate = true;
     }
 
     public void update() {
@@ -474,12 +477,26 @@ public class Player extends Entity {
         attacking = false;
     }
 
-    private int getAttack() {
+    public int getAttack() {
         return strength * weapon.attackValue;
     }
 
-    private int getDefense() {
+    public int getDefense() {
         return dexterity * shield.defenseValue;
+    }
+
+    public int getCurrentWeaponSlot() {
+        int currentWeaponSlot = 0;
+        for (int i = 0; i < inventory.size(); i++)
+            if (inventory.get(i) == weapon) currentWeaponSlot = i;
+        return currentWeaponSlot;
+    }
+
+    public int getCurrentShieldSlot() {
+        int currentShieldSlot = 0;
+        for (int i = 0; i < inventory.size(); i++)
+            if (inventory.get(i) == shield) currentShieldSlot = i;
+        return currentShieldSlot;
     }
 
     public void initSleepImage(BufferedImage image) {
@@ -499,6 +516,7 @@ public class Player extends Entity {
         inventory.add(shield);
         inventory.add(new PotionRed(game, world, 15));
         inventory.add(new Key(game, world, 1));
+        inventory.add(new Lantern(game, world));
     }
 
     private void drawRects(Graphics2D g2) {

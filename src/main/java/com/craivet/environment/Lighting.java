@@ -149,6 +149,11 @@ public class Lighting {
         }
     }
 
+    public void resetDay() {
+        dayState = day;
+        filterAlpha = 0f;
+    }
+
     private void debug(Graphics2D g2) {
         // Debug
         String situation = "";

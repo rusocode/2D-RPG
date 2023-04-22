@@ -10,6 +10,15 @@ import static com.craivet.utils.Global.*;
 
 public class Tent extends Item {
 
+    public Tent(Game game, World world) {
+        super(game, world);
+        type = TYPE_CONSUMABLE;
+        name = "Tent";
+        image = Utils.scaleImage(item_tent, tile_size, tile_size);
+        description = "[" + name + "]\nYou can sleep until\nnext morning.";
+        price = 1200;
+    }
+
     public Tent(Game game, World world, int x, int y) {
         super(game, world);
         this.x = x * tile_size;

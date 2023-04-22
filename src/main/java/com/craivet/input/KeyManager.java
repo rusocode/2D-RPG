@@ -65,12 +65,16 @@ public class KeyManager extends KeyAdapter {
             }
             if (code == KeyEvent.VK_ENTER) {
                 if (game.ui.command == 0) {
+                    game.state = PLAY_STATE;
                     game.playSound(sound_spawn);
-                    game.state = PLAY_STATE; // game.ui.titleScreenState = SELECTION_SCREEN;
-                    game.restart();
-                    // game.playMusic(blue_boy_adventure);
+                    game.playMusic(music_blue_boy_adventure);
                 }
-                // if (game.ui.commandNum == 1) {}
+                if (game.ui.command == 1) {
+                    game.saveLoad.load();
+                    game.state = PLAY_STATE;
+                    game.playSound(sound_spawn);
+                    game.playMusic(music_blue_boy_adventure);
+                }
                 if (game.ui.command == 2) System.exit(0);
             }
         } else if (game.ui.titleScreenState == SELECTION_SCREEN) {
@@ -141,7 +145,7 @@ public class KeyManager extends KeyAdapter {
         int maxCommandNum = 0;
         switch (game.ui.subState) {
             case 0:
-                maxCommandNum = 5;
+                maxCommandNum = 6;
                 break;
             case 3:
                 maxCommandNum = 1;
@@ -209,11 +213,11 @@ public class KeyManager extends KeyAdapter {
         if (code == KeyEvent.VK_ENTER) {
             if (game.ui.command == 0) {
                 game.state = PLAY_STATE;
-                game.retry();
+                game.resetGame(false);
                 game.playMusic(music_blue_boy_adventure);
             } else if (game.ui.command == 1) {
                 game.state = TITLE_STATE;
-                game.restart();
+                game.resetGame(true);
             }
         }
     }

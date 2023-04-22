@@ -9,6 +9,20 @@ import static com.craivet.gfx.Assets.*;
 
 public class Door extends Item {
 
+	public Door(Game game, World world) {
+		super(game, world);
+		name = "Door";
+		type = TYPE_OBSTACLE;
+		image = Utils.scaleImage(item_door, tile_size, tile_size);
+		solid = true;
+		hitbox.x = 0;
+		hitbox.y = 16;
+		hitbox.width = 48;
+		hitbox.height = 32;
+		hitboxDefaultX = hitbox.x;
+		hitboxDefaultY = hitbox.y;
+	}
+
 	public Door(Game game, World world, int x, int y) {
 		super(game, world);
 		this.x = x * tile_size;

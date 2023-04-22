@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
+import com.craivet.data.SaveLoad;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
@@ -26,6 +27,7 @@ public class Game extends Canvas implements Runnable {
     private final World world = new World(this);
     public UI ui = new UI(this, world);
     public Minimap minimap = new Minimap(world);
+    public SaveLoad saveLoad = new SaveLoad(this, world);
     public AudioManager sound = new AudioManager();
     public AudioManager music = new AudioManager();
     public EventManager event = new EventManager(this, world);
@@ -47,6 +49,7 @@ public class Game extends Canvas implements Runnable {
 
     public Game() {
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        setBackground(Color.black);
         setFocusable(true);
         addKeyListener(key);
     }
@@ -160,22 +163,22 @@ public class Game extends Canvas implements Runnable {
         setter.setInteractiveTile();
     }
 
-    public void retry() {
+    /**
+     * Reinicia el juego.
+     *
+     * @param restart vuelve a establecer los valores por defecto del player.
+     */
+    public void resetGame(boolean restart) {
         world.player.setDefaultPosition();
-        world.player.restoreLifeAndMana();
+        world.player.restoreStatus();
         setter.setNPC();
         setter.setMOB();
-    }
-
-    public void restart() {
-        world.player.setDefaultPosition();
-        world.player.initDefaultValues();
-        world.player.restoreLifeAndMana();
-        world.player.setItems();
-        setter.setItem();
-        setter.setNPC();
-        setter.setMOB();
-        setter.setInteractiveTile();
+        if (restart) {
+            world.player.setDefaultValues();
+            setter.setItem();
+            setter.setInteractiveTile();
+            world.environment.lighting.resetDay();
+        }
     }
 
     public World getWorld() {

@@ -421,7 +421,7 @@ public class UI {
             if (entity.inventory.get(i).amount > 1) {
                 g2.setFont(new Font("Consolas", Font.BOLD, 18));
                 int amountX, amountY;
-                String amount = "" + entity.inventory.get(i).amount;
+                String amount = String.valueOf(entity.inventory.get(i).amount);
                 amountX = getXforAlignToRightText(amount, slotX + 44);
                 amountY = slotY + tile_size - 2;
 
@@ -541,10 +541,21 @@ public class UI {
                 command = 0;
             }
         }
+        // Save Game
+        textY += tile_size;
+        g2.drawString("Save Game", textX, textY);
+        if (command == 4) {
+            g2.drawString(">", textX - 25, textY);
+            if (game.key.enter) {
+                game.saveLoad.save();
+                game.state = PLAY_STATE;
+                game.ui.addMessage("Game saved!");
+            }
+        }
         // End Game
         textY += tile_size;
         g2.drawString("End Game", textX, textY);
-        if (command == 4) {
+        if (command == 5) {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 subState = 3;
@@ -573,7 +584,7 @@ public class UI {
         textX = frameX + tile_size;
         textY = frameHeight;
         g2.drawString("Back", textX, textY);
-        if (command == 5) {
+        if (command == 6) {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 game.state = PLAY_STATE;
@@ -618,12 +629,16 @@ public class UI {
         changeFontSize(22f);
 
         textX = frameX + tile_size;
-        textY += tile_size * 1.5;
+        textY += tile_size - 10;
         g2.drawString("Move", textX, textY);
         textY += tile_size;
         g2.drawString("Confirm/Attack", textX, textY);
         textY += tile_size;
-        g2.drawString("Shoot/Cast", textX, textY);
+        g2.drawString("Shoot", textX, textY);
+        textY += tile_size;
+        g2.drawString("Minimap", textX, textY);
+        textY += tile_size;
+        g2.drawString("Debug", textX, textY);
         textY += tile_size;
         g2.drawString("Character Screen", textX, textY);
         textY += tile_size;
@@ -632,12 +647,16 @@ public class UI {
         g2.drawString("Options", textX, textY);
 
         textX = frameX + frameWidth - tile_size * 3;
-        textY = (int) (frameY + tile_size * 2.5);
+        textY = (frameY + tile_size * 2) - 10;
         g2.drawString("WASD", textX, textY);
         textY += tile_size;
         g2.drawString("ENTER", textX, textY);
         textY += tile_size;
         g2.drawString("F", textX, textY);
+        textY += tile_size;
+        g2.drawString("M", textX, textY);
+        textY += tile_size;
+        g2.drawString("T", textX, textY);
         textY += tile_size;
         g2.drawString("C", textX, textY);
         textY += tile_size;
@@ -647,7 +666,7 @@ public class UI {
 
         // Back
         textX = frameX + tile_size;
-        textY = frameHeight;
+        textY = frameHeight + 30;
         g2.drawString("Back", textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);
@@ -679,6 +698,7 @@ public class UI {
                 subState = 0;
                 game.state = TITLE_STATE;
                 game.key.t = false;
+                game.resetGame(true);
             }
         }
 
