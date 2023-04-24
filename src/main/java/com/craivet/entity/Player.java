@@ -79,6 +79,7 @@ public class Player extends Entity {
         loadMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         loadAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
         setItems();
+        // initDialogue();
     }
 
     public void setDefaultPosition() {
@@ -232,7 +233,6 @@ public class Player extends Entity {
     private void interactNPC(int npcIndex) {
         if (npcIndex != -1 && key.enter) {
             attackCanceled = true; // No puede atacar si interactua con un npc
-            game.state = DIALOGUE_STATE;
             world.npcs[world.map][npcIndex].speak();
         }
     }
@@ -328,7 +328,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Verifica si subio de nivel.
+     * Comprueba si subio de nivel.
      */
     private void checkLevelUp() {
         if (exp >= nextLvlExp) {
@@ -341,9 +341,13 @@ public class Player extends Entity {
             defense = getDefense();
 
             game.playSound(sound_level_up);
-            game.state = DIALOGUE_STATE;
-            game.ui.currentDialogue = "You are level " + lvl + "!";
+            dialogues[0][0] = "You are level " + lvl + "!";
+            startDialogue(this, 0);
         }
+    }
+
+    private void initDialogue() {
+        dialogues[0][0] = "You are level " + lvl + "!";
     }
 
     /**

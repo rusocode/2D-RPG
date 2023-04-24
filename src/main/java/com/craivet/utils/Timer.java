@@ -109,4 +109,20 @@ public class Timer {
         }
     }
 
+    /**
+     * Reinicia los contadores.
+     */
+    public void resetCounter() {
+        attackAnimationCounter = 0;
+        attackCounter = 0;
+        deadCounter = 0;
+        directionCounter = 0;
+        hpBarCounter = 0;
+        invincibleCounter = 0;
+        knockbackCounter = 0;
+        movementCounter = 0;
+        naturalStopWalkingCounter = 0;
+        projectileCounter = 0;
+    }
+
 }

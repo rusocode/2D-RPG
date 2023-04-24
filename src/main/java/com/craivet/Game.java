@@ -171,6 +171,7 @@ public class Game extends Canvas implements Runnable {
     public void resetGame(boolean restart) {
         world.player.setDefaultPosition();
         world.player.restoreStatus();
+        world.player.timer.resetCounter();
         setter.setNPC();
         setter.setMOB();
         if (restart) {

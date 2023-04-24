@@ -26,6 +26,9 @@ public class Oldman extends Npc {
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
+
+        dialogueSet = -1;
+
         loadMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         initDialogue();
     }
@@ -39,15 +42,20 @@ public class Oldman extends Npc {
     }
 
     public void speak() {
-        super.speak();
-        onPath = true;
+        facePlayer();
+        startDialogue(this, dialogueSet);
+
+        dialogueSet++;
+        if (dialogues[dialogueSet][dialogueIndex] == null) dialogueSet = 0;
     }
 
     private void initDialogue() {
-        dialogues[0] = "Hola quemado!";
-        dialogues[1] = "Creo que arriba del bosque hay \nunas plantas de rulo...";
-        dialogues[2] = "Ahora el esta re quemado y no \nreacciona, asi que podes aprovechar \ny cortarlas";
-        dialogues[3] = "Ojo que pegan fuerte";
+        dialogues[0][0] = "Hola forastero!";
+        dialogues[0][1] = "Hacia el norte hay una pequenia laguna \ncon una hermosa vista...";
+
+        dialogues[1][0] = "Empiezo a creer que hay algo extranio en \nestos bosques.";
+        dialogues[1][1] = "Todo empezo a suceder desde que ese sujeto \nraro llego a la isla.";
+        dialogues[1][2] = "Voy a seguir explorando, hasta luego \nviajero!";
     }
 
 }

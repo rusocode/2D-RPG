@@ -26,7 +26,10 @@ public class UI {
     private final Item item;
     public Entity npc;
     private Graphics2D g2;
+
     public String currentDialogue;
+    int charIndex;
+    String combinedText = "";
 
     private final ArrayList<String> message = new ArrayList<>();
     private final ArrayList<Integer> messageCounter = new ArrayList<>();
@@ -269,6 +272,30 @@ public class UI {
         // Text
         int textX = frameX + tile_size;
         int textY = frameY + tile_size;
+
+        if (npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null) {
+            //  currentDialogue = npc.dialogues[npc.dialogueSet][npc.dialogueIndex];
+            char[] characters = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
+
+            if (charIndex < characters.length) {
+                combinedText += String.valueOf(characters[charIndex]);
+                currentDialogue = combinedText;
+                charIndex++;
+            }
+
+            if (game.key.enter) {
+                charIndex = 0;
+                combinedText = "";
+                if (game.state == DIALOGUE_STATE) {
+                    npc.dialogueIndex++;
+                    game.key.enter = false;
+                }
+            }
+
+        } else { // Si la conversacion termino
+            npc.dialogueIndex = 0;
+            if (game.state == DIALOGUE_STATE) game.state = PLAY_STATE;
+        }
 
         for (String line : currentDialogue.split("\n")) {
             g2.drawString(line, textX, textY);
@@ -771,26 +798,21 @@ public class UI {
 
     private void drawTradeScreen() {
         switch (subState) {
-            case 0:
-                tradeSelect();
-                break;
-            case 1:
-                tradeBuy();
-                break;
-            case 2:
-                tradeSell();
-                break;
+            case 0 -> tradeSelect();
+            case 1 -> tradeBuy();
+            case 2 -> tradeSell();
         }
         game.key.enter = false; // Reinicia la entrada de teclado
     }
 
     private void tradeSelect() {
+        // npc.dialogueSet = 0;
         drawDialogueScreen();
 
         int x = tile_size * 14;
         int y = tile_size * 4 + 32;
         int width = tile_size * 3;
-        int height = (int) (tile_size * 3);
+        int height = tile_size * 3;
         drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
         // Draw texts
@@ -857,13 +879,6 @@ public class UI {
                         world.player.coin -= npc.inventory.get(itemIndex).price;
                     } else addMessage("You cannot carry any more!");
                 }
-                /* else if (world.player.inventory.size() == MAX_INVENTORY_SIZE)
-                    addMessage("You cannot carry any more!");
-                else {
-                    game.playSound(sound_trade);
-                    world.player.coin -= npc.inventory.get(itemIndex).price;
-                    world.player.inventory.add(item.itemMap.get(npc.inventory.get(itemIndex).getClass()).get());
-                } */
             }
 
         }

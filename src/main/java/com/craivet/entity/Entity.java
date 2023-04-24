@@ -23,14 +23,15 @@ import static com.craivet.utils.Global.*;
  * <p>TODO Los metodos update() y render() se podrian implementar desde una interfaz
  */
 
-public abstract class Entity {
+public class Entity {
 
     protected final Game game;
     protected final World world;
 
     public Timer timer = new Timer();
     public ArrayList<Entity> inventory = new ArrayList<>();
-    public String[] dialogues = new String[20];
+    public String[][] dialogues = new String[20][20];
+    public int dialogueSet;
     public int dialogueIndex;
 
     // General attributes
@@ -192,21 +193,28 @@ public abstract class Entity {
 
     }
 
-    public void setLoot(Entity loot) {}
+    public void setLoot(Entity loot) {
+    }
 
     public void damageReaction() {
     }
 
     public void speak() {
-        if (dialogues[dialogueIndex] == null) dialogueIndex = 0;
-        game.ui.currentDialogue = dialogues[dialogueIndex];
-        dialogueIndex++;
+    }
+
+    protected void facePlayer() {
         switch (world.player.direction) {
             case DOWN -> direction = UP;
             case UP -> direction = DOWN;
             case LEFT -> direction = RIGHT;
             case RIGHT -> direction = LEFT;
         }
+    }
+
+    public void startDialogue(Entity entity, int setNum) {
+        game.state = DIALOGUE_STATE;
+        game.ui.npc = entity;
+        dialogueSet = setNum;
     }
 
     public boolean use(Entity entity) {

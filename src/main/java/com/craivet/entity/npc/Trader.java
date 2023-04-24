@@ -33,14 +33,13 @@ public class Trader extends Npc {
 	}
 
 	public void speak() {
-		super.speak();
 		game.playSound(sound_trade_open);
 		game.state = TRADE_STATE;
 		game.ui.npc = this;
 	}
 
 	private void initDialogue() {
-		dialogues[0] = "He he, so you found me. I have some good \nstuff. Do you want to trade?";
+		dialogues[0][0] = "He he, so you found me. I have some good \nstuff. Do you want to trade?";
 	}
 
 	private void setItems() {

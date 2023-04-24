@@ -114,12 +114,8 @@ public class KeyManager extends KeyAdapter {
          * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
         if (code == KeyEvent.VK_R) {
             switch (game.getWorld().map) {
-                case 0:
-                    game.getWorld().loadMap("maps/nix.txt", NIX, "Nix");
-                    break;
-                case 1:
-                    game.getWorld().loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
-                    break;
+                case 0 -> game.getWorld().loadMap("maps/nix.txt", NIX, "Nix");
+                case 1 -> game.getWorld().loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
             }
         }
     }
@@ -129,7 +125,7 @@ public class KeyManager extends KeyAdapter {
     }
 
     private void dialogueState(int code) {
-        if (code == KeyEvent.VK_ENTER) game.state = PLAY_STATE;
+        if (code == KeyEvent.VK_ENTER) enter = true;
     }
 
     private void characterState(int code) {
@@ -142,15 +138,11 @@ public class KeyManager extends KeyAdapter {
         if (code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
         if (code == KeyEvent.VK_ENTER) enter = true;
 
-        int maxCommandNum = 0;
-        switch (game.ui.subState) {
-            case 0:
-                maxCommandNum = 6;
-                break;
-            case 3:
-                maxCommandNum = 1;
-                break;
-        }
+        int maxCommandNum = switch (game.ui.subState) {
+            case 0 -> 6;
+            case 3 -> 1;
+            default -> 0;
+        };
 
         /* Si la seleccion de comandos esta en los subestados de fullScreen control, entonces no ejecuta las
          * siguientes instrucciones ya que la seleccion solo se mantiene en el back. */

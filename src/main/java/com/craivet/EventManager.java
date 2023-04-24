@@ -8,6 +8,8 @@ public class EventManager {
 
     private final Game game;
     private final World world;
+    Entity eventMaster;
+
     private final EventRect[][][] eventRect;
 
     /* El evento no sucede de nuevo si el player no se encuentra a 1 tile de distancia. Esta mecanica evita que el
@@ -19,6 +21,7 @@ public class EventManager {
     public EventManager(Game game, World world) {
         this.game = game;
         this.world = world;
+        eventMaster = new Entity(game, world);
         eventRect = new EventRect[MAX_MAP][MAX_MAP_ROW][MAX_MAP_COL];
 
         // Crea un evento con area solida para cada tile
@@ -35,6 +38,8 @@ public class EventManager {
                 }
             }
         }
+
+        initDialogue();
 
     }
 
@@ -96,8 +101,9 @@ public class EventManager {
      * Resta vida al player si callo en la foza.
      */
     private void damagePit() {
-        game.state = DIALOGUE_STATE;
-        game.ui.currentDialogue = "You fall into a pit!";
+        // game.state = DIALOGUE_STATE;
+        game.state = PLAY_STATE;
+        eventMaster.startDialogue(eventMaster, 0);
         world.player.life--;
         canTouchEvent = false;
     }
@@ -107,9 +113,10 @@ public class EventManager {
      */
     public void healingPool() {
         if (game.key.enter) {
-            game.state = DIALOGUE_STATE;
+            // game.state = DIALOGUE_STATE;
+            game.state = PLAY_STATE;
             world.player.attackCanceled = true; // No puede atacar si regenera vida
-            game.ui.currentDialogue = "You drink the water.\nYour life has been recovered.";
+            eventMaster.startDialogue(eventMaster, 1);
             world.player.life = world.player.maxLife;
             game.setter.setMOB();
         }
@@ -129,6 +136,11 @@ public class EventManager {
             world.player.attackCanceled = true;
             entity.speak();
         }
+    }
+
+    private void initDialogue() {
+        eventMaster.dialogues[0][0] = "You fall into a pit!";
+        eventMaster.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
     }
 
 }

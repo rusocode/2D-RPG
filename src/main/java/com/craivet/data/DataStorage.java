@@ -7,6 +7,7 @@ public class DataStorage implements Serializable {
 
     int x, y, direction, life, maxlife, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, coin;
 
+    // TODO Creo que se podria usar un HashMap
     ArrayList<String> itemNames = new ArrayList<>();
     ArrayList<Integer> itemAmounts = new ArrayList<>();
 

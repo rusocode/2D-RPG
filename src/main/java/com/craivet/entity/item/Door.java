@@ -9,39 +9,44 @@ import static com.craivet.gfx.Assets.*;
 
 public class Door extends Item {
 
-	public Door(Game game, World world) {
-		super(game, world);
-		name = "Door";
-		type = TYPE_OBSTACLE;
-		image = Utils.scaleImage(item_door, tile_size, tile_size);
-		solid = true;
-		hitbox.x = 0;
-		hitbox.y = 16;
-		hitbox.width = 48;
-		hitbox.height = 32;
-		hitboxDefaultX = hitbox.x;
-		hitboxDefaultY = hitbox.y;
-	}
+    public Door(Game game, World world) {
+        super(game, world);
+        name = "Door";
+        type = TYPE_OBSTACLE;
+        image = Utils.scaleImage(item_door, tile_size, tile_size);
+        solid = true;
+        hitbox.x = 0;
+        hitbox.y = 16;
+        hitbox.width = 48;
+        hitbox.height = 32;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
+        initDialogue();
+    }
 
-	public Door(Game game, World world, int x, int y) {
-		super(game, world);
-		this.x = x * tile_size;
-		this.y = y * tile_size;
-		name = "Door";
-		type = TYPE_OBSTACLE;
-		image = Utils.scaleImage(item_door, tile_size, tile_size);
-		solid = true;
-		hitbox.x = 0;
-		hitbox.y = 16;
-		hitbox.width = 48;
-		hitbox.height = 32;
-		hitboxDefaultX = hitbox.x;
-		hitboxDefaultY = hitbox.y;
-	}
-	
-	public void interact() {
-		game.state = DIALOGUE_STATE;
-		game.ui.currentDialogue = "You need a key to open this";
-	}
+    public Door(Game game, World world, int x, int y) {
+        super(game, world);
+        this.x = x * tile_size;
+        this.y = y * tile_size;
+        name = "Door";
+        type = TYPE_OBSTACLE;
+        image = Utils.scaleImage(item_door, tile_size, tile_size);
+        solid = true;
+        hitbox.x = 0;
+        hitbox.y = 16;
+        hitbox.width = 48;
+        hitbox.height = 32;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
+        initDialogue();
+    }
+
+    public void interact() {
+        startDialogue(this, 0);
+    }
+
+    private void initDialogue() {
+        dialogues[0][0] = "You need a key to open this.";
+    }
 
 }
