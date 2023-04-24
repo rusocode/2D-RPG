@@ -37,6 +37,7 @@ public class AssetSetter {
 
         world.items[NIX][i] = new Chest(game, world, 17, 21);
         world.items[NIX][i++].setLoot(new Tent(game, world));
+
         world.items[NIX][i] = new Chest(game, world, 16, 21);
         world.items[NIX][i].setLoot(new PotionRed(game, world, 5));
 

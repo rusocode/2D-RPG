@@ -12,7 +12,7 @@ public class DataStorage implements Serializable {
 
     int currentWeaponSlot, currentShieldSlot;
 
-    // Object on map
+    // Item on map
     String[][] mapItemNames;
     int[][] mapItemX;
     int[][] mapItemY;

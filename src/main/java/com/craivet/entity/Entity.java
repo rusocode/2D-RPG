@@ -47,7 +47,7 @@ public abstract class Entity {
     public int coin;
     public int strength, dexterity;
     public int attack, defense;
-    public int motion1, motion2;
+    public int motion1, motion2; // Velocidad de movimiento de la espada
     public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
     public Projectile projectile; // TODO Es necesario declarar este objeto aca?
@@ -217,9 +217,9 @@ public abstract class Entity {
     }
 
     /**
-     * Dropea el item.
+     * Dropea un item.
      *
-     * @param item el item.
+     * @param item item a dropear.
      */
     public void dropItem(Item item) {
         for (int i = 0; i < world.items[1].length; i++) {

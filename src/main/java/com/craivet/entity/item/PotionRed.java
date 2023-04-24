@@ -10,17 +10,6 @@ import static com.craivet.gfx.Assets.*;
 
 public class PotionRed extends Item {
 
-    public PotionRed(Game game, World world) {
-        super(game, world);
-        name = "Red Potion";
-        type = TYPE_CONSUMABLE;
-        image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
-        value = 5;
-        description = "[" + name + "]\nHeals your life by " + value + ".";
-        price = 25;
-        stackable = true;
-    }
-
     public PotionRed(Game game, World world, int amount) {
         super(game, world);
         name = "Red Potion";

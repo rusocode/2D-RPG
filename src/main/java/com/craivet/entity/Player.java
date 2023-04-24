@@ -210,10 +210,8 @@ public class Player extends Entity {
             Entity item = world.items[world.map][itemIndex];
             if (key.l && item.type != TYPE_OBSTACLE) {
                 if (item.type == TYPE_PICKUP_ONLY) item.use(this);
-                else if (canObtainItem(item)) {
-                    game.playSound(sound_pick_up);
-                    // game.ui.addMessage("Got a " + item.name + "!");
-                } else {
+                else if (canObtainItem(item)) game.playSound(sound_pick_up);
+                else {
                     game.ui.addMessage("You cannot carry any more!");
                     return;
                 }
@@ -392,7 +390,7 @@ public class Player extends Entity {
             // Verifica si ya existe en el inventario, y en caso de que ya exista aumenta la cantidad
             int itemIndex = searchItemInInventory(item.name);
             if (itemIndex != -1) {
-                inventory.get(itemIndex).amount++;
+                inventory.get(itemIndex).amount += item.amount;
                 canObtain = true;
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
                 inventory.add(item);
@@ -433,7 +431,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Verifica las colisiones con tiles, items, npcs, mobs, tiles interactivos y eventos.
+     * Comprueba las colisiones con tiles, items, npcs, mobs, tiles interactivos y eventos.
      */
     private void checkCollisions() {
         collision = false;

@@ -73,8 +73,7 @@ public class SaveLoad {
                         ds.mapItemNames[map][i] = item.name;
                         ds.mapItemX[map][i] = item.x;
                         ds.mapItemY[map][i] = item.y;
-                        if (item.loot != null)
-                            ds.mapItemLootNames[map][i] = item.loot.name;
+                        if (item.loot != null) ds.mapItemLootNames[map][i] = item.loot.name;
                         ds.mapItemOpened[map][i] = item.opened;
                         ds.mapItemEmpty[map][i] = item.empty;
                     }
@@ -158,7 +157,7 @@ public class SaveLoad {
             case "Door" -> item = new Door(game, world);
             case "Key" -> item = new Key(game, world, 1);
             case "Lantern" -> item = new Lantern(game, world);
-            case "Red Potion" -> item = new PotionRed(game, world);
+            case "Red Potion" -> item = new PotionRed(game, world, 1);
             case "Blue Shield" -> item = new ShieldBlue(game, world);
             case "Wood Shield" -> item = new ShieldWood(game, world);
             case "Normal Sword" -> item = new SwordNormal(game, world);
