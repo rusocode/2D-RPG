@@ -48,28 +48,30 @@ public class Chest extends Item {
             image = image2;
             opened = true;
             if (world.player.canObtainItem(loot)) {
+                dialogues[0][0] = "You open the chest and find a " + loot.name + "!\nYou obtain the " + loot.name + "!";
                 startDialogue(this, 0);
                 empty = true;
-            } else startDialogue(this, 1);
+            } else {
+                dialogues[1][0] = "You open the chest and find a " + loot.name + "!\n...But you cannot carry any more!";
+                startDialogue(this, 1);
+            }
         } else if (!empty) {
             if (world.player.canObtainItem(loot)) {
+                dialogues[2][0] = "You obtain the " + loot.name + "!";
                 startDialogue(this, 2);
                 empty = true;
-            } else startDialogue(this, 3);
-        } else startDialogue(this, 4);
+            } else {
+                dialogues[3][0] = "You cannot carry any more!";
+                startDialogue(this, 3);
+            }
+        } else {
+            dialogues[4][0] = "It's empty.";
+            startDialogue(this, 4);
+        }
     }
 
     public void setLoot(Entity loot) {
         this.loot = loot;
-        initDialogue();
-    }
-
-    private void initDialogue() {
-        dialogues[0][0] = "You open the chest and find a " + loot.name + "!\nYou obtain the " + loot.name + "!";
-        dialogues[1][0] = "You open the chest and find a " + loot.name + "!\n...But you cannot carry any more!";
-        dialogues[2][0] = "You obtain the " + loot.name + "!";
-        dialogues[3][0] = "You cannot carry any more!";
-        dialogues[4][0] = "It's empty.";
     }
 
 }

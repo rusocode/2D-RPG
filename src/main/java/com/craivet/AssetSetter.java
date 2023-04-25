@@ -28,7 +28,7 @@ public class AssetSetter {
         // world.items[NIX][i++] = new Tent(game, world, 12, 31);
         // world.items[NIX][i++] = new Lantern(game, world, 13, 31);
         world.items[NIX][i++] = new Axe(game, world, 33, 7);
-        world.items[NIX][i++] = new Axe(game, world, 20, 21);
+        world.items[NIX][i++] = new PotionRed(game, world, 20, 21, 5); // ?
         world.items[NIX][i++] = new Door(game, world, 14, 28);
         world.items[NIX][i++] = new Door(game, world, 12, 12);
 
@@ -40,7 +40,6 @@ public class AssetSetter {
 
         world.items[NIX][i] = new Chest(game, world, 16, 21);
         world.items[NIX][i].setLoot(new PotionRed(game, world, 5));
-
     }
 
     public void setNPC() {
@@ -48,7 +47,6 @@ public class AssetSetter {
         world.npcs[NIX][i++] = new Oldman(game, world, 23, 18);
         i = 0;
         world.npcs[NIX_INDOOR_01][i++] = new Trader(game, world, 12, 7);
-
     }
 
     public void setMOB() {

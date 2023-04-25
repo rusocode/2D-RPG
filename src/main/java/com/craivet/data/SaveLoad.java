@@ -6,7 +6,6 @@ import com.craivet.entity.Entity;
 import com.craivet.entity.item.*;
 
 import java.io.*;
-import java.util.IllegalFormatCodePointException;
 
 import static com.craivet.gfx.Assets.entity_player_attack_axe;
 import static com.craivet.gfx.Assets.entity_player_attack_sword;
@@ -50,8 +49,8 @@ public class SaveLoad {
 
             // Player inventory
             for (int i = 0; i < world.player.inventory.size(); i++) {
-                ds.itemNames.add(world.player.inventory.get(i).name);
-                ds.itemAmounts.add(world.player.inventory.get(i).amount);
+                ds.names.add(world.player.inventory.get(i).name);
+                ds.amounts.add(world.player.inventory.get(i).amount);
             }
 
             // Player equipment
@@ -59,23 +58,23 @@ public class SaveLoad {
             ds.currentShieldSlot = world.player.getCurrentShieldSlot();
 
             // Items on map
-            ds.mapItemNames = new String[MAX_MAP][world.items[1].length];
-            ds.mapItemX = new int[MAX_MAP][world.items[1].length];
-            ds.mapItemY = new int[MAX_MAP][world.items[1].length];
-            ds.mapItemLootNames = new String[MAX_MAP][world.items[1].length];
-            ds.mapItemOpened = new boolean[MAX_MAP][world.items[1].length];
-            ds.mapItemEmpty = new boolean[MAX_MAP][world.items[1].length];
+            ds.itemName = new String[MAX_MAP][world.items[1].length];
+            ds.itemX = new int[MAX_MAP][world.items[1].length];
+            ds.itemY = new int[MAX_MAP][world.items[1].length];
+            ds.loot = new String[MAX_MAP][world.items[1].length];
+            ds.opened = new boolean[MAX_MAP][world.items[1].length];
+            ds.empty = new boolean[MAX_MAP][world.items[1].length];
             for (int map = 0; map < MAX_MAP; map++) {
                 for (int i = 0; i < world.items[1].length; i++) {
                     Entity item = world.items[map][i];
-                    if (item == null) ds.mapItemNames[map][i] = "NA";
+                    if (item == null) ds.itemName[map][i] = "NA";
                     else {
-                        ds.mapItemNames[map][i] = item.name;
-                        ds.mapItemX[map][i] = item.x;
-                        ds.mapItemY[map][i] = item.y;
-                        if (item.loot != null) ds.mapItemLootNames[map][i] = item.loot.name;
-                        ds.mapItemOpened[map][i] = item.opened;
-                        ds.mapItemEmpty[map][i] = item.empty;
+                        ds.itemName[map][i] = item.name;
+                        ds.itemX[map][i] = item.x;
+                        ds.itemY[map][i] = item.y;
+                        if (item.loot != null) ds.loot[map][i] = item.loot.name;
+                        ds.opened[map][i] = item.opened;
+                        ds.empty[map][i] = item.empty;
                     }
                 }
             }
@@ -111,9 +110,9 @@ public class SaveLoad {
             world.player.coin = ds.coin;
 
             world.player.inventory.clear();
-            for (int i = 0; i < ds.itemNames.size(); i++) {
-                world.player.inventory.add(getItem(ds.itemNames.get(i)));
-                world.player.inventory.get(i).amount = ds.itemAmounts.get(i);
+            for (int i = 0; i < ds.names.size(); i++) {
+                world.player.inventory.add(getItem(ds.names.get(i)));
+                world.player.inventory.get(i).amount = ds.amounts.get(i);
             }
             world.player.weapon = world.player.inventory.get(ds.currentWeaponSlot);
             world.player.shield = world.player.inventory.get(ds.currentShieldSlot);
@@ -123,15 +122,15 @@ public class SaveLoad {
 
             for (int map = 0; map < MAX_MAP; map++) {
                 for (int i = 0; i < world.items[1].length; i++) {
-                    if (ds.mapItemNames[map][i].equals("NA")) world.items[map][i] = null;
+                    if (ds.itemName[map][i].equals("NA")) world.items[map][i] = null;
                     else {
-                        world.items[map][i] = getItem(ds.mapItemNames[map][i]);
-                        world.items[map][i].x = ds.mapItemX[map][i];
-                        world.items[map][i].y = ds.mapItemY[map][i];
-                        if (ds.mapItemLootNames[map][i] != null && !ds.mapItemEmpty[map][i])
-                            world.items[map][i].loot = getItem(ds.mapItemLootNames[map][i]);
-                        world.items[map][i].opened = ds.mapItemOpened[map][i];
-                        world.items[map][i].empty = ds.mapItemEmpty[map][i];
+                        world.items[map][i] = getItem(ds.itemName[map][i]);
+                        world.items[map][i].x = ds.itemX[map][i];
+                        world.items[map][i].y = ds.itemY[map][i];
+                        if (ds.loot[map][i] != null && !ds.empty[map][i])
+                            world.items[map][i].loot = getItem(ds.loot[map][i]);
+                        world.items[map][i].opened = ds.opened[map][i];
+                        world.items[map][i].empty = ds.empty[map][i];
                         if (world.items[map][i].opened) world.items[map][i].image = world.items[map][i].image2;
                     }
                 }

@@ -8,16 +8,16 @@ public class DataStorage implements Serializable {
     int x, y, direction, life, maxlife, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, coin;
 
     // TODO Creo que se podria usar un HashMap
-    ArrayList<String> itemNames = new ArrayList<>();
-    ArrayList<Integer> itemAmounts = new ArrayList<>();
+    ArrayList<String> names = new ArrayList<>();
+    ArrayList<Integer> amounts = new ArrayList<>();
 
     int currentWeaponSlot, currentShieldSlot;
 
     // Item on map
-    String[][] mapItemNames;
-    int[][] mapItemX;
-    int[][] mapItemY;
-    String[][] mapItemLootNames;
-    boolean[][] mapItemOpened;
-    boolean[][] mapItemEmpty;
+    int[][] itemX;
+    int[][] itemY;
+    String[][] itemName;
+    String[][] loot;
+    boolean[][] opened;
+    boolean[][] empty;
 }

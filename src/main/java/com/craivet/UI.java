@@ -27,7 +27,7 @@ public class UI {
     public Entity npc;
     private Graphics2D g2;
 
-    public String currentDialogue;
+    public String currentDialogue = "";
     int charIndex;
     String combinedText = "";
 
