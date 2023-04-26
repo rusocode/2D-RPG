@@ -10,9 +10,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class Coin extends Item {
 
+	public static final String item_name = "Coin";
+
 	public Coin(Game game, World world) {
 		super(game, world);
-		name = "Coin";
+		name = item_name;
 		type = TYPE_PICKUP_ONLY;
 		image = Utils.scaleImage(item_coin, 32, 32);
 		value = 1;

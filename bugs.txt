@@ -7,3 +7,4 @@ y se muestra la descripcion del item.
 # A veces al iniciar el dialogo con el Trader, la flecha para indicar las opciones Buy o Sell ">" no aparece.
 # Al dañar a un mob el borde del minimap se vuelve rojo.
 # Cuando la entidad sigue al player y colisiona con un item solido no lo esquiva.
+# Evitar que el player aparezca sobre una entidad solida.

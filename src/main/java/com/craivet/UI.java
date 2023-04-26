@@ -874,7 +874,7 @@ public class UI {
                 if (npc.inventory.get(itemIndex).price > world.player.coin)
                     addMessage("You need more coin to buy that!");
                 else {
-                    if (world.player.canObtainItem(item.itemMap.get(npc.inventory.get(itemIndex).getClass()).get())) {
+                    if (world.player.canObtainItem(npc.inventory.get(itemIndex))) {
                         game.playSound(sound_trade);
                         world.player.coin -= npc.inventory.get(itemIndex).price;
                     } else addMessage("You cannot carry any more!");

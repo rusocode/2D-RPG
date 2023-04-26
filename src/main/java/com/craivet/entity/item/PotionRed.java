@@ -10,9 +10,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class PotionRed extends Item {
 
+    public static final String item_name = "Red Potion";
+
     public PotionRed(Game game, World world, int amount) {
         super(game, world);
-        name = "Red Potion";
+        name = item_name;
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
         value = 5;
@@ -26,7 +28,7 @@ public class PotionRed extends Item {
         super(game, world);
         this.x = x * tile_size;
         this.y = y * tile_size;
-        name = "Red Potion";
+        name = item_name;
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
         value = 5;

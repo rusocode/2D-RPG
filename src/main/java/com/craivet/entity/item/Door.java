@@ -9,9 +9,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class Door extends Item {
 
+    public static final String item_name = "Door";
+
     public Door(Game game, World world) {
         super(game, world);
-        name = "Door";
+        name = item_name;
         type = TYPE_OBSTACLE;
         image = Utils.scaleImage(item_door, tile_size, tile_size);
         solid = true;
@@ -28,7 +30,7 @@ public class Door extends Item {
         super(game, world);
         this.x = x * tile_size;
         this.y = y * tile_size;
-        name = "Door";
+        name = item_name;
         type = TYPE_OBSTACLE;
         image = Utils.scaleImage(item_door, tile_size, tile_size);
         solid = true;

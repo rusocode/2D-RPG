@@ -9,9 +9,11 @@ import static com.craivet.utils.Global.*;
 
 public class Lantern extends Item {
 
+    public static final String item_name = "Lantern";
+
     public Lantern(Game game, World world) {
         super(game, world);
-        name = "Lantern";
+        name = item_name;
         type = TYPE_LIGHT;
         image = Utils.scaleImage(item_lantern, tile_size, tile_size);
         description = "[" + name + "]\nIlluminaties your \nsurroundings.";
@@ -23,7 +25,7 @@ public class Lantern extends Item {
         super(game, world);
         this.x = x * tile_size;
         this.y = y * tile_size;
-        name = "Lantern";
+        name = item_name;
         type = TYPE_LIGHT;
         image = Utils.scaleImage(item_lantern, tile_size, tile_size);
         description = "[" + name + "]\nIlluminaties your \nsurroundings.";

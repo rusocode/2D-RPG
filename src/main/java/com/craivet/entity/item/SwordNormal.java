@@ -9,9 +9,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class SwordNormal extends Item {
 
+	public static final String item_name = "Normal Sword";
+
 	public SwordNormal(Game game, World world) {
 		super(game, world);
-		name = "Normal Sword";
+		name = item_name;
 		type = TYPE_SWORD;
 		image = Utils.scaleImage(item_sword_normal, tile_size, tile_size);
 		description = "[" + name + "]\nAn old sword.";

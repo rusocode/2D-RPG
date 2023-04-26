@@ -9,9 +9,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class ShieldWood extends Item {
 
+	public static final String item_name = "Wood Shield";
+
 	public ShieldWood(Game game, World world) {
 		super(game, world);
-		name = "Wood Shield";
+		name = item_name;
 		type = TYPE_SHIELD;
 		image = Utils.scaleImage(item_shield_wood, tile_size, tile_size);
 		description = "[" + name + "]\nMade by wood.";

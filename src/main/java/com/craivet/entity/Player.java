@@ -389,6 +389,8 @@ public class Player extends Entity {
      */
     public boolean canObtainItem(Entity item) {
         boolean canObtain = false;
+        // Evita la referencia al mismo item
+        Entity newItem = game.generator.getItem(item.name);
         // Verifica si es stackable
         if (item.stackable) {
             // Verifica si ya existe en el inventario, y en caso de que ya exista aumenta la cantidad
@@ -397,11 +399,11 @@ public class Player extends Entity {
                 inventory.get(itemIndex).amount += item.amount;
                 canObtain = true;
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
-                inventory.add(item);
+                inventory.add(newItem);
                 canObtain = true;
             }
         } else if (inventory.size() != MAX_INVENTORY_SIZE) {
-            inventory.add(item);
+            inventory.add(newItem);
             canObtain = true;
         }
         return canObtain;

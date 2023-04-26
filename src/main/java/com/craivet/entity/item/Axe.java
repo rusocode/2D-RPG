@@ -9,12 +9,14 @@ import static com.craivet.gfx.Assets.*;
 
 public class Axe extends Item {
 
+	public static final String item_name = "Axe";
+
 	/**
 	 * Constructor solo para agregar Axe al inventario.
 	 */
 	public Axe(Game game, World world) {
 		super(game, world);
-		name = "Axe";
+		name = item_name;
 		type = TYPE_AXE;
 		image = Utils.scaleImage(item_axe, tile_size, tile_size);
 		attackbox.width = 30;
@@ -32,7 +34,7 @@ public class Axe extends Item {
 		super(game, world);
 		this.x = x * tile_size;
 		this.y = y * tile_size;
-		name = "Axe";
+		name = item_name;
 		type = TYPE_AXE;
 		image = Utils.scaleImage(item_axe, tile_size, tile_size);
 		attackbox.width = 30;

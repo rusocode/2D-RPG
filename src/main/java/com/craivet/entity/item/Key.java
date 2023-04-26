@@ -10,9 +10,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class Key extends Item {
 
+    public static final String item_name = "Key";
+
     public Key(Game game, World world, int amount) {
         super(game, world);
-        name = "Key";
+        name = item_name;
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_key, tile_size, tile_size);
         description = "[" + name + "]\nIt opens a door.";
@@ -25,7 +27,7 @@ public class Key extends Item {
         super(game, world);
         this.x = x * tile_size;
         this.y = y * tile_size;
-        name = "Key";
+        name = item_name;
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_key, tile_size, tile_size);
         description = "[" + name + "]\nIt opens a door.";

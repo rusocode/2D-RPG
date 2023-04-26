@@ -9,9 +9,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class Boots extends Item {
 
+	public static final String item_name = "Boots";
+
 	public Boots(Game game, World world) {
 		super(game, world);
-		name = "Boots";
+		name = item_name;
 		image = Utils.scaleImage(item_boots, tile_size, tile_size);
 	}
 
