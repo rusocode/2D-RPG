@@ -34,6 +34,8 @@ import static com.craivet.utils.Global.*;
 
 public class World {
 
+    private final Game game;
+
     // Managers
     private final TileManager tiles;
     private final EntityManager entitites;
@@ -61,6 +63,7 @@ public class World {
     public boolean drawPath;
 
     public World(Game game) {
+        this.game = game;
         player = new Player(game, this);
         tiles = new TileManager(game, this);
         entitites = new EntityManager(game, this);
@@ -75,7 +78,7 @@ public class World {
      */
     public void update() {
         entitites.update();
-        environment.update();
+        if (game.state != TITLE_STATE) environment.update();
     }
 
     /**
@@ -86,7 +89,7 @@ public class World {
     public void render(Graphics2D g2) {
         tiles.render(g2);
         entitites.render(g2);
-        environment.render(g2);
+        if (game.state != TITLE_STATE) environment.render(g2);
     }
 
     /**

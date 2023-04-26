@@ -34,7 +34,7 @@ public class Lighting {
     public Lighting(Game game, World world) {
         this.game = game;
         this.world = world;
-        illuminate(); // TOOD Por que se llama desde aca este metodo?
+        illuminate(); // TODO Por que se llama desde aca este metodo?
     }
 
     /**
@@ -116,7 +116,7 @@ public class Lighting {
         if (game.area == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         if (game.area == OUTSIDE || game.area == DUNGEON) g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        debug(g2);
+        // debug(g2);
     }
 
     /**

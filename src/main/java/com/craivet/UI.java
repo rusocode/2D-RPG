@@ -31,7 +31,7 @@ public class UI {
     int charIndex;
     String combinedText = "";
 
-    private final ArrayList<String> message = new ArrayList<>();
+    public final ArrayList<String> message = new ArrayList<>();
     private final ArrayList<Integer> messageCounter = new ArrayList<>();
 
     public int playerSlotCol, playerSlotRow;
@@ -738,7 +738,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 subState = 0;
-                command = 4;
+                command = 5;
             }
         }
 

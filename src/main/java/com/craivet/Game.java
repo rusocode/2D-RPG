@@ -110,7 +110,7 @@ public class Game extends Canvas implements Runnable {
 
     private void init() {
         setAssets();
-        playMusic(music_blue_boy_adventure);
+        playMusic(music_main);
         stateManager.setState(new GameState(this, world, ui, minimap));
     }
 
@@ -170,10 +170,14 @@ public class Game extends Canvas implements Runnable {
     public void changeArea() {
         // Si hay un cambio de area
         if (nextArea != area) {
-            stopMusic();
-            if (nextArea == OUTSIDE) playMusic(music_blue_boy_adventure);
-            if (nextArea == INDOOR) playMusic(music_trader);
-            if (nextArea == DUNGEON) playMusic(music_dungeon);
+            if (nextArea == DUNGEON) {
+                stopMusic();
+                playMusic(music_dungeon);
+            }
+            if (area == DUNGEON && nextArea == OUTSIDE) {
+                stopMusic();
+                // playMusic(music_main);
+            }
         }
         area = nextArea;
         setter.setMOB();
@@ -185,12 +189,14 @@ public class Game extends Canvas implements Runnable {
      * @param restart vuelve a establecer los valores por defecto del player.
      */
     public void resetGame(boolean restart) {
+        ui.message.clear();
         world.player.setDefaultPosition();
         world.player.restoreStatus();
         world.player.timer.resetCounter();
         setter.setNPC();
         setter.setMOB();
         if (restart) {
+            playMusic(music_main);
             world.player.setDefaultValues();
             setter.setItem();
             setter.setInteractiveTile();

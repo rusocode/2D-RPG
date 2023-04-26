@@ -56,24 +56,26 @@ public class KeyManager extends KeyAdapter {
     private void titleState(int code) {
         if (game.ui.titleScreenState == MAIN_SCREEN) {
             if (code == KeyEvent.VK_W) {
+                game.playSound(sound_cursor);
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = 2;
             }
             if (code == KeyEvent.VK_S) {
+                game.playSound(sound_cursor);
                 game.ui.command++;
                 if (game.ui.command > 2) game.ui.command = 0;
             }
             if (code == KeyEvent.VK_ENTER) {
                 if (game.ui.command == 0) {
                     game.state = PLAY_STATE;
+                    game.stopMusic();
                     game.playSound(sound_spawn);
-                    game.playMusic(music_blue_boy_adventure);
                 }
                 if (game.ui.command == 1) {
                     game.saveLoad.load();
                     game.state = PLAY_STATE;
+                    game.stopMusic();
                     game.playSound(sound_spawn);
-                    game.playMusic(music_blue_boy_adventure);
                 }
                 if (game.ui.command == 2) System.exit(0);
             }
@@ -206,7 +208,6 @@ public class KeyManager extends KeyAdapter {
             if (game.ui.command == 0) {
                 game.state = PLAY_STATE;
                 game.resetGame(false);
-                game.playMusic(music_blue_boy_adventure);
             } else if (game.ui.command == 1) {
                 game.state = TITLE_STATE;
                 game.resetGame(true);

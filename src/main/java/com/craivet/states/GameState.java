@@ -23,7 +23,7 @@ public class GameState implements State {
         this.game = game;
         this.world = world;
         this.ui = ui;
-        this.minimap =  minimap;
+        this.minimap = minimap;
         game.state = TITLE_STATE;
         game.area = OUTSIDE;
     }
