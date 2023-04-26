@@ -55,13 +55,15 @@ public final class Global {
     public static final int MAX_MAP_COL = 50;
     public static final int NIX = 0;
     public static final int NIX_INDOOR_01 = 1;
+    public static final int DUNGEON_01 = 2;
+    public static final int DUNGEON_02 = 3;
 
     // Title screen
     public static final int MAIN_SCREEN = 0;
     public static final int SELECTION_SCREEN = 1;
 
-    // Probabilidades
-    public static final int PROBABILIDAD_DROP_ORO = 47; // 47%
+    // Probabilidades %
+    public static final int PROBABILIDAD_DROP_ORO = 47;
 
     // Interval animation
     public static final int INTERVAL_DEAD_ANIMATION = 10;
@@ -91,6 +93,11 @@ public final class Global {
     public static final int TRANSITION_STATE = 7;
     public static final int TRADE_STATE = 8;
     public static final int SLEEP_STATE = 9;
+
+    // Area
+    public static final int OUTSIDE = 0;
+    public static final int INDOOR = 1;
+    public static final int DUNGEON = 2;
 
     // Entity type
     public static final int TYPE_PLAYER = 0;

@@ -519,7 +519,7 @@ public class Player extends Entity {
         inventory.add(weapon);
         inventory.add(shield);
         inventory.add(new PotionRed(game, world, 15));
-        inventory.add(new Key(game, world, 1));
+        inventory.add(new Key(game, world, 2));
         inventory.add(new Lantern(game, world));
     }
 

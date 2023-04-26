@@ -16,7 +16,7 @@ public class EventManager {
      * evento se repita en el mismo lugar. */
     public int previousEventX, previousEventY;
     private boolean canTouchEvent = true;
-    public int tempMap, tempCol, tempRow;
+    public int map, col, row;
 
     public EventManager(Game game, World world) {
         this.game = game;
@@ -58,9 +58,13 @@ public class EventManager {
             // El else if se utiliza para evitar que el siguiente if se llame inmediatamente en el caso de la teleport
             if (hit(0, 27, 16, RIGHT)) damagePit();
             else if (hit(0, 23, 12, UP)) healingPool();
-            else if (hit(0, 10, 39, ANY)) teleport(1, 12, 13);
-            else if (hit(1, 12, 13, ANY)) teleport(0, 10, 39);
+            else if (hit(0, 10, 39, ANY)) teleport(INDOOR, 1, 12, 13); // A Nix Indoor 1
+            else if (hit(1, 12, 13, ANY)) teleport(OUTSIDE, 0, 10, 39); // A Nix
             else if (hit(1, 12, 9, UP)) speak(world.npcs[1][0]);
+            else if (hit(0, 12, 9, ANY)) teleport(DUNGEON, 2, 9, 41); // A Dungeon 1
+            else if (hit(2, 9, 41, ANY)) teleport(OUTSIDE, 0, 12, 9); // A Nix
+            else if (hit(2, 8, 7, ANY)) teleport(DUNGEON, 3, 26, 41); // A Dungeon 2
+            else if (hit(3, 26, 41, ANY)) teleport(DUNGEON, 2, 8, 7); // A Dungeon 1
         }
 
     }
@@ -122,11 +126,12 @@ public class EventManager {
         }
     }
 
-    public void teleport(int map, int col, int row) {
+    public void teleport(int area, int map, int col, int row) {
         game.state = TRANSITION_STATE;
-        tempMap = map;
-        tempCol = col;
-        tempRow = row;
+        game.nextArea = area;
+        this.map = map;
+        this.col = col;
+        this.row = row;
         canTouchEvent = false;
     }
 

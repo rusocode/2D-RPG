@@ -1,9 +1,11 @@
 package com.craivet.environment;
 
+import com.craivet.Game;
 import com.craivet.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageFilter;
 
 import static com.craivet.gfx.Assets.font_medieval1;
 import static com.craivet.utils.Global.*;
@@ -15,6 +17,8 @@ import static com.craivet.utils.Global.*;
 public class Lighting {
 
     private final World world;
+    private final Game game;
+
     private BufferedImage darknessFilter;
 
     public int dayCounter;
@@ -27,7 +31,8 @@ public class Lighting {
     public final int dawn = 3;
     public int dayState = day;
 
-    public Lighting(World world) {
+    public Lighting(Game game, World world) {
+        this.game = game;
         this.world = world;
         illuminate(); // TOOD Por que se llama desde aca este metodo?
     }
@@ -96,15 +101,22 @@ public class Lighting {
             world.player.lightUpdate = false;
         }
 
-        // cycleDay();
+        cycleDay();
 
     }
 
+    /**
+     * Si el area es OUTSIDE, configura el filterAlpha y dibuja el filtro oscuro.
+     * <p>
+     * Si el area es DUNGEON, solo dibuja el filtro oscuro. Significa que permanecera oscuro todo el tiempo.
+     * <p>
+     * Si el area es INDOOR, no configura ni dibuja el filtro oscuro. Significa que permanece luminoso tood el tiempo.
+     */
     public void render(Graphics2D g2) {
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
-        g2.drawImage(darknessFilter, 0, 0, null);
+        if (game.area == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
+        if (game.area == OUTSIDE || game.area == DUNGEON) g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        // debug(g2);
+        debug(g2);
     }
 
     /**

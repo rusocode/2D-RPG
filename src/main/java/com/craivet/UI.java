@@ -788,11 +788,12 @@ public class UI {
         if (counter >= INTERVAL_TRANSITION) {
             counter = 0;
             game.state = PLAY_STATE;
-            world.map = game.event.tempMap;
-            world.player.x = tile_size * game.event.tempCol;
-            world.player.y = tile_size * game.event.tempRow;
+            world.map = game.event.map;
+            world.player.x = tile_size * game.event.col;
+            world.player.y = tile_size * game.event.row;
             game.event.previousEventX = world.player.x;
             game.event.previousEventY = world.player.y;
+            game.changeArea();
         }
     }
 

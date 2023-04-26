@@ -2,6 +2,7 @@ package com.craivet;
 
 import com.craivet.ai.AStar;
 import com.craivet.data.SaveLoad;
+import com.craivet.gfx.Assets;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
@@ -40,6 +41,8 @@ public class Game extends Canvas implements Runnable {
     // States
     public StateManager stateManager = new StateManager();
     public int state;
+    public int area;
+    public int nextArea;
 
     // Otros
     private BufferStrategy buffer;
@@ -162,6 +165,18 @@ public class Game extends Canvas implements Runnable {
         setter.setNPC();
         setter.setMOB();
         setter.setInteractiveTile();
+    }
+
+    public void changeArea() {
+        // Si hay un cambio de area
+        if (nextArea != area) {
+            stopMusic();
+            if (nextArea == OUTSIDE) playMusic(music_blue_boy_adventure);
+            if (nextArea == INDOOR) playMusic(music_trader);
+            if (nextArea == DUNGEON) playMusic(music_dungeon);
+        }
+        area = nextArea;
+        setter.setMOB();
     }
 
     /**

@@ -18,6 +18,8 @@ public final class Assets {
     // AUDIO (ambient, music and sounds)
     // Music
     public static final URL music_blue_boy_adventure = Utils.loadAudio("audio/music/blue_boy_adventure.wav");
+    public static final URL music_dungeon = Utils.loadAudio("audio/music/dungeon.wav");
+    public static final URL music_trader = Utils.loadAudio("audio/music/trader.wav");
     // Sounds
     private static final String sounds_path = "audio/sounds/";
     public static final URL sound_burning = Utils.loadAudio(sounds_path + "burning5.wav");

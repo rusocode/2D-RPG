@@ -64,7 +64,7 @@ public class World {
         player = new Player(game, this);
         tiles = new TileManager(game, this);
         entitites = new EntityManager(game, this);
-        environment = new EnvironmentManager(this);
+        environment = new EnvironmentManager(game, this);
 
         loadTiles();
         loadMaps();
@@ -127,6 +127,8 @@ public class World {
     private void loadMaps() {
         loadMap("maps/nix.txt", NIX, "Nix");
         loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
+        loadMap("maps/dungeon01.txt", DUNGEON_01, "Dungeon 01");
+        loadMap("maps/dungeon02.txt", DUNGEON_02, "Dungeon 02");
     }
 
     /**
