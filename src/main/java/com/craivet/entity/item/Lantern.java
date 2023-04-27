@@ -18,7 +18,7 @@ public class Lantern extends Item {
         image = Utils.scaleImage(item_lantern, tile_size, tile_size);
         description = "[" + name + "]\nIlluminaties your \nsurroundings.";
         price = 200;
-        lightRadius = 250;
+        lightRadius = 350;
     }
 
     public Lantern(Game game, World world, int x, int y) {
@@ -30,7 +30,7 @@ public class Lantern extends Item {
         image = Utils.scaleImage(item_lantern, tile_size, tile_size);
         description = "[" + name + "]\nIlluminaties your \nsurroundings.";
         price = 200;
-        lightRadius = 250;
+        lightRadius = 350;
     }
 
 }

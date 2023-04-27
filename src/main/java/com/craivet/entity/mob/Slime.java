@@ -70,7 +70,7 @@ public class Slime extends Mob {
     }
 
     private void checkShoot() {
-        if (Utils.azar(100) == 1 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK) {
+        if (Utils.azar(100) == 1 && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
             projectile.set(x + 8, y + 17, direction, true, this);
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {

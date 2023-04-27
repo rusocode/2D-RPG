@@ -80,7 +80,7 @@ public class Entity {
 
     // Frames
     public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
-    public BufferedImage attackDown1, attackDown2, attackUp1, attackUp2, attackLeft1, attackLeft2, attackRight1, attackRight2;
+    public BufferedImage weaponDown1, weaponDown2, weaponUp1, weaponUp2, weaponLeft1, weaponLeft2, weaponRight1, weaponRight2;
     public int movementNum = 1, attackNum = 1;
 
     public Entity(Game game, World world) {
@@ -115,7 +115,7 @@ public class Entity {
              * animacion de ataque, creo que no interrumpiria el tiempo en el cambio de frames. */
             timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
             if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-            if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
+            if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
         }
     }
 
@@ -132,26 +132,26 @@ public class Entity {
             switch (direction) {
                 case DOWN -> {
                     if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                    if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
+                    if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
                 }
                 case UP -> {
                     if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
                     if (attacking) {
                         // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                         tempScreenY -= tile_size;
-                        frame = attackNum == 1 ? attackUp1 : attackUp2;
+                        frame = attackNum == 1 ? weaponUp1 : weaponUp2;
                     }
                 }
                 case LEFT -> {
                     if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
                     if (attacking) {
                         tempScreenX -= tile_size;
-                        frame = attackNum == 1 ? attackLeft1 : attackLeft2;
+                        frame = attackNum == 1 ? weaponLeft1 : weaponLeft2;
                     }
                 }
                 case RIGHT -> {
                     if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
-                    if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
+                    if (attacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
                 }
             }
 
@@ -468,22 +468,22 @@ public class Entity {
     }
 
     /**
-     * Carga las subimagenes de ataque.
+     * Carga las subimagenes de armas.
      *
-     * @param ss SpriteSheet con todas las subimages de ataque.
+     * @param ss SpriteSheet con todas las subimages de armas.
      * @param w  ancho de la subimagen.
      * @param h  alto de la subimagen.
      */
-    public void loadAttackImages(SpriteSheet ss, int w, int h) {
-        BufferedImage[] subimages = SpriteSheet.getAttackSubimages(ss, w, h);
-        attackDown1 = Utils.scaleImage(subimages[0], tile_size, tile_size * 2);
-        attackDown2 = Utils.scaleImage(subimages[1], tile_size, tile_size * 2);
-        attackUp1 = Utils.scaleImage(subimages[2], tile_size, tile_size * 2);
-        attackUp2 = Utils.scaleImage(subimages[3], tile_size, tile_size * 2);
-        attackLeft1 = Utils.scaleImage(subimages[4], tile_size * 2, tile_size);
-        attackLeft2 = Utils.scaleImage(subimages[5], tile_size * 2, tile_size);
-        attackRight1 = Utils.scaleImage(subimages[6], tile_size * 2, tile_size);
-        attackRight2 = Utils.scaleImage(subimages[7], tile_size * 2, tile_size);
+    public void loadWeaponImages(SpriteSheet ss, int w, int h) {
+        BufferedImage[] subimages = SpriteSheet.getWeaponSubimages(ss, w, h);
+        weaponDown1 = Utils.scaleImage(subimages[0], tile_size, tile_size * 2);
+        weaponDown2 = Utils.scaleImage(subimages[1], tile_size, tile_size * 2);
+        weaponUp1 = Utils.scaleImage(subimages[2], tile_size, tile_size * 2);
+        weaponUp2 = Utils.scaleImage(subimages[3], tile_size, tile_size * 2);
+        weaponLeft1 = Utils.scaleImage(subimages[4], tile_size * 2, tile_size);
+        weaponLeft2 = Utils.scaleImage(subimages[5], tile_size * 2, tile_size);
+        weaponRight1 = Utils.scaleImage(subimages[6], tile_size * 2, tile_size);
+        weaponRight2 = Utils.scaleImage(subimages[7], tile_size * 2, tile_size);
     }
 
     /**

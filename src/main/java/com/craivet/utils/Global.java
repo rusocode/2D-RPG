@@ -65,16 +65,17 @@ public final class Global {
     // Probabilidades %
     public static final int PROBABILIDAD_DROP_ORO = 47;
 
-    // Interval animation
+    // Animation interval
     public static final int INTERVAL_DEAD_ANIMATION = 10;
     public static final int INTERVAL_MOVEMENT_ANIMATION = 10;
     public static final int INTERVAL_PROJECTILE_ANIMATION = 10;
-    // Interval attack
-    public static final int INTERVAL_SWORD_ATTACK = 40;
-    public static final int INTERVAL_PROJECTILE_ATTACK = 80;
-    // Interval others
+    // Weapon interval
+    public static final int INTERVAL_WEAPON = 30;
+    // Projectile interval
+    public static final int INTERVAL_PROJECTILE = 80;
+    // Others interval
     public static final int INTERVAL_INVINCIBLE = 60;
-    public static final int INTERVAL_INVINCIBLE_TREE = 20;
+    public static final int INTERVAL_INVINCIBLE_INTERACTIVE = 20;
     public static final int INTERVAL_DIRECTION = 120;
     public static final int INTERVAL_HP_BAR = 240;
     public static final int INTERVAL_KNOCKBACK = 10;
@@ -110,5 +111,6 @@ public final class Global {
     public static final int TYPE_PICKUP_ONLY = 7;
     public static final int TYPE_OBSTACLE = 8;
     public static final int TYPE_LIGHT = 9;
+    public static final int TYPE_PICKAXE = 10;
 
 }

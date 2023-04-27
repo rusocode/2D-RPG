@@ -5,6 +5,7 @@ import com.craivet.entity.mob.Orc;
 import com.craivet.entity.mob.Slime;
 import com.craivet.entity.npc.Trader;
 import com.craivet.entity.npc.Oldman;
+import com.craivet.tile.DestructibleWall;
 import com.craivet.tile.DryTree;
 
 import static com.craivet.utils.Global.*;
@@ -25,8 +26,6 @@ public class AssetSetter {
 
     public void setItem() {
         int i = 0;
-        // world.items[NIX][i++] = new Tent(game, world, 12, 31);
-        // world.items[NIX][i++] = new Lantern(game, world, 13, 31);
         world.items[NIX][i++] = new Axe(game, world, 33, 7);
         world.items[NIX][i++] = new PotionRed(game, world, 20, 21, 5); // ?
         world.items[NIX][i++] = new Door(game, world, 14, 28);
@@ -39,7 +38,19 @@ public class AssetSetter {
         world.items[NIX][i++].setLoot(new Tent(game, world));
 
         world.items[NIX][i] = new Chest(game, world, 16, 21);
-        world.items[NIX][i].setLoot(new PotionRed(game, world, 5));
+        world.items[NIX][i++].setLoot(new PotionRed(game, world, 5));
+
+        world.items[DUNGEON_01][i] = new Chest(game, world, 40, 41);
+        world.items[DUNGEON_01][i++].setLoot(new Pickaxe(game, world));
+
+        world.items[DUNGEON_01][i] = new Chest(game, world, 13, 16);
+        world.items[DUNGEON_01][i++].setLoot(new PotionRed(game, world, 20));
+
+        world.items[DUNGEON_01][i] = new Chest(game, world, 26, 34);
+        world.items[DUNGEON_01][i++].setLoot(new PotionRed(game, world, 5));
+
+        world.items[DUNGEON_01][i] = new Chest(game, world, 27, 15);
+        world.items[DUNGEON_01][i].setLoot(new PotionRed(game, world, 30));
     }
 
     public void setNPC() {
@@ -70,6 +81,25 @@ public class AssetSetter {
         world.interactives[NIX][i++] = new DryTree(game, world, 28, 31);
         world.interactives[NIX][i++] = new DryTree(game, world, 29, 31);
         world.interactives[NIX][i++] = new DryTree(game, world, 30, 31);
+
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 18, 30);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 17, 31);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 17, 32);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 17, 34);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 18, 34);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 18, 33);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 10, 22);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 10, 24);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 38, 18);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 38, 19);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 38, 20);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 38, 21);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 18, 13);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 18, 14);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 22, 28);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 30, 28);
+        world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 32, 28);
+
     }
 
 }

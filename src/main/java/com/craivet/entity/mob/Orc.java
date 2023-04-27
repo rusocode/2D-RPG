@@ -39,7 +39,7 @@ public class Orc extends Mob {
         motion2 = 30;
 
         loadMovementImages(entity_orc_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-        loadAttackImages(entity_orc_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
+        loadWeaponImages(entity_orc_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
         mobImage = movementDown1;
     }
 

@@ -955,7 +955,7 @@ public class UI {
                 world.environment.lighting.dayCounter = 0;
                 game.state = PLAY_STATE;
                 world.player.loadMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-                world.player.loadAttackImages(world.player.weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+                world.player.loadWeaponImages(world.player.weapon.type == TYPE_SWORD ? entity_player_sword : entity_player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
             }
         }
     }

@@ -101,7 +101,7 @@ public class Lighting {
             world.player.lightUpdate = false;
         }
 
-        cycleDay();
+        // cycleDay();
 
     }
 

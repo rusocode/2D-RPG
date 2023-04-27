@@ -3,12 +3,11 @@ package com.craivet.data;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
-import com.craivet.entity.item.*;
 
 import java.io.*;
 
-import static com.craivet.gfx.Assets.entity_player_attack_axe;
-import static com.craivet.gfx.Assets.entity_player_attack_sword;
+import static com.craivet.gfx.Assets.entity_player_axe;
+import static com.craivet.gfx.Assets.entity_player_sword;
 import static com.craivet.utils.Global.*;
 
 public class SaveLoad {
@@ -118,7 +117,7 @@ public class SaveLoad {
             world.player.shield = world.player.inventory.get(ds.currentShieldSlot);
             world.player.getAttack();
             world.player.getDefense();
-            world.player.loadAttackImages(world.player.weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+            world.player.loadWeaponImages(world.player.weapon.type == TYPE_SWORD ? entity_player_sword : entity_player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
             for (int map = 0; map < MAX_MAP; map++) {
                 for (int i = 0; i < world.items[1].length; i++) {

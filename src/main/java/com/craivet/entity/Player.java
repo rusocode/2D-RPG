@@ -77,7 +77,11 @@ public class Player extends Entity {
         motion2 = 25;
 
         loadMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-        loadAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+        switch (weapon.type) {
+            case TYPE_SWORD -> loadWeaponImages(entity_player_sword, 16, 16);
+            case TYPE_AXE -> loadWeaponImages(entity_player_axe, 16, 16);
+            case TYPE_PICKAXE -> loadWeaponImages(entity_player_pickaxe, 16, 16);
+        }
         setItems();
         // initDialogue();
     }
@@ -121,8 +125,8 @@ public class Player extends Entity {
 
         // Aplica el timer solo si el player es invencible
         if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-        if (timer.projectileCounter < INTERVAL_PROJECTILE_ATTACK) timer.projectileCounter++;
-        if (timer.attackCounter < INTERVAL_SWORD_ATTACK) timer.attackCounter++;
+        if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
+        if (timer.attackCounter < INTERVAL_WEAPON) timer.attackCounter++;
 
         if (life > maxLife) life = maxLife;
         if (mana > maxMana) mana = maxMana;
@@ -135,26 +139,26 @@ public class Player extends Entity {
         switch (direction) {
             case DOWN -> {
                 if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                if (attacking) frame = attackNum == 1 ? attackDown1 : attackDown2;
+                if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
             }
             case UP -> {
                 if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
                 if (attacking) {
                     // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                     tempScreenY -= tile_size;
-                    frame = attackNum == 1 ? attackUp1 : attackUp2;
+                    frame = attackNum == 1 ? weaponUp1 : weaponUp2;
                 }
             }
             case LEFT -> {
                 if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
                 if (attacking) {
                     tempScreenX -= tile_size;
-                    frame = attackNum == 1 ? attackLeft1 : attackLeft2;
+                    frame = attackNum == 1 ? weaponLeft1 : weaponLeft2;
                 }
             }
             case RIGHT -> {
                 if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
-                if (attacking) frame = attackNum == 1 ? attackRight1 : attackRight2;
+                if (attacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
             }
         }
 
@@ -172,9 +176,9 @@ public class Player extends Entity {
      */
     private void checkAttack() {
         // Si presiono enter y el ataque no esta cancelado
-        if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_SWORD_ATTACK) {
+        if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON) {
             if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
-            if (weapon.type == TYPE_AXE) game.playSound(sound_swing_axe);
+            if (weapon.type != TYPE_SWORD) game.playSound(sound_swing_axe);
             attacking = true;
             timer.attackAnimationCounter = 0;
             timer.attackCounter = 0;
@@ -186,7 +190,7 @@ public class Player extends Entity {
      * Comprueba si puede lanzar un proyectil.
      */
     private void checkShoot() {
-        if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE_ATTACK && projectile.haveResource(this)) {
+        if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this)) {
             game.playSound(sound_burning);
             projectile.set(x, y, direction, true, this);
             // Comprueba vacante para agregar el proyectil
@@ -305,15 +309,17 @@ public class Player extends Entity {
     protected void damageInteractiveTile(int iTileIndex) {
         if (iTileIndex != -1) {
             Interactive iTile = world.interactives[world.map][iTileIndex];
-            if (iTile.destructible && iTile.isCorrectItem(weapon) && !iTile.invincible) {
-                game.playSound(sound_cut_tree);
-
+            if (iTile.destructible && iTile.isCorrectWeapon(weapon) && !iTile.invincible) {
+                iTile.playSound();
                 iTile.life--;
                 iTile.invincible = true;
 
                 generateParticle(iTile, iTile);
 
-                if (iTile.life == 0) world.interactives[world.map][iTileIndex] = iTile.getDestroyedForm();
+                if (iTile.life == 0) {
+                    iTile.checkDrop();
+                    world.interactives[world.map][iTileIndex] = iTile.getDestroyedForm();
+                }
             }
         }
     }
@@ -357,12 +363,18 @@ public class Player extends Entity {
         int itemIndex = game.ui.getItemIndexOnSlot(game.ui.playerSlotCol, game.ui.playerSlotRow);
         if (itemIndex < inventory.size()) {
             Entity selectedItem = inventory.get(itemIndex);
-            if (selectedItem instanceof SwordNormal || selectedItem instanceof Axe) {
+            if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordNormal) {
                 weapon = selectedItem;
                 attackbox = weapon.attackbox; // TODO Hace falta esto aca?
                 attack = getAttack();
-                if (weapon.type == TYPE_SWORD) game.playSound(sound_draw_sword);
-                loadAttackImages(weapon.type == TYPE_SWORD ? entity_player_attack_sword : entity_player_attack_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+                switch (weapon.type) {
+                    case TYPE_SWORD -> {
+                        loadWeaponImages(entity_player_sword, 16, 16);
+                        game.playSound(sound_draw_sword);
+                    }
+                    case TYPE_AXE -> loadWeaponImages(entity_player_axe, 16, 16);
+                    case TYPE_PICKAXE -> loadWeaponImages(entity_player_pickaxe, 16, 16);
+                }
             }
             if (selectedItem.type == TYPE_SHIELD) {
                 shield = selectedItem;
@@ -521,6 +533,7 @@ public class Player extends Entity {
         inventory.add(new PotionRed(game, world, 15));
         inventory.add(new Key(game, world, 2));
         inventory.add(new Lantern(game, world));
+        inventory.add(new Axe(game, world));
     }
 
     private void drawRects(Graphics2D g2) {
