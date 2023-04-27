@@ -41,8 +41,6 @@ public class Game extends Canvas implements Runnable {
     // States
     public StateManager stateManager = new StateManager();
     public int state;
-    public int area;
-    public int nextArea;
 
     // Otros
     private BufferStrategy buffer;
@@ -167,28 +165,13 @@ public class Game extends Canvas implements Runnable {
         setter.setInteractiveTile();
     }
 
-    public void changeArea() {
-        // Si hay un cambio de area
-        if (nextArea != area) {
-            if (nextArea == DUNGEON) {
-                stopMusic();
-                playMusic(music_dungeon);
-            }
-            if (area == DUNGEON && nextArea == OUTSIDE) {
-                stopMusic();
-                // playMusic(music_main);
-            }
-        }
-        area = nextArea;
-        setter.setMOB();
-    }
-
     /**
      * Reinicia el juego.
      *
      * @param restart vuelve a establecer los valores por defecto del player.
      */
     public void resetGame(boolean restart) {
+        stopMusic();
         ui.message.clear();
         world.player.setDefaultPosition();
         world.player.restoreStatus();

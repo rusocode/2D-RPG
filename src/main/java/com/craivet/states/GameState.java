@@ -25,7 +25,6 @@ public class GameState implements State {
         this.ui = ui;
         this.minimap = minimap;
         game.state = TITLE_STATE;
-        game.area = OUTSIDE;
     }
 
     public void update() {

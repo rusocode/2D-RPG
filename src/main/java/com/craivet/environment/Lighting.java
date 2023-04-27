@@ -113,8 +113,8 @@ public class Lighting {
      * Si el area es INDOOR, no configura ni dibuja el filtro oscuro. Significa que permanece luminoso tood el tiempo.
      */
     public void render(Graphics2D g2) {
-        if (game.area == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
-        if (game.area == OUTSIDE || game.area == DUNGEON) g2.drawImage(darknessFilter, 0, 0, null);
+        if (world.area == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
+        if (world.area == OUTSIDE || world.area == DUNGEON) g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         // debug(g2);
     }

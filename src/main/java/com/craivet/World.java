@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
+import static com.craivet.gfx.Assets.music_dungeon;
 import static com.craivet.utils.Global.*;
 
 /**
@@ -43,10 +44,10 @@ public class World {
 
     // Tiles
     public int map;
+    public int area, nextArea;
     public HashMap<Integer, String> maps = new HashMap<>();
     public Tile[] tileData;
     public int[][][] tileIndex = new int[MAX_MAP][MAX_MAP_ROW][MAX_MAP_COL];
-    // TODO Creo que se podria reemplazar por un HashMap
     ArrayList<String> names = new ArrayList<>();
     ArrayList<String> solids = new ArrayList<>();
 
@@ -64,12 +65,7 @@ public class World {
 
     public World(Game game) {
         this.game = game;
-        // TODO Implementar metodo para verificar posicion valida
-        // public static boolean isValid(short x, short y) {
-        //        return (x > 0) && (y > 0) && (x <= MAPA_ANCHO) && (y <= MAPA_ALTO);
-        //    }
-        // Y tile no solido..
-        player = new Player(game, this, 23, 21);
+        player = new Player(game, this);
         tiles = new TileManager(game, this);
         entitites = new EntityManager(game, this);
         environment = new EnvironmentManager(game, this);
@@ -159,6 +155,16 @@ public class World {
         } catch (IOException e) {
             throw new RuntimeException("Error al leer el archivo " + path + " en la linea " + (row + 1), e);
         }
+    }
+
+    public void changeArea() {
+        // Si hay un cambio de area
+        if (nextArea != area) {
+            if (nextArea == DUNGEON) game.playMusic(music_dungeon);
+            if (area == DUNGEON && nextArea == OUTSIDE) game.stopMusic();
+        }
+        area = nextArea;
+        game.setter.setMOB();
     }
 
 }

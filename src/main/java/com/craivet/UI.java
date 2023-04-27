@@ -793,7 +793,7 @@ public class UI {
             world.player.y = tile_size * game.event.row;
             game.event.previousEventX = world.player.x;
             game.event.previousEventY = world.player.y;
-            game.changeArea();
+            world.changeArea();
         }
     }
 

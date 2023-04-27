@@ -180,6 +180,7 @@ public class Collider {
 
         if (entity.hitbox.intersects(world.player.hitbox)) {
             entity.collision = true;
+            entity.collisionOnPlayer = true;
             contact = true;
         }
 

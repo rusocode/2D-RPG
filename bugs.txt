@@ -9,5 +9,4 @@ y se muestra la descripcion del item.
 # Cuando la entidad sigue al player y colisiona con un item solido no lo esquiva.
 # Evitar que el player aparezca sobre una entidad solida.
 # Especificar el mapa del player al darle una ubicacion.
-# No puede atacar cuando esta sobre un item. OK!
 # La pimera carga del minimapa se bugea.

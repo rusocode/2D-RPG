@@ -29,64 +29,14 @@ public class Player extends Entity {
     public final int screenX, screenY;
     public boolean attackCanceled, lightUpdate;
 
-    public Player(Game game, World world, int x, int y) {
-        super(game, world, x, y);
+    public Player(Game game, World world) {
+        super(game, world);
         // Posiciona el player en el centro de la pantalla
         screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
         screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
-        key = game.getKey();
+        setDefaultPosition();
         setDefaultValues();
-    }
-
-    public void setDefaultValues() {
-        type = TYPE_PLAYER;
-        speed = defaultSpeed = 3;
-        life = maxLife = 6;
-        mana = maxMana = 4;
-        ammo = 5;
-        lvl = 1;
-        exp = 0;
-        nextLvlExp = 5;
-        coin = 500;
-        strength = 1;
-        dexterity = 1;
-        invincible = false;
-
-        projectile = new Fireball(game, world);
-        weapon = new SwordNormal(game, world);
-        shield = new ShieldWood(game, world);
-        light = null;
-        attack = getAttack();
-        defense = getDefense();
-
-        hitbox.x = 8;
-        hitbox.y = 16;
-        hitbox.width = 32;
-        hitbox.height = 32;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
-        motion1 = 5;
-        motion2 = 25;
-
-        loadMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-        loadWeaponImages(entity_player_sword, 16, 16);
-        setItems();
-        // initDialogue();
-    }
-
-    public void setDefaultPosition() {
-        x = 23 * tile_size;
-        y = 21 * tile_size;
-        direction = DOWN;
-    }
-
-    public void restoreStatus() {
-        life = maxLife;
-        mana = maxMana;
-        invincible = false;
-        attacking = false;
-        knockback = false;
-        lightUpdate = true;
+        key = game.getKey();
     }
 
     public void update() {
@@ -157,6 +107,67 @@ public class Player extends Entity {
 
         Utils.changeAlpha(g2, 1);
 
+    }
+
+    public void setDefaultValues() {
+        type = TYPE_PLAYER;
+        direction = DOWN;
+        speed = defaultSpeed = 3;
+        life = maxLife = 6;
+        mana = maxMana = 4;
+        ammo = 5;
+        lvl = 1;
+        exp = 0;
+        nextLvlExp = 5;
+        coin = 500;
+        strength = 1;
+        dexterity = 1;
+        invincible = false;
+
+        projectile = new Fireball(game, world);
+        weapon = new SwordNormal(game, world);
+        shield = new ShieldWood(game, world);
+        light = null;
+        attack = getAttack();
+        defense = getDefense();
+
+        hitbox.x = 8;
+        hitbox.y = 16;
+        hitbox.width = 32;
+        hitbox.height = 32;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
+        motion1 = 5;
+        motion2 = 25;
+
+        loadMovementImages(entity_player_movement, 16, 16, tile_size);
+        loadWeaponImages(entity_player_sword, 16, 16);
+        setItems();
+    }
+
+    public void setDefaultPosition() {
+        world.area = OUTSIDE;
+        world.map = NIX;
+        x = 23 * tile_size;
+        y = 21 * tile_size;
+    }
+
+    public void setPosition(int map, int x, int y) {
+        if (map == NIX) world.area = OUTSIDE;
+        if (map == NIX_INDOOR_01) world.area = INDOOR;
+        if (map == DUNGEON_01 || map == DUNGEON_02) world.area = DUNGEON;
+        world.map = map;
+        this.x = x * tile_size;
+        this.y = y * tile_size;
+    }
+
+    public void restoreStatus() {
+        life = maxLife;
+        mana = maxMana;
+        invincible = false;
+        attacking = false;
+        knockback = false;
+        lightUpdate = true;
     }
 
     /**
@@ -340,10 +351,6 @@ public class Player extends Entity {
             dialogues[0][0] = "You are level " + lvl + "!";
             startDialogue(this, 0);
         }
-    }
-
-    private void initDialogue() {
-        dialogues[0][0] = "You are level " + lvl + "!";
     }
 
     /**

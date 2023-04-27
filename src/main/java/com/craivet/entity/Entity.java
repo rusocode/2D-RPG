@@ -71,6 +71,7 @@ public class Entity {
     public boolean attacking;
     public boolean alive = true;
     public boolean collision;
+    public boolean collisionOnPlayer;  // En caso de que el mob este pegado al player, comprueba la colision y actualiza
     public boolean dead;
     public boolean hpBar;
     public boolean invincible;
@@ -99,15 +100,22 @@ public class Entity {
     /**
      * En caso de que se haya aplicado knockback a la entidad, comprueba las colisiones y en base a eso determina si se
      * detiene el knockback o se actualiza la posicion de la entidad utilizando la variable temporal knockbackDirection.
-     * En caso contrario, comprueba si la entidad esta atacando y si es verdadero ataca. Si ninguna de las dos
-     * condiciones anteriores se cumple (knockback o attacking), entonces la entidad realiza una accion y comprueba las
-     * colisiones para determinar si se actualiza la posicion o no aplicando el intervalo de movimiento.
+     * Si la entidad esta pegada al player y este aplica knockback, la entidad retrocede. Esto se comprueba con el
+     * estado collisionOnPlayer (soluciona el bug en el que no retrocedia al aplicar knockback). Pero si la entidad no
+     * esta pegada al player pero colisiona con otra entidad, detiene el knockback. Sino actualiza la posicion.
+     * <p>
+     * Si la entidad esta atacando, entonces ataca.
+     * <p>
+     * Si ninguna de las dos condiciones anteriores se cumple (knockback o attacking), entonces la entidad realiza una
+     * accion y comprueba las colisiones para determinar si se actualiza la posicion o no aplicando el intervalo de
+     * movimiento.
      */
     public void update() {
         // TODO Se podria separar en metodos
         if (knockback) {
             checkCollisions();
-            if (collision) {
+            if (collisionOnPlayer) updatePosition(knockbackDirection);
+            else if (collision) {
                 knockback = false;
                 speed = defaultSpeed;
                 timer.knockbackCounter = 0;
@@ -405,7 +413,6 @@ public class Entity {
                 int iTileIndex = game.collider.checkEntity(this, world.interactives);
                 world.player.damageInteractiveTile(iTileIndex);
 
-                // TODO Hay un bug que cuando lanza una bola de fuego y ataca al mimso tiempo la dania
                 int projectileIndex = game.collider.checkEntity(this, world.projectiles);
                 world.player.damageProjectile(projectileIndex);
             }

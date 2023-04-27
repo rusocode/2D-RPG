@@ -58,13 +58,13 @@ public class EventManager {
             // El else if se utiliza para evitar que el siguiente if se llame inmediatamente en el caso de la teleport
             if (hit(0, 27, 16, RIGHT)) damagePit();
             else if (hit(0, 23, 12, UP)) healingPool();
-            else if (hit(0, 10, 39, ANY)) teleport(INDOOR, 1, 12, 13); // A Nix Indoor 1
-            else if (hit(1, 12, 13, ANY)) teleport(OUTSIDE, 0, 10, 39); // A Nix
             else if (hit(1, 12, 9, UP)) speak(world.npcs[1][0]);
-            else if (hit(0, 12, 9, ANY)) teleport(DUNGEON, 2, 9, 41); // A Dungeon 1
-            else if (hit(2, 9, 41, ANY)) teleport(OUTSIDE, 0, 12, 9); // A Nix
-            else if (hit(2, 8, 7, ANY)) teleport(DUNGEON, 3, 26, 41); // A Dungeon 2
-            else if (hit(3, 26, 41, ANY)) teleport(DUNGEON, 2, 8, 7); // A Dungeon 1
+            else if (hit(NIX, 10, 39, ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
+            else if (hit(NIX_INDOOR_01, 12, 13, ANY)) teleport(OUTSIDE, NIX, 10, 39); // De Nix Indoor 1 a Nix
+            else if (hit(NIX, 12, 9, ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1
+            else if (hit(DUNGEON_01, 9, 41, ANY)) teleport(OUTSIDE, NIX, 12, 9); // De Dungeon 1 a Nix
+            else if (hit(DUNGEON_01, 8, 7, ANY)) teleport(DUNGEON, DUNGEON_02, 26, 41); // De Dungeon 1 a Dungeon 2
+            else if (hit(DUNGEON_02, 26, 41, ANY)) teleport(DUNGEON, DUNGEON_01, 8, 7); // De Dungeon 2 a Dungeon 1
         }
 
     }
@@ -128,7 +128,7 @@ public class EventManager {
 
     public void teleport(int area, int map, int col, int row) {
         game.state = TRANSITION_STATE;
-        game.nextArea = area;
+        world.nextArea = area;
         this.map = map;
         this.col = col;
         this.row = row;
