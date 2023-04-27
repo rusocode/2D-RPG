@@ -22,9 +22,7 @@ public class Tent extends Item {
     }
 
     public Tent(Game game, World world, int x, int y) {
-        super(game, world);
-        this.x = x * tile_size;
-        this.y = y * tile_size;
+        super(game, world, x, y);
         type = TYPE_CONSUMABLE;
         name = item_name;
         image = Utils.scaleImage(item_tent, tile_size, tile_size);

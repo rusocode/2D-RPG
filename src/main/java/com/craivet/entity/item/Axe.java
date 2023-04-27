@@ -31,9 +31,7 @@ public class Axe extends Item {
 	 * Constructor solo para agregar Axe al World.
 	 */
 	public Axe(Game game, World world, int x, int y) {
-		super(game, world);
-		this.x = x * tile_size;
-		this.y = y * tile_size;
+		super(game, world, x, y);
 		name = item_name;
 		type = TYPE_AXE;
 		image = Utils.scaleImage(item_axe, tile_size, tile_size);

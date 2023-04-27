@@ -16,9 +16,7 @@ import static com.craivet.gfx.Assets.*;
 public class Slime extends Mob {
 
     public Slime(Game game, World world, int x, int y) {
-        super(game, world);
-        this.x = x * tile_size;
-        this.y = y * tile_size;
+        super(game, world, x, y);
         initDefaultValues();
     }
 
@@ -66,7 +64,7 @@ public class Slime extends Mob {
      * Comprueba si dropeo un item.
      */
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(new Coin(game, world));
+        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(this, new Coin(game, world));
     }
 
     private void checkShoot() {

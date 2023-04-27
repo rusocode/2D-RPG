@@ -24,9 +24,7 @@ public class Key extends Item {
     }
 
     public Key(Game game, World world, int x, int y, int amount) {
-        super(game, world);
-        this.x = x * tile_size;
-        this.y = y * tile_size;
+        super(game, world, x , y);
         name = item_name;
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_key, tile_size, tile_size);

@@ -62,6 +62,7 @@ public class AssetSetter {
 
     public void setMOB() {
         int i = 0;
+        world.mobs[NIX][i++] = new Slime(game, world, 23, 23);
         world.mobs[NIX][i++] = new Slime(game, world, 23, 41);
         world.mobs[NIX][i++] = new Slime(game, world, 24, 37);
         world.mobs[NIX][i++] = new Slime(game, world, 34, 42);

@@ -22,9 +22,7 @@ public class Lantern extends Item {
     }
 
     public Lantern(Game game, World world, int x, int y) {
-        super(game, world);
-        this.x = x * tile_size;
-        this.y = y * tile_size;
+        super(game, world, x, y);
         name = item_name;
         type = TYPE_LIGHT;
         image = Utils.scaleImage(item_lantern, tile_size, tile_size);

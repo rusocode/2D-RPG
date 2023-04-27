@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.craivet.Game;
 import com.craivet.entity.item.Item;
+import com.craivet.entity.mob.Mob;
 import com.craivet.entity.projectile.Projectile;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.tile.Interactive;
@@ -86,6 +87,13 @@ public class Entity {
     public Entity(Game game, World world) {
         this.game = game;
         this.world = world;
+    }
+
+    public Entity(Game game, World world, int x, int y) {
+        this.game = game;
+        this.world = world;
+        this.x = x * tile_size;
+        this.y = y * tile_size;
     }
 
     /**
@@ -229,12 +237,17 @@ public class Entity {
      *
      * @param item item a dropear.
      */
-    public void dropItem(Item item) {
+    public void dropItem(Entity entity, Item item) {
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] == null) {
                 world.items[world.map][i] = item;
-                world.items[world.map][i].x = x + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
-                world.items[world.map][i].y = y + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
+                if (entity instanceof Mob) {
+                    world.items[world.map][i].x = x + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
+                    world.items[world.map][i].y = y + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
+                } else if (entity instanceof Interactive) {
+                    world.items[world.map][i].x = x + (image.getWidth() / 2 - item.image.getWidth() / 2);
+                    world.items[world.map][i].y = y + (image.getHeight() / 2 - item.image.getHeight() / 2);
+                }
                 break;
             }
         }

@@ -16,4 +16,8 @@ public class Item extends Entity {
 		super(game, world);
 	}
 
+	public Item(Game game, World world, int x, int y) {
+		super(game, world, x, y);
+	}
+
 }

@@ -6,8 +6,8 @@ import com.craivet.World;
 
 public abstract class Mob extends Entity {
 
-    public Mob(Game game, World world) {
-        super(game, world);
+    public Mob(Game game, World world, int x, int y) {
+        super(game, world, x, y);
     }
 
 }

@@ -11,9 +11,7 @@ import static com.craivet.utils.Global.*;
 public class Orc extends Mob {
 
     public Orc(Game game, World world, int x, int y) {
-        super(game, world);
-        this.x = x * tile_size;
-        this.y = y * tile_size;
+        super(game, world, x, y);
         initDefaultValues();
     }
 
@@ -65,7 +63,7 @@ public class Orc extends Mob {
      * Comprueba si dropeo un item.
      */
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(new Coin(game, world));
+        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(this, new Coin(game, world));
     }
 
 }

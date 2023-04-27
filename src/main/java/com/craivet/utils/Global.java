@@ -63,7 +63,7 @@ public final class Global {
     public static final int SELECTION_SCREEN = 1;
 
     // Probabilidades %
-    public static final int PROBABILIDAD_DROP_ORO = 47;
+    public static final int PROBABILIDAD_DROP_ORO = 100;
 
     // Animation interval
     public static final int INTERVAL_DEAD_ANIMATION = 10;

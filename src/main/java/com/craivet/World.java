@@ -64,7 +64,12 @@ public class World {
 
     public World(Game game) {
         this.game = game;
-        player = new Player(game, this);
+        // TODO Implementar metodo para verificar posicion valida
+        // public static boolean isValid(short x, short y) {
+        //        return (x > 0) && (y > 0) && (x <= MAPA_ANCHO) && (y <= MAPA_ALTO);
+        //    }
+        // Y tile no solido..
+        player = new Player(game, this, 23, 21);
         tiles = new TileManager(game, this);
         entitites = new EntityManager(game, this);
         environment = new EnvironmentManager(game, this);

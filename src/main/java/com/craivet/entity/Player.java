@@ -29,19 +29,11 @@ public class Player extends Entity {
     public final int screenX, screenY;
     public boolean attackCanceled, lightUpdate;
 
-    public Player(Game game, World world) {
-        super(game, world);
+    public Player(Game game, World world, int x, int y) {
+        super(game, world, x, y);
         // Posiciona el player en el centro de la pantalla
         screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
         screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
-        // Posiciona el player en el mundo
-        // TODO Implementar metodo para verificar posicion valida
-        // public static boolean isValid(short x, short y) {
-        //        return (x > 0) && (y > 0) && (x <= MAPA_ANCHO) && (y <= MAPA_ALTO);
-        //    }
-        // Y tile no solido..
-        x = 23 * tile_size;
-        y = 21 * tile_size;
         key = game.getKey();
         setDefaultValues();
     }
@@ -77,11 +69,7 @@ public class Player extends Entity {
         motion2 = 25;
 
         loadMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-        switch (weapon.type) {
-            case TYPE_SWORD -> loadWeaponImages(entity_player_sword, 16, 16);
-            case TYPE_AXE -> loadWeaponImages(entity_player_axe, 16, 16);
-            case TYPE_PICKAXE -> loadWeaponImages(entity_player_pickaxe, 16, 16);
-        }
+        loadWeaponImages(entity_player_sword, 16, 16);
         setItems();
         // initDialogue();
     }
@@ -223,8 +211,10 @@ public class Player extends Entity {
                 world.items[world.map][itemIndex] = null;
             }
             if (key.enter) {
-                attackCanceled = true;
-                if (item.type == TYPE_OBSTACLE) item.interact();
+                if (item.type == TYPE_OBSTACLE) {
+                    attackCanceled = true;
+                    item.interact();
+                }
             }
         }
     }

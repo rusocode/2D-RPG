@@ -11,9 +11,7 @@ import static com.craivet.gfx.Assets.*;
 public class Trader extends Npc {
 
 	public Trader(Game game, World world, int x, int y) {
-		super(game, world);
-		this.x = x * tile_size;
-		this.y = y * tile_size;
+		super(game, world, x, y);
 		initDefaultValues();
 	}
 
