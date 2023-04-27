@@ -137,40 +137,43 @@ public class KeyManager extends KeyAdapter {
     }
 
     private void optionState(int code) {
-        if (code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
+        if (code == KeyEvent.VK_ESCAPE) {
+            game.state = PLAY_STATE;
+            game.ui.command = 0;
+        }
         if (code == KeyEvent.VK_ENTER) enter = true;
 
-        int maxCommandNum = switch (game.ui.subState) {
-            case 0 -> 6;
-            case 3 -> 1;
+        int max_command = switch (game.ui.subState) {
+            case 0 -> 5;
+            case 1, 2 -> 1;
             default -> 0;
         };
 
         /* Si la seleccion de comandos esta en los subestados de fullScreen control, entonces no ejecuta las
          * siguientes instrucciones ya que la seleccion solo se mantiene en el back. */
-        if (game.ui.subState == 0 || game.ui.subState == 3) {
+        if (game.ui.subState == 0 || game.ui.subState == 2) {
             if (code == KeyEvent.VK_W) {
                 game.playSound(sound_cursor);
                 game.ui.command--;
-                if (game.ui.command < 0) game.ui.command = maxCommandNum;
+                if (game.ui.command < 0) game.ui.command = max_command;
             }
             if (code == KeyEvent.VK_S) {
                 game.playSound(sound_cursor);
                 game.ui.command++;
-                if (game.ui.command > maxCommandNum) game.ui.command = 0;
+                if (game.ui.command > max_command) game.ui.command = 0;
             }
         }
 
         // Para bajar el volumen
         if (code == KeyEvent.VK_A) {
             if (game.ui.subState == 0) {
-                if (game.ui.command == 1 && game.music.volumeScale > 0) { // Musica
+                if (game.ui.command == 0 && game.music.volumeScale > 0) { // Musica
                     game.music.volumeScale--;
                     // TODO Hace falta esto aca?
                     game.music.checkVolume(); // Cambia el volumen de la musica cuando ya se esta reproduciendo
                     game.playSound(sound_cursor);
                 }
-                if (game.ui.command == 2 && game.sound.volumeScale > 0) { // Sonido
+                if (game.ui.command == 1 && game.sound.volumeScale > 0) { // Sonido
                     game.sound.volumeScale--;
                     game.playSound(sound_cursor);
                 }
@@ -179,12 +182,12 @@ public class KeyManager extends KeyAdapter {
         // Para subir el volumen
         if (code == KeyEvent.VK_D) {
             if (game.ui.subState == 0) {
-                if (game.ui.command == 1 && game.music.volumeScale < 5) {
+                if (game.ui.command == 0 && game.music.volumeScale < 5) {
                     game.music.volumeScale++;
                     game.music.checkVolume();
                     game.playSound(sound_cursor);
                 }
-                if (game.ui.command == 2 && game.sound.volumeScale < 5) { // Sonido
+                if (game.ui.command == 1 && game.sound.volumeScale < 5) { // Sonido
                     game.sound.volumeScale++;
                     game.playSound(sound_cursor);
                 }
@@ -218,12 +221,12 @@ public class KeyManager extends KeyAdapter {
     private void tradeState(int code) {
         if (code == KeyEvent.VK_ENTER) enter = true;
         if (game.ui.subState == 0) {
-            if (code == KeyEvent.VK_W) {
+            if (code == KeyEvent.VK_A) {
                 game.playSound(sound_cursor);
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = 1;
             }
-            if (code == KeyEvent.VK_S) {
+            if (code == KeyEvent.VK_D) {
                 game.playSound(sound_cursor);
                 game.ui.command++;
                 if (game.ui.command > 1) game.ui.command = 0;

@@ -112,7 +112,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         type = TYPE_PLAYER;
         direction = DOWN;
-        speed = defaultSpeed = 3;
+        speed = defaultSpeed = 5;
         life = maxLife = 6;
         mana = maxMana = 4;
         ammo = 5;
@@ -152,6 +152,7 @@ public class Player extends Entity {
         y = 21 * tile_size;
     }
 
+    // TODO Evitar que el player aparezca sobre una entidad solida
     public void setPosition(int map, int x, int y) {
         if (map == NIX) world.area = OUTSIDE;
         if (map == NIX_INDOOR_01) world.area = INDOOR;

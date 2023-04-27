@@ -31,8 +31,8 @@ public class Config {
 	private void loadConfig() {
 		try (BufferedReader br = new BufferedReader(new FileReader(CONFIG_FILE))) {
 			game.fullScreen = ON.equals(br.readLine());
-			game.music.volumeScale = Integer.parseInt(br.readLine());
-			game.sound.volumeScale = Integer.parseInt(br.readLine());
+			// game.music.volumeScale = Integer.parseInt(br.readLine());
+			// game.sound.volumeScale = Integer.parseInt(br.readLine());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar la configuración: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}

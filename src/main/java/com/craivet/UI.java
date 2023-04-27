@@ -508,18 +508,9 @@ public class UI {
         drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
 
         switch (subState) {
-            case 0:
-                optionsMain(frameX, frameY, frameWidth, frameHeight);
-                break;
-            case 1:
-                optionsFullScreenNotification(frameX, frameY, frameHeight);
-                break;
-            case 2:
-                optionsControl(frameX, frameY, frameWidth, frameHeight);
-                break;
-            case 3:
-                optionsEndGameConfirmation(frameX, frameY);
-                break;
+            case 0 -> optionsMain(frameX, frameY, frameWidth, frameHeight);
+            case 1 -> optionsControl(frameX, frameY, frameWidth, frameHeight);
+            case 2 -> optionsEndGameConfirmation(frameX, frameY);
         }
 
         game.key.enter = false;
@@ -539,39 +530,29 @@ public class UI {
 
         changeFontSize(22f);
 
-        // Full Screen ON/OFF
+         // Music
         textX = frameX + tile_size;
-        textY += tile_size + 24;
-        /* g2.drawString("Full Screen", textX, textY);
-        if (commandNum == 0) {
-            g2.drawString(">", textX - 25, textY);
-            if (game.key.enter) {
-                game.fullScreen = !game.fullScreen;
-                subState = 1;
-            }
-        } */
-        // Music
-        textY += tile_size;
+        textY += tile_size * 2;
         g2.drawString("Music", textX, textY);
-        if (command == 1) g2.drawString(">", textX - 25, textY);
+        if (command == 0) g2.drawString(">", textX - 25, textY);
         // Sound
         textY += tile_size;
         g2.drawString("Sound", textX, textY);
-        if (command == 2) g2.drawString(">", textX - 25, textY);
+        if (command == 1) g2.drawString(">", textX - 25, textY);
         // Control
         textY += tile_size;
         g2.drawString("Control", textX, textY);
-        if (command == 3) {
+        if (command == 2) {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
-                subState = 2;
+                subState = 1;
                 command = 0;
             }
         }
         // Save Game
         textY += tile_size;
         g2.drawString("Save Game", textX, textY);
-        if (command == 4) {
+        if (command == 3) {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 game.saveLoad.save();
@@ -582,22 +563,17 @@ public class UI {
         // End Game
         textY += tile_size;
         g2.drawString("End Game", textX, textY);
-        if (command == 5) {
+        if (command == 4) {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
-                subState = 3;
+                subState = 2;
                 command = 0;
             }
         }
 
-        // Full Screen Check Box
-        textX = frameX + frameWidth - tile_size * 3;
-        textY = frameY + (tile_size * 2 + 7);
-        g2.setStroke(new BasicStroke(2));
-        g2.drawRect(textX, textY, 24, 24);
-        // if (game.fullScreen) g2.fillRect(textX, textY, 24, 24);
         // Music volume
-        textY += tile_size;
+        textX = frameX + frameWidth - tile_size * 3;
+        textY = frameY + tile_size * 2 + 28;
         g2.drawRect(textX, textY, 120, 24);
         int volumeWidth = 24 * game.music.volumeScale;
         g2.fillRect(textX, textY, volumeWidth, 24);
@@ -611,7 +587,7 @@ public class UI {
         textX = frameX + tile_size;
         textY = frameHeight;
         g2.drawString("Back", textX, textY);
-        if (command == 6) {
+        if (command == 5) {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 game.state = PLAY_STATE;
@@ -620,25 +596,6 @@ public class UI {
         }
 
         game.config.saveConfig();
-
-    }
-
-    private void optionsFullScreenNotification(int frameX, int frameY, int frameHeight) {
-        int textX = frameX + tile_size;
-        int textY = frameY + tile_size * 3;
-        currentDialogue = "The change will take effect \nafter restarting the game";
-
-        for (String line : currentDialogue.split("\n")) {
-            g2.drawString(line, textX, textY);
-            textY += 40;
-        }
-
-        // Back
-        textX = frameX + tile_size;
-        textY = frameHeight;
-        g2.drawString("Back", textX, textY);
-        g2.drawString(">", textX - 25, textY);
-        if (game.key.enter) subState = 0;
 
     }
 
@@ -699,7 +656,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 subState = 0;
-                command = 3;
+                command = 2;
             }
         }
     }
@@ -738,7 +695,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 subState = 0;
-                command = 5;
+                command = 4;
             }
         }
 
@@ -810,22 +767,17 @@ public class UI {
         // npc.dialogueSet = 0;
         drawDialogueScreen();
 
-        int x = tile_size * 14;
-        int y = tile_size * 4 + 32;
-        int width = tile_size * 3;
-        int height = tile_size * 3;
-        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
+        int x = tile_size * 4;
+        int y = tile_size * 4;
 
         // Draw texts
-        x += tile_size;
-        y += tile_size;
         g2.drawString("Buy", x, y);
         if (command == 0) {
             g2.drawString(">", x - 24, y);
             if (game.key.enter) subState = 1;
         }
 
-        y += tile_size;
+        x += 4 * tile_size;
 
         g2.drawString("Sell", x, y);
         if (command == 1) {

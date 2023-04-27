@@ -45,6 +45,7 @@ public class Minimap {
             int x = SCREEN_WIDTH - width - 20;
             int y = 20;
             g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
+            g2.setColor(Color.black);
             g2.drawRect(x - 1, y - 1, width + 1, height + 1);
             g2.drawImage(minimap[world.map], x, y, width, height, null);
 
