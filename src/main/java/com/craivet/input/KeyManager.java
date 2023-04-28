@@ -140,7 +140,9 @@ public class KeyManager extends KeyAdapter {
         if (code == KeyEvent.VK_ESCAPE) {
             game.state = PLAY_STATE;
             game.ui.command = 0;
+            game.ui.subState = 0;
         }
+
         if (code == KeyEvent.VK_ENTER) enter = true;
 
         int max_command = switch (game.ui.subState) {

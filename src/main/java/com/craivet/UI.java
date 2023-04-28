@@ -628,7 +628,7 @@ public class UI {
         textY += tile_size;
         g2.drawString("Pause", textX, textY);
         textY += tile_size;
-        g2.drawString("Options", textX, textY);
+        g2.drawString("Options/Back", textX, textY);
 
         textX = frameX + frameWidth - tile_size * 3;
         textY = (frameY + tile_size * 2) - 10;

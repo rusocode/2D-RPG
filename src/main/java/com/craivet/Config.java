@@ -18,8 +18,8 @@ public class Config {
 
 	public void saveConfig() {
 		try (BufferedWriter bw = new BufferedWriter(new FileWriter(CONFIG_FILE))) {
-			bw.write(game.fullScreen ? ON : OFF);
-			bw.newLine();
+			// bw.write(game.fullScreen ? ON : OFF);
+			// bw.newLine();
 			bw.write(String.valueOf(game.music.volumeScale));
 			bw.newLine();
 			bw.write(String.valueOf(game.sound.volumeScale));
@@ -30,9 +30,9 @@ public class Config {
 
 	private void loadConfig() {
 		try (BufferedReader br = new BufferedReader(new FileReader(CONFIG_FILE))) {
-			game.fullScreen = ON.equals(br.readLine());
-			// game.music.volumeScale = Integer.parseInt(br.readLine());
-			// game.sound.volumeScale = Integer.parseInt(br.readLine());
+			// game.fullScreen = ON.equals(br.readLine());
+			game.music.volumeScale = Integer.parseInt(br.readLine());
+			game.sound.volumeScale = Integer.parseInt(br.readLine());
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(null, "Error al cargar la configuración: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 		}
