@@ -27,7 +27,7 @@ public class Player extends Entity {
 
     private final KeyManager key;
     public final int screenX, screenY;
-    public boolean attackCanceled, lightUpdate;
+    public boolean attackCanceled, shooting, lightUpdate;
 
     public Player(Game game, World world) {
         super(game, world);
@@ -152,7 +152,7 @@ public class Player extends Entity {
         y = 21 * tile_size;
     }
 
-    // TODO Evitar que el player aparezca sobre una entidad solida
+    // TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
     public void setPosition(int map, int x, int y) {
         if (map == NIX) world.area = OUTSIDE;
         if (map == NIX_INDOOR_01) world.area = INDOOR;
@@ -176,13 +176,14 @@ public class Player extends Entity {
      */
     private void checkAttack() {
         // Si presiono enter y el ataque no esta cancelado
-        if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON) {
+        if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !shooting) {
             if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
             if (weapon.type != TYPE_SWORD) game.playSound(sound_swing_axe);
             attacking = true;
             timer.attackAnimationCounter = 0;
             timer.attackCounter = 0;
         }
+        shooting = false;
         attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
     }
 
@@ -190,7 +191,8 @@ public class Player extends Entity {
      * Comprueba si puede lanzar un proyectil.
      */
     private void checkShoot() {
-        if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this)) {
+        if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !attacking) {
+            shooting = true;
             game.playSound(sound_burning);
             projectile.set(x, y, direction, true, this);
             // Comprueba vacante para agregar el proyectil

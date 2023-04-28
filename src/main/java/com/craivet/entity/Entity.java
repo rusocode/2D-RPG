@@ -547,6 +547,7 @@ public class Entity {
      */
     private void checkCollisions() {
         collision = false;
+        collisionOnPlayer = false;
         game.collider.checkTile(this);
         game.collider.checkItem(this);
         game.collider.checkEntity(this, world.npcs);

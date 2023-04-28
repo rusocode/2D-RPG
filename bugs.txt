@@ -1,10 +1,6 @@
-# Al lanzar un proyectil y atacar al instante, el proyectil desaparece ya que el area de ataque colisiona con este.
-# Rara vez sucede que al navegar por el inventario del player lanza un ArrayIndexOutOfBoundsException que lo genera el 
+# Rara vez sucede que al navegar por el inventario del player lanza un ArrayIndexOutOfBoundsException que lo genera el
 cuadro de descripcion del item. Creo que puede ser un error de sincronizacion cuando se remueve el item del inventario
 y se muestra la descripcion del item.
-# El mundo no se limpia al reiniciar el juego.
 # El bola de fuego pasa por debajo del npc cuando es lanzada desde arriba.
-# A veces al iniciar el dialogo con el Trader, la flecha para indicar las opciones Buy o Sell ">" no aparece.
 # Cuando la entidad sigue al player y colisiona con un item solido o entidad, no lo esquiva.
-# La pimera carga del minimapa se "bugea".
-# Centrar los minimpas.
+# La pimera carga del minimapa en DUNGEON_01 se "bugea".

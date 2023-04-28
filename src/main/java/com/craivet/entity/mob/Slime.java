@@ -48,7 +48,7 @@ public class Slime extends Mob {
         if (onPath) {
             checkUnfollow(world.player, 15);
             searchPath(getGoalRow(world.player), getGoalCol(world.player));
-            checkShoot();
+            // checkShoot();
         } else {
             checkFollow(world.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);

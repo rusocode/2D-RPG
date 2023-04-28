@@ -145,7 +145,7 @@ public class KeyManager extends KeyAdapter {
 
         if (code == KeyEvent.VK_ENTER) enter = true;
 
-        int max_command = switch (game.ui.subState) {
+        int maxCommand = switch (game.ui.subState) {
             case 0 -> 5;
             case 1, 2 -> 1;
             default -> 0;
@@ -157,12 +157,12 @@ public class KeyManager extends KeyAdapter {
             if (code == KeyEvent.VK_W) {
                 game.playSound(sound_cursor);
                 game.ui.command--;
-                if (game.ui.command < 0) game.ui.command = max_command;
+                if (game.ui.command < 0) game.ui.command = maxCommand;
             }
             if (code == KeyEvent.VK_S) {
                 game.playSound(sound_cursor);
                 game.ui.command++;
-                if (game.ui.command > max_command) game.ui.command = 0;
+                if (game.ui.command > maxCommand) game.ui.command = 0;
             }
         }
 

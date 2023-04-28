@@ -1,7 +1,6 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
-import com.craivet.entity.item.Item;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 
@@ -23,7 +22,6 @@ public class UI {
 
     private final Game game;
     private final World world;
-    private final Item item;
     public Entity npc;
     private Graphics2D g2;
 
@@ -48,7 +46,6 @@ public class UI {
     public UI(Game game, World world) {
         this.game = game;
         this.world = world;
-        item = new Item(game, world);
         initHUD();
     }
 
@@ -558,6 +555,7 @@ public class UI {
                 game.saveLoad.save();
                 game.state = PLAY_STATE;
                 game.ui.addMessage("Game saved!");
+                command = 0;
             }
         }
         // End Game

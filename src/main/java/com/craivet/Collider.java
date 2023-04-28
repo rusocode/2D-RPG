@@ -114,8 +114,8 @@ public class Collider {
     /**
      * Verifica la colision entre entidades.
      *
-     * @param entity      la entidad.
-     * @param otherEntity la otra entidad.
+     * @param entity      entidad.
+     * @param otherEntity otra entidad.
      * @return el indice de la otra entidad en caso de que la entidad colisione con esta.
      */
     public int checkEntity(Entity entity, Entity[][] otherEntity) {
