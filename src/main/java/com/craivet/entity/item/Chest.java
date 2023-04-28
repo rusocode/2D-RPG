@@ -51,24 +51,24 @@ public class Chest extends Item {
             opened = true;
             if (world.player.canObtainItem(loot)) {
                 dialogues[0][0] = "You open the chest and find a " + loot.name + "!\nYou obtain the " + loot.name + "!";
-                startDialogue(this, 0);
+                startDialogue(DIALOGUE_STATE, this, 0);
                 empty = true;
             } else {
                 dialogues[1][0] = "You open the chest and find a " + loot.name + "!\n...But you cannot carry any more!";
-                startDialogue(this, 1);
+                startDialogue(DIALOGUE_STATE, this, 1);
             }
         } else if (!empty) {
             if (world.player.canObtainItem(loot)) {
                 dialogues[2][0] = "You obtain the " + loot.name + "!";
-                startDialogue(this, 2);
+                startDialogue(DIALOGUE_STATE, this, 2);
                 empty = true;
             } else {
                 dialogues[3][0] = "You cannot carry any more!";
-                startDialogue(this, 3);
+                startDialogue(DIALOGUE_STATE, this, 3);
             }
         } else {
             dialogues[4][0] = "It's empty.";
-            startDialogue(this, 4);
+            startDialogue(DIALOGUE_STATE, this, 4);
         }
     }
 

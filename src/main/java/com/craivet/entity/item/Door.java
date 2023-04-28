@@ -42,7 +42,7 @@ public class Door extends Item {
     }
 
     public void interact() {
-        startDialogue(this, 0);
+        startDialogue(DIALOGUE_STATE, this, 0);
     }
 
     private void initDialogue() {

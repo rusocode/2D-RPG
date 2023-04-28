@@ -10,7 +10,7 @@ import static com.craivet.utils.Global.*;
 public class KeyManager extends KeyAdapter {
 
     private final Game game;
-    public boolean w, a, s, d, enter, f, l, t;
+    public boolean w, a, s, d, enter, esc, f, l, t;
 
     private int lastKey = -1;
     public static final int MAX_KEYCODE = 255;
@@ -234,6 +234,7 @@ public class KeyManager extends KeyAdapter {
                 if (game.ui.command > 1) game.ui.command = 0;
             }
             if (code == KeyEvent.VK_ESCAPE) {
+                esc = true;
                 game.ui.command = 0;
                 game.state = PLAY_STATE;
             }

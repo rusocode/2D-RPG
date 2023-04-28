@@ -120,7 +120,7 @@ public class Player extends Entity {
         exp = 0;
         nextLvlExp = 5;
         coin = 500;
-        strength = 1;
+        strength = 2;
         dexterity = 1;
         invincible = false;
 
@@ -148,8 +148,8 @@ public class Player extends Entity {
     public void setDefaultPosition() {
         world.area = OUTSIDE;
         world.map = NIX;
-        x = 23 * tile_size;
-        y = 21 * tile_size;
+        x = 10 * tile_size;
+        y = 41 * tile_size;
     }
 
     // TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
@@ -343,6 +343,7 @@ public class Player extends Entity {
     private void checkLevelUp() {
         if (exp >= nextLvlExp) {
             lvl++;
+            exp = 0;
             nextLvlExp *= 2;
             maxLife += 2;
             strength++;
@@ -352,7 +353,7 @@ public class Player extends Entity {
 
             game.playSound(sound_level_up);
             dialogues[0][0] = "You are level " + lvl + "!";
-            startDialogue(this, 0);
+            startDialogue(DIALOGUE_STATE, this, 0);
         }
     }
 

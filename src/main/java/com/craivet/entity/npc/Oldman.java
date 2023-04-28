@@ -41,7 +41,7 @@ public class Oldman extends Npc {
 
     public void speak() {
         facePlayer();
-        startDialogue(this, dialogueSet);
+        startDialogue(DIALOGUE_STATE, this, dialogueSet);
 
         dialogueSet++;
         if (dialogues[dialogueSet][dialogueIndex] == null) dialogueSet = 0;

@@ -164,7 +164,7 @@ public class World {
             if (area == DUNGEON && nextArea == OUTSIDE) game.stopMusic();
         }
         area = nextArea;
-        game.setter.setMOB();
+        // game.setter.setMOB();
     }
 
 }

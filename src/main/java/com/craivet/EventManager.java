@@ -72,7 +72,7 @@ public class EventManager {
     /**
      * Verifica si el area solida del player colisiona con el evento de la posicion especificada.
      */
-    public boolean hit(int map, int col, int row, int reqDirection) {
+    private boolean hit(int map, int col, int row, int reqDirection) {
         boolean hit = false;
 
         if (map == world.map) {
@@ -105,9 +105,8 @@ public class EventManager {
      * Resta vida al player si callo en la foza.
      */
     private void damagePit() {
-        // game.state = DIALOGUE_STATE;
         game.state = PLAY_STATE;
-        eventMaster.startDialogue(eventMaster, 0);
+        eventMaster.startDialogue(DIALOGUE_STATE, eventMaster, 0);
         world.player.life--;
         canTouchEvent = false;
     }
@@ -115,18 +114,17 @@ public class EventManager {
     /**
      * Regenera vida al player si toma agua.
      */
-    public void healingPool() {
+    private void healingPool() {
         if (game.key.enter) {
-            // game.state = DIALOGUE_STATE;
             game.state = PLAY_STATE;
             world.player.attackCanceled = true; // No puede atacar si regenera vida
-            eventMaster.startDialogue(eventMaster, 1);
+            eventMaster.startDialogue(DIALOGUE_STATE, eventMaster, 1);
             world.player.life = world.player.maxLife;
             game.setter.setMOB();
         }
     }
 
-    public void teleport(int area, int map, int col, int row) {
+    private void teleport(int area, int map, int col, int row) {
         game.state = TRANSITION_STATE;
         world.nextArea = area;
         this.map = map;
@@ -135,9 +133,8 @@ public class EventManager {
         canTouchEvent = false;
     }
 
-    public void speak(Entity entity) {
+    private void speak(Entity entity) {
         if (game.key.enter) {
-            game.state = DIALOGUE_STATE;
             world.player.attackCanceled = true;
             entity.speak();
         }

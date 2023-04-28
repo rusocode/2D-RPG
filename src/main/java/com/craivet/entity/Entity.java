@@ -31,9 +31,9 @@ public class Entity {
 
     public Timer timer = new Timer();
     public ArrayList<Entity> inventory = new ArrayList<>();
+
     public String[][] dialogues = new String[20][20];
-    public int dialogueSet;
-    public int dialogueIndex;
+    public int dialogueSet, dialogueIndex;
 
     // General attributes
     public int x, y;
@@ -205,17 +205,34 @@ public class Entity {
         }
     }
 
-    public void setAction() {
+    protected void setAction() {
 
     }
 
     public void setLoot(Entity loot) {
     }
 
-    public void damageReaction() {
+    protected void damageReaction() {
     }
 
     public void speak() {
+    }
+
+    protected void interact() {
+
+    }
+
+    protected boolean use(Entity entity) {
+        return false;
+    }
+
+    public void checkDrop() {
+    }
+
+    public void startDialogue(int state, Entity entity, int setNum) {
+        game.state = state;
+        game.ui.npc = entity;
+        dialogueSet = setNum;
     }
 
     protected void facePlayer() {
@@ -224,40 +241,6 @@ public class Entity {
             case UP -> direction = DOWN;
             case LEFT -> direction = RIGHT;
             case RIGHT -> direction = LEFT;
-        }
-    }
-
-    public void startDialogue(Entity entity, int setNum) {
-        game.state = DIALOGUE_STATE;
-        game.ui.npc = entity;
-        dialogueSet = setNum;
-    }
-
-    public boolean use(Entity entity) {
-        return false;
-    }
-
-    public void checkDrop() {
-    }
-
-    /**
-     * Dropea un item.
-     *
-     * @param item item a dropear.
-     */
-    public void dropItem(Entity entity, Item item) {
-        for (int i = 0; i < world.items[1].length; i++) {
-            if (world.items[world.map][i] == null) {
-                world.items[world.map][i] = item;
-                if (entity instanceof Mob) {
-                    world.items[world.map][i].x = x + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
-                    world.items[world.map][i].y = y + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
-                } else if (entity instanceof Interactive) {
-                    world.items[world.map][i].x = x + (image.getWidth() / 2 - item.image.getWidth() / 2);
-                    world.items[world.map][i].y = y + (image.getHeight() / 2 - item.image.getHeight() / 2);
-                }
-                break;
-            }
         }
     }
 
@@ -277,8 +260,38 @@ public class Entity {
         return 0;
     }
 
-    public void interact() {
+    /**
+     * Genera 4 particulas en el objetivo.
+     *
+     * @param generator entidad que va a generar las particulas.
+     * @param target    objetivo en donde se van a generar las particulas.
+     */
+    protected void generateParticle(Entity generator, Entity target) {
+        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
+    }
 
+    /**
+     * Dropea un item.
+     *
+     * @param item item a dropear.
+     */
+    protected void dropItem(Entity entity, Item item) {
+        for (int i = 0; i < world.items[1].length; i++) {
+            if (world.items[world.map][i] == null) {
+                world.items[world.map][i] = item;
+                if (entity instanceof Mob) {
+                    world.items[world.map][i].x = x + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
+                    world.items[world.map][i].y = y + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
+                } else if (entity instanceof Interactive) {
+                    world.items[world.map][i].x = x + (image.getWidth() / 2 - item.image.getWidth() / 2);
+                    world.items[world.map][i].y = y + (image.getHeight() / 2 - item.image.getHeight() / 2);
+                }
+                break;
+            }
+        }
     }
 
     /**
@@ -289,7 +302,7 @@ public class Entity {
      * @param targetName nombre del item especificado.
      * @return el indice del item especificado a la posicion adyacente del player.
      */
-    public int getDetected(Entity user, Entity[][] target, String targetName) {
+    protected int getDetected(Entity user, Entity[][] target, String targetName) {
         int index = -1;
 
         // Verifica el item adyacente al usuario
@@ -321,19 +334,6 @@ public class Entity {
     }
 
     /**
-     * Genera 4 particulas en el objetivo.
-     *
-     * @param generator entidad que va a generar las particulas.
-     * @param target    objetivo en donde se van a generar las particulas.
-     */
-    public void generateParticle(Entity generator, Entity target) {
-        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
-        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
-        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
-        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
-    }
-
-    /**
      * Daña la entidad si el frame de ataque colisiona con la hitbox del objetivo.
      * <p>
      * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
@@ -342,7 +342,7 @@ public class Entity {
      * En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con una
      * entidad.
      */
-    public void attack() {
+    protected void attack() {
         timer.attackAnimationCounter++;
         if (timer.attackAnimationCounter <= motion1) attackNum = 1; // (de 0-motion1 ms frame de ataque 1)
         if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de motion1-motion2 ms frame de ataque 2)
@@ -436,7 +436,7 @@ public class Entity {
      * @param contact si el mob hace contacto con el player.
      * @param attack  puntos de ataque.
      */
-    public void damagePlayer(boolean contact, int attack) {
+    protected void damagePlayer(boolean contact, int attack) {
         // Si el mob hace contacto con el player que no es invencible
         if (type == TYPE_MOB && contact && !world.player.invincible) {
             game.playSound(sound_receive_damage);
@@ -448,72 +448,13 @@ public class Entity {
     }
 
     /**
-     * Carga las subimagenes de movimiento.
-     *
-     * @param ss SpriteSheet con todas las subimages de movimiento.
-     * @param w  ancho de la subimagen.
-     * @param h  alto de la subimagen.
-     * @param s  valor de escala.
-     */
-    public void loadMovementImages(SpriteSheet ss, int w, int h, int s) {
-        BufferedImage[] subimages = SpriteSheet.getMovementSubimages(ss, w, h);
-        if (subimages.length > 2) { // Orc (8 frames)
-            movementDown1 = Utils.scaleImage(subimages[0], s, s);
-            movementDown2 = Utils.scaleImage(subimages[1], s, s);
-            movementUp1 = Utils.scaleImage(subimages[2], s, s);
-            movementUp2 = Utils.scaleImage(subimages[3], s, s);
-            movementLeft1 = Utils.scaleImage(subimages[4], s, s);
-            movementLeft2 = Utils.scaleImage(subimages[5], s, s);
-            movementRight1 = Utils.scaleImage(subimages[6], s, s);
-            movementRight2 = Utils.scaleImage(subimages[7], s, s);
-        } else if (subimages.length == 2) { // Slime (2 frames)
-            movementDown1 = Utils.scaleImage(subimages[0], s, s);
-            movementDown2 = Utils.scaleImage(subimages[1], s, s);
-            movementUp1 = Utils.scaleImage(subimages[0], s, s);
-            movementUp2 = Utils.scaleImage(subimages[1], s, s);
-            movementLeft1 = Utils.scaleImage(subimages[0], s, s);
-            movementLeft2 = Utils.scaleImage(subimages[1], s, s);
-            movementRight1 = Utils.scaleImage(subimages[0], s, s);
-            movementRight2 = Utils.scaleImage(subimages[1], s, s);
-        } else { // StickyBall (1 frame)
-            movementDown1 = Utils.scaleImage(subimages[0], s, s);
-            movementDown2 = Utils.scaleImage(subimages[0], s, s);
-            movementUp1 = Utils.scaleImage(subimages[0], s, s);
-            movementUp2 = Utils.scaleImage(subimages[0], s, s);
-            movementLeft1 = Utils.scaleImage(subimages[0], s, s);
-            movementLeft2 = Utils.scaleImage(subimages[0], s, s);
-            movementRight1 = Utils.scaleImage(subimages[0], s, s);
-            movementRight2 = Utils.scaleImage(subimages[0], s, s);
-        }
-    }
-
-    /**
-     * Carga las subimagenes de armas.
-     *
-     * @param ss SpriteSheet con todas las subimages de armas.
-     * @param w  ancho de la subimagen.
-     * @param h  alto de la subimagen.
-     */
-    public void loadWeaponImages(SpriteSheet ss, int w, int h) {
-        BufferedImage[] subimages = SpriteSheet.getWeaponSubimages(ss, w, h);
-        weaponDown1 = Utils.scaleImage(subimages[0], tile_size, tile_size * 2);
-        weaponDown2 = Utils.scaleImage(subimages[1], tile_size, tile_size * 2);
-        weaponUp1 = Utils.scaleImage(subimages[2], tile_size, tile_size * 2);
-        weaponUp2 = Utils.scaleImage(subimages[3], tile_size, tile_size * 2);
-        weaponLeft1 = Utils.scaleImage(subimages[4], tile_size * 2, tile_size);
-        weaponLeft2 = Utils.scaleImage(subimages[5], tile_size * 2, tile_size);
-        weaponRight1 = Utils.scaleImage(subimages[6], tile_size * 2, tile_size);
-        weaponRight2 = Utils.scaleImage(subimages[7], tile_size * 2, tile_size);
-    }
-
-    /**
      * Comprueba si puede atacar o no verificando si el objetivo esta dentro del rango especificado.
      *
      * @param rate       probabilidad de que el mob ataque.
      * @param vertical   indica la distancia vertical.
      * @param horizontal indica la distancia horizontal.
      */
-    public void checkAttackOrNot(int rate, int vertical, int horizontal) {
+    protected void checkAttackOrNot(int rate, int vertical, int horizontal) {
         boolean targetInRage = false;
         int xDis = getXDistance(world.player);
         int yDis = getYDistance(world.player);
@@ -586,24 +527,24 @@ public class Entity {
     }
 
     /**
-     * Comprueba si deja de seguir al objetivo.
+     * Comprueba si comienza a seguir al objetivo.
      *
-     * @param target   el objetivo.
-     * @param distance la distancia en tiles.
+     * @param target   objetivo.
+     * @param distance distancia en tiles.
+     * @param rate     la tasa que determina si sigue al objetivo.
      */
-    public void checkUnfollow(Entity target, int distance) {
-        if (getTileDistance(target) > distance) onPath = false;
+    protected void checkFollow(Entity target, int distance, int rate) {
+        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) onPath = true;
     }
 
     /**
-     * Comprueba si empieza a seguir al objetivo.
+     * Comprueba si deja de seguir al objetivo.
      *
-     * @param target   el objetivo.
-     * @param distance la distancia en tiles.
-     * @param rate     la tasa que determina si sigue al objetivo.
+     * @param target   objetivo.
+     * @param distance distancia en tiles.
      */
-    public void checkFollow(Entity target, int distance, int rate) {
-        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) onPath = true;
+    protected void checkUnfollow(Entity target, int distance) {
+        if (getTileDistance(target) > distance) onPath = false;
     }
 
     /**
@@ -612,7 +553,7 @@ public class Entity {
      * @param goalRow fila objetivo.
      * @param goalCol columna objetivo.
      */
-    public void searchPath(int goalRow, int goalCol) {
+    protected void searchPath(int goalRow, int goalCol) {
         int startRow = (y + hitbox.y) / tile_size;
         int startCol = (x + hitbox.x) / tile_size;
 
@@ -666,12 +607,71 @@ public class Entity {
     }
 
     /**
+     * Carga las subimagenes de movimiento.
+     *
+     * @param ss SpriteSheet con todas las subimages de movimiento.
+     * @param w  ancho de la subimagen.
+     * @param h  alto de la subimagen.
+     * @param s  valor de escala.
+     */
+    public void loadMovementImages(SpriteSheet ss, int w, int h, int s) {
+        BufferedImage[] subimages = SpriteSheet.getMovementSubimages(ss, w, h);
+        if (subimages.length > 2) { // Orc (8 frames)
+            movementDown1 = Utils.scaleImage(subimages[0], s, s);
+            movementDown2 = Utils.scaleImage(subimages[1], s, s);
+            movementUp1 = Utils.scaleImage(subimages[2], s, s);
+            movementUp2 = Utils.scaleImage(subimages[3], s, s);
+            movementLeft1 = Utils.scaleImage(subimages[4], s, s);
+            movementLeft2 = Utils.scaleImage(subimages[5], s, s);
+            movementRight1 = Utils.scaleImage(subimages[6], s, s);
+            movementRight2 = Utils.scaleImage(subimages[7], s, s);
+        } else if (subimages.length == 2) { // Slime (2 frames)
+            movementDown1 = Utils.scaleImage(subimages[0], s, s);
+            movementDown2 = Utils.scaleImage(subimages[1], s, s);
+            movementUp1 = Utils.scaleImage(subimages[0], s, s);
+            movementUp2 = Utils.scaleImage(subimages[1], s, s);
+            movementLeft1 = Utils.scaleImage(subimages[0], s, s);
+            movementLeft2 = Utils.scaleImage(subimages[1], s, s);
+            movementRight1 = Utils.scaleImage(subimages[0], s, s);
+            movementRight2 = Utils.scaleImage(subimages[1], s, s);
+        } else { // StickyBall (1 frame)
+            movementDown1 = Utils.scaleImage(subimages[0], s, s);
+            movementDown2 = Utils.scaleImage(subimages[0], s, s);
+            movementUp1 = Utils.scaleImage(subimages[0], s, s);
+            movementUp2 = Utils.scaleImage(subimages[0], s, s);
+            movementLeft1 = Utils.scaleImage(subimages[0], s, s);
+            movementLeft2 = Utils.scaleImage(subimages[0], s, s);
+            movementRight1 = Utils.scaleImage(subimages[0], s, s);
+            movementRight2 = Utils.scaleImage(subimages[0], s, s);
+        }
+    }
+
+    /**
+     * Carga las subimagenes de armas.
+     *
+     * @param ss SpriteSheet con todas las subimages de armas.
+     * @param w  ancho de la subimagen.
+     * @param h  alto de la subimagen.
+     */
+    public void loadWeaponImages(SpriteSheet ss, int w, int h) {
+        BufferedImage[] subimages = SpriteSheet.getWeaponSubimages(ss, w, h);
+        weaponDown1 = Utils.scaleImage(subimages[0], tile_size, tile_size * 2);
+        weaponDown2 = Utils.scaleImage(subimages[1], tile_size, tile_size * 2);
+        weaponUp1 = Utils.scaleImage(subimages[2], tile_size, tile_size * 2);
+        weaponUp2 = Utils.scaleImage(subimages[3], tile_size, tile_size * 2);
+        weaponLeft1 = Utils.scaleImage(subimages[4], tile_size * 2, tile_size);
+        weaponLeft2 = Utils.scaleImage(subimages[5], tile_size * 2, tile_size);
+        weaponRight1 = Utils.scaleImage(subimages[6], tile_size * 2, tile_size);
+        weaponRight2 = Utils.scaleImage(subimages[7], tile_size * 2, tile_size);
+    }
+
+    /**
      * Obtiene la diferencia entre la posicion x del mob y la posicion x del objetivo.
      *
      * @param target objetivo.
      * @return la diferencia entre la posicion x del mob y la posicion x del objetivo.
      */
-    public int getXDistance(Entity target) {
+    private int getXDistance(Entity target) {
         return Math.abs(x - target.x);
     }
 
@@ -681,7 +681,7 @@ public class Entity {
      * @param target objetivo.
      * @return la diferencia entre la posicion y del mob y la posicion y del objetivo.
      */
-    public int getYDistance(Entity target) {
+    private int getYDistance(Entity target) {
         return Math.abs(y - target.y);
     }
 
@@ -691,39 +691,39 @@ public class Entity {
      * @param target objetivo.
      * @return la distancia en tiles del objetivo.
      */
-    public int getTileDistance(Entity target) {
+    private int getTileDistance(Entity target) {
         return (getXDistance(target) + getYDistance(target)) / tile_size;
     }
 
-    public int getGoalRow(Entity target) {
+    protected int getGoalRow(Entity target) {
         return (target.y + target.hitbox.y) / tile_size;
     }
 
-    public int getGoalCol(Entity target) {
+    protected int getGoalCol(Entity target) {
         return (target.x + target.hitbox.x) / tile_size;
     }
 
-    public int getTop() {
+    private int getTop() {
         return y + hitbox.y;
     }
 
-    public int getBottom() {
+    private int getBottom() {
         return y + hitbox.y + hitbox.height;
     }
 
-    public int getLeft() {
+    private int getLeft() {
         return x + hitbox.x;
     }
 
-    public int getRight() {
+    private int getRight() {
         return x + hitbox.x + hitbox.width;
     }
 
-    public int getCol() {
+    private int getCol() {
         return (x + hitbox.x) / tile_size;
     }
 
-    public int getRow() {
+    private int getRow() {
         return (y + hitbox.y) / tile_size;
     }
 

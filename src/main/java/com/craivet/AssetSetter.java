@@ -34,14 +34,14 @@ public class AssetSetter {
         world.items[NIX][i] = new Chest(game, world, 30, 29);
         world.items[NIX][i++].setLoot(new Key(game, world, 1));
 
-        world.items[NIX][i] = new Chest(game, world, 17, 21);
-        world.items[NIX][i++].setLoot(new Tent(game, world));
+        /* world.items[NIX][i] = new Chest(game, world, 17, 21);
+        world.items[NIX][i++].setLoot(new Tent(game, world)); */
 
         world.items[NIX][i] = new Chest(game, world, 16, 21);
         world.items[NIX][i++].setLoot(new PotionRed(game, world, 5));
 
-        world.items[DUNGEON_01][i] = new Chest(game, world, 40, 41);
-        world.items[DUNGEON_01][i++].setLoot(new Pickaxe(game, world));
+        world.items[NIX][i] = new Chest(game, world, 23, 40);
+        world.items[NIX][i++].setLoot(new PotionRed(game, world, 30));
 
         world.items[DUNGEON_01][i] = new Chest(game, world, 13, 16);
         world.items[DUNGEON_01][i++].setLoot(new PotionRed(game, world, 20));
@@ -51,6 +51,7 @@ public class AssetSetter {
 
         world.items[DUNGEON_01][i] = new Chest(game, world, 27, 15);
         world.items[DUNGEON_01][i].setLoot(new PotionRed(game, world, 30));
+
     }
 
     public void setNPC() {
@@ -61,6 +62,7 @@ public class AssetSetter {
 
     public void setMOB() {
         int i = 0;
+        world.mobs[NIX][i++] = new Slime(game, world, 23, 23);
         world.mobs[NIX][i++] = new Slime(game, world, 23, 41);
         world.mobs[NIX][i++] = new Slime(game, world, 24, 37);
         world.mobs[NIX][i++] = new Slime(game, world, 34, 42);

@@ -18,7 +18,6 @@ public class Trader extends Npc {
 	private void initDefaultValues() {
 		type = TYPE_NPC;
 		name = "Trader";
-
 		hitbox.x = 8;
 		hitbox.y = 16;
 		hitbox.width = 32;
@@ -32,8 +31,7 @@ public class Trader extends Npc {
 
 	public void speak() {
 		game.playSound(sound_trade_open);
-		game.state = TRADE_STATE;
-		game.ui.npc = this;
+		startDialogue(TRADE_STATE, this, 0);
 	}
 
 	private void initDialogue() {

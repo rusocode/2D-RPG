@@ -3,4 +3,4 @@ cuadro de descripcion del item. Creo que puede ser un error de sincronizacion cu
 y se muestra la descripcion del item.
 # El bola de fuego pasa por debajo del npc cuando es lanzada desde arriba.
 # Cuando la entidad sigue al player y colisiona con un item solido o entidad, no lo esquiva.
-# La pimera carga del minimapa en DUNGEON_01 se "bugea".
+# La pimera carga del minimapa se clava un par de ms.

@@ -4,6 +4,7 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class UI {
 
     private final Game game;
     private final World world;
-    public Entity npc;
+    public Entity npc; // TODO entity seria un nombre mas logico ya que el player no es un npc (cuando se muestra el mensaje de up lvl)
     private Graphics2D g2;
 
     public String currentDialogue = "";
@@ -77,7 +78,10 @@ public class UI {
             drawPlayerLife();
             drawPauseText();
         }
-        if (game.state == DIALOGUE_STATE) drawDialogueScreen();
+        if (game.state == DIALOGUE_STATE) {
+
+            drawDialogueScreen();
+        }
         if (game.state == CHARACTER_STATE) {
             drawCharacterScreen();
             drawInventory(world.player, true);
@@ -271,7 +275,6 @@ public class UI {
         int textY = frameY + tile_size;
 
         if (npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null) {
-            //  currentDialogue = npc.dialogues[npc.dialogueSet][npc.dialogueIndex];
             char[] characters = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
 
             if (charIndex < characters.length) {
@@ -291,7 +294,8 @@ public class UI {
 
         } else { // Si la conversacion termino
             npc.dialogueIndex = 0;
-            if (game.state == DIALOGUE_STATE) game.state = PLAY_STATE;
+            /* if (game.state == DIALOGUE_STATE) */
+            game.state = PLAY_STATE;
         }
 
         for (String line : currentDialogue.split("\n")) {
@@ -329,7 +333,7 @@ public class UI {
         textY += gap;
         g2.drawString("Exp", textX, textY);
         textY += gap;
-        g2.drawString("Next Level", textX, textY);
+        g2.drawString("Next Level Exp", textX, textY);
         textY += gap;
         g2.drawString("Coin", textX, textY);
         textY += gap + 15;
@@ -527,7 +531,7 @@ public class UI {
 
         changeFontSize(22f);
 
-         // Music
+        // Music
         textX = frameX + tile_size;
         textY += tile_size * 2;
         g2.drawString("Music", textX, textY);
