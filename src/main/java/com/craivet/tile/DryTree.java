@@ -13,9 +13,7 @@ import static com.craivet.gfx.Assets.*;
 public class DryTree extends Interactive {
 
     public DryTree(Game game, World world, int x, int y) {
-        super(game, world);
-        this.x = tile_size * x;
-        this.y = tile_size * y;
+        super(game, world, x, y);
         image = Utils.scaleImage(itile_drytree, tile_size, tile_size);
         destructible = true;
         life = 1;
@@ -25,12 +23,8 @@ public class DryTree extends Interactive {
         return weapon.type == TYPE_AXE;
     }
 
-    public Interactive getDestroyedForm() {
-        return new Trunk(game, world, x / tile_size, y / tile_size);
-    }
-
     public Color getParticleColor() {
-        return new Color(65, 50, 30);
+        return new Color(121, 90, 47);
     }
 
     public int getParticleSize() {

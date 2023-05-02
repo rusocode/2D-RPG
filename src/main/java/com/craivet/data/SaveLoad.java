@@ -31,6 +31,8 @@ public class SaveLoad {
             DataStorage ds = new DataStorage();
 
             // Player status
+            ds.area = world.area;
+            ds.map = world.map;
             ds.x = world.player.x;
             ds.y = world.player.y;
             ds.direction = world.player.direction;
@@ -54,6 +56,7 @@ public class SaveLoad {
             // Player equipment
             ds.currentWeaponSlot = world.player.getCurrentWeaponSlot();
             ds.currentShieldSlot = world.player.getCurrentShieldSlot();
+            ds.currentLightSlot = world.player.getCurrentLightSlot();
 
             // Items on map
             ds.itemName = new String[MAX_MAP][world.items[1].length];
@@ -93,6 +96,8 @@ public class SaveLoad {
         try {
             ObjectInputStream ois = new ObjectInputStream(new FileInputStream("save.dat"));
             DataStorage ds = (DataStorage) ois.readObject();
+            world.area = ds.area;
+            world.map = ds.map;
             world.player.x = ds.x;
             world.player.y = ds.y;
             world.player.direction = ds.direction;
@@ -114,6 +119,7 @@ public class SaveLoad {
             }
             world.player.weapon = world.player.inventory.get(ds.currentWeaponSlot);
             world.player.shield = world.player.inventory.get(ds.currentShieldSlot);
+            world.player.light = world.player.inventory.get(ds.currentLightSlot);
             world.player.getAttack();
             world.player.getDefense();
             world.player.loadWeaponImages(world.player.weapon.type == TYPE_SWORD ? entity_player_sword : entity_player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);

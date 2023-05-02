@@ -1,5 +1,7 @@
-package com.craivet;
+package com.craivet.entity;
 
+import com.craivet.Game;
+import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.*;
 

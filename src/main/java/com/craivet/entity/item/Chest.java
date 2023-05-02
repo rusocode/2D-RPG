@@ -28,9 +28,7 @@ public class Chest extends Item {
     }
 
     public Chest(Game game, World world, int x, int y) {
-        super(game, world);
-        this.x = x * tile_size;
-        this.y = y * tile_size;
+        super(game, world, x, y);
         name = item_name;
         type = TYPE_OBSTACLE;
         image = Utils.scaleImage(item_chest_closed, tile_size, tile_size);

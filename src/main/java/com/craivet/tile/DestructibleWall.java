@@ -14,10 +14,7 @@ import static com.craivet.gfx.Assets.*;
 public class DestructibleWall extends Interactive {
 
     public DestructibleWall(Game game, World world, int x, int y) {
-        super(game, world);
-        // TODO Se podria calcular la edad desde la clase Entity
-        this.x = tile_size * x;
-        this.y = tile_size * y;
+        super(game, world, x, y);
         image = Utils.scaleImage(itile_destructiblewall, tile_size, tile_size);
         destructible = true;
         life = 3;
@@ -25,10 +22,6 @@ public class DestructibleWall extends Interactive {
 
     public boolean isCorrectWeapon(Entity weapon) {
         return weapon.type == TYPE_PICKAXE;
-    }
-
-    public Interactive getDestroyedForm() {
-        return null;
     }
 
     public Color getParticleColor() {

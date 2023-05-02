@@ -17,25 +17,23 @@ public class StickyBall extends Projectile {
 
     public StickyBall(Game game, World world) {
         super(game, world);
-        initDefaultValues();
+        setDefaultValues();
     }
 
-    private void initDefaultValues() {
+    private void setDefaultValues() {
         name = "Sticky Ball";
+        image = Utils.scaleImage(entity_sticky_ball, 32, 32);
         speed = 5;
         life = maxLife = 120;
         attack = 3;
         useCost = 1;
         alive = false;
-
         hitbox.x = 8;
         hitbox.y = 8;
         hitbox.width = 15;
         hitbox.height = 15;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-
-        image = Utils.scaleImage(entity_sticky_ball, 32, 32);
     }
 
     @Override

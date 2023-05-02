@@ -4,7 +4,6 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -217,7 +216,6 @@ public class UI {
 
         // Reset
         x = tile_size / 2;
-        y = tile_size / 2;
         i = 0;
 
         // Dibuja la vida actual
@@ -241,7 +239,6 @@ public class UI {
 
         // Dibuja la mana actual
         x = (tile_size / 2) - 4;
-        y = (int) (tile_size * 1.5);
         i = 0;
         while (i < world.player.mana) {
             g2.drawImage(manaFull, x, y, null);
@@ -358,12 +355,12 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.life + "/" + world.player.maxLife);
+        value = world.player.life + "/" + world.player.maxLife;
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.mana + "/" + world.player.maxMana);
+        value = world.player.mana + "/" + world.player.maxMana;
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
@@ -825,7 +822,7 @@ public class UI {
 
             // Draw price item
             int price = entity.inventory.get(itemIndex).price;
-            String text = "" + price;
+            String text = String.valueOf(price);
             x = getXforAlignToRightText(text, tile_size * 8 - 20);
             g2.drawString(text, x, y + 32);
 
@@ -876,7 +873,7 @@ public class UI {
 
             // Draw price item
             int price = world.player.inventory.get(itemIndex).price / 2;
-            String text = "" + price;
+            String text = String.valueOf(price);
             x = getXforAlignToRightText(text, tile_size * 18 - 20);
             g2.drawString(text, x, y + 32);
 

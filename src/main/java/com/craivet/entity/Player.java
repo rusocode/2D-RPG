@@ -148,8 +148,8 @@ public class Player extends Entity {
     public void setDefaultPosition() {
         world.area = OUTSIDE;
         world.map = NIX;
-        x = 10 * tile_size;
-        y = 41 * tile_size;
+        x = 23 * tile_size;
+        y = 21 * tile_size;
     }
 
     // TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
@@ -322,7 +322,7 @@ public class Player extends Entity {
 
                 if (iTile.life == 0) {
                     iTile.checkDrop();
-                    world.interactives[world.map][iTileIndex] = iTile.getDestroyedForm();
+                    world.interactives[world.map][iTileIndex] = iTile.replaceBy();
                 }
             }
         }
@@ -516,6 +516,13 @@ public class Player extends Entity {
         return currentShieldSlot;
     }
 
+    public int getCurrentLightSlot() {
+        int currentLightSlot = 0;
+        for (int i = 0; i < inventory.size(); i++)
+            if (inventory.get(i) == light) currentLightSlot = i;
+        return currentLightSlot;
+    }
+
     public void initSleepImage(BufferedImage image) {
         movementDown1 = image;
         movementDown2 = image;
@@ -527,7 +534,7 @@ public class Player extends Entity {
         movementRight2 = image;
     }
 
-    public void setItems() {
+    private void setItems() {
         inventory.clear();
         inventory.add(weapon);
         inventory.add(shield);

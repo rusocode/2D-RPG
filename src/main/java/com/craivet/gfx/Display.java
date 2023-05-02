@@ -3,10 +3,8 @@ package com.craivet.gfx;
 import com.craivet.Game;
 
 import javax.swing.*;
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 
 import static com.craivet.utils.Global.*;
 

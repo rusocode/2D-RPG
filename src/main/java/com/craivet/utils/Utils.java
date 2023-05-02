@@ -17,8 +17,8 @@ public final class Utils {
     /**
      * Carga la fuente utilizando la ruta especificada.
      *
-     * @param path la ruta del recurso.
-     * @param size el tamaño de la fuente.
+     * @param path ruta del recurso.
+     * @param size tamaño de la fuente.
      * @return una nueva fuente creada con el tipo de fuente especificado.
      */
     public static Font loadFont(String path, int size) {
@@ -38,7 +38,7 @@ public final class Utils {
     /**
      * Carga la imagen utilizando la ruta especificada.
      *
-     * @param path la ruta del recurso.
+     * @param path ruta del recurso.
      * @return una BufferedImage que contiene el contenido decodificado de la entrada.
      */
     public static BufferedImage loadImage(String path) {
@@ -85,20 +85,18 @@ public final class Utils {
     /**
      * Devuelve un valor pseudoaleatorio entre un minimo y maximo especificado.
      *
-     * @param min el valor minimo.
-     * @param max el valor maximo.
+     * @param min valor minimo.
+     * @param max valor maximo.
      * @return el valor pseudoaleatorio.
      */
     public static int azar(int min, int max) {
         return (int) (Math.random() * (max - min + 1)) + min;
-        // int valor = (int) ((Math.random() * (max - min + 1)) + min);
-        // return (valor < min) ? min : valor;
     }
 
     /**
      * Devuelve un valor pseudoaleatorio entre 1 y el maximo especificado.
      *
-     * @param max el valor maximo.
+     * @param max valor maximo.
      * @return el valor pseudoaleatorio.
      */
     public static int azar(int max) {

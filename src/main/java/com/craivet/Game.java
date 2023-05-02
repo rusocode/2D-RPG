@@ -2,7 +2,7 @@ package com.craivet;
 
 import com.craivet.ai.AStar;
 import com.craivet.data.SaveLoad;
-import com.craivet.gfx.Assets;
+import com.craivet.entity.EntityGenerator;
 import com.craivet.input.KeyManager;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
@@ -46,7 +46,6 @@ public class Game extends Canvas implements Runnable {
     private BufferStrategy buffer;
     public int framesInRender;
     public boolean showFPS;
-    public boolean fullScreen;
     private boolean running;
 
     public Game() {
