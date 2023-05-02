@@ -234,18 +234,21 @@ public class KeyManager extends KeyAdapter {
                 game.ui.command++;
                 if (game.ui.command > 1) game.ui.command = 0;
             }
-            if (code == KeyEvent.VK_ESCAPE) {
-                game.ui.command = 0;
-                game.state = PLAY_STATE;
-            }
+            if (code == KeyEvent.VK_ESCAPE) game.ui.command = 0;
         }
         if (game.ui.subState == 1) {
             npcInventory(code);
-            if (code == KeyEvent.VK_ESCAPE) game.ui.subState = 0;
+            if (code == KeyEvent.VK_ESCAPE) {
+                esc = false;
+                game.ui.subState = 0;
+            }
         }
         if (game.ui.subState == 2) {
             playerInventory(code);
-            if (code == KeyEvent.VK_ESCAPE) game.ui.subState = 0;
+            if (code == KeyEvent.VK_ESCAPE) {
+                esc = false;
+                game.ui.subState = 0;
+            }
         }
     }
 

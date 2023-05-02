@@ -282,7 +282,7 @@ public class UI {
             }
 
             // En el caso de tener varios cuadros de dialogos (ejemplo, Oldman)
-            if (game.key.enter && game.state != TRADE_STATE) {
+            if (game.key.enter) {
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == DIALOGUE_STATE) {
@@ -290,10 +290,13 @@ public class UI {
                     game.key.enter = false;
                 }
             }
-            if (game.key.esc) {
-                System.out.println("aaa");
-                entity.dialogueIndex++;
-                game.key.esc = false;
+            if (game.key.esc) { // TODO o else if?
+                charIndex = 0;
+                combinedText = "";
+                if (game.state == TRADE_STATE) {
+                    entity.dialogueIndex++;
+                    game.key.esc = false;
+                }
             }
 
         } else { // Si la conversacion termino
@@ -766,11 +769,9 @@ public class UI {
             case 2 -> tradeSell();
         }
         game.key.enter = false; // Reinicia la entrada de teclado
-        game.key.esc = false;
     }
 
     private void tradeSelect() {
-        // entity.dialogueSet = 0;
         drawDialogueScreen();
 
         int x = tile_size * 4;
