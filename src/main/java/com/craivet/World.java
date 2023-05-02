@@ -68,7 +68,7 @@ public class World {
         player = new Player(game, this);
         tiles = new TileManager(game, this);
         entitites = new EntityManager(game, this);
-        environment = new EnvironmentManager(game, this);
+        environment = new EnvironmentManager(this);
 
         loadTiles();
         loadMaps();

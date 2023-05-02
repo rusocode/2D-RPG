@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 public class DataStorage implements Serializable {
 
+    // TODO Falta el entorno
     int area, map, x, y, direction, life, maxlife, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, coin;
 
     // TODO Creo que se podria usar un HashMap

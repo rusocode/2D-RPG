@@ -1,11 +1,9 @@
 package com.craivet.environment;
 
-import com.craivet.Game;
 import com.craivet.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageFilter;
 
 import static com.craivet.gfx.Assets.font_medieval1;
 import static com.craivet.utils.Global.*;
@@ -17,7 +15,6 @@ import static com.craivet.utils.Global.*;
 public class Lighting {
 
     private final World world;
-    private final Game game;
 
     private BufferedImage darknessFilter;
 
@@ -31,8 +28,7 @@ public class Lighting {
     public final int dawn = 3;
     public int dayState = day;
 
-    public Lighting(Game game, World world) {
-        this.game = game;
+    public Lighting(World world) {
         this.world = world;
         illuminate(); // TODO Por que se llama desde aca este metodo?
     }
@@ -167,27 +163,18 @@ public class Lighting {
     }
 
     private void debug(Graphics2D g2) {
-        // Debug
-        String situation = "";
-        switch (dayState) {
-            case day:
-                situation = "Day";
-                break;
-            case dusk:
-                situation = "Dusk";
-                break;
-            case night:
-                situation = "Night";
-                break;
-            case dawn:
-                situation = "Dawn";
-                break;
-        }
+        String state = switch (dayState) {
+            case day -> "Day";
+            case dusk -> "Dusk";
+            case night -> "Night";
+            case dawn -> "Dawn";
+            default -> "";
+        };
         g2.setFont(font_medieval1);
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(50f));
-        g2.drawString(situation, 750, 500);
+        g2.drawString(state, 750, 500);
     }
 
 }

@@ -84,6 +84,7 @@ public final class Assets {
     public static final BufferedImage item_potion_red = Utils.loadImage(textures_items_path + "potion_red.png");
     public static final BufferedImage item_shield_blue = Utils.loadImage(textures_items_path + "shield_blue.png");
     public static final BufferedImage item_shield_wood = Utils.loadImage(textures_items_path + "shield_wood.png");
+    public static final BufferedImage item_stone = Utils.loadImage(textures_items_path + "stone.png");
     public static final BufferedImage item_sword_normal = Utils.loadImage(textures_items_path + "sword_normal.png");
     public static final BufferedImage item_tent = Utils.loadImage(textures_items_path + "tent.png");
     // Interactive tiles

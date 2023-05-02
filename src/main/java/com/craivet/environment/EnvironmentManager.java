@@ -1,6 +1,5 @@
 package com.craivet.environment;
 
-import com.craivet.Game;
 import com.craivet.World;
 
 import java.awt.*;
@@ -13,8 +12,8 @@ public class EnvironmentManager {
 
     public final Lighting lighting;
 
-    public EnvironmentManager(Game game, World world) {
-        lighting = new Lighting(game, world);
+    public EnvironmentManager(World world) {
+        lighting = new Lighting(world);
     }
 
     public void update() {

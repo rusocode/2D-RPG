@@ -541,7 +541,7 @@ public class Player extends Entity {
         inventory.add(new PotionRed(game, world, 15));
         inventory.add(new Key(game, world, 2));
         inventory.add(new Lantern(game, world));
-        inventory.add(new Axe(game, world));
+        inventory.add(new Pickaxe(game, world));
     }
 
     private void drawRects(Graphics2D g2) {

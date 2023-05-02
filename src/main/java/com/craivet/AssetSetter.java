@@ -49,8 +49,8 @@ public class AssetSetter {
         world.items[DUNGEON_01][i] = new Chest(game, world, 26, 34);
         world.items[DUNGEON_01][i++].setLoot(new PotionRed(game, world, 5));
 
-        world.items[DUNGEON_01][i] = new Chest(game, world, 27, 15);
-        world.items[DUNGEON_01][i].setLoot(new PotionRed(game, world, 30));
+        world.items[DUNGEON_01][i] = new Chest(game, world, 40, 41);
+        world.items[DUNGEON_01][i].setLoot(new Pickaxe(game, world));
 
     }
 
@@ -62,7 +62,6 @@ public class AssetSetter {
 
     public void setMOB() {
         int i = 0;
-        world.mobs[NIX][i++] = new Slime(game, world, 23, 23);
         world.mobs[NIX][i++] = new Slime(game, world, 23, 41);
         world.mobs[NIX][i++] = new Slime(game, world, 24, 37);
         world.mobs[NIX][i++] = new Slime(game, world, 34, 42);
@@ -82,6 +81,8 @@ public class AssetSetter {
         world.interactives[NIX][i++] = new DryTree(game, world, 28, 31);
         world.interactives[NIX][i++] = new DryTree(game, world, 29, 31);
         world.interactives[NIX][i++] = new DryTree(game, world, 30, 31);
+        world.interactives[NIX][i++] = new DestructibleWall(game, world, 23, 22);
+        world.interactives[NIX][i++] = new DestructibleWall(game, world, 23, 23);
 
         world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 18, 30);
         world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 17, 31);
