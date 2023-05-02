@@ -24,7 +24,7 @@ public class GameState implements State {
         this.world = world;
         this.ui = ui;
         this.minimap = minimap;
-        game.state = TITLE_STATE;
+        game.state = MAIN_STATE;
     }
 
     public void update() {

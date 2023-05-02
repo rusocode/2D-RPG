@@ -42,7 +42,7 @@ public class World {
     private final EntityManager entitites;
     public final EnvironmentManager environment;
 
-    // Tiles
+    // Map
     public int map;
     public int area, nextArea;
     public HashMap<Integer, String> maps = new HashMap<>();
@@ -79,7 +79,7 @@ public class World {
      */
     public void update() {
         entitites.update();
-        if (game.state != TITLE_STATE) environment.update();
+        if (game.state != MAIN_STATE) environment.update();
     }
 
     /**
@@ -90,7 +90,7 @@ public class World {
     public void render(Graphics2D g2) {
         tiles.render(g2);
         entitites.render(g2);
-        if (game.state != TITLE_STATE) environment.render(g2);
+        if (game.state != MAIN_STATE) environment.render(g2);
     }
 
     /**

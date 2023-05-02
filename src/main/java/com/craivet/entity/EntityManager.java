@@ -62,7 +62,7 @@ public class EntityManager {
     }
 
     public void render(Graphics2D g2) {
-        if (game.state == TITLE_STATE) {
+        if (game.state == MAIN_STATE) {
             // Creo que evitaba un mal renderizado cuando estaba en pantalla completa
             g2.setColor(Color.black);
             g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);

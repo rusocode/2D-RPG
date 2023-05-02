@@ -4,7 +4,6 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -23,7 +22,7 @@ public class UI {
 
     private final Game game;
     private final World world;
-    public Entity npc; // TODO entity seria un nombre mas logico ya que el player no es un npc (cuando se muestra el mensaje de up lvl)
+    public Entity entity;
     private Graphics2D g2;
 
     public String currentDialogue = "";
@@ -63,13 +62,14 @@ public class UI {
 
         this.g2 = g2;
 
+        // TODO Esto va aca o en el constructor?
         // Fuente y color por defecto
         g2.setFont(font_medieval1);
         g2.setColor(Color.white);
         // Suaviza los bordes de la fuente
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
-        if (game.state == TITLE_STATE) drawTitleScreen();
+        if (game.state == MAIN_STATE) drawTitleScreen();
         if (game.state == PLAY_STATE) {
             drawPlayerLife();
             drawConsole();
@@ -78,10 +78,7 @@ public class UI {
             drawPlayerLife();
             drawPauseText();
         }
-        if (game.state == DIALOGUE_STATE) {
-
-            drawDialogueScreen();
-        }
+        if (game.state == DIALOGUE_STATE) drawDialogueScreen();
         if (game.state == CHARACTER_STATE) {
             drawCharacterScreen();
             drawInventory(world.player, true);
@@ -274,8 +271,8 @@ public class UI {
         int textX = frameX + tile_size;
         int textY = frameY + tile_size;
 
-        if (npc.dialogues[npc.dialogueSet][npc.dialogueIndex] != null) {
-            char[] characters = npc.dialogues[npc.dialogueSet][npc.dialogueIndex].toCharArray();
+        if (entity.dialogues[entity.dialogueSet][entity.dialogueIndex] != null) {
+            char[] characters = entity.dialogues[entity.dialogueSet][entity.dialogueIndex].toCharArray();
 
             if (charIndex < characters.length) {
                 combinedText += String.valueOf(characters[charIndex]);
@@ -283,17 +280,22 @@ public class UI {
                 charIndex++;
             }
 
+            // En el caso de tener varios cuadros de dialogos (ejemplo, Oldman)
             if (game.key.enter) {
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == DIALOGUE_STATE) {
-                    npc.dialogueIndex++;
+                    entity.dialogueIndex++;
                     game.key.enter = false;
                 }
+            } else if (game.key.esc && game.state == TRADE_STATE) {
+                System.out.println("asd");
+                game.state = PLAY_STATE;
+                game.key.esc = false;
             }
 
         } else { // Si la conversacion termino
-            npc.dialogueIndex = 0;
+            entity.dialogueIndex = 0;
             /* if (game.state == DIALOGUE_STATE) */
             game.state = PLAY_STATE;
         }
@@ -682,7 +684,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
                 subState = 0;
-                game.state = TITLE_STATE;
+                game.state = MAIN_STATE;
                 game.key.t = false;
                 game.resetGame(true);
             }
@@ -790,7 +792,7 @@ public class UI {
 
     private void tradeBuy() {
         drawInventory(world.player, false);
-        drawInventory(npc, true);
+        drawInventory(entity, true);
 
         // Draw hint window
         int x = tile_size * 2;
@@ -807,7 +809,7 @@ public class UI {
         g2.drawString("Your coin: " + world.player.coin, x + 24, y + 60);
 
         int itemIndex = getItemIndexOnSlot(npcSlotCol, npcSlotRow);
-        if (itemIndex < npc.inventory.size()) {
+        if (itemIndex < entity.inventory.size()) {
             // Draw price window
             x = (int) (tile_size * 5.5);
             y = (int) (tile_size * 5.2);
@@ -819,19 +821,19 @@ public class UI {
             g2.drawImage(item_coin, x + 14, y + 10, 32, 32, null);
 
             // Draw price item
-            int price = npc.inventory.get(itemIndex).price;
+            int price = entity.inventory.get(itemIndex).price;
             String text = "" + price;
             x = getXforAlignToRightText(text, tile_size * 8 - 20);
             g2.drawString(text, x, y + 32);
 
             // BUY AN ITEM
             if (game.key.enter) {
-                if (npc.inventory.get(itemIndex).price > world.player.coin)
+                if (entity.inventory.get(itemIndex).price > world.player.coin)
                     addMessage("You need more coin to buy that!");
                 else {
-                    if (world.player.canObtainItem(npc.inventory.get(itemIndex))) {
+                    if (world.player.canObtainItem(entity.inventory.get(itemIndex))) {
                         game.playSound(sound_trade);
-                        world.player.coin -= npc.inventory.get(itemIndex).price;
+                        world.player.coin -= entity.inventory.get(itemIndex).price;
                     } else addMessage("You cannot carry any more!");
                 }
             }

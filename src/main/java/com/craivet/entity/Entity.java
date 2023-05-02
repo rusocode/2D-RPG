@@ -229,10 +229,10 @@ public class Entity {
     public void checkDrop() {
     }
 
-    public void startDialogue(int state, Entity entity, int setNum) {
+    public void startDialogue(int state, Entity entity, int set) {
         game.state = state;
-        game.ui.npc = entity;
-        dialogueSet = setNum;
+        game.ui.entity = entity;
+        dialogueSet = set;
     }
 
     protected void facePlayer() {

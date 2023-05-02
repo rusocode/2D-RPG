@@ -27,7 +27,7 @@ public class KeyManager extends KeyAdapter {
             throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
         if (lastKey != e.getKeyCode()) {
             lastKey = e.getKeyCode();
-            if (game.state == TITLE_STATE) titleState(lastKey);
+            if (game.state == MAIN_STATE) titleState(lastKey);
             else if (game.state == PLAY_STATE) playState(lastKey);
             else if (game.state == PAUSE_STATE) pauseState(lastKey);
             else if (game.state == DIALOGUE_STATE) dialogueState(lastKey);
@@ -214,7 +214,7 @@ public class KeyManager extends KeyAdapter {
                 game.state = PLAY_STATE;
                 game.resetGame(false);
             } else if (game.ui.command == 1) {
-                game.state = TITLE_STATE;
+                game.state = MAIN_STATE;
                 game.resetGame(true);
             }
         }
@@ -222,6 +222,7 @@ public class KeyManager extends KeyAdapter {
 
     private void tradeState(int code) {
         if (code == KeyEvent.VK_ENTER) enter = true;
+        if (code == KeyEvent.VK_ESCAPE) esc = true;
         if (game.ui.subState == 0) {
             if (code == KeyEvent.VK_A) {
                 game.playSound(sound_cursor);
@@ -234,7 +235,6 @@ public class KeyManager extends KeyAdapter {
                 if (game.ui.command > 1) game.ui.command = 0;
             }
             if (code == KeyEvent.VK_ESCAPE) {
-                esc = true;
                 game.ui.command = 0;
                 game.state = PLAY_STATE;
             }

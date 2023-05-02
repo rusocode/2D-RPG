@@ -134,7 +134,7 @@ public class Player extends Entity {
         hitbox.x = 8;
         hitbox.y = 16;
         hitbox.width = 32;
-        hitbox.height = 32;
+        hitbox.height = 30;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         motion1 = 5;

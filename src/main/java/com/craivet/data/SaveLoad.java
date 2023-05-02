@@ -6,8 +6,7 @@ import com.craivet.entity.Entity;
 
 import java.io.*;
 
-import static com.craivet.gfx.Assets.entity_player_axe;
-import static com.craivet.gfx.Assets.entity_player_sword;
+import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class SaveLoad {

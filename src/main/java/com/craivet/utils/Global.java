@@ -57,6 +57,9 @@ public final class Global {
     public static final int NIX_INDOOR_01 = 1;
     public static final int DUNGEON_01 = 2;
     public static final int DUNGEON_02 = 3;
+    public static final int OUTSIDE = 0;
+    public static final int INDOOR = 1;
+    public static final int DUNGEON = 2;
 
     // Title screen
     public static final int MAIN_SCREEN = 0;
@@ -84,7 +87,7 @@ public final class Global {
     // Game state
     /* TODO Se podrian separar estas constantes en un enum tal vez? GameState con enums TITLE, PLAY, etc. o en un
      * paquete con los diferentes tipos de constantes en clases final. */
-    public static final int TITLE_STATE = 0;
+    public static final int MAIN_STATE = 0;
     public static final int PLAY_STATE = 1;
     public static final int PAUSE_STATE = 2;
     public static final int DIALOGUE_STATE = 3;
@@ -94,11 +97,6 @@ public final class Global {
     public static final int TRANSITION_STATE = 7;
     public static final int TRADE_STATE = 8;
     public static final int SLEEP_STATE = 9;
-
-    // Area
-    public static final int OUTSIDE = 0;
-    public static final int INDOOR = 1;
-    public static final int DUNGEON = 2;
 
     // Entity type
     public static final int TYPE_PLAYER = 0;
