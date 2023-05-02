@@ -221,8 +221,8 @@ public class KeyManager extends KeyAdapter {
     }
 
     private void tradeState(int code) {
-        if (code == KeyEvent.VK_ENTER) enter = true;
         if (code == KeyEvent.VK_ESCAPE) esc = true;
+        if (code == KeyEvent.VK_ENTER) enter = true;
         if (game.ui.subState == 0) {
             if (code == KeyEvent.VK_A) {
                 game.playSound(sound_cursor);

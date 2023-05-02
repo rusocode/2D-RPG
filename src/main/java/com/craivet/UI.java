@@ -4,6 +4,7 @@ import com.craivet.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -281,22 +282,22 @@ public class UI {
             }
 
             // En el caso de tener varios cuadros de dialogos (ejemplo, Oldman)
-            if (game.key.enter) {
+            if (game.key.enter && game.state != TRADE_STATE) {
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == DIALOGUE_STATE) {
                     entity.dialogueIndex++;
                     game.key.enter = false;
                 }
-            } else if (game.key.esc && game.state == TRADE_STATE) {
-                System.out.println("asd");
-                game.state = PLAY_STATE;
+            }
+            if (game.key.esc) {
+                System.out.println("aaa");
+                entity.dialogueIndex++;
                 game.key.esc = false;
             }
 
         } else { // Si la conversacion termino
             entity.dialogueIndex = 0;
-            /* if (game.state == DIALOGUE_STATE) */
             game.state = PLAY_STATE;
         }
 
@@ -765,10 +766,11 @@ public class UI {
             case 2 -> tradeSell();
         }
         game.key.enter = false; // Reinicia la entrada de teclado
+        game.key.esc = false;
     }
 
     private void tradeSelect() {
-        // npc.dialogueSet = 0;
+        // entity.dialogueSet = 0;
         drawDialogueScreen();
 
         int x = tile_size * 4;
