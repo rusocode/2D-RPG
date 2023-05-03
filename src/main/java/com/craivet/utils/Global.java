@@ -71,7 +71,7 @@ public final class Global {
 
     // Animation interval
     public static final int INTERVAL_DEAD_ANIMATION = 10;
-    public static final int INTERVAL_MOVEMENT_ANIMATION = 10;
+    public static final int INTERVAL_MOVEMENT_ANIMATION = 15;
     public static final int INTERVAL_PROJECTILE_ANIMATION = 10;
     // Weapon interval
     public static final int INTERVAL_WEAPON = 30;

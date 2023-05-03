@@ -4,8 +4,7 @@ import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.utils.Utils;
 
-import static com.craivet.gfx.Assets.item_door;
-import static com.craivet.gfx.Assets.item_door_iron;
+import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class DoorIron extends Item {
@@ -31,7 +30,7 @@ public class DoorIron extends Item {
         super(game, world, x, y);
         name = item_name;
         type = TYPE_OBSTACLE;
-        image = Utils.scaleImage(item_door, tile_size, tile_size);
+        image = Utils.scaleImage(item_door_iron, tile_size, tile_size);
         solid = true;
         hitbox.x = 0;
         hitbox.y = 16;

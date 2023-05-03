@@ -3,10 +3,12 @@ package com.craivet;
 import com.craivet.entity.item.*;
 import com.craivet.entity.mob.Orc;
 import com.craivet.entity.mob.Slime;
+import com.craivet.entity.npc.BigRock;
 import com.craivet.entity.npc.Trader;
 import com.craivet.entity.npc.Oldman;
 import com.craivet.tile.DestructibleWall;
 import com.craivet.tile.DryTree;
+import com.craivet.tile.MetalPlate;
 
 import static com.craivet.utils.Global.*;
 
@@ -50,7 +52,9 @@ public class AssetSetter {
         world.items[DUNGEON_01][i++].setLoot(new PotionRed(game, world, 5));
 
         world.items[DUNGEON_01][i] = new Chest(game, world, 40, 41);
-        world.items[DUNGEON_01][i].setLoot(new Pickaxe(game, world));
+        world.items[DUNGEON_01][i++].setLoot(new Pickaxe(game, world));
+
+        world.items[DUNGEON_01][i] = new DoorIron(game, world, 18, 23);
 
     }
 
@@ -58,6 +62,10 @@ public class AssetSetter {
         int i = 0;
         world.npcs[NIX][i] = new Oldman(game, world, 23, 18);
         world.npcs[NIX_INDOOR_01][i] = new Trader(game, world, 12, 7);
+
+        world.npcs[DUNGEON_01][i++] = new BigRock(game, world, 20, 25);
+        world.npcs[DUNGEON_01][i++] = new BigRock(game, world, 11, 18);
+        world.npcs[DUNGEON_01][i] = new BigRock(game, world, 23, 14);
     }
 
     public void setMOB() {
@@ -81,8 +89,6 @@ public class AssetSetter {
         world.interactives[NIX][i++] = new DryTree(game, world, 28, 31);
         world.interactives[NIX][i++] = new DryTree(game, world, 29, 31);
         world.interactives[NIX][i++] = new DryTree(game, world, 30, 31);
-        world.interactives[NIX][i++] = new DestructibleWall(game, world, 23, 22);
-        world.interactives[NIX][i++] = new DestructibleWall(game, world, 23, 23);
 
         world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 18, 30);
         world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 17, 31);
@@ -101,6 +107,10 @@ public class AssetSetter {
         world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 22, 28);
         world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 30, 28);
         world.interactives[DUNGEON_01][i++] = new DestructibleWall(game, world, 32, 28);
+
+        world.interactives[DUNGEON_01][i++] = new MetalPlate(game, world, 20, 22);
+        world.interactives[DUNGEON_01][i++] = new MetalPlate(game, world, 8, 17);
+        world.interactives[DUNGEON_01][i++] = new MetalPlate(game, world, 39, 31);
 
     }
 

@@ -16,15 +16,15 @@ public class Trader extends Npc {
 	}
 
 	private void initDefaultValues() {
-		type = TYPE_NPC;
 		name = "Trader";
+		type = TYPE_NPC;
+		image = Utils.scaleImage(entity_trader, tile_size, tile_size);
 		hitbox.x = 8;
 		hitbox.y = 16;
 		hitbox.width = 32;
 		hitbox.height = 32;
 		hitboxDefaultX = hitbox.x;
 		hitboxDefaultY = hitbox.y;
-		image = Utils.scaleImage(entity_trader, tile_size, tile_size);
 		initDialogue();
 		setItems();
 	}

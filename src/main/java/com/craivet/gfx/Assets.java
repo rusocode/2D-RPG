@@ -28,6 +28,7 @@ public final class Assets {
     public static final URL sound_cursor = Utils.loadAudio(sounds_path + "500.wav");
     public static final URL sound_cut_tree = Utils.loadAudio(sounds_path + "cut_tree.wav");
     public static final URL sound_door_opening = Utils.loadAudio(sounds_path + "door_opening.wav");
+    public static final URL sound_door_iron_opening = Utils.loadAudio(sounds_path + "door_iron_opening.wav");
     public static final URL sound_draw_sword = Utils.loadAudio(sounds_path + "draw_sword.wav");
     public static final URL sound_hit_monster = Utils.loadAudio(sounds_path + "hit_monster.wav");
     public static final URL sound_hit_orc = Utils.loadAudio(sounds_path + "hit_orc.wav");
@@ -92,6 +93,5 @@ public final class Assets {
     public static final BufferedImage itile_destructiblewall = Utils.loadImage(textures_tiles_path + "destructiblewall.png");
     public static final BufferedImage itile_drytree = Utils.loadImage(textures_tiles_path + "drytree.png");
     public static final BufferedImage itile_metalplate = Utils.loadImage(textures_tiles_path + "metalplate.png");
-    public static final BufferedImage itile_trunk = Utils.loadImage(textures_tiles_path + "trunk.png");
 
 }

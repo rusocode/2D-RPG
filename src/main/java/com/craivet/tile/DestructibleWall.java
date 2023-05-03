@@ -3,7 +3,6 @@ package com.craivet.tile;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
-import com.craivet.entity.item.Coin;
 import com.craivet.entity.item.Stone;
 import com.craivet.utils.Utils;
 

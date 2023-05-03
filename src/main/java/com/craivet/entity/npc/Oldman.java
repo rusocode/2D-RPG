@@ -14,19 +14,16 @@ public class Oldman extends Npc {
     }
 
     private void initDefaultValues() {
-        type = TYPE_NPC;
         name = "Oldman";
+        type = TYPE_NPC;
         speed = 1;
-
         hitbox.x = 8;
         hitbox.y = 16;
         hitbox.width = 32;
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-
         dialogueSet = -1;
-
         loadMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         initDialogue();
     }

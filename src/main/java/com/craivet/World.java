@@ -57,7 +57,7 @@ public class World {
     public List<Entity> particles = new ArrayList<>();
     public Entity[][] items = new Item[MAX_MAP][20];
     public Entity[][] mobs = new Mob[MAX_MAP][20];
-    public Entity[][] npcs = new Npc[MAX_MAP][10];
+    public Entity[][] npcs = new Npc[MAX_MAP][10]; // TODO Por que no lo declaro como un objeto Npc?
     public Entity[][] projectiles = new Projectile[MAX_MAP][20];
     public Interactive[][] interactives = new Interactive[MAX_MAP][50];
 
@@ -164,7 +164,8 @@ public class World {
             if (area == DUNGEON && nextArea == OUTSIDE) game.stopMusic();
         }
         area = nextArea;
-        // game.setter.setMOB();
+        game.setter.setMOB();
+        game.setter.setNPC();
     }
 
 }

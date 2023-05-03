@@ -1,1 +1,2 @@
 # Centrar los minimpas.
+# Preguntar si desea guardar la partida cuando cierra el juego desde el menu de opciones.

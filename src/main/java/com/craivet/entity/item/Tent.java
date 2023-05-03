@@ -14,8 +14,8 @@ public class Tent extends Item {
 
     public Tent(Game game, World world) {
         super(game, world);
-        type = TYPE_CONSUMABLE;
         name = item_name;
+        type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_tent, tile_size, tile_size);
         description = "[" + name + "]\nYou can sleep until\nnext morning.";
         price = 1200;
@@ -23,8 +23,8 @@ public class Tent extends Item {
 
     public Tent(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        type = TYPE_CONSUMABLE;
         name = item_name;
+        type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_tent, tile_size, tile_size);
         description = "[" + name + "]\nYou can sleep until\nnext morning.";
         price = 1200;

@@ -112,7 +112,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         type = TYPE_PLAYER;
         direction = DOWN;
-        speed = defaultSpeed = 5;
+        speed = defaultSpeed = 3;
         life = maxLife = 6;
         mana = maxMana = 4;
         ammo = 5;
@@ -146,10 +146,10 @@ public class Player extends Entity {
     }
 
     public void setDefaultPosition() {
-        world.area = OUTSIDE;
-        world.map = NIX;
-        x = 23 * tile_size;
-        y = 21 * tile_size;
+        world.area = DUNGEON;
+        world.map = DUNGEON_01;
+        x = 9 * tile_size;
+        y = 39 * tile_size;
     }
 
     // TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
@@ -239,9 +239,12 @@ public class Player extends Entity {
      * @param npcIndex indice del npc.
      */
     private void interactNPC(int npcIndex) {
-        if (npcIndex != -1 && key.enter) {
-            attackCanceled = true; // No puede atacar si interactua con un npc
-            world.npcs[world.map][npcIndex].speak();
+        if (npcIndex != -1) {
+            if (key.enter) {
+                attackCanceled = true; // No puede atacar si interactua con un npc
+                world.npcs[world.map][npcIndex].speak();
+            }
+            world.npcs[world.map][npcIndex].move(direction);
         }
     }
 
@@ -452,7 +455,7 @@ public class Player extends Entity {
     /**
      * Comprueba las colisiones con tiles, items, npcs, mobs, tiles interactivos y eventos.
      */
-    private void checkCollisions() {
+    public void checkCollisions() {
         collision = false;
         game.collider.checkTile(this);
         pickUpItem(game.collider.checkItem(this));

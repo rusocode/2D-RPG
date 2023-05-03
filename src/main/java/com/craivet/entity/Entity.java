@@ -31,6 +31,7 @@ public class Entity {
 
     public Timer timer = new Timer();
     public ArrayList<Entity> inventory = new ArrayList<>();
+    public Entity linkedEntity;
 
     public String[][] dialogues = new String[20][20];
     public int dialogueSet, dialogueIndex;
@@ -206,6 +207,10 @@ public class Entity {
     }
 
     protected void setAction() {
+
+    }
+
+    protected void move(int direction) {
 
     }
 
@@ -486,7 +491,7 @@ public class Entity {
     /**
      * Comprueba las colisiones.
      */
-    private void checkCollisions() {
+    public void checkCollisions() {
         collision = false;
         collisionOnPlayer = false;
         game.collider.checkTile(this);
@@ -634,15 +639,6 @@ public class Entity {
             movementLeft2 = Utils.scaleImage(subimages[1], s, s);
             movementRight1 = Utils.scaleImage(subimages[0], s, s);
             movementRight2 = Utils.scaleImage(subimages[1], s, s);
-        } else { // StickyBall (1 frame)
-            movementDown1 = Utils.scaleImage(subimages[0], s, s);
-            movementDown2 = Utils.scaleImage(subimages[0], s, s);
-            movementUp1 = Utils.scaleImage(subimages[0], s, s);
-            movementUp2 = Utils.scaleImage(subimages[0], s, s);
-            movementLeft1 = Utils.scaleImage(subimages[0], s, s);
-            movementLeft2 = Utils.scaleImage(subimages[0], s, s);
-            movementRight1 = Utils.scaleImage(subimages[0], s, s);
-            movementRight2 = Utils.scaleImage(subimages[0], s, s);
         }
     }
 
