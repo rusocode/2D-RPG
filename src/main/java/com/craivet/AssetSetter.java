@@ -59,13 +59,16 @@ public class AssetSetter {
     }
 
     public void setNPC() {
-        int i = 0;
-        world.npcs[NIX][i] = new Oldman(game, world, 23, 18);
-        world.npcs[NIX_INDOOR_01][i] = new Trader(game, world, 12, 7);
+        int i = 0, j = 0, k = 0;
+        
+        world.npcs[NIX][i++] = new Oldman(game, world, 23, 18);
+        world.npcs[NIX][i] = new Oldman(game, world, 23, 20);
 
-        world.npcs[DUNGEON_01][i++] = new BigRock(game, world, 20, 25);
-        world.npcs[DUNGEON_01][i++] = new BigRock(game, world, 11, 18);
-        world.npcs[DUNGEON_01][i] = new BigRock(game, world, 23, 14);
+        world.npcs[NIX_INDOOR_01][j] = new Trader(game, world, 12, 7);
+
+        world.npcs[DUNGEON_01][k++] = new BigRock(game, world, 20, 25);
+        world.npcs[DUNGEON_01][k++] = new BigRock(game, world, 11, 18);
+        world.npcs[DUNGEON_01][k] = new BigRock(game, world, 23, 14);
     }
 
     public void setMOB() {

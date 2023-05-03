@@ -29,6 +29,8 @@ public class Player extends Entity {
     public final int screenX, screenY;
     public boolean attackCanceled, shooting, lightUpdate;
 
+    private Entity entityAux;
+
     public Player(Game game, World world) {
         super(game, world);
         // Posiciona el player en el centro de la pantalla
@@ -76,7 +78,12 @@ public class Player extends Entity {
         int tempScreenX = screenX, tempScreenY = screenY;
         switch (direction) {
             case DOWN -> {
-                if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                if (!attacking) {
+                    frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                    // if (collisionOnEntity && entityAux.direction == DOWN)
+                    // frame = movementNum == 1 ? movementDown1 : movementDown2;
+                    // else frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                }
                 if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
             }
             case UP -> {
@@ -146,10 +153,10 @@ public class Player extends Entity {
     }
 
     public void setDefaultPosition() {
-        world.area = DUNGEON;
-        world.map = DUNGEON_01;
-        x = 9 * tile_size;
-        y = 39 * tile_size;
+        world.area = OUTSIDE;
+        world.map = NIX;
+        x = 23 * tile_size;
+        y = 21 * tile_size;
     }
 
     // TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
@@ -240,6 +247,7 @@ public class Player extends Entity {
      */
     private void interactNPC(int npcIndex) {
         if (npcIndex != -1) {
+            entityAux = world.npcs[world.map][npcIndex];
             if (key.enter) {
                 attackCanceled = true; // No puede atacar si interactua con un npc
                 world.npcs[world.map][npcIndex].speak();
@@ -255,6 +263,7 @@ public class Player extends Entity {
      */
     private void damagePlayer(int mobIndex) {
         if (mobIndex >= 0) {
+            entityAux = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
             if (!invincible && !mob.dead) {
                 game.playSound(sound_receive_damage);
@@ -275,7 +284,7 @@ public class Player extends Entity {
      * @param attack         tipo de ataque (sword o fireball).
      */
     public void damageMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
-        if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
+        if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?\
             Entity mob = world.mobs[world.map][mobIndex];
             if (!mob.invincible) {
 
@@ -457,6 +466,7 @@ public class Player extends Entity {
      */
     public void checkCollisions() {
         collision = false;
+        // collisionOnEntity = false;
         game.collider.checkTile(this);
         pickUpItem(game.collider.checkItem(this));
         interactNPC(game.collider.checkEntity(this, world.npcs));
