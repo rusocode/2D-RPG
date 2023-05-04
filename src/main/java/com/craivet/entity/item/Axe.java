@@ -23,7 +23,7 @@ public class Axe extends Item {
 		attackbox.height = 30;
 		description = "[" + name + "]\nA bit rusty but still \ncan cut some trees.";
 		price = 75;
-		attackValue = 1;
+		attackValue = 0;
 		knockbackValue = 8;
 	}
 

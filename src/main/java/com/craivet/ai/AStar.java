@@ -83,25 +83,25 @@ public class AStar {
 
                 for (int i = 0; i < world.interactives[1].length; i++) {
                     if (world.interactives[world.map][i] != null && world.interactives[world.map][i].destructible) {
-                        int itRow = world.interactives[world.map][i].y / tile_size;
+                        int itRow = world.interactives[world.map][i].y / tile_size; // TODO Falta sumarle la hitbox
                         int itCol = world.interactives[world.map][i].x / tile_size;
                         node[itRow][itCol].solid = true;
                     }
                 }
 
-                // Funciona bien, pero cuando esta en una posicion cerrada (no literalmente) de tree se queda atascado en el tree
-                /* for (int i = 0; i < world.items[1].length; i++) {
+                // Funciona bien, pero cuando la entidad esta en una posicion cerrada (no literalmente) de tiles interactivos, se queda atascada
+                for (int i = 0; i < world.items[1].length; i++) {
                     if (world.items[world.map][i] != null && world.items[world.map][i].solid) {
-                        int itRow = world.items[world.map][i].y / tile_size;
-                        int itCol = world.items[world.map][i].x / tile_size;
+                        int itRow = (world.items[world.map][i].y + world.items[world.map][i].hitbox.y) / tile_size;
+                        int itCol = (world.items[world.map][i].x + world.items[world.map][i].hitbox.x) / tile_size;
                         node[itRow][itCol].solid = true;
                     }
-                } */
+                }
 
-                /* for (int i = 0; i < world.npcs[1].length; i++) {
-                    if (world.npcs[world.map][i] != null) {
-                        int itRow = world.npcs[world.map][i].y / tile_size;
-                        int itCol = world.npcs[world.map][i].x / tile_size;
+               /* for (int i = 0; i < world.mobs[1].length; i++) {
+                    if (world.mobs[world.map][i] != null) {
+                        int itRow = (world.mobs[world.map][i].y + world.mobs[world.map][i].hitbox.y) / tile_size;
+                        int itCol = (world.mobs[world.map][i].x + world.mobs[world.map][i].hitbox.x) / tile_size;
                         node[itRow][itCol].solid = true;
                     }
                 } */
