@@ -4,7 +4,6 @@ import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.DoorIron;
-import com.craivet.entity.item.Item;
 import com.craivet.tile.Interactive;
 import com.craivet.tile.MetalPlate;
 import com.craivet.utils.Utils;
@@ -48,7 +47,7 @@ public class BigRock extends Npc {
 
     public void move(int direction) {
         this.direction = direction;
-        checkCollisions();
+        checkCollision();
         if (!collision) {
             switch (direction) {
                 case DOWN -> y += speed;

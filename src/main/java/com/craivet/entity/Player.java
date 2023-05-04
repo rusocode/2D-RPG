@@ -48,7 +48,7 @@ public class Player extends Entity {
         if (checkKeys()) {
 
             getDirection();
-            checkCollisions();
+            checkCollision();
             if (!collision && !key.enter && !key.l) updatePosition();
             checkAttack();
 
@@ -342,10 +342,13 @@ public class Player extends Entity {
 
     protected void damageProjectile(int projectileIndex) {
         if (projectileIndex != -1) {
-            game.playSound(sound_receive_damage);
             Entity projectile = world.projectiles[world.map][projectileIndex];
-            projectile.alive = false;
-            generateParticle(projectile, projectile);
+            // Evita daniar el propio proyectil
+            if (projectile != this.projectile) {
+                game.playSound(sound_receive_damage);
+                projectile.alive = false;
+                generateParticle(projectile, projectile);
+            }
         }
     }
 
@@ -464,9 +467,8 @@ public class Player extends Entity {
     /**
      * Comprueba las colisiones con tiles, items, npcs, mobs, tiles interactivos y eventos.
      */
-    public void checkCollisions() {
+    public void checkCollision() {
         collision = false;
-        // collisionOnPlayer = false;
         game.collider.checkTile(this);
         pickUpItem(game.collider.checkItem(this));
         interactNPC(game.collider.checkEntity(this, world.npcs));

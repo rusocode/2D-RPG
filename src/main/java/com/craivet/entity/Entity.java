@@ -100,10 +100,7 @@ public class Entity {
 
     /**
      * En caso de que se haya aplicado knockback a la entidad, comprueba las colisiones y en base a eso determina si se
-     * detiene el knockback o se actualiza la posicion de la entidad utilizando la variable temporal knockbackDirection.
-     * Si la entidad esta pegada al player y este aplica knockback, la entidad retrocede. Esto se comprueba con el
-     * estado collisionOnPlayer (soluciona el bug en el que no retrocedia al aplicar knockback). Pero si la entidad no
-     * esta pegada al player pero colisiona con otra entidad, detiene el knockback. Sino actualiza la posicion.
+     * actualiza la posicion de la entidad utilizando la variable temporal knockbackDirection o se detiene el knockback.
      * <p>
      * Si la entidad esta atacando, entonces ataca.
      * <p>
@@ -114,18 +111,14 @@ public class Entity {
     public void update() {
         // TODO Se podria separar en metodos
         if (knockback) {
-            checkCollisions();
-            if (collisionOnPlayer) updatePosition(knockbackDirection);
-            else if (collision) {
-                knockback = false;
-                speed = defaultSpeed;
-                timer.knockbackCounter = 0;
-            } else updatePosition(knockbackDirection);
+            checkCollision();
+            if (!collision) updatePosition(knockbackDirection);
+            else stopKnockback();
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
         } else if (attacking) attack();
         else {
             setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
-            checkCollisions();
+            checkCollision();
             if (!collision) updatePosition(direction);
 
             /* TODO Estos timers deberian ir fuera del else? Al usar un timer para el movimiento y otro para la
@@ -446,7 +439,7 @@ public class Entity {
         if (type == TYPE_MOB && contact && !world.player.invincible) {
             game.playSound(sound_receive_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
-            int damage = Math.max(attack - world.player.defense, 0);
+            int damage = Math.max(attack - world.player.defense, 1);
             world.player.life -= damage;
             world.player.invincible = true;
         }
@@ -491,9 +484,9 @@ public class Entity {
     /**
      * Comprueba las colisiones.
      */
-    public void checkCollisions() {
+    public void checkCollision() {
         collision = false;
-        collisionOnPlayer = false;
+        // collisionOnPlayer = false;
         game.collider.checkTile(this);
         game.collider.checkItem(this);
         game.collider.checkEntity(this, world.npcs);
@@ -529,6 +522,12 @@ public class Entity {
         target.knockbackDirection = attacker.direction;
         target.speed += knockbackValue;
         target.knockback = true;
+    }
+
+    private void stopKnockback() {
+        knockback = false;
+        speed = defaultSpeed;
+        timer.knockbackCounter = 0;
     }
 
     /**
@@ -589,22 +588,22 @@ public class Entity {
             else if (top > nextY && left > nextX) {
                 // up o left
                 direction = UP;
-                checkCollisions();
+                checkCollision();
                 if (collision) direction = LEFT;
             } else if (top > nextY && left < nextX) {
                 // up o right
                 direction = UP;
-                checkCollisions();
+                checkCollision();
                 if (collision) direction = RIGHT;
             } else if (top < nextY && left > nextX) {
                 // down o left
                 direction = DOWN;
-                checkCollisions();
+                checkCollision();
                 if (collision) direction = LEFT;
             } else if (top < nextY && left < nextX) {
                 // down o right
                 direction = DOWN;
-                checkCollisions();
+                checkCollision();
                 if (collision) direction = RIGHT;
             }
 

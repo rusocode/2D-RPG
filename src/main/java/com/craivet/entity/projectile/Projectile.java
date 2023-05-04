@@ -10,7 +10,7 @@ import static com.craivet.utils.Global.*;
 public class Projectile extends Entity {
 
     private Entity entity;
-    protected int useCost;
+    protected int cost;
 
     public Projectile(Game game, World world) {
         super(game, world);

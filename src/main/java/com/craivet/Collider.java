@@ -143,7 +143,6 @@ public class Collider {
                 if (entity.hitbox.intersects(otherEntity[world.map][i].hitbox)) {
                     if (otherEntity[world.map][i] != entity) { // Evita la colision en si misma
                         entity.collision = true;
-                        // entity.collisionOnEntity = true;
                         index = i;
                         // TODO No tendria que romper el bucle una vez que hay colision?
                     }
@@ -181,7 +180,7 @@ public class Collider {
 
         if (entity.hitbox.intersects(world.player.hitbox)) {
             entity.collision = true;
-            entity.collisionOnPlayer = true;
+            // entity.collisionOnPlayer = true;
             contact = true;
         }
 

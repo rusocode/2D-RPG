@@ -26,7 +26,7 @@ public class StickyBall extends Projectile {
         speed = 5;
         life = maxLife = 120;
         attack = 3;
-        useCost = 1;
+        cost = 1;
         alive = false;
         hitbox.x = 8;
         hitbox.y = 8;
@@ -38,12 +38,12 @@ public class StickyBall extends Projectile {
 
     @Override
     public boolean haveResource(Entity entity) {
-        return entity.ammo >= useCost;
+        return entity.ammo >= cost;
     }
 
     @Override
     public void subtractResource(Entity entity) {
-        entity.ammo -= useCost;
+        entity.ammo -= cost;
     }
 
     @Override

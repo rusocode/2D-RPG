@@ -22,19 +22,19 @@ public class Fireball extends Projectile {
 		life = maxLife = 80;
 		attack = 2;
 		knockbackValue = 5;
-		useCost = 1;
+		cost = 1;
 		alive = false;
 		loadMovementImages(entity_fireball, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 	}
 
 	@Override
 	public boolean haveResource(Entity entity) {
-		return entity.mana >= useCost;
+		return entity.mana >= cost;
 	}
 
 	@Override
 	public void subtractResource(Entity entity) {
-		entity.mana -= useCost;
+		entity.mana -= cost;
 	}
 
 	@Override
