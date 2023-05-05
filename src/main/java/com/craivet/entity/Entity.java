@@ -72,7 +72,7 @@ public class Entity {
     public boolean attacking;
     public boolean alive = true;
     public boolean collision;
-    public boolean collisionOnPlayer;  // En caso de que el mob este pegado al player, comprueba la colision y actualiza
+    public boolean collisionOnEntity;
     public boolean dead;
     public boolean hpBar;
     public boolean invincible;
@@ -486,7 +486,6 @@ public class Entity {
      */
     public void checkCollision() {
         collision = false;
-        // collisionOnPlayer = false;
         game.collider.checkTile(this);
         game.collider.checkItem(this);
         game.collider.checkEntity(this, world.npcs);

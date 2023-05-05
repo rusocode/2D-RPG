@@ -8,6 +8,7 @@ import com.craivet.entity.item.*;
 import com.craivet.entity.mob.Orc;
 import com.craivet.entity.mob.Slime;
 import com.craivet.entity.projectile.Fireball;
+import com.craivet.entity.projectile.Projectile;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
@@ -79,15 +80,32 @@ public class Player extends Entity {
         switch (direction) {
             case DOWN -> {
                 if (!attacking) {
-                    frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                    // if (collisionOnEntity && entityAux.direction == DOWN)
-                    // frame = movementNum == 1 ? movementDown1 : movementDown2;
-                    // else frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                    /* Si colisiona con una entidad con direccion hacia abajo, entonces iguala la velocidad a la de la
+                     * entidad. En caso contrario, vuelve a la velocidad por defecto y desactiva el estado collisionOnEntity. */
+                    if (collisionOnEntity && entityAux.direction == DOWN) {
+                        speed = entityAux.speed;
+                        frame = movementNum == 1 ? movementDown1 : movementDown2;
+                    } else {
+                        speed = defaultSpeed;
+                        collisionOnEntity = false;
+                        frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                    }
                 }
-                if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
+                if (attacking) {
+                    frame = attackNum == 1 ? weaponDown1 : weaponDown2;
+                }
             }
             case UP -> {
-                if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
+                if (!attacking) {
+                    if (collisionOnEntity && entityAux.direction == UP) {
+                        speed = entityAux.speed;
+                        frame = movementNum == 1 ? movementUp1 : movementUp2;
+                    } else {
+                        collisionOnEntity = false;
+                        speed = defaultSpeed;
+                        frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
+                    }
+                }
                 if (attacking) {
                     // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                     tempScreenY -= tile_size;
@@ -95,16 +113,40 @@ public class Player extends Entity {
                 }
             }
             case LEFT -> {
-                if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
+                if (!attacking) {
+                    if (collisionOnEntity && entityAux.direction == LEFT) {
+                        speed = entityAux.speed;
+                        frame = movementNum == 1 ? movementLeft1 : movementLeft2;
+                    } else {
+                        collisionOnEntity = false;
+                        speed = defaultSpeed;
+                        frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
+                    }
+                }
                 if (attacking) {
                     tempScreenX -= tile_size;
                     frame = attackNum == 1 ? weaponLeft1 : weaponLeft2;
                 }
             }
             case RIGHT -> {
-                if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
+                if (!attacking) {
+                    if (collisionOnEntity && entityAux.direction == RIGHT) {
+                        speed = entityAux.speed;
+                        frame = movementNum == 1 ? movementRight1 : movementRight2;
+                    } else {
+                        collisionOnEntity = false;
+                        speed = defaultSpeed;
+                        frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
+                    }
+                }
                 if (attacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
             }
+        }
+
+        // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal
+        if (attacking && collisionOnEntity) {
+            collisionOnEntity = false;
+            speed = defaultSpeed;
         }
 
         if (invincible) Utils.changeAlpha(g2, 0.3f);
@@ -127,7 +169,7 @@ public class Player extends Entity {
         exp = 0;
         nextLvlExp = 5;
         coin = 500;
-        strength = 2;
+        strength = 0;
         dexterity = 1;
         invincible = false;
 
@@ -247,8 +289,10 @@ public class Player extends Entity {
      */
     private void interactNPC(int npcIndex) {
         if (npcIndex != -1) {
+            System.out.println("El indice del NPC es distinto a -1");
             entityAux = world.npcs[world.map][npcIndex];
             if (key.enter) {
+                System.out.println("Estas hablando con el NPC");
                 attackCanceled = true; // No puede atacar si interactua con un npc
                 world.npcs[world.map][npcIndex].speak();
             }
@@ -285,6 +329,7 @@ public class Player extends Entity {
      */
     public void damageMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
         if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?\
+            entityAux = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
             if (!mob.invincible) {
 
@@ -342,6 +387,7 @@ public class Player extends Entity {
 
     protected void damageProjectile(int projectileIndex) {
         if (projectileIndex != -1) {
+            entityAux = world.projectiles[world.map][projectileIndex];
             Entity projectile = world.projectiles[world.map][projectileIndex];
             // Evita daniar el propio proyectil
             if (projectile != this.projectile) {
@@ -469,6 +515,7 @@ public class Player extends Entity {
      */
     public void checkCollision() {
         collision = false;
+        // collisionOnEntity = false;
         game.collider.checkTile(this);
         pickUpItem(game.collider.checkItem(this));
         interactNPC(game.collider.checkEntity(this, world.npcs));

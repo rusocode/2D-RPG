@@ -56,9 +56,9 @@ public class EventManager {
 
         if (canTouchEvent) {
             // El else if se utiliza para evitar que el siguiente if se llame inmediatamente en el caso de la teleport
-            if (hit(0, 27, 16, RIGHT)) damagePit();
-            else if (hit(0, 23, 12, UP)) healingPool();
-            else if (hit(1, 12, 9, UP)) speak(world.npcs[1][0]);
+            if (hit(NIX, 27, 16, RIGHT)) damagePit();
+            else if (hit(NIX, 23, 12, UP)) healingPool();
+            else if (hit(NIX_INDOOR_01, 12, 9, ANY)) speak(world.npcs[1][0]);
             else if (hit(NIX, 10, 39, ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
             else if (hit(NIX_INDOOR_01, 12, 13, ANY)) teleport(OUTSIDE, NIX, 10, 39); // De Nix Indoor 1 a Nix
             else if (hit(NIX, 12, 9, ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1

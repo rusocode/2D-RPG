@@ -2,6 +2,6 @@
 cuadro de descripcion del item. Creo que puede ser un error de sincronizacion cuando se remueve el item del inventario
 y se muestra la descripcion del item.
 # El bola de fuego pasa por debajo del npc cuando es lanzada desde arriba.
-# Cuando la entidad sigue al player y colisiona con un item solido o entidad, no lo esquiva.
 # La pimera carga del minimapa se clava un par de ms.
 # Cuando estoy parado sobre un item (Stone) y arriba hay otro item agarrable, agarra el de arriba.
+# Se genera como un "nerviosismo" al mover la roca.
