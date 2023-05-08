@@ -29,7 +29,7 @@ public class Projectile extends Entity {
         this.direction = direction;
         this.alive = alive;
         this.entity = entity;
-        this.life = this.maxLife; // Resetea la vida al valor maximo cada vez que lanza un proyectil
+        this.HP = this.maxHP; // Resetea la vida al valor maximo cada vez que lanza un proyectil
     }
 
     /**
@@ -48,7 +48,7 @@ public class Projectile extends Entity {
              * movimiento 2. La siguiente linea soluciona este problema. */
             collision = false;
             if (mobIndex != -1 && !world.mobs[world.map][mobIndex].invincible) {
-                world.player.damageMob(mobIndex, this, knockbackValue, attack);
+                world.player.hurtMob(mobIndex, this, knockbackValue, attack);
                 // En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
                 generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
                 alive = false;
@@ -65,7 +65,7 @@ public class Projectile extends Entity {
             }
         }
 
-        if (life-- <= 0) alive = false;
+        if (HP-- <= 0) alive = false;
 
         if (alive) {
             switch (direction) {

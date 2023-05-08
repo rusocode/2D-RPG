@@ -107,7 +107,7 @@ public class EventManager {
     private void damagePit() {
         game.state = PLAY_STATE;
         eventMaster.startDialogue(DIALOGUE_STATE, eventMaster, 0);
-        world.player.life--;
+        world.player.HP--;
         canTouchEvent = false;
     }
 
@@ -119,7 +119,7 @@ public class EventManager {
             game.state = PLAY_STATE;
             world.player.attackCanceled = true; // No puede atacar si regenera vida
             eventMaster.startDialogue(DIALOGUE_STATE, eventMaster, 1);
-            world.player.life = world.player.maxLife;
+            world.player.HP = world.player.maxHP;
             game.setter.setMOB();
         }
     }

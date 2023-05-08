@@ -24,7 +24,7 @@ public class Slime extends Mob {
         name = "Slime";
         type = TYPE_MOB;
         speed = defaultSpeed = 1;
-        life = maxLife = 4;
+        HP = maxHP = 4;
         exp = 2;
 
         attack = 0;

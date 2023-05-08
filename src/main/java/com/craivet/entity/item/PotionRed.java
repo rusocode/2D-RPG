@@ -39,8 +39,8 @@ public class PotionRed extends Item {
     public boolean use(Entity entity) {
         game.playSound(sound_potion_red);
         game.ui.addMessage("+" + value + " hp");
-        entity.life += value;
-        if (entity.life > entity.maxLife) entity.life = entity.maxLife;
+        entity.HP += value;
+        if (entity.HP > entity.maxHP) entity.HP = entity.maxHP;
         return true;
     }
 

@@ -16,7 +16,7 @@ public class DryTree extends Interactive {
         super(game, world, x, y);
         image = Utils.scaleImage(itile_drytree, tile_size, tile_size);
         destructible = true;
-        life = 1;
+        HP = 1;
     }
 
     public boolean isCorrectWeapon(Entity weapon) {

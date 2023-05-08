@@ -5,10 +5,8 @@ import java.awt.image.BufferedImage;
 
 import com.craivet.Game;
 import com.craivet.entity.item.*;
-import com.craivet.entity.mob.Orc;
-import com.craivet.entity.mob.Slime;
+import com.craivet.entity.mob.*;
 import com.craivet.entity.projectile.Fireball;
-import com.craivet.entity.projectile.Projectile;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
@@ -27,41 +25,50 @@ import static com.craivet.gfx.Assets.*;
 public class Player extends Entity {
 
     private final KeyManager key;
-    public final int screenX, screenY;
+    public int screenX, screenY;
     public boolean attackCanceled, shooting, lightUpdate;
 
-    private Entity entityAux;
+    // Variable auxiliar para obtener los atributos de la entidad actual
+    private Entity currentEntity;
 
     public Player(Game game, World world) {
         super(game, world);
-        // Posiciona el player en el centro de la pantalla
-        screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
-        screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
-        setDefaultPosition();
+        centerOnScreen();
+        setDefaultPos();
         setDefaultValues();
         key = game.getKey();
     }
 
+    /**
+     * Es muy importante el orden de los metodos.
+     */
     public void update() {
 
+        // Si esta atacando, entonces ataca
         if (attacking) attack();
 
+        // Comprueba las teclas de movimiento y accion presionadas
         if (checkKeys()) {
-
+            // Obtiene la direccion dependiendo de la tecla de movimiento presionada (w, a, s y d)
             getDirection();
+            // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y eventos
             checkCollision();
-            if (!collision && !key.enter && !key.l) updatePosition();
+            // Si no colisiona y no se presionaron las teclas de accion, entonces actualiza la posicion dependiendo de la direccion
+            if (!collision && !checkAccionKeys()) updatePos();
+            // Comprueba la velocidad de la direccion en caso de que el Player se mueva en la misma direccion que la entidad
+            checkDirectionSpeed();
+            // Comrpueba si puede atacar
             checkAttack();
-
             // Resetea las teclas de accion
-            key.enter = false;
-            key.l = false;
-
+            resetAccionKeys();
             // Temporiza la animacion de movimiento solo cuando se presionan las teclas de movimiento
             if (checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+        } else {
+            // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
+            timer.timeStopMovement(this, 20);
+        }
 
-        } else timer.timeNaturalStopWalking(this, 20);
-
+        // Comprueba si puede lanzar un proyectil
         checkShoot();
 
         // Aplica el timer solo si el player es invencible
@@ -69,9 +76,9 @@ public class Player extends Entity {
         if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
         if (timer.attackCounter < INTERVAL_WEAPON) timer.attackCounter++;
 
-        if (life > maxLife) life = maxLife;
+        if (HP > maxHP) HP = maxHP;
         if (mana > maxMana) mana = maxMana;
-        if (life <= 0) die();
+        if (HP <= 0) die();
     }
 
     public void render(Graphics2D g2) {
@@ -79,33 +86,11 @@ public class Player extends Entity {
         int tempScreenX = screenX, tempScreenY = screenY;
         switch (direction) {
             case DOWN -> {
-                if (!attacking) {
-                    /* Si colisiona con una entidad con direccion hacia abajo, entonces iguala la velocidad a la de la
-                     * entidad. En caso contrario, vuelve a la velocidad por defecto y desactiva el estado collisionOnEntity. */
-                    if (collisionOnEntity && entityAux.direction == DOWN) {
-                        speed = entityAux.speed;
-                        frame = movementNum == 1 ? movementDown1 : movementDown2;
-                    } else {
-                        speed = defaultSpeed;
-                        collisionOnEntity = false;
-                        frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                    }
-                }
-                if (attacking) {
-                    frame = attackNum == 1 ? weaponDown1 : weaponDown2;
-                }
+                if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
             }
             case UP -> {
-                if (!attacking) {
-                    if (collisionOnEntity && entityAux.direction == UP) {
-                        speed = entityAux.speed;
-                        frame = movementNum == 1 ? movementUp1 : movementUp2;
-                    } else {
-                        collisionOnEntity = false;
-                        speed = defaultSpeed;
-                        frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
-                    }
-                }
+                if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
                 if (attacking) {
                     // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                     tempScreenY -= tile_size;
@@ -113,56 +98,44 @@ public class Player extends Entity {
                 }
             }
             case LEFT -> {
-                if (!attacking) {
-                    if (collisionOnEntity && entityAux.direction == LEFT) {
-                        speed = entityAux.speed;
-                        frame = movementNum == 1 ? movementLeft1 : movementLeft2;
-                    } else {
-                        collisionOnEntity = false;
-                        speed = defaultSpeed;
-                        frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
-                    }
-                }
+                if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
                 if (attacking) {
                     tempScreenX -= tile_size;
                     frame = attackNum == 1 ? weaponLeft1 : weaponLeft2;
                 }
             }
             case RIGHT -> {
-                if (!attacking) {
-                    if (collisionOnEntity && entityAux.direction == RIGHT) {
-                        speed = entityAux.speed;
-                        frame = movementNum == 1 ? movementRight1 : movementRight2;
-                    } else {
-                        collisionOnEntity = false;
-                        speed = defaultSpeed;
-                        frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
-                    }
-                }
+                if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
                 if (attacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
             }
-        }
-
-        // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal
-        if (attacking && collisionOnEntity) {
-            collisionOnEntity = false;
-            speed = defaultSpeed;
         }
 
         if (invincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(frame, tempScreenX, tempScreenY, null);
 
-        // drawRects(g2);
+        drawRects(g2);
 
         Utils.changeAlpha(g2, 1);
 
+    }
+
+    private void centerOnScreen() {
+        screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
+        screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
+    }
+
+    public void setDefaultPos() {
+        world.area = OUTSIDE;
+        world.map = NIX;
+        x = 23 * tile_size;
+        y = 21 * tile_size;
     }
 
     public void setDefaultValues() {
         type = TYPE_PLAYER;
         direction = DOWN;
         speed = defaultSpeed = 3;
-        life = maxLife = 6;
+        HP = maxHP = 6;
         mana = maxMana = 4;
         ammo = 5;
         lvl = 1;
@@ -194,15 +167,10 @@ public class Player extends Entity {
         setItems();
     }
 
-    public void setDefaultPosition() {
-        world.area = OUTSIDE;
-        world.map = NIX;
-        x = 23 * tile_size;
-        y = 21 * tile_size;
-    }
-
-    // TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
-    public void setPosition(int map, int x, int y) {
+    /**
+     * TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
+     */
+    public void setPos(int map, int x, int y) {
         if (map == NIX) world.area = OUTSIDE;
         if (map == NIX_INDOOR_01) world.area = INDOOR;
         if (map == DUNGEON_01 || map == DUNGEON_02) world.area = DUNGEON;
@@ -212,7 +180,7 @@ public class Player extends Entity {
     }
 
     public void restoreStatus() {
-        life = maxLife;
+        HP = maxHP;
         mana = maxMana;
         invincible = false;
         attacking = false;
@@ -290,7 +258,7 @@ public class Player extends Entity {
     private void interactNPC(int npcIndex) {
         if (npcIndex != -1) {
             System.out.println("El indice del NPC es distinto a -1");
-            entityAux = world.npcs[world.map][npcIndex];
+            currentEntity = world.npcs[world.map][npcIndex];
             if (key.enter) {
                 System.out.println("Estas hablando con el NPC");
                 attackCanceled = true; // No puede atacar si interactua con un npc
@@ -305,15 +273,15 @@ public class Player extends Entity {
      *
      * @param mobIndex indice del mob.
      */
-    private void damagePlayer(int mobIndex) {
+    private void hurtPlayer(int mobIndex) {
         if (mobIndex >= 0) {
-            entityAux = world.mobs[world.map][mobIndex];
+            currentEntity = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
             if (!invincible && !mob.dead) {
                 game.playSound(sound_receive_damage);
                 // En caso de que el ataque sea menor a la defensa, entonces no hace daño
                 int damage = Math.max(mob.attack - defense, 1);
-                life -= damage;
+                HP -= damage;
                 invincible = true;
             }
         }
@@ -327,18 +295,18 @@ public class Player extends Entity {
      * @param knockbackValue valor de knockback.
      * @param attack         tipo de ataque (sword o fireball).
      */
-    public void damageMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
+    public void hurtMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
         if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?\
-            entityAux = world.mobs[world.map][mobIndex];
+            currentEntity = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
             if (!mob.invincible) {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
                 int damage = Math.max(attack - mob.defense, 0);
-                mob.life -= damage;
+                mob.HP -= damage;
                 game.ui.addMessage(damage + " damage!");
-                if (mob.life > 0) {
+                if (mob.HP > 0) {
                     if (mob instanceof Slime) game.playSound(sound_hit_slime);
                     if (mob instanceof Orc) {
                         game.playSound(sound_hit_monster);
@@ -350,7 +318,7 @@ public class Player extends Entity {
                 mob.hpBar = true;
                 mob.damageReaction();
 
-                if (mob.life <= 0) {
+                if (mob.HP <= 0) {
                     game.playSound(sound_mob_death);
                     mob.dead = true;
                     game.ui.addMessage("Killed the " + mob.name + "!");
@@ -372,12 +340,12 @@ public class Player extends Entity {
             Interactive iTile = world.interactives[world.map][iTileIndex];
             if (iTile.destructible && iTile.isCorrectWeapon(weapon) && !iTile.invincible) {
                 iTile.playSound();
-                iTile.life--;
+                iTile.HP--;
                 iTile.invincible = true;
 
                 generateParticle(iTile, iTile);
 
-                if (iTile.life == 0) {
+                if (iTile.HP == 0) {
                     iTile.checkDrop();
                     world.interactives[world.map][iTileIndex] = iTile.replaceBy();
                 }
@@ -387,7 +355,7 @@ public class Player extends Entity {
 
     protected void damageProjectile(int projectileIndex) {
         if (projectileIndex != -1) {
-            entityAux = world.projectiles[world.map][projectileIndex];
+            currentEntity = world.projectiles[world.map][projectileIndex];
             Entity projectile = world.projectiles[world.map][projectileIndex];
             // Evita daniar el propio proyectil
             if (projectile != this.projectile) {
@@ -406,7 +374,7 @@ public class Player extends Entity {
             lvl++;
             exp = 0;
             nextLvlExp *= 2;
-            maxLife += 2;
+            maxHP += 2;
             strength++;
             dexterity++;
             attack = getAttack();
@@ -515,25 +483,91 @@ public class Player extends Entity {
      */
     public void checkCollision() {
         collision = false;
-        // collisionOnEntity = false;
         game.collider.checkTile(this);
         pickUpItem(game.collider.checkItem(this));
         interactNPC(game.collider.checkEntity(this, world.npcs));
-        damagePlayer(game.collider.checkEntity(this, world.mobs));
+        hurtPlayer(game.collider.checkEntity(this, world.mobs));
         game.collider.checkEntity(this, world.interactives);
         game.event.checkEvent();
     }
 
     /**
-     * Actualiza la posicion del player.
+     * Actualiza la posicion.
      */
-    private void updatePosition() {
+    private void updatePos() {
         switch (direction) {
             case DOWN -> y += speed;
             case UP -> y -= speed;
             case LEFT -> x -= speed;
             case RIGHT -> x += speed;
         }
+    }
+
+    /**
+     * Comprueba la velocidad de la direccion cuando el Player colisiona con una entidad en movimiento en la misma
+     * direccion. Esto se hace para evitar un "nerviosismo" en la animacion de movimiento del Player. En ese caso,
+     * iguala la velocidad a la de la entidad. En caso contrario, vuelve a la velocidad por defecto y desactiva el
+     * estado collisionOnEntity.
+     * <p>
+     * Pero hay un pequeño problema. Por ejemplo, al igualar la velocidad a la del Oldman que se mueve hacia la derecha
+     * y querer dialogar al mismo tiempo, no lo podria hacer ya que la posicion del Player se actualiza 1 pixel antes a
+     * la del Oldman, por lo que no colisionan y por eso mismo no puedan dialogar. Pero la colision si sucede en el
+     * Collider, pero...
+     */
+    private void checkDirectionSpeed() {
+        /* switch (direction) {
+            case DOWN -> {
+                if (!attacking) {
+                    if (collisionOnEntity && currentEntity.direction == DOWN) speed = currentEntity.speed;
+                    else {
+                        speed = defaultSpeed;
+                        // collisionOnEntity = false;
+                    }
+                }
+            }
+            case UP -> {
+                if (!attacking) {
+                    if (collisionOnEntity && currentEntity.direction == UP) speed = currentEntity.speed;
+                    else {
+                        speed = defaultSpeed;
+                        // collisionOnEntity = false;
+                    }
+                }
+            }
+            case LEFT -> {
+                if (!attacking) {
+                    if (collisionOnEntity && currentEntity.direction == LEFT) speed = currentEntity.speed;
+                    else {
+                        speed = defaultSpeed;
+                        // collisionOnEntity = false;
+                    }
+                }
+            }
+            case RIGHT -> {
+                if (!attacking) {
+                    if (collisionOnEntity && currentEntity.direction == RIGHT) speed = currentEntity.speed;
+                    else {
+                        speed = defaultSpeed;
+                        // collisionOnEntity = false;
+                    }
+                }
+            }
+        } */
+
+        if (collisionOnEntity && direction == currentEntity.direction) {
+            speed = currentEntity.speed;
+        }
+        else /* (collisionOnEntity && direction != currentEntity.direction) */ {
+            collisionOnEntity = false;
+            speed = defaultSpeed;
+        }
+
+        // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal
+        /* if (attacking && collisionOnEntity) {
+            collisionOnEntity = false;
+            speed = defaultSpeed;
+        } */
+
     }
 
     private boolean checkKeys() {
@@ -546,6 +580,11 @@ public class Player extends Entity {
 
     private boolean checkAccionKeys() {
         return key.enter || key.l;
+    }
+
+    private void resetAccionKeys() {
+        key.enter = false;
+        key.l = false;
     }
 
     private void die() {
@@ -608,14 +647,14 @@ public class Player extends Entity {
 
     private void drawRects(Graphics2D g2) {
         // Imagen
-        g2.setColor(Color.magenta);
-        g2.drawRect(screenX, screenY, tile_size, tile_size);
-        // Cuerpo
-        g2.setColor(Color.yellow);
+        // g2.setColor(Color.magenta);
+        // g2.drawRect(screenX, screenY, tile_size, tile_size);
+        // Hitbox
+        g2.setColor(Color.red);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
         // Area de ataque
         if (attacking) {
-            g2.setColor(Color.red);
+            g2.setColor(Color.green);
             switch (direction) {
                 case DOWN ->
                         g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);

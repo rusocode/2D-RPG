@@ -36,8 +36,8 @@ public class SaveLoad {
             ds.x = world.player.x;
             ds.y = world.player.y;
             ds.direction = world.player.direction;
-            ds.life = world.player.life;
-            ds.maxlife = world.player.maxLife;
+            ds.life = world.player.HP;
+            ds.maxlife = world.player.maxHP;
             ds.mana = world.player.mana;
             ds.maxMana = world.player.maxMana;
             ds.strength = world.player.strength;
@@ -101,8 +101,8 @@ public class SaveLoad {
             world.player.x = ds.x;
             world.player.y = ds.y;
             world.player.direction = ds.direction;
-            world.player.life = ds.life;
-            world.player.maxLife = ds.maxlife;
+            world.player.HP = ds.life;
+            world.player.maxHP = ds.maxlife;
             world.player.mana = ds.mana;
             world.player.maxMana = ds.maxMana;
             world.player.strength = ds.strength;

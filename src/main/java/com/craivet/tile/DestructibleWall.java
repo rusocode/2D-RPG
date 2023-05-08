@@ -17,7 +17,7 @@ public class DestructibleWall extends Interactive {
         super(game, world, x, y);
         image = Utils.scaleImage(itile_destructiblewall, tile_size, tile_size);
         destructible = true;
-        life = 3;
+        HP = 3;
     }
 
     public boolean isCorrectWeapon(Entity weapon) {

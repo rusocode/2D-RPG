@@ -208,7 +208,7 @@ public class UI {
         int i = 0;
 
         // Dibuja el corazon vacio
-        while (i < world.player.maxLife / 2) {
+        while (i < world.player.maxHP / 2) {
             g2.drawImage(heartBlank, x, y, null);
             i++;
             x += tile_size;
@@ -219,10 +219,10 @@ public class UI {
         i = 0;
 
         // Dibuja la vida actual
-        while (i < world.player.life) {
+        while (i < world.player.HP) {
             g2.drawImage(heartHalf, x, y, null);
             i++;
-            if (i < world.player.life) g2.drawImage(heartFull, x, y, null);
+            if (i < world.player.HP) g2.drawImage(heartFull, x, y, null);
             i++;
             x += tile_size;
         }
@@ -355,7 +355,7 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = world.player.life + "/" + world.player.maxLife;
+        value = world.player.HP + "/" + world.player.maxHP;
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;

@@ -34,7 +34,7 @@ public class Tent extends Item {
     public boolean use(Entity entity) {
         game.state = SLEEP_STATE;
         game.playSound(sound_sleep);
-        world.player.life = world.player.maxLife;
+        world.player.HP = world.player.maxHP;
         world.player.mana = world.player.maxMana;
         world.player.initSleepImage(image);
         return true;

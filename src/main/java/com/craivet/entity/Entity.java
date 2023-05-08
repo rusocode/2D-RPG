@@ -37,13 +37,14 @@ public class Entity {
     public int dialogueSet, dialogueIndex;
 
     // General attributes
+    // TODO Podria separar las estadisticas en una clase aparte
     public int x, y;
     public String name;
     public int type = TYPE_MOB;
     public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
     public int direction = DOWN;
     public int speed, defaultSpeed;
-    public int life, maxLife; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+    public int HP, maxHP; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
     public int mana, maxMana;
     public int ammo;
     public int lvl, exp, nextLvlExp;
@@ -120,7 +121,6 @@ public class Entity {
             setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
             checkCollision();
             if (!collision) updatePosition(direction);
-
             /* TODO Estos timers deberian ir fuera del else? Al usar un timer para el movimiento y otro para la
              * animacion de ataque, creo que no interrumpiria el tiempo en el cambio de frames. */
             timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
@@ -168,8 +168,8 @@ public class Entity {
             // Si la barra de hp esta activada
             if (type == TYPE_MOB && hpBar) {
 
-                double oneScale = (double) tile_size / maxLife;
-                double hpBarValue = oneScale * life;
+                double oneScale = (double) tile_size / maxHP;
+                double hpBarValue = oneScale * HP;
 
                 /* En caso de que el valor de la barra de vida calculada sea menor a 0, le asigna 0 para que no se
                  * dibuje como valor negativo hacia la izquierda. */
@@ -192,8 +192,8 @@ public class Entity {
 
             g2.drawImage(frame, tempScreenX, tempScreenY, null);
             g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
-            // g2.setColor(Color.cyan);
-            // g2.drawRect(hitbox.x + screenX, hitbox.y + screenY, hitbox.width, hitbox.height);
+            g2.setColor(Color.blue);
+            g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
             // g2.drawRect(screenX, screenY, tile_size, tile_size);
             Utils.changeAlpha(g2, 1);
         }
@@ -406,7 +406,7 @@ public class Entity {
             } else {
                 // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
                 int mobIndex = game.collider.checkEntity(this, world.mobs);
-                world.player.damageMob(mobIndex, this, weapon.knockbackValue, attack);
+                world.player.hurtMob(mobIndex, this, weapon.knockbackValue, attack);
 
                 int iTileIndex = game.collider.checkEntity(this, world.interactives);
                 world.player.damageInteractiveTile(iTileIndex);
@@ -440,7 +440,7 @@ public class Entity {
             game.playSound(sound_receive_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.player.defense, 1);
-            world.player.life -= damage;
+            world.player.HP -= damage;
             world.player.invincible = true;
         }
     }

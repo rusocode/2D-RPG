@@ -25,11 +25,11 @@ public class Particle extends Entity {
 		this.color = color;
 		this.size = size;
 		this.speed = speed;
-		this.maxLife = maxLife;
+		this.maxHP = maxLife;
 		this.xd = xd;
 		this.yd = yd;
 
-		life = maxLife;
+		HP = maxLife;
 		int offset = (tile_size / 2) - (size - 2);
 		x = generator.x + offset;
 		y = generator.y + offset;
@@ -37,11 +37,11 @@ public class Particle extends Entity {
 	}
 
 	public void update() {
-		life--;
+		HP--;
 
 		/* Si la vida de la particula es la mitad de su vida maxima, entonces la posicion y aumenta en 1, generando asi
 		 * un efecto de gravedad. */
-		if (life < maxLife / 3) {
+		if (HP < maxHP / 3) {
 			yd++;
 			size--;
 		}
@@ -49,7 +49,7 @@ public class Particle extends Entity {
 		x += xd * speed;
 		y += yd * speed;
 
-		if (life == 0) alive = false;
+		if (HP == 0) alive = false;
 
 	}
 

@@ -22,7 +22,7 @@ public class Timer {
     public int invincibleCounter;
     public int knockbackCounter;
     public int movementCounter;
-    public int naturalStopWalkingCounter;
+    public int stopMovementCounter;
     public int projectileCounter;
 
     /**
@@ -40,10 +40,10 @@ public class Timer {
         }
     }
 
-    public void timeNaturalStopWalking(Entity entity, final int interval) {
-        if (++naturalStopWalkingCounter >= interval) {
+    public void timeStopMovement(Entity entity, final int interval) {
+        if (++stopMovementCounter >= interval) {
             entity.movementNum = 1;
-            naturalStopWalkingCounter = 0;
+            stopMovementCounter = 0;
         }
     }
 
@@ -121,7 +121,7 @@ public class Timer {
         invincibleCounter = 0;
         knockbackCounter = 0;
         movementCounter = 0;
-        naturalStopWalkingCounter = 0;
+        stopMovementCounter = 0;
         projectileCounter = 0;
     }
 

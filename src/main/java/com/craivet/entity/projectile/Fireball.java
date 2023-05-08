@@ -19,7 +19,7 @@ public class Fireball extends Projectile {
 	private void setDefaultValues() {
 		name = "Fireball";
 		speed = 7;
-		life = maxLife = 80;
+		HP = maxHP = 80;
 		attack = 2;
 		knockbackValue = 5;
 		cost = 1;

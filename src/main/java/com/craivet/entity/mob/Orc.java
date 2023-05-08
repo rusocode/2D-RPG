@@ -19,7 +19,7 @@ public class Orc extends Mob {
         name = "Orc";
         type = TYPE_MOB;
         speed = defaultSpeed = 1;
-        life = maxLife = 10;
+        HP = maxHP = 10;
         exp = 2;
 
         attack = 8;
