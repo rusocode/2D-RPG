@@ -18,7 +18,7 @@ public class Collider {
     }
 
     /**
-     * Verifica si la entidad colisiona con un tile solido.
+     * Comprueba si la entidad colisiona con un tile solido.
      *
      * @param entity la entidad.
      */
@@ -72,7 +72,7 @@ public class Collider {
     }
 
     /**
-     * Verifica si la entidad colisiona con un item.
+     * Comprueba si la entidad colisiona con un item.
      *
      * @param entity la entidad.
      * @return el indice del item en caso de que el player colisione con este.
@@ -112,7 +112,7 @@ public class Collider {
     }
 
     /**
-     * Verifica la colision entre entidades.
+     * Comprueba la colision entre entidades.
      *
      * @param entity      entidad.
      * @param otherEntity otra entidad.
@@ -125,6 +125,7 @@ public class Collider {
         int direction = entity.direction;
         // Obtiene la direccion del atacante si la entidad es retrocedida
         if (entity.knockback) direction = entity.knockbackDirection;
+        int speed = entity.speed;
 
         for (int i = 0; i < otherEntity[1].length; i++) {
             if (otherEntity[world.map][i] != null) {
@@ -134,10 +135,10 @@ public class Collider {
                 otherEntity[world.map][i].hitbox.x += otherEntity[world.map][i].x;
                 otherEntity[world.map][i].hitbox.y += otherEntity[world.map][i].y;
                 switch (direction) {
-                    case DOWN -> entity.hitbox.y += entity.speed;
-                    case UP -> entity.hitbox.y -= entity.speed;
-                    case LEFT -> entity.hitbox.x -= entity.speed;
-                    case RIGHT -> entity.hitbox.x += entity.speed;
+                    case DOWN -> entity.hitbox.y += speed;
+                    case UP -> entity.hitbox.y -= speed;
+                    case LEFT -> entity.hitbox.x -= speed;
+                    case RIGHT -> entity.hitbox.x += speed;
                 }
 
                 if (entity.hitbox.intersects(otherEntity[world.map][i].hitbox)) {
@@ -145,7 +146,7 @@ public class Collider {
                         entity.collision = true;
                         entity.collisionOnEntity = true;
                         index = i;
-                        // TODO No tendria que romper el bucle una vez que hay colision?
+                        // break; // TODO No tendria que romper el bucle una vez que hay colision?
                     }
                 }
 
@@ -159,7 +160,7 @@ public class Collider {
     }
 
     /**
-     * Verifica si la entidad colisiona con el player.
+     * Comprueba si la entidad colisiona con el player.
      *
      * <p>TODO Se puede fucionar con el metodo checkEntity()?
      *

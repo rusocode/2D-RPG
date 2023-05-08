@@ -6,7 +6,9 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.entity.item.*;
 import com.craivet.entity.mob.*;
+import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Fireball;
+import com.craivet.entity.projectile.Projectile;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
@@ -47,15 +49,15 @@ public class Player extends Entity {
         // Si esta atacando, entonces ataca
         if (attacking) attack();
 
-        // Comprueba las teclas de movimiento y accion presionadas
+        // Comprueba las teclas presionadas de movimiento y accion
         if (checkKeys()) {
-            // Obtiene la direccion dependiendo de la tecla de movimiento presionada (w, a, s y d)
+            // Obtiene la direccion dependiendo de la tecla presionada de movimiento (w, a, s, d)
             getDirection();
             // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y eventos
             checkCollision();
-            // Si no colisiona y no se presionaron las teclas de accion, entonces actualiza la posicion dependiendo de la direccion
+            // Si no colisiona y si no se presionaron las teclas de accion, entonces actualiza la posicion dependiendo de la direccion
             if (!collision && !checkAccionKeys()) updatePos();
-            // Comprueba la velocidad de la direccion en caso de que el Player se mueva en la misma direccion que la entidad
+            // Comprueba la velocidad de la direccion en caso de que se mueva en la misma direccion que la entidad
             checkDirectionSpeed();
             // Comrpueba si puede atacar
             checkAttack();
@@ -504,68 +506,28 @@ public class Player extends Entity {
     }
 
     /**
-     * Comprueba la velocidad de la direccion cuando el Player colisiona con una entidad en movimiento en la misma
-     * direccion. Esto se hace para evitar un "nerviosismo" en la animacion de movimiento del Player. En ese caso,
-     * iguala la velocidad a la de la entidad. En caso contrario, vuelve a la velocidad por defecto y desactiva el
-     * estado collisionOnEntity.
+     * Comprueba la velocidad de la direccion cuando colisiona con una Npc en movimiento en la misma direccion. Esto
+     * se hace para evitar un "nerviosismo" en la animacion de movimiento del Player. En ese caso, iguala la velocidad a
+     * la de la entidad. En caso contrario, vuelve a la velocidad por defecto y desactiva el estado collisionOnEntity.
      * <p>
      * Pero hay un pequeño problema. Por ejemplo, al igualar la velocidad a la del Oldman que se mueve hacia la derecha
      * y querer dialogar al mismo tiempo, no lo podria hacer ya que la posicion del Player se actualiza 1 pixel antes a
-     * la del Oldman, por lo que no colisionan y por eso mismo no puedan dialogar. Pero la colision si sucede en el
-     * Collider, pero...
+     * la del Oldman, por lo que no colisionan y por eso mismo no pueden dialogar. Es importante aclarar que en el
+     * Collider se utiliza la velocidad por defecto y nunca la actualizada.
      */
-    private void checkDirectionSpeed() {
-        /* switch (direction) {
-            case DOWN -> {
-                if (!attacking) {
-                    if (collisionOnEntity && currentEntity.direction == DOWN) speed = currentEntity.speed;
-                    else {
-                        speed = defaultSpeed;
-                        // collisionOnEntity = false;
-                    }
-                }
-            }
-            case UP -> {
-                if (!attacking) {
-                    if (collisionOnEntity && currentEntity.direction == UP) speed = currentEntity.speed;
-                    else {
-                        speed = defaultSpeed;
-                        // collisionOnEntity = false;
-                    }
-                }
-            }
-            case LEFT -> {
-                if (!attacking) {
-                    if (collisionOnEntity && currentEntity.direction == LEFT) speed = currentEntity.speed;
-                    else {
-                        speed = defaultSpeed;
-                        // collisionOnEntity = false;
-                    }
-                }
-            }
-            case RIGHT -> {
-                if (!attacking) {
-                    if (collisionOnEntity && currentEntity.direction == RIGHT) speed = currentEntity.speed;
-                    else {
-                        speed = defaultSpeed;
-                        // collisionOnEntity = false;
-                    }
-                }
-            }
-        } */
-
-        if (collisionOnEntity && direction == currentEntity.direction) {
+    public void checkDirectionSpeed() {
+        // Si colisiona con la entidad y esta en la misma direccion y no hay distancia y es un Npc
+        if (collisionOnEntity && direction == currentEntity.direction && !checkEntityDistance() && currentEntity instanceof Npc)
             speed = currentEntity.speed;
-        }
-        else /* (collisionOnEntity && direction != currentEntity.direction) */ {
-            collisionOnEntity = false;
+        else {
             speed = defaultSpeed;
+            collisionOnEntity = false;
         }
 
         // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal
         /* if (attacking && collisionOnEntity) {
-            collisionOnEntity = false;
             speed = defaultSpeed;
+            collisionOnEntity = false;
         } */
 
     }
@@ -585,6 +547,38 @@ public class Player extends Entity {
     private void resetAccionKeys() {
         key.enter = false;
         key.l = false;
+    }
+
+    /**
+     * Comprueba la distancia con la entidad. Cuando sigue (siempre colisionando) a la entidad en la misma direccion
+     * pero en algun momento la deja de seguir y esta se mantiene en la misma direccion, entonces la velocidad no se
+     * actualiza. Comprobando la distancia se soluciona el problema.
+     * <p>
+     * Es neseario sumar o restar 1 pixel dependiendo de la direccion para que haya una diferencia en la distancia y
+     * se pueda comprobar.
+     *
+     * @return true si se cumple la distancia especificada, false en caso contrario.
+     */
+    private boolean checkEntityDistance() {
+        switch (currentEntity.direction) {
+            case DOWN -> {
+                if (y + hitbox.y + hitbox.height + 1 < currentEntity.y + currentEntity.hitbox.y)
+                    return true;
+            }
+            case UP -> {
+                if (y + hitbox.y - 1 > currentEntity.y + currentEntity.hitbox.y + currentEntity.hitbox.height)
+                    return true;
+            }
+            case LEFT -> {
+                if (x + hitbox.x - 1 > currentEntity.x + currentEntity.hitbox.x + currentEntity.hitbox.width)
+                    return true;
+            }
+            case RIGHT -> {
+                if (x + hitbox.x + hitbox.width + 1 < currentEntity.x + currentEntity.hitbox.x)
+                    return true;
+            }
+        }
+        return false;
     }
 
     private void die() {
@@ -642,7 +636,7 @@ public class Player extends Entity {
         inventory.add(new PotionRed(game, world, 15));
         inventory.add(new Key(game, world, 2));
         inventory.add(new Lantern(game, world));
-        inventory.add(new Axe(game, world));
+        inventory.add(new Pickaxe(game, world));
     }
 
     private void drawRects(Graphics2D g2) {
