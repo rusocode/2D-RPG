@@ -27,7 +27,7 @@ public class Slime extends Mob {
         HP = maxHP = 4;
         exp = 2;
 
-        attack = 0;
+        attack = 2;
         defense = 1;
 
         hitbox.x = 3;

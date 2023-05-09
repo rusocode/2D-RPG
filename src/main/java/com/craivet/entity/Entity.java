@@ -409,10 +409,10 @@ public class Entity {
                 world.player.hurtMob(mobIndex, this, weapon.knockbackValue, attack);
 
                 int iTileIndex = game.collider.checkEntity(this, world.interactives);
-                world.player.damageInteractiveTile(iTileIndex);
+                world.player.hurtInteractiveTile(iTileIndex);
 
                 int projectileIndex = game.collider.checkEntity(this, world.projectiles);
-                world.player.damageProjectile(projectileIndex);
+                world.player.hurtProjectile(projectileIndex);
             }
 
             // Despues de verificar la colision, resetea los datos originales

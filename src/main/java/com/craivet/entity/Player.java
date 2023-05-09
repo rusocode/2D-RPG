@@ -30,6 +30,7 @@ public class Player extends Entity {
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity currentEntity;
+    private int lastDirection = -1;
 
     public Player(Game game, World world) {
         super(game, world);
@@ -85,12 +86,17 @@ public class Player extends Entity {
         int tempScreenX = screenX, tempScreenY = screenY;
         switch (direction) {
             case DOWN -> {
+                // Si no esta atacando
                 if (!attacking) {
+                    // Si colisiona con una entidad
                     if (collisionOnEntity) {
+                        // Utiliza el frame movementDown1 si movementNum es 1 o el frame movementDown2 en caso contrario
                         frame = movementNum == 1 ? movementDown1 : movementDown2;
+                        // Si la entidad actual esta colisionando, entonces utiliza el frame movementDown1
                         if (currentEntity.collision) frame = movementDown1;
                     } else frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
                 }
+                // Si esta atacando utiliza el frame weaponDown1 si attackNum es 1 o el frame weaponDown2 en caso contrario
                 if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
             }
             case UP -> {
@@ -161,7 +167,7 @@ public class Player extends Entity {
         exp = 0;
         nextLvlExp = 5;
         coin = 500;
-        strength = 0;
+        strength = 1;
         dexterity = 1;
         invincible = false;
 
@@ -276,7 +282,6 @@ public class Player extends Entity {
      */
     private void interactNpc(int npcIndex) {
         if (npcIndex != -1) {
-            // System.out.println("Colision!");
             currentEntity = world.npcs[world.map][npcIndex];
             if (key.enter) {
                 attackCanceled = true; // No puede atacar si interactua con un npc
@@ -320,7 +325,7 @@ public class Player extends Entity {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
-                int damage = Math.max(attack - mob.defense, 0);
+                int damage = Math.max(attack - mob.defense, 1);
                 mob.HP -= damage;
                 game.ui.addMessage(damage + " damage!");
                 if (mob.HP > 0) {
@@ -352,8 +357,9 @@ public class Player extends Entity {
      *
      * @param iTileIndex indice del tile interactivo.
      */
-    protected void damageInteractiveTile(int iTileIndex) {
+    protected void hurtInteractiveTile(int iTileIndex) {
         if (iTileIndex != -1) {
+            currentEntity = world.interactives[world.map][iTileIndex];
             Interactive iTile = world.interactives[world.map][iTileIndex];
             if (iTile.destructible && iTile.isCorrectWeapon(weapon) && !iTile.invincible) {
                 iTile.playSound();
@@ -370,7 +376,7 @@ public class Player extends Entity {
         }
     }
 
-    protected void damageProjectile(int projectileIndex) {
+    protected void hurtProjectile(int projectileIndex) {
         if (projectileIndex != -1) {
             currentEntity = world.projectiles[world.map][projectileIndex];
             Entity projectile = world.projectiles[world.map][projectileIndex];
@@ -493,6 +499,7 @@ public class Player extends Entity {
         else if (key.w) direction = UP;
         else if (key.a) direction = LEFT;
         else if (key.d) direction = RIGHT;
+        // lastDirection = direction;
     }
 
     /**
@@ -531,9 +538,14 @@ public class Player extends Entity {
      * dialogar si sigue a la entidad.
      */
     private void checkDirectionSpeed() {
-        // Si colisiona con la entidad y esta en la misma direccion y no hay distancia y no es un Mob
-        if (collisionOnEntity && direction == currentEntity.direction && !isDistanceWithEntity() && !(currentEntity instanceof Mob))
+        /* Si la entidad actual no es null y si la entidad actual es distinta a un Mob y si colisiona con la entidad y
+         * si esta en la misma direccion y si no hay distancia, iguala la velocidad. Es importante que primero se
+         * calcule si la entidad actual no es null ya que lanzaria un NPE si la primer colision en el juego es con un
+         * tile interactivo. */
+        if (currentEntity != null && !(currentEntity instanceof Mob) && collisionOnEntity && direction == currentEntity.direction && !isDistanceWithEntity()) {
             speed = currentEntity.speed;
+            // FIXME Hay un pequenio bug en donde el player al seguir a la entidad y esta "pega la vuelta" mientras el player tambien lo hace, la velocidad no cambia
+        }
         else {
             speed = defaultSpeed;
             collisionOnEntity = false;
@@ -651,6 +663,7 @@ public class Player extends Entity {
         inventory.add(new Key(game, world, 2));
         inventory.add(new Lantern(game, world));
         inventory.add(new Pickaxe(game, world));
+        inventory.add(new Axe(game, world));
     }
 
     private void drawRects(Graphics2D g2) {
