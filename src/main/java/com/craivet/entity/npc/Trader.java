@@ -19,9 +19,9 @@ public class Trader extends Npc {
 		name = "Trader";
 		type = TYPE_NPC;
 		image = Utils.scaleImage(entity_trader, tile_size, tile_size);
-		hitbox.x = 8;
+		hitbox.x = 7;
 		hitbox.y = 16;
-		hitbox.width = 32;
+		hitbox.width = 33;
 		hitbox.height = 32;
 		hitboxDefaultX = hitbox.x;
 		hitboxDefaultY = hitbox.y;

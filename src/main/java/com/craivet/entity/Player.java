@@ -45,7 +45,6 @@ public class Player extends Entity {
      * Es muy importante el orden de los metodos.
      */
     public void update() {
-
         // Si esta atacando, entonces ataca
         if (attacking) attack();
 
@@ -88,7 +87,16 @@ public class Player extends Entity {
         int tempScreenX = screenX, tempScreenY = screenY;
         switch (direction) {
             case DOWN -> {
-                if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                if (!attacking) {
+                    // frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                    if (collisionOnEntity) {
+                        frame = movementNum == 1 ? movementDown1 : movementDown2;
+                        System.out.println("asd");
+                    }
+                    else {
+                        frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                    }
+                }
                 if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
             }
             case UP -> {
@@ -259,10 +267,9 @@ public class Player extends Entity {
      */
     private void interactNPC(int npcIndex) {
         if (npcIndex != -1) {
-            System.out.println("El indice del NPC es distinto a -1");
+            // System.out.println("Colision!");
             currentEntity = world.npcs[world.map][npcIndex];
             if (key.enter) {
-                System.out.println("Estas hablando con el NPC");
                 attackCanceled = true; // No puede atacar si interactua con un npc
                 world.npcs[world.map][npcIndex].speak();
             }
@@ -506,8 +513,8 @@ public class Player extends Entity {
     }
 
     /**
-     * Comprueba la velocidad de la direccion cuando colisiona con una Npc en movimiento en la misma direccion. Esto
-     * se hace para evitar un "nerviosismo" en la animacion de movimiento del Player. En ese caso, iguala la velocidad a
+     * Comprueba la velocidad de la direccion cuando colisiona con un Npc en movimiento en la misma direccion. Esto
+     * se hace para evitar el "tartamudeo" en la animacion de movimiento del Player. En ese caso, iguala la velocidad a
      * la de la entidad. En caso contrario, vuelve a la velocidad por defecto y desactiva el estado collisionOnEntity.
      * <p>
      * Pero hay un pequeño problema. Por ejemplo, al igualar la velocidad a la del Oldman que se mueve hacia la derecha
@@ -515,7 +522,7 @@ public class Player extends Entity {
      * la del Oldman, por lo que no colisionan y por eso mismo no pueden dialogar. Es importante aclarar que en el
      * Collider se utiliza la velocidad por defecto y nunca la actualizada.
      */
-    public void checkDirectionSpeed() {
+    private void checkDirectionSpeed() {
         // Si colisiona con la entidad y esta en la misma direccion y no hay distancia y es un Npc
         if (collisionOnEntity && direction == currentEntity.direction && !checkEntityDistance() && currentEntity instanceof Npc)
             speed = currentEntity.speed;
@@ -530,23 +537,6 @@ public class Player extends Entity {
             collisionOnEntity = false;
         } */
 
-    }
-
-    private boolean checkKeys() {
-        return checkMovementKeys() || checkAccionKeys();
-    }
-
-    private boolean checkMovementKeys() {
-        return key.s || key.w || key.a || key.d;
-    }
-
-    private boolean checkAccionKeys() {
-        return key.enter || key.l;
-    }
-
-    private void resetAccionKeys() {
-        key.enter = false;
-        key.l = false;
     }
 
     /**
@@ -579,6 +569,23 @@ public class Player extends Entity {
             }
         }
         return false;
+    }
+
+    private boolean checkKeys() {
+        return checkMovementKeys() || checkAccionKeys();
+    }
+
+    private boolean checkMovementKeys() {
+        return key.s || key.w || key.a || key.d;
+    }
+
+    private boolean checkAccionKeys() {
+        return key.enter || key.l;
+    }
+
+    private void resetAccionKeys() {
+        key.enter = false;
+        key.l = false;
     }
 
     private void die() {
