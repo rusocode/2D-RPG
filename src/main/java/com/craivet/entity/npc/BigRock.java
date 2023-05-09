@@ -26,7 +26,7 @@ public class BigRock extends Npc {
         name = npc_name;
         type = TYPE_NPC;
         image = Utils.scaleImage(entity_bigrock, tile_size, tile_size);
-        speed = 4;
+        speed = 2;
         hitbox.x = 2;
         hitbox.y = 6;
         hitbox.width = 44;

@@ -8,7 +8,6 @@ import com.craivet.entity.item.*;
 import com.craivet.entity.mob.*;
 import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Fireball;
-import com.craivet.entity.projectile.Projectile;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
@@ -88,19 +87,16 @@ public class Player extends Entity {
         switch (direction) {
             case DOWN -> {
                 if (!attacking) {
-                    // frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                    if (collisionOnEntity) {
-                        frame = movementNum == 1 ? movementDown1 : movementDown2;
-                        System.out.println("asd");
-                    }
-                    else {
-                        frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                    }
+                    if (collisionOnEntity) frame = movementNum == 1 ? movementDown1 : movementDown2;
+                    else frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
                 }
                 if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
             }
             case UP -> {
-                if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
+                if (!attacking) {
+                    if (collisionOnEntity) frame = movementNum == 1 ? movementUp1 : movementUp2;
+                    else frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
+                }
                 if (attacking) {
                     // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                     tempScreenY -= tile_size;
@@ -108,14 +104,20 @@ public class Player extends Entity {
                 }
             }
             case LEFT -> {
-                if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
+                if (!attacking) {
+                    if (collisionOnEntity) frame = movementNum == 1 ? movementLeft1 : movementLeft2;
+                    else frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
+                }
                 if (attacking) {
                     tempScreenX -= tile_size;
                     frame = attackNum == 1 ? weaponLeft1 : weaponLeft2;
                 }
             }
             case RIGHT -> {
-                if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
+                if (!attacking) {
+                    if (collisionOnEntity) frame = movementNum == 1 ? movementRight1 : movementRight2;
+                    else frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
+                }
                 if (attacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
             }
         }
@@ -166,7 +168,7 @@ public class Player extends Entity {
         hitbox.x = 8;
         hitbox.y = 16;
         hitbox.width = 32;
-        hitbox.height = 30;
+        hitbox.height = 31;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         motion1 = 5;
@@ -265,7 +267,7 @@ public class Player extends Entity {
      *
      * @param npcIndex indice del npc.
      */
-    private void interactNPC(int npcIndex) {
+    private void interactNpc(int npcIndex) {
         if (npcIndex != -1) {
             // System.out.println("Colision!");
             currentEntity = world.npcs[world.map][npcIndex];
@@ -494,7 +496,7 @@ public class Player extends Entity {
         collision = false;
         game.collider.checkTile(this);
         pickUpItem(game.collider.checkItem(this));
-        interactNPC(game.collider.checkEntity(this, world.npcs));
+        interactNpc(game.collider.checkEntity(this, world.npcs));
         hurtPlayer(game.collider.checkEntity(this, world.mobs));
         game.collider.checkEntity(this, world.interactives);
         game.event.checkEvent();
@@ -519,52 +521,51 @@ public class Player extends Entity {
      * <p>
      * Pero hay un pequeño problema. Por ejemplo, al igualar la velocidad a la del Oldman que se mueve hacia la derecha
      * y querer dialogar al mismo tiempo, no lo podria hacer ya que la posicion del Player se actualiza 1 pixel antes a
-     * la del Oldman, por lo que no colisionan y por eso mismo no pueden dialogar. Es importante aclarar que en el
-     * Collider se utiliza la velocidad por defecto y nunca la actualizada.
+     * la del Oldman, por lo que no colisionan y por eso mismo no pueden dialogar. Aunque lo logico seria que no puedan
+     * dialogar si sigue a la entidad.
      */
     private void checkDirectionSpeed() {
-        // Si colisiona con la entidad y esta en la misma direccion y no hay distancia y es un Npc
-        if (collisionOnEntity && direction == currentEntity.direction && !checkEntityDistance() && currentEntity instanceof Npc)
+        // Si colisiona con la entidad y esta en la misma direccion y no hay distancia y no es un Mob
+        if (collisionOnEntity && direction == currentEntity.direction && !checkEntityDistance() && !(currentEntity instanceof Mob))
             speed = currentEntity.speed;
         else {
             speed = defaultSpeed;
             collisionOnEntity = false;
         }
-
         // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal
         /* if (attacking && collisionOnEntity) {
             speed = defaultSpeed;
             collisionOnEntity = false;
         } */
-
     }
 
     /**
-     * Comprueba la distancia con la entidad. Cuando sigue (siempre colisionando) a la entidad en la misma direccion
-     * pero en algun momento la deja de seguir y esta se mantiene en la misma direccion, entonces la velocidad no se
-     * actualiza. Comprobando la distancia se soluciona el problema.
+     * Comprueba la distancia con la entidad.
      * <p>
-     * Es neseario sumar o restar 1 pixel dependiendo de la direccion para que haya una diferencia en la distancia y
-     * se pueda comprobar.
+     * <h3>¿Para que se comprueba la distancia?</h3>
+     * Cuando sigue (siempre colisionando) a la entidad pero en algun momento la deja de seguir y esta se mantiene en la
+     * misma direccion, la velocidad va a seguir siendo la misma a la de la entidad. Entonces para solucionar ese
+     * problema, se comprueba la distancia y si hay distancia entre el Player y la entidad, vuelve a la velocidad por
+     * defecto.
      *
-     * @return true si se cumple la distancia especificada, false en caso contrario.
+     * @return true si hay distancia, false en caso contrario.
      */
     private boolean checkEntityDistance() {
         switch (currentEntity.direction) {
             case DOWN -> {
-                if (y + hitbox.y + hitbox.height + 1 < currentEntity.y + currentEntity.hitbox.y)
+                if (y + hitbox.y + hitbox.height + currentEntity.speed < currentEntity.y + currentEntity.hitbox.y)
                     return true;
             }
             case UP -> {
-                if (y + hitbox.y - 1 > currentEntity.y + currentEntity.hitbox.y + currentEntity.hitbox.height)
+                if (y + hitbox.y - currentEntity.speed > currentEntity.y + currentEntity.hitbox.y + currentEntity.hitbox.height)
                     return true;
             }
             case LEFT -> {
-                if (x + hitbox.x - 1 > currentEntity.x + currentEntity.hitbox.x + currentEntity.hitbox.width)
+                if (x + hitbox.x - currentEntity.speed > currentEntity.x + currentEntity.hitbox.x + currentEntity.hitbox.width)
                     return true;
             }
             case RIGHT -> {
-                if (x + hitbox.x + hitbox.width + 1 < currentEntity.x + currentEntity.hitbox.x)
+                if (x + hitbox.x + hitbox.width + currentEntity.speed < currentEntity.x + currentEntity.hitbox.x)
                     return true;
             }
         }
