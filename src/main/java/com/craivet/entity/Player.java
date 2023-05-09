@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.entity.item.*;
 import com.craivet.entity.mob.*;
-import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Fireball;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
@@ -87,15 +86,19 @@ public class Player extends Entity {
         switch (direction) {
             case DOWN -> {
                 if (!attacking) {
-                    if (collisionOnEntity) frame = movementNum == 1 ? movementDown1 : movementDown2;
-                    else frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
+                    if (collisionOnEntity) {
+                        frame = movementNum == 1 ? movementDown1 : movementDown2;
+                        if (currentEntity.collision) frame = movementDown1;
+                    } else frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
                 }
                 if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
             }
             case UP -> {
                 if (!attacking) {
-                    if (collisionOnEntity) frame = movementNum == 1 ? movementUp1 : movementUp2;
-                    else frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
+                    if (collisionOnEntity) {
+                        frame = movementNum == 1 ? movementUp1 : movementUp2;
+                        if (currentEntity.collision) frame = movementUp1;
+                    } else frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
                 }
                 if (attacking) {
                     // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
@@ -105,8 +108,10 @@ public class Player extends Entity {
             }
             case LEFT -> {
                 if (!attacking) {
-                    if (collisionOnEntity) frame = movementNum == 1 ? movementLeft1 : movementLeft2;
-                    else frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
+                    if (collisionOnEntity) {
+                        frame = movementNum == 1 ? movementLeft1 : movementLeft2;
+                        if (currentEntity.collision) frame = movementLeft1;
+                    } else frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
                 }
                 if (attacking) {
                     tempScreenX -= tile_size;
@@ -115,8 +120,10 @@ public class Player extends Entity {
             }
             case RIGHT -> {
                 if (!attacking) {
-                    if (collisionOnEntity) frame = movementNum == 1 ? movementRight1 : movementRight2;
-                    else frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
+                    if (collisionOnEntity) {
+                        frame = movementNum == 1 ? movementRight1 : movementRight2;
+                        if (currentEntity.collision) frame = movementRight1;
+                    } else frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
                 }
                 if (attacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
             }
@@ -274,8 +281,7 @@ public class Player extends Entity {
             if (key.enter) {
                 attackCanceled = true; // No puede atacar si interactua con un npc
                 world.npcs[world.map][npcIndex].speak();
-            }
-            world.npcs[world.map][npcIndex].move(direction);
+            } else world.npcs[world.map][npcIndex].move(direction);
         }
     }
 
@@ -526,13 +532,13 @@ public class Player extends Entity {
      */
     private void checkDirectionSpeed() {
         // Si colisiona con la entidad y esta en la misma direccion y no hay distancia y no es un Mob
-        if (collisionOnEntity && direction == currentEntity.direction && !checkEntityDistance() && !(currentEntity instanceof Mob))
+        if (collisionOnEntity && direction == currentEntity.direction && !isDistanceWithEntity() && !(currentEntity instanceof Mob))
             speed = currentEntity.speed;
         else {
             speed = defaultSpeed;
             collisionOnEntity = false;
         }
-        // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal
+        // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal (usarlo en caso aplicar en Mobs)
         /* if (attacking && collisionOnEntity) {
             speed = defaultSpeed;
             collisionOnEntity = false;
@@ -540,7 +546,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Comprueba la distancia con la entidad.
+     * Comprueba si hay distancia con la entidad.
      * <p>
      * <h3>¿Para que se comprueba la distancia?</h3>
      * Cuando sigue (siempre colisionando) a la entidad pero en algun momento la deja de seguir y esta se mantiene en la
@@ -550,7 +556,7 @@ public class Player extends Entity {
      *
      * @return true si hay distancia, false en caso contrario.
      */
-    private boolean checkEntityDistance() {
+    private boolean isDistanceWithEntity() {
         switch (currentEntity.direction) {
             case DOWN -> {
                 if (y + hitbox.y + hitbox.height + currentEntity.speed < currentEntity.y + currentEntity.hitbox.y)
