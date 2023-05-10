@@ -30,6 +30,7 @@ public class Player extends Entity {
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity currentEntity;
+    private boolean flag;
 
     public Player(Game game, World world) {
         super(game, world);
@@ -151,6 +152,7 @@ public class Player extends Entity {
     public void setDefaultPos() {
         world.area = OUTSIDE;
         world.map = NIX;
+        direction = DOWN;
         x = 23 * tile_size;
         y = 21 * tile_size;
     }
@@ -541,11 +543,27 @@ public class Player extends Entity {
          * direccion y si no hay distancia y si la entidad actual no colisiono con otra entidad, iguala la velocidad. Es
          * importante que primero se compruebe si la entidad actual es distinta a null ya que lanzaria un NPE si la
          * primera colision en el juego es con un tile interactivo. */
-        if (currentEntity != null && !(currentEntity instanceof Mob) && collisionOnEntity && direction == currentEntity.direction && !isDistanceWithEntity() && !currentEntity.collision)
+        if (currentEntity != null && !(currentEntity instanceof Mob) && collisionOnEntity && direction == currentEntity.direction && !isDistanceWithEntity() && !currentEntity.collision) {
             speed = currentEntity.speed;
-        else {
+            flag = true;
+            switch (direction) {
+                case DOWN -> y++;
+                case UP -> y--;
+                case LEFT -> x--;
+                case RIGHT -> x++;
+            }
+        } else {
             speed = defaultSpeed;
             collisionOnEntity = false;
+            if (flag) {
+                switch (direction) {
+                    case DOWN -> y--;
+                    case UP -> y++;
+                    case LEFT -> x++;
+                    case RIGHT -> x--;
+                }
+                flag = false;
+            }
         }
         // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal (usarlo en caso aplicar en Mobs)
         /* if (attacking && collisionOnEntity) {

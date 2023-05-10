@@ -19,7 +19,7 @@ public class Door extends Item {
         solid = true;
         hitbox.x = 0;
         hitbox.y = 16;
-        hitbox.width = 48;
+        hitbox.width = 47;
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
@@ -34,7 +34,7 @@ public class Door extends Item {
         solid = true;
         hitbox.x = 0;
         hitbox.y = 16;
-        hitbox.width = 48;
+        hitbox.width = 47;
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;

@@ -19,9 +19,9 @@ public class Chest extends Item {
         image = Utils.scaleImage(item_chest_closed, tile_size, tile_size);
         image2 = Utils.scaleImage(item_chest_opened, tile_size, tile_size);
         solid = true;
-        hitbox.x = 4;
+        hitbox.x = 2;
         hitbox.y = 16;
-        hitbox.width = 40;
+        hitbox.width = 42;
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
@@ -34,9 +34,9 @@ public class Chest extends Item {
         image = Utils.scaleImage(item_chest_closed, tile_size, tile_size);
         image2 = Utils.scaleImage(item_chest_opened, tile_size, tile_size);
         solid = true;
-        hitbox.x = 4;
+        hitbox.x = 2;
         hitbox.y = 16;
-        hitbox.width = 40;
+        hitbox.width = 42;
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
