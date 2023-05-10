@@ -340,7 +340,7 @@ public class Entity {
      * En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con una
      * entidad.
      */
-    protected void attack() {
+    protected void attack() { // TODO hit
         timer.attackAnimationCounter++;
         if (timer.attackAnimationCounter <= motion1) attackNum = 1; // (de 0-motion1 ms frame de ataque 1)
         if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de motion1-motion2 ms frame de ataque 2)
@@ -486,6 +486,7 @@ public class Entity {
      */
     public void checkCollision() {
         collision = false;
+        // collisionOnPlayer = false;
         game.collider.checkTile(this);
         game.collider.checkItem(this);
         game.collider.checkEntity(this, world.npcs);

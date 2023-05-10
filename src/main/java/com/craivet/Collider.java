@@ -146,7 +146,6 @@ public class Collider {
                         entity.collision = true;
                         entity.collisionOnEntity = true;
                         index = i;
-                        // break; // TODO No tendria que romper el bucle una vez que hay colision?
                     }
                 }
 
