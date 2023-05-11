@@ -46,11 +46,11 @@ public class Oldman extends Npc {
 
     private void initDialogue() {
         dialogues[0][0] = "Hola forastero!";
-        // dialogues[0][1] = "Hacia el norte hay una pequenia laguna \ncon una hermosa vista...";
+        dialogues[0][1] = "Hacia el norte hay una pequenia laguna \ncon una hermosa vista...";
 
-        // dialogues[1][0] = "Empiezo a creer que hay algo extranio en \nestos bosques.";
-        // dialogues[1][1] = "Todo empezo a suceder desde que ese sujeto \nraro llego a la isla.";
-        // dialogues[1][2] = "Voy a seguir explorando, hasta luego \nviajero!";
+        dialogues[1][0] = "Empiezo a creer que hay algo extranio en \nestos bosques.";
+        dialogues[1][1] = "Todo empezo a suceder desde que ese sujeto \nraro llego a la isla.";
+        dialogues[1][2] = "Voy a seguir explorando, hasta luego \nviajero!";
     }
 
 }

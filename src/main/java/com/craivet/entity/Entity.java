@@ -192,9 +192,9 @@ public class Entity {
 
             g2.drawImage(frame, tempScreenX, tempScreenY, null);
             g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
-            g2.setColor(Color.blue);
-            g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
-            // g2.drawRect(screenX, screenY, tile_size, tile_size);
+
+            // drawRects(g2, screenX, screenY);
+
             Utils.changeAlpha(g2, 1);
         }
     }
@@ -721,5 +721,12 @@ public class Entity {
     private int getRow() {
         return (y + hitbox.y) / tile_size;
     }
+
+    private void drawRects(Graphics2D g2, int screenX, int screenY) {
+        g2.setColor(Color.blue);
+        g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
+        // g2.drawRect(screenX, screenY, tile_size, tile_size);
+    }
+
 
 }

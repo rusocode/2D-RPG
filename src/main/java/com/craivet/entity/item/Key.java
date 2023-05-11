@@ -27,11 +27,17 @@ public class Key extends Item {
         super(game, world, x , y);
         name = item_name;
         type = TYPE_CONSUMABLE;
-        image = Utils.scaleImage(item_key, tile_size, tile_size);
+        image = Utils.scaleImage(item_key, 32, 32);
         description = "[" + name + "]\nIt opens a door.";
         price = 100;
         this.amount = amount;
         stackable = true;
+        hitbox.x = 2;
+        hitbox.y = 0;
+        hitbox.width = 27;
+        hitbox.height = 32;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
     }
 
     public boolean use(Entity entity) {

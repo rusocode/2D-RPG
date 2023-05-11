@@ -32,8 +32,8 @@ public class Player extends Entity {
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity currentEntity;
-    // Se utiliza para indicar cuando esta junto a una entidad en movimiento
-    private boolean together;
+    // Se utiliza para indicar cuando esta unido a una entidad en movimiento
+    private boolean united;
 
     public Player(Game game, World world) {
         super(game, world);
@@ -141,7 +141,7 @@ public class Player extends Entity {
         if (invincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(frame, tempScreenX, tempScreenY, null);
 
-        drawRects(g2);
+        // drawRects(g2);
 
         Utils.changeAlpha(g2, 1);
 
@@ -191,8 +191,8 @@ public class Player extends Entity {
         motion1 = 5;
         motion2 = 25;
 
-        // loadMovementImages(entity_player_movement, 16, 16, tile_size);
-        // loadWeaponImages(entity_player_sword, 16, 16);
+        loadMovementImages(entity_player_movement, 16, 16, tile_size);
+        loadWeaponImages(entity_player_sword, 16, 16);
         setItems();
     }
 
@@ -537,36 +537,13 @@ public class Player extends Entity {
     }
 
     /**
-     * Comprueba la velocidad de la direccion cuando colisiona con un Npc en movimiento en la misma direccion. Esto
+     * Comprueba la velocidad de la direccion cuando colisiona con una entidad en movimiento en la misma direccion. Esto
      * se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, iguala la velocidad a
      * la de la entidad. En caso contrario, vuelve a la velocidad por defecto.
      */
     private void checkDirectionSpeed() {
-        if (checkSomeConditionsForDirectionSpeed()) {
-            speed = currentEntity.speed;
-            together = true;
-            if (!(currentEntity instanceof BigRock)) {
-                switch (direction) {
-                    case DOWN -> y++;
-                    case UP -> y--;
-                    case LEFT -> x--;
-                    case RIGHT -> x++;
-                }
-            }
-        } else {
-            speed = defaultSpeed;
-            collisionOnEntity = false;
-            // Si esta junto (al npc), lo separa
-            if (together) {
-                switch (direction) {
-                    case DOWN -> y--;
-                    case UP -> y++;
-                    case LEFT -> x++;
-                    case RIGHT -> x--;
-                }
-                together = false;
-            }
-        }
+        if (checkSomeConditionsForDirectionSpeed()) unite();
+        else disunite();
         // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal (usarlo en caso aplicar en Mobs)
         /* if (attacking && collisionOnEntity) {
             speed = defaultSpeed;
@@ -578,9 +555,6 @@ public class Player extends Entity {
      * Comprueba si la entidad actual es distinta a null, y si la entidad actual es un Npc, y si el Player colisiono con
      * la entidad, y si el Player esta en la misma direccion que la entidad actual, y si el Player no tiene distancia
      * con la entidad y si la entidad actual no colisiono.
-     * <p>
-     * Es importante que primero se compruebe si la entidad actual es distinta a null ya que lanzaria un NPE si la
-     * primera colision en el juego es con un tile interactivo.
      *
      * @return true si se cumplen todas las condiciones especificadas o false.
      */
@@ -621,6 +595,45 @@ public class Player extends Entity {
             }
         }
         return false;
+    }
+
+    /**
+     * Une el Player a la entidad.
+     * <p>
+     * Iugala la velocidad de la entidad a la del Player y dependiendo de la direccion, suma o resta un pixel. Esto
+     * ultimo se hace para poder hablar con el Npc si este esta en movimiento.
+     */
+    private void unite() {
+        speed = currentEntity.speed;
+        united = true;
+        if (!(currentEntity instanceof BigRock)) {
+            switch (direction) {
+                case DOWN -> y++;
+                case UP -> y--;
+                case LEFT -> x--;
+                case RIGHT -> x++;
+            }
+        }
+    }
+
+    /**
+     * Desune el Player de la entidad.
+     * <p>
+     * Vuelve a la velocidad por defecto y verifica si estan unidos para "destrabar" ambas entidades restando o sumando
+     * un pixel.
+     */
+    private void disunite() {
+        speed = defaultSpeed;
+        collisionOnEntity = false;
+        if (united) {
+            switch (direction) {
+                case DOWN -> y--;
+                case UP -> y++;
+                case LEFT -> x++;
+                case RIGHT -> x--;
+            }
+            united = false;
+        }
     }
 
     private boolean checkKeys() {

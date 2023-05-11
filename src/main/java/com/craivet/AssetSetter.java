@@ -30,6 +30,7 @@ public class AssetSetter {
         int i = 0;
         world.items[NIX][i++] = new Axe(game, world, 33, 7);
         world.items[NIX][i++] = new PotionRed(game, world, 20, 21, 5);
+        world.items[NIX][i++] = new Key(game, world, 21, 21, 1);
         world.items[NIX][i++] = new Door(game, world, 14, 28);
         world.items[NIX][i++] = new Door(game, world, 12, 12);
 

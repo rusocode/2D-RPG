@@ -183,6 +183,7 @@ public class Game extends Canvas implements Runnable {
             setter.setItem();
             setter.setInteractiveTile();
             world.environment.lighting.resetDay();
+            minimap.miniMapOn = false;
         }
     }
 

@@ -29,12 +29,18 @@ public class PotionRed extends Item {
         super(game, world, x, y);
         name = item_name;
         type = TYPE_CONSUMABLE;
-        image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
+        image = Utils.scaleImage(item_potion_red, 32, 32);
         value = 5;
         description = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;
         this.amount = amount;
         stackable = true;
+        hitbox.x = 3;
+        hitbox.y = 0;
+        hitbox.width = 25;
+        hitbox.height = 32;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
     }
 
     public boolean use(Entity entity) {
