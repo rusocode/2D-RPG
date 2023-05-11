@@ -30,7 +30,8 @@ public class Player extends Entity {
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity currentEntity;
-    private boolean flag;
+    // Se utiliza para indicar cuando esta junto a una entidad en movimiento
+    private boolean together;
 
     public Player(Game game, World world) {
         super(game, world);
@@ -188,8 +189,8 @@ public class Player extends Entity {
         motion1 = 5;
         motion2 = 25;
 
-        loadMovementImages(entity_player_movement, 16, 16, tile_size);
-        loadWeaponImages(entity_player_sword, 16, 16);
+        // loadMovementImages(entity_player_movement, 16, 16, tile_size);
+        // loadWeaponImages(entity_player_sword, 16, 16);
         setItems();
     }
 
@@ -532,37 +533,31 @@ public class Player extends Entity {
      * Comprueba la velocidad de la direccion cuando colisiona con un Npc en movimiento en la misma direccion. Esto
      * se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, iguala la velocidad a
      * la de la entidad. En caso contrario, vuelve a la velocidad por defecto.
-     * <p>
-     * Pero hay un pequeño problema. Por ejemplo, al igualar la velocidad a la del Oldman que se mueve hacia la derecha
-     * y querer dialogar al mismo tiempo, no lo podria hacer ya que la posicion del Player se actualiza 1 pixel antes a
-     * la del Oldman, por lo que no colisionan y por eso mismo no pueden dialogar. Aunque lo logico seria que no puedan
-     * dialogar si sigue a la entidad.
      */
     private void checkDirectionSpeed() {
-        /* Si la entidad actual es distinta a null y no es un Mob y si colisiona con la entidad y si esta en la misma
-         * direccion y si no hay distancia y si la entidad actual no colisiono con otra entidad, iguala la velocidad. Es
-         * importante que primero se compruebe si la entidad actual es distinta a null ya que lanzaria un NPE si la
-         * primera colision en el juego es con un tile interactivo. */
-        if (currentEntity != null && !(currentEntity instanceof Mob) && collisionOnEntity && direction == currentEntity.direction && !isDistanceWithEntity() && !currentEntity.collision) {
+        if (checkSomeConditionsForDirectionSpeed()) {
             speed = currentEntity.speed;
-            flag = true;
-            switch (direction) {
-                case DOWN -> y++;
-                case UP -> y--;
-                case LEFT -> x--;
-                case RIGHT -> x++;
+            if (!(currentEntity instanceof Interactive)) {
+                together = true;
+                switch (direction) {
+                    case DOWN -> y++;
+                    case UP -> y--;
+                    case LEFT -> x--;
+                    case RIGHT -> x++;
+                }
             }
         } else {
             speed = defaultSpeed;
             collisionOnEntity = false;
-            if (flag) {
+            // Si esta junto, lo separa
+            if (together) {
                 switch (direction) {
                     case DOWN -> y--;
                     case UP -> y++;
                     case LEFT -> x++;
                     case RIGHT -> x--;
                 }
-                flag = false;
+                together = false;
             }
         }
         // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal (usarlo en caso aplicar en Mobs)
@@ -573,15 +568,31 @@ public class Player extends Entity {
     }
 
     /**
+     * Comprueba si la entidad actual es distinta a null, y si la entidad actual no es un Mob, y si el Player colisiono
+     * con la entidad, y si el Player esta en la misma direccion que la entidad actual, y si el Player no tiene
+     * distancia con la entidad y si la entidad actual no colisiono.
+     * <p>
+     * Es importante que primero se compruebe si la entidad actual es distinta a null ya que lanzaria un NPE si la
+     * primera colision en el juego es con un tile interactivo.
+     *
+     * @return true si se cumplen todas las condiciones especificadas o false.
+     */
+    private boolean checkSomeConditionsForDirectionSpeed() {
+        return currentEntity != null && !(currentEntity instanceof Mob) &&
+                collisionOnEntity && direction == currentEntity.direction &&
+                !isDistanceWithEntity() && !currentEntity.collision;
+    }
+
+    /**
      * Comprueba si hay distancia con la entidad.
      * <p>
      * <h3>¿Para que se comprueba la distancia?</h3>
      * Cuando sigue (siempre colisionando) a la entidad pero en algun momento la deja de seguir y esta se mantiene en la
      * misma direccion, la velocidad va a seguir siendo la misma a la de la entidad. Entonces para solucionar ese
-     * problema, se comprueba la distancia y si hay distancia entre el Player y la entidad, vuelve a la velocidad por
+     * problema se comprueba la distancia, y si hay distancia entre el Player y la entidad, vuelve a la velocidad por
      * defecto.
      *
-     * @return true si hay distancia, false en caso contrario.
+     * @return true si hay distancia o false.
      */
     private boolean isDistanceWithEntity() {
         switch (currentEntity.direction) {

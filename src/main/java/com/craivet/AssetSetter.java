@@ -62,8 +62,6 @@ public class AssetSetter {
         int i = 0, j = 0, k = 0;
         
         world.npcs[NIX][i++] = new Oldman(game, world, 23, 18);
-        world.npcs[NIX][i++] = new Oldman(game, world, 23, 20);
-        world.npcs[NIX][i++] = new Trader(game, world, 23, 22);
         world.npcs[NIX][i] = new BigRock(game, world, 26, 21);
 
         world.npcs[NIX_INDOOR_01][j] = new Trader(game, world, 12, 7);
@@ -84,6 +82,8 @@ public class AssetSetter {
 
     public void setInteractiveTile() {
         int i = 0;
+        world.interactives[NIX][i++] = new DryTree(game, world, 23, 22);
+
         world.interactives[NIX][i++] = new DryTree(game, world, 25, 27);
         world.interactives[NIX][i++] = new DryTree(game, world, 26, 27);
         world.interactives[NIX][i++] = new DryTree(game, world, 27, 27);
