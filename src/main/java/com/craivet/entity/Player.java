@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.entity.item.*;
 import com.craivet.entity.mob.*;
+import com.craivet.entity.npc.BigRock;
+import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Fireball;
 import com.craivet.input.KeyManager;
 import com.craivet.tile.Interactive;
@@ -513,8 +515,13 @@ public class Player extends Entity {
         pickUpItem(game.collider.checkItem(this));
         interactNpc(game.collider.checkEntity(this, world.npcs));
         hurtPlayer(game.collider.checkEntity(this, world.mobs));
-        game.collider.checkEntity(this, world.interactives);
+        setCurrentInteractive(game.collider.checkEntity(this, world.interactives));
+        // game.collider.checkEntity(this, world.interactives);
         game.event.checkEvent();
+    }
+
+    private void setCurrentInteractive(int iTileIndex) {
+        if (iTileIndex != -1) currentEntity = world.interactives[world.map][iTileIndex];
     }
 
     /**
@@ -537,8 +544,8 @@ public class Player extends Entity {
     private void checkDirectionSpeed() {
         if (checkSomeConditionsForDirectionSpeed()) {
             speed = currentEntity.speed;
-            if (!(currentEntity instanceof Interactive)) {
-                together = true;
+            together = true;
+            if (!(currentEntity instanceof BigRock)) {
                 switch (direction) {
                     case DOWN -> y++;
                     case UP -> y--;
@@ -549,7 +556,7 @@ public class Player extends Entity {
         } else {
             speed = defaultSpeed;
             collisionOnEntity = false;
-            // Si esta junto, lo separa
+            // Si esta junto (al npc), lo separa
             if (together) {
                 switch (direction) {
                     case DOWN -> y--;
@@ -568,9 +575,9 @@ public class Player extends Entity {
     }
 
     /**
-     * Comprueba si la entidad actual es distinta a null, y si la entidad actual no es un Mob, y si el Player colisiono
-     * con la entidad, y si el Player esta en la misma direccion que la entidad actual, y si el Player no tiene
-     * distancia con la entidad y si la entidad actual no colisiono.
+     * Comprueba si la entidad actual es distinta a null, y si la entidad actual es un Npc, y si el Player colisiono con
+     * la entidad, y si el Player esta en la misma direccion que la entidad actual, y si el Player no tiene distancia
+     * con la entidad y si la entidad actual no colisiono.
      * <p>
      * Es importante que primero se compruebe si la entidad actual es distinta a null ya que lanzaria un NPE si la
      * primera colision en el juego es con un tile interactivo.
@@ -578,7 +585,7 @@ public class Player extends Entity {
      * @return true si se cumplen todas las condiciones especificadas o false.
      */
     private boolean checkSomeConditionsForDirectionSpeed() {
-        return currentEntity != null && !(currentEntity instanceof Mob) &&
+        return currentEntity != null && currentEntity instanceof Npc &&
                 collisionOnEntity && direction == currentEntity.direction &&
                 !isDistanceWithEntity() && !currentEntity.collision;
     }

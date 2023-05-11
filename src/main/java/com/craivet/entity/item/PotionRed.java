@@ -24,6 +24,7 @@ public class PotionRed extends Item {
         stackable = true;
     }
 
+    // TODO Achicar la imagen en el drop
     public PotionRed(Game game, World world, int x, int y, int amount) {
         super(game, world, x, y);
         name = item_name;
