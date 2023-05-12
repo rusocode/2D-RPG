@@ -27,7 +27,7 @@ import static com.craivet.gfx.Assets.*;
 public class Player extends Entity {
 
     private final KeyManager key;
-    public int screenX, screenY;
+    public int screenX, screenY, tempScreenX, tempScreenY;
     public boolean attackCanceled, shooting, lightUpdate;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
@@ -86,65 +86,18 @@ public class Player extends Entity {
 
     public void render(Graphics2D g2) {
         BufferedImage frame = null;
-        int tempScreenX = screenX, tempScreenY = screenY;
+        tempScreenX = screenX;
+        tempScreenY = screenY;
         switch (direction) {
-            case DOWN -> {
-                // Si no esta atacando
-                if (!attacking) {
-                    // Si colisiona con una entidad
-                    if (collisionOnEntity) {
-                        // Utiliza el frame movementDown1 si movementNum es 1 o el frame movementDown2 en caso contrario
-                        frame = movementNum == 1 ? movementDown1 : movementDown2;
-                        // Si la entidad actual esta colisionando, entonces utiliza el frame movementDown1
-                        if (currentEntity.collision) frame = movementDown1;
-                    } else frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                }
-                // Si esta atacando utiliza el frame weaponDown1 si attackNum es 1 o el frame weaponDown2 en caso contrario
-                if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
-            }
-            case UP -> {
-                if (!attacking) {
-                    if (collisionOnEntity) {
-                        frame = movementNum == 1 ? movementUp1 : movementUp2;
-                        if (currentEntity.collision) frame = movementUp1;
-                    } else frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
-                }
-                if (attacking) {
-                    // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
-                    tempScreenY -= tile_size;
-                    frame = attackNum == 1 ? weaponUp1 : weaponUp2;
-                }
-            }
-            case LEFT -> {
-                if (!attacking) {
-                    if (collisionOnEntity) {
-                        frame = movementNum == 1 ? movementLeft1 : movementLeft2;
-                        if (currentEntity.collision) frame = movementLeft1;
-                    } else frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
-                }
-                if (attacking) {
-                    tempScreenX -= tile_size;
-                    frame = attackNum == 1 ? weaponLeft1 : weaponLeft2;
-                }
-            }
-            case RIGHT -> {
-                if (!attacking) {
-                    if (collisionOnEntity) {
-                        frame = movementNum == 1 ? movementRight1 : movementRight2;
-                        if (currentEntity.collision) frame = movementRight1;
-                    } else frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
-                }
-                if (attacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
-            }
+            case DOWN -> frame = getFrame(DOWN, movementDown1, movementDown2, weaponDown1, weaponDown2);
+            case UP -> frame = getFrame(UP, movementUp1, movementUp2, weaponUp1, weaponUp2);
+            case LEFT -> frame = getFrame(LEFT, movementLeft1, movementLeft2, weaponLeft1, weaponLeft2);
+            case RIGHT -> frame = getFrame(RIGHT, movementRight1, movementRight2, weaponRight1, weaponRight2);
         }
-
         if (invincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(frame, tempScreenX, tempScreenY, null);
-
         // drawRects(g2);
-
         Utils.changeAlpha(g2, 1);
-
     }
 
     private void centerOnScreen() {
@@ -655,6 +608,40 @@ public class Player extends Entity {
         game.playSound(sound_player_die);
         game.ui.command = -1;
         game.music.stop();
+    }
+
+    /**
+     * Obtiene el frame de la direccion especificada ya sea de movimiento o ataque.
+     *
+     * @param direction direccion.
+     * @param movement1 frame de movimiento 1.
+     * @param movement2 frame de movimiento 2.
+     * @param attack1   frame de ataque 1.
+     * @param attack2   frame de ataque 2.
+     * @return el frame de la direccion especificada ya sea de movimiento o ataque, o null.
+     */
+    private BufferedImage getFrame(int direction, BufferedImage movement1, BufferedImage movement2, BufferedImage attack1, BufferedImage attack2) {
+        BufferedImage frame = null;
+        // Si no esta atacando
+        if (!attacking) {
+            // Si colisiona con una entidad
+            if (collisionOnEntity) {
+                // Utiliza el frame movement1 si movementNum es 1 o el frame movement2 en caso contrario
+                frame = movementNum == 1 ? movement1 : movement2;
+                // Si la entidad actual esta colisionando, entonces utiliza el frame movement1
+                if (currentEntity.collision) frame = movement1;
+            } else frame = movementNum == 1 || collision ? movement1 : movement2;
+        }
+        if (attacking) {
+            // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
+            switch (direction) {
+                case UP -> tempScreenY -= tile_size;
+                case LEFT -> tempScreenX -= tile_size;
+            }
+            // Si esta atacando utiliza el frame attack1 si attackNum es 1 o el frame attack2 en caso contrario
+            frame = attackNum == 1 ? attack1 : attack2;
+        }
+        return frame;
     }
 
     public int getAttack() {
