@@ -402,13 +402,12 @@ public class Player extends Entity {
     }
 
     /**
-     * Verifica si puede obtener el item especificado y en caso afirmativo lo agrega al inventario.
+     * Verifica si puede recoger el item y en caso afirmativo lo agrega al inventario.
      *
-     * @param item item especificado.
-     * @return true si se puede obtener el item.
+     * @param item item.
+     * @return true si se puede recoger el item o false.
      */
     public boolean canPickup(Entity item) {
-        boolean canPickup = false;
         // Evita la referencia al mismo item
         Entity newItem = game.generator.getItem(item.name);
         // Verifica si es stackable
@@ -417,23 +416,23 @@ public class Player extends Entity {
             int itemIndex = searchItemInInventory(item.name);
             if (itemIndex != -1) {
                 inventory.get(itemIndex).amount += item.amount;
-                canPickup = true;
+                return true;
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
                 inventory.add(newItem);
-                canPickup = true;
+                return true;
             }
         } else if (inventory.size() != MAX_INVENTORY_SIZE) {
             inventory.add(newItem);
-            canPickup = true;
+            return true;
         }
-        return canPickup;
+        return false;
     }
 
     /**
-     * Busca el item especificado en el inventario.
+     * Busca el item en el inventario.
      *
-     * @param name el nombre del item especificado.
-     * @return el indice del item especificado.
+     * @param name nombre del item.
+     * @return el indice del item.
      */
     private int searchItemInInventory(String name) {
         int itemIndex = -1;
@@ -488,11 +487,11 @@ public class Player extends Entity {
 
     /**
      * Comprueba la velocidad de la direccion cuando colisiona con una entidad en movimiento en la misma direccion. Esto
-     * se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, iguala la velocidad a
-     * la de la entidad. En caso contrario, vuelve a la velocidad por defecto.
+     * se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, "une" el Player a la
+     * entidad. En caso contrario, "desune" el Player de la entidad.
      */
     private void checkDirectionSpeed() {
-        if (checkSomeConditionsForDirectionSpeed()) unite();
+        if (checkSomeConditionsForUnion()) unite();
         else disunite();
         // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal (usarlo en caso aplicar en Mobs)
         /* if (attacking && collisionOnEntity) {
@@ -508,7 +507,7 @@ public class Player extends Entity {
      *
      * @return true si se cumplen todas las condiciones especificadas o false.
      */
-    private boolean checkSomeConditionsForDirectionSpeed() {
+    private boolean checkSomeConditionsForUnion() {
         return currentEntity != null && currentEntity instanceof Npc &&
                 collisionOnEntity && direction == currentEntity.direction &&
                 !isDistanceWithEntity() && !currentEntity.collision;
@@ -517,7 +516,7 @@ public class Player extends Entity {
     /**
      * Comprueba si hay distancia con la entidad.
      * <p>
-     * <h3>¿Para que se comprueba la distancia?</h3>
+     * <h3>¿Para que hace esto?</h3>
      * Cuando sigue (siempre colisionando) a la entidad pero en algun momento la deja de seguir y esta se mantiene en la
      * misma direccion, la velocidad va a seguir siendo la misma a la de la entidad. Entonces para solucionar ese
      * problema se comprueba la distancia, y si hay distancia entre el Player y la entidad, vuelve a la velocidad por
@@ -550,7 +549,7 @@ public class Player extends Entity {
     /**
      * Une el Player a la entidad.
      * <p>
-     * Iugala la velocidad de la entidad a la del Player y dependiendo de la direccion, suma o resta un pixel. Esto
+     * Iguala la velocidad de la entidad a la del Player y dependiendo de la direccion, suma o resta un pixel. Esto
      * ultimo se hace para poder hablar con el Npc si este esta en movimiento.
      */
     private void unite() {
@@ -653,24 +652,21 @@ public class Player extends Entity {
     }
 
     public int getCurrentWeaponSlot() {
-        int currentWeaponSlot = 0;
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == weapon) currentWeaponSlot = i;
-        return currentWeaponSlot;
+            if (inventory.get(i) == weapon) return i;
+        return 0;
     }
 
     public int getCurrentShieldSlot() {
-        int currentShieldSlot = 0;
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == shield) currentShieldSlot = i;
-        return currentShieldSlot;
+            if (inventory.get(i) == shield) return i;
+        return 0;
     }
 
     public int getCurrentLightSlot() {
-        int currentLightSlot = 0;
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == light) currentLightSlot = i;
-        return currentLightSlot;
+            if (inventory.get(i) == light) return i;
+        return 0;
     }
 
     public void initSleepImage(BufferedImage image) {
