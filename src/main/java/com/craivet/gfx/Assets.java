@@ -30,7 +30,7 @@ public final class Assets {
     public static final URL sound_door_opening = Utils.loadAudio(sounds_path + "door_opening.wav");
     public static final URL sound_door_iron_opening = Utils.loadAudio(sounds_path + "door_iron_opening.wav");
     public static final URL sound_draw_sword = Utils.loadAudio(sounds_path + "draw_sword.wav");
-    public static final URL sound_hit_monster = Utils.loadAudio(sounds_path + "hit_monster.wav");
+    public static final URL sound_hit_mob = Utils.loadAudio(sounds_path + "hit_mob.wav");
     public static final URL sound_hit_orc = Utils.loadAudio(sounds_path + "hit_orc.wav");
     public static final URL sound_hit_slime = Utils.loadAudio(sounds_path + "hit_slime.wav");
     public static final URL sound_level_up = Utils.loadAudio(sounds_path + "level_up.wav");
@@ -38,7 +38,7 @@ public final class Assets {
     public static final URL sound_mob_death = Utils.loadAudio(sounds_path + "mob_death.wav");
     public static final URL sound_player_die = Utils.loadAudio(sounds_path + "player_die.wav");
     public static final URL sound_potion_red = Utils.loadAudio(sounds_path + "potion2.wav");
-    public static final URL sound_pick_up = Utils.loadAudio(sounds_path + "472.wav");
+    public static final URL sound_pickup = Utils.loadAudio(sounds_path + "472.wav");
     public static final URL sound_receive_damage = Utils.loadAudio(sounds_path + "receive_damage.wav");
     public static final URL sound_sleep = Utils.loadAudio(sounds_path + "sleep.wav");
     public static final URL sound_spawn = Utils.loadAudio(sounds_path + "spawn.wav");

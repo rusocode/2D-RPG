@@ -258,12 +258,12 @@ public class Player extends Entity {
      *
      * @param itemIndex indice del item.
      */
-    private void pickUpItem(int itemIndex) {
+    private void pickup(int itemIndex) {
         if (itemIndex != -1) {
             Entity item = world.items[world.map][itemIndex];
             if (key.l && item.type != TYPE_OBSTACLE) {
                 if (item.type == TYPE_PICKUP_ONLY) item.use(this);
-                else if (canObtainItem(item)) game.playSound(sound_pick_up);
+                else if (canPickup(item)) game.playSound(sound_pickup);
                 else {
                     game.ui.addMessage("You cannot carry any more!");
                     return;
@@ -288,7 +288,7 @@ public class Player extends Entity {
         if (npcIndex != -1) {
             currentEntity = world.npcs[world.map][npcIndex];
             if (key.enter) {
-                attackCanceled = true; // No puede atacar si interactua con un npc
+                attackCanceled = true;
                 world.npcs[world.map][npcIndex].speak();
             } else world.npcs[world.map][npcIndex].move(direction);
         }
@@ -305,7 +305,6 @@ public class Player extends Entity {
             Entity mob = world.mobs[world.map][mobIndex];
             if (!invincible && !mob.dead) {
                 game.playSound(sound_receive_damage);
-                // En caso de que el ataque sea menor a la defensa, entonces no hace daño
                 int damage = Math.max(mob.attack - defense, 1);
                 HP -= damage;
                 invincible = true;
@@ -335,7 +334,7 @@ public class Player extends Entity {
                 if (mob.HP > 0) {
                     if (mob instanceof Slime) game.playSound(sound_hit_slime);
                     if (mob instanceof Orc) {
-                        game.playSound(sound_hit_monster);
+                        game.playSound(sound_hit_mob);
                         game.playSound(sound_hit_orc);
                     }
                 }
@@ -406,7 +405,6 @@ public class Player extends Entity {
             dexterity++;
             attack = getAttack();
             defense = getDefense();
-
             game.playSound(sound_level_up);
             dialogues[0][0] = "You are level " + lvl + "!";
             startDialogue(DIALOGUE_STATE, this, 0);
@@ -453,11 +451,11 @@ public class Player extends Entity {
     /**
      * Verifica si puede obtener el item especificado y en caso afirmativo lo agrega al inventario.
      *
-     * @param item el item especificado.
-     * @return si se puede obtener el item o no.
+     * @param item item especificado.
+     * @return true si se puede obtener el item.
      */
-    public boolean canObtainItem(Entity item) {
-        boolean canObtain = false;
+    public boolean canPickup(Entity item) {
+        boolean canPickup = false;
         // Evita la referencia al mismo item
         Entity newItem = game.generator.getItem(item.name);
         // Verifica si es stackable
@@ -466,16 +464,16 @@ public class Player extends Entity {
             int itemIndex = searchItemInInventory(item.name);
             if (itemIndex != -1) {
                 inventory.get(itemIndex).amount += item.amount;
-                canObtain = true;
+                canPickup = true;
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
                 inventory.add(newItem);
-                canObtain = true;
+                canPickup = true;
             }
         } else if (inventory.size() != MAX_INVENTORY_SIZE) {
             inventory.add(newItem);
-            canObtain = true;
+            canPickup = true;
         }
-        return canObtain;
+        return canPickup;
     }
 
     /**
@@ -503,7 +501,6 @@ public class Player extends Entity {
         else if (key.w) direction = UP;
         else if (key.a) direction = LEFT;
         else if (key.d) direction = RIGHT;
-        // lastDirection = direction;
     }
 
     /**
@@ -512,7 +509,7 @@ public class Player extends Entity {
     public void checkCollision() {
         collision = false;
         game.collider.checkTile(this);
-        pickUpItem(game.collider.checkItem(this));
+        pickup(game.collider.checkItem(this));
         interactNpc(game.collider.checkEntity(this, world.npcs));
         hurtPlayer(game.collider.checkEntity(this, world.mobs));
         setCurrentInteractive(game.collider.checkEntity(this, world.interactives));
@@ -658,7 +655,6 @@ public class Player extends Entity {
         game.playSound(sound_player_die);
         game.ui.command = -1;
         game.music.stop();
-        attacking = false;
     }
 
     public int getAttack() {

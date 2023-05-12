@@ -47,7 +47,7 @@ public class Chest extends Item {
             game.playSound(sound_chest_opening);
             image = image2;
             opened = true;
-            if (world.player.canObtainItem(loot)) {
+            if (world.player.canPickup(loot)) {
                 dialogues[0][0] = "You open the chest and find a " + loot.name + "!\nYou obtain the " + loot.name + "!";
                 startDialogue(DIALOGUE_STATE, this, 0);
                 empty = true;
@@ -56,7 +56,7 @@ public class Chest extends Item {
                 startDialogue(DIALOGUE_STATE, this, 1);
             }
         } else if (!empty) {
-            if (world.player.canObtainItem(loot)) {
+            if (world.player.canPickup(loot)) {
                 dialogues[2][0] = "You obtain the " + loot.name + "!";
                 startDialogue(DIALOGUE_STATE, this, 2);
                 empty = true;
