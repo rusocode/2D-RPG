@@ -33,9 +33,12 @@ public class Entity {
     public ArrayList<Entity> inventory = new ArrayList<>();
     public Entity linkedEntity;
     public boolean hpBar;
+    /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
+     * ataque para actualizar la posicion de la entidad mientras el frame de esta se mantiene en la misma direccion. */
     public int knockbackDirection;
     public String[][] dialogues = new String[20][20];
     public int dialogueSet, dialogueIndex;
+    private int screenX, screenY, tempScreenX, tempScreenY;
 
     // General attributes
     // TODO Podria separar las estadisticas en una clase aparte
@@ -55,7 +58,7 @@ public class Entity {
     public int motion1, motion2; // Velocidad de movimiento de la espada
     public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
-    public Projectile projectile; // TODO Es necesario declarar este objeto aca?
+    public Projectile projectile;
     public Entity weapon, shield;
     public Entity light; // linterna, antorcha, etc.
 
@@ -63,16 +66,15 @@ public class Entity {
     public Entity loot;
     public String description;
     public int price;
-    public int attackValue, defenseValue;
-    public int knockbackValue;
+    public int attackValue, defenseValue, knockbackValue;
     public int amount = 1;
     public int lightRadius;
     public boolean solid, stackable;
     public boolean opened, empty; // chest
 
     // States
-    public boolean isAttacking;
-    public boolean isAlive = true; // TODO Se podria combinar isAlive y is isDead como uno solo creo...
+    public boolean isHitting;
+    public boolean isAlive = true;
     public boolean isColliding;
     public boolean isCollidingOnEntity;
     public boolean isDead;
@@ -97,90 +99,48 @@ public class Entity {
         this.y = y * tile_size;
     }
 
-    /**
-     * En caso de que se haya aplicado knockback a la entidad, comprueba las colisiones y en base a eso determina si se
-     * actualiza la posicion de la entidad utilizando la variable temporal knockbackDirection o se detiene el knockback.
-     * <p>
-     * Si la entidad esta atacando, ataca.
-     * <p>
-     * Si ninguna de las dos condiciones anteriores se cumple (isKnockback o isAttacking), entonces la entidad realiza
-     * una accion y comprueba las colisiones para determinar si se actualiza la posicion o no aplicando el intervalo de
-     * movimiento.
-     */
     public void update() {
-        // TODO Se podria separar en metodos
+        // Si esta en knockback
         if (isKnockback) {
+            // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y el Player
             checkCollision();
+            // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion del atacante
             if (!isColliding) updatePosition(knockbackDirection);
-            else stopKnockback();
+            else stopKnockback(); // Si colisiona, detiene el knockback
+            // Temporiza el knockback
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
-        } else if (isAttacking) attack();
+        } else if (isHitting) hit(); // Si esta atacando, entonces ataca
         else {
-            setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
+            // Establece una accion (es importante que realize una accion antes de comprobar las colisiones)
+            setAction();
+            // Comprueba las colisiones
             checkCollision();
+            // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion
             if (!isColliding) updatePosition(direction);
-            /* TODO Estos timers deberian ir fuera del else? Al usar un timer para el movimiento y otro para la
-             * animacion de ataque, creo que no interrumpiria el tiempo en el cambio de frames. */
-            timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
-            if (isInvincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-            if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
         }
+        // Temporiza la animacion de movimiento
+        timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+        // Aplica el timer solo si la entidad es invencible
+        if (isInvincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
+        if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
     }
 
     public void render(Graphics2D g2) {
         BufferedImage frame = null;
-        int screenX = (x - world.player.x) + world.player.screenX;
-        int screenY = (y - world.player.y) + world.player.screenY;
-        if (x + tile_size > world.player.x - world.player.screenX &&
-                x - tile_size < world.player.x + world.player.screenX &&
-                y + tile_size > world.player.y - world.player.screenY &&
-                y - tile_size < world.player.y + world.player.screenY) {
-
-            int tempScreenX = screenX, tempScreenY = screenY;
+        screenX = (x - world.player.x) + world.player.screenX;
+        screenY = (y - world.player.y) + world.player.screenY;
+        if (isOnCamera()) {
+            tempScreenX = screenX;
+            tempScreenY = screenY;
             switch (direction) {
-                case DOWN -> {
-                    if (!isAttacking) frame = movementNum == 1 || isColliding ? movementDown1 : movementDown2;
-                    if (isAttacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
-                }
-                case UP -> {
-                    if (!isAttacking) frame = movementNum == 1 || isColliding ? movementUp1 : movementUp2;
-                    if (isAttacking) {
-                        // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
-                        tempScreenY -= tile_size;
-                        frame = attackNum == 1 ? weaponUp1 : weaponUp2;
-                    }
-                }
-                case LEFT -> {
-                    if (!isAttacking) frame = movementNum == 1 || isColliding ? movementLeft1 : movementLeft2;
-                    if (isAttacking) {
-                        tempScreenX -= tile_size;
-                        frame = attackNum == 1 ? weaponLeft1 : weaponLeft2;
-                    }
-                }
-                case RIGHT -> {
-                    if (!isAttacking) frame = movementNum == 1 || isColliding ? movementRight1 : movementRight2;
-                    if (isAttacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
-                }
+                case DOWN -> frame = getFrame(DOWN, movementDown1, movementDown2, weaponDown1, weaponDown2);
+                case UP -> frame = getFrame(UP, movementUp1, movementUp2, weaponUp1, weaponUp2);
+                case LEFT -> frame = getFrame(LEFT, movementLeft1, movementLeft2, weaponLeft1, weaponLeft2);
+                case RIGHT -> frame = getFrame(RIGHT, movementRight1, movementRight2, weaponRight1, weaponRight2);
             }
 
-            // Si la barra de hp esta activada
-            if (type == TYPE_MOB && hpBar) {
-
-                double oneScale = (double) tile_size / maxHP;
-                double hpBarValue = oneScale * HP;
-
-                /* En caso de que el valor de la barra de vida calculada sea menor a 0, le asigna 0 para que no se
-                 * dibuje como valor negativo hacia la izquierda. */
-                if (hpBarValue < 0) hpBarValue = 0;
-
-                g2.setColor(new Color(35, 35, 35));
-                g2.fillRect(screenX - 1, screenY + tile_size + 4, tile_size + 2, 7);
-
-                g2.setColor(new Color(255, 0, 30));
-                g2.fillRect(screenX, screenY + tile_size + 5, (int) hpBarValue, 5);
-
-                timer.timeHpBar(this, INTERVAL_HP_BAR);
-            }
+            // Si el mob tiene activada la barra de vida
+            if (type == TYPE_MOB && hpBar) drawHpBar(g2);
             if (isInvincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
@@ -272,7 +232,8 @@ public class Entity {
     /**
      * Dropea un item.
      *
-     * @param item item a dropear.
+     * @param entity entidad.
+     * @param item   item a dropear.
      */
     protected void dropItem(Entity entity, Item item) {
         for (int i = 0; i < world.items[1].length; i++) {
@@ -296,11 +257,9 @@ public class Entity {
      * @param user       player.
      * @param target     lista de items.
      * @param targetName nombre del item especificado.
-     * @return el indice del item especificado a la posicion adyacente del player.
+     * @return el indice del item especificado a la posicion adyacente del player o -1 si no existe.
      */
     protected int getDetected(Entity user, Entity[][] target, String targetName) {
-        int index = -1;
-
         // Verifica el item adyacente al usuario
         int nextX = user.getLeft();
         int nextY = user.getTop();
@@ -317,20 +276,16 @@ public class Entity {
 
         // Si el item iterado es igual a la posicion adyacente del usuario
         for (int i = 0; i < target[1].length; i++) {
-            if (target[world.map][i] != null) {
-                if (target[world.map][i].getRow() == row && target[world.map][i].getCol() == col && target[world.map][i].name.equals(targetName)) {
-                    index = i;
-                    break;
-                }
-            }
+            if (target[world.map][i] != null)
+                if (target[world.map][i].getRow() == row && target[world.map][i].getCol() == col && target[world.map][i].name.equals(targetName))
+                    return i;
         }
 
-        return index;
-
+        return -1;
     }
 
     /**
-     * Daña la entidad si el frame de ataque colisiona con la hitbox del objetivo.
+     * Golpea a la entidad si el frame de ataque colisiona con la hitbox del objetivo.
      * <p>
      * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
      * ataque. Despues de motion2 vuelve al frame de movimiento.
@@ -338,7 +293,7 @@ public class Entity {
      * En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con una
      * entidad.
      */
-    protected void attack() { // TODO hit
+    protected void hit() {
         timer.attackAnimationCounter++;
         if (timer.attackAnimationCounter <= motion1) attackNum = 1; // (de 0-motion1 ms frame de ataque 1)
         if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de motion1-motion2 ms frame de ataque 2)
@@ -395,13 +350,12 @@ public class Entity {
                 }
             }
 
-            // Convierte el area del cuerpo en el area de ataque para verificar la colision solo con el area de ataque
+            // Convierte la hitbox en attackbox para verificar la colision solo con el area de ataque
             hitbox.width = attackbox.width;
             hitbox.height = attackbox.height;
 
-            if (type == TYPE_MOB) {
-                damagePlayer(game.collider.checkPlayer(this), attack);
-            } else {
+            if (type == TYPE_MOB) hitPlayer(game.collider.checkPlayer(this), attack);
+            else {
                 // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
                 int mobIndex = game.collider.checkEntity(this, world.mobs);
                 world.player.hitMob(mobIndex, this, weapon.knockbackValue, attack);
@@ -422,17 +376,17 @@ public class Entity {
         if (timer.attackAnimationCounter > motion2) {
             attackNum = 1;
             timer.attackAnimationCounter = 0;
-            isAttacking = false;
+            isHitting = false;
         }
     }
 
     /**
-     * Daña al player.
+     * Golpea al player.
      *
      * @param contact si el mob hace contacto con el player.
      * @param attack  puntos de ataque.
      */
-    protected void damagePlayer(boolean contact, int attack) {
+    protected void hitPlayer(boolean contact, int attack) {
         // Si el mob hace contacto con el player que no es invencible
         if (type == TYPE_MOB && contact && !world.player.isInvincible) {
             game.playSound(sound_receive_damage);
@@ -471,7 +425,7 @@ public class Entity {
         // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
         if (targetInRage) {
             if (Utils.azar(rate) == 1) {
-                isAttacking = true;
+                isHitting = true;
                 movementNum = 1;
                 timer.movementCounter = 0; // TODO O se referia al contador de ataque?
                 timer.projectileCounter = 0;
@@ -484,13 +438,12 @@ public class Entity {
      */
     public void checkCollision() {
         isColliding = false;
-        // collisionOnPlayer = false;
         game.collider.checkTile(this);
         game.collider.checkItem(this);
         game.collider.checkEntity(this, world.npcs);
         game.collider.checkEntity(this, world.mobs);
         game.collider.checkEntity(this, world.interactives);
-        damagePlayer(game.collider.checkPlayer(this), attack);
+        hitPlayer(game.collider.checkPlayer(this), attack);
     }
 
     /**
@@ -508,15 +461,13 @@ public class Entity {
     }
 
     /**
-     * Establece el retroceso al objetivo del atacante.
+     * Establece el knockback al objetivo del atacante.
      *
      * @param target         objetivo del atacante.
      * @param attacker       atacante de la entidad.
      * @param knockbackValue valor de knockback.
      */
     protected void setKnockback(Entity target, Entity attacker, int knockbackValue) {
-        /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
-         * ataque para actualizar la posicion de la entidad mientras el frame de esta se mantiene en la misma direccion. */
         target.knockbackDirection = attacker.direction;
         target.speed += knockbackValue;
         target.isKnockback = true;
@@ -656,6 +607,58 @@ public class Entity {
         weaponLeft2 = Utils.scaleImage(subimages[5], tile_size * 2, tile_size);
         weaponRight1 = Utils.scaleImage(subimages[6], tile_size * 2, tile_size);
         weaponRight2 = Utils.scaleImage(subimages[7], tile_size * 2, tile_size);
+    }
+
+    private void drawHpBar(Graphics2D g2) {
+        double oneScale = (double) tile_size / maxHP;
+        double hpBarValue = oneScale * HP;
+
+        /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se
+         * dibuje como valor negativo hacia la izquierda. */
+        if (hpBarValue < 0) hpBarValue = 0;
+
+        g2.setColor(new Color(35, 35, 35));
+        g2.fillRect(screenX - 1, screenY + tile_size + 4, tile_size + 2, 7);
+
+        g2.setColor(new Color(255, 0, 30));
+        g2.fillRect(screenX, screenY + tile_size + 5, (int) hpBarValue, 5);
+
+        timer.timeHpBar(this, INTERVAL_HP_BAR);
+    }
+
+    /**
+     * Verifica si la entidad esta dentro de la camara.
+     *
+     * @return true si la entidad esta dentro de la camara o false.
+     */
+    private boolean isOnCamera() {
+        return x + tile_size > world.player.x - world.player.screenX &&
+                x - tile_size < world.player.x + world.player.screenX &&
+                y + tile_size > world.player.y - world.player.screenY &&
+                y - tile_size < world.player.y + world.player.screenY;
+    }
+
+    /**
+     * Obtiene el frame de la direccion especificada ya sea de movimiento o ataque.
+     *
+     * @param direction direccion.
+     * @param movement1 frame de movimiento 1.
+     * @param movement2 frame de movimiento 2.
+     * @param attack1   frame de ataque 1.
+     * @param attack2   frame de ataque 2.
+     * @return el frame de la direccion especificada ya sea de movimiento o ataque, o null.
+     */
+    private BufferedImage getFrame(int direction, BufferedImage movement1, BufferedImage movement2, BufferedImage attack1, BufferedImage attack2) {
+        BufferedImage frame;
+        if (!isHitting) frame = movementNum == 1 || isColliding ? movement1 : movement2;
+        else {
+            switch (direction) {
+                case UP -> tempScreenY -= tile_size;
+                case LEFT -> tempScreenX -= tile_size;
+            }
+            frame = attackNum == 1 ? attack1 : attack2;
+        }
+        return frame;
     }
 
     /**

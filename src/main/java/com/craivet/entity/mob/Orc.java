@@ -50,7 +50,7 @@ public class Orc extends Mob {
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
 
-        if (!isAttacking) checkAttackOrNot(30, tile_size * 2, tile_size);
+        if (!isHitting) checkAttackOrNot(30, tile_size * 2, tile_size);
 
     }
 

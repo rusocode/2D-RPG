@@ -24,7 +24,8 @@ import static com.craivet.gfx.Assets.*;
 public class Player extends Entity {
 
     private final KeyManager key;
-    public int screenX, screenY, tempScreenX, tempScreenY;
+    public int screenX, screenY;
+    private int tempScreenX, tempScreenY;
     public boolean attackCanceled, shooting, lightUpdate;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
@@ -44,8 +45,8 @@ public class Player extends Entity {
      * Es muy importante el orden de los metodos.
      */
     public void update() {
-        // Si esta atacando, entonces ataca
-        if (isAttacking) attack();
+        // Si esta golpeando, entonces golpea
+        if (isHitting) hit();
         // Comprueba las teclas presionadas de movimiento y accion
         if (checkKeys()) {
             // Obtiene la direccion dependiendo de la tecla presionada de movimiento (w, a, s, d)
@@ -160,7 +161,7 @@ public class Player extends Entity {
         HP = maxHP;
         mana = maxMana;
         isInvincible = false;
-        isAttacking = false;
+        isHitting = false;
         isKnockback = false;
         lightUpdate = true;
     }
@@ -173,7 +174,7 @@ public class Player extends Entity {
         if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !shooting) {
             if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
             if (weapon.type != TYPE_SWORD) game.playSound(sound_swing_axe);
-            isAttacking = true;
+            isHitting = true;
             timer.attackAnimationCounter = 0;
             timer.attackCounter = 0;
         }
@@ -185,7 +186,7 @@ public class Player extends Entity {
      * Comprueba si puede lanzar un proyectil.
      */
     private void checkShoot() {
-        if (key.f && !projectile.isAlive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !isAttacking) {
+        if (key.f && !projectile.isAlive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !isHitting) {
             shooting = true;
             game.playSound(sound_burning);
             projectile.set(x, y, direction, true, this);
@@ -608,9 +609,9 @@ public class Player extends Entity {
      * @return el frame de la direccion especificada ya sea de movimiento o ataque, o null.
      */
     private BufferedImage getFrame(int direction, BufferedImage movement1, BufferedImage movement2, BufferedImage attack1, BufferedImage attack2) {
-        BufferedImage frame = null;
+        BufferedImage frame;
         // Si no esta atacando
-        if (!isAttacking) {
+        if (!isHitting) {
             // Si colisiona con una entidad
             if (isCollidingOnEntity) {
                 // Utiliza el frame movement1 si movementNum es 1 o el frame movement2 en caso contrario
@@ -640,7 +641,7 @@ public class Player extends Entity {
 
     public int getCurrentWeaponSlot() {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == weapon) return i; // TODO No hace falta un break?
+            if (inventory.get(i) == weapon) return i;
         return 0; // TODO No es -1?
     }
 
@@ -686,7 +687,7 @@ public class Player extends Entity {
         g2.setColor(Color.red);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
         // Area de ataque
-        if (isAttacking) {
+        if (isHitting) {
             g2.setColor(Color.green);
             switch (direction) {
                 case DOWN ->
