@@ -19,9 +19,6 @@ import static com.craivet.gfx.Assets.*;
 
 /**
  * El player permanece fijo en el centro de la pantalla dando la sensacion de movimiento.
- *
- * <p>La colision entre dos entidades, solo se genera cuando el limite de la hitbox del player SUPERA el limite de la
- * hitbox del slime. Pero en el caso del attackbox, solo se genera colision cuando los limites de ambos SE TOCAN.
  */
 
 public class Player extends Entity {
@@ -48,8 +45,7 @@ public class Player extends Entity {
      */
     public void update() {
         // Si esta atacando, entonces ataca
-        if (attacking) attack();
-
+        if (isAttacking) attack();
         // Comprueba las teclas presionadas de movimiento y accion
         if (checkKeys()) {
             // Obtiene la direccion dependiendo de la tecla presionada de movimiento (w, a, s, d)
@@ -57,7 +53,7 @@ public class Player extends Entity {
             // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y eventos
             checkCollision();
             // Si no colisiona y si no se presionaron las teclas de accion, entonces actualiza la posicion dependiendo de la direccion
-            if (!collision && !checkAccionKeys()) updatePos();
+            if (!isColliding && !checkAccionKeys()) updatePos();
             // Comprueba la velocidad de la direccion en caso de que se mueva en la misma direccion que la entidad
             checkDirectionSpeed();
             // Comrpueba si puede atacar
@@ -70,12 +66,11 @@ public class Player extends Entity {
             // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
             timer.timeStopMovement(this, 20);
         }
-
         // Comprueba si puede lanzar un proyectil
         checkShoot();
 
         // Aplica el timer solo si el player es invencible
-        if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
+        if (isInvincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
         if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
         if (timer.attackCounter < INTERVAL_WEAPON) timer.attackCounter++;
 
@@ -94,7 +89,7 @@ public class Player extends Entity {
             case LEFT -> frame = getFrame(LEFT, movementLeft1, movementLeft2, weaponLeft1, weaponLeft2);
             case RIGHT -> frame = getFrame(RIGHT, movementRight1, movementRight2, weaponRight1, weaponRight2);
         }
-        if (invincible) Utils.changeAlpha(g2, 0.3f);
+        if (isInvincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(frame, tempScreenX, tempScreenY, null);
         // drawRects(g2);
         Utils.changeAlpha(g2, 1);
@@ -126,7 +121,7 @@ public class Player extends Entity {
         coin = 500;
         strength = 1;
         dexterity = 1;
-        invincible = false;
+        isInvincible = false;
 
         projectile = new Fireball(game, world);
         weapon = new SwordNormal(game, world);
@@ -164,9 +159,9 @@ public class Player extends Entity {
     public void restoreStatus() {
         HP = maxHP;
         mana = maxMana;
-        invincible = false;
-        attacking = false;
-        knockback = false;
+        isInvincible = false;
+        isAttacking = false;
+        isKnockback = false;
         lightUpdate = true;
     }
 
@@ -178,7 +173,7 @@ public class Player extends Entity {
         if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !shooting) {
             if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
             if (weapon.type != TYPE_SWORD) game.playSound(sound_swing_axe);
-            attacking = true;
+            isAttacking = true;
             timer.attackAnimationCounter = 0;
             timer.attackCounter = 0;
         }
@@ -190,7 +185,7 @@ public class Player extends Entity {
      * Comprueba si puede lanzar un proyectil.
      */
     private void checkShoot() {
-        if (key.f && !projectile.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !attacking) {
+        if (key.f && !projectile.isAlive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !isAttacking) {
             shooting = true;
             game.playSound(sound_burning);
             projectile.set(x, y, direction, true, this);
@@ -252,32 +247,32 @@ public class Player extends Entity {
      *
      * @param mobIndex indice del mob.
      */
-    private void hurtPlayer(int mobIndex) {
+    private void hitPlayer(int mobIndex) {
         if (mobIndex >= 0) {
             currentEntity = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
-            if (!invincible && !mob.dead) {
+            if (!isInvincible && !mob.isDead) {
                 game.playSound(sound_receive_damage);
                 int damage = Math.max(mob.attack - defense, 1);
                 HP -= damage;
-                invincible = true;
+                isInvincible = true;
             }
         }
     }
 
     /**
-     * Daña al mob.
+     * Golpea al mob.
      *
      * @param mobIndex       indice del mob.
      * @param attacker       atacante del mob.
      * @param knockbackValue valor de knockback.
      * @param attack         tipo de ataque (sword o fireball).
      */
-    public void hurtMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
-        if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?\
+    public void hitMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
+        if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
             currentEntity = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
-            if (!mob.invincible) {
+            if (!mob.isInvincible) {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
@@ -292,13 +287,13 @@ public class Player extends Entity {
                     }
                 }
 
-                mob.invincible = true;
+                mob.isInvincible = true;
                 mob.hpBar = true;
                 mob.damageReaction();
 
                 if (mob.HP <= 0) {
                     game.playSound(sound_mob_death);
-                    mob.dead = true;
+                    mob.isDead = true;
                     game.ui.addMessage("Killed the " + mob.name + "!");
                     game.ui.addMessage("Exp + " + mob.exp);
                     exp += mob.exp;
@@ -313,14 +308,14 @@ public class Player extends Entity {
      *
      * @param iTileIndex indice del tile interactivo.
      */
-    protected void hurtInteractiveTile(int iTileIndex) {
+    protected void hitInteractiveTile(int iTileIndex) {
         if (iTileIndex != -1) {
             currentEntity = world.interactives[world.map][iTileIndex];
             Interactive iTile = world.interactives[world.map][iTileIndex];
-            if (iTile.destructible && iTile.isCorrectWeapon(weapon) && !iTile.invincible) {
+            if (iTile.destructible && iTile.isCorrectWeapon(weapon) && !iTile.isInvincible) {
                 iTile.playSound();
                 iTile.HP--;
-                iTile.invincible = true;
+                iTile.isInvincible = true;
 
                 generateParticle(iTile, iTile);
 
@@ -332,14 +327,14 @@ public class Player extends Entity {
         }
     }
 
-    protected void hurtProjectile(int projectileIndex) {
+    protected void hitProjectile(int projectileIndex) {
         if (projectileIndex != -1) {
             currentEntity = world.projectiles[world.map][projectileIndex];
             Entity projectile = world.projectiles[world.map][projectileIndex];
             // Evita daniar el propio proyectil
             if (projectile != this.projectile) {
                 game.playSound(sound_receive_damage);
-                projectile.alive = false;
+                projectile.isAlive = false;
                 generateParticle(projectile, projectile);
             }
         }
@@ -410,9 +405,7 @@ public class Player extends Entity {
     public boolean canPickup(Entity item) {
         // Evita la referencia al mismo item
         Entity newItem = game.generator.getItem(item.name);
-        // Verifica si es stackable
         if (item.stackable) {
-            // Verifica si ya existe en el inventario, y en caso de que ya exista aumenta la cantidad
             int itemIndex = searchItemInInventory(item.name);
             if (itemIndex != -1) {
                 inventory.get(itemIndex).amount += item.amount;
@@ -432,17 +425,12 @@ public class Player extends Entity {
      * Busca el item en el inventario.
      *
      * @param name nombre del item.
-     * @return el indice del item.
+     * @return el indice del item o -1 si no esta.
      */
     private int searchItemInInventory(String name) {
-        int itemIndex = -1;
-        for (int i = 0; i < inventory.size(); i++) {
-            if (inventory.get(i).name.equals(name)) {
-                itemIndex = i;
-                break;
-            }
-        }
-        return itemIndex;
+        for (int i = 0; i < inventory.size(); i++)
+            if (inventory.get(i).name.equals(name)) return i;
+        return -1;
     }
 
     /**
@@ -459,11 +447,11 @@ public class Player extends Entity {
      * Comprueba las colisiones con tiles, items, npcs, mobs, tiles interactivos y eventos.
      */
     public void checkCollision() {
-        collision = false;
+        isColliding = false;
         game.collider.checkTile(this);
         pickup(game.collider.checkItem(this));
         interactNpc(game.collider.checkEntity(this, world.npcs));
-        hurtPlayer(game.collider.checkEntity(this, world.mobs));
+        hitPlayer(game.collider.checkEntity(this, world.mobs));
         setCurrentInteractive(game.collider.checkEntity(this, world.interactives));
         // game.collider.checkEntity(this, world.interactives);
         game.event.checkEvent();
@@ -509,8 +497,8 @@ public class Player extends Entity {
      */
     private boolean checkSomeConditionsForUnion() {
         return currentEntity != null && currentEntity instanceof Npc &&
-                collisionOnEntity && direction == currentEntity.direction &&
-                !isDistanceWithEntity() && !currentEntity.collision;
+                isCollidingOnEntity && direction == currentEntity.direction &&
+                !isDistanceWithEntity() && !currentEntity.isColliding;
     }
 
     /**
@@ -573,7 +561,7 @@ public class Player extends Entity {
      */
     private void disunite() {
         speed = defaultSpeed;
-        collisionOnEntity = false;
+        isCollidingOnEntity = false;
         if (united) {
             switch (direction) {
                 case DOWN -> y--;
@@ -622,16 +610,15 @@ public class Player extends Entity {
     private BufferedImage getFrame(int direction, BufferedImage movement1, BufferedImage movement2, BufferedImage attack1, BufferedImage attack2) {
         BufferedImage frame = null;
         // Si no esta atacando
-        if (!attacking) {
+        if (!isAttacking) {
             // Si colisiona con una entidad
-            if (collisionOnEntity) {
+            if (isCollidingOnEntity) {
                 // Utiliza el frame movement1 si movementNum es 1 o el frame movement2 en caso contrario
                 frame = movementNum == 1 ? movement1 : movement2;
                 // Si la entidad actual esta colisionando, entonces utiliza el frame movement1
-                if (currentEntity.collision) frame = movement1;
-            } else frame = movementNum == 1 || collision ? movement1 : movement2;
-        }
-        if (attacking) {
+                if (currentEntity.isColliding) frame = movement1;
+            } else frame = movementNum == 1 || isColliding ? movement1 : movement2;
+        } else {
             // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
             switch (direction) {
                 case UP -> tempScreenY -= tile_size;
@@ -653,8 +640,8 @@ public class Player extends Entity {
 
     public int getCurrentWeaponSlot() {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == weapon) return i;
-        return 0;
+            if (inventory.get(i) == weapon) return i; // TODO No hace falta un break?
+        return 0; // TODO No es -1?
     }
 
     public int getCurrentShieldSlot() {
@@ -699,7 +686,7 @@ public class Player extends Entity {
         g2.setColor(Color.red);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
         // Area de ataque
-        if (attacking) {
+        if (isAttacking) {
             g2.setColor(Color.green);
             switch (direction) {
                 case DOWN ->

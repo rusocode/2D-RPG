@@ -32,7 +32,7 @@ public class Oldman extends Npc {
      * Establece la accion especificada.
      */
     public void setAction() {
-        if (onPath) searchPath(getGoalRow(world.player), getGoalCol(world.player));
+        if (isOnPath) searchPath(getGoalRow(world.player), getGoalCol(world.player));
         else timer.timeDirection(this, INTERVAL_DIRECTION);
     }
 

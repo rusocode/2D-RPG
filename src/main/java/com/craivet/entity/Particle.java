@@ -49,7 +49,7 @@ public class Particle extends Entity {
 		x += xd * speed;
 		y += yd * speed;
 
-		if (HP == 0) alive = false;
+		if (HP == 0) isAlive = false;
 
 	}
 

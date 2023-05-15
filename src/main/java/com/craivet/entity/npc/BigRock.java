@@ -48,7 +48,7 @@ public class BigRock extends Npc {
     public void move(int direction) {
         this.direction = direction;
         checkCollision();
-        if (!collision) {
+        if (!isColliding) {
             switch (direction) {
                 case DOWN -> y += speed;
                 case UP -> y -= speed;

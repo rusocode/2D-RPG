@@ -23,7 +23,7 @@ public class Fireball extends Projectile {
 		attack = 2;
 		knockbackValue = 5;
 		cost = 1;
-		alive = false;
+		isAlive = false;
 		loadMovementImages(entity_fireball, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 	}
 

@@ -32,7 +32,8 @@ public class Entity {
     public Timer timer = new Timer();
     public ArrayList<Entity> inventory = new ArrayList<>();
     public Entity linkedEntity;
-
+    public boolean hpBar;
+    public int knockbackDirection;
     public String[][] dialogues = new String[20][20];
     public int dialogueSet, dialogueIndex;
 
@@ -70,17 +71,14 @@ public class Entity {
     public boolean opened, empty; // chest
 
     // States
-    public boolean attacking;
-    public boolean alive = true;
-    public boolean collision;
-    public boolean collisionOnEntity;
-    public boolean dead;
-    public boolean hpBar;
-    public boolean invincible;
-    public boolean knockback;
-    public boolean onPath;
-
-    public int knockbackDirection;
+    public boolean isAttacking;
+    public boolean isAlive = true; // TODO Se podria combinar isAlive y is isDead como uno solo creo...
+    public boolean isColliding;
+    public boolean isCollidingOnEntity;
+    public boolean isDead;
+    public boolean isInvincible;
+    public boolean isKnockback;
+    public boolean isOnPath;
 
     // Frames
     public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -103,28 +101,28 @@ public class Entity {
      * En caso de que se haya aplicado knockback a la entidad, comprueba las colisiones y en base a eso determina si se
      * actualiza la posicion de la entidad utilizando la variable temporal knockbackDirection o se detiene el knockback.
      * <p>
-     * Si la entidad esta atacando, entonces ataca.
+     * Si la entidad esta atacando, ataca.
      * <p>
-     * Si ninguna de las dos condiciones anteriores se cumple (knockback o attacking), entonces la entidad realiza una
-     * accion y comprueba las colisiones para determinar si se actualiza la posicion o no aplicando el intervalo de
+     * Si ninguna de las dos condiciones anteriores se cumple (isKnockback o isAttacking), entonces la entidad realiza
+     * una accion y comprueba las colisiones para determinar si se actualiza la posicion o no aplicando el intervalo de
      * movimiento.
      */
     public void update() {
         // TODO Se podria separar en metodos
-        if (knockback) {
+        if (isKnockback) {
             checkCollision();
-            if (!collision) updatePosition(knockbackDirection);
+            if (!isColliding) updatePosition(knockbackDirection);
             else stopKnockback();
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
-        } else if (attacking) attack();
+        } else if (isAttacking) attack();
         else {
             setAction(); // TIENE QUE REALIZAR UNA ACCION ANTES DE VERIFICAR LA COLISION
             checkCollision();
-            if (!collision) updatePosition(direction);
+            if (!isColliding) updatePosition(direction);
             /* TODO Estos timers deberian ir fuera del else? Al usar un timer para el movimiento y otro para la
              * animacion de ataque, creo que no interrumpiria el tiempo en el cambio de frames. */
             timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
-            if (invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
+            if (isInvincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
             if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
         }
     }
@@ -141,27 +139,27 @@ public class Entity {
             int tempScreenX = screenX, tempScreenY = screenY;
             switch (direction) {
                 case DOWN -> {
-                    if (!attacking) frame = movementNum == 1 || collision ? movementDown1 : movementDown2;
-                    if (attacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
+                    if (!isAttacking) frame = movementNum == 1 || isColliding ? movementDown1 : movementDown2;
+                    if (isAttacking) frame = attackNum == 1 ? weaponDown1 : weaponDown2;
                 }
                 case UP -> {
-                    if (!attacking) frame = movementNum == 1 || collision ? movementUp1 : movementUp2;
-                    if (attacking) {
+                    if (!isAttacking) frame = movementNum == 1 || isColliding ? movementUp1 : movementUp2;
+                    if (isAttacking) {
                         // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                         tempScreenY -= tile_size;
                         frame = attackNum == 1 ? weaponUp1 : weaponUp2;
                     }
                 }
                 case LEFT -> {
-                    if (!attacking) frame = movementNum == 1 || collision ? movementLeft1 : movementLeft2;
-                    if (attacking) {
+                    if (!isAttacking) frame = movementNum == 1 || isColliding ? movementLeft1 : movementLeft2;
+                    if (isAttacking) {
                         tempScreenX -= tile_size;
                         frame = attackNum == 1 ? weaponLeft1 : weaponLeft2;
                     }
                 }
                 case RIGHT -> {
-                    if (!attacking) frame = movementNum == 1 || collision ? movementRight1 : movementRight2;
-                    if (attacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
+                    if (!isAttacking) frame = movementNum == 1 || isColliding ? movementRight1 : movementRight2;
+                    if (isAttacking) frame = attackNum == 1 ? weaponRight1 : weaponRight2;
                 }
             }
 
@@ -183,12 +181,12 @@ public class Entity {
 
                 timer.timeHpBar(this, INTERVAL_HP_BAR);
             }
-            if (invincible) {
+            if (isInvincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
                 if (!(this instanceof Interactive)) Utils.changeAlpha(g2, 0.4f);
             }
-            if (dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
+            if (isDead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
             g2.drawImage(frame, tempScreenX, tempScreenY, null);
             g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
@@ -406,13 +404,13 @@ public class Entity {
             } else {
                 // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
                 int mobIndex = game.collider.checkEntity(this, world.mobs);
-                world.player.hurtMob(mobIndex, this, weapon.knockbackValue, attack);
+                world.player.hitMob(mobIndex, this, weapon.knockbackValue, attack);
 
                 int iTileIndex = game.collider.checkEntity(this, world.interactives);
-                world.player.hurtInteractiveTile(iTileIndex);
+                world.player.hitInteractiveTile(iTileIndex);
 
                 int projectileIndex = game.collider.checkEntity(this, world.projectiles);
-                world.player.hurtProjectile(projectileIndex);
+                world.player.hitProjectile(projectileIndex);
             }
 
             // Despues de verificar la colision, resetea los datos originales
@@ -424,7 +422,7 @@ public class Entity {
         if (timer.attackAnimationCounter > motion2) {
             attackNum = 1;
             timer.attackAnimationCounter = 0;
-            attacking = false;
+            isAttacking = false;
         }
     }
 
@@ -436,12 +434,12 @@ public class Entity {
      */
     protected void damagePlayer(boolean contact, int attack) {
         // Si el mob hace contacto con el player que no es invencible
-        if (type == TYPE_MOB && contact && !world.player.invincible) {
+        if (type == TYPE_MOB && contact && !world.player.isInvincible) {
             game.playSound(sound_receive_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.player.defense, 1);
             world.player.HP -= damage;
-            world.player.invincible = true;
+            world.player.isInvincible = true;
         }
     }
 
@@ -473,7 +471,7 @@ public class Entity {
         // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
         if (targetInRage) {
             if (Utils.azar(rate) == 1) {
-                attacking = true;
+                isAttacking = true;
                 movementNum = 1;
                 timer.movementCounter = 0; // TODO O se referia al contador de ataque?
                 timer.projectileCounter = 0;
@@ -485,7 +483,7 @@ public class Entity {
      * Comprueba las colisiones.
      */
     public void checkCollision() {
-        collision = false;
+        isColliding = false;
         // collisionOnPlayer = false;
         game.collider.checkTile(this);
         game.collider.checkItem(this);
@@ -521,11 +519,11 @@ public class Entity {
          * ataque para actualizar la posicion de la entidad mientras el frame de esta se mantiene en la misma direccion. */
         target.knockbackDirection = attacker.direction;
         target.speed += knockbackValue;
-        target.knockback = true;
+        target.isKnockback = true;
     }
 
     private void stopKnockback() {
-        knockback = false;
+        isKnockback = false;
         speed = defaultSpeed;
         timer.knockbackCounter = 0;
     }
@@ -538,7 +536,7 @@ public class Entity {
      * @param rate     la tasa que determina si sigue al objetivo.
      */
     protected void checkFollow(Entity target, int distance, int rate) {
-        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) onPath = true;
+        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) isOnPath = true;
     }
 
     /**
@@ -548,7 +546,7 @@ public class Entity {
      * @param distance distancia en tiles.
      */
     protected void checkUnfollow(Entity target, int distance) {
-        if (getTileDistance(target) > distance) onPath = false;
+        if (getTileDistance(target) > distance) isOnPath = false;
     }
 
     /**
@@ -589,22 +587,22 @@ public class Entity {
                 // up o left
                 direction = UP;
                 checkCollision();
-                if (collision) direction = LEFT;
+                if (isColliding) direction = LEFT;
             } else if (top > nextY && left < nextX) {
                 // up o right
                 direction = UP;
                 checkCollision();
-                if (collision) direction = RIGHT;
+                if (isColliding) direction = RIGHT;
             } else if (top < nextY && left > nextX) {
                 // down o left
                 direction = DOWN;
                 checkCollision();
-                if (collision) direction = LEFT;
+                if (isColliding) direction = LEFT;
             } else if (top < nextY && left < nextX) {
                 // down o right
                 direction = DOWN;
                 checkCollision();
-                if (collision) direction = RIGHT;
+                if (isColliding) direction = RIGHT;
             }
 
         }
