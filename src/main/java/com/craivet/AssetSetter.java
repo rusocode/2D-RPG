@@ -1,14 +1,9 @@
 package com.craivet;
 
 import com.craivet.entity.item.*;
-import com.craivet.entity.mob.Orc;
-import com.craivet.entity.mob.Slime;
-import com.craivet.entity.npc.BigRock;
-import com.craivet.entity.npc.Trader;
-import com.craivet.entity.npc.Oldman;
-import com.craivet.tile.DestructibleWall;
-import com.craivet.tile.DryTree;
-import com.craivet.tile.MetalPlate;
+import com.craivet.entity.mob.*;
+import com.craivet.entity.npc.*;
+import com.craivet.tile.*;
 
 import static com.craivet.utils.Global.*;
 
@@ -61,7 +56,7 @@ public class AssetSetter {
 
     public void setNPC() {
         int i = 0, j = 0, k = 0;
-        
+
         world.npcs[NIX][i++] = new Oldman(game, world, 23, 18);
         world.npcs[NIX][i] = new BigRock(game, world, 26, 21);
 
@@ -73,13 +68,20 @@ public class AssetSetter {
     }
 
     public void setMOB() {
-        int i = 0;
-        world.mobs[NIX][i++] = new Slime(game, world, 21, 23);
+        int i = 0, j = 0;
+        // world.mobs[NIX][i++] = new RedSlime(game, world, 21, 23);
         world.mobs[NIX][i++] = new Slime(game, world, 23, 41);
         world.mobs[NIX][i++] = new Slime(game, world, 24, 37);
         world.mobs[NIX][i++] = new Slime(game, world, 34, 42);
         world.mobs[NIX][i++] = new Slime(game, world, 38, 42);
         world.mobs[NIX][i++] = new Orc(game, world, 12, 33);
+
+        world.mobs[DUNGEON_01][j++] = new Bat(game, world, 34, 39);
+        world.mobs[DUNGEON_01][j++] = new Bat(game, world, 36, 25);
+        world.mobs[DUNGEON_01][j++] = new Bat(game, world, 39, 26);
+        world.mobs[DUNGEON_01][j++] = new Bat(game, world, 28, 11);
+        world.mobs[DUNGEON_01][j++] = new Bat(game, world, 10, 19);
+
     }
 
     public void setInteractiveTile() {

@@ -338,7 +338,7 @@ public class UI {
         textY += gap;
         g2.drawString("Next Level Exp", textX, textY);
         textY += gap;
-        g2.drawString("Coin", textX, textY);
+        g2.drawString("Gold", textX, textY);
         textY += gap + 15;
         g2.drawString("Weapon", textX, textY);
         textY += gap + 15;
@@ -395,7 +395,7 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.coin);
+        value = String.valueOf(world.player.gold);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
@@ -803,10 +803,10 @@ public class UI {
         changeFontSize(23f);
         g2.drawString("[esc] Back", x + 24, y + 60);
 
-        // Draw player coin window
+        // Draw player gold window
         x = tile_size * 12;
         drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Your coin: " + world.player.coin, x + 24, y + 60);
+        g2.drawString("Your gold: " + world.player.gold, x + 24, y + 60);
 
         int itemIndex = getItemIndexOnSlot(npcSlotCol, npcSlotRow);
         if (itemIndex < entity.inventory.size()) {
@@ -817,8 +817,8 @@ public class UI {
             height = tile_size;
             drawSubwindow(x, y, width, height, 240);
 
-            // Draw image coin
-            g2.drawImage(item_coin, x + 14, y + 10, 32, 32, null);
+            // Draw image gold
+            g2.drawImage(item_gold, x + 14, y + 10, 32, 32, null);
 
             // Draw price item
             int price = entity.inventory.get(itemIndex).price;
@@ -828,12 +828,12 @@ public class UI {
 
             // BUY AN ITEM
             if (game.key.enter) {
-                if (entity.inventory.get(itemIndex).price > world.player.coin)
-                    addMessage("You need more coin to buy that!");
+                if (entity.inventory.get(itemIndex).price > world.player.gold)
+                    addMessage("You need more gold to buy that!");
                 else {
                     if (world.player.canPickup(entity.inventory.get(itemIndex))) {
                         game.playSound(sound_trade);
-                        world.player.coin -= entity.inventory.get(itemIndex).price;
+                        world.player.gold -= entity.inventory.get(itemIndex).price;
                     } else addMessage("You cannot carry any more!");
                 }
             }
@@ -854,10 +854,10 @@ public class UI {
         changeFontSize(23f);
         g2.drawString("[esc] Back", x + 24, y + 60);
 
-        // Draw player coin window
+        // Draw player gold window
         x = tile_size * 12;
         drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Your coin: " + world.player.coin, x + 24, y + 60);
+        g2.drawString("Your gold: " + world.player.gold, x + 24, y + 60);
 
         int itemIndex = getItemIndexOnSlot(playerSlotCol, playerSlotRow);
         if (itemIndex < world.player.inventory.size()) {
@@ -869,7 +869,7 @@ public class UI {
             drawSubwindow(x, y, width, height, 255);
 
             // Draw image icon
-            g2.drawImage(item_coin, x + 14, y + 10, 32, 32, null);
+            g2.drawImage(item_gold, x + 14, y + 10, 32, 32, null);
 
             // Draw price item
             int price = world.player.inventory.get(itemIndex).price / 2;
@@ -886,7 +886,7 @@ public class UI {
                     if (world.player.inventory.get(itemIndex).amount > 1)
                         world.player.inventory.get(itemIndex).amount--;
                     else world.player.inventory.remove(itemIndex);
-                    world.player.coin += price;
+                    world.player.gold += price;
                 }
             }
         }

@@ -1,7 +1,7 @@
 package com.craivet.entity.mob;
 
 import com.craivet.Game;
-import com.craivet.entity.item.Coin;
+import com.craivet.entity.item.Gold;
 import com.craivet.entity.projectile.StickyBall;
 import com.craivet.World;
 import com.craivet.utils.Utils;
@@ -60,11 +60,8 @@ public class Slime extends Mob {
         isOnPath = true;
     }
 
-    /**
-     * Comprueba si dropeo un item.
-     */
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(this, new Coin(game, world));
+        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(this, new Gold(game, world));
     }
 
     private void checkShoot() {

@@ -105,6 +105,7 @@ public class Player extends Entity {
         world.area = OUTSIDE;
         world.map = NIX;
         direction = DOWN;
+        // TODO Se podria comprobar si la posicion es valida o no
         x = 23 * tile_size;
         y = 21 * tile_size;
     }
@@ -119,7 +120,7 @@ public class Player extends Entity {
         lvl = 1;
         exp = 0;
         nextLvlExp = 5;
-        coin = 500;
+        gold = 500;
         strength = 1;
         dexterity = 1;
         isInvincible = false;
@@ -281,7 +282,7 @@ public class Player extends Entity {
                 mob.HP -= damage;
                 game.ui.addMessage(damage + " damage!");
                 if (mob.HP > 0) {
-                    if (mob instanceof Slime) game.playSound(sound_hit_slime);
+                    if (mob instanceof Slime || mob instanceof RedSlime) game.playSound(sound_hit_slime);
                     if (mob instanceof Orc) {
                         game.playSound(sound_hit_mob);
                         game.playSound(sound_hit_orc);

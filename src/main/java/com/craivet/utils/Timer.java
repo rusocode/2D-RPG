@@ -14,6 +14,7 @@ import static com.craivet.utils.Global.*;
 
 public class Timer {
 
+    // Contadores
     public int attackAnimationCounter;
     public int attackCounter;
     public int deadCounter;

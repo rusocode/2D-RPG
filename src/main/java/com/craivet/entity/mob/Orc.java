@@ -2,7 +2,7 @@ package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
-import com.craivet.entity.item.Coin;
+import com.craivet.entity.item.Gold;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
@@ -63,7 +63,7 @@ public class Orc extends Mob {
      * Comprueba si dropeo un item.
      */
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(this, new Coin(game, world));
+        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(this, new Gold(game, world));
     }
 
 }

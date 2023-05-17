@@ -45,7 +45,7 @@ public class SaveLoad {
             ds.lvl = world.player.lvl;
             ds.exp = world.player.exp;
             ds.nextLvlExp = world.player.nextLvlExp;
-            ds.coin = world.player.coin;
+            ds.gold = world.player.gold;
 
             // Player inventory
             for (int i = 0; i < world.player.inventory.size(); i++) {
@@ -110,7 +110,7 @@ public class SaveLoad {
             world.player.lvl = ds.lvl;
             world.player.exp = ds.exp;
             world.player.nextLvlExp = ds.nextLvlExp;
-            world.player.coin = ds.coin;
+            world.player.gold = ds.gold;
 
             world.player.inventory.clear();
             for (int i = 0; i < ds.names.size(); i++) {

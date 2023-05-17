@@ -52,7 +52,7 @@ public class Entity {
     public int mana, maxMana;
     public int ammo;
     public int lvl, exp, nextLvlExp;
-    public int coin;
+    public int gold;
     public int strength, dexterity;
     public int attack, defense;
     public int motion1, motion2; // Velocidad de movimiento de la espada
@@ -68,7 +68,7 @@ public class Entity {
     public int price;
     public int attackValue, defenseValue, knockbackValue;
     public int amount = 1;
-    public int lightRadius;
+    public int lightRadius = 350;
     public boolean solid, stackable;
     public boolean opened, empty; // chest
 

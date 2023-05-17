@@ -8,22 +8,22 @@ import com.craivet.utils.Utils;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
-public class Coin extends Item {
+public class Gold extends Item {
 
-	public static final String item_name = "Coin";
+	public static final String item_name = "Gold";
 
-	public Coin(Game game, World world) {
+	public Gold(Game game, World world) {
 		super(game, world);
 		name = item_name;
 		type = TYPE_PICKUP_ONLY;
-		image = Utils.scaleImage(item_coin, 32, 32);
+		image = Utils.scaleImage(item_gold, 32, 32);
 		value = 1;
 	}
 
 	public boolean use(Entity entity) {
-		game.playSound(sound_coin);
-		game.ui.addMessage("Coin +" + value);
-		entity.coin += value;
+		game.playSound(sound_gold);
+		game.ui.addMessage("Gold +" + value);
+		entity.gold += value;
 		return true;
 	}
 

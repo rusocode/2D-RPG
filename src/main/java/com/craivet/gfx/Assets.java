@@ -24,7 +24,7 @@ public final class Assets {
     public static final URL sound_burning = Utils.loadAudio(sounds_path + "burning5.wav");
     public static final URL sound_chest_opening = Utils.loadAudio(sounds_path + "chest_opening.wav");
     public static final URL sound_chipwall = Utils.loadAudio(sounds_path + "chipwall.wav");
-    public static final URL sound_coin = Utils.loadAudio(sounds_path + "coin.wav");
+    public static final URL sound_gold = Utils.loadAudio(sounds_path + "gold.wav");
     public static final URL sound_cursor = Utils.loadAudio(sounds_path + "500.wav");
     public static final URL sound_cut_tree = Utils.loadAudio(sounds_path + "cut_tree.wav");
     public static final URL sound_door_opening = Utils.loadAudio(sounds_path + "door_opening.wav");
@@ -58,6 +58,7 @@ public final class Assets {
     public static final SpriteSheet entity_orc_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/attack.png"));
     public static final SpriteSheet entity_orc_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/movement.png"));
     public static final SpriteSheet entity_bat = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/bat.png"));
+    public static final SpriteSheet entity_redslime = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/redslime.png"));
     public static final SpriteSheet entity_slime = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/slime.png"));
     public static final BufferedImage entity_bigrock = Utils.loadImage(textures_entity_path + "npc/bigrock.png");
     public static final SpriteSheet entity_oldman = new SpriteSheet(Utils.loadImage(textures_entity_path + "npc/oldman.png"));
@@ -78,7 +79,7 @@ public final class Assets {
     public static final BufferedImage item_chest_opened = Utils.loadImage(textures_items_path + "chest_opened.png");
     public static final BufferedImage item_door = Utils.loadImage(textures_items_path + "door.png");
     public static final BufferedImage item_door_iron = Utils.loadImage(textures_items_path + "door_iron.png");
-    public static final BufferedImage item_coin = Utils.loadImage(textures_items_path + "coin.png");
+    public static final BufferedImage item_gold = Utils.loadImage(textures_items_path + "gold.png");
     public static final BufferedImage item_key = Utils.loadImage(textures_items_path + "key.png");
     public static final BufferedImage item_lantern = Utils.loadImage(textures_items_path + "lantern.png");
     public static final BufferedImage item_pickaxe = Utils.loadImage(textures_items_path + "pickaxe.png");

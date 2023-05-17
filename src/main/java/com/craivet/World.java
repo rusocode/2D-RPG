@@ -115,8 +115,8 @@ public class World {
     /**
      * Carga el tile.
      *
-     * @param i     el indice del tile.
-     * @param name  el nombre del tile.
+     * @param i     indice del tile.
+     * @param name  nombre del tile.
      * @param solid si es solido o no.
      */
     private void loadTile(int i, String name, boolean solid) {
@@ -138,9 +138,9 @@ public class World {
     /**
      * Carga el mapa utilizando la ruta especificada y almacena cada valor (tile) leido del archivo en la matriz.
      *
-     * @param path la ruta del recurso.
-     * @param map  el numero del mapa como clave.
-     * @param name el nombre del mapa como valor.
+     * @param path ruta del recurso.
+     * @param map  numero del mapa como clave.
+     * @param name nombre del mapa como valor.
      */
     public void loadMap(String path, int map, String name) {
         maps.put(map, name);

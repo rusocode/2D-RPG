@@ -2,7 +2,6 @@ package com.craivet.entity;
 
 import com.craivet.Game;
 import com.craivet.World;
-import com.craivet.entity.Entity;
 import com.craivet.entity.item.*;
 
 public class EntityGenerator {
@@ -27,7 +26,7 @@ public class EntityGenerator {
             case Axe.item_name -> item = new Axe(game, world);
             case Boots.item_name -> item = new Boots(game, world);
             case Chest.item_name -> item = new Chest(game, world);
-            case Coin.item_name -> item = new Coin(game, world);
+            case Gold.item_name -> item = new Gold(game, world);
             case Door.item_name -> item = new Door(game, world);
             case DoorIron.item_name -> item = new DoorIron(game, world);
             case Key.item_name -> item = new Key(game, world, 1);

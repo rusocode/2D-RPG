@@ -14,14 +14,14 @@ import static com.craivet.utils.Global.*;
 
 public class Particle extends Entity {
 
-	Entity generator; // El generador seria por ejemplo el arbol seco o un proyectil
-	Color color;
-	int size;
-	int xd, yd;
+	private final Color color;
+	private int size;
+	private final int xd;
+	private int yd;
 
 	public Particle(Game game, World world, Entity generator, Color color, int size, int speed, int maxLife, int xd, int yd) {
 		super(game, world);
-		this.generator = generator;
+		// El generador seria por ejemplo el arbol seco o un proyectil
 		this.color = color;
 		this.size = size;
 		this.speed = speed;

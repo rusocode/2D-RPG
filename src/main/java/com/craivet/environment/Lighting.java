@@ -79,7 +79,7 @@ public class Lighting {
             fraction[11] = 1f;
 
             // Crea el efecto de gradacion usando la posicion del player, el radio, los datos de fraccion y color
-            RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, ((float) world.player.light.lightRadius / 2), fraction, color);
+            RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, (world.player.light.lightRadius / 2), fraction, color);
 
             // Establece los datos de gradacion en g2
             g2.setPaint(gPaint);
