@@ -9,7 +9,7 @@ import com.craivet.entity.mob.*;
 import com.craivet.entity.npc.BigRock;
 import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Fireball;
-import com.craivet.input.KeyManager;
+import com.craivet.input.Key;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
 import com.craivet.utils.Utils;
@@ -23,7 +23,7 @@ import static com.craivet.gfx.Assets.*;
 
 public class Player extends Entity {
 
-    private final KeyManager key;
+    private final Key key;
     public int screenX, screenY;
     private int tempScreenX, tempScreenY;
     public boolean attackCanceled, shooting, lightUpdate;
@@ -674,7 +674,7 @@ public class Player extends Entity {
         inventory.add(weapon);
         inventory.add(shield);
         inventory.add(new PotionRed(game, world, 15));
-        inventory.add(new Key(game, world, 2));
+        inventory.add(new com.craivet.entity.item.Key(game, world, 2));
         inventory.add(new Lantern(game, world));
         inventory.add(new Pickaxe(game, world));
         inventory.add(new Axe(game, world));

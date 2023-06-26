@@ -3,7 +3,7 @@ package com.craivet;
 import com.craivet.ai.AStar;
 import com.craivet.data.SaveLoad;
 import com.craivet.entity.EntityGenerator;
-import com.craivet.input.KeyManager;
+import com.craivet.input.Key;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
 import com.craivet.tile.Minimap;
@@ -24,13 +24,13 @@ public class Game extends Canvas implements Runnable {
 
     // TODO Estos objetos los creo aca o en el constructor?
     // System
-    public KeyManager key = new KeyManager(this);
+    public Key key = new Key(this);
     private final World world = new World(this);
     public UI ui = new UI(this, world);
     public Minimap minimap = new Minimap(world);
     public SaveLoad saveLoad = new SaveLoad(this, world);
-    public AudioManager sound = new AudioManager();
-    public AudioManager music = new AudioManager();
+    public Audio sound = new Audio();
+    public Audio music = new Audio();
     public EventManager event = new EventManager(this, world);
     public EntityGenerator generator = new EntityGenerator(this, world);
     public Collider collider = new Collider(world);
@@ -183,7 +183,7 @@ public class Game extends Canvas implements Runnable {
         return world;
     }
 
-    public KeyManager getKey() {
+    public Key getKey() {
         return key;
     }
 

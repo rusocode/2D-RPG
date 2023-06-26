@@ -7,7 +7,11 @@ import java.awt.event.*;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
-public class KeyManager extends KeyAdapter {
+/**
+ * TODO Se podria llamar Keyboard (Teclado)?
+ */
+
+public class Key extends KeyAdapter {
 
     private final Game game;
     public boolean w, a, s, d, enter, esc, f, l, t;
@@ -15,7 +19,7 @@ public class KeyManager extends KeyAdapter {
     private int lastKey = -1;
     public static final int MAX_KEYCODE = 255;
 
-    public KeyManager(Game game) {
+    public Key(Game game) {
         this.game = game;
     }
 
