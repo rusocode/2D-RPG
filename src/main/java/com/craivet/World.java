@@ -3,14 +3,18 @@ package com.craivet;
 import com.craivet.entity.Entity;
 import com.craivet.entity.EntityManager;
 import com.craivet.entity.Player;
-import com.craivet.entity.item.Item;
+import com.craivet.entity.item.*;
+import com.craivet.entity.mob.Bat;
 import com.craivet.entity.mob.Mob;
+import com.craivet.entity.mob.Orc;
+import com.craivet.entity.mob.Slime;
+import com.craivet.entity.npc.BigRock;
 import com.craivet.entity.npc.Npc;
+import com.craivet.entity.npc.Oldman;
+import com.craivet.entity.npc.Trader;
 import com.craivet.entity.projectile.Projectile;
 import com.craivet.environment.EnvironmentManager;
-import com.craivet.tile.Interactive;
-import com.craivet.tile.Tile;
-import com.craivet.tile.TileManager;
+import com.craivet.tile.*;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -26,11 +30,9 @@ import static com.craivet.gfx.Assets.music_dungeon;
 import static com.craivet.utils.Global.*;
 
 /**
- * En el mundo se crean los tiles, las entidades y el entorno que son actualizados y dibujados por sus respectivos
- * administradores.
+ * El objeto World represeta el escenario del Player. Este a su vez esta compuesto por tiles, entidades y un entorno.
  * <p>
- * El tamaño de cada mapa es el mismo para todos. Cada mapa tiene un tamaño de 50x50 tiles y este valor es fijo hasta
- * que se aplique una forma de utilizar diferentes dimensiones.
+ * El tamaño de cada mapa es de 50x50 tiles.
  */
 
 public class World {
@@ -56,10 +58,10 @@ public class World {
     public List<Entity> itemsList = new ArrayList<>();
     public List<Entity> particles = new ArrayList<>();
     public Entity[][] items = new Item[MAX_MAP][20];
+    public Entity[][] npcs = new Npc[MAX_MAP][10];
     public Entity[][] mobs = new Mob[MAX_MAP][20];
-    public Entity[][] npcs = new Npc[MAX_MAP][10]; // TODO Por que no lo declaro como un objeto Npc?
-    public Entity[][] projectiles = new Projectile[MAX_MAP][20];
     public Interactive[][] interactives = new Interactive[MAX_MAP][50];
+    public Entity[][] projectiles = new Projectile[MAX_MAP][20];
 
     public boolean drawPath;
 
@@ -95,7 +97,7 @@ public class World {
 
     /**
      * Lee los datos de cada tile (nombre y estado solido) desde el archivo "tile_data.txt" y los agrega a sus
-     * respectivas listas. Luego utiliza esos datos para cargar (crear) todos los tiles dentro de un array.
+     * respectivas listas. Luego utiliza esos datos para cargar todos los tiles dentro de un array.
      */
     private void loadTiles() {
         String line;
@@ -164,8 +166,135 @@ public class World {
             if (area == DUNGEON && nextArea == OUTSIDE) game.stopMusic();
         }
         area = nextArea;
-        game.setter.setMOB();
-        game.setter.setNPC();
+        createMOBs();
+        createNPCs();
     }
+
+    /**
+     * Crea las entidades.
+     */
+    public void createEntities() {
+        createItems();
+        createNPCs();
+        createMOBs();
+        createInteractiveTile();
+    }
+
+    /**
+     * Crea los items.
+     */
+    public void createItems() {
+        int i = 0;
+        items[NIX][i++] = new Axe(game, this, 33, 7);
+        items[NIX][i++] = new PotionRed(game, this, 20, 21, 5);
+        items[NIX][i++] = new Key(game, this, 21, 21, 1);
+        items[NIX][i++] = new Door(game, this, 14, 28);
+        items[NIX][i++] = new Door(game, this, 12, 12);
+
+        items[NIX][i] = new Chest(game, this, 30, 29);
+        items[NIX][i++].setLoot(new Key(game, this, 1));
+
+        /* items[NIX][i] = new Chest(game, this, 17, 21);
+        items[NIX][i++].setLoot(new Tent(game, this)); */
+
+        items[NIX][i] = new Chest(game, this, 16, 21);
+        // FIXME Se podria reemplazar el mal uso del Setter creando un nuevo item como argumento desde el constructor del objeto Chest
+        // TODO Y si son muchos items?
+        items[NIX][i++].setLoot(new PotionRed(game, this, 5));
+
+        items[NIX][i] = new Chest(game, this, 23, 40);
+        items[NIX][i++].setLoot(new PotionRed(game, this, 30));
+
+        items[DUNGEON_01][i] = new Chest(game, this, 13, 16);
+        items[DUNGEON_01][i++].setLoot(new PotionRed(game, this, 20));
+
+        items[DUNGEON_01][i] = new Chest(game, this, 26, 34);
+        items[DUNGEON_01][i++].setLoot(new PotionRed(game, this, 5));
+
+        items[DUNGEON_01][i] = new Chest(game, this, 40, 41);
+        items[DUNGEON_01][i++].setLoot(new Pickaxe(game, this));
+
+        items[DUNGEON_01][i] = new DoorIron(game, this, 18, 23);
+
+    }
+
+    /**
+     * Crea los npcs.
+     */
+    public void createNPCs() {
+        int i = 0, j = 0, k = 0;
+
+        npcs[NIX][i++] = new Oldman(game, this, 23, 18);
+        npcs[NIX][i] = new BigRock(game, this, 26, 21);
+
+        npcs[NIX_INDOOR_01][j] = new Trader(game, this, 12, 7);
+
+        npcs[DUNGEON_01][k++] = new BigRock(game, this, 20, 25);
+        npcs[DUNGEON_01][k++] = new BigRock(game, this, 11, 18);
+        npcs[DUNGEON_01][k] = new BigRock(game, this, 23, 14);
+    }
+
+    /**
+     * Crea los mobs.
+     */
+    public void createMOBs() {
+        int i = 0, j = 0;
+        // mobs[NIX][i++] = new RedSlime(game, this, 21, 23);
+        mobs[NIX][i++] = new Slime(game, this, 23, 41);
+        mobs[NIX][i++] = new Slime(game, this, 24, 37);
+        mobs[NIX][i++] = new Slime(game, this, 34, 42);
+        mobs[NIX][i++] = new Slime(game, this, 38, 42);
+        mobs[NIX][i++] = new Orc(game, this, 12, 33);
+
+        mobs[DUNGEON_01][j++] = new Bat(game, this, 34, 39);
+        mobs[DUNGEON_01][j++] = new Bat(game, this, 36, 25);
+        mobs[DUNGEON_01][j++] = new Bat(game, this, 39, 26);
+        mobs[DUNGEON_01][j++] = new Bat(game, this, 28, 11);
+        mobs[DUNGEON_01][j++] = new Bat(game, this, 10, 19);
+
+    }
+
+    /**
+     * Crea los tiles interactivos.
+     */
+    public void createInteractiveTile() {
+        int i = 0;
+        interactives[NIX][i++] = new DryTree(game, this, 23, 22);
+
+        interactives[NIX][i++] = new DryTree(game, this, 25, 27);
+        interactives[NIX][i++] = new DryTree(game, this, 26, 27);
+        interactives[NIX][i++] = new DryTree(game, this, 27, 27);
+        interactives[NIX][i++] = new DryTree(game, this, 27, 28);
+        interactives[NIX][i++] = new DryTree(game, this, 27, 29);
+        interactives[NIX][i++] = new DryTree(game, this, 27, 30);
+        interactives[NIX][i++] = new DryTree(game, this, 27, 31);
+        interactives[NIX][i++] = new DryTree(game, this, 28, 31);
+        interactives[NIX][i++] = new DryTree(game, this, 29, 31);
+        interactives[NIX][i++] = new DryTree(game, this, 30, 31);
+
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 30);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 17, 31);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 17, 32);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 17, 34);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 34);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 33);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 10, 22);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 10, 24);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 38, 18);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 38, 19);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 38, 20);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 38, 21);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 13);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 14);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 22, 28);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 30, 28);
+        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 32, 28);
+
+        interactives[DUNGEON_01][i++] = new MetalPlate(game, this, 20, 22);
+        interactives[DUNGEON_01][i++] = new MetalPlate(game, this, 8, 17);
+        interactives[DUNGEON_01][i++] = new MetalPlate(game, this, 39, 31);
+
+    }
+
 
 }

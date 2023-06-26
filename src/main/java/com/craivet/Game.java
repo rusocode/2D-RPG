@@ -32,7 +32,6 @@ public class Game extends Canvas implements Runnable {
     public AudioManager sound = new AudioManager();
     public AudioManager music = new AudioManager();
     public EventManager event = new EventManager(this, world);
-    public AssetSetter setter = new AssetSetter(this, world);
     public EntityGenerator generator = new EntityGenerator(this, world);
     public Collider collider = new Collider(world);
     public Config config = new Config(this);
@@ -106,7 +105,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void init() {
-        setAssets();
+        world.createEntities();
         playMusic(music_main);
         stateManager.setState(new GameState(this, world, ui, minimap));
     }
@@ -157,13 +156,6 @@ public class Game extends Canvas implements Runnable {
         sound.play(url);
     }
 
-    private void setAssets() {
-        setter.setItem();
-        setter.setNPC();
-        setter.setMOB();
-        setter.setInteractiveTile();
-    }
-
     /**
      * Reinicia el juego.
      *
@@ -175,13 +167,13 @@ public class Game extends Canvas implements Runnable {
         world.player.setDefaultPos();
         world.player.restoreStatus();
         world.player.timer.resetCounter();
-        setter.setNPC();
-        setter.setMOB();
+        world.createNPCs();
+        world.createMOBs();
         if (restart) {
             playMusic(music_main);
             world.player.setDefaultValues();
-            setter.setItem();
-            setter.setInteractiveTile();
+            world.createItems();
+            world.createInteractiveTile();
             world.environment.lighting.resetDay();
             minimap.miniMapOn = false;
         }

@@ -120,7 +120,7 @@ public class EventManager {
             world.player.attackCanceled = true; // No puede atacar si regenera vida
             eventMaster.startDialogue(DIALOGUE_STATE, eventMaster, 1);
             world.player.HP = world.player.maxHP;
-            game.setter.setMOB();
+            game.getWorld().createMOBs();
         }
     }
 
