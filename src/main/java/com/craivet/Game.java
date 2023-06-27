@@ -3,7 +3,6 @@ package com.craivet;
 import com.craivet.ai.AStar;
 import com.craivet.data.SaveLoad;
 import com.craivet.entity.Entity;
-import com.craivet.entity.EntityGenerator;
 import com.craivet.input.Key;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
