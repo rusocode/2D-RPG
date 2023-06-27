@@ -114,7 +114,7 @@ public class SaveLoad {
 
             world.player.inventory.clear();
             for (int i = 0; i < ds.names.size(); i++) {
-                world.player.inventory.add(game.generator.getItem(ds.names.get(i)));
+                world.player.inventory.add(game.entity.getItem(ds.names.get(i)));
                 world.player.inventory.get(i).amount = ds.amounts.get(i);
             }
             world.player.weapon = world.player.inventory.get(ds.currentWeaponSlot);
@@ -128,11 +128,11 @@ public class SaveLoad {
                 for (int i = 0; i < world.items[1].length; i++) {
                     if (ds.itemName[map][i].equals("NA")) world.items[map][i] = null;
                     else {
-                        world.items[map][i] = game.generator.getItem(ds.itemName[map][i]);
+                        world.items[map][i] = game.entity.getItem(ds.itemName[map][i]);
                         world.items[map][i].x = ds.itemX[map][i];
                         world.items[map][i].y = ds.itemY[map][i];
                         if (ds.loot[map][i] != null && !ds.empty[map][i])
-                            world.items[map][i].loot = game.generator.getItem(ds.loot[map][i]);
+                            world.items[map][i].loot = game.entity.getItem(ds.loot[map][i]);
                         world.items[map][i].opened = ds.opened[map][i];
                         world.items[map][i].empty = ds.empty[map][i];
                         if (world.items[map][i].opened) world.items[map][i].image = world.items[map][i].image2;

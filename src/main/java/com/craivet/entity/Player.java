@@ -406,7 +406,7 @@ public class Player extends Entity {
      */
     public boolean canPickup(Entity item) {
         // Evita la referencia al mismo item
-        Entity newItem = game.generator.getItem(item.name);
+        Item newItem = /*game.generator.*/getItem(item.name);
         if (item.stackable) {
             int itemIndex = searchItemInInventory(item.name);
             if (itemIndex != -1) {

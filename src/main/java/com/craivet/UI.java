@@ -831,6 +831,7 @@ public class UI {
                 if (entity.inventory.get(itemIndex).price > world.player.gold)
                     addMessage("You need more gold to buy that!");
                 else {
+                    // TODO Especificar la cantidad de items a comprar
                     if (world.player.canPickup(entity.inventory.get(itemIndex))) {
                         game.playSound(sound_trade);
                         world.player.gold -= entity.inventory.get(itemIndex).price;

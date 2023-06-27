@@ -20,8 +20,8 @@ public class EntityGenerator {
      * @param name nombre del item.
      * @return el item.
      */
-    public Entity getItem(String name) {
-        Entity item = null;
+    public Item getItem(String name) {
+        Item item = null;
         switch (name) {
             case Axe.item_name -> item = new Axe(game, world);
             case Boots.item_name -> item = new Boots(game, world);

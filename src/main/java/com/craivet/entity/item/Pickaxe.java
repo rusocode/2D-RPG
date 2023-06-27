@@ -8,7 +8,7 @@ import com.craivet.utils.Utils;
 import static com.craivet.gfx.Assets.item_pickaxe;
 import static com.craivet.utils.Global.*;
 
-public class Pickaxe extends Entity {
+public class Pickaxe extends Item {
 
     public static final String item_name = "Pickaxe";
 

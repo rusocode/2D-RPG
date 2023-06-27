@@ -2,6 +2,7 @@ package com.craivet;
 
 import com.craivet.ai.AStar;
 import com.craivet.data.SaveLoad;
+import com.craivet.entity.Entity;
 import com.craivet.entity.EntityGenerator;
 import com.craivet.input.Key;
 import com.craivet.states.GameState;
@@ -26,13 +27,13 @@ public class Game extends Canvas implements Runnable {
     // System
     public Key key = new Key(this);
     private final World world = new World(this);
+    public Entity entity = new Entity(this, world);
     public UI ui = new UI(this, world);
     public Minimap minimap = new Minimap(world);
-    public SaveLoad saveLoad = new SaveLoad(this, world);
+    public SaveLoad saveLoad = new SaveLoad(this, world); // TODO Nombre File?
     public Audio sound = new Audio();
     public Audio music = new Audio();
     public EventManager event = new EventManager(this, world);
-    public EntityGenerator generator = new EntityGenerator(this, world);
     public Collider collider = new Collider(world);
     public Config config = new Config(this);
     public AStar aStar = new AStar(world);
