@@ -9,21 +9,19 @@ import java.io.*;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
-public class FileIO {
+public final class GameFile {
 
     private final Game game;
     private final World world;
     private final String saveFile = "save.dat";
 
-    public FileIO(Game game, World world) {
+    public GameFile(final Game game, final World world) {
         this.game = game;
         this.world = world;
     }
 
     /**
-     * Guarda los datos del player.
-     * <p>
-     * Almacena los datos del player en el DataStorage y los escribe en el flujo de salida hacia el archivo especificado.
+     * Guarda los datos del juego.
      */
     public void save() {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(saveFile))) {
@@ -87,12 +85,11 @@ public class FileIO {
     }
 
     /**
-     * Carga los datos del player.
-     * <p>
-     * Lee los bytes desde el flujo de entrada y los deserializa en un objeto DataStorage.
+     * Carga los datos del juego.
      */
     public void load() {
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(saveFile))) {
+            // Lee los bytes desde el flujo de entrada y los deserializa en un objeto Data
             Data data = (Data) input.readObject();
             world.area = data.area;
             world.map = data.map;
