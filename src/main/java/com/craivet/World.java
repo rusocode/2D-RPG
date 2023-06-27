@@ -30,7 +30,7 @@ import static com.craivet.gfx.Assets.music_dungeon;
 import static com.craivet.utils.Global.*;
 
 /**
- * El objeto World represeta el escenario del Player. Este a su vez esta compuesto por tiles, entidades y un entorno.
+ * La clase World represeta el escenario del Player. Este a su vez esta compuesto por tiles, entidades y un entorno.
  * <p>
  * El tamaño de cada mapa es de 50x50 tiles.
  */

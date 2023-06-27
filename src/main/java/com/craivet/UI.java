@@ -559,7 +559,7 @@ public class UI {
         if (command == 3) {
             g2.drawString(">", textX - 25, textY);
             if (game.key.enter) {
-                game.saveLoad.save();
+                game.file.save();
                 game.state = PLAY_STATE;
                 game.ui.addMessage("Game saved!");
                 command = 0;

@@ -19,9 +19,12 @@ import static com.craivet.utils.Global.*;
 
 /**
  * Crea los componentes para cada entidad.
- *
- * <p>TODO Los metodos para obtener las subimagenes deberian ir en otra clase
- * <p>TODO Los metodos update() y render() se podrian implementar desde una interfaz
+ * <p>
+ * TODO Los metodos para obtener las subimagenes deberian ir en otra clase
+ * <p>
+ * TODO Los metodos update() y render() se podrian implementar desde una interfaz
+ * <p>
+ * TODO No tendria que ser una clase abstracta?
  */
 
 public class Entity {

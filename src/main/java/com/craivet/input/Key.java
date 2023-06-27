@@ -76,7 +76,7 @@ public class Key extends KeyAdapter {
                     game.playSound(sound_spawn);
                 }
                 if (game.ui.command == 1) {
-                    game.saveLoad.load();
+                    game.file.load();
                     game.state = PLAY_STATE;
                     game.stopMusic();
                     game.playSound(sound_spawn);

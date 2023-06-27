@@ -1,9 +1,9 @@
-package com.craivet.data;
+package com.craivet.io;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class DataStorage implements Serializable {
+public class Data implements Serializable {
 
     // TODO Falta el entorno
     int area, map, x, y, direction, life, maxlife, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, gold;

@@ -26,7 +26,7 @@ public class Display extends JFrame {
                     int option = JOptionPane.showConfirmDialog(null, "Do you want to save the changes?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
                     switch (option) {
                         case JOptionPane.YES_OPTION -> {
-                            game.saveLoad.save();
+                            game.file.save();
                             System.exit(0);
                         }
                         case JOptionPane.NO_OPTION -> System.exit(0);
