@@ -10,13 +10,11 @@ import static com.craivet.utils.Global.*;
 public class Minimap {
 
     private final World world;
-
     private BufferedImage[] minimap;
     public boolean miniMapOn;
 
     public Minimap(World world) {
         this.world = world;
-        createMinimap();
     }
 
     public void createMinimap() {
@@ -38,7 +36,7 @@ public class Minimap {
         }
     }
 
-    public void render(Graphics2D g2) {
+    public void render(final Graphics2D g2) {
         if (miniMapOn) {
             int width = 200;
             int height = 200;

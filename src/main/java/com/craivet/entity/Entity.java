@@ -357,16 +357,16 @@ public class Entity {
             hitbox.width = attackbox.width;
             hitbox.height = attackbox.height;
 
-            if (type == TYPE_MOB) hitPlayer(game.collider.checkPlayer(this), attack);
+            if (type == TYPE_MOB) hitPlayer(game.collision.checkPlayer(this), attack);
             else {
                 // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
-                int mobIndex = game.collider.checkEntity(this, world.mobs);
+                int mobIndex = game.collision.checkEntity(this, world.mobs);
                 world.player.hitMob(mobIndex, this, weapon.knockbackValue, attack);
 
-                int iTileIndex = game.collider.checkEntity(this, world.interactives);
+                int iTileIndex = game.collision.checkEntity(this, world.interactives);
                 world.player.hitInteractiveTile(iTileIndex);
 
-                int projectileIndex = game.collider.checkEntity(this, world.projectiles);
+                int projectileIndex = game.collision.checkEntity(this, world.projectiles);
                 world.player.hitProjectile(projectileIndex);
             }
 
@@ -441,12 +441,12 @@ public class Entity {
      */
     public void checkCollision() {
         isColliding = false;
-        game.collider.checkTile(this);
-        game.collider.checkItem(this);
-        game.collider.checkEntity(this, world.npcs);
-        game.collider.checkEntity(this, world.mobs);
-        game.collider.checkEntity(this, world.interactives);
-        hitPlayer(game.collider.checkPlayer(this), attack);
+        game.collision.checkTile(this);
+        game.collision.checkItem(this);
+        game.collision.checkEntity(this, world.npcs);
+        game.collision.checkEntity(this, world.mobs);
+        game.collision.checkEntity(this, world.interactives);
+        hitPlayer(game.collision.checkPlayer(this), attack);
     }
 
     /**

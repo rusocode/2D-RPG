@@ -4,6 +4,8 @@ import com.craivet.ai.AStar;
 import com.craivet.io.GameFile;
 import com.craivet.entity.Entity;
 import com.craivet.input.Key;
+import com.craivet.physics.Collision;
+import com.craivet.physics.CollisionEvent;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
 import com.craivet.tile.Minimap;
@@ -32,8 +34,8 @@ public class Game extends Canvas implements Runnable {
     public GameFile file = new GameFile(this, world);
     public Audio sound = new Audio();
     public Audio music = new Audio();
-    public EventManager event = new EventManager(this, world);
-    public Collider collider = new Collider(world);
+    public CollisionEvent event = new CollisionEvent(this, world);
+    public Collision collision = new Collision(world);
     public Config config = new Config(this);
     public AStar aStar = new AStar(world);
 
@@ -106,6 +108,8 @@ public class Game extends Canvas implements Runnable {
 
     private void init() {
         world.createEntities();
+        minimap.createMinimap();
+        event.createEvents();
         playMusic(music_main);
         stateManager.setState(new GameState(this, world, ui, minimap));
     }

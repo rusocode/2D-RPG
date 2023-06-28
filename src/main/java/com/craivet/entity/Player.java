@@ -92,7 +92,7 @@ public class Player extends Entity {
         }
         if (isInvincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(frame, tempScreenX, tempScreenY, null);
-        // drawRects(g2);
+        drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -450,11 +450,11 @@ public class Player extends Entity {
      */
     public void checkCollision() {
         isColliding = false;
-        game.collider.checkTile(this);
-        pickup(game.collider.checkItem(this));
-        interactNpc(game.collider.checkEntity(this, world.npcs));
-        hitPlayer(game.collider.checkEntity(this, world.mobs));
-        setCurrentInteractive(game.collider.checkEntity(this, world.interactives));
+        game.collision.checkTile(this);
+        pickup(game.collision.checkItem(this));
+        interactNpc(game.collision.checkEntity(this, world.npcs));
+        hitPlayer(game.collision.checkEntity(this, world.mobs));
+        setCurrentInteractive(game.collision.checkEntity(this, world.interactives));
         // game.collider.checkEntity(this, world.interactives);
         game.event.checkEvent();
     }

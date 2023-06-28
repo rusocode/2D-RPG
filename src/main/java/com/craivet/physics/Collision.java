@@ -1,22 +1,21 @@
-package com.craivet;
+package com.craivet.physics;
 
+import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.entity.Player;
 
 import static com.craivet.utils.Global.*;
 
 /**
- * Deteccion de colisiones.
- * <p>
  * La colision entre dos entidades se genera cuando uno de los limites de la hitbox se pasa 1 pixel de la hitbox de la
  * otra entidad. Pero en el caso del attackbox, solo se genera colision cuando los limites de ambos se tocan.
  */
 
-public class Collider {
+public class Collision {
 
     private final World world;
 
-    public Collider(World world) {
+    public Collision(World world) {
         this.world = world;
     }
 

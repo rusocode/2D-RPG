@@ -44,7 +44,7 @@ public class Audio {
      * Detiene el clip.
      */
     public void stop() {
-        clip.stop();
+        if (clip != null) clip.stop();
     }
 
     public void loop() {
