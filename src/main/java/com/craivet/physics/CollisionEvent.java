@@ -19,10 +19,10 @@ public class CollisionEvent {
     private final Entity entity;
 
     private final Rectangle[][][] event;
+    private boolean canTouchEvent;
     /* El evento no sucede de nuevo si el player no se encuentra a 1 tile de distancia. Esta mecanica evita que el
-     * evento se repita en el mismo lugar. */
+     * evento se repita en el mismo lugar repetidamente. */
     public int previousEventX, previousEventY;
-    private boolean canTouchEvent = true;
     public int map, col, row;
 
     public CollisionEvent(Game game, World world) {
@@ -48,7 +48,7 @@ public class CollisionEvent {
                 }
             }
         }
-        initDialogue();
+        initDialogues();
     }
 
     /**
@@ -56,25 +56,24 @@ public class CollisionEvent {
      */
     public void checkEvent() {
 
-        // Verifica si el player esta a mas de 1 tile de distancia del ultimo evento
+        // Verifica si el player esta a mas de 1 tile de distancia del ultimo evento utilizando el evento previo como informacion
         int xDis = Math.abs(world.player.x - previousEventX);
         int yDis = Math.abs(world.player.y - previousEventY);
         int dis = Math.max(xDis, yDis);
         if (dis > tile_size) canTouchEvent = true;
 
         if (canTouchEvent) {
-            // El else if se utiliza para evitar que el siguiente if se llame inmediatamente en el caso de la teleport
             if (checkCollision(NIX, 27, 16, RIGHT)) hurt();
-            else if (checkCollision(NIX, 23, 12, UP)) heal();
-            else if (checkCollision(NIX_INDOOR_01, 12, 9, ANY)) speak(world.npcs[1][0]);
-            else if (checkCollision(NIX, 10, 39, ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
-            else if (checkCollision(NIX_INDOOR_01, 12, 13, ANY))
+            if (checkCollision(NIX, 23, 12, UP)) heal();
+            if (checkCollision(NIX_INDOOR_01, 12, 9, ANY)) speak(world.npcs[1][0]);
+            if (checkCollision(NIX, 10, 39, ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
+            if (checkCollision(NIX_INDOOR_01, 12, 13, ANY))
                 teleport(OUTSIDE, NIX, 10, 39); // De Nix Indoor 1 a Nix
-            else if (checkCollision(NIX, 12, 9, ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1
-            else if (checkCollision(DUNGEON_01, 9, 41, ANY)) teleport(OUTSIDE, NIX, 12, 9); // De Dungeon 1 a Nix
-            else if (checkCollision(DUNGEON_01, 8, 7, ANY))
+            if (checkCollision(NIX, 12, 9, ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1
+            if (checkCollision(DUNGEON_01, 9, 41, ANY)) teleport(OUTSIDE, NIX, 12, 9); // De Dungeon 1 a Nix
+            if (checkCollision(DUNGEON_01, 8, 7, ANY))
                 teleport(DUNGEON, DUNGEON_02, 26, 41); // De Dungeon 1 a Dungeon 2
-            else if (checkCollision(DUNGEON_02, 26, 41, ANY))
+            if (checkCollision(DUNGEON_02, 26, 41, ANY))
                 teleport(DUNGEON, DUNGEON_01, 8, 7); // De Dungeon 2 a Dungeon 1
         }
 
@@ -108,6 +107,7 @@ public class CollisionEvent {
                 previousEventY = world.player.y;
             }
 
+            // Resetea la posicion del hitbox del player y la posicion del evento
             world.player.hitbox.x = world.player.hitboxDefaultX;
             world.player.hitbox.y = world.player.hitboxDefaultY;
             event[map][row][col].x = 23;
@@ -122,7 +122,6 @@ public class CollisionEvent {
      * Daña al player.
      */
     private void hurt() {
-        game.state = PLAY_STATE;
         entity.startDialogue(DIALOGUE_STATE, entity, 0);
         world.player.HP--;
         canTouchEvent = false;
@@ -133,7 +132,6 @@ public class CollisionEvent {
      */
     private void heal() {
         if (game.key.enter) {
-            game.state = PLAY_STATE;
             entity.startDialogue(DIALOGUE_STATE, entity, 1);
             world.player.HP = world.player.maxHP;
             game.getWorld().createMOBs();
@@ -166,7 +164,7 @@ public class CollisionEvent {
         if (game.key.enter) entity.speak();
     }
 
-    private void initDialogue() {
+    private void initDialogues() {
         entity.dialogues[0][0] = "You fall into a pit!";
         entity.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
     }

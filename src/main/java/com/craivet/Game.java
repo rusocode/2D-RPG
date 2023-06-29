@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
+import com.craivet.io.Config;
 import com.craivet.io.GameFile;
 import com.craivet.entity.Entity;
 import com.craivet.input.Key;
@@ -34,8 +35,8 @@ public class Game extends Canvas implements Runnable {
     public GameFile file = new GameFile(this, world);
     public Audio sound = new Audio();
     public Audio music = new Audio();
-    public CollisionEvent event = new CollisionEvent(this, world);
     public Collision collision = new Collision(world);
+    public CollisionEvent event = new CollisionEvent(this, world);
     public Config config = new Config(this);
     public AStar aStar = new AStar(world);
 

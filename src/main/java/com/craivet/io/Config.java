@@ -1,4 +1,6 @@
-package com.craivet;
+package com.craivet.io;
+
+import com.craivet.Game;
 
 import javax.swing.*;
 import java.io.*;
