@@ -1,14 +1,12 @@
-package com.craivet.environment;
+package com.craivet.managers;
 
 import com.craivet.World;
+import com.craivet.environment.Lighting;
+import com.craivet.states.State;
 
 import java.awt.*;
 
-/**
- * Administrador del ambiente.
- */
-
-public class EnvironmentManager {
+public class EnvironmentManager implements State {
 
     public final Lighting lighting;
 
@@ -16,10 +14,12 @@ public class EnvironmentManager {
         lighting = new Lighting(world);
     }
 
+    @Override
     public void update() {
         lighting.update();
     }
 
+    @Override
     public void render(Graphics2D g2) {
         lighting.render(g2);
     }

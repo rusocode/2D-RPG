@@ -136,6 +136,7 @@ public class Collision {
                 entity.hitbox.y += entity.y;
                 otherEntity[world.map][i].hitbox.x += otherEntity[world.map][i].x;
                 otherEntity[world.map][i].hitbox.y += otherEntity[world.map][i].y;
+
                 switch (direction) {
                     case DOWN -> entity.hitbox.y += speed;
                     case UP -> entity.hitbox.y -= speed;
@@ -174,6 +175,7 @@ public class Collision {
         entity.hitbox.y += entity.y;
         world.player.hitbox.x += world.player.x;
         world.player.hitbox.y += world.player.y;
+
         switch (entity.direction) {
             case DOWN -> entity.hitbox.y += entity.speed;
             case UP -> entity.hitbox.y -= entity.speed;

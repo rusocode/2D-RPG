@@ -1,7 +1,7 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
-import com.craivet.entity.EntityManager;
+import com.craivet.managers.EntityManager;
 import com.craivet.entity.Player;
 import com.craivet.entity.item.*;
 import com.craivet.entity.mob.Bat;
@@ -13,7 +13,8 @@ import com.craivet.entity.npc.Npc;
 import com.craivet.entity.npc.Oldman;
 import com.craivet.entity.npc.Trader;
 import com.craivet.entity.projectile.Projectile;
-import com.craivet.environment.EnvironmentManager;
+import com.craivet.managers.EnvironmentManager;
+import com.craivet.managers.TileManager;
 import com.craivet.tile.*;
 import com.craivet.utils.Utils;
 
@@ -39,7 +40,6 @@ public class World {
 
     private final Game game;
 
-    // Managers
     private final TileManager tiles;
     private final EntityManager entitites;
     public final EnvironmentManager environment;
@@ -71,9 +71,6 @@ public class World {
         tiles = new TileManager(game, this);
         entitites = new EntityManager(game, this);
         environment = new EnvironmentManager(this);
-
-        loadTiles();
-        loadMaps();
     }
 
     /**
@@ -99,7 +96,7 @@ public class World {
      * Lee los datos de cada tile (nombre y estado solido) desde el archivo "tile_data.txt" y los agrega a sus
      * respectivas listas. Luego utiliza esos datos para cargar todos los tiles dentro de un array.
      */
-    private void loadTiles() {
+    public void loadTiles() {
         String line;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("maps/tile_data.txt"))))) {
             while ((line = br.readLine()) != null) {
@@ -130,7 +127,7 @@ public class World {
     /**
      * Carga todos los mapas que componen al mundo.
      */
-    private void loadMaps() {
+    public void loadMaps() {
         loadMap("maps/nix.txt", NIX, "Nix");
         loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
         loadMap("maps/dungeon01.txt", DUNGEON_01, "Dungeon 01");

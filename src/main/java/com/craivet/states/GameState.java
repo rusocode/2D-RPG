@@ -3,7 +3,7 @@ package com.craivet.states;
 import com.craivet.Game;
 import com.craivet.UI;
 import com.craivet.World;
-import com.craivet.tile.Minimap;
+import com.craivet.Minimap;
 
 import java.awt.*;
 

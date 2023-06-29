@@ -4,8 +4,8 @@ import java.awt.*;
 
 public interface State {
 
-	void update();
+    void update();
 
-	void render(Graphics2D g2);
+    void render(Graphics2D g2);
 
 }

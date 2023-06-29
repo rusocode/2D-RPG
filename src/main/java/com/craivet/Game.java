@@ -9,7 +9,6 @@ import com.craivet.physics.Collision;
 import com.craivet.physics.CollisionEvent;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
-import com.craivet.tile.Minimap;
 import com.craivet.utils.TimeUtils;
 
 import java.awt.*;
@@ -108,6 +107,8 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void init() {
+        world.loadTiles();
+        world.loadMaps();
         world.createEntities();
         minimap.createMinimap();
         event.createEvents();

@@ -1,7 +1,9 @@
-package com.craivet.entity;
+package com.craivet.managers;
 
 import com.craivet.*;
 import com.craivet.World;
+import com.craivet.entity.Entity;
+import com.craivet.states.State;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -10,11 +12,7 @@ import java.util.List;
 
 import static com.craivet.utils.Global.*;
 
-/**
- * Adminstra las entidades actualizandolas y renderizandolas.
- */
-
-public class EntityManager {
+public class EntityManager implements State {
 
     private final Game game;
     private final World world;
@@ -26,6 +24,7 @@ public class EntityManager {
         this.world = world;
     }
 
+    @Override
     public void update() {
         if (game.state == PLAY_STATE) {
             world.player.update();
@@ -61,6 +60,7 @@ public class EntityManager {
         }
     }
 
+    @Override
     public void render(Graphics2D g2) {
         if (game.state == MAIN_STATE) {
             // Creo que evitaba un mal renderizado cuando estaba en pantalla completa

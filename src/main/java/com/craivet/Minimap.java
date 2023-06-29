@@ -1,4 +1,4 @@
-package com.craivet.tile;
+package com.craivet;
 
 import com.craivet.World;
 
