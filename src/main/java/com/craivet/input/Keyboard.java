@@ -11,15 +11,14 @@ import static com.craivet.utils.Global.*;
  * TODO Se podria llamar Keyboard (Teclado)?
  */
 
-public class Key extends KeyAdapter {
+public class Keyboard extends KeyAdapter {
 
     private final Game game;
     public boolean w, a, s, d, enter, esc, f, l, t;
-
     private int lastKey = -1;
-    public static final int MAX_KEYCODE = 255;
+    private final int maxKeycode = 255;
 
-    public Key(Game game) {
+    public Keyboard(Game game) {
         this.game = game;
     }
 
@@ -27,7 +26,7 @@ public class Key extends KeyAdapter {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() < 0)
             throw new IllegalArgumentException("keycode cannot be negative, keycode: " + e.getKeyCode());
-        if (e.getKeyCode() > MAX_KEYCODE)
+        if (e.getKeyCode() > maxKeycode)
             throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
         if (lastKey != e.getKeyCode()) {
             lastKey = e.getKeyCode();
@@ -46,7 +45,7 @@ public class Key extends KeyAdapter {
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() < 0)
             throw new IllegalArgumentException("keycode cannot be negative, keycode: " + e.getKeyCode());
-        if (e.getKeyCode() > MAX_KEYCODE)
+        if (e.getKeyCode() > maxKeycode)
             throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
         lastKey = -1;
         int code = e.getKeyCode();
@@ -55,6 +54,23 @@ public class Key extends KeyAdapter {
         if (code == KeyEvent.VK_S) s = false;
         if (code == KeyEvent.VK_D) d = false;
         if (code == KeyEvent.VK_F) f = false;
+    }
+
+    public boolean checkKeys() {
+        return checkMovementKeys() || checkAccionKeys();
+    }
+
+    public boolean checkMovementKeys() {
+        return s || w || a || d;
+    }
+
+    public boolean checkAccionKeys() {
+        return enter || l;
+    }
+
+    public void resetAccionKeys() {
+        enter = false;
+        l = false;
     }
 
     private void titleState(int code) {

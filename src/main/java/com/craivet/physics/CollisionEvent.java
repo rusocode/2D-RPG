@@ -131,7 +131,7 @@ public class CollisionEvent {
      * Sana al player.
      */
     private void heal() {
-        if (game.key.enter) {
+        if (game.keyboard.enter) {
             entity.startDialogue(DIALOGUE_STATE, entity, 1);
             world.player.HP = world.player.maxHP;
             game.getWorld().createMOBs();
@@ -161,7 +161,7 @@ public class CollisionEvent {
      * @param entity entidad con la que habla el player.
      */
     private void speak(Entity entity) {
-        if (game.key.enter) entity.speak();
+        if (game.keyboard.enter) entity.speak();
     }
 
     private void initDialogues() {

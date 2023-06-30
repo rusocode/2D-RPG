@@ -32,14 +32,14 @@ public class GameState implements State {
     }
 
     public void render(Graphics2D g2) {
-        if (game.getKey().t) renderStart = System.nanoTime();
+        if (game.getKeyboard().t) renderStart = System.nanoTime();
 
         world.render(g2);
         minimap.render(g2);
         ui.render(g2);
 
         // Debug mode
-        if (game.getKey().t) {
+        if (game.getKeyboard().t) {
             g2.setFont(new Font("Consolas", Font.ITALIC, 20));
             g2.setColor(Color.white);
             int x = 8, y = SCREEN_HEIGHT - 55, gap = 25;

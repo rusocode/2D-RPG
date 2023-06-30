@@ -279,20 +279,20 @@ public class UI {
             }
 
             // En el caso de tener varios cuadros de dialogos (ejemplo, Oldman)
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == DIALOGUE_STATE) {
                     entity.dialogueIndex++;
-                    game.key.enter = false;
+                    game.keyboard.enter = false;
                 }
             }
-            if (game.key.esc) { // TODO o else if?
+            if (game.keyboard.esc) { // TODO o else if?
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == TRADE_STATE) {
                     entity.dialogueIndex++;
-                    game.key.esc = false;
+                    game.keyboard.esc = false;
                 }
             }
 
@@ -517,7 +517,7 @@ public class UI {
             case 2 -> optionsEndGameConfirmation(frameX, frameY);
         }
 
-        game.key.enter = false;
+        game.keyboard.enter = false;
 
     }
 
@@ -548,7 +548,7 @@ public class UI {
         g2.drawString("Control", textX, textY);
         if (command == 2) {
             g2.drawString(">", textX - 25, textY);
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 subState = 1;
                 command = 0;
             }
@@ -558,7 +558,7 @@ public class UI {
         g2.drawString("Save Game", textX, textY);
         if (command == 3) {
             g2.drawString(">", textX - 25, textY);
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 game.file.save();
                 game.state = PLAY_STATE;
                 game.ui.addMessage("Game saved!");
@@ -570,7 +570,7 @@ public class UI {
         g2.drawString("End Game", textX, textY);
         if (command == 4) {
             g2.drawString(">", textX - 25, textY);
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 subState = 2;
                 command = 0;
             }
@@ -594,7 +594,7 @@ public class UI {
         g2.drawString("Back", textX, textY);
         if (command == 5) {
             g2.drawString(">", textX - 25, textY);
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 game.state = PLAY_STATE;
                 command = 0;
             }
@@ -659,7 +659,7 @@ public class UI {
         g2.drawString("Back", textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 subState = 0;
                 command = 2;
             }
@@ -683,10 +683,10 @@ public class UI {
         g2.drawString(text, textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 subState = 0;
                 game.state = MAIN_STATE;
-                game.key.t = false;
+                game.keyboard.t = false;
                 game.resetGame(true);
             }
         }
@@ -698,7 +698,7 @@ public class UI {
         g2.drawString(text, textX, textY);
         if (command == 1) {
             g2.drawString(">", textX - 25, textY);
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 subState = 0;
                 command = 4;
             }
@@ -765,7 +765,7 @@ public class UI {
             case 1 -> tradeBuy();
             case 2 -> tradeSell();
         }
-        game.key.enter = false; // Reinicia la entrada de teclado
+        game.keyboard.enter = false; // Reinicia la entrada de teclado
     }
 
     private void tradeSelect() {
@@ -778,7 +778,7 @@ public class UI {
         g2.drawString("Buy", x, y);
         if (command == 0) {
             g2.drawString(">", x - 24, y);
-            if (game.key.enter) subState = 1;
+            if (game.keyboard.enter) subState = 1;
         }
 
         x += 4 * tile_size;
@@ -786,7 +786,7 @@ public class UI {
         g2.drawString("Sell", x, y);
         if (command == 1) {
             g2.drawString(">", x - 24, y);
-            if (game.key.enter) subState = 2;
+            if (game.keyboard.enter) subState = 2;
         }
     }
 
@@ -827,7 +827,7 @@ public class UI {
             g2.drawString(text, x, y + 32);
 
             // BUY AN ITEM
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 if (entity.inventory.get(itemIndex).price > world.player.gold)
                     addMessage("You need more gold to buy that!");
                 else {
@@ -879,7 +879,7 @@ public class UI {
             g2.drawString(text, x, y + 32);
 
             // SELL AN ITEM
-            if (game.key.enter) {
+            if (game.keyboard.enter) {
                 if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
                     addMessage("You cannot sell an equipped item!");
                 else {

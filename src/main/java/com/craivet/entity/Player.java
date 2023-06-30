@@ -9,7 +9,8 @@ import com.craivet.entity.mob.*;
 import com.craivet.entity.npc.BigRock;
 import com.craivet.entity.npc.Npc;
 import com.craivet.entity.projectile.Fireball;
-import com.craivet.input.Key;
+import com.craivet.input.Keyboard;
+import com.craivet.physics.Mechanics;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
 import com.craivet.utils.Utils;
@@ -23,22 +24,22 @@ import static com.craivet.gfx.Assets.*;
 
 public class Player extends Entity {
 
-    private final Key key;
+    private final Mechanics mechanics;
+    private final Keyboard key;
     public int screenX, screenY;
     private int tempScreenX, tempScreenY;
     public boolean attackCanceled, shooting, lightUpdate;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity currentEntity;
-    // Se utiliza para indicar cuando esta unido a una entidad en movimiento
-    private boolean united;
 
     public Player(Game game, World world) {
         super(game, world);
         centerOnScreen();
         setDefaultPos();
         setDefaultValues();
-        key = game.getKey();
+        key = game.getKeyboard();
+        mechanics = new Mechanics(this);
     }
 
     /**
@@ -48,23 +49,23 @@ public class Player extends Entity {
         // Si esta golpeando, entonces golpea
         if (isHitting) hit();
         // Comprueba las teclas presionadas de movimiento y accion
-        if (checkKeys()) {
+        if (key.checkKeys()) {
             // Obtiene la direccion dependiendo de la tecla presionada de movimiento (w, a, s, d)
             getDirection();
             // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y eventos
             checkCollision();
             // Si no colisiona y si no se presionaron las teclas de accion, entonces actualiza la posicion dependiendo de la direccion
-            if (!isColliding && !checkAccionKeys()) updatePos();
+            if (!isColliding && !key.checkAccionKeys()) updatePosition(direction);
             // Comprueba la velocidad de la direccion en caso de que se mueva en la misma direccion que la entidad
-            checkDirectionSpeed();
+            mechanics.checkDirectionSpeed(currentEntity);
             // Comrpueba si puede atacar
             checkAttack();
             // Resetea las teclas de accion
-            resetAccionKeys();
+            key.resetAccionKeys();
             // Temporiza la animacion de movimiento solo cuando se presionan las teclas de movimiento
-            if (checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+            if (key.checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
         } else
-            timer.timeStopMovement(this, 20);    // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
+            timer.timeStopMovement(this, 20); // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
 
         checkShoot();
         checkTimers();
@@ -83,7 +84,7 @@ public class Player extends Entity {
         }
         if (isInvincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(frame, tempScreenX, tempScreenY, null);
-        drawRects(g2);
+        // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -134,7 +135,7 @@ public class Player extends Entity {
 
         loadMovementImages(entity_player_movement, 16, 16, tile_size);
         loadWeaponImages(entity_player_sword, 16, 16);
-        setItems();
+        addItemsToInventory();
     }
 
     /**
@@ -462,130 +463,6 @@ public class Player extends Entity {
         if (iTileIndex != -1) currentEntity = world.interactives[world.map][iTileIndex];
     }
 
-    /**
-     * Actualiza la posicion.
-     */
-    private void updatePos() {
-        switch (direction) {
-            case DOWN -> y += speed;
-            case UP -> y -= speed;
-            case LEFT -> x -= speed;
-            case RIGHT -> x += speed;
-        }
-    }
-
-    /**
-     * Comprueba la velocidad de la direccion cuando colisiona con una entidad en movimiento en la misma direccion. Esto
-     * se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, "une" el Player a la
-     * entidad. En caso contrario, "desune" el Player de la entidad.
-     */
-    private void checkDirectionSpeed() {
-        if (checkSomeConditionsForUnion()) unite();
-        else disunite();
-    }
-
-    /**
-     * Comprueba si la entidad actual es distinta a null, y si la entidad actual es un Npc, y si el Player colisiono con
-     * la entidad, y si el Player esta en la misma direccion que la entidad actual, y si el Player no tiene distancia
-     * con la entidad y si la entidad actual no colisiono.
-     *
-     * @return true si se cumplen todas las condiciones especificadas o false.
-     */
-    private boolean checkSomeConditionsForUnion() {
-        return currentEntity != null && currentEntity instanceof Npc &&
-                isCollidingOnEntity && direction == currentEntity.direction &&
-                !isDistanceWithEntity() && !currentEntity.isColliding;
-    }
-
-    /**
-     * Comprueba si hay distancia con la entidad.
-     * <p>
-     * <h3>¿Para que hace esto?</h3>
-     * Cuando sigue (siempre colisionando) a la entidad pero en algun momento la deja de seguir y esta se mantiene en la
-     * misma direccion, la velocidad va a seguir siendo la misma a la de la entidad. Entonces para solucionar ese
-     * problema se comprueba la distancia, y si hay distancia entre el Player y la entidad, vuelve a la velocidad por
-     * defecto.
-     *
-     * @return true si hay distancia o false.
-     */
-    private boolean isDistanceWithEntity() {
-        switch (currentEntity.direction) {
-            case DOWN -> {
-                if (y + hitbox.y + hitbox.height + currentEntity.speed < currentEntity.y + currentEntity.hitbox.y)
-                    return true;
-            }
-            case UP -> {
-                if (y + hitbox.y - currentEntity.speed > currentEntity.y + currentEntity.hitbox.y + currentEntity.hitbox.height)
-                    return true;
-            }
-            case LEFT -> {
-                if (x + hitbox.x - currentEntity.speed > currentEntity.x + currentEntity.hitbox.x + currentEntity.hitbox.width)
-                    return true;
-            }
-            case RIGHT -> {
-                if (x + hitbox.x + hitbox.width + currentEntity.speed < currentEntity.x + currentEntity.hitbox.x)
-                    return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Une el Player a la entidad.
-     * <p>
-     * Iguala la velocidad de la entidad a la del Player y dependiendo de la direccion, suma o resta un pixel. Esto
-     * ultimo se hace para poder hablar con el Npc si este esta en movimiento.
-     */
-    private void unite() {
-        speed = currentEntity.speed;
-        united = true;
-        if (!(currentEntity instanceof BigRock)) {
-            switch (direction) {
-                case DOWN -> y++;
-                case UP -> y--;
-                case LEFT -> x--;
-                case RIGHT -> x++;
-            }
-        }
-    }
-
-    /**
-     * Desune el Player de la entidad.
-     * <p>
-     * Vuelve a la velocidad por defecto y verifica si estan unidos para "destrabar" ambas entidades restando o sumando
-     * un pixel.
-     */
-    private void disunite() {
-        speed = defaultSpeed;
-        isCollidingOnEntity = false;
-        if (united) {
-            switch (direction) {
-                case DOWN -> y--;
-                case UP -> y++;
-                case LEFT -> x++;
-                case RIGHT -> x--;
-            }
-            united = false;
-        }
-    }
-
-    private boolean checkKeys() {
-        return checkMovementKeys() || checkAccionKeys();
-    }
-
-    private boolean checkMovementKeys() {
-        return key.s || key.w || key.a || key.d;
-    }
-
-    private boolean checkAccionKeys() {
-        return key.enter || key.l;
-    }
-
-    private void resetAccionKeys() {
-        key.enter = false;
-        key.l = false;
-    }
-
     private void die() {
         game.state = GAME_OVER_STATE;
         game.playSound(sound_player_die);
@@ -658,15 +535,16 @@ public class Player extends Entity {
         movementRight2 = image;
     }
 
-    private void setItems() {
+    private void addItemsToInventory() {
         inventory.clear();
         inventory.add(weapon);
         inventory.add(shield);
         inventory.add(new PotionRed(game, world, 15));
-        inventory.add(new com.craivet.entity.item.Key(game, world, 2));
+        inventory.add(new Key(game, world, 2));
         inventory.add(new Lantern(game, world));
         inventory.add(new Pickaxe(game, world));
         inventory.add(new Axe(game, world));
+        inventory.add(new Tent(game, world));
     }
 
     private void drawRects(Graphics2D g2) {

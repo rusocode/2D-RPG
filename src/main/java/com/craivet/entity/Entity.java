@@ -161,11 +161,9 @@ public class Entity {
     }
 
     protected void setAction() {
-
     }
 
     protected void move(int direction) {
-
     }
 
     public void setLoot(Entity loot) {
@@ -178,7 +176,6 @@ public class Entity {
     }
 
     protected void interact() {
-
     }
 
     protected boolean use(Entity entity) {
@@ -454,7 +451,7 @@ public class Entity {
      *
      * @param direction direccion de la entidad.
      */
-    private void updatePosition(int direction) {
+    protected void updatePosition(int direction) {
         switch (direction) {
             case DOWN -> y += speed;
             case UP -> y -= speed;
@@ -665,10 +662,10 @@ public class Entity {
     }
 
     /**
-     * Obtiene el item.
+     * Obtiene un nuevo item.
      *
      * @param name nombre del item.
-     * @return el item.
+     * @return un nuevo item.
      */
     public Item getItem(String name) {
         Item item = null;

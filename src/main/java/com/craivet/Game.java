@@ -4,7 +4,7 @@ import com.craivet.ai.AStar;
 import com.craivet.io.Config;
 import com.craivet.io.GameFile;
 import com.craivet.entity.Entity;
-import com.craivet.input.Key;
+import com.craivet.input.Keyboard;
 import com.craivet.physics.Collision;
 import com.craivet.physics.CollisionEvent;
 import com.craivet.states.GameState;
@@ -24,9 +24,7 @@ import static com.craivet.gfx.Assets.*;
 
 public class Game extends Canvas implements Runnable {
 
-    // TODO Estos objetos los creo aca o en el constructor?
-    // System
-    public Key key = new Key(this);
+    public Keyboard keyboard = new Keyboard(this);
     private final World world = new World(this);
     public Entity entity = new Entity(this, world);
     public UI ui = new UI(this, world);
@@ -53,7 +51,7 @@ public class Game extends Canvas implements Runnable {
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         setBackground(Color.black);
         setFocusable(true);
-        addKeyListener(key);
+        addKeyListener(keyboard);
     }
 
     /**
@@ -189,8 +187,8 @@ public class Game extends Canvas implements Runnable {
         return world;
     }
 
-    public Key getKey() {
-        return key;
+    public Keyboard getKeyboard() {
+        return keyboard;
     }
 
 }
