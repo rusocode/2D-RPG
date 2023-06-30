@@ -9,13 +9,13 @@ import java.io.*;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
-public final class GameFile {
+public class GameFile {
 
     private final Game game;
     private final World world;
     private final String saveFile = "save.dat";
 
-    public GameFile(final Game game, final World world) {
+    public GameFile(Game game, World world) {
         this.game = game;
         this.world = world;
     }

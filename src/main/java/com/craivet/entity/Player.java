@@ -63,21 +63,12 @@ public class Player extends Entity {
             resetAccionKeys();
             // Temporiza la animacion de movimiento solo cuando se presionan las teclas de movimiento
             if (checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
-        } else {
-            // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
-            timer.timeStopMovement(this, 20);
-        }
-        // Comprueba si puede lanzar un proyectil
+        } else
+            timer.timeStopMovement(this, 20);    // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
+
         checkShoot();
-
-        // Aplica el timer solo si el player es invencible
-        if (isInvincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-        if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
-        if (timer.attackCounter < INTERVAL_WEAPON) timer.attackCounter++;
-
-        if (HP > maxHP) HP = maxHP;
-        if (mana > maxMana) mana = maxMana;
-        if (HP <= 0) die();
+        checkTimers();
+        checkHP();
     }
 
     public void render(Graphics2D g2) {
@@ -171,7 +162,6 @@ public class Player extends Entity {
      * Comprueba si puede atacar. No puede atacar si interactua con un npc o bebe agua.
      */
     private void checkAttack() {
-        // Si presiono enter y el ataque no esta cancelado
         if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !shooting) {
             if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
             if (weapon.type != TYPE_SWORD) game.playSound(sound_swing_axe);
@@ -203,6 +193,18 @@ public class Player extends Entity {
         }
     }
 
+    private void checkTimers() {
+        if (isInvincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
+        if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
+        if (timer.attackCounter < INTERVAL_WEAPON) timer.attackCounter++;
+    }
+
+    private void checkHP() {
+        if (HP > maxHP) HP = maxHP;
+        if (mana > maxMana) mana = maxMana;
+        if (HP <= 0) die();
+    }
+
     /**
      * Recoge un item.
      *
@@ -220,11 +222,9 @@ public class Player extends Entity {
                 }
                 world.items[world.map][itemIndex] = null;
             }
-            if (key.enter) {
-                if (item.type == TYPE_OBSTACLE) {
-                    attackCanceled = true;
-                    item.interact();
-                }
+            if (key.enter && item.type == TYPE_OBSTACLE) {
+                attackCanceled = true;
+                item.interact();
             }
         }
     }
@@ -405,8 +405,7 @@ public class Player extends Entity {
      * @return true si se puede recoger el item o false.
      */
     public boolean canPickup(Entity item) {
-        // Evita la referencia al mismo item
-        Item newItem = /*game.generator.*/getItem(item.name);
+        Item newItem = getItem(item.name);
         if (item.stackable) {
             int itemIndex = searchItemInInventory(item.name);
             if (itemIndex != -1) {
@@ -483,11 +482,6 @@ public class Player extends Entity {
     private void checkDirectionSpeed() {
         if (checkSomeConditionsForUnion()) unite();
         else disunite();
-        // Desactiva el estado collisionOnEntity cuando ataca para mantener la velocidad normal (usarlo en caso aplicar en Mobs)
-        /* if (attacking && collisionOnEntity) {
-            speed = defaultSpeed;
-            collisionOnEntity = false;
-        } */
     }
 
     /**
@@ -611,13 +605,9 @@ public class Player extends Entity {
      */
     private BufferedImage getFrame(int direction, BufferedImage movement1, BufferedImage movement2, BufferedImage attack1, BufferedImage attack2) {
         BufferedImage frame;
-        // Si no esta atacando
         if (!isHitting) {
-            // Si colisiona con una entidad
             if (isCollidingOnEntity) {
-                // Utiliza el frame movement1 si movementNum es 1 o el frame movement2 en caso contrario
                 frame = movementNum == 1 ? movement1 : movement2;
-                // Si la entidad actual esta colisionando, entonces utiliza el frame movement1
                 if (currentEntity.isColliding) frame = movement1;
             } else frame = movementNum == 1 || isColliding ? movement1 : movement2;
         } else {
@@ -626,7 +616,6 @@ public class Player extends Entity {
                 case UP -> tempScreenY -= tile_size;
                 case LEFT -> tempScreenX -= tile_size;
             }
-            // Si esta atacando utiliza el frame attack1 si attackNum es 1 o el frame attack2 en caso contrario
             frame = attackNum == 1 ? attack1 : attack2;
         }
         return frame;
