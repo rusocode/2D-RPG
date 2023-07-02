@@ -29,6 +29,7 @@ public class PotionRed extends Item {
         name = item_name;
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_potion_red, 32, 32);
+
         value = 5;
         description = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;

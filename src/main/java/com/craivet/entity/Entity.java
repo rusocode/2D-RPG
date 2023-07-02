@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import com.craivet.Game;
 import com.craivet.entity.item.*;
 import com.craivet.entity.mob.Mob;
-import com.craivet.entity.projectile.Projectile;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
@@ -27,11 +26,12 @@ import static com.craivet.utils.Global.*;
  * TODO No tendria que ser una clase abstracta?
  */
 
-public class Entity {
+public class Entity extends Attributes {
 
     protected final Game game;
     protected final World world;
 
+    public Flags flags = new Flags();
     public Timer timer = new Timer();
     public ArrayList<Entity> inventory = new ArrayList<>();
     public Entity linkedEntity;
@@ -42,48 +42,6 @@ public class Entity {
     public String[][] dialogues = new String[20][20];
     public int dialogueSet, dialogueIndex;
     private int screenX, screenY, tempScreenX, tempScreenY;
-
-    // General attributes
-    // TODO Podria separar las estadisticas en una clase aparte
-    public int x, y;
-    public String name;
-    public int type = TYPE_MOB;
-    public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
-    public int direction = DOWN;
-    public int speed, defaultSpeed;
-    public int HP, maxHP; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
-    public int mana, maxMana;
-    public int ammo;
-    public int lvl, exp, nextLvlExp;
-    public int gold;
-    public int strength, dexterity;
-    public int attack, defense;
-    public int motion1, motion2; // Velocidad de movimiento de la espada
-    public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
-    public int hitboxDefaultX, hitboxDefaultY;
-    public Projectile projectile;
-    public Entity weapon, shield;
-    public Entity light; // linterna, antorcha, etc.
-
-    // Item attributes
-    public Entity loot;
-    public String description;
-    public int price;
-    public int attackValue, defenseValue, knockbackValue;
-    public int amount = 1;
-    public int lightRadius = 350;
-    public boolean solid, stackable;
-    public boolean opened, empty; // chest
-
-    // States
-    public boolean isHitting;
-    public boolean isAlive = true;
-    public boolean isColliding;
-    public boolean isCollidingOnEntity;
-    public boolean isDead;
-    public boolean isInvincible;
-    public boolean isKnockback;
-    public boolean isOnPath;
 
     // Frames
     public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -104,27 +62,27 @@ public class Entity {
 
     public void update() {
         // Si esta en knockback
-        if (isKnockback) {
+        if (flags.knockback) {
             // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y el Player
             checkCollision();
             // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion del atacante
-            if (!isColliding) updatePosition(knockbackDirection);
+            if (!flags.colliding) updatePosition(knockbackDirection);
             else stopKnockback(); // Si colisiona, detiene el knockback
             // Temporiza el knockback
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
-        } else if (isHitting) hit(); // Si esta atacando, entonces ataca
+        } else if (flags.hitting) hit(); // Si esta atacando, entonces ataca
         else {
             // Establece una accion (es importante que realize una accion antes de comprobar las colisiones)
             setAction();
             // Comprueba las colisiones
             checkCollision();
             // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion
-            if (!isColliding) updatePosition(direction);
+            if (!flags.colliding) updatePosition(direction);
         }
         // Temporiza la animacion de movimiento
         timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
         // Aplica el timer solo si la entidad es invencible
-        if (isInvincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
+        if (flags.invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
         if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
     }
 
@@ -144,12 +102,12 @@ public class Entity {
 
             // Si el mob tiene activada la barra de vida
             if (type == TYPE_MOB && hpBar) drawHpBar(g2);
-            if (isInvincible) {
+            if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
                 if (!(this instanceof Interactive)) Utils.changeAlpha(g2, 0.4f);
             }
-            if (isDead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
+            if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
             g2.drawImage(frame, tempScreenX, tempScreenY, null);
             g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
@@ -376,7 +334,7 @@ public class Entity {
         if (timer.attackAnimationCounter > motion2) {
             attackNum = 1;
             timer.attackAnimationCounter = 0;
-            isHitting = false;
+            flags.hitting = false;
         }
     }
 
@@ -388,12 +346,12 @@ public class Entity {
      */
     protected void hitPlayer(boolean contact, int attack) {
         // Si el mob hace contacto con el player que no es invencible
-        if (type == TYPE_MOB && contact && !world.player.isInvincible) {
+        if (type == TYPE_MOB && contact && !world.player.flags.invincible) {
             game.playSound(sound_receive_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.player.defense, 1);
             world.player.HP -= damage;
-            world.player.isInvincible = true;
+            world.player.flags.invincible = true;
         }
     }
 
@@ -425,7 +383,7 @@ public class Entity {
         // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
         if (targetInRage) {
             if (Utils.azar(rate) == 1) {
-                isHitting = true;
+                flags.hitting = true;
                 movementNum = 1;
                 timer.movementCounter = 0; // TODO O se referia al contador de ataque?
                 timer.projectileCounter = 0;
@@ -437,7 +395,7 @@ public class Entity {
      * Comprueba las colisiones.
      */
     public void checkCollision() {
-        isColliding = false;
+        flags.colliding = false;
         game.collision.checkTile(this);
         game.collision.checkItem(this);
         game.collision.checkEntity(this, world.npcs);
@@ -470,11 +428,11 @@ public class Entity {
     protected void setKnockback(Entity target, Entity attacker, int knockbackValue) {
         target.knockbackDirection = attacker.direction;
         target.speed += knockbackValue;
-        target.isKnockback = true;
+        target.flags.knockback = true;
     }
 
     private void stopKnockback() {
-        isKnockback = false;
+        flags.knockback = false;
         speed = defaultSpeed;
         timer.knockbackCounter = 0;
     }
@@ -487,7 +445,7 @@ public class Entity {
      * @param rate     la tasa que determina si sigue al objetivo.
      */
     protected void checkFollow(Entity target, int distance, int rate) {
-        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) isOnPath = true;
+        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) flags.onPath = true;
     }
 
     /**
@@ -497,7 +455,7 @@ public class Entity {
      * @param distance distancia en tiles.
      */
     protected void checkUnfollow(Entity target, int distance) {
-        if (getTileDistance(target) > distance) isOnPath = false;
+        if (getTileDistance(target) > distance) flags.onPath = false;
     }
 
     /**
@@ -538,22 +496,22 @@ public class Entity {
                 // up o left
                 direction = UP;
                 checkCollision();
-                if (isColliding) direction = LEFT;
+                if (flags.colliding) direction = LEFT;
             } else if (top > nextY && left < nextX) {
                 // up o right
                 direction = UP;
                 checkCollision();
-                if (isColliding) direction = RIGHT;
+                if (flags.colliding) direction = RIGHT;
             } else if (top < nextY && left > nextX) {
                 // down o left
                 direction = DOWN;
                 checkCollision();
-                if (isColliding) direction = LEFT;
+                if (flags.colliding) direction = LEFT;
             } else if (top < nextY && left < nextX) {
                 // down o right
                 direction = DOWN;
                 checkCollision();
-                if (isColliding) direction = RIGHT;
+                if (flags.colliding) direction = RIGHT;
             }
 
         }
@@ -650,7 +608,7 @@ public class Entity {
      */
     private BufferedImage getFrame(int direction, BufferedImage movement1, BufferedImage movement2, BufferedImage attack1, BufferedImage attack2) {
         BufferedImage frame;
-        if (!isHitting) frame = movementNum == 1 || isColliding ? movement1 : movement2;
+        if (!flags.hitting) frame = movementNum == 1 || flags.colliding ? movement1 : movement2;
         else {
             switch (direction) {
                 case UP -> tempScreenY -= tile_size;
@@ -659,34 +617,6 @@ public class Entity {
             frame = attackNum == 1 ? attack1 : attack2;
         }
         return frame;
-    }
-
-    /**
-     * Obtiene un nuevo item.
-     *
-     * @param name nombre del item.
-     * @return un nuevo item.
-     */
-    public Item getItem(String name) {
-        Item item = null;
-        switch (name) {
-            case Axe.item_name -> item = new Axe(game, world);
-            case Boots.item_name -> item = new Boots(game, world);
-            case Chest.item_name -> item = new Chest(game, world);
-            case Gold.item_name -> item = new Gold(game, world);
-            case Door.item_name -> item = new Door(game, world);
-            case DoorIron.item_name -> item = new DoorIron(game, world);
-            case Key.item_name -> item = new Key(game, world, 1);
-            case Lantern.item_name -> item = new Lantern(game, world);
-            case Pickaxe.item_name -> item = new Pickaxe(game, world);
-            case PotionRed.item_name -> item = new PotionRed(game, world, 1);
-            case ShieldBlue.item_name -> item = new ShieldBlue(game, world);
-            case ShieldWood.item_name -> item = new ShieldWood(game, world);
-            case Stone.item_name -> item = new Stone(game, world);
-            case SwordNormal.item_name -> item = new SwordNormal(game, world);
-            case Tent.item_name -> item = new Tent(game, world);
-        }
-        return item;
     }
 
     /**

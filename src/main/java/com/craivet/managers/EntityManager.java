@@ -35,9 +35,9 @@ public class EntityManager implements State {
                     /* Cuando muere el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
                      * genera la animacion de muerte y al finalizarla, establece alive en false para que no genere
                      * movimiento y elimine el objeto. */
-                    if (world.mobs[world.map][i].isAlive && !world.mobs[world.map][i].isDead)
+                    if (world.mobs[world.map][i].flags.alive && !world.mobs[world.map][i].flags.dead)
                         world.mobs[world.map][i].update();
-                    if (!world.mobs[world.map][i].isAlive) {
+                    if (!world.mobs[world.map][i].flags.alive) {
                         world.mobs[world.map][i].checkDrop();
                         world.mobs[world.map][i] = null;
                     }
@@ -45,14 +45,14 @@ public class EntityManager implements State {
             }
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] != null) {
-                    if (world.projectiles[world.map][i].isAlive) world.projectiles[world.map][i].update();
-                    if (!world.projectiles[world.map][i].isAlive) world.projectiles[world.map][i] = null;
+                    if (world.projectiles[world.map][i].flags.alive) world.projectiles[world.map][i].update();
+                    if (!world.projectiles[world.map][i].flags.alive) world.projectiles[world.map][i] = null;
                 }
             }
             for (int i = 0; i < world.particles.size(); i++) {
                 if (world.particles.get(i) != null) {
-                    if (world.particles.get(i).isAlive) world.particles.get(i).update();
-                    if (!world.particles.get(i).isAlive) world.particles.remove(i);
+                    if (world.particles.get(i).flags.alive) world.particles.get(i).update();
+                    if (!world.particles.get(i).flags.alive) world.particles.remove(i);
                 }
             }
             for (int i = 0; i < world.interactives[1].length; i++)

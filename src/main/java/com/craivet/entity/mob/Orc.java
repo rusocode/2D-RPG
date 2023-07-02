@@ -42,7 +42,7 @@ public class Orc extends Mob {
     }
 
     public void setAction() {
-        if (isOnPath) {
+        if (flags.onPath) {
             checkUnfollow(world.player, 15);
             searchPath(getGoalRow(world.player), getGoalCol(world.player));
         } else {
@@ -50,13 +50,13 @@ public class Orc extends Mob {
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
 
-        if (!isHitting) checkAttackOrNot(30, tile_size * 2, tile_size);
+        if (!flags.hitting) checkAttackOrNot(30, tile_size * 2, tile_size);
 
     }
 
     public void damageReaction() {
         timer.directionCounter = 0;
-        isOnPath = true;
+        flags.onPath = true;
     }
 
     /**

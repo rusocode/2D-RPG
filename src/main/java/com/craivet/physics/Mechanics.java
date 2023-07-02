@@ -39,8 +39,8 @@ public class Mechanics {
      */
     private boolean checkSomeConditionsForUnion(Entity currentEntity) {
         return currentEntity != null && currentEntity instanceof Npc &&
-                entity.isCollidingOnEntity && entity.direction == currentEntity.direction &&
-                !isDistanceWithEntity(currentEntity) && !currentEntity.isColliding;
+                entity.flags.collidingOnEntity && entity.direction == currentEntity.direction &&
+                !isDistanceWithEntity(currentEntity) && !currentEntity.flags.colliding;
     }
 
     /**
@@ -106,7 +106,7 @@ public class Mechanics {
      */
     private void disunite() {
         entity.speed = entity.defaultSpeed;
-        entity.isCollidingOnEntity = false;
+        entity.flags.collidingOnEntity = false;
         if (united) {
             switch (entity.direction) {
                 case DOWN -> entity.y--;

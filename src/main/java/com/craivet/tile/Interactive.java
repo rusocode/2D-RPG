@@ -15,7 +15,7 @@ public class Interactive extends Entity {
     }
 
     public void update() {
-        if (isInvincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE_INTERACTIVE);
+        if (flags.invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE_INTERACTIVE);
     }
 
     /**

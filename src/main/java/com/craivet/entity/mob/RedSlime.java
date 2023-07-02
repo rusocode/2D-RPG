@@ -2,7 +2,6 @@ package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
-import com.craivet.entity.Entity;
 import com.craivet.entity.item.Gold;
 import com.craivet.entity.projectile.StickyBall;
 import com.craivet.utils.Utils;
@@ -41,7 +40,7 @@ public class RedSlime extends Mob {
     }
 
     public void setAction() {
-        if (isOnPath) {
+        if (flags.onPath) {
             checkUnfollow(world.player, 17);
             searchPath(getGoalRow(world.player), getGoalCol(world.player));
             checkShoot();
@@ -53,7 +52,7 @@ public class RedSlime extends Mob {
 
     public void damageReaction() {
         timer.directionCounter = 0;
-        isOnPath = true;
+        flags.onPath = true;
     }
 
     public void checkDrop() {
@@ -61,7 +60,7 @@ public class RedSlime extends Mob {
     }
 
     private void checkShoot() {
-        if (Utils.azar(100) == 1 && !projectile.isAlive && timer.projectileCounter == INTERVAL_PROJECTILE) {
+        if (Utils.azar(100) == 1 && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
             projectile.set(x + 8, y + 17, direction, true, this);
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {

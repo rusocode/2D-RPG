@@ -55,7 +55,7 @@ public class Timer {
      */
     public void timeInvincible(Entity entity, final int interval) {
         if (++invincibleCounter >= interval) {
-            entity.isInvincible = false;
+            entity.flags.invincible = false;
             invincibleCounter = 0;
         }
     }
@@ -87,7 +87,7 @@ public class Timer {
     public void timeDeadAnimation(Entity entity, final int interval, Graphics2D g2) {
         int alpha = (++deadCounter / interval) % 2 == 0 ? 0 : 1;
         Utils.changeAlpha(g2, alpha);
-        if (deadCounter > interval * 8) entity.isAlive = false;
+        if (deadCounter > interval * 8) entity.flags.alive = false;
     }
 
     /**
@@ -104,7 +104,7 @@ public class Timer {
 
     public void timerKnockback(Entity entity, final int interval) {
         if (++knockbackCounter >= interval) {
-            entity.isKnockback = false;
+            entity.flags.knockback = false;
             entity.speed = entity.defaultSpeed;
             knockbackCounter = 0;
         }

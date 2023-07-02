@@ -27,7 +27,7 @@ public class Projectile extends Entity {
         this.x = worldX;
         this.y = worldY;
         this.direction = direction;
-        this.isAlive = alive;
+        flags.alive = alive;
         this.entity = entity;
         this.HP = this.maxHP; // Resetea la vida al valor maximo cada vez que lanza un proyectil
     }
@@ -46,28 +46,28 @@ public class Projectile extends Entity {
              * se vuelva a dibujar el proyectil, este se va a mantener en el frame de movimiento 1 ya que en el operador
              * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
              * movimiento 2. La siguiente linea soluciona este problema. */
-            isColliding = false;
-            if (mobIndex != -1 && !world.mobs[world.map][mobIndex].isInvincible) {
+            flags.colliding = false;
+            if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible) {
                 world.player.hitMob(mobIndex, this, knockbackValue, attack);
                 // En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
                 generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
-                isAlive = false;
+                flags.alive = false;
             }
         }
 
         // Si el mob lanza un proyectil
         if (!(entity instanceof Player)) {
             boolean contact = game.collision.checkPlayer(this);
-            if (contact && !world.player.isInvincible) {
+            if (contact && !world.player.flags.invincible) {
                 hitPlayer(true, attack);
                 generateParticle(entity.projectile, world.player);
-                isAlive = false;
+                flags.alive = false;
             }
         }
 
-        if (HP-- <= 0) isAlive = false;
+        if (HP-- <= 0) flags.alive = false;
 
-        if (isAlive) {
+        if (flags.alive) {
             switch (direction) {
                 case DOWN -> y += speed;
                 case UP -> y -= speed;

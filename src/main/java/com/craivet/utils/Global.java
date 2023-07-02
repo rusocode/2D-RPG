@@ -1,12 +1,5 @@
 package com.craivet.utils;
 
-/**
- * TODO Y si aplico enums?
- *
- * <br><br>
- * <a href="https://github.com/iluwatar/java-design-patterns/tree/master/singleton">...</a>
- */
-
 public final class Global {
 
     private Global() {

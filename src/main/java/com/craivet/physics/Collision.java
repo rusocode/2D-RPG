@@ -42,32 +42,32 @@ public class Collision {
         int direction = entity.direction;
         /* Obtiene la direccion del atacante si la entidad es retrocedida para evitar que la verificacion de la colision
          * se vuelva inexacta. */
-        if (entity.isKnockback) direction = entity.knockbackDirection;
+        if (entity.flags.knockback) direction = entity.knockbackDirection;
 
         switch (direction) {
             case DOWN -> {
                 entityBottomRow = (entityBottomWorldY + entity.speed) / tile_size;
                 tile1 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
                 tile2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
-                if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.isColliding = true;
+                if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.flags.colliding = true;
             }
             case UP -> {
                 entityTopRow = (entityTopWorldY - entity.speed) / tile_size;
                 tile1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
                 tile2 = world.tileIndex[world.map][entityTopRow][entityRightCol];
-                if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.isColliding = true;
+                if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.flags.colliding = true;
             }
             case LEFT -> {
                 entityLeftCol = (entityLeftWorldX - entity.speed) / tile_size;
                 tile1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
                 tile2 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
-                if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.isColliding = true;
+                if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.flags.colliding = true;
             }
             case RIGHT -> {
                 entityRightCol = (entityRightWorldX + entity.speed) / tile_size;
                 tile1 = world.tileIndex[world.map][entityTopRow][entityRightCol];
                 tile2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
-                if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.isColliding = true;
+                if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.flags.colliding = true;
             }
         }
 
@@ -90,7 +90,7 @@ public class Collision {
                 world.items[world.map][i].hitbox.y += world.items[world.map][i].y;
 
                 int direction = entity.direction;
-                if (entity.isKnockback) direction = entity.knockbackDirection;
+                if (entity.flags.knockback) direction = entity.knockbackDirection;
 
                 switch (direction) {
                     case DOWN -> entity.hitbox.y += entity.speed;
@@ -100,7 +100,7 @@ public class Collision {
                 }
 
                 if (entity.hitbox.intersects(world.items[world.map][i].hitbox)) {
-                    if (world.items[world.map][i].solid) entity.isColliding = true;
+                    if (world.items[world.map][i].solid) entity.flags.colliding = true;
                     if (entity instanceof Player) index = i;
                 }
 
@@ -126,7 +126,7 @@ public class Collision {
         // Direccion temporal de la entidad
         int direction = entity.direction;
         // Obtiene la direccion del atacante si la entidad es retrocedida
-        if (entity.isKnockback) direction = entity.knockbackDirection;
+        if (entity.flags.knockback) direction = entity.knockbackDirection;
         int speed = entity.speed;
 
         for (int i = 0; i < otherEntity[1].length; i++) {
@@ -146,8 +146,8 @@ public class Collision {
 
                 if (entity.hitbox.intersects(otherEntity[world.map][i].hitbox)) {
                     if (otherEntity[world.map][i] != entity) { // Evita la colision en si misma
-                        entity.isColliding = true;
-                        entity.isCollidingOnEntity = true;
+                        entity.flags.colliding = true;
+                        entity.flags.collidingOnEntity = true;
                         index = i;
                     }
                 }
@@ -184,7 +184,7 @@ public class Collision {
         }
 
         if (entity.hitbox.intersects(world.player.hitbox)) {
-            entity.isColliding = true;
+            entity.flags.colliding = true;
             contact = true;
         }
 

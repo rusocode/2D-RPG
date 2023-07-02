@@ -45,7 +45,7 @@ public class Slime extends Mob {
 
     public void setAction() {
         // Si es agresivo
-        if (isOnPath) {
+        if (flags.onPath) {
             checkUnfollow(world.player, 15);
             searchPath(getGoalRow(world.player), getGoalCol(world.player));
             // checkShoot();
@@ -57,7 +57,7 @@ public class Slime extends Mob {
 
     public void damageReaction() {
         timer.directionCounter = 0;
-        isOnPath = true;
+        flags.onPath = true;
     }
 
     public void checkDrop() {
@@ -65,7 +65,7 @@ public class Slime extends Mob {
     }
 
     private void checkShoot() {
-        if (Utils.azar(100) == 1 && !projectile.isAlive && timer.projectileCounter == INTERVAL_PROJECTILE) {
+        if (Utils.azar(100) == 1 && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
             projectile.set(x + 8, y + 17, direction, true, this);
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {

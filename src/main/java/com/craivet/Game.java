@@ -1,9 +1,9 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
+import com.craivet.entity.item.ItemGenerator;
 import com.craivet.io.Config;
 import com.craivet.io.GameFile;
-import com.craivet.entity.Entity;
 import com.craivet.input.Keyboard;
 import com.craivet.physics.Collision;
 import com.craivet.physics.CollisionEvent;
@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable {
 
     public Keyboard keyboard = new Keyboard(this);
     private final World world = new World(this);
-    public Entity entity = new Entity(this, world);
+    public ItemGenerator generator = new ItemGenerator(this, world);
     public UI ui = new UI(this, world);
     public Minimap minimap = new Minimap(world);
     public GameFile file = new GameFile(this, world);
