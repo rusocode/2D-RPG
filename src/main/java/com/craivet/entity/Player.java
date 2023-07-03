@@ -434,7 +434,7 @@ public class Player extends Entity {
      */
     public void checkCollision() {
         flags.colliding = false;
-        game.collision.checkTile(this);
+        // game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.npcs));
         hitPlayer(game.collision.checkEntity(this, world.mobs));

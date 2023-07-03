@@ -57,6 +57,8 @@ public class Entity extends Attributes {
     public Entity(Game game, World world, int x, int y) {
         this.game = game;
         this.world = world;
+        // En caso de que se pase una posicion invalida
+        // if (x != -1 && y != -1) { }
         this.x = x * tile_size;
         this.y = y * tile_size;
     }
