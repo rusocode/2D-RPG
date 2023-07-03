@@ -134,7 +134,7 @@ public class CollisionEvent {
         if (game.keyboard.enter) {
             entity.startDialogue(DIALOGUE_STATE, entity, 1);
             world.player.HP = world.player.maxHP;
-            game.getWorld().createMOBs();
+            game.world.createMOBs();
         }
     }
 

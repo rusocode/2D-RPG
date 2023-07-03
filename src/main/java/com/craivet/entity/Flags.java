@@ -1,10 +1,13 @@
 package com.craivet.entity;
 
 /**
- * Flags de la entidad.
+ * Las "flags" son variables o bits individuales utilizados como indicadores booleanos para representar y controlar el
+ * estado o las condiciones especificas dentro del juego.
+ *
+ * @author Juan Debenedetti
  */
 
-public class Flags {
+public final class Flags {
 
     public boolean hitting;
     public boolean alive = true;

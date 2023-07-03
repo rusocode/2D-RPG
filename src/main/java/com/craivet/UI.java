@@ -687,7 +687,7 @@ public class UI {
                 subState = 0;
                 game.state = MAIN_STATE;
                 game.keyboard.t = false;
-                game.resetGame(true);
+                game.reset(true);
             }
         }
 

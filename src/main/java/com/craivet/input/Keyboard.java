@@ -131,13 +131,13 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_P) game.state = PAUSE_STATE;
         if (code == KeyEvent.VK_C) game.state = CHARACTER_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;
-        if (code == KeyEvent.VK_M) game.minimap.miniMapOn = !game.minimap.miniMapOn;
+        if (code == KeyEvent.VK_M) game.minimap.minimapOn = !game.minimap.minimapOn;
         /* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
          * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
         if (code == KeyEvent.VK_R) {
-            switch (game.getWorld().map) {
-                case 0 -> game.getWorld().loadMap("maps/nix.txt", NIX, "Nix");
-                case 1 -> game.getWorld().loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
+            switch (game.world.map) {
+                case 0 -> game.world.loadMap("maps/nix.txt", NIX, "Nix");
+                case 1 -> game.world.loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
             }
         }
     }
@@ -153,7 +153,7 @@ public class Keyboard extends KeyAdapter {
     private void characterState(int code) {
         if (code == KeyEvent.VK_C || code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
         playerInventory(code);
-        if (code == KeyEvent.VK_ENTER) game.getWorld().player.selectItem();
+        if (code == KeyEvent.VK_ENTER) game.world.player.selectItem();
     }
 
     private void optionState(int code) {
@@ -232,10 +232,10 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_ENTER) {
             if (game.ui.command == 0) {
                 game.state = PLAY_STATE;
-                game.resetGame(false);
+                game.reset(false);
             } else if (game.ui.command == 1) {
                 game.state = MAIN_STATE;
-                game.resetGame(true);
+                game.reset(true);
             }
         }
     }

@@ -26,6 +26,7 @@ import static com.craivet.utils.Global.*;
  * TODO No tendria que ser una clase abstracta?
  */
 
+// Se crean 87 entidades por ahora, por lo tanto se crean 87 objetos Timer y nose si es necesario crear un timer para cada entidad
 public class Entity extends Attributes {
 
     protected final Game game;
@@ -41,7 +42,7 @@ public class Entity extends Attributes {
     public int knockbackDirection;
     public String[][] dialogues = new String[20][20];
     public int dialogueSet, dialogueIndex;
-    private int screenX, screenY, tempScreenX, tempScreenY;
+    public int screenX, screenY, tempScreenX, tempScreenY; // TODO No tendrian que ser atributos del objeto Display?
 
     // Frames
     public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;

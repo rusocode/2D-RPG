@@ -25,7 +25,7 @@ import static com.craivet.gfx.Assets.*;
 public class Game extends Canvas implements Runnable {
 
     public Keyboard keyboard = new Keyboard(this);
-    private final World world = new World(this);
+    public World world = new World(this);
     public ItemGenerator generator = new ItemGenerator(this, world);
     public UI ui = new UI(this, world);
     public Minimap minimap = new Minimap(world);
@@ -147,25 +147,12 @@ public class Game extends Canvas implements Runnable {
         new Thread(this).start();
     }
 
-    public void playMusic(URL url) {
-        music.play(url);
-        music.loop();
-    }
-
-    public void stopMusic() {
-        music.stop();
-    }
-
-    public void playSound(URL url) {
-        sound.play(url);
-    }
-
     /**
      * Reinicia el juego.
      *
      * @param restart vuelve a establecer los valores por defecto del player.
      */
-    public void resetGame(boolean restart) {
+    public void reset(boolean restart) {
         stopMusic();
         ui.message.clear();
         world.player.setDefaultPos();
@@ -179,16 +166,21 @@ public class Game extends Canvas implements Runnable {
             world.createItems();
             world.createInteractiveTile();
             world.environment.lighting.resetDay();
-            minimap.miniMapOn = false;
+            minimap.minimapOn = false;
         }
     }
 
-    public World getWorld() {
-        return world;
+    public void playMusic(URL url) {
+        music.play(url);
+        music.loop();
     }
 
-    public Keyboard getKeyboard() {
-        return keyboard;
+    public void stopMusic() {
+        music.stop();
+    }
+
+    public void playSound(URL url) {
+        sound.play(url);
     }
 
 }

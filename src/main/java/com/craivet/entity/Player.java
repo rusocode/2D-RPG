@@ -16,27 +16,22 @@ import com.craivet.utils.Utils;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
-/**
- * El player permanece fijo en el centro de la pantalla dando la sensacion de movimiento.
- */
-
 public class Player extends Entity {
 
     private final Mechanics mechanics;
-    private final Keyboard key;
-    public int screenX, screenY;
-    private int tempScreenX, tempScreenY;
-    public boolean attackCanceled, shooting, lightUpdate;
+    private final Keyboard keyboard;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity currentEntity;
+
+    public boolean attackCanceled, shooting, lightUpdate;
 
     public Player(Game game, World world) {
         super(game, world);
         centerOnScreen();
         setDefaultPos();
         setDefaultValues();
-        key = game.getKeyboard();
+        keyboard = game.keyboard;
         mechanics = new Mechanics(this);
     }
 
@@ -44,24 +39,15 @@ public class Player extends Entity {
      * Es muy importante el orden de los metodos.
      */
     public void update() {
-        // Si esta golpeando, entonces golpea
         if (flags.hitting) hit();
-        // Comprueba las teclas presionadas de movimiento y accion
-        if (key.checkKeys()) {
-            // Obtiene la direccion dependiendo de la tecla presionada de movimiento (w, a, s, d)
+        if (keyboard.checkKeys()) {
             getDirection();
-            // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y eventos
             checkCollision();
-            // Si no colisiona y si no se presionaron las teclas de accion, entonces actualiza la posicion dependiendo de la direccion
-            if (!flags.colliding && !key.checkAccionKeys()) updatePosition(direction);
-            // Comprueba la velocidad de la direccion en caso de que se mueva en la misma direccion que la entidad
+            if (!flags.colliding && !keyboard.checkAccionKeys()) updatePosition(direction);
             mechanics.checkDirectionSpeed(currentEntity);
-            // Comrpueba si puede atacar
             checkAttack();
-            // Resetea las teclas de accion
-            key.resetAccionKeys();
-            // Temporiza la animacion de movimiento solo cuando se presionan las teclas de movimiento
-            if (key.checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+            keyboard.resetAccionKeys();
+            if (keyboard.checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
         } else
             timer.timeStopMovement(this, 20); // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
 
@@ -161,7 +147,7 @@ public class Player extends Entity {
      * Comprueba si puede atacar. No puede atacar si interactua con un npc o bebe agua.
      */
     private void checkAttack() {
-        if (key.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !shooting) {
+        if (keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !shooting) {
             if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
             if (weapon.type != TYPE_SWORD) game.playSound(sound_swing_axe);
             flags.hitting = true;
@@ -176,7 +162,7 @@ public class Player extends Entity {
      * Comprueba si puede lanzar un proyectil.
      */
     private void checkShoot() {
-        if (key.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+        if (keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             shooting = true;
             game.playSound(sound_burning);
             projectile.set(x, y, direction, true, this);
@@ -212,7 +198,7 @@ public class Player extends Entity {
     private void pickup(int itemIndex) {
         if (itemIndex != -1) {
             Entity item = world.items[world.map][itemIndex];
-            if (key.l && item.type != TYPE_OBSTACLE) {
+            if (keyboard.l && item.type != TYPE_OBSTACLE) {
                 if (item.type == TYPE_PICKUP_ONLY) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_pickup);
                 else {
@@ -221,7 +207,7 @@ public class Player extends Entity {
                 }
                 world.items[world.map][itemIndex] = null;
             }
-            if (key.enter && item.type == TYPE_OBSTACLE) {
+            if (keyboard.enter && item.type == TYPE_OBSTACLE) {
                 attackCanceled = true;
                 item.interact();
             }
@@ -236,7 +222,7 @@ public class Player extends Entity {
     private void interactNpc(int npcIndex) {
         if (npcIndex != -1) {
             currentEntity = world.npcs[world.map][npcIndex];
-            if (key.enter) {
+            if (keyboard.enter) {
                 attackCanceled = true;
                 world.npcs[world.map][npcIndex].speak();
             } else world.npcs[world.map][npcIndex].move(direction);
@@ -437,10 +423,10 @@ public class Player extends Entity {
      * Obtiene la direccion dependiendo de la tecla seleccionada.
      */
     private void getDirection() {
-        if (key.s) direction = DOWN;
-        else if (key.w) direction = UP;
-        else if (key.a) direction = LEFT;
-        else if (key.d) direction = RIGHT;
+        if (keyboard.s) direction = DOWN;
+        else if (keyboard.w) direction = UP;
+        else if (keyboard.a) direction = LEFT;
+        else if (keyboard.d) direction = RIGHT;
     }
 
     /**
