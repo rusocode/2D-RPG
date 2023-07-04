@@ -6,11 +6,17 @@ import com.craivet.entity.npc.Npc;
 
 import static com.craivet.utils.Global.*;
 
+/**
+ * Controla la velocidad del Player cuando colisiona con un Npc en movimiento en la misma direccion.
+ *
+ * @author Juan Debenedetti
+ */
+
 public class Mechanics {
 
     private final Entity entity;
 
-    // Se utiliza para indicar cuando esta "unido" a una entidad en movimiento
+    // Indica cuando esta "unido" a una entidad en movimiento
     private boolean united;
 
     public Mechanics(Entity entity) {

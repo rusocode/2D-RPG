@@ -9,14 +9,14 @@ import static com.craivet.gfx.Assets.*;
 
 public class Axe extends Item {
 
-    public static final String item_name = "Axe";
+    public static final String NAME = "Axe";
 
     /**
-     * Constructor que agregar Axe al World o al inventario utilizando varargs.
+     * Crea el objeto Axe al inventario o al World utilizando varargs para especificar la posicion.
      */
     public Axe(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = item_name;
+        name = NAME;
         type = TYPE_AXE;
         image = Utils.scaleImage(item_axe, tile_size, tile_size);
         attackbox.width = 30;

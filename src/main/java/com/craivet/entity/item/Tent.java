@@ -10,11 +10,11 @@ import static com.craivet.utils.Global.*;
 
 public class Tent extends Item {
 
-    public static final String item_name = "Tent";
+    public static final String NAME = "Tent";
 
     public Tent(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = item_name;
+        name = NAME;
         type = TYPE_CONSUMABLE;
         image = Utils.scaleImage(item_tent, tile_size, tile_size);
         description = "[" + name + "]\nYou can sleep until\nnext morning.";

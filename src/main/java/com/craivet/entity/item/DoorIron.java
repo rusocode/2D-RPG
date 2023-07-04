@@ -9,11 +9,11 @@ import static com.craivet.utils.Global.*;
 
 public class DoorIron extends Item {
 
-    public static final String item_name = "Iron Door";
+    public static final String NAME = "Iron Door";
 
     public DoorIron(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = item_name;
+        name = NAME;
         type = TYPE_OBSTACLE;
         image = Utils.scaleImage(item_door_iron, tile_size, tile_size);
         solid = true;

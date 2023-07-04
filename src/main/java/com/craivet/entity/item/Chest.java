@@ -10,11 +10,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class Chest extends Item {
 
-    public static final String item_name = "Chest";
+    public static final String NAME = "Chest";
 
     public Chest(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = item_name;
+        name = NAME;
         type = TYPE_OBSTACLE;
         image = Utils.scaleImage(item_chest_closed, tile_size, tile_size);
         image2 = Utils.scaleImage(item_chest_opened, tile_size, tile_size);

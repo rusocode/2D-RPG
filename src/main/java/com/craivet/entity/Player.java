@@ -18,13 +18,13 @@ import static com.craivet.gfx.Assets.*;
 
 public class Player extends Entity {
 
-    private final Mechanics mechanics;
     private final Keyboard keyboard;
+    private final Mechanics mechanics;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity currentEntity;
 
-    public boolean attackCanceled, shooting, lightUpdate;
+    public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
         super(game, world);
@@ -147,14 +147,14 @@ public class Player extends Entity {
      * Comprueba si puede atacar. No puede atacar si interactua con un npc o bebe agua.
      */
     private void checkAttack() {
-        if (keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !shooting) {
+        if (keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting) {
             if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
             if (weapon.type != TYPE_SWORD) game.playSound(sound_swing_axe);
             flags.hitting = true;
             timer.attackAnimationCounter = 0;
             timer.attackCounter = 0;
         }
-        shooting = false;
+        flags.shooting = false;
         attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
     }
 
@@ -163,7 +163,7 @@ public class Player extends Entity {
      */
     private void checkShoot() {
         if (keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
-            shooting = true;
+            flags.shooting = true;
             game.playSound(sound_burning);
             projectile.set(x, y, direction, true, this);
             // Comprueba vacante para agregar el proyectil

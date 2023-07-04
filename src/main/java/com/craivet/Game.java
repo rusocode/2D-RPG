@@ -2,6 +2,7 @@ package com.craivet;
 
 import com.craivet.ai.AStar;
 import com.craivet.entity.item.ItemGenerator;
+import com.craivet.gfx.Screen;
 import com.craivet.io.Config;
 import com.craivet.io.GameFile;
 import com.craivet.input.Keyboard;
@@ -52,6 +53,7 @@ public class Game extends Canvas implements Runnable {
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(keyboard);
+        new Screen(this);
     }
 
     /**

@@ -9,11 +9,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class ShieldBlue extends Item {
 
-	public static final String item_name = "Blue Shield";
+	public static final String NAME = "Blue Shield";
 
 	public ShieldBlue(Game game, World world, int... pos) {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-		name = item_name;
+		name = NAME;
 		type = TYPE_SHIELD;
 		image = Utils.scaleImage(item_shield_blue, tile_size, tile_size);
 		description = "[" + name + "]\nA shiny blue shield.";

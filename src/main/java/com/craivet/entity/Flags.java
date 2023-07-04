@@ -17,5 +17,6 @@ public final class Flags {
     public boolean invincible;
     public boolean knockback;
     public boolean onPath;
+    public boolean shooting;
 
 }

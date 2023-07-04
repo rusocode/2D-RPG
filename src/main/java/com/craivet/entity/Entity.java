@@ -17,8 +17,6 @@ import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * Crea los componentes para cada entidad.
- * <p>
  * TODO Los metodos para obtener las subimagenes deberian ir en otra clase
  * <p>
  * TODO Los metodos update() y render() se podrian implementar desde una interfaz
@@ -63,7 +61,6 @@ public class Entity extends Attributes {
     }
 
     public void update() {
-        // Si esta en knockback
         if (flags.knockback) {
             // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y el Player
             checkCollision();
@@ -76,14 +73,10 @@ public class Entity extends Attributes {
         else {
             // Establece una accion (es importante que realize una accion antes de comprobar las colisiones)
             setAction();
-            // Comprueba las colisiones
             checkCollision();
-            // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion
             if (!flags.colliding) updatePosition(direction);
         }
-        // Temporiza la animacion de movimiento
         timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
-        // Aplica el timer solo si la entidad es invencible
         if (flags.invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
         if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
     }

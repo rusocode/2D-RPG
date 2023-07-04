@@ -8,12 +8,9 @@ import java.awt.event.WindowEvent;
 
 import static com.craivet.utils.Global.*;
 
-public class Display extends JFrame {
+public class Screen extends JFrame {
 
-    private final Game game;
-
-    public Display(Game game) {
-        this.game = game;
+    public Screen(final Game game) {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(game);
@@ -36,10 +33,6 @@ public class Display extends JFrame {
             }
         });
         setVisible(true);
-    }
-
-    public void startGame() {
-        game.start();
     }
 
 }

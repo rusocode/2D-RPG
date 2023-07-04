@@ -113,7 +113,7 @@ public class BigRock extends Npc {
         // Si todas las rocas estan en las placas, la puerta de hierro se abre
         if (c == rocks.size()) {
             for (int i = 0; i < world.items[1].length; i++) {
-                if (world.items[world.map][i] != null && world.items[world.map][i].name.equals(DoorIron.item_name)) {
+                if (world.items[world.map][i] != null && world.items[world.map][i].name.equals(DoorIron.NAME)) {
                     world.items[world.map][i] = null;
                     game.playSound(sound_door_iron_opening);
                 }
