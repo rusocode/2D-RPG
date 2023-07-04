@@ -12,8 +12,8 @@ public class Pickaxe extends Item {
 
     public static final String item_name = "Pickaxe";
 
-    public Pickaxe(Game game, World world) {
-        super(game, world);
+    public Pickaxe(Game game, World world, int... pos) {
+        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = item_name;
         type = TYPE_PICKAXE;
         image = Utils.scaleImage(item_pickaxe, tile_size, tile_size);

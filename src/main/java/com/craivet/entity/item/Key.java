@@ -12,22 +12,13 @@ public class Key extends Item {
 
     public static final String item_name = "Key";
 
-    public Key(Game game, World world, int amount) {
-        super(game, world);
+    public Key(Game game, World world, int amount, int... pos) {
+        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = item_name;
         type = TYPE_CONSUMABLE;
-        image = Utils.scaleImage(item_key, tile_size, tile_size);
-        description = "[" + name + "]\nIt opens a door.";
-        price = 100;
-        this.amount = amount;
-        stackable = true;
-    }
-
-    public Key(Game game, World world, int x, int y, int amount) {
-        super(game, world, x , y);
-        name = item_name;
-        type = TYPE_CONSUMABLE;
-        image = Utils.scaleImage(item_key, 32, 32);
+        // Si hay posicion entonces la imagen es mas pequenia
+        if (pos.length > 0) image = Utils.scaleImage(item_key, 32, 32);
+        else image = Utils.scaleImage(item_key, tile_size, tile_size);
         description = "[" + name + "]\nIt opens a door.";
         price = 100;
         this.amount = amount;

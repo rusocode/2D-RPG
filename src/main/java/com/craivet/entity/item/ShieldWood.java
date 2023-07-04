@@ -11,8 +11,8 @@ public class ShieldWood extends Item {
 
 	public static final String item_name = "Wood Shield";
 
-	public ShieldWood(Game game, World world) {
-		super(game, world);
+	public ShieldWood(Game game, World world, int... pos) {
+		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 		name = item_name;
 		type = TYPE_SHIELD;
 		image = Utils.scaleImage(item_shield_wood, tile_size, tile_size);

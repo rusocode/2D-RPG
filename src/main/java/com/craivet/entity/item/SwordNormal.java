@@ -11,8 +11,8 @@ public class SwordNormal extends Item {
 
 	public static final String item_name = "Normal Sword";
 
-	public SwordNormal(Game game, World world) {
-		super(game, world);
+	public SwordNormal(Game game, World world, int... pos) {
+		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 		name = item_name;
 		type = TYPE_SWORD;
 		image = Utils.scaleImage(item_sword_normal, tile_size, tile_size);

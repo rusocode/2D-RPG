@@ -390,14 +390,17 @@ public class Player extends Entity {
      * @return true si se puede recoger el item o false.
      */
     public boolean canPickup(Entity item) {
-        Item newItem = game.generator.getItem(item.name);
+        Item newItem = game.itemGenerator.generate(item.name);
         if (item.stackable) {
             int itemIndex = searchItemInInventory(item.name);
+            // Si existe en el inventario, entonces solo aumenta la cantidad
             if (itemIndex != -1) {
                 inventory.get(itemIndex).amount += item.amount;
                 return true;
+                // Si no existe en el inventario, lo agrega como nuevo item con su respectiva cantidad
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
                 inventory.add(newItem);
+                inventory.get(searchItemInInventory(item.name)).amount += item.amount;
                 return true;
             }
         } else if (inventory.size() != MAX_INVENTORY_SIZE) {
@@ -523,7 +526,7 @@ public class Player extends Entity {
         inventory.clear();
         inventory.add(weapon);
         inventory.add(shield);
-        inventory.add(new PotionRed(game, world, 15));
+        inventory.add(new PotionRed(game, world, 1));
         inventory.add(new Lantern(game, world));
         inventory.add(new Pickaxe(game, world));
         inventory.add(new Axe(game, world));

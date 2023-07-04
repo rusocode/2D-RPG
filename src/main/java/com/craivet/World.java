@@ -184,8 +184,8 @@ public class World {
     public void createItems() {
         int i = 0;
         items[NIX][i++] = new Axe(game, this, 33, 7);
-        items[NIX][i++] = new PotionRed(game, this, 20, 21, 5);
-        items[NIX][i++] = new Key(game, this, 21, 21, 1);
+        items[NIX][i++] = new PotionRed(game, this, 5, 20, 21);
+        items[NIX][i++] = new Key(game, this, 1, 21, 21);
         items[NIX][i++] = new Door(game, this, 14, 28);
         items[NIX][i++] = new Door(game, this, 12, 12);
 

@@ -36,7 +36,7 @@ public class Attributes {
     public String description;
     public int price;
     public int attackValue, defenseValue, knockbackValue;
-    public int amount = 1;
+    public int amount; // 1?
     public int lightRadius = 350;
     public boolean solid, stackable;
     public boolean opened, empty; // chest

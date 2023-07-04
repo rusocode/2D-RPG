@@ -109,7 +109,7 @@ public class GameFile {
 
             world.player.inventory.clear();
             for (int i = 0; i < data.names.size(); i++) {
-                world.player.inventory.add(game.generator.getItem(data.names.get(i)));
+                world.player.inventory.add(game.itemGenerator.generate(data.names.get(i)));
                 world.player.inventory.get(i).amount = data.amounts.get(i);
             }
             world.player.weapon = world.player.inventory.get(data.currentWeaponSlot);
@@ -123,11 +123,11 @@ public class GameFile {
                 for (int i = 0; i < world.items[1].length; i++) {
                     if (data.itemName[map][i].equals("NA")) world.items[map][i] = null;
                     else {
-                        world.items[map][i] = game.generator.getItem(data.itemName[map][i]);
+                        world.items[map][i] = game.itemGenerator.generate(data.itemName[map][i]);
                         world.items[map][i].x = data.itemX[map][i];
                         world.items[map][i].y = data.itemY[map][i];
                         if (data.loot[map][i] != null && !data.empty[map][i])
-                            world.items[map][i].loot = game.generator.getItem(data.loot[map][i]);
+                            world.items[map][i].loot = game.itemGenerator.generate(data.loot[map][i]);
                         world.items[map][i].opened = data.opened[map][i];
                         world.items[map][i].empty = data.empty[map][i];
                         if (world.items[map][i].opened) world.items[map][i].image = world.items[map][i].image2;

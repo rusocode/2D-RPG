@@ -41,7 +41,7 @@ public class DestructibleWall extends Interactive {
     }
 
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_STONE) dropItem(this, new Stone(game, world));
+        if (Utils.azar(100) <= PROBABILIDAD_DROP_STONE) dropItem(this, new Stone(game, world, 1));
     }
 
     @Override

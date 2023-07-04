@@ -26,7 +26,7 @@ public class Game extends Canvas implements Runnable {
 
     public Keyboard keyboard = new Keyboard(this);
     public World world = new World(this);
-    public ItemGenerator generator = new ItemGenerator(this, world);
+    public ItemGenerator itemGenerator = new ItemGenerator(this, world);
     public UI ui = new UI(this, world);
     public Minimap minimap = new Minimap(world);
     public GameFile file = new GameFile(this, world);

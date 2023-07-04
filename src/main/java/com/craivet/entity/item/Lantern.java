@@ -11,18 +11,8 @@ public class Lantern extends Item {
 
     public static final String item_name = "Lantern";
 
-    public Lantern(Game game, World world) {
-        super(game, world);
-        name = item_name;
-        type = TYPE_LIGHT;
-        image = Utils.scaleImage(item_lantern, tile_size, tile_size);
-        description = "[" + name + "]\nIlluminaties your \nsurroundings.";
-        price = 200;
-        lightRadius = 350;
-    }
-
-    public Lantern(Game game, World world, int x, int y) {
-        super(game, world, x, y);
+    public Lantern(Game game, World world, int... pos) {
+        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = item_name;
         type = TYPE_LIGHT;
         image = Utils.scaleImage(item_lantern, tile_size, tile_size);
