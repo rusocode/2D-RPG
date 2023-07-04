@@ -57,6 +57,7 @@ public class World {
     public Player player;
     public List<Entity> itemsList = new ArrayList<>();
     public List<Entity> particles = new ArrayList<>();
+    // TODO No tendrian que declararse como HashMap?
     public Entity[][] items = new Item[MAX_MAP][20];
     public Entity[][] npcs = new Npc[MAX_MAP][10];
     public Entity[][] mobs = new Mob[MAX_MAP][20];

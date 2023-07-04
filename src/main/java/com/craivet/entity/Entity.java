@@ -57,8 +57,7 @@ public class Entity extends Attributes {
     public Entity(Game game, World world, int x, int y) {
         this.game = game;
         this.world = world;
-        // En caso de que se pase una posicion invalida
-        // if (x != -1 && y != -1) { }
+        // TODO Verificar posicion invalida (dentro de los limites del mapa y sobre tiles que no sean solidos, ni sobre otra entidad)
         this.x = x * tile_size;
         this.y = y * tile_size;
     }
@@ -113,6 +112,8 @@ public class Entity extends Attributes {
             if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
             g2.drawImage(frame, tempScreenX, tempScreenY, null);
+
+            // Dibuja las imagenes estaticas (items, tiles interactivos)
             g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
 
             // drawRects(g2, screenX, screenY);

@@ -30,9 +30,8 @@ public class Axe extends Item {
     /**
      * Constructor solo para agregar Axe al World.
      */
-    public Axe(Game game, World world, int... pos/* int x, int y */) {
-        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1 /* x, y */);
-        System.out.println(pos.length);
+    public Axe(Game game, World world, int... pos) {
+        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = item_name;
         type = TYPE_AXE;
         image = Utils.scaleImage(item_axe, tile_size, tile_size);

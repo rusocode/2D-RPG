@@ -89,7 +89,7 @@ public class Player extends Entity {
     public void setDefaultValues() {
         type = TYPE_PLAYER;
         direction = DOWN;
-        speed = defaultSpeed = 3;
+        speed = defaultSpeed = 8;
         HP = maxHP = 6;
         mana = maxMana = 4;
         ammo = 5;
@@ -524,7 +524,6 @@ public class Player extends Entity {
         inventory.add(weapon);
         inventory.add(shield);
         inventory.add(new PotionRed(game, world, 15));
-        inventory.add(new Key(game, world, 2));
         inventory.add(new Lantern(game, world));
         inventory.add(new Pickaxe(game, world));
         inventory.add(new Axe(game, world));
