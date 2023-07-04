@@ -7,12 +7,15 @@ package com.craivet.utils;
 
 public final class TimeUtils {
 
-	public static long nanoTime() {
-		return System.nanoTime();
-	}
+    private TimeUtils() {
+    }
 
-	public static long millis() {
-		return System.currentTimeMillis();
-	}
+    public static long nanoTime() {
+        return System.nanoTime();
+    }
+
+    public static long millis() {
+        return System.currentTimeMillis();
+    }
 
 }
