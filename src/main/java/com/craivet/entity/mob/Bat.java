@@ -48,7 +48,7 @@ public class Bat extends Mob {
      * Comprueba si dropeo un item.
      */
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(this, new Gold(game, world));
+        if (Utils.azar(100) <= PROBABILIDAD_DROP_GOLD) dropItem(this, new Gold(game, world));
     }
 
 }

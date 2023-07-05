@@ -12,7 +12,7 @@ public class Axe extends Item {
     public static final String NAME = "Axe";
 
     /**
-     * Crea el objeto Axe al inventario o al World utilizando varargs para especificar la posicion.
+     * Crea el objeto en el inventario o en el World (utiliza varargs para especificar la posicion).
      */
     public Axe(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);

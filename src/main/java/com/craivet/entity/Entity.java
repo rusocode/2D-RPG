@@ -40,7 +40,7 @@ public class Entity extends Attributes {
     public int knockbackDirection;
     public String[][] dialogues = new String[20][20];
     public int dialogueSet, dialogueIndex;
-    public int screenX, screenY, tempScreenX, tempScreenY; // TODO No tendrian que ser atributos del objeto Display?
+    public int screenX, screenY, tempScreenX, tempScreenY;
 
     // Frames
     public BufferedImage movementDown1, movementDown2, movementUp1, movementUp2, movementLeft1, movementLeft2, movementRight1, movementRight2;
@@ -62,23 +62,19 @@ public class Entity extends Attributes {
 
     public void update() {
         if (flags.knockback) {
-            // Comprueba las colisiones con los tiles, las entidades (items, npcs, mobs y tiles interactivos) y el Player
             checkCollision();
             // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion del atacante
             if (!flags.colliding) updatePosition(knockbackDirection);
             else stopKnockback(); // Si colisiona, detiene el knockback
-            // Temporiza el knockback
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
-        } else if (flags.hitting) hit(); // Si esta atacando, entonces ataca
+        } else if (flags.hitting) hit();
         else {
             // Establece una accion (es importante que realize una accion antes de comprobar las colisiones)
             setAction();
             checkCollision();
             if (!flags.colliding) updatePosition(direction);
         }
-        timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
-        if (flags.invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-        if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
+        checkTimers();
     }
 
     public void render(Graphics2D g2) {
@@ -207,39 +203,6 @@ public class Entity extends Attributes {
     }
 
     /**
-     * Detecta si el item especificado se encuentra en la posicion adyacente del player.
-     *
-     * @param user       player.
-     * @param target     lista de items.
-     * @param targetName nombre del item especificado.
-     * @return el indice del item especificado a la posicion adyacente del player o -1 si no existe.
-     */
-    protected int getDetected(Entity user, Entity[][] target, String targetName) {
-        // Verifica el item adyacente al usuario
-        int nextX = user.getLeft();
-        int nextY = user.getTop();
-
-        switch (user.direction) {
-            case DOWN -> nextY = user.getBottom() + user.speed;
-            case UP -> nextY = user.getTop() - user.speed;
-            case LEFT -> nextX = user.getLeft() - user.speed;
-            case RIGHT -> nextX = user.getRight() + user.speed;
-        }
-
-        int row = nextY / tile_size;
-        int col = nextX / tile_size;
-
-        // Si el item iterado es igual a la posicion adyacente del usuario
-        for (int i = 0; i < target[1].length; i++) {
-            if (target[world.map][i] != null)
-                if (target[world.map][i].getRow() == row && target[world.map][i].getCol() == col && target[world.map][i].name.equals(targetName))
-                    return i;
-        }
-
-        return -1;
-    }
-
-    /**
      * Golpea a la entidad si el frame de ataque colisiona con la hitbox del objetivo.
      * <p>
      * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
@@ -350,6 +313,12 @@ public class Entity extends Attributes {
             world.player.HP -= damage;
             world.player.flags.invincible = true;
         }
+    }
+
+    private void checkTimers() {
+        timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+        if (flags.invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
+        if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
     }
 
     /**
@@ -652,30 +621,6 @@ public class Entity extends Attributes {
 
     protected int getGoalCol(Entity target) {
         return (target.x + target.hitbox.x) / tile_size;
-    }
-
-    private int getTop() {
-        return y + hitbox.y;
-    }
-
-    private int getBottom() {
-        return y + hitbox.y + hitbox.height;
-    }
-
-    private int getLeft() {
-        return x + hitbox.x;
-    }
-
-    private int getRight() {
-        return x + hitbox.x + hitbox.width;
-    }
-
-    private int getCol() {
-        return (x + hitbox.x) / tile_size;
-    }
-
-    private int getRow() {
-        return (y + hitbox.y) / tile_size;
     }
 
     private void drawRects(Graphics2D g2, int screenX, int screenY) {

@@ -4,6 +4,9 @@ import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.World;
 
+import static com.craivet.utils.Global.*;
+import static com.craivet.utils.Global.tile_size;
+
 /**
  * Potion, Key y Stone son items stackables.
  * <p>
@@ -16,6 +19,39 @@ public class Item extends Entity {
 
     public Item(Game game, World world, int x, int y) {
         super(game, world, x, y);
+    }
+
+    /**
+     * Detecta si el item especificado se encuentra en la posicion adyacente a la entidad.
+     *
+     * @param entity entidad.
+     * @param items  lista de items.
+     * @param name   nombre del item.
+     * @return el indice del item especificado a la posicion adyacente de la entidad o -1 si no existe.
+     */
+    protected int getDetected(Entity entity, Entity[][] items, String name) {
+        // Verifica el item adyacente a la entidad
+        int nextX = entity.getLeftHitbox();
+        int nextY = entity.getTopHitbox();
+
+        switch (entity.direction) {
+            case DOWN -> nextY = entity.getBottomHitbox() + entity.speed;
+            case UP -> nextY = entity.getTopHitbox() - entity.speed;
+            case LEFT -> nextX = entity.getLeftHitbox() - entity.speed;
+            case RIGHT -> nextX = entity.getRightHitbox() + entity.speed;
+        }
+
+        int row = nextY / tile_size;
+        int col = nextX / tile_size;
+
+        // Si el item iterado es igual a la posicion adyacente de la entidad
+        for (int i = 0; i < items[1].length; i++) {
+            if (items[world.map][i] != null)
+                if (items[world.map][i].getRow() == row && items[world.map][i].getCol() == col && items[world.map][i].name.equals(name))
+                    return i;
+        }
+
+        return -1;
     }
 
 }

@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.World;
 
 /**
- * Crea nuevos objetos al comerciar con el Trader, evitando asi utilizar la misma referencia del item comprado.
+ * Crea nuevos items al comprar o recoger. Esto evita utilizar la misma referencia cuando se compra un item.
  */
 
 public class ItemGenerator {

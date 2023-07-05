@@ -60,7 +60,7 @@ public final class Global {
     public static final int SELECTION_SCREEN = 1;
 
     // Probabilidades %
-    public static final int PROBABILIDAD_DROP_ORO = 47;
+    public static final int PROBABILIDAD_DROP_GOLD = 47;
     public static final int PROBABILIDAD_DROP_STONE = 90;
 
     // Animation interval

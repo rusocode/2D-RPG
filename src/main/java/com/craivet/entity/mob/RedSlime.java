@@ -56,7 +56,7 @@ public class RedSlime extends Mob {
     }
 
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_ORO) dropItem(this, new Gold(game, world));
+        if (Utils.azar(100) <= PROBABILIDAD_DROP_GOLD) dropItem(this, new Gold(game, world));
     }
 
     private void checkShoot() {

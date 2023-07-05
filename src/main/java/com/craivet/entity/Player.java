@@ -53,7 +53,7 @@ public class Player extends Entity {
 
         checkShoot();
         checkTimers();
-        checkHP();
+        checkHpMana();
     }
 
     public void render(Graphics2D g2) {
@@ -144,7 +144,7 @@ public class Player extends Entity {
     }
 
     /**
-     * Comprueba si puede atacar. No puede atacar si interactua con un npc o bebe agua.
+     * Comprueba si puede atacar.
      */
     private void checkAttack() {
         if (keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting) {
@@ -184,10 +184,10 @@ public class Player extends Entity {
         if (timer.attackCounter < INTERVAL_WEAPON) timer.attackCounter++;
     }
 
-    private void checkHP() {
+    private void checkHpMana() {
+        if (HP <= 0) die();
         if (HP > maxHP) HP = maxHP;
         if (mana > maxMana) mana = maxMana;
-        if (HP <= 0) die();
     }
 
     /**
@@ -400,6 +400,7 @@ public class Player extends Entity {
                 // Si no existe en el inventario, lo agrega como nuevo item con su respectiva cantidad
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
                 inventory.add(newItem);
+                // Al agregar un nuevo item, no puede utilizar el indice del item anterior, tiene que buscar el indice a partir del nuevo item
                 inventory.get(searchItemInInventory(item.name)).amount += item.amount;
                 return true;
             }
