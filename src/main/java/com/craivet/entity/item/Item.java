@@ -7,10 +7,6 @@ import com.craivet.World;
 import static com.craivet.utils.Global.*;
 import static com.craivet.utils.Global.tile_size;
 
-/**
- * TODO Crear un texture atlas con todos los items.
- */
-
 public class Item extends Entity {
 
     protected int value;
@@ -20,7 +16,7 @@ public class Item extends Entity {
     }
 
     /**
-     * Usa el item en cuestion.
+     * Usa el item.
      *
      * @param entity entidad que utiliza el item.
      * @return true si puede usarlo o false.
