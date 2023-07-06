@@ -8,8 +8,6 @@ import static com.craivet.utils.Global.*;
 import static com.craivet.utils.Global.tile_size;
 
 /**
- * Potion, Key y Stone son items stackables.
- * <p>
  * TODO Crear un texture atlas con todos los items.
  */
 
@@ -22,6 +20,16 @@ public class Item extends Entity {
     }
 
     /**
+     * Usa el item en cuestion.
+     *
+     * @param entity entidad que utiliza el item.
+     * @return true si puede usarlo o false.
+     */
+    public boolean use(Entity entity) {
+        return false;
+    }
+
+    /**
      * Detecta si el item especificado se encuentra en la posicion adyacente a la entidad.
      *
      * @param entity entidad.
@@ -29,7 +37,7 @@ public class Item extends Entity {
      * @param name   nombre del item.
      * @return el indice del item especificado a la posicion adyacente de la entidad o -1 si no existe.
      */
-    protected int getDetected(Entity entity, Entity[][] items, String name) {
+    protected int detect(Entity entity, Entity[][] items, String name) {
         // Verifica el item adyacente a la entidad
         int nextX = entity.getLeftHitbox();
         int nextY = entity.getTopHitbox();

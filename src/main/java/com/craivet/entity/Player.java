@@ -16,6 +16,10 @@ import com.craivet.utils.Utils;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
+/**
+ * El player puede formar parte de un Mob.
+ */
+
 public class Player extends Entity {
 
     private final Keyboard keyboard;
@@ -197,7 +201,7 @@ public class Player extends Entity {
      */
     private void pickup(int itemIndex) {
         if (itemIndex != -1) {
-            Entity item = world.items[world.map][itemIndex];
+            Item item = (Item) world.items[world.map][itemIndex];
             if (keyboard.l && item.type != TYPE_OBSTACLE) {
                 if (item.type == TYPE_PICKUP_ONLY) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_pickup);
@@ -352,7 +356,7 @@ public class Player extends Entity {
     public void selectItem() {
         int itemIndex = game.ui.getItemIndexOnSlot(game.ui.playerSlotCol, game.ui.playerSlotRow);
         if (itemIndex < inventory.size()) {
-            Entity selectedItem = inventory.get(itemIndex);
+            Item selectedItem = (Item) inventory.get(itemIndex);
             if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordNormal) {
                 weapon = selectedItem;
                 attackbox = weapon.attackbox; // TODO Hace falta esto aca?

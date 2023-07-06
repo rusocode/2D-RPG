@@ -129,10 +129,6 @@ public class Entity extends Attributes {
     protected void interact() {
     }
 
-    protected boolean use(Entity entity) {
-        return false;
-    }
-
     public void checkDrop() {
     }
 

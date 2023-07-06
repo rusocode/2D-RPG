@@ -31,9 +31,10 @@ public class Key extends Item {
         hitboxDefaultY = hitbox.y;
     }
 
+    @Override
     public boolean use(Entity entity) {
         // Si detecta una puerta, entonces puede usar la llave
-        int itemIndex = getDetected(entity, world.items, "Door");
+        int itemIndex = detect(entity, world.items, Door.NAME);
         if (itemIndex != -1) {
             game.playSound(sound_door_opening);
             world.items[world.map][itemIndex] = null;

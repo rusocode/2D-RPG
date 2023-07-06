@@ -31,6 +31,7 @@ public class PotionRed extends Item {
         hitboxDefaultY = hitbox.y;
     }
 
+    @Override
     public boolean use(Entity entity) {
         game.playSound(sound_potion_red);
         game.ui.addMessage("+" + value + " hp");
