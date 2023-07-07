@@ -28,8 +28,6 @@ public class EntityManager implements State {
     public void update() {
         if (game.state == PLAY_STATE) {
             world.player.update();
-            for (int i = 0; i < world.npcs[1].length; i++)
-                if (world.npcs[world.map][i] != null) world.npcs[world.map][i].update();
             for (int i = 0; i < world.mobs[1].length; i++) {
                 if (world.mobs[world.map][i] != null) {
                     /* Cuando muere el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
@@ -80,8 +78,6 @@ public class EntityManager implements State {
                     else entities.add(world.items[world.map][i]);
                 }
             }
-            for (int i = 0; i < world.npcs[1].length; i++)
-                if (world.npcs[world.map][i] != null) entities.add(world.npcs[world.map][i]);
             for (int i = 0; i < world.mobs[1].length; i++)
                 if (world.mobs[world.map][i] != null) entities.add(world.mobs[world.map][i]);
             for (int i = 0; i < world.projectiles[1].length; i++)

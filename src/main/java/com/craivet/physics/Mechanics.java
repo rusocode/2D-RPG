@@ -1,8 +1,7 @@
 package com.craivet.physics;
 
 import com.craivet.entity.Entity;
-import com.craivet.entity.npc.BigRock;
-import com.craivet.entity.npc.Npc;
+import com.craivet.entity.mob.BigRock;
 
 import static com.craivet.utils.Global.*;
 
@@ -44,7 +43,7 @@ public class Mechanics {
      * @return true si se cumplen todas las condiciones especificadas o false.
      */
     private boolean checkSomeConditionsForUnion(Entity currentEntity) {
-        return currentEntity != null && currentEntity instanceof Npc &&
+        return currentEntity != null && currentEntity.type == TYPE_NPC &&
                 entity.flags.collidingOnEntity && entity.direction == currentEntity.direction &&
                 !isDistanceWithEntity(currentEntity) && !currentEntity.flags.colliding;
     }

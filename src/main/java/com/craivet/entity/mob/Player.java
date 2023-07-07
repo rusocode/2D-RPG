@@ -1,9 +1,10 @@
-package com.craivet.entity;
+package com.craivet.entity.mob;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.craivet.Game;
+import com.craivet.entity.Entity;
 import com.craivet.entity.item.*;
 import com.craivet.entity.mob.*;
 import com.craivet.entity.projectile.Fireball;
@@ -20,7 +21,7 @@ import static com.craivet.gfx.Assets.*;
  * El player puede formar parte de un Mob.
  */
 
-public class Player extends Entity {
+public class Player extends Mob {
 
     private final Keyboard keyboard;
     private final Mechanics mechanics;
@@ -31,7 +32,7 @@ public class Player extends Entity {
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
-        super(game, world);
+        super(game, world, 23, 21);
         centerOnScreen();
         setDefaultPos();
         setDefaultValues();
@@ -86,14 +87,14 @@ public class Player extends Entity {
         world.map = NIX;
         direction = DOWN;
         // TODO Se podria comprobar si la posicion es valida o no
-        x = 23 * tile_size;
-        y = 21 * tile_size;
+        // x = 23 * tile_size;
+        // y = 21 * tile_size;
     }
 
     public void setDefaultValues() {
         type = TYPE_PLAYER;
         direction = DOWN;
-        speed = defaultSpeed = 8;
+        speed = defaultSpeed = 3;
         HP = maxHP = 6;
         mana = maxMana = 4;
         ammo = 5;
@@ -225,11 +226,11 @@ public class Player extends Entity {
      */
     private void interactNpc(int npcIndex) {
         if (npcIndex != -1) {
-            currentEntity = world.npcs[world.map][npcIndex];
-            if (keyboard.enter) {
+            currentEntity = world.mobs[world.map][npcIndex];
+            if (keyboard.enter && currentEntity.type == TYPE_NPC) {
                 attackCanceled = true;
-                world.npcs[world.map][npcIndex].speak();
-            } else world.npcs[world.map][npcIndex].move(direction);
+                world.mobs[world.map][npcIndex].speak();
+            } else world.mobs[world.map][npcIndex].move(direction);
         }
     }
 
@@ -242,7 +243,7 @@ public class Player extends Entity {
         if (mobIndex >= 0) {
             currentEntity = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
-            if (!flags.invincible && !mob.flags.dead) {
+            if (!flags.invincible && !mob.flags.dead && mob.type != TYPE_NPC) {
                 game.playSound(sound_receive_damage);
                 int damage = Math.max(mob.attack - defense, 1);
                 HP -= damage;
@@ -263,7 +264,7 @@ public class Player extends Entity {
         if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
             currentEntity = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
-            if (!mob.flags.invincible) {
+            if (!mob.flags.invincible && mob.type != TYPE_NPC) {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
@@ -299,7 +300,7 @@ public class Player extends Entity {
      *
      * @param iTileIndex indice del tile interactivo.
      */
-    protected void hitInteractiveTile(int iTileIndex) {
+    public void hitInteractiveTile(int iTileIndex) {
         if (iTileIndex != -1) {
             currentEntity = world.interactives[world.map][iTileIndex];
             Interactive iTile = world.interactives[world.map][iTileIndex];
@@ -318,7 +319,7 @@ public class Player extends Entity {
         }
     }
 
-    protected void hitProjectile(int projectileIndex) {
+    public void hitProjectile(int projectileIndex) {
         if (projectileIndex != -1) {
             currentEntity = world.projectiles[world.map][projectileIndex];
             Entity projectile = world.projectiles[world.map][projectileIndex];
@@ -444,7 +445,7 @@ public class Player extends Entity {
         flags.colliding = false;
         // game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
-        interactNpc(game.collision.checkEntity(this, world.npcs));
+        interactNpc(game.collision.checkEntity(this, world.mobs));
         hitPlayer(game.collision.checkEntity(this, world.mobs));
         setCurrentInteractive(game.collision.checkEntity(this, world.interactives));
         // game.collider.checkEntity(this, world.interactives);

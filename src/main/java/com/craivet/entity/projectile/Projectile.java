@@ -2,7 +2,7 @@ package com.craivet.entity.projectile;
 
 import com.craivet.Game;
 import com.craivet.entity.Entity;
-import com.craivet.entity.Player;
+import com.craivet.entity.mob.Player;
 import com.craivet.World;
 
 import static com.craivet.utils.Global.*;
@@ -42,12 +42,12 @@ public class Projectile extends Entity {
         // Si el player lanza un proyectil
         if (entity instanceof Player) {
             int mobIndex = game.collision.checkEntity(this, world.mobs);
-            /* Cuando el proyectil colisiona con un mob, establece el estado collisionOn en true. Por lo tanto, cuando
+            /* Cuando el proyectil colisiona con un mob, establece el estado colliding en true. Por lo tanto, cuando
              * se vuelva a dibujar el proyectil, este se va a mantener en el frame de movimiento 1 ya que en el operador
              * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
              * movimiento 2. La siguiente linea soluciona este problema. */
             flags.colliding = false;
-            if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible) {
+            if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible && world.mobs[world.map][mobIndex].type != TYPE_NPC) {
                 world.player.hitMob(mobIndex, this, knockbackValue, attack);
                 // En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
                 generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);

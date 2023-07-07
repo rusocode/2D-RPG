@@ -1,33 +1,21 @@
 package com.craivet;
 
 import com.craivet.entity.Entity;
-import com.craivet.managers.EntityManager;
-import com.craivet.entity.Player;
 import com.craivet.entity.item.*;
-import com.craivet.entity.mob.Bat;
-import com.craivet.entity.mob.Mob;
-import com.craivet.entity.mob.Orc;
-import com.craivet.entity.mob.Slime;
-import com.craivet.entity.npc.BigRock;
-import com.craivet.entity.npc.Npc;
-import com.craivet.entity.npc.Oldman;
-import com.craivet.entity.npc.Trader;
+import com.craivet.entity.mob.*;
 import com.craivet.entity.projectile.Projectile;
-import com.craivet.managers.EnvironmentManager;
-import com.craivet.managers.TileManager;
+import com.craivet.managers.*;
 import com.craivet.tile.*;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-import static com.craivet.gfx.Assets.music_dungeon;
+import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
@@ -59,7 +47,6 @@ public class World {
     public List<Entity> particles = new ArrayList<>();
     // TODO No tendrian que declararse como HashMap?
     public Entity[][] items = new Item[MAX_MAP][20];
-    public Entity[][] npcs = new Npc[MAX_MAP][10];
     public Entity[][] mobs = new Mob[MAX_MAP][20];
     public Interactive[][] interactives = new Interactive[MAX_MAP][50];
     public Entity[][] projectiles = new Projectile[MAX_MAP][20];
@@ -165,7 +152,6 @@ public class World {
         }
         area = nextArea;
         createMOBs();
-        createNPCs();
     }
 
     /**
@@ -173,7 +159,6 @@ public class World {
      */
     public void createEntities() {
         createItems();
-        createNPCs();
         createMOBs();
         createInteractiveTile();
     }
@@ -217,38 +202,29 @@ public class World {
     }
 
     /**
-     * Crea los npcs.
-     */
-    public void createNPCs() {
-        int i = 0, j = 0, k = 0;
-
-        npcs[NIX][i++] = new Oldman(game, this, 23, 18);
-        npcs[NIX][i] = new BigRock(game, this, 26, 21);
-
-        npcs[NIX_INDOOR_01][j] = new Trader(game, this, 12, 7);
-
-        npcs[DUNGEON_01][k++] = new BigRock(game, this, 20, 25);
-        npcs[DUNGEON_01][k++] = new BigRock(game, this, 11, 18);
-        npcs[DUNGEON_01][k] = new BigRock(game, this, 23, 14);
-    }
-
-    /**
      * Crea los mobs.
      */
     public void createMOBs() {
-        int i = 0, j = 0;
-        // mobs[NIX][i++] = new RedSlime(game, this, 21, 23);
+        int i = 0, j = 0, k = 0;
+
+        mobs[NIX][i++] = new Oldman(game, this, 23, 18);
+        mobs[NIX][i++] = new BigRock(game, this, 26, 21);
         mobs[NIX][i++] = new Slime(game, this, 23, 41);
         mobs[NIX][i++] = new Slime(game, this, 24, 37);
         mobs[NIX][i++] = new Slime(game, this, 34, 42);
         mobs[NIX][i++] = new Slime(game, this, 38, 42);
         mobs[NIX][i++] = new Orc(game, this, 12, 33);
 
-        mobs[DUNGEON_01][j++] = new Bat(game, this, 34, 39);
-        mobs[DUNGEON_01][j++] = new Bat(game, this, 36, 25);
-        mobs[DUNGEON_01][j++] = new Bat(game, this, 39, 26);
-        mobs[DUNGEON_01][j++] = new Bat(game, this, 28, 11);
-        mobs[DUNGEON_01][j++] = new Bat(game, this, 10, 19);
+        mobs[NIX_INDOOR_01][j++] = new Trader(game, this, 12, 7);
+
+        mobs[DUNGEON_01][k++] = new BigRock(game, this, 20, 25);
+        mobs[DUNGEON_01][k++] = new BigRock(game, this, 11, 18);
+        mobs[DUNGEON_01][k++] = new BigRock(game, this, 23, 14);
+        mobs[DUNGEON_01][k++] = new Bat(game, this, 34, 39);
+        mobs[DUNGEON_01][k++] = new Bat(game, this, 36, 25);
+        mobs[DUNGEON_01][k++] = new Bat(game, this, 39, 26);
+        mobs[DUNGEON_01][k++] = new Bat(game, this, 28, 11);
+        mobs[DUNGEON_01][k++] = new Bat(game, this, 10, 19);
 
     }
 

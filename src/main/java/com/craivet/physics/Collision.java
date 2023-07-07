@@ -2,7 +2,7 @@ package com.craivet.physics;
 
 import com.craivet.World;
 import com.craivet.entity.Entity;
-import com.craivet.entity.Player;
+import com.craivet.entity.mob.Player;
 
 import static com.craivet.utils.Global.*;
 

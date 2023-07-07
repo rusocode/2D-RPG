@@ -1,4 +1,4 @@
-package com.craivet.entity.npc;
+package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
-public class BigRock extends Npc {
+public class BigRock extends Mob {
 
-    public static final String npc_name = "Big Rock";
+    public static final String NAME = "Big Rock";
 
     public BigRock(Game game, World world, int x, int y) {
         super(game, world, x, y);
@@ -23,7 +23,7 @@ public class BigRock extends Npc {
     }
 
     private void initDefaultValues() {
-        name = npc_name;
+        name = NAME;
         type = TYPE_NPC;
         image = Utils.scaleImage(entity_bigrock, tile_size, tile_size);
         speed = 2;
@@ -87,9 +87,9 @@ public class BigRock extends Npc {
         }
 
         // Agrega las rocas a la lista
-        for (int i = 0; i < world.npcs[1].length; i++) {
-            if (world.npcs[world.map][i] != null && world.npcs[world.map][i].name.equals(BigRock.npc_name))
-                rocks.add(world.npcs[world.map][i]);
+        for (int i = 0; i < world.mobs[1].length; i++) {
+            if (world.mobs[world.map][i] != null && world.mobs[world.map][i].name.equals(BigRock.NAME))
+                rocks.add(world.mobs[world.map][i]);
         }
 
         // Itera las placas y verifica la distancia con la roca

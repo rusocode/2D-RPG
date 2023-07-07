@@ -1,4 +1,4 @@
-package com.craivet.entity.npc;
+package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
@@ -6,7 +6,7 @@ import com.craivet.World;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
-public class Oldman extends Npc {
+public class Oldman extends Mob {
 
     public Oldman(Game game, World world, int x, int y) {
         super(game, world, x, y);

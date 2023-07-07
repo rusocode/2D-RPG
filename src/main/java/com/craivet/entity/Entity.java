@@ -114,19 +114,19 @@ public class Entity extends Attributes {
     protected void setAction() {
     }
 
-    protected void move(int direction) {
+    public void move(int direction) {
     }
 
     public void setLoot(Entity loot) {
     }
 
-    protected void damageReaction() {
+    public void damageReaction() {
     }
 
     public void speak() {
     }
 
-    protected void interact() {
+    public void interact() {
     }
 
     public void checkDrop() {
@@ -360,7 +360,7 @@ public class Entity extends Attributes {
         flags.colliding = false;
         game.collision.checkTile(this);
         game.collision.checkItem(this);
-        game.collision.checkEntity(this, world.npcs);
+        // game.collision.checkEntity(this, world.npcs);
         game.collision.checkEntity(this, world.mobs);
         game.collision.checkEntity(this, world.interactives);
         hitPlayer(game.collision.checkPlayer(this), attack);

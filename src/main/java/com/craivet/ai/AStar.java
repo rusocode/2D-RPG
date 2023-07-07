@@ -98,10 +98,10 @@ public class AStar {
                     }
                 }
 
-                for (int i = 0; i < world.npcs[1].length; i++) {
-                    if (world.npcs[world.map][i] != null) {
-                        int itRow = (world.npcs[world.map][i].y + world.npcs[world.map][i].hitbox.y) / tile_size;
-                        int itCol = (world.npcs[world.map][i].x + world.npcs[world.map][i].hitbox.x) / tile_size;
+                for (int i = 0; i < world.mobs[1].length; i++) {
+                    if (world.mobs[world.map][i] != null) {
+                        int itRow = (world.mobs[world.map][i].y + world.mobs[world.map][i].hitbox.y) / tile_size;
+                        int itCol = (world.mobs[world.map][i].x + world.mobs[world.map][i].hitbox.x) / tile_size;
                         node[itRow][itCol].solid = true;
                     }
                 }

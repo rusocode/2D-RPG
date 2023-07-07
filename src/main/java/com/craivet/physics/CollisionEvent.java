@@ -65,7 +65,7 @@ public class CollisionEvent {
         if (canTouchEvent) {
             if (checkCollision(NIX, 27, 16, RIGHT)) hurt();
             if (checkCollision(NIX, 23, 12, UP)) heal();
-            if (checkCollision(NIX_INDOOR_01, 12, 9, ANY)) speak(world.npcs[1][0]);
+            if (checkCollision(NIX_INDOOR_01, 12, 9, ANY)) speak(world.mobs[1][0]);
             if (checkCollision(NIX, 10, 39, ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
             if (checkCollision(NIX_INDOOR_01, 12, 13, ANY))
                 teleport(OUTSIDE, NIX, 10, 39); // De Nix Indoor 1 a Nix
