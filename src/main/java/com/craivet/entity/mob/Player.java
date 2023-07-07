@@ -4,22 +4,17 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.craivet.Game;
+import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.*;
-import com.craivet.entity.mob.*;
 import com.craivet.entity.projectile.Fireball;
 import com.craivet.input.Keyboard;
 import com.craivet.physics.Mechanics;
 import com.craivet.tile.Interactive;
-import com.craivet.World;
-import com.craivet.utils.Utils;
+import com.craivet.utils.*;
 
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
-
-/**
- * El player puede formar parte de un Mob.
- */
 
 public class Player extends Mob {
 
@@ -27,7 +22,7 @@ public class Player extends Mob {
     private final Mechanics mechanics;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
-    private Entity currentEntity;
+    private Entity entity;
 
     public boolean attackCanceled, lightUpdate;
 
@@ -49,7 +44,7 @@ public class Player extends Mob {
             getDirection();
             checkCollision();
             if (!flags.colliding && !keyboard.checkAccionKeys()) updatePosition(direction);
-            mechanics.checkDirectionSpeed(currentEntity);
+            mechanics.checkDirectionSpeed(entity);
             checkAttack();
             keyboard.resetAccionKeys();
             if (keyboard.checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
@@ -92,7 +87,7 @@ public class Player extends Mob {
     }
 
     public void setDefaultValues() {
-        type = TYPE_PLAYER;
+        type = Type.PLAYER;
         direction = DOWN;
         speed = defaultSpeed = 3;
         HP = maxHP = 6;
@@ -153,8 +148,8 @@ public class Player extends Mob {
      */
     private void checkAttack() {
         if (keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting) {
-            if (weapon.type == TYPE_SWORD) game.playSound(sound_swing_weapon);
-            if (weapon.type != TYPE_SWORD) game.playSound(sound_swing_axe);
+            if (weapon.type == Type.SWORD) game.playSound(sound_swing_weapon);
+            if (weapon.type != Type.SWORD) game.playSound(sound_swing_axe);
             flags.hitting = true;
             timer.attackAnimationCounter = 0;
             timer.attackCounter = 0;
@@ -203,8 +198,8 @@ public class Player extends Mob {
     private void pickup(int itemIndex) {
         if (itemIndex != -1) {
             Item item = (Item) world.items[world.map][itemIndex];
-            if (keyboard.l && item.type != TYPE_OBSTACLE) {
-                if (item.type == TYPE_PICKUP_ONLY) item.use(this);
+            if (keyboard.l && item.type != Type.OBSTACLE) {
+                if (item.type == Type.PICKUP) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_pickup);
                 else {
                     game.ui.addMessage("You cannot carry any more!");
@@ -212,7 +207,7 @@ public class Player extends Mob {
                 }
                 world.items[world.map][itemIndex] = null;
             }
-            if (keyboard.enter && item.type == TYPE_OBSTACLE) {
+            if (keyboard.enter && item.type == Type.OBSTACLE) {
                 attackCanceled = true;
                 item.interact();
             }
@@ -226,8 +221,8 @@ public class Player extends Mob {
      */
     private void interactNpc(int npcIndex) {
         if (npcIndex != -1) {
-            currentEntity = world.mobs[world.map][npcIndex];
-            if (keyboard.enter && currentEntity.type == TYPE_NPC) {
+            entity = world.mobs[world.map][npcIndex];
+            if (keyboard.enter && entity.type == Type.NPC) {
                 attackCanceled = true;
                 world.mobs[world.map][npcIndex].speak();
             } else world.mobs[world.map][npcIndex].move(direction);
@@ -241,9 +236,9 @@ public class Player extends Mob {
      */
     private void hitPlayer(int mobIndex) {
         if (mobIndex >= 0) {
-            currentEntity = world.mobs[world.map][mobIndex];
+            // entity = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
-            if (!flags.invincible && !mob.flags.dead && mob.type != TYPE_NPC) {
+            if (!flags.invincible && !mob.flags.dead && mob.type != Type.NPC) {
                 game.playSound(sound_receive_damage);
                 int damage = Math.max(mob.attack - defense, 1);
                 HP -= damage;
@@ -262,9 +257,9 @@ public class Player extends Mob {
      */
     public void hitMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
         if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
-            currentEntity = world.mobs[world.map][mobIndex];
+            // entity = world.mobs[world.map][mobIndex];
             Entity mob = world.mobs[world.map][mobIndex];
-            if (!mob.flags.invincible && mob.type != TYPE_NPC) {
+            if (!mob.flags.invincible && mob.type != Type.NPC) {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
@@ -302,7 +297,7 @@ public class Player extends Mob {
      */
     public void hitInteractiveTile(int iTileIndex) {
         if (iTileIndex != -1) {
-            currentEntity = world.interactives[world.map][iTileIndex];
+            // entity = world.interactives[world.map][iTileIndex];
             Interactive iTile = world.interactives[world.map][iTileIndex];
             if (iTile.destructible && iTile.isCorrectWeapon(weapon) && !iTile.flags.invincible) {
                 iTile.playSound();
@@ -321,7 +316,7 @@ public class Player extends Mob {
 
     public void hitProjectile(int projectileIndex) {
         if (projectileIndex != -1) {
-            currentEntity = world.projectiles[world.map][projectileIndex];
+            // entity = world.projectiles[world.map][projectileIndex];
             Entity projectile = world.projectiles[world.map][projectileIndex];
             // Evita daniar el propio proyectil
             if (projectile != this.projectile) {
@@ -363,23 +358,23 @@ public class Player extends Mob {
                 attackbox = weapon.attackbox; // TODO Hace falta esto aca?
                 attack = getAttack();
                 switch (weapon.type) {
-                    case TYPE_SWORD -> {
+                    case SWORD -> {
                         loadWeaponImages(entity_player_sword, 16, 16);
                         game.playSound(sound_draw_sword);
                     }
-                    case TYPE_AXE -> loadWeaponImages(entity_player_axe, 16, 16);
-                    case TYPE_PICKAXE -> loadWeaponImages(entity_player_pickaxe, 16, 16);
+                    case AXE -> loadWeaponImages(entity_player_axe, 16, 16);
+                    case PICKAXE -> loadWeaponImages(entity_player_pickaxe, 16, 16);
                 }
             }
-            if (selectedItem.type == TYPE_SHIELD) {
+            if (selectedItem.type == Type.SHIELD) {
                 shield = selectedItem;
                 defense = getDefense();
             }
-            if (selectedItem.type == TYPE_LIGHT) {
+            if (selectedItem.type == Type.LIGHT) {
                 light = light == selectedItem ? null : selectedItem;
                 lightUpdate = true;
             }
-            if (selectedItem.type == TYPE_CONSUMABLE) {
+            if (selectedItem.type == Type.CONSUMABLE) {
                 if (selectedItem.use(this)) {
                     if (selectedItem.amount > 1) selectedItem.amount--;
                     else inventory.remove(itemIndex);
@@ -453,7 +448,7 @@ public class Player extends Mob {
     }
 
     private void setCurrentInteractive(int iTileIndex) {
-        if (iTileIndex != -1) currentEntity = world.interactives[world.map][iTileIndex];
+        if (iTileIndex != -1) entity = world.interactives[world.map][iTileIndex];
     }
 
     private void die() {
@@ -478,7 +473,7 @@ public class Player extends Mob {
         if (!flags.hitting) {
             if (flags.collidingOnEntity) {
                 frame = movementNum == 1 ? movement1 : movement2;
-                if (currentEntity.flags.colliding) frame = movement1;
+                if (entity.flags.colliding) frame = movement1;
             } else frame = movementNum == 1 || flags.colliding ? movement1 : movement2;
         } else {
             // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes

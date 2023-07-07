@@ -2,6 +2,7 @@ package com.craivet;
 
 import com.craivet.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
+import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -912,7 +913,7 @@ public class UI {
                 world.environment.lighting.dayCounter = 0;
                 game.state = PLAY_STATE;
                 world.player.loadMovementImages(entity_player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-                world.player.loadWeaponImages(world.player.weapon.type == TYPE_SWORD ? entity_player_sword : entity_player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+                world.player.loadWeaponImages(world.player.weapon.type == Type.SWORD ? entity_player_sword : entity_player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
             }
         }
     }

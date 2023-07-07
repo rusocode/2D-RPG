@@ -93,17 +93,4 @@ public final class Global {
     public static final int TRADE_STATE = 8;
     public static final int SLEEP_STATE = 9;
 
-    // Entity type
-    public static final int TYPE_PLAYER = 0;
-    public static final int TYPE_NPC = 1;
-    public static final int TYPE_MOB = 2;
-    public static final int TYPE_SWORD = 3;
-    public static final int TYPE_AXE = 4;
-    public static final int TYPE_SHIELD = 5;
-    public static final int TYPE_CONSUMABLE = 6; // TODO Se podria combinar, ya que una pocion es agarrable y consumible
-    public static final int TYPE_PICKUP_ONLY = 7;
-    public static final int TYPE_OBSTACLE = 8;
-    public static final int TYPE_LIGHT = 9;
-    public static final int TYPE_PICKAXE = 10;
-
 }

@@ -2,6 +2,7 @@ package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
+import com.craivet.utils.Type;
 
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
@@ -10,12 +11,8 @@ public class Oldman extends Mob {
 
     public Oldman(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        initDefaultValues();
-    }
-
-    private void initDefaultValues() {
         name = "Oldman";
-        type = TYPE_NPC;
+        type = Type.NPC;
         speed = 1;
         hitbox.x = 8;
         hitbox.y = 16;

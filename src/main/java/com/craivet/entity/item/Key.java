@@ -3,6 +3,7 @@ package com.craivet.entity.item;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
+import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
@@ -15,7 +16,7 @@ public class Key extends Item {
     public Key(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
-        type = TYPE_CONSUMABLE;
+        type = Type.CONSUMABLE;
         // Si se especifica una posicion entonces la imagen es mas pequenia
         if (pos.length > 0) image = Utils.scaleImage(item_key, 32, 32);
         else image = Utils.scaleImage(item_key, tile_size, tile_size);

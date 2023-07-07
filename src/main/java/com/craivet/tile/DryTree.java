@@ -5,6 +5,7 @@ import java.awt.*;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
+import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
@@ -20,7 +21,7 @@ public class DryTree extends Interactive {
     }
 
     public boolean isCorrectWeapon(Entity weapon) {
-        return weapon.type == TYPE_AXE;
+        return weapon.type == Type.AXE;
     }
 
     public Color getParticleColor() {

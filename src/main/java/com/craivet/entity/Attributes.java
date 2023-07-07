@@ -1,6 +1,8 @@
 package com.craivet.entity;
 
+import com.craivet.entity.mob.Mob;
 import com.craivet.entity.projectile.Projectile;
+import com.craivet.utils.Type;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -28,7 +30,7 @@ public class Attributes {
     public int x, y;
     public int width, height;
     public String name;
-    public int type = TYPE_MOB;
+    public Type type = Type.HOSTILE;
     public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
     public int direction = DOWN;
     public int speed, defaultSpeed;

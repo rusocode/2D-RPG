@@ -4,9 +4,8 @@ import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.DoorIron;
-import com.craivet.tile.Interactive;
-import com.craivet.tile.MetalPlate;
-import com.craivet.utils.Utils;
+import com.craivet.tile.*;
+import com.craivet.utils.*;
 
 import java.util.ArrayList;
 
@@ -19,12 +18,8 @@ public class BigRock extends Mob {
 
     public BigRock(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        initDefaultValues();
-    }
-
-    private void initDefaultValues() {
         name = NAME;
-        type = TYPE_NPC;
+        type = Type.NPC;
         image = Utils.scaleImage(entity_bigrock, tile_size, tile_size);
         speed = 2;
         hitbox.x = 2;

@@ -3,6 +3,7 @@ package com.craivet.entity.item;
 import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.World;
+import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
@@ -15,7 +16,7 @@ public class Gold extends Item {
     public Gold(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
-        type = TYPE_PICKUP_ONLY;
+        type = Type.PICKUP;
         image = Utils.scaleImage(item_gold, 32, 32);
         value = 1;
     }

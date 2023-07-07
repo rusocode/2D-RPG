@@ -11,6 +11,7 @@ import com.craivet.gfx.SpriteSheet;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
 import com.craivet.utils.Timer;
+import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
@@ -91,8 +92,8 @@ public class Entity extends Attributes {
                 case RIGHT -> frame = getFrame(RIGHT, movementRight1, movementRight2, weaponRight1, weaponRight2);
             }
 
-            // Si el mob tiene activada la barra de vida
-            if (type == TYPE_MOB && hpBar) drawHpBar(g2);
+            // Si el mob hostil tiene activada la barra de vida
+            if (type == Type.HOSTILE && hpBar) drawHpBar(g2);
             if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
@@ -220,7 +221,7 @@ public class Entity extends Attributes {
             int hitboxHeight = hitbox.height;
 
             // Ajusta el area de ataque del player para cada direccion
-            if (type == TYPE_PLAYER) {
+            if (type == Type.PLAYER) {
                 switch (direction) {
                     case DOWN -> {
                         attackbox.x = 9;
@@ -255,7 +256,7 @@ public class Entity extends Attributes {
                         y += attackbox.y;
                     }
                 }
-            } else if (type == TYPE_MOB) {
+            } else if (type == Type.HOSTILE) {
                 switch (direction) {
                     case DOWN -> y += attackbox.height;
                     case UP -> y -= attackbox.height;
@@ -268,7 +269,7 @@ public class Entity extends Attributes {
             hitbox.width = attackbox.width;
             hitbox.height = attackbox.height;
 
-            if (type == TYPE_MOB) hitPlayer(game.collision.checkPlayer(this), attack);
+            if (type == Type.HOSTILE) hitPlayer(game.collision.checkPlayer(this), attack);
             else {
                 // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
                 int mobIndex = game.collision.checkEntity(this, world.mobs);
@@ -297,12 +298,12 @@ public class Entity extends Attributes {
     /**
      * Golpea al player.
      *
-     * @param contact si el mob hace contacto con el player.
+     * @param contact si el mob hostil hace contacto con el player.
      * @param attack  puntos de ataque.
      */
     protected void hitPlayer(boolean contact, int attack) {
-        // Si el mob hace contacto con el player que no es invencible
-        if (type == TYPE_MOB && contact && !world.player.flags.invincible) {
+        // Si la entidad es hostil y hace contacto con el player que no es invencible
+        if (type == Type.HOSTILE && contact && !world.player.flags.invincible) {
             game.playSound(sound_receive_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.player.defense, 1);

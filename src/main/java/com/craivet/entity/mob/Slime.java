@@ -1,10 +1,10 @@
 package com.craivet.entity.mob;
 
 import com.craivet.Game;
+import com.craivet.World;
 import com.craivet.entity.item.Gold;
 import com.craivet.entity.projectile.StickyBall;
-import com.craivet.World;
-import com.craivet.utils.Utils;
+import com.craivet.utils.*;
 
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
@@ -17,28 +17,20 @@ public class Slime extends Mob {
 
     public Slime(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        initDefaultValues();
-    }
-
-    private void initDefaultValues() {
         name = "Slime";
-        type = TYPE_MOB;
+        type = Type.HOSTILE;
         speed = defaultSpeed = 1;
         HP = maxHP = 4;
         exp = 2;
-
         attack = 2;
         defense = 1;
-
         hitbox.x = 3;
         hitbox.y = 18;
         hitbox.width = 42;
         hitbox.height = 30;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-
         projectile = new StickyBall(game, world);
-
         loadMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         mobImage = movementDown1;
     }

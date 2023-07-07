@@ -3,7 +3,7 @@ package com.craivet.entity.mob;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.item.Gold;
-import com.craivet.utils.Utils;
+import com.craivet.utils.*;
 
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
@@ -12,19 +12,13 @@ public class Orc extends Mob {
 
     public Orc(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        initDefaultValues();
-    }
-
-    private void initDefaultValues() {
         name = "Orc";
-        type = TYPE_MOB;
+        type = Type.HOSTILE;
         speed = defaultSpeed = 1;
         HP = maxHP = 10;
         exp = 2;
-
         attack = 8;
         defense = 2;
-
         hitbox.x = 4;
         hitbox.y = 4;
         hitbox.width = 40;
@@ -35,7 +29,6 @@ public class Orc extends Mob {
         attackbox.height = 48;
         motion1 = 15;
         motion2 = 30;
-
         loadMovementImages(entity_orc_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         loadWeaponImages(entity_orc_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
         mobImage = movementDown1;

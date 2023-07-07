@@ -2,6 +2,7 @@ package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.World;
+import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
@@ -14,7 +15,7 @@ public class Lantern extends Item {
     public Lantern(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
-        type = TYPE_LIGHT;
+        type = Type.LIGHT;
         image = Utils.scaleImage(item_lantern, tile_size, tile_size);
         description = "[" + name + "]\nIlluminaties your \nsurroundings.";
         price = 200;

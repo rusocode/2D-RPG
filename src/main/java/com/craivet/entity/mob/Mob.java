@@ -1,12 +1,21 @@
 package com.craivet.entity.mob;
 
 import com.craivet.Game;
-import com.craivet.entity.Entity;
 import com.craivet.World;
+import com.craivet.entity.Entity;
+
+/**
+ * Los mobs se dividen en
+ * <ul>
+ * <li>PLAYER: jugador principal.
+ * <li>NPC: entidades con las que se interactura, comercia, etc.
+ * <li>HOSTILE: son entidades agresivas que pueden atacar y ser atacadas.
+ * </ul>
+ * <p>
+ * TODO Es posible crear el enum aca?
+ */
 
 public class Mob extends Entity {
-
-    public static final int HOSTIL = 1;
 
     public Mob(Game game, World world, int x, int y) {
         super(game, world, x, y);

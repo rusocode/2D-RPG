@@ -3,6 +3,7 @@ package com.craivet.io;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
+import com.craivet.utils.Type;
 
 import java.io.*;
 
@@ -117,7 +118,7 @@ public class GameFile {
             world.player.light = world.player.inventory.get(data.currentLightSlot);
             world.player.getAttack();
             world.player.getDefense();
-            world.player.loadWeaponImages(world.player.weapon.type == TYPE_SWORD ? entity_player_sword : entity_player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+            world.player.loadWeaponImages(world.player.weapon.type == Type.SWORD ? entity_player_sword : entity_player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
             for (int map = 0; map < MAX_MAP; map++) {
                 for (int i = 0; i < world.items[1].length; i++) {

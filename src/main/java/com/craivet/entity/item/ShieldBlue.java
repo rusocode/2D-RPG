@@ -2,6 +2,7 @@ package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.World;
+import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
@@ -14,7 +15,7 @@ public class ShieldBlue extends Item {
 	public ShieldBlue(Game game, World world, int... pos) {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 		name = NAME;
-		type = TYPE_SHIELD;
+		type = Type.SHIELD;
 		image = Utils.scaleImage(item_shield_blue, tile_size, tile_size);
 		description = "[" + name + "]\nA shiny blue shield.";
 		price = 250;

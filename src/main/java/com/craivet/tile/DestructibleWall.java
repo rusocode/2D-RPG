@@ -4,6 +4,7 @@ import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.Stone;
+import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ public class DestructibleWall extends Interactive {
     }
 
     public boolean isCorrectWeapon(Entity weapon) {
-        return weapon.type == TYPE_PICKAXE;
+        return weapon.type == Type.PICKAXE;
     }
 
     public Color getParticleColor() {
