@@ -2,7 +2,7 @@ package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;

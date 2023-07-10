@@ -11,7 +11,6 @@ import com.craivet.gfx.SpriteSheet;
 import com.craivet.tile.Interactive;
 import com.craivet.World;
 import com.craivet.utils.Timer;
-import com.craivet.utils.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
@@ -304,10 +303,10 @@ public class Entity extends Attributes {
     protected void hitPlayer(boolean contact, int attack) {
         // Si la entidad es hostil y hace contacto con el player que no es invencible
         if (type == Type.HOSTILE && contact && !world.player.flags.invincible) {
-            game.playSound(sound_receive_damage);
+            game.playSound(sound_player_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.player.defense, 1);
-            world.player.HP -= damage;
+            world.player.hp -= damage;
             world.player.flags.invincible = true;
         }
     }
@@ -531,8 +530,8 @@ public class Entity extends Attributes {
     }
 
     private void drawHpBar(Graphics2D g2) {
-        double oneScale = (double) tile_size / maxHP;
-        double hpBarValue = oneScale * HP;
+        double oneScale = (double) tile_size / maxHp;
+        double hpBarValue = oneScale * hp;
 
         /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se
          * dibuje como valor negativo hacia la izquierda. */

@@ -1,8 +1,6 @@
 package com.craivet.entity;
 
-import com.craivet.entity.mob.Mob;
 import com.craivet.entity.projectile.Projectile;
-import com.craivet.utils.Type;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -34,7 +32,7 @@ public class Attributes {
     public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
     public int direction = DOWN;
     public int speed, defaultSpeed;
-    public int HP, maxHP; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+    public int hp, maxHp; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
     public int mana, maxMana;
     public int ammo;
     public int lvl, exp, nextLvlExp;

@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
+import com.craivet.entity.Type;
 import com.craivet.entity.item.*;
 import com.craivet.entity.projectile.Fireball;
 import com.craivet.input.Keyboard;
@@ -23,6 +24,7 @@ public class Player extends Mob {
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity entity;
+    private Entity mob;
 
     public boolean attackCanceled, lightUpdate;
 
@@ -44,7 +46,7 @@ public class Player extends Mob {
             getDirection();
             checkCollision();
             if (!flags.colliding && !keyboard.checkAccionKeys()) updatePosition(direction);
-            mechanics.checkDirectionSpeed(entity);
+            mechanics.checkDirectionSpeed(entity); // TODO Nose porque se tiene que guardar el tile iteractivo tambien
             checkAttack();
             keyboard.resetAccionKeys();
             if (keyboard.checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
@@ -90,7 +92,7 @@ public class Player extends Mob {
         type = Type.PLAYER;
         direction = DOWN;
         speed = defaultSpeed = 3;
-        HP = maxHP = 6;
+        hp = maxHp = 6;
         mana = maxMana = 4;
         ammo = 5;
         lvl = 1;
@@ -135,7 +137,7 @@ public class Player extends Mob {
     }
 
     public void restoreStatus() {
-        HP = maxHP;
+        hp = maxHp;
         mana = maxMana;
         flags.invincible = false;
         flags.hitting = false;
@@ -185,19 +187,19 @@ public class Player extends Mob {
     }
 
     private void checkHpMana() {
-        if (HP <= 0) die();
-        if (HP > maxHP) HP = maxHP;
+        if (hp <= 0) die();
+        if (hp > maxHp) hp = maxHp;
         if (mana > maxMana) mana = maxMana;
     }
 
     /**
      * Recoge un item.
      *
-     * @param itemIndex indice del item.
+     * @param i indice del item.
      */
-    private void pickup(int itemIndex) {
-        if (itemIndex != -1) {
-            Item item = (Item) world.items[world.map][itemIndex];
+    private void pickup(int i) {
+        if (i != -1) {
+            Item item = (Item) world.items[world.map][i];
             if (keyboard.l && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_pickup);
@@ -205,7 +207,7 @@ public class Player extends Mob {
                     game.ui.addMessage("You cannot carry any more!");
                     return;
                 }
-                world.items[world.map][itemIndex] = null;
+                world.items[world.map][i] = null;
             }
             if (keyboard.enter && item.type == Type.OBSTACLE) {
                 attackCanceled = true;
@@ -217,31 +219,32 @@ public class Player extends Mob {
     /**
      * Interactua con el npc.
      *
-     * @param npcIndex indice del npc.
+     * @param i indice del npc.
      */
-    private void interactNpc(int npcIndex) {
-        if (npcIndex != -1) {
-            entity = world.mobs[world.map][npcIndex];
-            if (keyboard.enter && entity.type == Type.NPC) {
+    private void interactNpc(int i) {
+        if (i != -1) {
+            entity = world.mobs[world.map][i];
+            mob = world.mobs[world.map][i];
+            if (keyboard.enter && mob.type == Type.NPC) {
                 attackCanceled = true;
-                world.mobs[world.map][npcIndex].speak();
-            } else world.mobs[world.map][npcIndex].move(direction);
+                mob.speak();
+            } else mob.move(direction);
         }
     }
 
     /**
-     * El player recibe daño si colisiona con un mob.
+     * Daña al player si colisiona con un mob hostil.
      *
-     * @param mobIndex indice del mob.
+     * @param i indice del mob.
      */
-    private void hitPlayer(int mobIndex) {
-        if (mobIndex >= 0) {
-            // entity = world.mobs[world.map][mobIndex];
-            Entity mob = world.mobs[world.map][mobIndex];
-            if (!flags.invincible && !mob.flags.dead && mob.type != Type.NPC) {
-                game.playSound(sound_receive_damage);
+    private void hurt(int i) {
+        if (i != -1) {
+            entity = world.mobs[world.map][i];
+            mob = world.mobs[world.map][i];
+            if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
+                game.playSound(sound_player_damage);
                 int damage = Math.max(mob.attack - defense, 1);
-                HP -= damage;
+                hp -= damage;
                 flags.invincible = true;
             }
         }
@@ -250,23 +253,23 @@ public class Player extends Mob {
     /**
      * Golpea al mob.
      *
-     * @param mobIndex       indice del mob.
+     * @param i              indice del mob.
      * @param attacker       atacante del mob.
      * @param knockbackValue valor de knockback.
      * @param attack         tipo de ataque (sword o fireball).
      */
-    public void hitMob(int mobIndex, Entity attacker, int knockbackValue, int attack) {
-        if (mobIndex != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
-            // entity = world.mobs[world.map][mobIndex];
-            Entity mob = world.mobs[world.map][mobIndex];
+    public void hitMob(int i, Entity attacker, int knockbackValue, int attack) {
+        if (i != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
+            entity = world.mobs[world.map][i];
+            mob = world.mobs[world.map][i];
             if (!mob.flags.invincible && mob.type != Type.NPC) {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
                 int damage = Math.max(attack - mob.defense, 1);
-                mob.HP -= damage;
+                mob.hp -= damage;
                 game.ui.addMessage(damage + " damage!");
-                if (mob.HP > 0) {
+                if (mob.hp > 0) {
                     if (mob instanceof Slime || mob instanceof RedSlime) game.playSound(sound_hit_slime);
                     if (mob instanceof Orc) {
                         game.playSound(sound_hit_mob);
@@ -278,7 +281,7 @@ public class Player extends Mob {
                 mob.hpBar = true;
                 mob.damageReaction();
 
-                if (mob.HP <= 0) {
+                if (mob.hp <= 0) {
                     game.playSound(sound_mob_death);
                     mob.flags.dead = true;
                     game.ui.addMessage("Killed the " + mob.name + "!");
@@ -293,34 +296,34 @@ public class Player extends Mob {
     /**
      * Daña al tile interactivo.
      *
-     * @param iTileIndex indice del tile interactivo.
+     * @param i indice del tile interactivo.
      */
-    public void hitInteractiveTile(int iTileIndex) {
-        if (iTileIndex != -1) {
-            // entity = world.interactives[world.map][iTileIndex];
-            Interactive iTile = world.interactives[world.map][iTileIndex];
+    public void hitInteractiveTile(int i) {
+        if (i != -1) {
+            entity = world.interactives[world.map][i];
+            Interactive iTile = world.interactives[world.map][i];
             if (iTile.destructible && iTile.isCorrectWeapon(weapon) && !iTile.flags.invincible) {
                 iTile.playSound();
-                iTile.HP--;
+                iTile.hp--;
                 iTile.flags.invincible = true;
 
                 generateParticle(iTile, iTile);
 
-                if (iTile.HP == 0) {
+                if (iTile.hp == 0) {
                     iTile.checkDrop();
-                    world.interactives[world.map][iTileIndex] = iTile.replaceBy();
+                    world.interactives[world.map][i] = iTile.replaceBy();
                 }
             }
         }
     }
 
-    public void hitProjectile(int projectileIndex) {
-        if (projectileIndex != -1) {
-            // entity = world.projectiles[world.map][projectileIndex];
-            Entity projectile = world.projectiles[world.map][projectileIndex];
-            // Evita daniar el propio proyectil
+    public void hitProjectile(int i) {
+        if (i != -1) {
+            entity = world.projectiles[world.map][i];
+            Entity projectile = world.projectiles[world.map][i];
+            // Evita dañar el propio proyectil
             if (projectile != this.projectile) {
-                game.playSound(sound_receive_damage);
+                game.playSound(sound_player_damage);
                 projectile.flags.alive = false;
                 generateParticle(projectile, projectile);
             }
@@ -335,7 +338,7 @@ public class Player extends Mob {
             lvl++;
             exp = 0;
             nextLvlExp *= 2;
-            maxHP += 2;
+            maxHp += 2;
             strength++;
             dexterity++;
             attack = getAttack();
@@ -438,22 +441,22 @@ public class Player extends Mob {
      */
     public void checkCollision() {
         flags.colliding = false;
-        // game.collision.checkTile(this);
+        game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.mobs));
-        hitPlayer(game.collision.checkEntity(this, world.mobs));
+        hurt(game.collision.checkEntity(this, world.mobs));
         setCurrentInteractive(game.collision.checkEntity(this, world.interactives));
-        // game.collider.checkEntity(this, world.interactives);
+        // game.collision.checkEntity(this, world.interactives);
         game.event.checkEvent();
     }
 
-    private void setCurrentInteractive(int iTileIndex) {
-        if (iTileIndex != -1) entity = world.interactives[world.map][iTileIndex];
+    private void setCurrentInteractive(int i) {
+        if (i != -1) entity = world.interactives[world.map][i];
     }
 
     private void die() {
+        game.playSound(sound_player_death);
         game.state = GAME_OVER_STATE;
-        game.playSound(sound_player_die);
         game.ui.command = -1;
         game.music.stop();
     }
@@ -471,10 +474,8 @@ public class Player extends Mob {
     private BufferedImage getFrame(int direction, BufferedImage movement1, BufferedImage movement2, BufferedImage attack1, BufferedImage attack2) {
         BufferedImage frame;
         if (!flags.hitting) {
-            if (flags.collidingOnEntity) {
-                frame = movementNum == 1 ? movement1 : movement2;
-                if (entity.flags.colliding) frame = movement1;
-            } else frame = movementNum == 1 || flags.colliding ? movement1 : movement2;
+            if (flags.collidingOnMob) frame = movementNum == 1 ? movement1 : movement2;
+            else frame = movementNum == 1 || flags.colliding ? movement1 : movement2;
         } else {
             // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
             switch (direction) {

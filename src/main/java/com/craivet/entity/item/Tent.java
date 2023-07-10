@@ -3,7 +3,7 @@ package com.craivet.entity.item;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
@@ -26,7 +26,7 @@ public class Tent extends Item {
     public boolean use(Entity entity) {
         game.state = SLEEP_STATE;
         game.playSound(sound_sleep);
-        world.player.HP = world.player.maxHP;
+        world.player.hp = world.player.maxHp;
         world.player.mana = world.player.maxMana;
         world.player.initSleepImage(image);
         return true;

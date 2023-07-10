@@ -2,7 +2,7 @@ package com.craivet;
 
 import com.craivet.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -209,7 +209,7 @@ public class UI {
         int i = 0;
 
         // Dibuja el corazon vacio
-        while (i < world.player.maxHP / 2) {
+        while (i < world.player.maxHp / 2) {
             g2.drawImage(heartBlank, x, y, null);
             i++;
             x += tile_size;
@@ -220,10 +220,10 @@ public class UI {
         i = 0;
 
         // Dibuja la vida actual
-        while (i < world.player.HP) {
+        while (i < world.player.hp) {
             g2.drawImage(heartHalf, x, y, null);
             i++;
-            if (i < world.player.HP) g2.drawImage(heartFull, x, y, null);
+            if (i < world.player.hp) g2.drawImage(heartFull, x, y, null);
             i++;
             x += tile_size;
         }
@@ -356,7 +356,7 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = world.player.HP + "/" + world.player.maxHP;
+        value = world.player.hp + "/" + world.player.maxHp;
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;

@@ -3,7 +3,7 @@ package com.craivet.io;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 
 import java.io.*;
 
@@ -34,8 +34,8 @@ public class GameFile {
             data.x = world.player.x;
             data.y = world.player.y;
             data.direction = world.player.direction;
-            data.life = world.player.HP;
-            data.maxlife = world.player.maxHP;
+            data.life = world.player.hp;
+            data.maxlife = world.player.maxHp;
             data.mana = world.player.mana;
             data.maxMana = world.player.maxMana;
             data.strength = world.player.strength;
@@ -97,8 +97,8 @@ public class GameFile {
             world.player.x = data.x;
             world.player.y = data.y;
             world.player.direction = data.direction;
-            world.player.HP = data.life;
-            world.player.maxHP = data.maxlife;
+            world.player.hp = data.life;
+            world.player.maxHp = data.maxlife;
             world.player.mana = data.mana;
             world.player.maxMana = data.maxMana;
             world.player.strength = data.strength;

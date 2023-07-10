@@ -3,6 +3,7 @@ package com.craivet.entity.mob;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
+import com.craivet.entity.Type;
 import com.craivet.entity.item.DoorIron;
 import com.craivet.tile.*;
 import com.craivet.utils.*;

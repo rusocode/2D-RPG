@@ -123,7 +123,7 @@ public class CollisionEvent {
      */
     private void hurt() {
         entity.startDialogue(DIALOGUE_STATE, entity, 0);
-        world.player.HP--;
+        world.player.hp--;
         canTouchEvent = false;
     }
 
@@ -133,7 +133,7 @@ public class CollisionEvent {
     private void heal() {
         if (game.keyboard.enter) {
             entity.startDialogue(DIALOGUE_STATE, entity, 1);
-            world.player.HP = world.player.maxHP;
+            world.player.hp = world.player.maxHp;
             game.world.createMOBs();
         }
     }

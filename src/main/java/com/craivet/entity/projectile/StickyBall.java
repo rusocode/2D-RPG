@@ -24,7 +24,7 @@ public class StickyBall extends Projectile {
         name = "Sticky Ball";
         image = Utils.scaleImage(entity_sticky_ball, 32, 32);
         speed = 5;
-        HP = maxHP = 120;
+        hp = maxHp = 120;
         attack = 3;
         cost = 1;
         flags.alive = false;

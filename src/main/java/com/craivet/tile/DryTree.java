@@ -5,7 +5,7 @@ import java.awt.*;
 import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
@@ -17,7 +17,7 @@ public class DryTree extends Interactive {
         super(game, world, x, y);
         image = Utils.scaleImage(itile_drytree, tile_size, tile_size);
         destructible = true;
-        HP = 1;
+        hp = 1;
     }
 
     public boolean isCorrectWeapon(Entity weapon) {

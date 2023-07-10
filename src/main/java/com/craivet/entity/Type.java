@@ -1,4 +1,4 @@
-package com.craivet.utils;
+package com.craivet.entity;
 
 /**
  * Tipos de entidades.

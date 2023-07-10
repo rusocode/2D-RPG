@@ -47,7 +47,7 @@ public class World {
     public List<Entity> particles = new ArrayList<>();
     // TODO No tendrian que declararse como HashMap?
     public Entity[][] items = new Item[MAX_MAP][20];
-    public Entity[][] mobs = new Mob[MAX_MAP][20];
+    public Entity[][] mobs = new Mob[MAX_MAP][20]; // TODO No es mejor declararlo como Mob para evitar los casteos?
     public Interactive[][] interactives = new Interactive[MAX_MAP][50];
     public Entity[][] projectiles = new Projectile[MAX_MAP][20];
 

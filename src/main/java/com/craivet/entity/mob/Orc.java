@@ -2,6 +2,7 @@ package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
+import com.craivet.entity.Type;
 import com.craivet.entity.item.Gold;
 import com.craivet.utils.*;
 
@@ -15,7 +16,7 @@ public class Orc extends Mob {
         name = "Orc";
         type = Type.HOSTILE;
         speed = defaultSpeed = 1;
-        HP = maxHP = 10;
+        hp = maxHp = 10;
         exp = 2;
         attack = 8;
         defense = 2;

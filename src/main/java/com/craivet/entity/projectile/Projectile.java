@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.entity.mob.Player;
 import com.craivet.World;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 
 import static com.craivet.utils.Global.*;
 
@@ -30,7 +30,7 @@ public class Projectile extends Entity {
         this.direction = direction;
         flags.alive = alive;
         this.entity = entity;
-        this.HP = this.maxHP; // Resetea la vida al valor maximo cada vez que lanza un proyectil
+        this.hp = this.maxHp; // Resetea la vida al valor maximo cada vez que lanza un proyectil
     }
 
     /**
@@ -66,7 +66,7 @@ public class Projectile extends Entity {
             }
         }
 
-        if (HP-- <= 0) flags.alive = false;
+        if (hp-- <= 0) flags.alive = false;
 
         if (flags.alive) {
             switch (direction) {

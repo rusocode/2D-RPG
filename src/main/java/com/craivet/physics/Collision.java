@@ -147,7 +147,7 @@ public class Collision {
                 if (entity.hitbox.intersects(otherEntity[world.map][i].hitbox)) {
                     if (otherEntity[world.map][i] != entity) { // Evita la colision en si misma
                         entity.flags.colliding = true;
-                        entity.flags.collidingOnEntity = true;
+                        entity.flags.collidingOnMob = true;
                         index = i;
                     }
                 }

@@ -36,10 +36,10 @@ public final class Assets {
     public static final URL sound_level_up = Utils.loadAudio(sounds_path + "level_up.wav");
     public static final URL sound_mine = Utils.loadAudio(sounds_path + "mine.wav");
     public static final URL sound_mob_death = Utils.loadAudio(sounds_path + "mob_death.wav");
-    public static final URL sound_player_die = Utils.loadAudio(sounds_path + "player_die.wav");
+    public static final URL sound_player_damage = Utils.loadAudio(sounds_path + "player_damage.wav");
+    public static final URL sound_player_death = Utils.loadAudio(sounds_path + "player_death.wav");
     public static final URL sound_potion_red = Utils.loadAudio(sounds_path + "potion2.wav");
     public static final URL sound_pickup = Utils.loadAudio(sounds_path + "472.wav");
-    public static final URL sound_receive_damage = Utils.loadAudio(sounds_path + "receive_damage.wav");
     public static final URL sound_sleep = Utils.loadAudio(sounds_path + "sleep.wav");
     public static final URL sound_spawn = Utils.loadAudio(sounds_path + "spawn.wav");
     public static final URL sound_swing_weapon = Utils.loadAudio(sounds_path + "swing_weapon.wav");

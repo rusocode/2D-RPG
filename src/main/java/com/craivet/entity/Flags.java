@@ -12,7 +12,7 @@ public final class Flags {
     public boolean hitting;
     public boolean alive = true;
     public boolean colliding;
-    public boolean collidingOnEntity;
+    public boolean collidingOnMob;
     public boolean dead;
     public boolean invincible;
     public boolean knockback;

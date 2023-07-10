@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.World;
 import com.craivet.entity.Entity;
 import com.craivet.entity.item.Stone;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
@@ -18,7 +18,7 @@ public class DestructibleWall extends Interactive {
         super(game, world, x, y);
         image = Utils.scaleImage(itile_destructiblewall, tile_size, tile_size);
         destructible = true;
-        HP = 3;
+        hp = 3;
     }
 
     public boolean isCorrectWeapon(Entity weapon) {

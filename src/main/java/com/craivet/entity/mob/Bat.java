@@ -2,6 +2,7 @@ package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
+import com.craivet.entity.Type;
 import com.craivet.entity.item.Gold;
 import com.craivet.utils.*;
 
@@ -15,7 +16,7 @@ public class Bat extends Mob {
         name = "Bat";
         type = Type.HOSTILE;
         speed = defaultSpeed = 4;
-        HP = maxHP = 7;
+        hp = maxHp = 7;
         exp = 7;
         attack = 4;
         defense = 1;

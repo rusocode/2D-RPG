@@ -2,7 +2,7 @@ package com.craivet.entity.item;
 
 import com.craivet.Game;
 import com.craivet.World;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.item_pickaxe;

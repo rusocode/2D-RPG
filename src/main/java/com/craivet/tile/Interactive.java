@@ -6,6 +6,7 @@ import com.craivet.entity.Entity;
 
 import static com.craivet.utils.Global.*;
 
+// TODO Esta clase tiene que ir en el paquete de entidades
 public class Interactive extends Entity {
 
     public boolean destructible;

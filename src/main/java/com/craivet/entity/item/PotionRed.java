@@ -3,7 +3,7 @@ package com.craivet.entity.item;
 import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.World;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
@@ -36,8 +36,8 @@ public class PotionRed extends Item {
     public boolean use(Entity entity) {
         game.playSound(sound_potion_red);
         game.ui.addMessage("+" + value + " hp");
-        entity.HP += value;
-        if (entity.HP > entity.maxHP) entity.HP = entity.maxHP;
+        entity.hp += value;
+        if (entity.hp > entity.maxHp) entity.hp = entity.maxHp;
         return true;
     }
 

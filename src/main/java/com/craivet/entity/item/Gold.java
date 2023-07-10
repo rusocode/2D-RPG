@@ -3,10 +3,9 @@ package com.craivet.entity.item;
 import com.craivet.Game;
 import com.craivet.entity.Entity;
 import com.craivet.World;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
 import com.craivet.utils.Utils;
 
-import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Gold extends Item {

@@ -2,6 +2,7 @@ package com.craivet.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.World;
+import com.craivet.entity.Type;
 import com.craivet.entity.item.Gold;
 import com.craivet.entity.projectile.StickyBall;
 import com.craivet.utils.*;
@@ -16,7 +17,7 @@ public class RedSlime extends Mob {
         name = "Red Slime";
         type = Type.HOSTILE;
         speed = defaultSpeed = 2;
-        HP = maxHP = 5;
+        hp = maxHp = 5;
         exp = 3;
         attack = 3;
         defense = 1;

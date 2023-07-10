@@ -1,82 +1,80 @@
 package com.craivet.physics;
 
 import com.craivet.entity.Entity;
-import com.craivet.entity.mob.BigRock;
-import com.craivet.utils.Type;
+import com.craivet.entity.Type;
+import com.craivet.entity.mob.*;
 
 import static com.craivet.utils.Global.*;
 
 /**
- * Controla la velocidad del Player cuando colisiona con un Npc en movimiento en la misma direccion.
+ * Controla la velocidad del Player cuando colisiona con un Mob en movimiento en la misma direccion.
  *
  * @author Juan Debenedetti
  */
 
 public class Mechanics {
 
-    private final Entity entity;
+    private final Player player;
 
-    // Indica cuando esta "unido" a una entidad en movimiento
+    // Indica cuando el Player esta "unido" al Mob en movimiento
     private boolean united;
 
-    public Mechanics(Entity entity) {
-        this.entity = entity;
+    public Mechanics(Player player) {
+        this.player = player;
     }
 
     /**
-     * Comprueba la velocidad de la direccion cuando colisiona con una entidad en movimiento en la misma direccion. Esto
-     * se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, "une" el Player a la
-     * entidad. En caso contrario, "desune" el Player de la entidad.
+     * Comprueba la velocidad de la direccion cuando colisiona con un Mob en movimiento en la misma direccion. Esto se
+     * hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, "une" el Player al Mob.
+     * En caso contrario, "desune" el Player del Mob.
      *
-     * @param currentEntity entidad actual.
+     * @param mob Mob actual.
      */
-    public void checkDirectionSpeed(Entity currentEntity) {
-        if (checkSomeConditionsForUnion(currentEntity)) unite(currentEntity);
+    public void checkDirectionSpeed(Entity mob) {
+        if (checkConditionsForUnion(mob)) unite(mob);
         else disunite();
     }
 
     /**
-     * Comprueba si la entidad actual es distinta a null, y si la entidad actual es un Npc, y si el Player colisiono con
-     * la entidad, y si el Player esta en la misma direccion que la entidad actual, y si el Player no tiene distancia
-     * con la entidad y si la entidad actual no colisiono.
+     * Comprueba si el Mob actual es distinto a null, y si el Mob es un Npc, y si el Player colisiono con el Mob, y si
+     * el Player esta en la misma direccion que el Mob, y si el Player no tiene distancia con el Mob y si el Mob no
+     * colisiono.
      *
-     * @param currentEntity entidad actual.
+     * @param mob Mob actual.
      * @return true si se cumplen todas las condiciones especificadas o false.
      */
-    private boolean checkSomeConditionsForUnion(Entity currentEntity) {
-        return currentEntity != null /* && currentEntity.type == Type.NPC*/ &&
-                entity.flags.collidingOnEntity && entity.direction == currentEntity.direction &&
-                !isDistanceWithEntity(currentEntity) && !currentEntity.flags.colliding;
+    private boolean checkConditionsForUnion(Entity mob) {
+        return mob != null && mob.type == Type.NPC && player.flags.collidingOnMob
+                && player.direction == mob.direction && !isDistanceWithMob(mob) && !mob.flags.colliding;
     }
 
     /**
-     * Comprueba si hay distancia con la entidad.
+     * Comprueba si hay distancia con el Mob.
      * <p>
      * <h3>¿Para que hace esto?</h3>
-     * Cuando sigue (siempre colisionando) a la entidad pero en algun momento la deja de seguir y esta se mantiene en la
-     * misma direccion, la velocidad va a seguir siendo la misma a la de la entidad. Entonces para solucionar ese
-     * problema se comprueba la distancia, y si hay distancia entre el Player y la entidad, vuelve a la velocidad por
-     * defecto.
+     * Cuando sigue (siempre colisionando) al Mob pero en algun momento la deja de seguir y este se mantiene en la misma
+     * direccion, la velocidad va a seguir siendo la misma a la del Mob. Entonces para solucionar ese problema se
+     * comprueba la distancia, y si hay distancia entre el Player y el Mob, vuelve a la velocidad por defecto.
      *
-     * @param currentEntity entidad actual.
+     * @param mob Mob actual.
      * @return true si hay distancia o false.
      */
-    private boolean isDistanceWithEntity(Entity currentEntity) {
-        switch (currentEntity.direction) {
+    private boolean isDistanceWithMob(Entity mob) {
+        switch (mob.direction) {
             case DOWN -> {
-                if (entity.y + entity.hitbox.y + entity.hitbox.height + currentEntity.speed < currentEntity.y + currentEntity.hitbox.y)
+                if (player.y + player.hitbox.y + player.hitbox.height + mob.speed < mob.y + mob.hitbox.y)
                     return true;
             }
             case UP -> {
-                if (entity.y + entity.hitbox.y - currentEntity.speed > currentEntity.y + currentEntity.hitbox.y + currentEntity.hitbox.height)
+                if (player.y + player.hitbox.y - mob.speed > mob.y + mob.hitbox.y + mob.hitbox.height)
                     return true;
             }
             case LEFT -> {
-                if (entity.x + entity.hitbox.x - currentEntity.speed > currentEntity.x + currentEntity.hitbox.x + currentEntity.hitbox.width)
+                if (player.x + player.hitbox.x - mob.speed > mob.x + mob.hitbox.x + mob.hitbox.width)
                     return true;
             }
             case RIGHT -> {
-                if (entity.x + entity.hitbox.x + entity.hitbox.width + currentEntity.speed < currentEntity.x + currentEntity.hitbox.x)
+                if (player.x + player.hitbox.x + player.hitbox.width + mob.speed < mob.x + mob.hitbox.x)
                     return true;
             }
         }
@@ -84,41 +82,41 @@ public class Mechanics {
     }
 
     /**
-     * Une el Player a la entidad.
+     * Une el Player al Mob.
      * <p>
-     * Iguala la velocidad de la entidad a la del Player y dependiendo de la direccion, suma o resta un pixel. Esto
-     * ultimo se hace para poder hablar con el Npc si este esta en movimiento.
+     * Iguala la velocidad del Mob a la del Player y dependiendo de la direccion, suma o resta un pixel. Esto ultimo se
+     * hace para que el Player pueda dialogar si el Mob es un Npc y este esta en movimiento.
      *
-     * @param currentEntity entidad actual.
+     * @param mob Mob actual.
      */
-    private void unite(Entity currentEntity) {
-        entity.speed = currentEntity.speed;
+    private void unite(Entity mob) {
+        player.speed = mob.speed;
         united = true;
-        if (!(currentEntity instanceof BigRock)) {
-            switch (entity.direction) {
-                case DOWN -> entity.y++;
-                case UP -> entity.y--;
-                case LEFT -> entity.x--;
-                case RIGHT -> entity.x++;
+        if (!(mob instanceof BigRock)) {
+            switch (player.direction) {
+                case DOWN -> player.y++;
+                case UP -> player.y--;
+                case LEFT -> player.x--;
+                case RIGHT -> player.x++;
             }
         }
     }
 
     /**
-     * Desune el Player de la entidad.
+     * Desune el Player del Mob.
      * <p>
      * Vuelve a la velocidad por defecto y verifica si estan unidos para "destrabar" ambas entidades restando o sumando
      * un pixel.
      */
     private void disunite() {
-        entity.speed = entity.defaultSpeed;
-        entity.flags.collidingOnEntity = false;
+        player.speed = player.defaultSpeed;
+        player.flags.collidingOnMob = false;
         if (united) {
-            switch (entity.direction) {
-                case DOWN -> entity.y--;
-                case UP -> entity.y++;
-                case LEFT -> entity.x++;
-                case RIGHT -> entity.x--;
+            switch (player.direction) {
+                case DOWN -> player.y--;
+                case UP -> player.y++;
+                case LEFT -> player.x++;
+                case RIGHT -> player.x--;
             }
             united = false;
         }
