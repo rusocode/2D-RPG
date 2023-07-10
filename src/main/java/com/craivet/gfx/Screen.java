@@ -6,7 +6,7 @@ import javax.swing.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 public class Screen extends JFrame {
 

@@ -1,10 +1,11 @@
 package com.craivet.physics;
 
-import com.craivet.entity.Entity;
-import com.craivet.entity.Type;
-import com.craivet.entity.mob.*;
+import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.Type;
+import com.craivet.world.entity.mob.BigRock;
+import com.craivet.world.entity.mob.Player;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 /**
  * Controla la velocidad del Player cuando colisiona con un Mob en movimiento en la misma direccion.
@@ -16,7 +17,7 @@ public class Mechanics {
 
     private final Player player;
 
-    // Indica cuando el Player esta "unido" al Mob en movimiento
+    // Indica cuando el Player esta "unido" al Mob
     private boolean united;
 
     public Mechanics(Player player) {
@@ -24,19 +25,22 @@ public class Mechanics {
     }
 
     /**
-     * Comprueba la velocidad de la direccion cuando colisiona con un Mob en movimiento en la misma direccion. Esto se
-     * hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, "une" el Player al Mob.
-     * En caso contrario, "desune" el Player del Mob.
+     * Comprueba la velocidad de la direccion del Player cuando colisiona con un Mob en movimiento en la misma
+     * direccion. Esto se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, "une"
+     * el Player al Mob. En caso contrario, "desune" el Player del Mob.
      *
      * @param mob Mob actual.
      */
     public void checkDirectionSpeed(Entity mob) {
-        if (checkConditionsForUnion(mob)) unite(mob);
+        if (checkConditionsForUnion(mob)) {
+            System.out.println("asd");
+            unite(mob);
+        }
         else disunite();
     }
 
     /**
-     * Comprueba si el Mob actual es distinto a null, y si el Mob es un Npc, y si el Player colisiono con el Mob, y si
+     * Comprueba si el Mob es distinto a null, y si el Mob es un Npc, y si el Player esta colisionando con el Mob, y si
      * el Player esta en la misma direccion que el Mob, y si el Player no tiene distancia con el Mob y si el Mob no
      * colisiono.
      *
@@ -52,7 +56,7 @@ public class Mechanics {
      * Comprueba si hay distancia con el Mob.
      * <p>
      * <h3>¿Para que hace esto?</h3>
-     * Cuando sigue (siempre colisionando) al Mob pero en algun momento la deja de seguir y este se mantiene en la misma
+     * Cuando sigue (siempre colisionando) al Mob pero en algun momento lo deja de seguir y este se mantiene en la misma
      * direccion, la velocidad va a seguir siendo la misma a la del Mob. Entonces para solucionar ese problema se
      * comprueba la distancia, y si hay distancia entre el Player y el Mob, vuelve a la velocidad por defecto.
      *

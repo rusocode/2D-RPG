@@ -2,12 +2,12 @@ package com.craivet.states;
 
 import com.craivet.Game;
 import com.craivet.UI;
-import com.craivet.World;
+import com.craivet.world.World;
 import com.craivet.Minimap;
 
 import java.awt.*;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 public class GameState implements State {
 

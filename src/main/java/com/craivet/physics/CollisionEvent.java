@@ -1,12 +1,12 @@
 package com.craivet.physics;
 
 import com.craivet.Game;
-import com.craivet.World;
-import com.craivet.entity.Entity;
+import com.craivet.world.World;
+import com.craivet.world.entity.Entity;
 
 import java.awt.*;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 /**
  * Representa un evento en el World. Los eventos pueden ser una teletransportacion, hablar con un npc, etc.

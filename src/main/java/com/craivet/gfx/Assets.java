@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
-import com.craivet.utils.Utils;
+import com.craivet.util.Utils;
 
 /**
  * Esta clase carga los recursos solo una vez al iniciar el juego.

@@ -1,10 +1,10 @@
 package com.craivet.ai;
 
-import com.craivet.World;
+import com.craivet.world.World;
 
 import java.util.ArrayList;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 public class AStar {
 

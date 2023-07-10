@@ -5,7 +5,7 @@ import com.craivet.Game;
 import javax.swing.*;
 import java.io.*;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 public class Config {
 

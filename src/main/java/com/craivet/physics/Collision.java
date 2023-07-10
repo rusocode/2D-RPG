@@ -1,10 +1,10 @@
 package com.craivet.physics;
 
-import com.craivet.World;
-import com.craivet.entity.Entity;
-import com.craivet.entity.mob.Player;
+import com.craivet.world.World;
+import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.mob.Player;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 /**
  * La colision entre dos entidades se genera cuando uno de los limites de la hitbox se pasa 1 pixel de la hitbox de la

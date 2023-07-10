@@ -1,14 +1,14 @@
 package com.craivet.io;
 
 import com.craivet.Game;
-import com.craivet.World;
-import com.craivet.entity.Entity;
-import com.craivet.entity.Type;
+import com.craivet.world.World;
+import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.Type;
 
 import java.io.*;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 public class GameFile {
 

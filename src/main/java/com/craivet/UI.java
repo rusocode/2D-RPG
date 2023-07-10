@@ -1,15 +1,16 @@
 package com.craivet;
 
-import com.craivet.entity.Entity;
+import com.craivet.world.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
-import com.craivet.entity.Type;
-import com.craivet.utils.Utils;
+import com.craivet.world.entity.Type;
+import com.craivet.util.Utils;
+import com.craivet.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**

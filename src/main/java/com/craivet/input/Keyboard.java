@@ -5,7 +5,7 @@ import com.craivet.Game;
 import java.awt.event.*;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 /**
  * TODO Se podria llamar Keyboard (Teclado)?

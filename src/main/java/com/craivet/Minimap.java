@@ -1,9 +1,11 @@
 package com.craivet;
 
+import com.craivet.world.World;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 
 public class Minimap {
 

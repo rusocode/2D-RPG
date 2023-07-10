@@ -1,7 +1,7 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
-import com.craivet.entity.item.ItemGenerator;
+import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
 import com.craivet.io.Config;
 import com.craivet.io.GameFile;
@@ -10,13 +10,14 @@ import com.craivet.physics.Collision;
 import com.craivet.physics.CollisionEvent;
 import com.craivet.states.GameState;
 import com.craivet.states.StateManager;
-import com.craivet.utils.TimeUtils;
+import com.craivet.util.TimeUtils;
+import com.craivet.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.net.URL;
 
-import static com.craivet.utils.Global.*;
+import static com.craivet.util.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
