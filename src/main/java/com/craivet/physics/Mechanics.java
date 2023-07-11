@@ -32,10 +32,7 @@ public class Mechanics {
      * @param mob Mob actual.
      */
     public void checkDirectionSpeed(Entity mob) {
-        if (checkConditionsForUnion(mob)) {
-            System.out.println("asd");
-            unite(mob);
-        }
+        if (checkConditionsForUnion(mob)) unite(mob);
         else disunite();
     }
 
@@ -66,11 +63,19 @@ public class Mechanics {
     private boolean isDistanceWithMob(Entity mob) {
         switch (mob.direction) {
             case DOWN -> {
-                if (player.y + player.hitbox.y + player.hitbox.height + mob.speed < mob.y + mob.hitbox.y)
+                if (
+                    // Si el player tiene distancia por detras del mob
+                        (player.y + player.hitbox.y + player.hitbox.height + mob.speed < mob.y + mob.hitbox.y) ||
+                                // Si el player tiene distancia por delante del mob
+                                (player.y + player.hitbox.y + player.speed > mob.y + mob.hitbox.y + mob.hitbox.height)
+                )
                     return true;
             }
             case UP -> {
-                if (player.y + player.hitbox.y - mob.speed > mob.y + mob.hitbox.y + mob.hitbox.height)
+                if (
+                        (player.y + player.hitbox.y - mob.speed > mob.y + mob.hitbox.y + mob.hitbox.height) ||
+                                (player.y + player.hitbox.y + player.hitbox.height + mob.speed < mob.y + mob.hitbox.y)
+                )
                     return true;
             }
             case LEFT -> {
