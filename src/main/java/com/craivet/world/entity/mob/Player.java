@@ -25,7 +25,6 @@ public class Player extends Mob {
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity entity;
-    private Mob mob;
 
     public boolean attackCanceled, lightUpdate;
 
@@ -47,7 +46,7 @@ public class Player extends Mob {
             getDirection();
             checkCollision();
             if (!flags.colliding && !keyboard.checkAccionKeys()) updatePosition(direction);
-            mechanics.checkDirectionSpeed(mob);
+            mechanics.checkDirectionSpeed(entity);
             checkAttack();
             keyboard.resetAccionKeys();
             if (keyboard.checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
@@ -225,7 +224,7 @@ public class Player extends Mob {
     private void interactNpc(int i) {
         if (i != -1) {
             entity = world.mobs[world.map][i];
-            mob = world.mobs[world.map][i];
+            Mob mob = world.mobs[world.map][i];
             if (keyboard.enter && mob.type == Type.NPC) {
                 attackCanceled = true;
                 mob.speak();
@@ -241,7 +240,7 @@ public class Player extends Mob {
     private void hurt(int i) {
         if (i != -1) {
             entity = world.mobs[world.map][i];
-            mob = world.mobs[world.map][i];
+            Mob mob = world.mobs[world.map][i];
             if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
                 game.playSound(sound_player_damage);
                 int damage = Math.max(mob.attack - defense, 1);
@@ -262,7 +261,7 @@ public class Player extends Mob {
     public void hitMob(int i, Entity attacker, int knockbackValue, int attack) {
         if (i != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
             entity = world.mobs[world.map][i];
-            mob = world.mobs[world.map][i];
+            Mob mob = world.mobs[world.map][i];
             if (!mob.flags.invincible && mob.type != Type.NPC) {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);

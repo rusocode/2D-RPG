@@ -63,28 +63,16 @@ public class Mechanics {
     private boolean isDistanceWithMob(Entity mob) {
         switch (mob.direction) {
             case DOWN -> {
-                if (
-                    // Si el player tiene distancia por detras del mob
-                        (player.y + player.hitbox.y + player.hitbox.height + mob.speed < mob.y + mob.hitbox.y) ||
-                                // Si el player tiene distancia por delante del mob
-                                (player.y + player.hitbox.y + player.speed > mob.y + mob.hitbox.y + mob.hitbox.height)
-                )
-                    return true;
+                if (player.y + player.hitbox.y + player.hitbox.height + mob.speed < mob.y + mob.hitbox.y) return true;
             }
             case UP -> {
-                if (
-                        (player.y + player.hitbox.y - mob.speed > mob.y + mob.hitbox.y + mob.hitbox.height) ||
-                                (player.y + player.hitbox.y + player.hitbox.height + mob.speed < mob.y + mob.hitbox.y)
-                )
-                    return true;
+                if (player.y + player.hitbox.y - mob.speed > mob.y + mob.hitbox.y + mob.hitbox.height) return true;
             }
             case LEFT -> {
-                if (player.x + player.hitbox.x - mob.speed > mob.x + mob.hitbox.x + mob.hitbox.width)
-                    return true;
+                if (player.x + player.hitbox.x - mob.speed > mob.x + mob.hitbox.x + mob.hitbox.width) return true;
             }
             case RIGHT -> {
-                if (player.x + player.hitbox.x + player.hitbox.width + mob.speed < mob.x + mob.hitbox.x)
-                    return true;
+                if (player.x + player.hitbox.x + player.hitbox.width + mob.speed < mob.x + mob.hitbox.x) return true;
             }
         }
         return false;
