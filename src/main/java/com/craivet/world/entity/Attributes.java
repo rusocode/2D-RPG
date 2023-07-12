@@ -1,5 +1,6 @@
 package com.craivet.world.entity;
 
+import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.projectile.Projectile;
 
 import java.awt.*;
@@ -21,7 +22,7 @@ import static com.craivet.util.Global.*;
 public class Attributes {
 
     // Generals attributes
-    public Entity weapon, shield, light;
+    public Item weapon, shield, light;
     public Projectile projectile;
     public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;

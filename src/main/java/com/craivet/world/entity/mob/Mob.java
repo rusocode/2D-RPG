@@ -21,4 +21,18 @@ public class Mob extends Entity {
         super(game, world, x, y);
     }
 
+    /**
+     * Mueve al Mob.
+     *
+     * @param direction direccion hacia donde se mueve el Mob.
+     */
+    protected void move(int direction) {
+    }
+
+    public void speak() {
+    }
+
+    public void damageReaction() {
+    }
+
 }

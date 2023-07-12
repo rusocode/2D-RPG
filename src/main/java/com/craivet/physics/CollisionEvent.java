@@ -3,6 +3,7 @@ package com.craivet.physics;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
 
@@ -156,12 +157,12 @@ public class CollisionEvent {
     }
 
     /**
-     * Habla con la entidad.
+     * Habla con el Mob.
      *
-     * @param entity entidad con la que habla el player.
+     * @param mob mob con la que habla el player.
      */
-    private void speak(Entity entity) {
-        if (game.keyboard.enter) entity.speak();
+    private void speak(Mob mob) {
+        if (game.keyboard.enter) mob.speak();
     }
 
     private void initDialogues() {

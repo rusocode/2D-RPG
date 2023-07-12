@@ -7,6 +7,7 @@ import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
 import com.craivet.util.Utils;
+import com.craivet.world.entity.item.Item;
 
 import static com.craivet.util.Global.*;
 import static com.craivet.gfx.Assets.*;
@@ -20,7 +21,7 @@ public class DryTree extends Interactive {
         hp = 1;
     }
 
-    public boolean isCorrectWeapon(Entity weapon) {
+    public boolean isCorrectWeapon(Item weapon) {
         return weapon.type == Type.AXE;
     }
 

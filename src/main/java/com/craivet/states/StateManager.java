@@ -4,11 +4,11 @@ public class StateManager {
 
 	private State state;
 
-	public State getState() {
+	public State get() {
 		return state;
 	}
 
-	public void setState(State state) {
+	public void set(State state) {
 		this.state = state;
 	}
 

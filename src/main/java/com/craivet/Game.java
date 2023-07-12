@@ -3,7 +3,7 @@ package com.craivet;
 import com.craivet.ai.AStar;
 import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
-import com.craivet.io.GameFile;
+import com.craivet.io.File;
 import com.craivet.input.Keyboard;
 import com.craivet.physics.*;
 import com.craivet.states.*;
@@ -30,7 +30,7 @@ public class Game extends Canvas implements Runnable {
     public Minimap minimap = new Minimap(world);
     public Audio sound = new Audio();
     public Audio music = new Audio();
-    public GameFile file = new GameFile(this, world);
+    public File file = new File(this, world);
     public Collision collision = new Collision(world);
     public CollisionEvent event = new CollisionEvent(this, world);
     public AStar aStar = new AStar(world);
@@ -104,17 +104,18 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void init() {
+        file.loadConfig();
         file.loadTiles();
         file.loadMaps();
         world.createEntities();
         minimap.createMinimap();
         event.createEvents();
         playMusic(music_main);
-        stateManager.setState(new GameState(this, world, ui, minimap));
+        stateManager.set(new GameState(this, world, ui, minimap));
     }
 
     private void update() {
-        if (stateManager.getState() != null) stateManager.getState().update();
+        if (stateManager.get() != null) stateManager.get().update();
     }
 
     private void render() {
@@ -123,7 +124,7 @@ public class Game extends Canvas implements Runnable {
         // Limpia la ventana usando el color de fondo actual
         g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         // Renderiza los graficos en pantalla
-        if (stateManager.getState() != null) stateManager.getState().render(g2);
+        if (stateManager.get() != null) stateManager.get().render(g2);
         // Hace visible el buffer
         buffer.show();
         // Elimina este contexto de graficos y libera cualquier recurso del sistema que este utilizando

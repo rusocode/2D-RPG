@@ -25,6 +25,15 @@ public class Item extends Entity {
         return false;
     }
 
+    public void setLoot(Entity loot) {
+    }
+
+    /**
+     * Interactua con el item.
+     */
+    public void interact() {
+    }
+
     /**
      * Detecta si el item especificado se encuentra en la posicion adyacente a la entidad.
      *

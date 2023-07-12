@@ -32,7 +32,7 @@ public class Entity extends Attributes {
 
     public Flags flags = new Flags();
     public Timer timer = new Timer();
-    public ArrayList<Entity> inventory = new ArrayList<>();
+    public ArrayList<Item> inventory = new ArrayList<>();
     public Entity linkedEntity;
     public boolean hpBar;
     /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
@@ -112,21 +112,6 @@ public class Entity extends Attributes {
     }
 
     protected void setAction() {
-    }
-
-    public void move(int direction) {
-    }
-
-    public void setLoot(Entity loot) {
-    }
-
-    public void damageReaction() {
-    }
-
-    public void speak() {
-    }
-
-    public void interact() {
     }
 
     public void checkDrop() {

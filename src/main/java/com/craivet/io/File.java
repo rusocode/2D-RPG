@@ -21,7 +21,7 @@ import static com.craivet.util.Global.*;
  * @author Juan Debenedetti
  */
 
-public class GameFile {
+public class File {
 
     private final Game game;
     private final World world;
@@ -35,10 +35,9 @@ public class GameFile {
     private final ArrayList<String> names = new ArrayList<>();
     private final ArrayList<String> solids = new ArrayList<>();
 
-    public GameFile(Game game, World world) {
+    public File(Game game, World world) {
         this.game = game;
         this.world = world;
-        loadConfig();
     }
 
     /**
@@ -59,7 +58,7 @@ public class GameFile {
     /**
      * Carga la configuracion del juego.
      */
-    private void loadConfig() {
+    public void loadConfig() {
         try (BufferedReader br = new BufferedReader(new FileReader(config))) {
             // game.fullScreen = ON.equals(br.readLine());
             // TODO Verificar null
@@ -210,6 +209,16 @@ public class GameFile {
     }
 
     /**
+     * Carga todos los mapas que componen al mundo.
+     */
+    public void loadMaps() {
+        loadMap("maps/nix.txt", NIX, "Nix");
+        loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
+        loadMap("maps/dungeon01.txt", DUNGEON_01, "Dungeon 01");
+        loadMap("maps/dungeon02.txt", DUNGEON_02, "Dungeon 02");
+    }
+
+    /**
      * Carga el tile.
      *
      * @param i     indice del tile.
@@ -220,17 +229,6 @@ public class GameFile {
         world.tileData[i] = new Tile();
         world.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile_size, tile_size);
         world.tileData[i].solid = solid;
-    }
-
-
-    /**
-     * Carga todos los mapas que componen al mundo.
-     */
-    public void loadMaps() {
-        loadMap("maps/nix.txt", NIX, "Nix");
-        loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
-        loadMap("maps/dungeon01.txt", DUNGEON_01, "Dungeon 01");
-        loadMap("maps/dungeon02.txt", DUNGEON_02, "Dungeon 02");
     }
 
     /**

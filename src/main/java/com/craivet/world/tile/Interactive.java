@@ -3,6 +3,7 @@ package com.craivet.world.tile;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.item.Item;
 
 import static com.craivet.util.Global.*;
 
@@ -25,7 +26,7 @@ public class Interactive extends Entity {
      * @param weapon arma seleccionada.
      * @return true si el arma seleccionada es la correcta.
      */
-    public boolean isCorrectWeapon(Entity weapon) {
+    public boolean isCorrectWeapon(Item weapon) {
         return false;
     }
 
