@@ -19,7 +19,6 @@ public final class Global {
     public static final boolean FPS_UNLIMITED = false;
 
     // Otros
-    public static final String CONFIG_FILE = "config.txt";
     public static final int MAX_INVENTORY_SIZE = 20;
     public static final int ENTITY_WIDTH = 16;
     public static final int ENTITY_HEIGHT = 16;

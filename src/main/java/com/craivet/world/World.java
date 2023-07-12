@@ -41,8 +41,6 @@ public class World {
     public HashMap<Integer, String> maps = new HashMap<>();
     public Tile[] tileData;
     public int[][][] tileIndex = new int[MAX_MAP][MAX_MAP_ROW][MAX_MAP_COL];
-    ArrayList<String> names = new ArrayList<>();
-    ArrayList<String> solids = new ArrayList<>();
 
     // Entities
     public Player player;
@@ -81,70 +79,6 @@ public class World {
         tiles.render(g2);
         entitites.render(g2);
         if (game.state != MAIN_STATE) environment.render(g2);
-    }
-
-    /**
-     * Lee los datos de cada tile (nombre y estado solido) desde el archivo "tile_data.txt" y los agrega a sus
-     * respectivas listas. Luego utiliza esos datos para cargar todos los tiles dentro de un array.
-     */
-    public void loadTiles() {
-        String line;
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream("maps/tile_data.txt"))))) {
-            while ((line = br.readLine()) != null) {
-                names.add(line);
-                solids.add(br.readLine());
-            }
-            tileData = new Tile[names.size()];
-            for (int i = 0; i < names.size(); i++)
-                loadTile(i, names.get(i), Boolean.parseBoolean(solids.get(i)));
-        } catch (IOException e) {
-            throw new RuntimeException("Error al leer el archivo tile_data.txt", e);
-        }
-    }
-
-    /**
-     * Carga el tile.
-     *
-     * @param i     indice del tile.
-     * @param name  nombre del tile.
-     * @param solid si es solido o no.
-     */
-    private void loadTile(int i, String name, boolean solid) {
-        tileData[i] = new Tile();
-        tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile_size, tile_size);
-        tileData[i].solid = solid;
-    }
-
-    /**
-     * Carga todos los mapas que componen al mundo.
-     */
-    public void loadMaps() {
-        loadMap("maps/nix.txt", NIX, "Nix");
-        loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
-        loadMap("maps/dungeon01.txt", DUNGEON_01, "Dungeon 01");
-        loadMap("maps/dungeon02.txt", DUNGEON_02, "Dungeon 02");
-    }
-
-    /**
-     * Carga el mapa utilizando la ruta especificada y almacena cada valor (tile) leido del archivo en la matriz.
-     *
-     * @param path ruta del recurso.
-     * @param map  numero del mapa como clave.
-     * @param name nombre del mapa como valor.
-     */
-    public void loadMap(String path, int map, String name) {
-        maps.put(map, name);
-        int row = 0;
-        try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
-            for (row = 0; row < MAX_MAP_ROW; row++) {
-                String line = br.readLine();
-                String[] numbers = line.split(" ");
-                for (int col = 0; col < MAX_MAP_COL; col++)
-                    tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Error al leer el archivo " + path + " en la linea " + (row + 1), e);
-        }
     }
 
     public void changeArea() {

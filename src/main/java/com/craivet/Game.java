@@ -3,13 +3,10 @@ package com.craivet;
 import com.craivet.ai.AStar;
 import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
-import com.craivet.io.Config;
 import com.craivet.io.GameFile;
 import com.craivet.input.Keyboard;
-import com.craivet.physics.Collision;
-import com.craivet.physics.CollisionEvent;
-import com.craivet.states.GameState;
-import com.craivet.states.StateManager;
+import com.craivet.physics.*;
+import com.craivet.states.*;
 import com.craivet.util.TimeUtils;
 import com.craivet.world.World;
 
@@ -28,15 +25,14 @@ public class Game extends Canvas implements Runnable {
 
     public Keyboard keyboard = new Keyboard(this);
     public World world = new World(this);
-    public ItemGenerator itemGenerator = new ItemGenerator(this, world);
     public UI ui = new UI(this, world);
+    public ItemGenerator itemGenerator = new ItemGenerator(this, world);
     public Minimap minimap = new Minimap(world);
-    public GameFile file = new GameFile(this, world);
     public Audio sound = new Audio();
     public Audio music = new Audio();
+    public GameFile file = new GameFile(this, world);
     public Collision collision = new Collision(world);
     public CollisionEvent event = new CollisionEvent(this, world);
-    public Config config = new Config(this);
     public AStar aStar = new AStar(world);
 
     // States
@@ -108,8 +104,8 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void init() {
-        world.loadTiles();
-        world.loadMaps();
+        file.loadTiles();
+        file.loadMaps();
         world.createEntities();
         minimap.createMinimap();
         event.createEvents();

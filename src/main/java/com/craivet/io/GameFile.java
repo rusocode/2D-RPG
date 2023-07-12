@@ -1,31 +1,80 @@
 package com.craivet.io;
 
 import com.craivet.Game;
+import com.craivet.util.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
+import com.craivet.world.tile.Tile;
 
+import javax.swing.*;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.Objects;
 
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.util.Global.*;
+
+/**
+ * Archivos del juego.
+ *
+ * @author Juan Debenedetti
+ */
 
 public class GameFile {
 
     private final Game game;
     private final World world;
-    private final String saveFile = "save.dat";
+    private final String config = "config.txt";
+    private final String data = "data.dat";
+    private final String tileData = "maps/tile_data.txt";
+
+    private static final String ON = "On";
+    private static final String OFF = "Off";
+
+    private final ArrayList<String> names = new ArrayList<>();
+    private final ArrayList<String> solids = new ArrayList<>();
 
     public GameFile(Game game, World world) {
         this.game = game;
         this.world = world;
+        loadConfig();
+    }
+
+    /**
+     * Guarda la configuracion del juego.
+     */
+    public void saveConfig() {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(config))) {
+            // bw.write(game.fullScreen ? ON : OFF);
+            // bw.newLine();
+            bw.write(String.valueOf(game.music.volumeScale));
+            bw.newLine();
+            bw.write(String.valueOf(game.sound.volumeScale));
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Carga la configuracion del juego.
+     */
+    private void loadConfig() {
+        try (BufferedReader br = new BufferedReader(new FileReader(config))) {
+            // game.fullScreen = ON.equals(br.readLine());
+            // TODO Verificar null
+            game.music.volumeScale = Integer.parseInt(br.readLine());
+            game.sound.volumeScale = Integer.parseInt(br.readLine());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error loading configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
      * Guarda los datos del juego.
      */
-    public void save() {
-        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(saveFile))) {
+    public void saveData() {
+        try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(data))) {
             Data data = new Data();
 
             // Player status
@@ -88,8 +137,8 @@ public class GameFile {
     /**
      * Carga los datos del juego.
      */
-    public void load() {
-        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(saveFile))) {
+    public void loadData() {
+        try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(data))) {
             // Lee los bytes desde el flujo de entrada y los deserializa en un objeto Data
             Data data = (Data) input.readObject();
             world.area = data.area;
@@ -138,6 +187,71 @@ public class GameFile {
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Lee los datos de cada tile (nombre y estado solido) desde el archivo "tile_data.txt" y los agrega a sus
+     * respectivas listas. Luego utiliza esos datos para cargar todos los tiles dentro de un array.
+     */
+    public void loadTiles() {
+        String line;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(tileData))))) {
+            while ((line = br.readLine()) != null) {
+                names.add(line);
+                solids.add(br.readLine());
+            }
+            world.tileData = new Tile[names.size()];
+            for (int i = 0; i < names.size(); i++)
+                loadTile(i, names.get(i), Boolean.parseBoolean(solids.get(i)));
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading file tile_data.txt", e);
+        }
+    }
+
+    /**
+     * Carga el tile.
+     *
+     * @param i     indice del tile.
+     * @param name  nombre del tile.
+     * @param solid si es solido o no.
+     */
+    private void loadTile(int i, String name, boolean solid) {
+        world.tileData[i] = new Tile();
+        world.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile_size, tile_size);
+        world.tileData[i].solid = solid;
+    }
+
+
+    /**
+     * Carga todos los mapas que componen al mundo.
+     */
+    public void loadMaps() {
+        loadMap("maps/nix.txt", NIX, "Nix");
+        loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
+        loadMap("maps/dungeon01.txt", DUNGEON_01, "Dungeon 01");
+        loadMap("maps/dungeon02.txt", DUNGEON_02, "Dungeon 02");
+    }
+
+    /**
+     * Carga el mapa utilizando la ruta especificada y almacena cada valor (tile) leido del archivo en la matriz.
+     *
+     * @param path ruta del recurso.
+     * @param map  numero del mapa como clave.
+     * @param name nombre del mapa como valor.
+     */
+    public void loadMap(String path, int map, String name) {
+        world.maps.put(map, name);
+        int row = 0;
+        try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
+            for (row = 0; row < MAX_MAP_ROW; row++) {
+                String line = br.readLine();
+                String[] numbers = line.split(" ");
+                for (int col = 0; col < MAX_MAP_COL; col++)
+                    world.tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Error reading file " + path + " on the line " + (row + 1), e);
         }
     }
 

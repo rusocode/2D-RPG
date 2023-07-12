@@ -92,7 +92,7 @@ public class Keyboard extends KeyAdapter {
                     game.playSound(sound_spawn);
                 }
                 if (game.ui.command == 1) {
-                    game.file.load();
+                    game.file.loadData();
                     game.state = PLAY_STATE;
                     game.stopMusic();
                     game.playSound(sound_spawn);
@@ -136,8 +136,8 @@ public class Keyboard extends KeyAdapter {
          * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
         if (code == KeyEvent.VK_R) {
             switch (game.world.map) {
-                case 0 -> game.world.loadMap("maps/nix.txt", NIX, "Nix");
-                case 1 -> game.world.loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
+                case 0 -> game.file.loadMap("maps/nix.txt", NIX, "Nix");
+                case 1 -> game.file.loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
             }
         }
     }
