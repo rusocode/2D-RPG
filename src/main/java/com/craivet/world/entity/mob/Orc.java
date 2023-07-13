@@ -60,4 +60,6 @@ public class Orc extends Mob {
         if (Utils.azar(100) <= PROBABILIDAD_DROP_GOLD) dropItem(this, new Gold(game, world));
     }
 
+
+
 }

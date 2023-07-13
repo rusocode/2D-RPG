@@ -227,7 +227,7 @@ public class Player extends Mob {
             Mob mob = world.mobs[world.map][i];
             if (keyboard.enter && mob.type == Type.NPC) {
                 attackCanceled = true;
-                mob.speak();
+                mob.dialogue();
             } else mob.move(direction);
         }
     }

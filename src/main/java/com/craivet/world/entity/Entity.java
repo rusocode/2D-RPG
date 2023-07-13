@@ -123,15 +123,6 @@ public class Entity extends Attributes {
         dialogueSet = set;
     }
 
-    protected void facePlayer() {
-        switch (world.player.direction) {
-            case DOWN -> direction = UP;
-            case UP -> direction = DOWN;
-            case LEFT -> direction = RIGHT;
-            case RIGHT -> direction = LEFT;
-        }
-    }
-
     public Color getParticleColor() {
         return null;
     }
@@ -300,42 +291,6 @@ public class Entity extends Attributes {
         timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
         if (flags.invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
         if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
-    }
-
-    /**
-     * Comprueba si puede atacar o no verificando si el objetivo esta dentro del rango especificado.
-     *
-     * @param rate       probabilidad de que el mob ataque.
-     * @param vertical   indica la distancia vertical.
-     * @param horizontal indica la distancia horizontal.
-     */
-    protected void checkAttackOrNot(int rate, int vertical, int horizontal) {
-        boolean targetInRage = false;
-        int xDis = getXDistance(world.player);
-        int yDis = getYDistance(world.player);
-        switch (direction) {
-            case DOWN -> {
-                if (world.player.y > y && yDis < vertical && xDis < horizontal) targetInRage = true;
-            }
-            case UP -> {
-                if (world.player.y < y && yDis < vertical && xDis < horizontal) targetInRage = true;
-            }
-            case LEFT -> {
-                if (world.player.x < x && xDis < vertical && yDis < horizontal) targetInRage = true;
-            }
-            case RIGHT -> {
-                if (world.player.x > x && xDis < vertical && yDis < horizontal) targetInRage = true;
-            }
-        }
-        // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
-        if (targetInRage) {
-            if (Utils.azar(rate) == 1) {
-                flags.hitting = true;
-                movementNum = 1;
-                timer.movementCounter = 0; // TODO O se referia al contador de ataque?
-                timer.projectileCounter = 0;
-            }
-        }
     }
 
     /**
@@ -572,7 +527,7 @@ public class Entity extends Attributes {
      * @param target objetivo.
      * @return la diferencia entre la posicion x del mob y la posicion x del objetivo.
      */
-    private int getXDistance(Entity target) {
+    protected int getXDistance(Entity target) {
         return Math.abs(x - target.x);
     }
 
@@ -582,7 +537,7 @@ public class Entity extends Attributes {
      * @param target objetivo.
      * @return la diferencia entre la posicion y del mob y la posicion y del objetivo.
      */
-    private int getYDistance(Entity target) {
+    protected int getYDistance(Entity target) {
         return Math.abs(y - target.y);
     }
 
@@ -594,14 +549,6 @@ public class Entity extends Attributes {
      */
     private int getTileDistance(Entity target) {
         return (getXDistance(target) + getYDistance(target)) / tile_size;
-    }
-
-    protected int getGoalRow(Entity target) {
-        return (target.y + target.hitbox.y) / tile_size;
-    }
-
-    protected int getGoalCol(Entity target) {
-        return (target.x + target.hitbox.x) / tile_size;
     }
 
     private void drawRects(Graphics2D g2, int screenX, int screenY) {

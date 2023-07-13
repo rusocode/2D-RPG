@@ -33,10 +33,9 @@ public class Oldman extends Mob {
         else timer.timeDirection(this, INTERVAL_DIRECTION);
     }
 
-    public void speak() {
-        facePlayer();
+    public void dialogue() {
+        lookPlayer();
         startDialogue(DIALOGUE_STATE, this, dialogueSet);
-
         dialogueSet++;
         if (dialogues[dialogueSet][dialogueIndex] == null) dialogueSet = 0;
     }

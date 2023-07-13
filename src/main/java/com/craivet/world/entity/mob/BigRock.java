@@ -57,8 +57,8 @@ public class BigRock extends Mob {
         detectedPlate();
     }
 
-    public void speak() {
-        facePlayer();
+    public void dialogue() {
+        lookPlayer();
         startDialogue(DIALOGUE_STATE, this, dialogueSet);
 
         dialogueSet++;

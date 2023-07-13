@@ -162,7 +162,7 @@ public class CollisionEvent {
      * @param mob mob con la que habla el player.
      */
     private void speak(Mob mob) {
-        if (game.keyboard.enter) mob.speak();
+        if (game.keyboard.enter) mob.dialogue();
     }
 
     private void initDialogues() {
