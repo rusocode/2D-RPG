@@ -24,7 +24,7 @@ public class Fireball extends Projectile {
 		knockbackValue = 5;
 		cost = 1;
 		flags.alive = false;
-		loadMovementImages(entity_fireball, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+		loadMovementImages(fireball, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
 	}
 
 	@Override

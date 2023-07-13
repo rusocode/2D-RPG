@@ -32,15 +32,14 @@ public class Slime extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
-        loadMovementImages(entity_slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        loadMovementImages(slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         mobImage = movementDown1;
     }
 
-    public void setAction() {
-        // Si es agresivo
-        if (flags.onPath) {
+    public void doActions() {
+        if (flags.following) {
             checkUnfollow(world.player, 15);
-            searchPath(getGoalRow(world.player), getGoalCol(world.player));
+            game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
             // checkShoot();
         } else {
             checkFollow(world.player, 5, 100);
@@ -50,7 +49,7 @@ public class Slime extends Mob {
 
     public void damageReaction() {
         timer.directionCounter = 0;
-        flags.onPath = true;
+        flags.following = true;
     }
 
     public void checkDrop() {

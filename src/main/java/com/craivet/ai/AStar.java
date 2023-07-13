@@ -1,6 +1,7 @@
 package com.craivet.ai;
 
 import com.craivet.world.World;
+import com.craivet.world.entity.Entity;
 
 import java.util.ArrayList;
 
@@ -24,8 +25,67 @@ public class AStar {
         initNodes();
     }
 
+    /**
+     * Busca la mejor ruta para la entidad.
+     *
+     * @param goalRow fila objetivo.
+     * @param goalCol columna objetivo.
+     */
+    public void searchPath(Entity entity, int goalRow, int goalCol) {
+        int startRow = (entity.y + entity.hitbox.y) / tile_size;
+        int startCol = (entity.x + entity.hitbox.x) / tile_size;
+
+        setNodes(startRow, startCol, goalRow, goalCol);
+
+        // Si devuelve verdadero, significa que ha encontrado un camino para guiar a la entidad hacia el objetivo
+        if (search()) {
+
+            // Obtiene la siguiente posicion x/y de la ruta
+            int nextX = pathList.get(0).col * tile_size;
+            int nextY = pathList.get(0).row * tile_size;
+            // Obtiene la posicion de la entidad
+            int left = entity.x + entity.hitbox.x;
+            int right = entity.x + entity.hitbox.x + entity.hitbox.width;
+            int top = entity.y + entity.hitbox.y;
+            int bottom = entity.y + entity.hitbox.y + entity.hitbox.height;
+
+            // Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
+            /* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces
+             * se define su movimiento hacia arriba o abajo. */
+            if (left >= nextX && right < nextX + tile_size) entity.direction = top > nextY ? UP : DOWN;
+            /* Si el lado superior y inferior de la entidad estan entre la siguiente posicion y de la ruta, entonces
+             * se define su movimiento hacia la izquierda o derecha. */
+            if (top >= nextY && bottom < nextY + tile_size) entity.direction = left > nextX ? LEFT : RIGHT;
+
+                /* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
+                 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
+            else if (top > nextY && left > nextX) {
+                // up o left
+                entity.direction = UP;
+                entity.checkCollision();
+                if (entity.flags.colliding) entity.direction = LEFT;
+            } else if (top > nextY && left < nextX) {
+                // up o right
+                entity.direction = UP;
+                entity.checkCollision();
+                if (entity.flags.colliding) entity.direction = RIGHT;
+            } else if (top < nextY && left > nextX) {
+                // down o left
+                entity.direction = DOWN;
+                entity.checkCollision();
+                if (entity.flags.colliding) entity.direction = LEFT;
+            } else if (top < nextY && left < nextX) {
+                // down o right
+                entity.direction = DOWN;
+                entity.checkCollision();
+                if (entity.flags.colliding) entity.direction = RIGHT;
+            }
+
+        }
+    }
+
     // TODO El problema de esto es que la busqueda se actualiza cada 60 segundos
-    public boolean search() {
+    private boolean search() {
         while (!goalReached && step < 500) {
 
             currentNode.checked = true;

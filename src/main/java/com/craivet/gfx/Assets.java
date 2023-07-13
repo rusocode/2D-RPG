@@ -55,20 +55,20 @@ public final class Assets {
     // TEXTURES
     // Entity
     private static final String textures_entity_path = "textures/entity/";
-    public static final SpriteSheet entity_orc_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/attack.png"));
-    public static final SpriteSheet entity_orc_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/movement.png"));
-    public static final SpriteSheet entity_bat = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/bat.png"));
-    public static final SpriteSheet entity_redslime = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/redslime.png"));
-    public static final SpriteSheet entity_slime = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/slime.png"));
-    public static final BufferedImage entity_bigrock = Utils.loadImage(textures_entity_path + "npc/bigrock.png");
-    public static final SpriteSheet entity_oldman = new SpriteSheet(Utils.loadImage(textures_entity_path + "npc/oldman.png"));
-    public static final BufferedImage entity_trader = Utils.loadImage(textures_entity_path + "npc/trader.png");
-    public static final SpriteSheet entity_player_axe = new SpriteSheet(Utils.loadImage(textures_entity_path + "player/axe.png"));
-    public static final SpriteSheet entity_player_sword = new SpriteSheet(Utils.loadImage(textures_entity_path + "player/sword.png")); // TODO SpriteSheet de armas?
-    public static final SpriteSheet entity_player_pickaxe = new SpriteSheet(Utils.loadImage(textures_entity_path + "player/pickaxe.png"));
-    public static final SpriteSheet entity_player_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "player/movement.png"));
-    public static final SpriteSheet entity_fireball = new SpriteSheet(Utils.loadImage(textures_entity_path + "projectile/fireball.png"));
-    public static final BufferedImage entity_sticky_ball = Utils.loadImage(textures_entity_path + "projectile/sticky_ball.png");
+    public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/attack.png"));
+    public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/movement.png"));
+    public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/axe.png"));
+    public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/movement.png"));
+    public static final SpriteSheet player_pickaxe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/pickaxe.png"));
+    public static final SpriteSheet player_sword = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/sword.png")); // TODO SpriteSheet de armas?
+    public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/bat.png"));
+    public static final BufferedImage bigrock = Utils.loadImage(textures_entity_path + "mob/bigrock.png");
+    public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/oldman.png"));
+    public static final SpriteSheet redslime = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/redslime.png"));
+    public static final SpriteSheet slime = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/slime.png"));
+    public static final BufferedImage trader = Utils.loadImage(textures_entity_path + "mob/trader.png");
+    public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage(textures_entity_path + "projectile/fireball.png"));
+    public static final BufferedImage sticky_ball = Utils.loadImage(textures_entity_path + "projectile/sticky_ball.png");
     // Gui
     public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));
     // Items

@@ -21,15 +21,12 @@ public class Oldman extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogueSet = -1;
-        loadMovementImages(entity_oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        loadMovementImages(oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         initDialogue();
     }
 
-    /**
-     * Establece la accion especificada.
-     */
-    public void setAction() {
-        if (flags.onPath) searchPath(getGoalRow(world.player), getGoalCol(world.player));
+    public void doActions() {
+        if (flags.following) game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
         else timer.timeDirection(this, INTERVAL_DIRECTION);
     }
 

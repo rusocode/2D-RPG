@@ -28,14 +28,14 @@ public class RedSlime extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
-        loadMovementImages(entity_redslime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        loadMovementImages(redslime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         mobImage = movementDown1;
     }
 
-    public void setAction() {
-        if (flags.onPath) {
+    public void doActions() {
+        if (flags.following) {
             checkUnfollow(world.player, 17);
-            searchPath(getGoalRow(world.player), getGoalCol(world.player));
+            game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
             checkShoot();
         } else {
             checkFollow(world.player, 6, 100);
@@ -45,7 +45,7 @@ public class RedSlime extends Mob {
 
     public void damageReaction() {
         timer.directionCounter = 0;
-        flags.onPath = true;
+        flags.following = true;
     }
 
     public void checkDrop() {

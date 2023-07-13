@@ -24,7 +24,8 @@ import static com.craivet.util.Global.*;
  * TODO No tendria que ser una clase abstracta?
  */
 
-// Se crean 87 entidades por ahora, por lo tanto se crean 87 objetos Timer y nose si es necesario crear un timer para cada entidad
+/* TODO Se crean 87 entidades por ahora, por lo tanto se crean 87 objetos Timer y nose si es necesario crear un timer
+ * para cada entidad, entonces no tiene mas sentido crear esos objetos en la clase Game? */
 public class Entity extends Attributes {
 
     protected final Game game;
@@ -32,6 +33,7 @@ public class Entity extends Attributes {
 
     public Flags flags = new Flags();
     public Timer timer = new Timer();
+
     public ArrayList<Item> inventory = new ArrayList<>();
     public Entity linkedEntity;
     public boolean hpBar;
@@ -69,8 +71,8 @@ public class Entity extends Attributes {
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
         } else if (flags.hitting) hit();
         else {
-            // Establece una accion (es importante que realize una accion antes de comprobar las colisiones)
-            setAction();
+            // Es importante que realize las acciones antes de comprobar las colisiones
+            doActions();
             checkCollision();
             if (!flags.colliding) updatePosition(direction);
         }
@@ -111,9 +113,15 @@ public class Entity extends Attributes {
         }
     }
 
-    protected void setAction() {
+    /**
+     * Realiza acciones.
+     */
+    protected void doActions() {
     }
 
+    /**
+     * Comprueba si dropeo un item.
+     */
     public void checkDrop() {
     }
 
@@ -300,7 +308,6 @@ public class Entity extends Attributes {
         flags.colliding = false;
         game.collision.checkTile(this);
         game.collision.checkItem(this);
-        // game.collision.checkEntity(this, world.npcs);
         game.collision.checkEntity(this, world.mobs);
         game.collision.checkEntity(this, world.interactives);
         hitPlayer(game.collision.checkPlayer(this), attack);
@@ -337,86 +344,6 @@ public class Entity extends Attributes {
         flags.knockback = false;
         speed = defaultSpeed;
         timer.knockbackCounter = 0;
-    }
-
-    /**
-     * Comprueba si comienza a seguir al objetivo.
-     *
-     * @param target   objetivo.
-     * @param distance distancia en tiles.
-     * @param rate     la tasa que determina si sigue al objetivo.
-     */
-    protected void checkFollow(Entity target, int distance, int rate) {
-        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) flags.onPath = true;
-    }
-
-    /**
-     * Comprueba si deja de seguir al objetivo.
-     *
-     * @param target   objetivo.
-     * @param distance distancia en tiles.
-     */
-    protected void checkUnfollow(Entity target, int distance) {
-        if (getTileDistance(target) > distance) flags.onPath = false;
-    }
-
-    /**
-     * Busca la mejor ruta para la entidad.
-     *
-     * @param goalRow fila objetivo.
-     * @param goalCol columna objetivo.
-     */
-    protected void searchPath(int goalRow, int goalCol) {
-        int startRow = (y + hitbox.y) / tile_size;
-        int startCol = (x + hitbox.x) / tile_size;
-
-        game.aStar.setNodes(startRow, startCol, goalRow, goalCol);
-
-        // Si devuelve verdadero, significa que ha encontrado un camino para guiar a la entidad hacia el objetivo
-        if (game.aStar.search()) {
-
-            // Obtiene la siguiente posicion x/y de la ruta
-            int nextX = game.aStar.pathList.get(0).col * tile_size;
-            int nextY = game.aStar.pathList.get(0).row * tile_size;
-            // Obtiene la posicion de la entidad
-            int left = x + hitbox.x;
-            int right = x + hitbox.x + hitbox.width;
-            int top = y + hitbox.y;
-            int bottom = y + hitbox.y + hitbox.height;
-
-            // Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
-            /* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces
-             * se define su movimiento hacia arriba o abajo. */
-            if (left >= nextX && right < nextX + tile_size) direction = top > nextY ? UP : DOWN;
-            /* Si el lado superior y inferior de la entidad estan entre la siguiente posicion y de la ruta, entonces
-             * se define su movimiento hacia la izquierda o derecha. */
-            if (top >= nextY && bottom < nextY + tile_size) direction = left > nextX ? LEFT : RIGHT;
-
-                /* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
-                 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
-            else if (top > nextY && left > nextX) {
-                // up o left
-                direction = UP;
-                checkCollision();
-                if (flags.colliding) direction = LEFT;
-            } else if (top > nextY && left < nextX) {
-                // up o right
-                direction = UP;
-                checkCollision();
-                if (flags.colliding) direction = RIGHT;
-            } else if (top < nextY && left > nextX) {
-                // down o left
-                direction = DOWN;
-                checkCollision();
-                if (flags.colliding) direction = LEFT;
-            } else if (top < nextY && left < nextX) {
-                // down o right
-                direction = DOWN;
-                checkCollision();
-                if (flags.colliding) direction = RIGHT;
-            }
-
-        }
     }
 
     /**
@@ -519,36 +446,6 @@ public class Entity extends Attributes {
             frame = attackNum == 1 ? attack1 : attack2;
         }
         return frame;
-    }
-
-    /**
-     * Obtiene la diferencia entre la posicion x del mob y la posicion x del objetivo.
-     *
-     * @param target objetivo.
-     * @return la diferencia entre la posicion x del mob y la posicion x del objetivo.
-     */
-    protected int getXDistance(Entity target) {
-        return Math.abs(x - target.x);
-    }
-
-    /**
-     * Obtiene la diferencia entre la posicion y del mob y la posicion y del objetivo.
-     *
-     * @param target objetivo.
-     * @return la diferencia entre la posicion y del mob y la posicion y del objetivo.
-     */
-    protected int getYDistance(Entity target) {
-        return Math.abs(y - target.y);
-    }
-
-    /**
-     * Obtiene la distancia del objetivo en tiles.
-     *
-     * @param target objetivo.
-     * @return la distancia en tiles del objetivo.
-     */
-    private int getTileDistance(Entity target) {
-        return (getXDistance(target) + getYDistance(target)) / tile_size;
     }
 
     private void drawRects(Graphics2D g2, int screenX, int screenY) {

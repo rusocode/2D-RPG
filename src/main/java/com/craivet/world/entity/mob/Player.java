@@ -119,8 +119,8 @@ public class Player extends Mob {
         motion1 = 5;
         motion2 = 25;
 
-        loadMovementImages(entity_player_movement, 16, 16, tile_size);
-        loadWeaponImages(entity_player_sword, 16, 16);
+        loadMovementImages(player_movement, 16, 16, tile_size);
+        loadWeaponImages(player_sword, 16, 16);
         addItemsToInventory();
     }
 
@@ -362,11 +362,11 @@ public class Player extends Mob {
                 attack = getAttack();
                 switch (weapon.type) {
                     case SWORD -> {
-                        loadWeaponImages(entity_player_sword, 16, 16);
+                        loadWeaponImages(player_sword, 16, 16);
                         game.playSound(sound_draw_sword);
                     }
-                    case AXE -> loadWeaponImages(entity_player_axe, 16, 16);
-                    case PICKAXE -> loadWeaponImages(entity_player_pickaxe, 16, 16);
+                    case AXE -> loadWeaponImages(player_axe, 16, 16);
+                    case PICKAXE -> loadWeaponImages(player_pickaxe, 16, 16);
                 }
             }
             if (selectedItem.type == Type.SHIELD) {
@@ -436,9 +436,6 @@ public class Player extends Mob {
         else if (keyboard.d) direction = RIGHT;
     }
 
-    /**
-     * Comprueba las colisiones con tiles, items, mobs, tiles interactivos y eventos.
-     */
     public void checkCollision() {
         flags.colliding = false;
         game.collision.checkTile(this);

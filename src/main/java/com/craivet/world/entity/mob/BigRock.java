@@ -22,7 +22,7 @@ public class BigRock extends Mob {
         super(game, world, x, y);
         name = NAME;
         type = Type.NPC;
-        image = Utils.scaleImage(entity_bigrock, tile_size, tile_size);
+        image = Utils.scaleImage(bigrock, tile_size, tile_size);
         speed = 2;
         hitbox.x = 2;
         hitbox.y = 6;
@@ -35,10 +35,6 @@ public class BigRock extends Mob {
     }
 
     public void update() {
-
-    }
-
-    public void setAction() {
 
     }
 
@@ -58,9 +54,7 @@ public class BigRock extends Mob {
     }
 
     public void dialogue() {
-        lookPlayer();
         startDialogue(DIALOGUE_STATE, this, dialogueSet);
-
         dialogueSet++;
         if (dialogues[dialogueSet][dialogueIndex] == null) dialogueSet = 0;
     }

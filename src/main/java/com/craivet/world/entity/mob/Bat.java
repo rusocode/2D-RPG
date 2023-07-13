@@ -26,11 +26,11 @@ public class Bat extends Mob {
         hitbox.height = 21;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        loadMovementImages(entity_bat, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        loadMovementImages(bat, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
         mobImage = movementDown1;
     }
 
-    public void setAction() {
+    public void doActions() {
         timer.timeDirection(this, INTERVAL_DIRECTION);
     }
 
@@ -38,9 +38,6 @@ public class Bat extends Mob {
         timer.directionCounter = 0;
     }
 
-    /**
-     * Comprueba si dropeo un item.
-     */
     public void checkDrop() {
         if (Utils.azar(100) <= PROBABILIDAD_DROP_GOLD) dropItem(this, new Gold(game, world));
     }

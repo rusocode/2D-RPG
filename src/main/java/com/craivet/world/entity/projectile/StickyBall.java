@@ -22,7 +22,7 @@ public class StickyBall extends Projectile {
 
     private void setDefaultValues() {
         name = "Sticky Ball";
-        image = Utils.scaleImage(entity_sticky_ball, 32, 32);
+        image = Utils.scaleImage(sticky_ball, 32, 32);
         speed = 5;
         hp = maxHp = 120;
         attack = 3;
