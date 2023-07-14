@@ -16,7 +16,7 @@ public class Lantern extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.LIGHT;
-        image = Utils.scaleImage(item_lantern, tile_size, tile_size);
+        image = Utils.scaleImage(lantern, tile_size, tile_size);
         description = "[" + name + "]\nIlluminaties your \nsurroundings.";
         price = 200;
         lightRadius = 350;

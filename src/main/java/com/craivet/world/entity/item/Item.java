@@ -11,25 +11,32 @@ public class Item extends Entity {
 
     protected int value;
 
+    private Entity entity;
+
     public Item(Game game, World world, int x, int y) {
         super(game, world, x, y);
     }
 
     /**
-     * Usa el item.
+     * Use the item.
      *
-     * @param entity entidad que utiliza el item.
-     * @return true si puede usarlo o false.
+     * @param entity entity using the item.
+     * @return true if can use it or false.
      */
     public boolean use(Entity entity) {
         return false;
     }
 
+    /**
+     * Set loot to chest.
+     *
+     * @param loot loot from the chest.
+     */
     public void setLoot(Entity loot) {
     }
 
     /**
-     * Interactua con el item.
+     * Interact with the Player.
      */
     public void interact() {
     }
@@ -42,16 +49,17 @@ public class Item extends Entity {
      * @param name   nombre del item.
      * @return el indice del item especificado a la posicion adyacente de la entidad o -1 si no existe.
      */
-    protected int detect(Entity entity, Entity[][] items, String name) {
+    protected int detect(Entity entity, Item[][] items, String name) {
+        this.entity = entity;
         // Verifica el item adyacente a la entidad
-        int nextX = entity.getLeftHitbox();
-        int nextY = entity.getTopHitbox();
+        int nextX = getLeftHitbox();
+        int nextY = getTopHitbox();
 
         switch (entity.direction) {
-            case DOWN -> nextY = entity.getBottomHitbox() + entity.speed;
-            case UP -> nextY = entity.getTopHitbox() - entity.speed;
-            case LEFT -> nextX = entity.getLeftHitbox() - entity.speed;
-            case RIGHT -> nextX = entity.getRightHitbox() + entity.speed;
+            case DOWN -> nextY = getBottomHitbox() + entity.speed;
+            case UP -> nextY = getTopHitbox() - entity.speed;
+            case LEFT -> nextX = getLeftHitbox() - entity.speed;
+            case RIGHT -> nextX = getRightHitbox() + entity.speed;
         }
 
         int row = nextY / tile_size;
@@ -65,6 +73,60 @@ public class Item extends Entity {
         }
 
         return -1;
+    }
+
+    /**
+     * Obtiene la posicion superior de la hitbox.
+     *
+     * @return la posicion superior de la hitbox.
+     */
+    private int getTopHitbox() {
+        return entity.y + entity.hitbox.y;
+    }
+
+    /**
+     * Obtiene la posicion inferior de la hitbox.
+     *
+     * @return la posicion inferior de la hitbox.
+     */
+    private int getBottomHitbox() {
+        return entity.y + entity.hitbox.y + entity.hitbox.height;
+    }
+
+    /**
+     * Obtiene la posicion izquierda de la hitbox.
+     *
+     * @return la posicion izquierda de la hitbox.
+     */
+    private int getLeftHitbox() {
+        return entity.x + entity.hitbox.x;
+    }
+
+    /**
+     * Obtiene la posicion derecha de la hitbox.
+     *
+     * @return la posicion derecha de la hitbox.
+     */
+    private int getRightHitbox() {
+        return entity.x + entity.hitbox.x + entity.hitbox.width;
+    }
+
+    /**
+     * Obtiene la fila de la entidad.
+     *
+     * @return la fila de la entiad.
+     */
+    private int getRow() {
+        return (y + hitbox.y) / tile_size;
+    }
+
+    /**
+     * Obtiene la columna de la entidad.
+     *
+     * @return la columna de la entiad.
+     */
+    private int getCol() {
+        return (x + hitbox.x) / tile_size;
     }
 
 }

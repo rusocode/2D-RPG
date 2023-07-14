@@ -35,6 +35,7 @@ public class Orc extends Mob {
         mobImage = movementDown1;
     }
 
+    @Override
     public void doActions() {
         if (flags.following) {
             checkUnfollow(world.player, 15);
@@ -43,16 +44,18 @@ public class Orc extends Mob {
             checkFollow(world.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
-        if (!flags.hitting) checkAttackOrNot(30, tile_size * 2, tile_size);
+        if (!flags.hitting) checkAttackOrNot(tile_size * 2, tile_size, 30);
     }
 
+    @Override
     public void damageReaction() {
         timer.directionCounter = 0;
         flags.following = true;
     }
 
+    @Override
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_GOLD) dropItem(this, new Gold(game, world));
+        if (Utils.azar(100) <= PROBABILITY_GOLD_DROP) dropItem(this, new Gold(game, world));
     }
 
 }

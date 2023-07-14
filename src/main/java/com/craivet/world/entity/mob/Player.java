@@ -40,6 +40,7 @@ public class Player extends Mob {
     /**
      * Es muy importante el orden de los metodos.
      */
+    @Override
     public void update() {
         if (flags.hitting) hit();
         if (keyboard.checkKeys()) {
@@ -58,6 +59,7 @@ public class Player extends Mob {
         checkHpMana();
     }
 
+    @Override
     public void render(Graphics2D g2) {
         BufferedImage frame = null;
         tempScreenX = screenX;
@@ -436,6 +438,7 @@ public class Player extends Mob {
         else if (keyboard.d) direction = RIGHT;
     }
 
+    @Override
     public void checkCollision() {
         flags.colliding = false;
         game.collision.checkTile(this);

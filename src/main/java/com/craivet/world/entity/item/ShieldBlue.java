@@ -16,7 +16,7 @@ public class ShieldBlue extends Item {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 		name = NAME;
 		type = Type.SHIELD;
-		image = Utils.scaleImage(item_shield_blue, tile_size, tile_size);
+		image = Utils.scaleImage(shield_blue, tile_size, tile_size);
 		description = "[" + name + "]\nA shiny blue shield.";
 		price = 250;
 		defenseValue = 2;

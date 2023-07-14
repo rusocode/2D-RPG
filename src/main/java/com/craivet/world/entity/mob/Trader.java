@@ -26,6 +26,7 @@ public class Trader extends Mob {
         setItems();
     }
 
+    @Override
     public void dialogue() {
         game.playSound(sound_trade_open);
         startDialogue(TRADE_STATE, this, 0);

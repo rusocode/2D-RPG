@@ -18,8 +18,8 @@ public class Key extends Item {
         name = NAME;
         type = Type.CONSUMABLE;
         // Si se especifica una posicion entonces la imagen es mas pequenia
-        if (pos.length > 0) image = Utils.scaleImage(item_key, 32, 32);
-        else image = Utils.scaleImage(item_key, tile_size, tile_size);
+        if (pos.length > 0) image = Utils.scaleImage(key, 32, 32);
+        else image = Utils.scaleImage(key, tile_size, tile_size);
         description = "[" + name + "]\nIt opens a door.";
         price = 100;
         this.amount = amount;
@@ -35,10 +35,10 @@ public class Key extends Item {
     @Override
     public boolean use(Entity entity) {
         // Si detecta una puerta, entonces puede usar la llave
-        int itemIndex = detect(entity, world.items, Door.NAME);
-        if (itemIndex != -1) {
+        int i = detect(entity, world.items, Door.NAME);
+        if (i != -1) {
             game.playSound(sound_door_opening);
-            world.items[world.map][itemIndex] = null;
+            world.items[world.map][i] = null;
             return true;
         }
         return false;

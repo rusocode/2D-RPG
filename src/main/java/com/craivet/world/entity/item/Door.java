@@ -16,7 +16,7 @@ public class Door extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.OBSTACLE;
-        image = Utils.scaleImage(item_door, tile_size, tile_size);
+        image = Utils.scaleImage(door, tile_size, tile_size);
         solid = true;
         hitbox.x = 0;
         hitbox.y = 16;
@@ -27,6 +27,7 @@ public class Door extends Item {
         initDialogue();
     }
 
+    @Override
     public void interact() {
         startDialogue(DIALOGUE_STATE, this, 0);
     }

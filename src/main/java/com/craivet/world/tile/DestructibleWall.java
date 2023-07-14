@@ -2,7 +2,6 @@ package com.craivet.world.tile;
 
 import com.craivet.Game;
 import com.craivet.world.World;
-import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.item.Stone;
 import com.craivet.world.entity.Type;
@@ -43,7 +42,7 @@ public class DestructibleWall extends Interactive {
     }
 
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_STONE) dropItem(this, new Stone(game, world, 1));
+        if (Utils.azar(100) <= PROBABILITY_STONE_DROP) dropItem(this, new Stone(game, world, 1));
     }
 
     @Override

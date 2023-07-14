@@ -15,12 +15,16 @@ public final class Assets {
     private Assets() {
     }
 
+    private static final String sounds_path = "audio/sounds/";
+    private static final String textures_entity_path = "textures/entity/";
+    private static final String textures_items_path = "textures/items/";
+    private static final String textures_tiles_interactive_path = "textures/tiles/interactive/";
+
     // AUDIO (ambient, music and sounds)
-    // Music Gunfor
+    // Music
     public static final URL music_main = Utils.loadAudio("audio/music/main.wav");
     public static final URL music_dungeon = Utils.loadAudio("audio/music/dungeon.wav");
     // Sounds
-    private static final String sounds_path = "audio/sounds/";
     public static final URL sound_burning = Utils.loadAudio(sounds_path + "burning5.wav");
     public static final URL sound_chest_opening = Utils.loadAudio(sounds_path + "chest_opening.wav");
     public static final URL sound_chipwall = Utils.loadAudio(sounds_path + "chipwall.wav");
@@ -54,7 +58,6 @@ public final class Assets {
 
     // TEXTURES
     // Entity
-    private static final String textures_entity_path = "textures/entity/";
     public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/attack.png"));
     public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/movement.png"));
     public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/axe.png"));
@@ -72,27 +75,25 @@ public final class Assets {
     // Gui
     public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));
     // Items
-    private static final String textures_items_path = "textures/items/";
-    public static final BufferedImage item_axe = Utils.loadImage(textures_items_path + "axe.png");
-    public static final BufferedImage item_boots = Utils.loadImage(textures_items_path + "boots.png");
-    public static final BufferedImage item_chest_closed = Utils.loadImage(textures_items_path + "chest_closed.png");
-    public static final BufferedImage item_chest_opened = Utils.loadImage(textures_items_path + "chest_opened.png");
-    public static final BufferedImage item_door = Utils.loadImage(textures_items_path + "door.png");
-    public static final BufferedImage item_door_iron = Utils.loadImage(textures_items_path + "door_iron.png");
-    public static final BufferedImage item_gold = Utils.loadImage(textures_items_path + "gold.png");
-    public static final BufferedImage item_key = Utils.loadImage(textures_items_path + "key.png");
-    public static final BufferedImage item_lantern = Utils.loadImage(textures_items_path + "lantern.png");
-    public static final BufferedImage item_pickaxe = Utils.loadImage(textures_items_path + "pickaxe.png");
-    public static final BufferedImage item_potion_red = Utils.loadImage(textures_items_path + "potion_red.png");
-    public static final BufferedImage item_shield_blue = Utils.loadImage(textures_items_path + "shield_blue.png");
-    public static final BufferedImage item_shield_wood = Utils.loadImage(textures_items_path + "shield_wood.png");
-    public static final BufferedImage item_stone = Utils.loadImage(textures_items_path + "stone.png");
-    public static final BufferedImage item_sword_normal = Utils.loadImage(textures_items_path + "sword_normal.png");
-    public static final BufferedImage item_tent = Utils.loadImage(textures_items_path + "tent.png");
+    public static final BufferedImage axe = Utils.loadImage(textures_items_path + "axe.png");
+    public static final BufferedImage boots = Utils.loadImage(textures_items_path + "boots.png");
+    public static final BufferedImage chest_closed = Utils.loadImage(textures_items_path + "chest_closed.png");
+    public static final BufferedImage chest_opened = Utils.loadImage(textures_items_path + "chest_opened.png");
+    public static final BufferedImage door = Utils.loadImage(textures_items_path + "door.png");
+    public static final BufferedImage door_iron = Utils.loadImage(textures_items_path + "door_iron.png");
+    public static final BufferedImage gold = Utils.loadImage(textures_items_path + "gold.png");
+    public static final BufferedImage key = Utils.loadImage(textures_items_path + "key.png");
+    public static final BufferedImage lantern = Utils.loadImage(textures_items_path + "lantern.png");
+    public static final BufferedImage pickaxe = Utils.loadImage(textures_items_path + "pickaxe.png");
+    public static final BufferedImage potion_red = Utils.loadImage(textures_items_path + "potion_red.png");
+    public static final BufferedImage shield_blue = Utils.loadImage(textures_items_path + "shield_blue.png");
+    public static final BufferedImage shield_wood = Utils.loadImage(textures_items_path + "shield_wood.png");
+    public static final BufferedImage stone = Utils.loadImage(textures_items_path + "stone.png");
+    public static final BufferedImage sword_normal = Utils.loadImage(textures_items_path + "sword_normal.png");
+    public static final BufferedImage tent = Utils.loadImage(textures_items_path + "tent.png");
     // Interactive tiles
-    private static final String textures_tiles_path = "textures/tiles/interactive/";
-    public static final BufferedImage itile_destructiblewall = Utils.loadImage(textures_tiles_path + "destructiblewall.png");
-    public static final BufferedImage itile_drytree = Utils.loadImage(textures_tiles_path + "drytree.png");
-    public static final BufferedImage itile_metalplate = Utils.loadImage(textures_tiles_path + "metalplate.png");
+    public static final BufferedImage itile_destructiblewall = Utils.loadImage(textures_tiles_interactive_path + "destructiblewall.png");
+    public static final BufferedImage itile_drytree = Utils.loadImage(textures_tiles_interactive_path + "drytree.png");
+    public static final BufferedImage itile_metalplate = Utils.loadImage(textures_tiles_interactive_path + "metalplate.png");
 
 }

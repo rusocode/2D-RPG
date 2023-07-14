@@ -36,6 +36,7 @@ public class Slime extends Mob {
         mobImage = movementDown1;
     }
 
+    @Override
     public void doActions() {
         if (flags.following) {
             checkUnfollow(world.player, 15);
@@ -47,13 +48,15 @@ public class Slime extends Mob {
         }
     }
 
+    @Override
     public void damageReaction() {
         timer.directionCounter = 0;
         flags.following = true;
     }
 
+    @Override
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_GOLD) dropItem(this, new Gold(game, world));
+        if (Utils.azar(100) <= PROBABILITY_GOLD_DROP) dropItem(this, new Gold(game, world));
     }
 
     private void checkShoot() {

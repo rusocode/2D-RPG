@@ -1,5 +1,9 @@
 package com.craivet.util;
 
+/**
+ * TODO Estos valores no tendrian que ir en un JSON?
+ */
+
 public final class Global {
 
     private Global() {
@@ -18,7 +22,7 @@ public final class Global {
      * TIP: Activa esta opcion para testear bajones de fps en diferentes areas del juego. */
     public static final boolean FPS_UNLIMITED = false;
 
-    // Otros
+    // Others
     public static final int MAX_INVENTORY_SIZE = 20;
     public static final int ENTITY_WIDTH = 16;
     public static final int ENTITY_HEIGHT = 16;
@@ -35,7 +39,7 @@ public final class Global {
     public static final int ORIGINAL_TILE_SIZE = 16;
     public static final int SCALE = 3;
     public static final int tile_size = ORIGINAL_TILE_SIZE * SCALE;
-    // Relacion de aspecto 4:3 = 960 x 576 pixels
+    // Aspect ratio 4:3 = 960 x 576 pixels
     public static final int MAX_SCREEN_COL = 20;
     public static final int MAX_SCREEN_ROW = 12;
     public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL;
@@ -49,26 +53,26 @@ public final class Global {
     public static final int NIX_INDOOR_01 = 1;
     public static final int DUNGEON_01 = 2;
     public static final int DUNGEON_02 = 3;
-    // Areas (o zonas)
+    // Areas (or zones)
     public static final int OUTSIDE = 0;
     public static final int INDOOR = 1;
     public static final int DUNGEON = 2;
 
-    // Title screen
+    // Screen titles
     public static final int MAIN_SCREEN = 0;
     public static final int SELECTION_SCREEN = 1;
 
-    // Probabilidades %
-    public static final int PROBABILIDAD_DROP_GOLD = 47;
-    public static final int PROBABILIDAD_DROP_STONE = 90;
+    // Probabilitys %
+    public static final int PROBABILITY_GOLD_DROP = 47;
+    public static final int PROBABILITY_STONE_DROP = 90;
 
-    // Animation interval
+    // Animations interval
     public static final int INTERVAL_DEAD_ANIMATION = 10;
     public static final int INTERVAL_MOVEMENT_ANIMATION = 15;
     public static final int INTERVAL_PROJECTILE_ANIMATION = 10;
-    // Weapon interval
+    // Weapons interval
     public static final int INTERVAL_WEAPON = 30;
-    // Projectile interval
+    // Projectiles interval
     public static final int INTERVAL_PROJECTILE = 80;
     // Others interval
     public static final int INTERVAL_INVINCIBLE = 60;
@@ -78,7 +82,7 @@ public final class Global {
     public static final int INTERVAL_KNOCKBACK = 10;
     public static final int INTERVAL_TRANSITION = 50;
 
-    // Game state
+    // Game states
     /* TODO Se podrian separar estas constantes en un enum tal vez? GameState con enums TITLE, PLAY, etc. o en un
      * paquete con los diferentes tipos de constantes en clases final. */
     public static final int MAIN_STATE = 0;

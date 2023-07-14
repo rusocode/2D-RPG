@@ -30,16 +30,19 @@ public class Bat extends Mob {
         mobImage = movementDown1;
     }
 
+    @Override
     public void doActions() {
         timer.timeDirection(this, INTERVAL_DIRECTION);
     }
 
+    @Override
     public void damageReaction() {
         timer.directionCounter = 0;
     }
 
+    @Override
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILIDAD_DROP_GOLD) dropItem(this, new Gold(game, world));
+        if (Utils.azar(100) <= PROBABILITY_GOLD_DROP) dropItem(this, new Gold(game, world));
     }
 
 }

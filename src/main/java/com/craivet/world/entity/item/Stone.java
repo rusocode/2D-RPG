@@ -16,7 +16,7 @@ public class Stone extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.CONSUMABLE;
-        image = Utils.scaleImage(item_stone, tile_size, tile_size);
+        image = Utils.scaleImage(stone, tile_size, tile_size);
         description = "[" + name + "]\nIt's just a stone.";
         this.amount = amount;
         stackable = true;

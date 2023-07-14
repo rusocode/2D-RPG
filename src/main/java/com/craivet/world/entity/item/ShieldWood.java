@@ -16,7 +16,7 @@ public class ShieldWood extends Item {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 		name = NAME;
 		type = Type.SHIELD;
-		image = Utils.scaleImage(item_shield_wood, tile_size, tile_size);
+		image = Utils.scaleImage(shield_wood, tile_size, tile_size);
 		description = "[" + name + "]\nMade by wood.";
 		price = 25;
 		defenseValue = 1;

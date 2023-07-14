@@ -25,11 +25,13 @@ public class Oldman extends Mob {
         initDialogue();
     }
 
+    @Override
     public void doActions() {
         if (flags.following) game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
         else timer.timeDirection(this, INTERVAL_DIRECTION);
     }
 
+    @Override
     public void dialogue() {
         lookPlayer();
         startDialogue(DIALOGUE_STATE, this, dialogueSet);

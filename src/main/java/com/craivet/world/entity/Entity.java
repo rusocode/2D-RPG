@@ -24,8 +24,6 @@ import static com.craivet.util.Global.*;
  * TODO No tendria que ser una clase abstracta?
  */
 
-/* TODO Se crean 87 entidades por ahora, por lo tanto se crean 87 objetos Timer y nose si es necesario crear un timer
- * para cada entidad, entonces no tiene mas sentido crear esos objetos en la clase Game? */
 public class Entity extends Attributes {
 
     protected final Game game;

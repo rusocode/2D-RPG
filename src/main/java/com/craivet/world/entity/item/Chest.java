@@ -17,8 +17,8 @@ public class Chest extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.OBSTACLE;
-        image = Utils.scaleImage(item_chest_closed, tile_size, tile_size);
-        image2 = Utils.scaleImage(item_chest_opened, tile_size, tile_size);
+        image = Utils.scaleImage(chest_closed, tile_size, tile_size);
+        image2 = Utils.scaleImage(chest_opened, tile_size, tile_size);
         solid = true;
         hitbox.x = 2;
         hitbox.y = 16;
@@ -28,6 +28,7 @@ public class Chest extends Item {
         hitboxDefaultY = hitbox.y;
     }
 
+    @Override
     public void interact() {
         if (!opened) {
             game.playSound(sound_chest_opening);
@@ -56,6 +57,7 @@ public class Chest extends Item {
         }
     }
 
+    @Override
     public void setLoot(Entity loot) {
         this.loot = loot;
     }

@@ -34,10 +34,12 @@ public class BigRock extends Mob {
         initDialogue();
     }
 
+    @Override
     public void update() {
 
     }
 
+    @Override
     public void move(int direction) {
         this.direction = direction;
         checkCollision();
@@ -53,6 +55,7 @@ public class BigRock extends Mob {
         detectedPlate();
     }
 
+    @Override
     public void dialogue() {
         startDialogue(DIALOGUE_STATE, this, dialogueSet);
         dialogueSet++;

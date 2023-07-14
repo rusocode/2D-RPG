@@ -17,8 +17,8 @@ public class PotionRed extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.CONSUMABLE;
-        if (pos.length > 0) image = Utils.scaleImage(item_potion_red, 32, 32);
-        else image = Utils.scaleImage(item_potion_red, tile_size, tile_size);
+        if (pos.length > 0) image = Utils.scaleImage(potion_red, 32, 32);
+        else image = Utils.scaleImage(potion_red, tile_size, tile_size);
         value = 5;
         description = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;

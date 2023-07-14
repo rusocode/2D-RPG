@@ -25,27 +25,27 @@ public class Mob extends Entity {
     }
 
     /**
-     * Se mueve.
+     * Moves the mob in a specified direction.
      *
-     * @param direction direccion hacia donde se mueve.
+     * @param direction direction in which it moves.
      */
     protected void move(int direction) {
     }
 
     /**
-     * Dialoga.
+     * Dialogue.
      */
     public void dialogue() {
     }
 
     /**
-     * Reacciona al daño.
+     * React to damage.
      */
     public void damageReaction() {
     }
 
     /**
-     * Mira al Player.
+     * Look at the Player.
      */
     protected void lookPlayer() {
         switch (world.player.direction) {
@@ -57,13 +57,13 @@ public class Mob extends Entity {
     }
 
     /**
-     * Comprueba si puede atacar o no verificando si el objetivo esta dentro del rango especificado.
+     * It checks if it can attack or not by checking if the target is within the specified range.
      *
-     * @param rate       probabilidad de que el mob ataque.
-     * @param vertical   indica la distancia vertical.
-     * @param horizontal indica la distancia horizontal.
+     * @param vertical   indicates the vertical distance.
+     * @param horizontal indicates the horizontal distance.
+     * @param rate       rate that determines if the mob attacks.
      */
-    protected void checkAttackOrNot(int rate, int vertical, int horizontal) {
+    protected void checkAttackOrNot(int vertical, int horizontal, int rate) {
         boolean targetInRage = false;
         int xDis = getXDistance(world.player);
         int yDis = getYDistance(world.player);
@@ -82,82 +82,80 @@ public class Mob extends Entity {
             }
         }
         // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
-        if (targetInRage) {
-            if (Utils.azar(rate) == 1) {
-                flags.hitting = true;
-                movementNum = 1;
-                timer.movementCounter = 0; // TODO O se referia al contador de ataque?
-                timer.projectileCounter = 0;
-            }
+        if (targetInRage && Utils.azar(rate) == 1) {
+            flags.hitting = true;
+            movementNum = 1;
+            timer.movementCounter = 0; // TODO O se referia al contador de ataque?
+            timer.projectileCounter = 0;
         }
     }
 
     /**
-     * Obtiene la fila del objetivo.
+     * Gets the row of the target.
      *
-     * @param target objetivo.
-     * @return la fila del objetivo.
+     * @param target target.
+     * @return the target row.
      */
     protected int getGoalRow(Entity target) {
         return (target.y + target.hitbox.y) / tile_size;
     }
 
     /**
-     * Obtiene la columna del objetivo.
+     * Gets the target column.
      *
-     * @param target objetivo.
-     * @return la columna del objetivo.
+     * @param target target.
+     * @return the target column.
      */
     protected int getGoalCol(Entity target) {
         return (target.x + target.hitbox.x) / tile_size;
     }
 
     /**
-     * Comprueba si comienza a seguir al objetivo.
+     * Check if it starts following the target.
      *
-     * @param target   objetivo.
-     * @param distance distancia en tiles.
-     * @param rate     la tasa que determina si sigue al objetivo.
+     * @param target   target.
+     * @param distance distance in tiles.
+     * @param rate     rate that determines if follows the target.
      */
     protected void checkFollow(Entity target, int distance, int rate) {
         if (getTileDistance(target) < distance && Utils.azar(rate) == 1) flags.following = true;
     }
 
     /**
-     * Comprueba si deja de seguir al objetivo.
+     * Check if it stops following the target.
      *
-     * @param target   objetivo.
-     * @param distance distancia en tiles.
+     * @param target   target.
+     * @param distance distance in tiles.
      */
     protected void checkUnfollow(Entity target, int distance) {
         if (getTileDistance(target) > distance) flags.following = false;
     }
 
     /**
-     * Obtiene la distancia del objetivo en tiles.
+     * Gets the distance of the target in tiles.
      *
-     * @param target objetivo.
-     * @return la distancia del objetivo en tiles.
+     * @param target target.
+     * @return the distance of the target in tiles.
      */
     private int getTileDistance(Entity target) {
         return (getXDistance(target) + getYDistance(target)) / tile_size;
     }
 
     /**
-     * Obtiene la diferencia entre la posicion x de la entidad actual y la posicion x del objetivo.
+     * Gets the difference between the x position of the mob and the x position of the target.
      *
-     * @param target objetivo.
-     * @return la diferencia entre la posicion x de la entidad actual y la posicion x del objetivo.
+     * @param target target.
+     * @return the difference between the x position of the mob and the x position of the target.
      */
     private int getXDistance(Entity target) {
         return Math.abs(x - target.x);
     }
 
     /**
-     * Obtiene la diferencia entre la posicion y de la entidad actual y la posicion y del objetivo.
+     * Gets the difference between the y position of the mob and the y position of the target.
      *
-     * @param target objetivo.
-     * @return la diferencia entre la posicion y de la entidad actual y la posicion y del objetivo.
+     * @param target target.
+     * @return the difference between the y position of the mob and the y position of the target.
      */
     private int getYDistance(Entity target) {
         return Math.abs(y - target.y);

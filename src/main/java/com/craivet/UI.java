@@ -820,7 +820,7 @@ public class UI {
             drawSubwindow(x, y, width, height, 240);
 
             // Draw image gold
-            g2.drawImage(item_gold, x + 14, y + 10, 32, 32, null);
+            g2.drawImage(gold, x + 14, y + 10, 32, 32, null);
 
             // Draw price item
             int price = entity.inventory.get(itemIndex).price;
@@ -872,7 +872,7 @@ public class UI {
             drawSubwindow(x, y, width, height, 255);
 
             // Draw image icon
-            g2.drawImage(item_gold, x + 14, y + 10, 32, 32, null);
+            g2.drawImage(gold, x + 14, y + 10, 32, 32, null);
 
             // Draw price item
             int price = world.player.inventory.get(itemIndex).price / 2;
