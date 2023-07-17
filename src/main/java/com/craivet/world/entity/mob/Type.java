@@ -1,4 +1,4 @@
-package com.craivet.world.entity;
+package com.craivet.world.entity.mob;
 
 /**
  * Tipos de entidades.

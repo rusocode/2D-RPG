@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.mob.Player;
 import com.craivet.world.World;
-import com.craivet.world.entity.Type;
+import com.craivet.world.entity.mob.Type;
 
 import static com.craivet.util.Global.*;
 

@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.item.Stone;
-import com.craivet.world.entity.Type;
+import com.craivet.world.entity.mob.Type;
 import com.craivet.util.Utils;
 
 import java.awt.*;

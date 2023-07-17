@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
+import com.craivet.util.Timer;
 import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
 import com.craivet.io.File;

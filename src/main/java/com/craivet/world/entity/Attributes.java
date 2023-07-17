@@ -1,6 +1,7 @@
 package com.craivet.world.entity;
 
 import com.craivet.world.entity.item.Item;
+import com.craivet.world.entity.mob.Type;
 import com.craivet.world.entity.projectile.Projectile;
 
 import java.awt.*;

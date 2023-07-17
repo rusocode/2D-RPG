@@ -6,7 +6,6 @@ import java.awt.image.BufferedImage;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.Type;
 import com.craivet.world.entity.projectile.Fireball;
 import com.craivet.input.Keyboard;
 import com.craivet.physics.Mechanics;
@@ -357,7 +356,7 @@ public class Player extends Mob {
     public void selectItem() {
         int itemIndex = game.ui.getItemIndexOnSlot(game.ui.playerSlotCol, game.ui.playerSlotRow);
         if (itemIndex < inventory.size()) {
-            Item selectedItem = (Item) inventory.get(itemIndex);
+            Item selectedItem = inventory.get(itemIndex);
             if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordNormal) {
                 weapon = selectedItem;
                 attackbox = weapon.attackbox; // TODO Hace falta esto aca?

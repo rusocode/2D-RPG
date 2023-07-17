@@ -2,7 +2,7 @@ package com.craivet;
 
 import com.craivet.world.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
-import com.craivet.world.entity.Type;
+import com.craivet.world.entity.mob.Type;
 import com.craivet.util.Utils;
 import com.craivet.world.World;
 

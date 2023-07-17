@@ -90,11 +90,11 @@ public class SpriteSheet {
         return subimages;
     }
 
-    public int getWidth() {
+    private int getWidth() {
         return image.getWidth();
     }
 
-    public int getHeight() {
+    private int getHeight() {
         return image.getHeight();
     }
 

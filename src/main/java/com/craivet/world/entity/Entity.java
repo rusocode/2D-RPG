@@ -8,6 +8,7 @@ import com.craivet.Game;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.gfx.SpriteSheet;
+import com.craivet.world.entity.mob.Type;
 import com.craivet.world.tile.Interactive;
 import com.craivet.world.World;
 import com.craivet.util.Timer;
