@@ -116,7 +116,7 @@ public class UI {
             // Image
             x = SCREEN_WIDTH / 2 - (tile_size * 2) / 2;
             y += tile_size * 2;
-            g2.drawImage(world.player.movementDown1, x, y, tile_size * 2, tile_size * 2, null);
+            g2.drawImage(world.player.frame.movement[0], x, y, tile_size * 2, tile_size * 2, null);
 
             // Menu
             changeFontSize(48f);
@@ -913,8 +913,8 @@ public class UI {
                 world.environment.lighting.dayState = world.environment.lighting.day;
                 world.environment.lighting.dayCounter = 0;
                 game.state = PLAY_STATE;
-                world.player.loadMovementImages(player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-                world.player.loadWeaponImages(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+                world.player.loadMovementFrames(player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+                world.player.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
             }
         }
     }

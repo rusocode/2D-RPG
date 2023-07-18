@@ -84,7 +84,7 @@ public class Mob extends Entity {
         // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
         if (targetInRage && Utils.azar(rate) == 1) {
             flags.hitting = true;
-            movementNum = 1;
+            frame.movementNum = 1;
             timer.movementCounter = 0; // TODO O se referia al contador de ataque?
             timer.projectileCounter = 0;
         }

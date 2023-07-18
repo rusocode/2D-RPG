@@ -35,15 +35,15 @@ public class Timer {
      */
     public void timeMovement(Entity entity, final int interval) {
         if (++movementCounter >= interval - entity.speed) {
-            if (entity.movementNum == 1) entity.movementNum = 2;
-            else if (entity.movementNum == 2) entity.movementNum = 1;
+            if (entity.frame.movementNum == 1) entity.frame.movementNum = 2;
+            else if (entity.frame.movementNum == 2) entity.frame.movementNum = 1;
             movementCounter = 0;
         }
     }
 
     public void timeStopMovement(Entity entity, final int interval) {
         if (++stopMovementCounter >= interval) {
-            entity.movementNum = 1;
+            entity.frame.movementNum = 1;
             stopMovementCounter = 0;
         }
     }

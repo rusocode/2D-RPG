@@ -10,20 +10,6 @@ public class SpriteSheet {
         this.image = image;
     }
 
-    /**
-     * Devuelve una subimagen definida por una region rectangular especificada. La BufferedImage devuelta comparte la
-     * misma matriz de datos que la imagen original.
-     *
-     * @param x coordenada x de la esquina superior izquierda de la region rectangular especificada.
-     * @param y coordenada y de la esquina superior izquierda de la region rectangular especificada.
-     * @param w ancho de la region rectangular especificada.
-     * @param h altura de la region rectangular especificada.
-     * @return una BufferedImage que es la subimagen de esta BufferedImage.
-     */
-    public BufferedImage crop(int x, int y, int w, int h) {
-        return image.getSubimage(x, y, w, h);
-    }
-
     public static BufferedImage[] getIconsSubimages(SpriteSheet ss, int w, int h) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
@@ -36,38 +22,38 @@ public class SpriteSheet {
     }
 
     /**
-     * Obtiene las subimagenes de movimiento.
+     * Obtiene los frames de movimiento.
      *
      * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
      * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
      *
-     * @param ss SpriteSheet.
-     * @param w  ancho de la subimagen.
-     * @param h  alto de la subimagen.
-     * @return una matriz con las subimagenes del SpriteSheet.
+     * @param ss SpriteSheet con los frames de movimiento.
+     * @param w  ancho del frame.
+     * @param h  alto del frame.
+     * @return una matriz con los frames del SpriteSheet.
      */
-    public static BufferedImage[] getMovementSubimages(SpriteSheet ss, int w, int h) {
+    public static BufferedImage[] getMovementFrames(SpriteSheet ss, int w, int h) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
-        BufferedImage[] subimages = new BufferedImage[col * row];
+        BufferedImage[] frames = new BufferedImage[col * row];
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                subimages[i++] = ss.crop(x * w, y * h, w, h);
-        return subimages;
+                frames[i++] = ss.crop(x * w, y * h, w, h);
+        return frames;
     }
 
     /**
-     * Obtiene las subimagenes del arma.
+     * Obtiene los frames de armas.
      *
      * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
      *
-     * @param ss SpriteSheet.
-     * @param w  ancho de la subimagen.
-     * @param h  alto de la subimagen.
-     * @return una matriz con las subimagenes del SpriteSheet.
+     * @param ss SpriteSheet con los frames de armas.
+     * @param w  ancho del frame.
+     * @param h  alto del frame.
+     * @return una matriz con los frames del SpriteSheet.
      */
-    public static BufferedImage[] getWeaponSubimages(SpriteSheet ss, int w, int h) {
+    public static BufferedImage[] getWeaponFrames(SpriteSheet ss, int w, int h) {
         int col = ss.getWidth() / w; // 2
         int row = ss.getHeight() / h; // 8
         BufferedImage[] subimages = new BufferedImage[col * row]; // Necesito guardar 8 imagenes no 16
@@ -90,6 +76,20 @@ public class SpriteSheet {
         return subimages;
     }
 
+    /**
+     * Devuelve una subimagen definida por una region rectangular especificada. La BufferedImage devuelta comparte la
+     * misma matriz de datos que la imagen original. En otras palabras, corta la subimagen del SpriteSheet.
+     *
+     * @param x coordenada x de la esquina superior izquierda de la region rectangular especificada.
+     * @param y coordenada y de la esquina superior izquierda de la region rectangular especificada.
+     * @param w ancho de la region rectangular especificada.
+     * @param h altura de la region rectangular especificada.
+     * @return una BufferedImage que es la subimagen de esta BufferedImage.
+     */
+    private BufferedImage crop(int x, int y, int w, int h) {
+        return image.getSubimage(x, y, w, h);
+    }
+
     private int getWidth() {
         return image.getWidth();
     }
@@ -97,6 +97,5 @@ public class SpriteSheet {
     private int getHeight() {
         return image.getHeight();
     }
-
 
 }

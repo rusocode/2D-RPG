@@ -2,6 +2,7 @@ package com.craivet.world.entity.mob;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Arrays;
 
 import com.craivet.Game;
 import com.craivet.world.World;
@@ -60,17 +61,10 @@ public class Player extends Mob {
 
     @Override
     public void render(Graphics2D g2) {
-        BufferedImage frame = null;
         tempScreenX = screenX;
         tempScreenY = screenY;
-        switch (direction) {
-            case DOWN -> frame = getFrame(DOWN, movementDown1, movementDown2, weaponDown1, weaponDown2);
-            case UP -> frame = getFrame(UP, movementUp1, movementUp2, weaponUp1, weaponUp2);
-            case LEFT -> frame = getFrame(LEFT, movementLeft1, movementLeft2, weaponLeft1, weaponLeft2);
-            case RIGHT -> frame = getFrame(RIGHT, movementRight1, movementRight2, weaponRight1, weaponRight2);
-        }
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
-        g2.drawImage(frame, tempScreenX, tempScreenY, null);
+        g2.drawImage(getCurrentFrame(), tempScreenX, tempScreenY, null);
         // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
@@ -120,8 +114,8 @@ public class Player extends Mob {
         motion1 = 5;
         motion2 = 25;
 
-        loadMovementImages(player_movement, 16, 16, tile_size);
-        loadWeaponImages(player_sword, 16, 16);
+        loadMovementFrames(player_movement, 16, 16, tile_size);
+        loadWeaponFrames(player_sword, 16, 16);
         addItemsToInventory();
     }
 
@@ -363,11 +357,11 @@ public class Player extends Mob {
                 attack = getAttack();
                 switch (weapon.type) {
                     case SWORD -> {
-                        loadWeaponImages(player_sword, 16, 16);
+                        loadWeaponFrames(player_sword, 16, 16);
                         game.playSound(sound_draw_sword);
                     }
-                    case AXE -> loadWeaponImages(player_axe, 16, 16);
-                    case PICKAXE -> loadWeaponImages(player_pickaxe, 16, 16);
+                    case AXE -> loadWeaponFrames(player_axe, 16, 16);
+                    case PICKAXE -> loadWeaponFrames(player_pickaxe, 16, 16);
                 }
             }
             if (selectedItem.type == Type.SHIELD) {
@@ -461,29 +455,49 @@ public class Player extends Mob {
     }
 
     /**
-     * Obtiene el frame de la direccion especificada ya sea de movimiento o ataque.
+     * Obtiene el frame actual.
      *
-     * @param direction direccion.
-     * @param movement1 frame de movimiento 1.
-     * @param movement2 frame de movimiento 2.
-     * @param attack1   frame de ataque 1.
-     * @param attack2   frame de ataque 2.
-     * @return el frame de la direccion especificada ya sea de movimiento o ataque, o null.
+     * @return el frame actual.
      */
-    private BufferedImage getFrame(int direction, BufferedImage movement1, BufferedImage movement2, BufferedImage attack1, BufferedImage attack2) {
-        BufferedImage frame;
+    private BufferedImage getCurrentFrame() {
+        int frameIndex = 0;
+
         if (!flags.hitting) {
-            if (flags.collidingOnMob) frame = movementNum == 1 ? movement1 : movement2;
-            else frame = movementNum == 1 || flags.colliding ? movement1 : movement2;
-        } else {
-            // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
             switch (direction) {
-                case UP -> tempScreenY -= tile_size;
-                case LEFT -> tempScreenX -= tile_size;
+                case DOWN -> {
+                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 0 : 1;
+                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 0 : 1;
+                }
+                case UP -> {
+                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 2 : 3;
+                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 2 : 3;
+                }
+                case LEFT -> {
+                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 4 : 5;
+                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 4 : 5;
+                }
+                case RIGHT -> {
+                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 6 : 7;
+                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 6 : 7;
+                }
             }
-            frame = attackNum == 1 ? attack1 : attack2;
+        } else {
+            switch (direction) {
+                case DOWN -> frameIndex = frame.attackNum == 1 ? 0 : 1;
+                case UP -> {
+                    // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
+                    tempScreenY -= tile_size;
+                    frameIndex = frame.attackNum == 1 ? 2 : 3;
+                }
+                case LEFT -> {
+                    tempScreenX -= tile_size;
+                    frameIndex = frame.attackNum == 1 ? 4 : 5;
+                }
+                case RIGHT -> frameIndex = frame.attackNum == 1 ? 6 : 7;
+            }
         }
-        return frame;
+
+        return !flags.hitting ? frame.movement[frameIndex] : frame.weapon[frameIndex];
     }
 
     public int getAttack() {
@@ -513,14 +527,7 @@ public class Player extends Mob {
     }
 
     public void initSleepImage(BufferedImage image) {
-        movementDown1 = image;
-        movementDown2 = image;
-        movementUp1 = image;
-        movementUp2 = image;
-        movementLeft1 = image;
-        movementLeft2 = image;
-        movementRight1 = image;
-        movementRight2 = image;
+        Arrays.fill(frame.movement, image);
     }
 
     private void addItemsToInventory() {
