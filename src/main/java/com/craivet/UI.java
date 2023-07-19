@@ -913,7 +913,7 @@ public class UI {
                 world.environment.lighting.dayState = world.environment.lighting.day;
                 world.environment.lighting.dayCounter = 0;
                 game.state = PLAY_STATE;
-                world.player.loadMovementFrames(player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+                // world.player.loadMovementFrames(player_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
                 world.player.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
             }
         }

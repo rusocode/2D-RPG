@@ -71,6 +71,7 @@ public class EntityManager implements State {
 
             // Agrega las entidades a la lista de entidades
             entities.add(world.player);
+
             for (int i = 0; i < world.items[1].length; i++) {
                 if (world.items[world.map][i] != null) {
                     if (!world.items[world.map][i].solid) world.itemsList.add(world.items[world.map][i]);
@@ -78,10 +79,13 @@ public class EntityManager implements State {
                     else entities.add(world.items[world.map][i]);
                 }
             }
+
             for (int i = 0; i < world.mobs[1].length; i++)
                 if (world.mobs[world.map][i] != null) entities.add(world.mobs[world.map][i]);
+
             for (int i = 0; i < world.projectiles[1].length; i++)
                 if (world.projectiles[world.map][i] != null) entities.add(world.projectiles[world.map][i]);
+
             for (Entity particle : world.particles)
                 if (particle != null) entities.add(particle);
 

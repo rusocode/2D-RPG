@@ -1,5 +1,6 @@
 package com.craivet.world.entity.mob;
 
+import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
@@ -39,7 +40,7 @@ public class BigRock extends Mob {
     }
 
     @Override
-    public void move(int direction) {
+    public void move(Direction direction) {
         this.direction = direction;
         checkCollision();
         if (!flags.colliding) {

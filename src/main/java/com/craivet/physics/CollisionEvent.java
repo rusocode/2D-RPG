@@ -1,5 +1,6 @@
 package com.craivet.physics;
 
+import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
@@ -64,17 +65,17 @@ public class CollisionEvent {
         if (dis > tile_size) canTouchEvent = true;
 
         if (canTouchEvent) {
-            if (checkCollision(NIX, 27, 16, RIGHT)) hurt();
-            if (checkCollision(NIX, 23, 12, UP)) heal();
-            if (checkCollision(NIX_INDOOR_01, 12, 9, ANY)) speak(world.mobs[1][0]);
-            if (checkCollision(NIX, 10, 39, ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
-            if (checkCollision(NIX_INDOOR_01, 12, 13, ANY))
+            if (checkCollision(NIX, 27, 16, Direction.RIGHT)) hurt();
+            if (checkCollision(NIX, 23, 12, Direction.UP)) heal();
+            if (checkCollision(NIX_INDOOR_01, 12, 9, Direction.ANY)) speak(world.mobs[1][0]);
+            if (checkCollision(NIX, 10, 39, Direction.ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
+            if (checkCollision(NIX_INDOOR_01, 12, 13, Direction.ANY))
                 teleport(OUTSIDE, NIX, 10, 39); // De Nix Indoor 1 a Nix
-            if (checkCollision(NIX, 12, 9, ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1
-            if (checkCollision(DUNGEON_01, 9, 41, ANY)) teleport(OUTSIDE, NIX, 12, 9); // De Dungeon 1 a Nix
-            if (checkCollision(DUNGEON_01, 8, 7, ANY))
+            if (checkCollision(NIX, 12, 9, Direction.ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1
+            if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY)) teleport(OUTSIDE, NIX, 12, 9); // De Dungeon 1 a Nix
+            if (checkCollision(DUNGEON_01, 8, 7, Direction.ANY))
                 teleport(DUNGEON, DUNGEON_02, 26, 41); // De Dungeon 1 a Dungeon 2
-            if (checkCollision(DUNGEON_02, 26, 41, ANY))
+            if (checkCollision(DUNGEON_02, 26, 41, Direction.ANY))
                 teleport(DUNGEON, DUNGEON_01, 8, 7); // De Dungeon 2 a Dungeon 1
         }
 
@@ -89,7 +90,7 @@ public class CollisionEvent {
      * @param direction direccion del evento.
      * @return devuelve true si colisiono con el evento o false.
      */
-    private boolean checkCollision(int map, int col, int row, int direction) {
+    private boolean checkCollision(int map, int col, int row, Direction direction) {
         boolean isColliding = false;
 
         // Si el player esta en el mismo mapa que el evento
@@ -100,7 +101,7 @@ public class CollisionEvent {
             event[map][row][col].y += row * tile_size;
 
             // Si el player colisiona con el evento y si la direccion coincide con la del evento
-            if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.direction == direction || direction == ANY)) {
+            if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.direction == direction || direction == Direction.ANY)) {
                 isColliding = true;
                 world.player.attackCanceled = true; // Cancela el ataque en caso de interactuar con un evento usando enter (tecla que se utiliza para atacar)
                 // En base a esta informacion verifica la distancia entre el player y el ultimo evento

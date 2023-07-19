@@ -1,5 +1,6 @@
 package com.craivet.world.entity;
 
+import com.craivet.Direction;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Type;
 import com.craivet.world.entity.projectile.Projectile;
@@ -32,7 +33,7 @@ public class Attributes {
     public String name;
     public Type type = Type.HOSTILE;
     public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
-    public int direction = DOWN;
+    public Direction direction = Direction.DOWN;
     public int speed, defaultSpeed;
     public int hp, maxHp; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
     public int mana, maxMana;

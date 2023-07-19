@@ -28,13 +28,6 @@ public final class Global {
     public static final int ENTITY_HEIGHT = 16;
     public static final int SUBWINDOW_ALPHA = 210;
 
-    // Directions
-    public static final int DOWN = 0;
-    public static final int UP = 1;
-    public static final int LEFT = 2;
-    public static final int RIGHT = 3;
-    public static final int ANY = 4;
-
     // Screen settings
     public static final int ORIGINAL_TILE_SIZE = 16;
     public static final int SCALE = 3;

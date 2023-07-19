@@ -1,5 +1,6 @@
 package com.craivet.physics;
 
+import com.craivet.Direction;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.mob.Player;
@@ -39,7 +40,7 @@ public class Collision {
         // En caso de que la entidad colisione en el medio de dos tiles solidos
         int tile1, tile2;
 
-        int direction = entity.direction;
+        Direction direction = entity.direction;
         /* Obtiene la direccion del atacante si la entidad es retrocedida para evitar que la verificacion de la colision
          * se vuelva inexacta. */
         if (entity.flags.knockback) direction = entity.knockbackDirection;
@@ -89,7 +90,7 @@ public class Collision {
                 world.items[world.map][i].hitbox.x += world.items[world.map][i].x;
                 world.items[world.map][i].hitbox.y += world.items[world.map][i].y;
 
-                int direction = entity.direction;
+                Direction direction = entity.direction;
                 if (entity.flags.knockback) direction = entity.knockbackDirection;
 
                 switch (direction) {
@@ -124,7 +125,7 @@ public class Collision {
         int index = -1;
 
         // Direccion temporal de la entidad
-        int direction = entity.direction;
+        Direction direction = entity.direction;
         // Obtiene la direccion del atacante si la entidad es retrocedida
         if (entity.flags.knockback) direction = entity.knockbackDirection;
         int speed = entity.speed;

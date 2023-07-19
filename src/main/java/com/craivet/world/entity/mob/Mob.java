@@ -1,5 +1,6 @@
 package com.craivet.world.entity.mob;
 
+import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.util.Utils;
 import com.craivet.world.World;
@@ -29,7 +30,7 @@ public class Mob extends Entity {
      *
      * @param direction direction in which it moves.
      */
-    protected void move(int direction) {
+    protected void move(Direction direction) {
     }
 
     /**
@@ -49,10 +50,10 @@ public class Mob extends Entity {
      */
     protected void lookPlayer() {
         switch (world.player.direction) {
-            case DOWN -> direction = UP;
-            case UP -> direction = DOWN;
-            case LEFT -> direction = RIGHT;
-            case RIGHT -> direction = LEFT;
+            case DOWN -> direction = Direction.UP;
+            case UP -> direction = Direction.DOWN;
+            case LEFT -> direction = Direction.RIGHT;
+            case RIGHT -> direction = Direction.LEFT;
         }
     }
 

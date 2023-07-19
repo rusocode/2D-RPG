@@ -1,5 +1,6 @@
 package com.craivet.world.entity.projectile;
 
+import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.mob.Player;
@@ -24,7 +25,7 @@ public class Projectile extends Entity {
     public void subtractResource(Entity entity) {
     }
 
-    public void set(int worldX, int worldY, int direction, boolean alive, Entity entity) {
+    public void set(int worldX, int worldY, Direction direction, boolean alive, Entity entity) {
         this.x = worldX;
         this.y = worldY;
         this.direction = direction;

@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 
 public class Frame {
 
-    public BufferedImage[] movement = new BufferedImage[2]; // Array que contendra los frames de movimiento
+    public BufferedImage[] movement; // Array que contendra los frames de movimiento
     public BufferedImage[] weapon; // Array que contendra los frames de ataque
 
     public int movementNum = 1, attackNum = 1;

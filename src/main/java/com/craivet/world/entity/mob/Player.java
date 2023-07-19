@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
+import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
@@ -77,7 +78,7 @@ public class Player extends Mob {
     public void setDefaultPos() {
         world.area = OUTSIDE;
         world.map = NIX;
-        direction = DOWN;
+        direction = Direction.DOWN;
         // TODO Se podria comprobar si la posicion es valida o no
         // x = 23 * tile_size;
         // y = 21 * tile_size;
@@ -85,7 +86,7 @@ public class Player extends Mob {
 
     public void setDefaultValues() {
         type = Type.PLAYER;
-        direction = DOWN;
+        direction = Direction.DOWN;
         speed = defaultSpeed = 3;
         hp = maxHp = 6;
         mana = maxMana = 4;
@@ -425,10 +426,10 @@ public class Player extends Mob {
      * Obtiene la direccion dependiendo de la tecla seleccionada.
      */
     private void getDirection() {
-        if (keyboard.s) direction = DOWN;
-        else if (keyboard.w) direction = UP;
-        else if (keyboard.a) direction = LEFT;
-        else if (keyboard.d) direction = RIGHT;
+        if (keyboard.s) direction = Direction.DOWN;
+        else if (keyboard.w) direction = Direction.UP;
+        else if (keyboard.a) direction = Direction.LEFT;
+        else if (keyboard.d) direction = Direction.RIGHT;
     }
 
     @Override
@@ -465,35 +466,35 @@ public class Player extends Mob {
         if (!flags.hitting) {
             switch (direction) {
                 case DOWN -> {
-                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 0 : 1;
-                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 0 : 1;
+                    if (flags.collidingOnMob) frameIndex =  frame.movementNum == 1 ? 0 : 1;
+                    else frameIndex =  frame.movementNum == 1 || flags.colliding ? 0 : 1;
                 }
                 case UP -> {
-                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 2 : 3;
-                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 2 : 3;
+                    if (flags.collidingOnMob) frameIndex =  frame.movementNum == 1 ? 2 : 3;
+                    else frameIndex =  frame.movementNum == 1 || flags.colliding ? 2 : 3;
                 }
                 case LEFT -> {
-                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 4 : 5;
-                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 4 : 5;
+                    if (flags.collidingOnMob) frameIndex =  frame.movementNum == 1 ? 4 : 5;
+                    else frameIndex =  frame.movementNum == 1 || flags.colliding ? 4 : 5;
                 }
                 case RIGHT -> {
-                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 6 : 7;
-                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 6 : 7;
+                    if (flags.collidingOnMob) frameIndex =  frame.movementNum == 1 ? 6 : 7;
+                    else frameIndex =  frame.movementNum == 1 || flags.colliding ? 6 : 7;
                 }
             }
         } else {
             switch (direction) {
-                case DOWN -> frameIndex = frame.attackNum == 1 ? 0 : 1;
+                case DOWN -> frameIndex =  frame.attackNum == 1 ? 0 : 1;
                 case UP -> {
                     // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                     tempScreenY -= tile_size;
-                    frameIndex = frame.attackNum == 1 ? 2 : 3;
+                    frameIndex =  frame.attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
                     tempScreenX -= tile_size;
-                    frameIndex = frame.attackNum == 1 ? 4 : 5;
+                    frameIndex =  frame.attackNum == 1 ? 4 : 5;
                 }
-                case RIGHT -> frameIndex = frame.attackNum == 1 ? 6 : 7;
+                case RIGHT -> frameIndex =  frame.attackNum == 1 ? 6 : 7;
             }
         }
 

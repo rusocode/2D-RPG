@@ -56,7 +56,8 @@ public class World {
 
     public World(Game game) {
         this.game = game;
-        player = new Player(game, this);
+        player = new Player(game, this); // TODO Deberia ir dentro de createEntities()
+        // createEntities();
         tiles = new TileManager(game, this);
         entitites = new EntityManager(game, this);
         environment = new EnvironmentManager(this);
