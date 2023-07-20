@@ -46,7 +46,7 @@ public class World {
     public Player player;
     public List<Entity> itemsList = new ArrayList<>();
     public List<Entity> particles = new ArrayList<>();
-    // TODO No tendrian que declararse como HashMap?
+    // TODO No tendrian que declararse como HashMap o ArrayList?
     public Item[][] items = new Item[MAX_MAP][20];
     public Mob[][] mobs = new Mob[MAX_MAP][40];
     public Interactive[][] interactives = new Interactive[MAX_MAP][50];
@@ -56,8 +56,8 @@ public class World {
 
     public World(Game game) {
         this.game = game;
-        player = new Player(game, this); // TODO Deberia ir dentro de createEntities()
-        // createEntities();
+        createEntities();
+        // TODO Creo un metodo para estos 3 objetos?
         tiles = new TileManager(game, this);
         entitites = new EntityManager(game, this);
         environment = new EnvironmentManager(this);
@@ -145,6 +145,8 @@ public class World {
     public void createMOBs() {
         int i = 0, j = 0, k = 0;
 
+        player = new Player(game, this);
+
         mobs[NIX][i++] = new Oldman(game, this, 23, 19);
         mobs[NIX][i++] = new BigRock(game, this, 26, 21);
         mobs[NIX][i++] = new Slime(game, this, 23, 41);
@@ -208,6 +210,5 @@ public class World {
         interactives[DUNGEON_01][i++] = new MetalPlate(game, this, 39, 31);
 
     }
-
 
 }

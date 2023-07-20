@@ -30,7 +30,7 @@ public class Player extends Mob {
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
-        super(game, world, 23, 20);
+        super(game, world);
         centerOnScreen();
         setDefaultPos();
         setDefaultValues();
@@ -80,8 +80,8 @@ public class Player extends Mob {
         world.map = NIX;
         direction = Direction.DOWN;
         // TODO Se podria comprobar si la posicion es valida o no
-        // x = 23 * tile_size;
-        // y = 21 * tile_size;
+        x = 23 * tile_size;
+        y = 20 * tile_size;
     }
 
     public void setDefaultValues() {

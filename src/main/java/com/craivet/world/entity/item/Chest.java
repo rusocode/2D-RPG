@@ -17,6 +17,7 @@ public class Chest extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.OBSTACLE;
+        // TODO Unir en una imagen
         image = Utils.scaleImage(chest_closed, tile_size, tile_size);
         image2 = Utils.scaleImage(chest_opened, tile_size, tile_size);
         solid = true;

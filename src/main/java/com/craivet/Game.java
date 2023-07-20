@@ -108,7 +108,6 @@ public class Game extends Canvas implements Runnable {
         file.loadConfig();
         file.loadTiles();
         file.loadMaps();
-        world.createEntities();
         minimap.createMinimap();
         event.createEvents();
         playMusic(music_main);

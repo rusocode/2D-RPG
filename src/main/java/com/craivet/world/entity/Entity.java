@@ -94,10 +94,11 @@ public class Entity extends Attributes {
             }
             if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
-            g2.drawImage(getCurrentFrame(), tempScreenX, tempScreenY, null);
-
-            // Dibuja las imagenes estaticas (items, tiles interactivos)
-            g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
+            // Si es una animacion
+            if (frame.movement != null || frame.weapon != null)
+                g2.drawImage(getCurrentFrame(), tempScreenX, tempScreenY, null);
+                // Si es una imagen estatica
+            else g2.drawImage(image, screenX, screenY, null); // TODO Es eficiente esto?
 
             // drawRects(g2, screenX, screenY);
 
@@ -362,13 +363,14 @@ public class Entity extends Attributes {
      */
     public void loadWeaponFrames(SpriteSheet ss, int w, int h) {
         BufferedImage[] frames = SpriteSheet.getWeaponFrames(ss, w, h);
-         frame.weapon = new BufferedImage[frames.length];
-        // Array de escalas correspondientes para cada frame
+        frame.weapon = new BufferedImage[frames.length];
         /* int[] scales = {1, 1, 1, 1, 2, 2, 2, 2};
         // Cargar los frames de armas en el array con las escalas adecuadas
-        for (int i = 0; i < frames.length; i++){
+        for (int i = 0; i < frames.length; i++) {
             System.out.println(i);
-            weapon[i] = Utils.scaleImage(frames[i], tile_size * scales[i], tile_size * scales[i == 4 || i == 5 || i == 6 || i == 7 ? 1 : 2]);
+            // if (i == 8) break;
+            frame.weapon[i] = Utils.scaleImage(frames[i], tile_size * i >= 4 ? 2 : 1, tile_size * i < 4 ? 2 : 1);
+            // frame.weapon[i] = Utils.scaleImage(frames[i], tile_size * scales[i], tile_size * scales[i == 4 || i == 5 || i == 6 || i == 7 ? 1 : 2]);
         } */
         frame.weapon[0] = Utils.scaleImage(frames[0], tile_size, tile_size * 2);
         frame.weapon[1] = Utils.scaleImage(frames[1], tile_size, tile_size * 2);
@@ -420,32 +422,32 @@ public class Entity extends Attributes {
         if (!flags.hitting) {
             if (frame.movement.length == 2) { // Si se trata de entidades de dos frames
                 switch (direction) {
-                    case DOWN, UP, LEFT, RIGHT -> frameIndex =  frame.movementNum == 1 || flags.colliding ? 0 : 1;
+                    case DOWN, UP, LEFT, RIGHT -> frameIndex = frame.movementNum == 1 || flags.colliding ? 0 : 1;
                 }
             } else {
                 switch (direction) {
-                    case DOWN -> frameIndex =  frame.movementNum == 1 || flags.colliding ? 0 : 1;
-                    case UP -> frameIndex =  frame.movementNum == 1 || flags.colliding ? 2 : 3;
-                    case LEFT -> frameIndex =  frame.movementNum == 1 || flags.colliding ? 4 : 5;
-                    case RIGHT -> frameIndex =  frame.movementNum == 1 || flags.colliding ? 6 : 7;
+                    case DOWN -> frameIndex = frame.movementNum == 1 || flags.colliding ? 0 : 1;
+                    case UP -> frameIndex = frame.movementNum == 1 || flags.colliding ? 2 : 3;
+                    case LEFT -> frameIndex = frame.movementNum == 1 || flags.colliding ? 4 : 5;
+                    case RIGHT -> frameIndex = frame.movementNum == 1 || flags.colliding ? 6 : 7;
                 }
             }
         } else {
             switch (direction) {
-                case DOWN -> frameIndex =  frame.attackNum == 1 ? 0 : 1;
+                case DOWN -> frameIndex = frame.attackNum == 1 ? 0 : 1;
                 case UP -> {
                     tempScreenY -= tile_size;
-                    frameIndex =  frame.attackNum == 1 ? 2 : 3;
+                    frameIndex = frame.attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
                     tempScreenX -= tile_size;
-                    frameIndex =  frame.attackNum == 1 ? 4 : 5;
+                    frameIndex = frame.attackNum == 1 ? 4 : 5;
                 }
-                case RIGHT -> frameIndex =  frame.attackNum == 1 ? 6 : 7;
+                case RIGHT -> frameIndex = frame.attackNum == 1 ? 6 : 7;
             }
         }
 
-        return !flags.hitting ? frame.movement[frameIndex] :  frame.weapon[frameIndex];
+        return !flags.hitting ? frame.movement[frameIndex] : frame.weapon[frameIndex];
     }
 
     private void drawRects(Graphics2D g2, int screenX, int screenY) {

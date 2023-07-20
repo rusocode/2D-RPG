@@ -56,24 +56,24 @@ public class SpriteSheet {
     public static BufferedImage[] getWeaponFrames(SpriteSheet ss, int w, int h) {
         int col = ss.getWidth() / w; // 2
         int row = ss.getHeight() / h; // 8
-        BufferedImage[] subimages = new BufferedImage[col * row]; // Necesito guardar 8 imagenes no 16
+        BufferedImage[] frames = new BufferedImage[col * row]; // Necesito guardar 8 imagenes no 16
         int i = 0;
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                if (y == 0) subimages[i++] = ss.crop(x * w, 0, 16, 32);
-                if (y == 1) subimages[i++] = ss.crop(x * w, 32, 16, 32);
+                if (y == 0) frames[i++] = ss.crop(x * w, 0, 16, 32);
+                if (y == 1) frames[i++] = ss.crop(x * w, 32, 16, 32);
                 if (y == 2) {
-                    if (x == 0) subimages[i++] = ss.crop(0, 64, 32, 16);
-                    if (x == 1) subimages[i++] = ss.crop(0, 80, 32, 16);
+                    if (x == 0) frames[i++] = ss.crop(0, 64, 32, 16);
+                    if (x == 1) frames[i++] = ss.crop(0, 80, 32, 16);
                 }
                 if (y == 3) {
-                    if (x == 0) subimages[i++] = ss.crop(0, 96, 32, 16);
-                    if (x == 1) subimages[i++] = ss.crop(0, 112, 32, 16);
+                    if (x == 0) frames[i++] = ss.crop(0, 96, 32, 16);
+                    if (x == 1) frames[i++] = ss.crop(0, 112, 32, 16);
                 }
             }
             if (y == 3) break; // Evita iterar hasta los espacios sobrantes de la matriz
         }
-        return subimages;
+        return frames;
     }
 
     /**

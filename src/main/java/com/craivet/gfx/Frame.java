@@ -15,6 +15,10 @@ import java.awt.image.BufferedImage;
 
 public class Frame {
 
+    /* Lo que esta pasando es que el array solo se inicializa para los mobs, pero para los items, projectile y tile
+     * interactivos nunca sucede ya que estos utilizan la variable imagen para representar la imagen. Por lo tanto el
+     * render de Entity se llama para todas las entidades y al no inicializar el array de movement para los items, etc.
+     * lanza NPE ya que estas utlimas no inicializaron ese array. */
     public BufferedImage[] movement; // Array que contendra los frames de movimiento
     public BufferedImage[] weapon; // Array que contendra los frames de ataque
 
