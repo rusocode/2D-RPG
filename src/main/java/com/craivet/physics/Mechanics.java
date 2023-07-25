@@ -5,8 +5,6 @@ import com.craivet.world.entity.mob.Type;
 import com.craivet.world.entity.mob.BigRock;
 import com.craivet.world.entity.mob.Player;
 
-import static com.craivet.util.Global.*;
-
 /**
  * Controla la velocidad del Player cuando colisiona con un Mob en movimiento en la misma direccion.
  *
@@ -29,7 +27,7 @@ public class Mechanics {
      * direccion. Esto se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, "une"
      * el Player al Mob. En caso contrario, "desune" el Player del Mob.
      *
-     * @param mob Mob actual.
+     * @param mob mob actual.
      */
     public void checkDirectionSpeed(Entity mob) {
         if (checkConditionsForUnion(mob)) unite(mob);
@@ -41,7 +39,7 @@ public class Mechanics {
      * el Player esta en la misma direccion que el Mob, y si el Player no tiene distancia con el Mob y si el Mob no
      * colisiono.
      *
-     * @param mob Mob actual.
+     * @param mob mob actual.
      * @return true si se cumplen todas las condiciones especificadas o false.
      */
     private boolean checkConditionsForUnion(Entity mob) {
@@ -57,7 +55,7 @@ public class Mechanics {
      * direccion, la velocidad va a seguir siendo la misma a la del Mob. Entonces para solucionar ese problema se
      * comprueba la distancia, y si hay distancia entre el Player y el Mob, vuelve a la velocidad por defecto.
      *
-     * @param mob Mob actual.
+     * @param mob mob actual.
      * @return true si hay distancia o false.
      */
     private boolean isDistanceWithMob(Entity mob) {
@@ -84,7 +82,7 @@ public class Mechanics {
      * Iguala la velocidad del Mob a la del Player y dependiendo de la direccion, suma o resta un pixel. Esto ultimo se
      * hace para que el Player pueda dialogar si el Mob es un Npc y este esta en movimiento.
      *
-     * @param mob Mob actual.
+     * @param mob mob actual.
      */
     private void unite(Entity mob) {
         player.speed = mob.speed;

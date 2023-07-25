@@ -24,6 +24,7 @@ import static com.craivet.util.Global.*;
 public class Attributes {
 
     // Generals attributes
+    public int screenX, screenY, tempScreenX, tempScreenY;
     public Item weapon, shield, light;
     public Projectile projectile;
     public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);

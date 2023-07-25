@@ -67,8 +67,9 @@ public class CollisionEvent {
         if (canTouchEvent) {
             if (checkCollision(NIX, 27, 16, Direction.RIGHT)) hurt();
             if (checkCollision(NIX, 23, 12, Direction.UP)) heal();
-            if (checkCollision(NIX_INDOOR_01, 12, 9, Direction.ANY)) speak(world.mobs[1][0]);
-            if (checkCollision(NIX, 10, 39, Direction.ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
+            if (checkCollision(NIX_INDOOR_01, 12, 9, Direction.ANY)) dialogue(world.mobs[1][0]);
+            if (checkCollision(NIX, 10, 39, Direction.ANY))
+                teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
             if (checkCollision(NIX_INDOOR_01, 12, 13, Direction.ANY))
                 teleport(OUTSIDE, NIX, 10, 39); // De Nix Indoor 1 a Nix
             if (checkCollision(NIX, 12, 9, Direction.ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1
@@ -158,11 +159,11 @@ public class CollisionEvent {
     }
 
     /**
-     * Habla con el Mob.
+     * Dialoga con el Mob.
      *
      * @param mob mob con la que habla el player.
      */
-    private void speak(Mob mob) {
+    private void dialogue(Mob mob) {
         if (game.keyboard.enter) mob.dialogue();
     }
 

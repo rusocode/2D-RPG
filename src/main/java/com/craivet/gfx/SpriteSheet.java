@@ -33,8 +33,8 @@ public class SpriteSheet {
      * @return una matriz con los frames del SpriteSheet.
      */
     public static BufferedImage[] getMovementFrames(SpriteSheet ss, int w, int h) {
-        int col = ss.getWidth() / w;
-        int row = ss.getHeight() / h;
+        int col = ss.getWidth() / w; // 6
+        int row = ss.getHeight() / h; // 4
         BufferedImage[] frames = new BufferedImage[col * row];
         int i = 0;
         for (int y = 0; y < row; y++)
