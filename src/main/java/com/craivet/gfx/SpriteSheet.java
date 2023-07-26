@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 public class SpriteSheet {
 
     private final BufferedImage image;
+    public static BufferedImage[] player_down, player_up, player_left, player_right;
 
     public SpriteSheet(BufferedImage image) {
         this.image = image;
@@ -74,6 +75,38 @@ public class SpriteSheet {
             if (y == 3) break; // Evita iterar hasta los espacios sobrantes de la matriz
         }
         return frames;
+    }
+
+    public static void initPlayer(SpriteSheet player) {
+
+        player_down = new BufferedImage[6];
+        player_up = new BufferedImage[6];
+        player_left = new BufferedImage[5];
+        player_right = new BufferedImage[5];
+
+        int player_width = player.getWidth() / player_down.length;
+        int player_height = player.getHeight() / (player_left.length - 1);
+
+        for (int y = 0; y < player.getHeight() / player_height; y++) {
+            for (int x = 0; x < player.getWidth() / player_width; x++) {
+                switch (y) { // Controla las filas
+                    case 0 -> player_down[x] = player.crop(x * player_width, 0, player_width, player_height);
+                    case 1 ->
+                            player_up[x] = player.crop(x * player_width, y * player_height, player_width, player_height);
+                    case 2 -> {
+                        /* Los movimientos izquierdos y derechos solo tienen 5 frames, por lo tanto comprueba hasta el
+                         * limite 5 para evitar un ArrayIndexOutOfBoundsException. */
+                        if (x < 5)
+                            player_left[x] = player.crop(x * player_width, y * player_height, player_width, player_height);
+                    }
+                    case 3 -> {
+                        if (x < 5)
+                            player_right[x] = player.crop(x * player_width, y * player_height, player_width, player_height);
+                    }
+                }
+            }
+        }
+
     }
 
     /**

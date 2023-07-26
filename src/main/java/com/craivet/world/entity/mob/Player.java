@@ -6,6 +6,9 @@ import java.util.Arrays;
 
 import com.craivet.Direction;
 import com.craivet.Game;
+import com.craivet.gfx.Animation;
+import com.craivet.gfx.Assets;
+import com.craivet.gfx.SpriteSheet;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.projectile.Fireball;
@@ -16,6 +19,8 @@ import com.craivet.world.tile.Interactive;
 import com.craivet.util.*;
 import com.craivet.world.entity.item.*;
 
+import javax.print.DocFlavor;
+
 import static com.craivet.util.Global.*;
 import static com.craivet.gfx.Assets.*;
 
@@ -23,6 +28,8 @@ public class Player extends Mob {
 
     private final Keyboard keyboard;
     private final Mechanics mechanics;
+    private BufferedImage currentFrame;
+    public Animation down, up, left, right;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity entity;
@@ -51,7 +58,13 @@ public class Player extends Mob {
             mechanics.checkDirectionSpeed(entity);
             checkAttack();
             keyboard.resetAccionKeys();
-            if (keyboard.checkMovementKeys()) timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+            if (keyboard.checkMovementKeys()) {
+                // timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
+                down.tick();
+                up.tick();
+                left.tick();
+                right.tick();
+            }
         } else
             timer.timeStopMovement(this, 20); // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
 
@@ -65,7 +78,7 @@ public class Player extends Mob {
         tempScreenX = screenX;
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
-        g2.drawImage(getCurrentFrame(), tempScreenX, tempScreenY, null);
+        g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
         // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
@@ -106,18 +119,28 @@ public class Player extends Mob {
         attack = getAttack();
         defense = getDefense();
 
-        hitbox.x = 8;
-        hitbox.y = 16;
-        hitbox.width = 32;
-        hitbox.height = 31;
+        hitbox.x = 13;
+        hitbox.y = 25;
+        hitbox.width = 23;
+        hitbox.height = 60;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         motion1 = 5;
         motion2 = 25;
 
-        animation.loadMovementFrames2(player_movement2, 50, 90);
+        // Primero carga los frames de movimiento desde la clase Frame y despues se pasen esos frames a la clase Animation para que los anime
+        // frame.loadMovementFrames2(player_movement2, 50, 90);
+        // animation = new Animation(frame.movement);
         // animation.loadMovementFrames(player_movement, 16, 16, tile_size);
-        animation.loadWeaponFrames(player_sword, 16, 16);
+        frame.loadWeaponFrames(player_sword, 16, 16);
+
+        SpriteSheet.initPlayer(player_movement2);
+        int animationSpeed = 90;
+        down = new Animation(animationSpeed, SpriteSheet.player_down);
+        up = new Animation(animationSpeed, SpriteSheet.player_up);
+        left = new Animation(animationSpeed, SpriteSheet.player_left);
+        right = new Animation(animationSpeed, SpriteSheet.player_right);
+        currentFrame = down.getFirstFrame(); // Frame inicial
         addItemsToInventory();
     }
 
@@ -359,11 +382,11 @@ public class Player extends Mob {
                 attack = getAttack();
                 switch (weapon.type) {
                     case SWORD -> {
-                        animation.loadWeaponFrames(player_sword, 16, 16);
+                        frame.loadWeaponFrames(player_sword, 16, 16);
                         game.playSound(sound_draw_sword);
                     }
-                    case AXE -> animation.loadWeaponFrames(player_axe, 16, 16);
-                    case PICKAXE -> animation.loadWeaponFrames(player_pickaxe, 16, 16);
+                    case AXE -> frame.loadWeaponFrames(player_axe, 16, 16);
+                    case PICKAXE -> frame.loadWeaponFrames(player_pickaxe, 16, 16);
                 }
             }
             if (selectedItem.type == Type.SHIELD) {
@@ -456,6 +479,28 @@ public class Player extends Mob {
         game.music.stop();
     }
 
+    private BufferedImage getCurrentAnimationFrame() {
+        switch (direction) {
+            case DOWN -> {
+                if (flags.collidingOnMob) return down.getCurrentFrame();
+                else return flags.colliding ? down.getFirstFrame() : down.getCurrentFrame();
+            }
+            case UP -> {
+                if (flags.collidingOnMob) return up.getCurrentFrame();
+                else return flags.colliding ? up.getFirstFrame() : up.getCurrentFrame();
+            }
+            case LEFT -> {
+                if (flags.collidingOnMob) return left.getCurrentFrame();
+                else return flags.colliding ? left.getFirstFrame() : left.getCurrentFrame();
+            }
+            case RIGHT -> {
+                if (flags.collidingOnMob) return right.getCurrentFrame();
+                else return flags.colliding ? right.getFirstFrame() : right.getCurrentFrame();
+            }
+        }
+        return currentFrame;
+    }
+
     /**
      * Obtiene el frame actual.
      *
@@ -463,43 +508,42 @@ public class Player extends Mob {
      */
     private BufferedImage getCurrentFrame() {
         int frameIndex = 0;
-
         if (!flags.hitting) {
             switch (direction) {
                 case DOWN -> {
-                    if (flags.collidingOnMob) frameIndex = animation.movementNum == 1 ? 0 : 1;
-                    else frameIndex =  animation.movementNum == 1 || flags.colliding ? 0 : 1;
+                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 0 : 1;
+                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 0 : 1;
                 }
                 case UP -> {
-                    if (flags.collidingOnMob) frameIndex =  animation.movementNum == 1 ? 2 : 3;
-                    else frameIndex =  animation.movementNum == 1 || flags.colliding ? 2 : 3;
+                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 2 : 3;
+                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 2 : 3;
                 }
                 case LEFT -> {
-                    if (flags.collidingOnMob) frameIndex =  animation.movementNum == 1 ? 4 : 5;
-                    else frameIndex =  animation.movementNum == 1 || flags.colliding ? 4 : 5;
+                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 4 : 5;
+                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 4 : 5;
                 }
                 case RIGHT -> {
-                    if (flags.collidingOnMob) frameIndex =  animation.movementNum == 1 ? 6 : 7;
-                    else frameIndex =  animation.movementNum == 1 || flags.colliding ? 6 : 7;
+                    if (flags.collidingOnMob) frameIndex = frame.movementNum == 1 ? 6 : 7;
+                    else frameIndex = frame.movementNum == 1 || flags.colliding ? 6 : 7;
                 }
             }
         } else {
             switch (direction) {
-                case DOWN -> frameIndex =  animation.attackNum == 1 ? 0 : 1;
+                case DOWN -> frameIndex = frame.attackNum == 1 ? 0 : 1;
                 case UP -> {
                     // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
                     tempScreenY -= tile_size;
-                    frameIndex =  animation.attackNum == 1 ? 2 : 3;
+                    frameIndex = frame.attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
                     tempScreenX -= tile_size;
-                    frameIndex =  animation.attackNum == 1 ? 4 : 5;
+                    frameIndex = frame.attackNum == 1 ? 4 : 5;
                 }
-                case RIGHT -> frameIndex =  animation.attackNum == 1 ? 6 : 7;
+                case RIGHT -> frameIndex = frame.attackNum == 1 ? 6 : 7;
             }
         }
 
-        return !flags.hitting ? animation.movement[frameIndex] : animation.weapon[frameIndex];
+        return !flags.hitting ? frame.movement[frameIndex] : frame.weapon[frameIndex];
     }
 
     public int getAttack() {
@@ -529,7 +573,7 @@ public class Player extends Mob {
     }
 
     public void initSleepImage(BufferedImage image) {
-        Arrays.fill(animation.movement, image);
+        Arrays.fill(frame.movement, image);
     }
 
     private void addItemsToInventory() {
@@ -545,8 +589,8 @@ public class Player extends Mob {
 
     private void drawRects(Graphics2D g2) {
         // Imagen
-        // g2.setColor(Color.magenta);
-        // g2.drawRect(screenX, screenY, tile_size, tile_size);
+        g2.setColor(Color.magenta);
+        g2.drawRect(screenX, screenY, 50, 90);
         // Hitbox
         g2.setColor(Color.red);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);

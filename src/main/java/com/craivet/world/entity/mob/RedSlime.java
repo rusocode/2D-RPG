@@ -27,8 +27,8 @@ public class RedSlime extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
-        animation.loadMovementFrames(redslime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-        mobImage = animation.movement[0];
+        frame.loadMovementFrames(redslime, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        mobImage = frame.movement[0];
     }
 
     @Override
