@@ -134,7 +134,7 @@ public class Player extends Mob {
         // animation.loadMovementFrames(player_movement, 16, 16, tile_size);
         frame.loadWeaponFrames(player_sword, 16, 16);
 
-        SpriteSheet.initPlayer(player_movement2);
+        SpriteSheet.initPlayer(player_movement3);
         int animationSpeed = 90;
         down = new Animation(animationSpeed, SpriteSheet.player_down);
         up = new Animation(animationSpeed, SpriteSheet.player_up);

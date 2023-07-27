@@ -63,6 +63,7 @@ public final class Assets {
     public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/axe.png"));
     public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/movement.png"));
     public static final SpriteSheet player_movement2 = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player 300x360.png"));
+    public static final SpriteSheet player_movement3 = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player 150x180.png"));
     public static final SpriteSheet player_pickaxe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/pickaxe.png"));
     public static final SpriteSheet player_sword = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/sword.png")); // TODO SpriteSheet de armas?
     public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/bat.png"));
