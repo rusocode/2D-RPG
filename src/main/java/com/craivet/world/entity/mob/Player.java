@@ -133,13 +133,16 @@ public class Player extends Mob {
         // animation = new Animation(frame.movement);
         // animation.loadMovementFrames(player_movement, 16, 16, tile_size);
         frame.loadWeaponFrames(player_sword, 16, 16);
+        // frame.loadMovementFrames(player_movement, 16, 16, tile_size);
 
-        SpriteSheet.initPlayer(player_movement3);
+        frame.loadMovementFrames3(player_movement2, 50, 90, 50, 90);
+
+        // SpriteSheet.initPlayer(player_movement3);
         int animationSpeed = 90;
-        down = new Animation(animationSpeed, SpriteSheet.player_down);
-        up = new Animation(animationSpeed, SpriteSheet.player_up);
-        left = new Animation(animationSpeed, SpriteSheet.player_left);
-        right = new Animation(animationSpeed, SpriteSheet.player_right);
+        down = new Animation(animationSpeed, frame.down);
+        up = new Animation(animationSpeed, frame.up);
+        left = new Animation(animationSpeed, frame.left);
+        right = new Animation(animationSpeed, frame.right);
         currentFrame = down.getFirstFrame(); // Frame inicial
         addItemsToInventory();
     }

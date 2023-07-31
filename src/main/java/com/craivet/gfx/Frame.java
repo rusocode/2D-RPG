@@ -10,10 +10,12 @@ public class Frame {
 
     public BufferedImage[] movement;
     public BufferedImage[] weapon;
+    public BufferedImage[] down, up, left, right;
 
     public int movementNum = 1, attackNum = 1;
 
     // TODO Tendria que moverse a otro lado para desacoplar la carga de frames independiente de cada entidad de la animacion que es esta clase
+
     /**
      * Carga los frames de movimiento en el array.
      *
@@ -33,6 +35,25 @@ public class Frame {
         BufferedImage[] frames = SpriteSheet.getMovementFrames(ss, w, h);
         movement = new BufferedImage[frames.length];
         System.arraycopy(frames, 0, movement, 0, frames.length);
+    }
+
+    public void loadMovementFrames3(SpriteSheet ss, int w, int h, int sw, int sh) {
+        BufferedImage[] down = SpriteSheet.getMovementFramesDown(ss, w, h);
+        BufferedImage[] up = SpriteSheet.getMovementFramesUp(ss, w, h);
+        BufferedImage[] left = SpriteSheet.getMovementFramesLeft(ss, w, h);
+        BufferedImage[] right = SpriteSheet.getMovementFramesRight(ss, w, h);
+        this.down = new BufferedImage[down.length];
+        this.up = new BufferedImage[up.length];
+        this.left = new BufferedImage[left.length];
+        this.right = new BufferedImage[right.length];
+        for (int i = 0; i < 6; i++) {
+            this.down[i] = Utils.scaleImage(down[i], sw, sh);
+            this.up[i] = Utils.scaleImage(up[i], sw, sh);
+            if (i < 5) {
+                this.left[i] = Utils.scaleImage(left[i], sw, sh);
+                this.right[i] = Utils.scaleImage(right[i], sw, sh);
+            }
+        }
     }
 
     /**

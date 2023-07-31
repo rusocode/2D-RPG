@@ -77,6 +77,66 @@ public class SpriteSheet {
         return frames;
     }
 
+    public static BufferedImage[] getMovementFramesDown(SpriteSheet ss, int w /* 25 */, int h /* 45 */) {
+        final int frames_down = 6;
+        int col = ss.getWidth() / w; // 6
+        int row = ss.getHeight() / h; // 4
+        BufferedImage[] framesDown = new BufferedImage[frames_down];
+        int i = 0;
+        for (int y = 0; y < row; y++) {
+            if (y == 0) { // Fila 1
+                for (int x = 0; x < col; x++)
+                    framesDown[i++] = ss.crop(x * w, 0, w, h);
+            }
+        }
+        return framesDown;
+    }
+
+    public static BufferedImage[] getMovementFramesUp(SpriteSheet ss, int w /* 25 */, int h /* 45 */) {
+        final int frames_up = 6;
+        int col = ss.getWidth() / w; // 6
+        int row = ss.getHeight() / h; // 4
+        BufferedImage[] framesUp = new BufferedImage[frames_up];
+        int i = 0;
+        for (int y = 0; y < row; y++) {
+            if (y == 1) { // Fila 2
+                for (int x = 0; x < col; x++)
+                    framesUp[i++] = ss.crop(x * w, y * h, w, h);
+            }
+        }
+        return framesUp;
+    }
+
+    public static BufferedImage[] getMovementFramesLeft(SpriteSheet ss, int w /* 25 */, int h /* 45 */) {
+        final int frames_left = 5;
+        int col = ss.getWidth() / w; // 6
+        int row = ss.getHeight() / h; // 4
+        BufferedImage[] framesLeft = new BufferedImage[frames_left];
+        int i = 0;
+        for (int y = 0; y < row; y++) {
+            if (y == 2) { // Fila 3
+                for (int x = 0; x < col; x++)
+                    if (x < 5) framesLeft[i++] = ss.crop(x * w, y * h, w, h);
+            }
+        }
+        return framesLeft;
+    }
+
+    public static BufferedImage[] getMovementFramesRight(SpriteSheet ss, int w /* 25 */, int h /* 45 */) {
+        final int frames_right = 5;
+        int col = ss.getWidth() / w; // 6
+        int row = ss.getHeight() / h; // 4
+        BufferedImage[] framesRight = new BufferedImage[frames_right];
+        int i = 0;
+        for (int y = 0; y < row; y++) {
+            if (y == 3) { // Fila 4
+                for (int x = 0; x < col; x++)
+                    if (x < 5) framesRight[i++] = ss.crop(x * w, y * h, w, h);
+            }
+        }
+        return framesRight;
+    }
+
     public static void initPlayer(SpriteSheet player) {
 
         player_down = new BufferedImage[6];
