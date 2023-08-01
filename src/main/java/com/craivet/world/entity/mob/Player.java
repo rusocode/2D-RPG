@@ -59,13 +59,12 @@ public class Player extends Mob {
             checkAttack();
             keyboard.resetAccionKeys();
             if (keyboard.checkMovementKeys()) {
-                // timer.timeMovement(this, INTERVAL_MOVEMENT_ANIMATION);
                 down.tick();
                 up.tick();
                 left.tick();
                 right.tick();
             }
-        } else
+        } else // TODO Este else no funciona por que no se temporiza la detencion de los nuevos frames
             timer.timeStopMovement(this, 20); // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
 
         checkShoot();
@@ -120,16 +119,16 @@ public class Player extends Mob {
         defense = getDefense();
 
         hitbox.x = 13;
-        hitbox.y = 25;
+        hitbox.y = 70;
         hitbox.width = 23;
-        hitbox.height = 60;
+        hitbox.height = 42;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         motion1 = 5;
         motion2 = 25;
 
         // frame.loadWeaponFrames(player_sword, 16, 16);
-        ss.loadMovementFramesOfPlayer(player_movement3, 2);
+        ss.loadMovementFramesOfPlayer(player_movement, 2);
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, ss.down);
@@ -476,22 +475,28 @@ public class Player extends Mob {
     }
 
     private BufferedImage getCurrentAnimationFrame() {
-        switch (direction) {
-            case DOWN -> {
-                if (flags.collidingOnMob) return down.getCurrentFrame();
-                else return flags.colliding ? down.getFirstFrame() : down.getCurrentFrame();
-            }
-            case UP -> {
-                if (flags.collidingOnMob) return up.getCurrentFrame();
-                else return flags.colliding ? up.getFirstFrame() : up.getCurrentFrame();
-            }
-            case LEFT -> {
-                if (flags.collidingOnMob) return left.getCurrentFrame();
-                else return flags.colliding ? left.getFirstFrame() : left.getCurrentFrame();
-            }
-            case RIGHT -> {
-                if (flags.collidingOnMob) return right.getCurrentFrame();
-                else return flags.colliding ? right.getFirstFrame() : right.getCurrentFrame();
+        if (keyboard.checkMovementKeys()) {
+            switch (direction) {
+                case DOWN -> {
+                    currentFrame = down.getFirstFrame();
+                    if (flags.collidingOnMob) return down.getCurrentFrame();
+                    else return flags.colliding ? down.getFirstFrame() : down.getCurrentFrame();
+                }
+                case UP -> {
+                    currentFrame = up.getFirstFrame();
+                    if (flags.collidingOnMob) return up.getCurrentFrame();
+                    else return flags.colliding ? up.getFirstFrame() : up.getCurrentFrame();
+                }
+                case LEFT -> {
+                    currentFrame = left.getFirstFrame();
+                    if (flags.collidingOnMob) return left.getCurrentFrame();
+                    else return flags.colliding ? left.getFirstFrame() : left.getCurrentFrame();
+                }
+                case RIGHT -> {
+                    currentFrame = right.getFirstFrame();
+                    if (flags.collidingOnMob) return right.getCurrentFrame();
+                    else return flags.colliding ? right.getFirstFrame() : right.getCurrentFrame();
+                }
             }
         }
         return currentFrame;
@@ -586,7 +591,7 @@ public class Player extends Mob {
     private void drawRects(Graphics2D g2) {
         // Imagen
         g2.setColor(Color.magenta);
-        g2.drawRect(screenX, screenY, 50, 90);
+        g2.drawRect(screenX, screenY, 50, 122);
         // Hitbox
         g2.setColor(Color.red);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);

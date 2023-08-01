@@ -174,7 +174,7 @@ public class World {
     public void createInteractiveTile() {
         int i = 0;
         interactives[NIX][i++] = new DryTree(game, this, 21, 20);
-        interactives[NIX][i++] = new DryTree(game, this, 23, 22);
+        // interactives[NIX][i++] = new DryTree(game, this, 23, 22);
 
         interactives[NIX][i++] = new DryTree(game, this, 25, 27);
         interactives[NIX][i++] = new DryTree(game, this, 26, 27);

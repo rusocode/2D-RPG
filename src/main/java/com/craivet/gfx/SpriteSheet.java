@@ -41,9 +41,8 @@ public class SpriteSheet {
      * @param ss SpriteSheet con los frames de movimiento.
      * @param w  ancho del frame.
      * @param h  alto del frame.
-     * @return una matriz con los frames del SpriteSheet.
      */
-    public BufferedImage[] loadMovementFrames(SpriteSheet ss, int w, int h, int scale) {
+    public void loadMovementFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
         movement = new BufferedImage[col * row];
@@ -51,7 +50,6 @@ public class SpriteSheet {
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
                 movement[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale, scale);
-        return movement;
     }
 
     /**
@@ -62,9 +60,8 @@ public class SpriteSheet {
      * @param ss SpriteSheet con los frames de armas.
      * @param w  ancho del frame.
      * @param h  alto del frame.
-     * @return una matriz con los frames del SpriteSheet.
      */
-    public BufferedImage[] loadWeaponFrames(SpriteSheet ss, int w, int h) {
+    public void loadWeaponFrames(SpriteSheet ss, int w, int h) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
         weapon = new BufferedImage[col * row];
@@ -84,7 +81,6 @@ public class SpriteSheet {
             }
             if (y == 3) break; // Evita iterar hasta los espacios sobrantes de la matriz
         }
-        return weapon;
     }
 
     public void loadMovementFramesOfPlayer(SpriteSheet ss, int scale) {
