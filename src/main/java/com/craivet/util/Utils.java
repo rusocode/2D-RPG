@@ -54,8 +54,8 @@ public final class Utils {
     /**
      * Escala la imagen antes de renderizarla para un mejor rendimiento.
      * <p>
-     * Es importante usar solo valores multiplicados por dos al tamaño original de la imagen (16), ejemplo, 32, 64,
-     * etc., sino se deforma.
+     * Es importante que el valor de escala para el ancho y alto sea multiplo del tamaño original para evitar
+     * estiramientos o deformaciones en la imagen escalada.
      *
      * @param image  imagen.
      * @param width  ancho de la imagen.
@@ -63,8 +63,7 @@ public final class Utils {
      * @return la imagen escalada.
      */
     public static BufferedImage scaleImage(BufferedImage image, int width, int height) {
-        BufferedImage scaledImage = new BufferedImage(width, height, image.getType());
-        // TODO Es necesario esto?
+        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = scaledImage.createGraphics(); // Crea un Graphics2D, que se puede usar para dibujar en este BufferedImage
         g2.drawImage(image, 0, 0, width, height, null);
         g2.dispose();

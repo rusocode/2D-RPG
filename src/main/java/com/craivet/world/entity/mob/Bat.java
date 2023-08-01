@@ -25,8 +25,8 @@ public class Bat extends Mob {
         hitbox.height = 21;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        frame.loadMovementFrames(bat, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
-        mobImage = frame.movement[0];
+        ss.loadMovementFrames(bat, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        mobImage = ss.movement[0];
     }
 
     @Override

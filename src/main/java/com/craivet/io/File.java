@@ -166,7 +166,7 @@ public class File {
             world.player.light = world.player.inventory.get(data.currentLightSlot);
             world.player.getAttack();
             world.player.getDefense();
-            world.player.frame.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+            // world.player.frame.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
             for (int map = 0; map < MAX_MAP; map++) {
                 for (int i = 0; i < world.items[1].length; i++) {

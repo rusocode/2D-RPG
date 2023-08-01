@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 import com.craivet.Direction;
 import com.craivet.Game;
-import com.craivet.gfx.Frame;
+import com.craivet.gfx.SpriteSheet;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.mob.Type;
@@ -31,7 +31,7 @@ public class Entity extends Attributes {
     protected final Game game;
     protected final World world;
 
-    public Frame frame = new Frame();
+    public SpriteSheet ss = new SpriteSheet();
     public Flags flags = new Flags();
     public Timer timer = new Timer();
 
@@ -92,7 +92,7 @@ public class Entity extends Attributes {
             if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
             // Si es una animacion
-            if (frame.movement != null || frame.weapon != null)
+            if (ss.movement != null || ss.weapon != null)
                 g2.drawImage(getCurrentFrame(), tempScreenX, tempScreenY, null);
                 // Si es una imagen estatica
             else g2.drawImage(image, screenX, screenY, null);
@@ -183,9 +183,9 @@ public class Entity extends Attributes {
      */
     protected void hit() {
         timer.attackAnimationCounter++;
-        if (timer.attackAnimationCounter <= motion1) frame.attackNum = 1; // (de 0-motion1 ms frame de ataque 1)
+        if (timer.attackAnimationCounter <= motion1) ss.attackNum = 1; // (de 0-motion1 ms frame de ataque 1)
         if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de motion1-motion2 ms frame de ataque 2)
-            frame.attackNum = 2;
+            ss.attackNum = 2;
 
             // Guarda la posicion actual de x, y y el tamaño del hitbox
             int currentX = x;
@@ -262,7 +262,7 @@ public class Entity extends Attributes {
             hitbox.height = hitboxHeight;
         }
         if (timer.attackAnimationCounter > motion2) {
-            frame.attackNum = 1;
+            ss.attackNum = 1;
             timer.attackAnimationCounter = 0;
             flags.hitting = false;
         }
@@ -374,34 +374,34 @@ public class Entity extends Attributes {
         int frameIndex = 0;
 
         if (!flags.hitting) {
-            if (frame.movement.length == 2) { // Si se trata de entidades de dos frames
+            if (ss.movement.length == 2) { // Si se trata de entidades de dos frames
                 switch (direction) {
-                    case DOWN, UP, LEFT, RIGHT -> frameIndex = frame.movementNum == 1 || flags.colliding ? 0 : 1;
+                    case DOWN, UP, LEFT, RIGHT -> frameIndex = ss.movementNum == 1 || flags.colliding ? 0 : 1;
                 }
             } else {
                 switch (direction) {
-                    case DOWN -> frameIndex = frame.movementNum == 1 || flags.colliding ? 0 : 1;
-                    case UP -> frameIndex = frame.movementNum == 1 || flags.colliding ? 2 : 3;
-                    case LEFT -> frameIndex = frame.movementNum == 1 || flags.colliding ? 4 : 5;
-                    case RIGHT -> frameIndex = frame.movementNum == 1 || flags.colliding ? 6 : 7;
+                    case DOWN -> frameIndex = ss.movementNum == 1 || flags.colliding ? 0 : 1;
+                    case UP -> frameIndex = ss.movementNum == 1 || flags.colliding ? 2 : 3;
+                    case LEFT -> frameIndex = ss.movementNum == 1 || flags.colliding ? 4 : 5;
+                    case RIGHT -> frameIndex = ss.movementNum == 1 || flags.colliding ? 6 : 7;
                 }
             }
         } else {
             switch (direction) {
-                case DOWN -> frameIndex = frame.attackNum == 1 ? 0 : 1;
+                case DOWN -> frameIndex = ss.attackNum == 1 ? 0 : 1;
                 case UP -> {
                     tempScreenY -= tile_size;
-                    frameIndex = frame.attackNum == 1 ? 2 : 3;
+                    frameIndex = ss.attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
                     tempScreenX -= tile_size;
-                    frameIndex = frame.attackNum == 1 ? 4 : 5;
+                    frameIndex = ss.attackNum == 1 ? 4 : 5;
                 }
-                case RIGHT -> frameIndex = frame.attackNum == 1 ? 6 : 7;
+                case RIGHT -> frameIndex = ss.attackNum == 1 ? 6 : 7;
             }
         }
 
-        return !flags.hitting ? frame.movement[frameIndex] : frame.weapon[frameIndex];
+        return !flags.hitting ? ss.movement[frameIndex] : ss.weapon[frameIndex];
     }
 
     private void drawRects(Graphics2D g2, int screenX, int screenY) {

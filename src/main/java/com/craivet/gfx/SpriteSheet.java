@@ -1,11 +1,21 @@
 package com.craivet.gfx;
 
+import com.craivet.util.Utils;
+
 import java.awt.image.BufferedImage;
+
+import static com.craivet.util.Global.*;
 
 public class SpriteSheet {
 
-    private final BufferedImage image;
-    public static BufferedImage[] player_down, player_up, player_left, player_right;
+    private BufferedImage image;
+    public BufferedImage[] movement; // Entidades con dos frames para cada direccion
+    public BufferedImage[] weapon;
+    public int movementNum = 1, attackNum = 1;
+    public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
+
+    public SpriteSheet() {
+    }
 
     public SpriteSheet(BufferedImage image) {
         this.image = image;
@@ -33,15 +43,15 @@ public class SpriteSheet {
      * @param h  alto del frame.
      * @return una matriz con los frames del SpriteSheet.
      */
-    public static BufferedImage[] getMovementFrames(SpriteSheet ss, int w, int h) {
-        int col = ss.getWidth() / w; // 6
-        int row = ss.getHeight() / h; // 4
-        BufferedImage[] frames = new BufferedImage[col * row];
+    public BufferedImage[] loadMovementFrames(SpriteSheet ss, int w, int h, int scale) {
+        int col = ss.getWidth() / w;
+        int row = ss.getHeight() / h;
+        movement = new BufferedImage[col * row];
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                frames[i++] = ss.crop(x * w, y * h, w, h);
-        return frames;
+                movement[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale, scale);
+        return movement;
     }
 
     /**
@@ -54,114 +64,58 @@ public class SpriteSheet {
      * @param h  alto del frame.
      * @return una matriz con los frames del SpriteSheet.
      */
-    public static BufferedImage[] getWeaponFrames(SpriteSheet ss, int w, int h) {
-        int col = ss.getWidth() / w; // 2
-        int row = ss.getHeight() / h; // 8
-        BufferedImage[] frames = new BufferedImage[col * row]; // Necesito guardar 8 imagenes no 16
+    public BufferedImage[] loadWeaponFrames(SpriteSheet ss, int w, int h) {
+        int col = ss.getWidth() / w;
+        int row = ss.getHeight() / h;
+        weapon = new BufferedImage[col * row];
         int i = 0;
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                if (y == 0) frames[i++] = ss.crop(x * w, 0, 16, 32);
-                if (y == 1) frames[i++] = ss.crop(x * w, 32, 16, 32);
+                if (y == 0) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 0, 16, 32), tile_size, tile_size * 2);
+                if (y == 1) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 32, 16, 32), tile_size, tile_size * 2);
                 if (y == 2) {
-                    if (x == 0) frames[i++] = ss.crop(0, 64, 32, 16);
-                    if (x == 1) frames[i++] = ss.crop(0, 80, 32, 16);
+                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 64, 32, 16), tile_size * 2, tile_size);
+                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 80, 32, 16), tile_size * 2, tile_size);
                 }
                 if (y == 3) {
-                    if (x == 0) frames[i++] = ss.crop(0, 96, 32, 16);
-                    if (x == 1) frames[i++] = ss.crop(0, 112, 32, 16);
+                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 96, 32, 16), tile_size * 2, tile_size);
+                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 112, 32, 16), tile_size * 2, tile_size);
                 }
             }
             if (y == 3) break; // Evita iterar hasta los espacios sobrantes de la matriz
         }
-        return frames;
+        return weapon;
     }
 
-    public static BufferedImage[] getMovementFramesDown(SpriteSheet ss, int w /* 25 */, int h /* 45 */) {
-        final int frames_down = 6;
-        int col = ss.getWidth() / w; // 6
-        int row = ss.getHeight() / h; // 4
-        BufferedImage[] framesDown = new BufferedImage[frames_down];
-        int i = 0;
+    public void loadMovementFramesOfPlayer(SpriteSheet ss, int scale) {
+
+        final int col = 6;
+        final int row = 4;
+        int w = ss.getWidth() / col;
+        int h = ss.getHeight() / row;
+
+        final int number_frame_down = 6;
+        final int number_frame_up = 6;
+        final int number_frame_left = 5;
+        final int number_frame_right = 5;
+        down = new BufferedImage[number_frame_down];
+        up = new BufferedImage[number_frame_up];
+        left = new BufferedImage[number_frame_left];
+        right = new BufferedImage[number_frame_right];
+
         for (int y = 0; y < row; y++) {
-            if (y == 0) { // Fila 1
-                for (int x = 0; x < col; x++)
-                    framesDown[i++] = ss.crop(x * w, 0, w, h);
-            }
-        }
-        return framesDown;
-    }
-
-    public static BufferedImage[] getMovementFramesUp(SpriteSheet ss, int w /* 25 */, int h /* 45 */) {
-        final int frames_up = 6;
-        int col = ss.getWidth() / w; // 6
-        int row = ss.getHeight() / h; // 4
-        BufferedImage[] framesUp = new BufferedImage[frames_up];
-        int i = 0;
-        for (int y = 0; y < row; y++) {
-            if (y == 1) { // Fila 2
-                for (int x = 0; x < col; x++)
-                    framesUp[i++] = ss.crop(x * w, y * h, w, h);
-            }
-        }
-        return framesUp;
-    }
-
-    public static BufferedImage[] getMovementFramesLeft(SpriteSheet ss, int w /* 25 */, int h /* 45 */) {
-        final int frames_left = 5;
-        int col = ss.getWidth() / w; // 6
-        int row = ss.getHeight() / h; // 4
-        BufferedImage[] framesLeft = new BufferedImage[frames_left];
-        int i = 0;
-        for (int y = 0; y < row; y++) {
-            if (y == 2) { // Fila 3
-                for (int x = 0; x < col; x++)
-                    if (x < 5) framesLeft[i++] = ss.crop(x * w, y * h, w, h);
-            }
-        }
-        return framesLeft;
-    }
-
-    public static BufferedImage[] getMovementFramesRight(SpriteSheet ss, int w /* 25 */, int h /* 45 */) {
-        final int frames_right = 5;
-        int col = ss.getWidth() / w; // 6
-        int row = ss.getHeight() / h; // 4
-        BufferedImage[] framesRight = new BufferedImage[frames_right];
-        int i = 0;
-        for (int y = 0; y < row; y++) {
-            if (y == 3) { // Fila 4
-                for (int x = 0; x < col; x++)
-                    if (x < 5) framesRight[i++] = ss.crop(x * w, y * h, w, h);
-            }
-        }
-        return framesRight;
-    }
-
-    public static void initPlayer(SpriteSheet player) {
-
-        player_down = new BufferedImage[6];
-        player_up = new BufferedImage[6];
-        player_left = new BufferedImage[5];
-        player_right = new BufferedImage[5];
-
-        int player_width = player.getWidth() / player_down.length;
-        int player_height = player.getHeight() / (player_left.length - 1);
-
-        for (int y = 0; y < player.getHeight() / player_height; y++) {
-            for (int x = 0; x < player.getWidth() / player_width; x++) {
+            for (int x = 0; x < col; x++) {
                 switch (y) { // Controla las filas
-                    case 0 -> player_down[x] = player.crop(x * player_width, 0, player_width, player_height);
-                    case 1 ->
-                            player_up[x] = player.crop(x * player_width, y * player_height, player_width, player_height);
+                    case 0 -> down[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                    case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                    // Los frames izquierdos y derechos solo tienen 5 frames, por lo tanto comprueba hasta el limite 5 para evitar un ArrayIndexOutOfBoundsException
                     case 2 -> {
-                        /* Los movimientos izquierdos y derechos solo tienen 5 frames, por lo tanto comprueba hasta el
-                         * limite 5 para evitar un ArrayIndexOutOfBoundsException. */
-                        if (x < 5)
-                            player_left[x] = player.crop(x * player_width, y * player_height, player_width, player_height);
+                        if (x < number_frame_left)
+                            left[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                     case 3 -> {
-                        if (x < 5)
-                            player_right[x] = player.crop(x * player_width, y * player_height, player_width, player_height);
+                        if (x < number_frame_right)
+                            right[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                 }
             }
