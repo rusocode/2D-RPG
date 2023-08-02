@@ -18,6 +18,7 @@ public class EntityManager implements State {
 
     private final List<Entity> entities = new ArrayList<>();
     private final List<Entity> items = new ArrayList<>();
+    private final List<Entity> projectiles = new ArrayList<>();
 
     public EntityManager(Game game, World world) {
         this.game = game;
@@ -86,7 +87,7 @@ public class EntityManager implements State {
                 if (world.mobs[world.map][i] != null) entities.add(world.mobs[world.map][i]);
 
             for (int i = 0; i < world.projectiles[1].length; i++)
-                if (world.projectiles[world.map][i] != null) entities.add(world.projectiles[world.map][i]);
+                if (world.projectiles[world.map][i] != null) projectiles.add(world.projectiles[world.map][i]);
 
             for (Entity particle : world.particles)
                 if (particle != null) entities.add(particle);
@@ -99,8 +100,10 @@ public class EntityManager implements State {
              * por la posicion de la coordena y de cada entidad. */
             entities.sort(Comparator.comparingInt(e -> e.y + e.hitbox.y));
 
-            for (Entity item : items) item.render(g2); // Ahora se dibujan por orden ascendente
+            // Ahora se dibujan por orden ascendente
+            for (Entity item : items) item.render(g2);
             for (Entity entity : entities) entity.render(g2);
+            for (Entity projectile : projectiles) projectile.render(g2);
 
             items.clear();
             entities.clear();

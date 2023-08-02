@@ -74,7 +74,7 @@ public class Player extends Mob {
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
-        drawRects(g2);
+        // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -131,7 +131,7 @@ public class Player extends Mob {
         up = new Animation(animationSpeed, ss.up);
         left = new Animation(animationSpeed, ss.left);
         right = new Animation(animationSpeed, ss.right);
-        currentFrame = down.getFirstFrame(); // Frame inicial
+        currentFrame = down.getFirstFrame();
         addItemsToInventory();
     }
 

@@ -15,13 +15,17 @@ import java.awt.image.BufferedImage;
 
 public class Animation {
 
-    public int index;
-    int speed;
+    private final int speed;
+    private int index;
     private long lastTime, timer;
     private final BufferedImage[] frames;
 
     public Animation(int speed, BufferedImage[] frames) {
+        this.speed = speed;
         this.frames = frames;
+        index = 0;
+        timer = 0;
+        lastTime = System.currentTimeMillis();
     }
 
     /**
@@ -31,7 +35,7 @@ public class Animation {
     public void tick() {
         timer += System.currentTimeMillis() - lastTime;
         lastTime = System.currentTimeMillis(); // El player se vuelve loco sin esta linea xD
-        if (timer > 90) {
+        if (timer > speed) {
             index++;
             timer = 0;
             if (index >= frames.length) index = 0;
