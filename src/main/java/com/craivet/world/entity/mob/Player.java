@@ -7,8 +7,6 @@ import java.util.Arrays;
 import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.gfx.Animation;
-import com.craivet.gfx.Assets;
-import com.craivet.gfx.SpriteSheet;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.projectile.Fireball;
@@ -18,8 +16,6 @@ import com.craivet.world.entity.projectile.Projectile;
 import com.craivet.world.tile.Interactive;
 import com.craivet.util.*;
 import com.craivet.world.entity.item.*;
-
-import javax.print.DocFlavor;
 
 import static com.craivet.util.Global.*;
 import static com.craivet.gfx.Assets.*;
@@ -78,7 +74,7 @@ public class Player extends Mob {
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
-        // drawRects(g2);
+        drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 

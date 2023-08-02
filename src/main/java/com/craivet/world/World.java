@@ -5,18 +5,15 @@ import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.item.*;
 import com.craivet.world.entity.mob.*;
 import com.craivet.world.entity.projectile.Projectile;
-import com.craivet.util.Utils;
 import com.craivet.world.management.EntityManager;
 import com.craivet.world.management.EnvironmentManager;
 import com.craivet.world.management.TileManager;
 import com.craivet.world.tile.*;
 
 import java.awt.*;
-import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.util.Global.*;
@@ -44,7 +41,6 @@ public class World {
 
     // Entities
     public Player player;
-    public List<Entity> itemsList = new ArrayList<>();
     public List<Entity> particles = new ArrayList<>();
     // TODO No tendrian que declararse como HashMap o ArrayList?
     public Item[][] items = new Item[MAX_MAP][20];

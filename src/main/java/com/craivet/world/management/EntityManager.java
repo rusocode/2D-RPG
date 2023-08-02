@@ -6,8 +6,7 @@ import com.craivet.world.entity.Entity;
 import com.craivet.states.State;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
 import java.util.List;
 
 import static com.craivet.util.Global.*;
@@ -18,6 +17,7 @@ public class EntityManager implements State {
     private final World world;
 
     private final List<Entity> entities = new ArrayList<>();
+    private final List<Entity> items = new ArrayList<>();
 
     public EntityManager(Game game, World world) {
         this.game = game;
@@ -66,16 +66,18 @@ public class EntityManager implements State {
             g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
             game.ui.render(g2);
         } else {
+
             for (int i = 0; i < world.interactives[1].length; i++)
                 if (world.interactives[world.map][i] != null) world.interactives[world.map][i].render(g2);
 
-            // Agrega las entidades a la lista de entidades
             entities.add(world.player);
 
             for (int i = 0; i < world.items[1].length; i++) {
                 if (world.items[world.map][i] != null) {
-                    if (!world.items[world.map][i].solid) world.itemsList.add(world.items[world.map][i]);
-                        // Agrega la puerta a la lista de entidades para poder ordenarla con respecto a la posicion Y del player
+                    /* Agrega los items solidos (door, chest, etc.) a la lista de entidades para poder ordenarlos
+                     * con respecto a la posicion y del player. Los items que no son solidos se agregan a la lista de
+                     * items. */
+                    if (!world.items[world.map][i].solid) items.add(world.items[world.map][i]);
                     else entities.add(world.items[world.map][i]);
                 }
             }
@@ -89,15 +91,19 @@ public class EntityManager implements State {
             for (Entity particle : world.particles)
                 if (particle != null) entities.add(particle);
 
-            /* Ordena la lista de entidades dependiendo de la posicion Y. Es decir, si el player esta por encima del npc
-             * entonces este se dibuja por debajo. */
-            entities.sort(Comparator.comparingInt(o -> o.y));
+            /* Ordena la lista de entidades dependiendo de la posicion y. Es decir, si el player esta por encima del mob,
+             * entonces este se dibuja por debajo. Pero si el player esta por debajo del mob, este se dibuja por encima.
+             * Lo mismo se aplica para los items solidos. Es decir que cuando el player se posiciona por encima de un
+             * item solido o un mob, este se dibuja por debajo, y cuando el player se posiciona por debajo, este se
+             * dibuja por arriba. Esto se debe porque estan todos en una misma lista y se ordenan de manera ascendente
+             * por la posicion de la coordena y de cada entidad. */
+            entities.sort(Comparator.comparingInt(e -> e.y + e.hitbox.y));
 
-            for (Entity item : world.itemsList) item.render(g2);
+            for (Entity item : items) item.render(g2); // Ahora se dibujan por orden ascendente
             for (Entity entity : entities) entity.render(g2);
 
+            items.clear();
             entities.clear();
-            world.itemsList.clear();
 
         }
     }
