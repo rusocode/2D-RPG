@@ -1,10 +1,10 @@
 package com.craivet.gfx;
 
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 
 import java.awt.image.BufferedImage;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 public class SpriteSheet {
 

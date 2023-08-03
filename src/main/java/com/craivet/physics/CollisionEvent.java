@@ -8,7 +8,7 @@ import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Representa un evento en el World. Los eventos pueden ser una teletransportacion, hablar con un npc, etc.
@@ -68,10 +68,8 @@ public class CollisionEvent {
             if (checkCollision(NIX, 27, 16, Direction.RIGHT)) hurt();
             if (checkCollision(NIX, 23, 12, Direction.UP)) heal();
             if (checkCollision(NIX_INDOOR_01, 12, 9, Direction.ANY)) dialogue(world.mobs[1][0]);
-            if (checkCollision(NIX, 10, 39, Direction.ANY))
-                teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
-            if (checkCollision(NIX_INDOOR_01, 12, 13, Direction.ANY))
-                teleport(OUTSIDE, NIX, 10, 39); // De Nix Indoor 1 a Nix
+            if (checkCollision(NIX, 10, 39, Direction.ANY)) teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
+            if (checkCollision(NIX_INDOOR_01, 12, 13, Direction.ANY)) teleport(OUTSIDE, NIX, 10, 39); // De Nix Indoor 1 a Nix
             if (checkCollision(NIX, 12, 9, Direction.ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1
             if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY)) teleport(OUTSIDE, NIX, 12, 9); // De Dungeon 1 a Nix
             if (checkCollision(DUNGEON_01, 8, 7, Direction.ANY))

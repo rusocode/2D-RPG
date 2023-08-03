@@ -6,7 +6,7 @@ import com.craivet.world.entity.Entity;
 
 import java.util.ArrayList;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 public class AStar {
 

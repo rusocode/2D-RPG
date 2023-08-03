@@ -5,7 +5,7 @@ import com.craivet.gfx.Assets;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Type;
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
 
@@ -23,7 +23,7 @@ public class Gold extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        game.playSound(sound_gold);
+        game.playSound(sound_gold_pickup);
         game.ui.addMessage("Gold +" + value);
         entity.gold += value;
         return true;

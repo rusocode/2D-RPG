@@ -8,8 +8,6 @@ import com.craivet.world.entity.projectile.Projectile;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.craivet.util.Global.*;
-
 /**
  * Tiene pinta de que esta clase se va a convertir en la clase Entity, y cada funcion y atributo de la clase Entity
  * va a volar a sus respectivas clases.

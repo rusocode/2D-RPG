@@ -4,9 +4,9 @@ import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Type;
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class PotionRed extends Item {
@@ -34,8 +34,7 @@ public class PotionRed extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        game.playSound(sound_potion_red);
-        // game.ui.addMessage("+" + value + " hp");
+        game.playSound(sound_drink_potion);
         entity.hp += value;
         if (entity.hp > entity.maxHp) entity.hp = entity.maxHp;
         return true;

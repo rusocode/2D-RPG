@@ -3,7 +3,7 @@ package com.craivet.world.entity.projectile;
 import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 
 import java.awt.*;
 

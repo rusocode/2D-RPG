@@ -2,9 +2,9 @@ package com.craivet.world.entity.item;
 
 import com.craivet.Game;
 import com.craivet.world.World;
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Boots extends Item {

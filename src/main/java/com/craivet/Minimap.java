@@ -5,7 +5,7 @@ import com.craivet.world.World;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 public class Minimap {
 

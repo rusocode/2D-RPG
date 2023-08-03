@@ -5,14 +5,14 @@ import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.item.DoorIron;
-import com.craivet.util.*;
+import com.craivet.utils.*;
 import com.craivet.world.tile.Interactive;
 import com.craivet.world.tile.MetalPlate;
 
 import java.util.ArrayList;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 public class BigRock extends Mob {
 

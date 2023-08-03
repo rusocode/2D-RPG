@@ -1,10 +1,9 @@
 package com.craivet.io;
 
 import com.craivet.Game;
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.mob.Type;
 import com.craivet.world.tile.Tile;
 
 import javax.swing.*;
@@ -12,8 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.craivet.gfx.Assets.*;
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Archivos del juego.

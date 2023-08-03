@@ -3,10 +3,10 @@ package com.craivet.world.entity.mob;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.item.Gold;
-import com.craivet.util.*;
+import com.craivet.utils.*;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 public class Orc extends Mob {
 

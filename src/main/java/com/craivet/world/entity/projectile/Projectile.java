@@ -7,7 +7,7 @@ import com.craivet.world.entity.mob.Player;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Type;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 public class Projectile extends Entity {
 

@@ -14,10 +14,10 @@ import com.craivet.input.Keyboard;
 import com.craivet.physics.Mechanics;
 import com.craivet.world.entity.projectile.Projectile;
 import com.craivet.world.tile.Interactive;
-import com.craivet.util.*;
+import com.craivet.utils.*;
 import com.craivet.world.entity.item.*;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Player extends Mob {
@@ -177,7 +177,7 @@ public class Player extends Mob {
     private void checkShoot() {
         if (keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
-            game.playSound(sound_burning);
+            game.playSound(sound_fireball);
             projectile.set(x, y, direction, true, this);
             // Comprueba vacante para agregar el proyectil
             for (int i = 0; i < world.projectiles[1].length; i++) {
@@ -205,6 +205,8 @@ public class Player extends Mob {
 
     /**
      * Recoge un item.
+     * <p>
+     * TODO No tendria que ir en la clase Item?
      *
      * @param i indice del item.
      */
@@ -213,7 +215,7 @@ public class Player extends Mob {
             Item item = world.items[world.map][i];
             if (keyboard.l && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(this);
-                else if (canPickup(item)) game.playSound(sound_pickup);
+                else if (canPickup(item)) game.playSound(sound_item_pickup);
                 else {
                     game.ui.addMessage("You cannot carry any more!");
                     return;
@@ -577,6 +579,7 @@ public class Player extends Mob {
         inventory.clear();
         inventory.add(weapon);
         inventory.add(shield);
+        inventory.add(new Key(game, world, 2));
         inventory.add(new PotionRed(game, world, 1));
         inventory.add(new Lantern(game, world));
         inventory.add(new Pickaxe(game, world));

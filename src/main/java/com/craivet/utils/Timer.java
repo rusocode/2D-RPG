@@ -1,4 +1,4 @@
-package com.craivet.util;
+package com.craivet.utils;
 
 import com.craivet.Direction;
 import com.craivet.world.entity.Entity;

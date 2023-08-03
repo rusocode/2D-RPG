@@ -1,21 +1,20 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
-import com.craivet.util.Timer;
 import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
 import com.craivet.io.File;
 import com.craivet.input.Keyboard;
 import com.craivet.physics.*;
 import com.craivet.states.*;
-import com.craivet.util.TimeUtils;
+import com.craivet.utils.TimeUtils;
 import com.craivet.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.net.URL;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**

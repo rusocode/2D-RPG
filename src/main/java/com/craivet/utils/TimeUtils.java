@@ -1,4 +1,4 @@
-package com.craivet.util;
+package com.craivet.utils;
 
 /**
  * Wrapper alrededor de System.nanoTime() y System.currentTimeMillis(). ¡Usa esto si quieres ser compatible en todas

@@ -5,7 +5,7 @@ import com.craivet.Game;
 import java.awt.event.*;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * TODO Se podria llamar Keyboard (Teclado)?
@@ -76,12 +76,12 @@ public class Keyboard extends KeyAdapter {
     private void titleState(int code) {
         if (game.ui.titleScreenState == MAIN_SCREEN) {
             if (code == KeyEvent.VK_W) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = 2;
             }
             if (code == KeyEvent.VK_S) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.command++;
                 if (game.ui.command > 2) game.ui.command = 0;
             }
@@ -175,12 +175,12 @@ public class Keyboard extends KeyAdapter {
          * siguientes instrucciones ya que la seleccion solo se mantiene en el back. */
         if (game.ui.subState == 0 || game.ui.subState == 2) {
             if (code == KeyEvent.VK_W) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = maxCommand;
             }
             if (code == KeyEvent.VK_S) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.command++;
                 if (game.ui.command > maxCommand) game.ui.command = 0;
             }
@@ -193,11 +193,11 @@ public class Keyboard extends KeyAdapter {
                     game.music.volumeScale--;
                     // TODO Hace falta esto aca?
                     game.music.checkVolume(); // Cambia el volumen de la musica cuando ya se esta reproduciendo
-                    game.playSound(sound_cursor);
+                    game.playSound(sound_slot);
                 }
                 if (game.ui.command == 1 && game.sound.volumeScale > 0) { // Sonido
                     game.sound.volumeScale--;
-                    game.playSound(sound_cursor);
+                    game.playSound(sound_slot);
                 }
             }
         }
@@ -207,11 +207,11 @@ public class Keyboard extends KeyAdapter {
                 if (game.ui.command == 0 && game.music.volumeScale < 5) {
                     game.music.volumeScale++;
                     game.music.checkVolume();
-                    game.playSound(sound_cursor);
+                    game.playSound(sound_slot);
                 }
                 if (game.ui.command == 1 && game.sound.volumeScale < 5) { // Sonido
                     game.sound.volumeScale++;
-                    game.playSound(sound_cursor);
+                    game.playSound(sound_slot);
                 }
             }
         }
@@ -220,12 +220,12 @@ public class Keyboard extends KeyAdapter {
 
     private void gameOverState(int code) {
         if (code == KeyEvent.VK_W) {
-            game.playSound(sound_cursor);
+            game.playSound(sound_slot);
             game.ui.command--;
             if (game.ui.command < 0) game.ui.command = 1;
         }
         if (code == KeyEvent.VK_S) {
-            game.playSound(sound_cursor);
+            game.playSound(sound_slot);
             game.ui.command++;
             if (game.ui.command > 1) game.ui.command = 0;
         }
@@ -245,12 +245,12 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_ENTER) enter = true;
         if (game.ui.subState == 0) {
             if (code == KeyEvent.VK_A) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = 1;
             }
             if (code == KeyEvent.VK_D) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.command++;
                 if (game.ui.command > 1) game.ui.command = 0;
             }
@@ -275,25 +275,25 @@ public class Keyboard extends KeyAdapter {
     private void playerInventory(int code) {
         if (code == KeyEvent.VK_W) {
             if (game.ui.playerSlotRow > 0) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.playerSlotRow--;
             }
         }
         if (code == KeyEvent.VK_A) {
             if (game.ui.playerSlotCol > 0) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.playerSlotCol--;
             }
         }
         if (code == KeyEvent.VK_S) {
             if (game.ui.playerSlotRow < 3) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.playerSlotRow++;
             }
         }
         if (code == KeyEvent.VK_D) {
             if (game.ui.playerSlotCol < 4) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.playerSlotCol++;
             }
         }
@@ -302,25 +302,25 @@ public class Keyboard extends KeyAdapter {
     private void npcInventory(int code) {
         if (code == KeyEvent.VK_W) {
             if (game.ui.npcSlotRow > 0) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.npcSlotRow--;
             }
         }
         if (code == KeyEvent.VK_A) {
             if (game.ui.npcSlotCol > 0) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.npcSlotCol--;
             }
         }
         if (code == KeyEvent.VK_S) {
             if (game.ui.npcSlotRow < 3) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.npcSlotRow++;
             }
         }
         if (code == KeyEvent.VK_D) {
             if (game.ui.npcSlotCol < 4) {
-                game.playSound(sound_cursor);
+                game.playSound(sound_slot);
                 game.ui.npcSlotCol++;
             }
         }

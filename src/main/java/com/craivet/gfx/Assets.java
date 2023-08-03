@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 
 /**
  * Esta clase carga los recursos solo una vez al iniciar el juego.
@@ -25,11 +25,11 @@ public final class Assets {
     public static final URL music_main = Utils.loadAudio("audio/music/main.wav");
     public static final URL music_dungeon = Utils.loadAudio("audio/music/dungeon.wav");
     // Sounds
-    public static final URL sound_burning = Utils.loadAudio(sounds_path + "burning5.wav");
+    public static final URL sound_fireball = Utils.loadAudio(sounds_path + "fireball5.wav");
     public static final URL sound_chest_opening = Utils.loadAudio(sounds_path + "chest_opening.wav");
     public static final URL sound_chipwall = Utils.loadAudio(sounds_path + "chipwall.wav");
-    public static final URL sound_gold = Utils.loadAudio(sounds_path + "gold.wav");
-    public static final URL sound_cursor = Utils.loadAudio(sounds_path + "500.wav");
+    public static final URL sound_gold_pickup = Utils.loadAudio(sounds_path + "gold_pickup.wav");
+    public static final URL sound_slot = Utils.loadAudio(sounds_path + "slot.wav");
     public static final URL sound_cut_tree = Utils.loadAudio(sounds_path + "cut_tree.wav");
     public static final URL sound_door_opening = Utils.loadAudio(sounds_path + "door_opening.wav");
     public static final URL sound_door_iron_opening = Utils.loadAudio(sounds_path + "door_iron_opening.wav");
@@ -42,14 +42,15 @@ public final class Assets {
     public static final URL sound_mob_death = Utils.loadAudio(sounds_path + "mob_death.wav");
     public static final URL sound_player_damage = Utils.loadAudio(sounds_path + "player_damage.wav");
     public static final URL sound_player_death = Utils.loadAudio(sounds_path + "player_death.wav");
-    public static final URL sound_potion_red = Utils.loadAudio(sounds_path + "potion2.wav");
-    public static final URL sound_pickup = Utils.loadAudio(sounds_path + "472.wav");
+    public static final URL sound_drink_potion = Utils.loadAudio(sounds_path + "drink_potion.wav");
+    public static final URL sound_item_pickup = Utils.loadAudio(sounds_path + "item_pickup2.wav");
     public static final URL sound_sleep = Utils.loadAudio(sounds_path + "sleep.wav");
     public static final URL sound_spawn = Utils.loadAudio(sounds_path + "spawn.wav");
     public static final URL sound_swing_weapon = Utils.loadAudio(sounds_path + "swing_weapon.wav");
     public static final URL sound_swing_axe = Utils.loadAudio(sounds_path + "swing_axe.wav");
-    public static final URL sound_trade = Utils.loadAudio(sounds_path + "485.wav");
-    public static final URL sound_trade_open = Utils.loadAudio(sounds_path + "trade_open.wav");
+    public static final URL sound_trade_buy = Utils.loadAudio(sounds_path + "trade_buy.wav");
+    public static final URL sound_trade_opening = Utils.loadAudio(sounds_path + "trade_opening2.wav");
+    public static final URL sound_trade_sell = Utils.loadAudio(sounds_path + "trade_sell.wav");
 
     // FONT
     public static final Font font_medieval1 = Utils.loadFont("font/medieval1.ttf", 22);

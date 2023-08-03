@@ -12,11 +12,11 @@ import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.mob.Type;
 import com.craivet.world.tile.Interactive;
 import com.craivet.world.World;
-import com.craivet.util.Timer;
-import com.craivet.util.Utils;
+import com.craivet.utils.Timer;
+import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * TODO Los metodos para obtener las subimagenes deberian ir en otra clase
@@ -97,7 +97,7 @@ public class Entity extends Attributes {
                 // Si es una imagen estatica
             else g2.drawImage(image, screenX, screenY, null);
 
-            drawRects(g2, screenX, screenY);
+            // drawRects(g2, screenX, screenY);
 
             Utils.changeAlpha(g2, 1);
         }

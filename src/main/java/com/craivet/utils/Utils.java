@@ -1,4 +1,4 @@
-package com.craivet.util;
+package com.craivet.utils;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;

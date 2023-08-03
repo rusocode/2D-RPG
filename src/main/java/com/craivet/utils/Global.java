@@ -1,4 +1,4 @@
-package com.craivet.util;
+package com.craivet.utils;
 
 /**
  * TODO Estos valores no tendrian que ir en un JSON?

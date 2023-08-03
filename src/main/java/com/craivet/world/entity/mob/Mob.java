@@ -2,11 +2,11 @@ package com.craivet.world.entity.mob;
 
 import com.craivet.Direction;
 import com.craivet.Game;
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * Los mobs se dividen en

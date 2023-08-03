@@ -9,7 +9,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 public class EntityManager implements State {
 

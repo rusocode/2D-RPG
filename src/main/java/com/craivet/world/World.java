@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 /**
  * La clase World represeta el escenario del Player. Este a su vez esta compuesto por tiles, entidades y un entorno.

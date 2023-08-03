@@ -2,10 +2,10 @@ package com.craivet.world.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.world.World;
-import com.craivet.util.*;
+import com.craivet.utils.*;
 import com.craivet.world.entity.item.*;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Trader extends Mob {
@@ -27,7 +27,7 @@ public class Trader extends Mob {
 
     @Override
     public void dialogue() {
-        game.playSound(sound_trade_open);
+        game.playSound(sound_trade_opening);
         startDialogue(TRADE_STATE, this, 0);
     }
 

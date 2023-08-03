@@ -6,7 +6,7 @@ import com.craivet.world.World;
 
 import java.awt.*;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 public class Fireball extends Projectile {

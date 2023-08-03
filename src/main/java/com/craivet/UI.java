@@ -2,15 +2,14 @@ package com.craivet;
 
 import com.craivet.world.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
-import com.craivet.world.entity.mob.Type;
-import com.craivet.util.Utils;
+import com.craivet.utils.Utils;
 import com.craivet.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
@@ -835,7 +834,7 @@ public class UI {
                 else {
                     // TODO Especificar la cantidad de items a comprar
                     if (world.player.canPickup(entity.inventory.get(itemIndex))) {
-                        game.playSound(sound_trade);
+                        game.playSound(sound_trade_buy);
                         world.player.gold -= entity.inventory.get(itemIndex).price;
                     } else addMessage("You cannot carry any more!");
                 }
@@ -885,7 +884,7 @@ public class UI {
                 if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
                     addMessage("You cannot sell an equipped item!");
                 else {
-                    game.playSound(sound_trade);
+                    game.playSound(sound_trade_sell);
                     if (world.player.inventory.get(itemIndex).amount > 1)
                         world.player.inventory.get(itemIndex).amount--;
                     else world.player.inventory.remove(itemIndex);

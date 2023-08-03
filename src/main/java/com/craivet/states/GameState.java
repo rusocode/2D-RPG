@@ -7,7 +7,7 @@ import com.craivet.Minimap;
 
 import java.awt.*;
 
-import static com.craivet.util.Global.*;
+import static com.craivet.utils.Global.*;
 
 public class GameState implements State {
 
