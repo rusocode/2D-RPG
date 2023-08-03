@@ -106,6 +106,7 @@ public class EntityManager implements State {
             for (Entity projectile : projectiles) projectile.render(g2);
 
             items.clear();
+            projectiles.clear();
             entities.clear();
 
         }

@@ -753,7 +753,7 @@ public class UI {
             game.state = PLAY_STATE;
             world.map = game.event.map;
             world.player.x = tile_size * game.event.col;
-            world.player.y = tile_size * game.event.row;
+            world.player.y = tile_size * game.event.row - 122 / 2;
             game.event.previousEventX = world.player.x;
             game.event.previousEventY = world.player.y;
             world.changeArea();

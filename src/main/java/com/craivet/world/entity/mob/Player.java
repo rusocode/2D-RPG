@@ -89,7 +89,9 @@ public class Player extends Mob {
         direction = Direction.DOWN;
         // TODO Se podria comprobar si la posicion es valida o no
         x = 23 * tile_size;
-        y = 20 * tile_size;
+        /* Al usar una imagen mas grande para el player en donde los tiles son de 48x48 hay que ajustar la posicion
+         * restando la mitad del alto escalado de la imagen para que respete la coordenada especificada. */
+        y = 20 * tile_size - 122 / 2;
     }
 
     public void setDefaultValues() {

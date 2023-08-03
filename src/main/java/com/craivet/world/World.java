@@ -52,6 +52,7 @@ public class World {
 
     public World(Game game) {
         this.game = game;
+        player = new Player(game, this);
         createEntities();
         // TODO Creo un metodo para estos 3 objetos?
         tiles = new TileManager(game, this);
@@ -140,8 +141,6 @@ public class World {
      */
     public void createMOBs() {
         int i = 0, j = 0, k = 0;
-
-        player = new Player(game, this);
 
         mobs[NIX][i++] = new Oldman(game, this, 23, 19);
         mobs[NIX][i++] = new BigRock(game, this, 26, 21);
