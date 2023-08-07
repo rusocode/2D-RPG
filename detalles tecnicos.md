@@ -8,6 +8,8 @@ Un dato menor, es que la primera resolución de argentum fue (y se sigue utiliza
 
 Para renderizar el mapa del juego se utilizan tiles de 32x32 pixeles (aunque puede variar), y teniendo en cuenta la resolución 800x600, solo se llegan a visualizar 17 en el eje x e 13 en el eje y, dando así una mayor visión horizontal. ***Es importante aclarar que los tiles sobrantes (8 y 5) de la resolución representan a la interfaz y los otros al “RenderPic”***.
 
+![](aogrid.png)
+
 Acá se puede ver la cantidad de espacios que ocupa el render (la parte donde se muestra el juego) y la interfaz. Los personajes ocupan dos grillas verticales. Esto se debe a que el cuerpo tiene un tamaño de 19x37 aproximadamente mas la cabeza que es de 17x16. Para clicks el tile importante es el de arriba ("la cabeza") y para colisiones el tile importante es el de los pies.
 
 ### Tiles
