@@ -91,7 +91,7 @@ public class Player extends Mob {
         x = 23 * tile_size;
         /* Al usar una imagen mas grande para el player en donde los tiles son de 48x48 hay que ajustar la posicion
          * restando la mitad del alto escalado de la imagen para que respete la coordenada especificada. */
-        y = 20 * tile_size - 122 / 2;
+        y = 23 * tile_size - 122 / 2;
     }
 
     public void setDefaultValues() {
@@ -126,7 +126,7 @@ public class Player extends Mob {
         motion2 = 25;
 
         // frame.loadWeaponFrames(player_sword, 16, 16);
-        ss.loadMovementFramesOfPlayer(player_movement, 2);
+        ss.loadMovementFramesOfPlayer(player_movement, 1);
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, ss.down);

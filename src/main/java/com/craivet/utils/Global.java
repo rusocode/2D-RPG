@@ -30,11 +30,11 @@ public final class Global {
 
     // Screen settings
     public static final int ORIGINAL_TILE_SIZE = 16;
-    public static final int SCALE = 3;
+    public static final int SCALE = 2;
     public static final int tile_size = ORIGINAL_TILE_SIZE * SCALE;
-    // Aspect ratio 4:3 = 960 x 576 pixels
-    public static final int MAX_SCREEN_COL = 20;
-    public static final int MAX_SCREEN_ROW = 12;
+    // Tamaño en tiles de la pantalla de visualizacion
+    public static final int MAX_SCREEN_COL = 17; // 20
+    public static final int MAX_SCREEN_ROW = 13; // 12
     public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL;
     public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW;
 
