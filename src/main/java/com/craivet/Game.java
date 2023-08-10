@@ -41,13 +41,13 @@ public class Game extends Canvas implements Runnable {
     public StateManager stateManager = new StateManager();
     public int state;
 
-    // Fullscreen
+    // Screen
     private final Screen screen;
     private BufferedImage tempScreen;
     private Graphics2D g2;
+    private BufferStrategy buffer;
 
     // Otros
-    private BufferStrategy buffer;
     public int framesInRender;
     public boolean showFPS;
     private boolean running;
@@ -145,15 +145,21 @@ public class Game extends Canvas implements Runnable {
         g2.dispose(); // TODO Primero se muestra el buffer o se elimina el contexto grafico? https://docs.oracle.com/javase/8/docs/api/index.html
     }
 
+    /**
+     * Dibuja los graficos en la pantalla temporal.
+     */
     public void drawToTempScreen() {
         // Limpia la ventana usando el color de fondo actual
         g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        // Renderiza los graficos en pantalla
+        // Renderiza los graficos
         if (stateManager.get() != null) stateManager.get().render(g2);
         // Hace visible el buffer
         buffer.show();
     }
 
+    /**
+     * Dibuja la pantalla temporal en el Canvas utilizando el ancho y alto especificado de la ventana.
+     */
     public void drawToScreen() {
         Graphics g = buffer.getDrawGraphics();
         g.drawImage(tempScreen, 0, 0, screen.getWidth(), screen.getHeight(), null);

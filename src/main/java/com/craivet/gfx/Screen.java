@@ -37,10 +37,6 @@ public class Screen extends JFrame {
             }
         });
         if (fullScreenMode) setFullScreen();
-        else {
-            Dimension dimension = new Dimension(800, 600);
-            setSize(dimension.width, dimension.height);
-        }
         setLocationRelativeTo(null);
         setVisible(true);
     }
