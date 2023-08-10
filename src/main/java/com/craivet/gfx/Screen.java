@@ -3,6 +3,7 @@ package com.craivet.gfx;
 import com.craivet.Game;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -10,12 +11,12 @@ import static com.craivet.utils.Global.*;
 
 public class Screen extends JFrame {
 
-    public Screen(final Game game) {
+    public Screen(final Game game, boolean fullScreenMode) {
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(game);
         pack();
-        setLocationRelativeTo(null);
+        // setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -35,7 +36,23 @@ public class Screen extends JFrame {
                 }
             }
         });
+        if (fullScreenMode) setFullScreen();
+        else {
+            Dimension dimension = new Dimension(800, 600);
+            setSize(dimension.width, dimension.height);
+        }
+        setLocationRelativeTo(null);
         setVisible(true);
+    }
+
+    /**
+     * Establece la resolucion a pantalla completa.
+     */
+    private void setFullScreen() {
+        // Obtiene el dispositivo de pantalla local
+        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        GraphicsDevice gd = ge.getDefaultScreenDevice();
+        gd.setFullScreenWindow(this);
     }
 
 }

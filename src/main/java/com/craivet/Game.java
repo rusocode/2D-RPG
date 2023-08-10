@@ -12,6 +12,7 @@ import com.craivet.world.World;
 
 import java.awt.*;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import static com.craivet.utils.Global.*;
@@ -23,6 +24,7 @@ import static com.craivet.gfx.Assets.*;
 
 public class Game extends Canvas implements Runnable {
 
+    // Systems
     public Keyboard keyboard = new Keyboard(this);
     public World world = new World(this);
     public UI ui = new UI(this, world);
@@ -39,6 +41,11 @@ public class Game extends Canvas implements Runnable {
     public StateManager stateManager = new StateManager();
     public int state;
 
+    // Fullscreen
+    private final Screen screen;
+    private BufferedImage tempScreen;
+    private Graphics2D g2;
+
     // Otros
     private BufferStrategy buffer;
     public int framesInRender;
@@ -50,7 +57,7 @@ public class Game extends Canvas implements Runnable {
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(keyboard);
-        new Screen(this);
+        screen = new Screen(this, false);
     }
 
     /**
@@ -86,7 +93,9 @@ public class Game extends Canvas implements Runnable {
              * entre cada frame especificado. */
             if (FPS_UNLIMITED || now - lastRender >= timePerFrame) {
                 lastRender = TimeUtils.nanoTime();
-                render();
+                drawToTempScreen();
+                drawToScreen();
+                // render();
                 framesInConsole++;
             }
 
@@ -111,6 +120,12 @@ public class Game extends Canvas implements Runnable {
         event.createEvents();
         playMusic(music_main);
         stateManager.set(new GameState(this, world, ui, minimap));
+
+        // Crea una pantalla temporal para el Fullscreen
+        tempScreen = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        // Utiliza el "pincel" (g2) de la pantalla temporal
+        g2 = (Graphics2D) tempScreen.getGraphics();
+
     }
 
     private void update() {
@@ -127,8 +142,22 @@ public class Game extends Canvas implements Runnable {
         // Hace visible el buffer
         buffer.show();
         // Elimina este contexto de graficos y libera cualquier recurso del sistema que este utilizando
-        g2.dispose();
-        // TODO Primero se muestra el buffer o se elimina el contexto grafico? https://docs.oracle.com/javase/8/docs/api/index.html
+        g2.dispose(); // TODO Primero se muestra el buffer o se elimina el contexto grafico? https://docs.oracle.com/javase/8/docs/api/index.html
+    }
+
+    public void drawToTempScreen() {
+        // Limpia la ventana usando el color de fondo actual
+        g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        // Renderiza los graficos en pantalla
+        if (stateManager.get() != null) stateManager.get().render(g2);
+        // Hace visible el buffer
+        buffer.show();
+    }
+
+    public void drawToScreen() {
+        Graphics g = buffer.getDrawGraphics();
+        g.drawImage(tempScreen, 0, 0, screen.getWidth(), screen.getHeight(), null);
+        g.dispose();
     }
 
     private synchronized boolean isRunning() {

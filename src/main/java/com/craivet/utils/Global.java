@@ -14,7 +14,7 @@ public final class Global {
     public static final int TICKS = 60;
     /* Cantidad maxima de veces que el GameLoop PUEDE llegar a renderizar la pantalla por segundo. Cuando digo "puede",
      * significa que no siempre puede llegar al maximo especificado.
-     * TIP: Sincronizar la cantidad de fps con los Hz del monitor para evitar un posible "tearing" o "stuttering". */
+     * TIP: Sincronizar la cantidad de fps con los hz del monitor para evitar un posible "tearing" o "stuttering". */
     public static final int MAX_FPS = 60;
     /* En caso de activar la ilimitacion de fps, el renderizado se va a realizar la mayor cantidad de veces que pueda.
      * A diferencia de MAX_FPS, los limites para la cantidad de fps son el poder de procesamiento de la computadora, el
