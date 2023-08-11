@@ -9,6 +9,10 @@ import java.awt.event.WindowEvent;
 
 import static com.craivet.utils.Global.*;
 
+/**
+ * <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html">Full-Screen Exclusive Mode</a>
+ */
+
 public class Screen extends JFrame {
 
     public Screen(final Game game, boolean fullScreenMode) {
@@ -16,7 +20,6 @@ public class Screen extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(game);
         pack();
-        // setLocationRelativeTo(null);
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -42,13 +45,17 @@ public class Screen extends JFrame {
     }
 
     /**
-     * Establece la resolucion a pantalla completa.
+     * Establece la resolucion a pantalla completa en caso de que el modo exclusivo de pantalla completa este disponible.
      */
     private void setFullScreen() {
         // Obtiene el dispositivo de pantalla local
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice();
-        gd.setFullScreenWindow(this);
+        GraphicsDevice gd = ge.getDefaultScreenDevice(); // Obtiene la pantalla predeterminada (la unica pantalla en un sistema de un solo monitor
+
+        if (gd.isFullScreenSupported()) {
+            System.out.println("full-screen exclusive mode is available");
+            gd.setFullScreenWindow(this);
+        } else gd.setFullScreenWindow(null);
     }
 
 }

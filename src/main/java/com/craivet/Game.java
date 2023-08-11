@@ -19,6 +19,44 @@ import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
+ * La clase Game utiliza un Canvas y implementa la interfaz Runnable para poder manejar la logica del juego, actualizar
+ * y renderizar.
+ * <p>
+ * Un componente Canvas representa un area rectangular en blanco de la pantalla en la que la aplicacion puede dibujar o
+ * desde la cual la aplicacion puede atrapar eventos de entrada del usuario. Para organizar la memoria del Canvas se
+ * utiliza un doble buffer (para este caso).
+ * <p>
+ * El almacenamiento en buffer en anillo secuencial (es decir, el almacenamiento en buffer doble o triple) es el mas
+ * comun; una aplicacion dibuja en un solo <i>back buffer</i> y luego mueve el contenido al frente (pantalla) en un solo
+ * paso, ya sea copiando los datos o moviendo el puntero de video. Al mover el puntero de video, los bufferes se
+ * intercambian, de modo que el primer buffer dibujado se convierte en el <i>front buffer</i>, o lo que se muestra
+ * actualmente en el dispositivo; esto se llama <i>page flipping</i>.
+ * <br><br>
+ * <h3>BufferedStrategy</h3>
+ * Utiliza "pintura activa". Te da control directo sobre cuando algo se pinta
+ * <ul>
+ *     <li>Proporciona un mejor control sobre la velocidad de fotogramas</li>
+ *     <li>Tiene una conexión de bajo nivel y proporciona acceso a la aceleración de hardware.</li>
+ * </ul>
+ * <h3>Swing</h3>
+ * Utiliza "pintura pasiva". Hay un {@code RepaintManager} que controla la programacion de cuando y que se pinta, esto
+ * se publica en el Event Dispatching Thread (hilo de envio de eventos) y se procesa junto con todos los demas eventos.
+ * <br><br>
+ * <h3>Ambos</h3>
+ * Estan vinculados a traves de la misma canalizacion de representacion, por lo general, esto es DirectX u OpenGL.
+ * <br><br>
+ * <h3>Game Engines</h3>
+ * La mayoria de los motores de juegos TIENEN que comenzar con un Canvas, ya que generalmente es la unica forma de
+ * vincular Java con el motor de renderizado subyacente. La mayoria de los motores de juegos son enlaces nativos de bajo
+ * nivel o envolturas ligeras sobre DirectX u OpenGL, lo que le brinda acceso (in)directo a esas API.
+ * <p>
+ * Algunos motores aun pueden usar Swing directamente, pero serian limitados y pueden estar destinados a situaciones en
+ * las que no necesita 3D o una velocidad de cuadros alta/consistente.
+ * <br><br>
+ * Recursos:
+ * <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/rendering.html">Passive vs. Active Rendering</a>
+ * <a href="https://www.oracle.com/java/technologies/painting.html">Painting in AWT and Swing</a>
+ * <p>
  * TODO Se podria crear un paquete que contenga todos los sistemas, de audio, eventos, etc. para mejor organizacion
  */
 
@@ -44,8 +82,8 @@ public class Game extends Canvas implements Runnable {
     // Screen
     private final Screen screen;
     private BufferedImage tempScreen;
+    private BufferStrategy buffer; // Es como una pantalla oculta que se usa para de evitar parpadedos
     private Graphics2D g2;
-    private BufferStrategy buffer;
 
     // Otros
     public int framesInRender;
@@ -57,7 +95,7 @@ public class Game extends Canvas implements Runnable {
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(keyboard);
-        screen = new Screen(this, false);
+        screen = new Screen(this, true);
     }
 
     /**
@@ -121,7 +159,7 @@ public class Game extends Canvas implements Runnable {
         playMusic(music_main);
         stateManager.set(new GameState(this, world, ui, minimap));
 
-        // Crea una pantalla temporal para el Fullscreen
+        // Crea una pantalla temporal para el fullscreen
         tempScreen = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         // Utiliza el "pincel" (g2) de la pantalla temporal
         g2 = (Graphics2D) tempScreen.getGraphics();
@@ -133,16 +171,12 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void render() {
-        // Obtiene un nuevo contexto de graficos en cada iteracion para asegurarse de que la estrategia este validada
-        Graphics2D g2 = (Graphics2D) buffer.getDrawGraphics(); // Pincel
-        // Limpia la ventana usando el color de fondo actual
+        Graphics2D g2 = (Graphics2D) buffer.getDrawGraphics();
         g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         // Renderiza los graficos en pantalla
         if (stateManager.get() != null) stateManager.get().render(g2);
-        // Hace visible el buffer
         buffer.show();
-        // Elimina este contexto de graficos y libera cualquier recurso del sistema que este utilizando
-        g2.dispose(); // TODO Primero se muestra el buffer o se elimina el contexto grafico? https://docs.oracle.com/javase/8/docs/api/index.html
+        g2.dispose();
     }
 
     /**
@@ -151,9 +185,9 @@ public class Game extends Canvas implements Runnable {
     public void drawToTempScreen() {
         // Limpia la ventana usando el color de fondo actual
         g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
-        // Renderiza los graficos
+        // Renderiza los graficos en el buffer de la pantalla temporal
         if (stateManager.get() != null) stateManager.get().render(g2);
-        // Hace visible el buffer
+        // Muestra el buffer
         buffer.show();
     }
 
@@ -161,8 +195,11 @@ public class Game extends Canvas implements Runnable {
      * Dibuja la pantalla temporal en el Canvas utilizando el ancho y alto especificado de la ventana.
      */
     public void drawToScreen() {
+        // Obtiene un nuevo contexto de graficos en cada iteracion para asegurarse de que el buffer este validado
         Graphics g = buffer.getDrawGraphics();
+        // Renderiza la pantalla temporal en el Canvas
         g.drawImage(tempScreen, 0, 0, screen.getWidth(), screen.getHeight(), null);
+        // Elimina este contexto de graficos y libera cualquier recurso del sistema que este utilizando
         g.dispose();
     }
 
@@ -172,9 +209,9 @@ public class Game extends Canvas implements Runnable {
 
     public synchronized void start() {
         if (running) return;
-        /* Crear una estrategia general de triple buffer. Tenga en cuenta que cuanto mas alto sea, mas potencia de
-         * procesamiento necesitara. */
-        createBufferStrategy(3);
+        /* Crear una estrategia de doble buffer para este componente (Canvas). Tenga en cuenta que cuanto mas alto sea,
+         * mas potencia de procesamiento sera necesaria. */
+        createBufferStrategy(2);
         // Obtiene el buffer del Canvas
         buffer = getBufferStrategy();
         running = true;
