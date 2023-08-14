@@ -9,9 +9,8 @@ public final class Global {
     private Global() {
     }
 
-    /* Cantidad de veces que el GameLoop actualiza la fisica por segundo. En general, muchos juegos RPG en 2D utilizan
-     * una frecuencia de 60 "ticks". */
-    public static final int TICKS = 60;
+    // Define el numero deseado de actualizaciones (ticks) por segundo (tiempo fijo entre cada tick)
+    public static final int TICKS_PER_SEC = 60;
     /* Cantidad maxima de veces que el GameLoop PUEDE llegar a renderizar la pantalla por segundo. Cuando digo "puede",
      * significa que no siempre puede llegar al maximo especificado.
      * TIP: Sincronizar la cantidad de fps con los hz del monitor para evitar un posible "tearing" o "stuttering". */

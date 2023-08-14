@@ -95,7 +95,7 @@ public class Game extends Canvas implements Runnable {
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(keyboard);
-        screen = new Screen(this, true);
+        screen = new Screen(this, false);
     }
 
     /**
@@ -107,29 +107,26 @@ public class Game extends Canvas implements Runnable {
         init();
 
         int ticks = 0, framesInConsole = 0;
-        double timePerTick = 1E9 / TICKS; // Tiempo fijo entre cada tick
-        double timePerFrame = 1E9 / MAX_FPS;
-        double delta, timer = 0, unprocessedTime = 0;
+        double delta = 1E9 / TICKS_PER_SEC; // nsPerTick = delta de Ticks
+        double timePerFrame = 1E9 / MAX_FPS; // nsPerFrame = delta de FPS
+        double timer = 0, unprocessed = 0;
         long lastTick = TimeUtils.nanoTime();
         long lastRender = TimeUtils.nanoTime();
 
         while (isRunning()) {
-            long now = TimeUtils.nanoTime();
-            delta = now - lastTick; // Diferencia entre el primer y ultimo tick
-            unprocessedTime += delta; // Acumulador del tiempo delta
-            timer += now - lastTick;
-            lastTick = now;
-            /* Actualiza la fisica cuando haya tiempo sin procesar. De esta manera, la fisica se actualiza a la misma
-             * velocidad independientemente de la computadora. */
-            if (unprocessedTime >= timePerTick) {
+            long currentTime = TimeUtils.nanoTime();
+            unprocessed += currentTime - lastTick;
+            timer += currentTime - lastTick;
+            lastTick = currentTime;
+            while (unprocessed >= delta) {
                 update();
                 ticks++;
-                unprocessedTime -= timePerTick;
+                unprocessed -= delta;
             }
 
             /* Renderiza los graficos cuando este activada la opcion FPS_UNLIMITED o cuando el ciclo alcanze el tiempo
              * entre cada frame especificado. */
-            if (FPS_UNLIMITED || now - lastRender >= timePerFrame) {
+            if (FPS_UNLIMITED || currentTime - lastRender >= timePerFrame) {
                 lastRender = TimeUtils.nanoTime();
                 drawToTempScreen();
                 drawToScreen();
