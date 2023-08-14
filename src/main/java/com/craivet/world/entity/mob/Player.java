@@ -97,7 +97,7 @@ public class Player extends Mob {
     public void setDefaultValues() {
         type = Type.PLAYER;
         direction = Direction.DOWN;
-        speed = defaultSpeed = 3;
+        speed = defaultSpeed = 3; // o 3?
         hp = maxHp = 6;
         mana = maxMana = 4;
         ammo = 5;

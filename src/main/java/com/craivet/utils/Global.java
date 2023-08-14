@@ -10,11 +10,11 @@ public final class Global {
     }
 
     // Define el numero deseado de actualizaciones (ticks) por segundo (tiempo fijo entre cada tick)
-    public static final int TICKS_PER_SEC = 60;
+    public static final int TICKS_PER_SEC = 60; // 40 parecen ser los que usa el AO
     /* Cantidad maxima de veces que el GameLoop PUEDE llegar a renderizar la pantalla por segundo. Cuando digo "puede",
      * significa que no siempre puede llegar al maximo especificado.
      * TIP: Sincronizar la cantidad de fps con los hz del monitor para evitar un posible "tearing" o "stuttering". */
-    public static final int MAX_FPS = 60;
+    public static final int MAX_FPS = 80;
     /* En caso de activar la ilimitacion de fps, el renderizado se va a realizar la mayor cantidad de veces que pueda.
      * A diferencia de MAX_FPS, los limites para la cantidad de fps son el poder de procesamiento de la computadora, el
      * rendimiento del juego, la cantidad de objetos que se renderizan en pantalla, el uso de la CPU, entre otros.

@@ -7,7 +7,6 @@ import com.craivet.io.File;
 import com.craivet.input.Keyboard;
 import com.craivet.physics.*;
 import com.craivet.states.*;
-import com.craivet.utils.TimeUtils;
 import com.craivet.world.World;
 
 import java.awt.*;
@@ -95,7 +94,7 @@ public class Game extends Canvas implements Runnable {
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(keyboard);
-        screen = new Screen(this, false);
+        screen = new Screen(this, true);
     }
 
     /**
@@ -106,37 +105,41 @@ public class Game extends Canvas implements Runnable {
 
         init();
 
+        long lastTick = System.nanoTime();
+        long lastRender = System.nanoTime();
+        double unprocessed = 0;
         int ticks = 0, framesInConsole = 0;
-        double delta = 1E9 / TICKS_PER_SEC; // nsPerTick = delta de Ticks
-        double timePerFrame = 1E9 / MAX_FPS; // nsPerFrame = delta de FPS
-        double timer = 0, unprocessed = 0;
-        long lastTick = TimeUtils.nanoTime();
-        long lastRender = TimeUtils.nanoTime();
+        double nsPerTick = 1E9D / TICKS_PER_SEC; //  delta fijo de Ticks
+        double timePerFrame = 1E9 / MAX_FPS; // delta fijo de FPS
+        long timer = System.currentTimeMillis();
 
         while (isRunning()) {
-            long currentTime = TimeUtils.nanoTime();
-            unprocessed += currentTime - lastTick;
-            timer += currentTime - lastTick;
+            long currentTime = System.nanoTime();
+            unprocessed += (currentTime - lastTick) / nsPerTick;
+            // timer += currentTime - lastTick;
             lastTick = currentTime;
-            while (unprocessed >= delta) {
+            while (unprocessed >= 1) {
                 update();
                 ticks++;
-                unprocessed -= delta;
+                unprocessed--;
             }
+
+            // TODO Tendria que obtener el tiempo actual de nuevo?
+            // currentTime = System.nanoTime();
 
             /* Renderiza los graficos cuando este activada la opcion FPS_UNLIMITED o cuando el ciclo alcanze el tiempo
              * entre cada frame especificado. */
             if (FPS_UNLIMITED || currentTime - lastRender >= timePerFrame) {
-                lastRender = TimeUtils.nanoTime();
+                lastRender = System.nanoTime();
                 drawToTempScreen();
                 drawToScreen();
                 // render();
                 framesInConsole++;
             }
 
-            if (timer >= 1E9) {
+            if (System.currentTimeMillis() - timer >= 1000) {
                 System.out.println(ticks + " ticks, " + framesInConsole + " fps");
-                timer = 0;
+                timer = System.currentTimeMillis();
                 ticks = 0;
                 framesInRender = framesInConsole;
                 framesInConsole = 0;
