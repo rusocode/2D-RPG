@@ -97,7 +97,7 @@ public class Player extends Mob {
     public void setDefaultValues() {
         type = Type.PLAYER;
         direction = Direction.DOWN;
-        speed = defaultSpeed = 3; // o 3?
+        speed = defaultSpeed = 3;
         hp = maxHp = 6;
         mana = maxMana = 4;
         ammo = 5;
@@ -474,6 +474,11 @@ public class Player extends Mob {
         game.music.stop();
     }
 
+    /**
+     * Obtiene el frame de animacion actual.
+     *
+     * @return el frame de animacion actual.
+     */
     private BufferedImage getCurrentAnimationFrame() {
         if (keyboard.checkMovementKeys()) {
             switch (direction) {
@@ -500,51 +505,6 @@ public class Player extends Mob {
             }
         }
         return currentFrame;
-    }
-
-    /**
-     * Obtiene el frame actual.
-     *
-     * @return el frame actual.
-     */
-    private BufferedImage getCurrentFrame() {
-        int frameIndex = 0;
-        if (!flags.hitting) {
-            switch (direction) {
-                case DOWN -> {
-                    if (flags.collidingOnMob) frameIndex = ss.movementNum == 1 ? 0 : 1;
-                    else frameIndex = ss.movementNum == 1 || flags.colliding ? 0 : 1;
-                }
-                case UP -> {
-                    if (flags.collidingOnMob) frameIndex = ss.movementNum == 1 ? 2 : 3;
-                    else frameIndex = ss.movementNum == 1 || flags.colliding ? 2 : 3;
-                }
-                case LEFT -> {
-                    if (flags.collidingOnMob) frameIndex = ss.movementNum == 1 ? 4 : 5;
-                    else frameIndex = ss.movementNum == 1 || flags.colliding ? 4 : 5;
-                }
-                case RIGHT -> {
-                    if (flags.collidingOnMob) frameIndex = ss.movementNum == 1 ? 6 : 7;
-                    else frameIndex = ss.movementNum == 1 || flags.colliding ? 6 : 7;
-                }
-            }
-        } else {
-            switch (direction) {
-                case DOWN -> frameIndex = ss.attackNum == 1 ? 0 : 1;
-                case UP -> {
-                    // Soluciona el bug para las imagenes de ataque up y left, ya que la posicion 0,0 de estas imagenes son tiles transparentes
-                    tempScreenY -= tile_size;
-                    frameIndex = ss.attackNum == 1 ? 2 : 3;
-                }
-                case LEFT -> {
-                    tempScreenX -= tile_size;
-                    frameIndex = ss.attackNum == 1 ? 4 : 5;
-                }
-                case RIGHT -> frameIndex = ss.attackNum == 1 ? 6 : 7;
-            }
-        }
-
-        return !flags.hitting ? ss.movement[frameIndex] : ss.weapon[frameIndex];
     }
 
     public int getAttack() {
