@@ -109,8 +109,8 @@ public class Game extends Canvas implements Runnable {
         long lastRender = System.nanoTime();
         double unprocessed = 0;
         int ticks = 0, framesInConsole = 0;
-        double nsPerTick = 1E9D / TICKS_PER_SEC; //  delta fijo de Ticks
-        double timePerFrame = 1E9 / MAX_FPS; // delta fijo de FPS
+        double nsPerTick = 1E9D / TICKS_PER_SEC; // timestep fijo de Ticks
+        double nsPerFrame = 1E9D / MAX_FPS; // delta fijo de FPS
         long timer = System.currentTimeMillis();
 
         while (isRunning()) {
@@ -128,7 +128,7 @@ public class Game extends Canvas implements Runnable {
 
             /* Renderiza los graficos cuando este activada la opcion FPS_UNLIMITED o cuando el ciclo alcanze el tiempo
              * entre cada frame especificado. */
-            if (FPS_UNLIMITED || currentTime - lastRender >= timePerFrame) {
+            if (FPS_UNLIMITED || currentTime - lastRender >= nsPerFrame) {
                 lastRender = System.nanoTime();
                 drawToTempScreen();
                 drawToScreen();
