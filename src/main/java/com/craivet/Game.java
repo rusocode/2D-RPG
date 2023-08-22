@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
+import com.craivet.utils.GameTimer;
 import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
 import com.craivet.io.File;
@@ -73,6 +74,7 @@ public class Game extends Canvas implements Runnable {
     public Collision collision = new Collision(world);
     public CollisionEvent event = new CollisionEvent(this, world);
     public AStar aStar = new AStar(world);
+    public GameTimer gameTimer = new GameTimer();
 
     // States
     public StateManager stateManager = new StateManager();
@@ -85,8 +87,6 @@ public class Game extends Canvas implements Runnable {
     private Graphics2D g2;
 
     // Otros
-    public int framesInRender;
-    public boolean showFPS;
     private boolean running;
 
     public Game() {
@@ -97,56 +97,14 @@ public class Game extends Canvas implements Runnable {
         screen = new Screen(this, true);
     }
 
-    /**
-     * Desde aca se bombea toda la sangre.
-     */
     @Override
     public void run() {
-
         init();
-
-        long lastTick = System.nanoTime();
-        long lastRender = System.nanoTime();
-        double unprocessed = 0;
-        int ticks = 0, framesInConsole = 0;
-        double nsPerTick = 1E9D / TICKS_PER_SEC; // timestep fijo de Ticks
-        double nsPerFrame = 1E9D / MAX_FPS; // delta fijo de FPS
-        long timer = System.currentTimeMillis();
-
         while (isRunning()) {
-            long currentTime = System.nanoTime();
-            unprocessed += (currentTime - lastTick) / nsPerTick;
-            lastTick = currentTime;
-            while (unprocessed >= 1) {
-                update();
-                ticks++;
-                unprocessed--;
-            }
-
-            // TODO Tendria que obtener el tiempo actual de nuevo?
-            // currentTime = System.nanoTime();
-
-            /* Renderiza los graficos cuando este activada la opcion FPS_UNLIMITED o cuando el ciclo alcanze el tiempo
-             * entre cada frame especificado. */
-            if (FPS_UNLIMITED || currentTime - lastRender >= nsPerFrame) {
-                lastRender = System.nanoTime();
-                drawToTempScreen();
-                drawToScreen();
-                // render();
-                framesInConsole++;
-            }
-
-            if (System.currentTimeMillis() - timer >= 1000) {
-                System.out.println(ticks + " ticks, " + framesInConsole + " fps");
-                timer = System.currentTimeMillis();
-                ticks = 0;
-                framesInRender = framesInConsole;
-                framesInConsole = 0;
-                showFPS = true;
-            }
-
+            if (gameTimer.shouldUpdate()) update();
+            if (gameTimer.shouldRender()) render();
+            gameTimer.timer(1000);
         }
-
     }
 
     private void init() {
@@ -169,7 +127,7 @@ public class Game extends Canvas implements Runnable {
         if (stateManager.get() != null) stateManager.get().update();
     }
 
-    private void render() {
+    private void render2() {
         Graphics2D g2 = (Graphics2D) buffer.getDrawGraphics();
         g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         // Renderiza los graficos en pantalla
@@ -178,10 +136,15 @@ public class Game extends Canvas implements Runnable {
         g2.dispose();
     }
 
+    private void render() {
+        drawToTempScreen();
+        drawToScreen();
+    }
+
     /**
      * Dibuja los graficos en la pantalla temporal.
      */
-    public void drawToTempScreen() {
+    private void drawToTempScreen() {
         // Limpia la ventana usando el color de fondo actual
         g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         // Renderiza los graficos en el buffer de la pantalla temporal
@@ -193,7 +156,7 @@ public class Game extends Canvas implements Runnable {
     /**
      * Dibuja la pantalla temporal en el Canvas utilizando el ancho y alto especificado de la ventana.
      */
-    public void drawToScreen() {
+    private void drawToScreen() {
         // Obtiene un nuevo contexto de graficos en cada iteracion para asegurarse de que el buffer este validado
         Graphics g = buffer.getDrawGraphics();
         // Renderiza la pantalla temporal en el Canvas

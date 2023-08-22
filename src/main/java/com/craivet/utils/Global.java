@@ -16,11 +16,11 @@ public final class Global {
      * procesamiento se necesita para ponerse al dia en tiempo real. Cuanto mas bajo es (pasos largos, mucha diferencia
      * de tiempo entre ciclos), mas entrecortado es el juego. Lo ideal es que sea bastante alto, a menudo mas rapido que
      * 60 FPS, para que el juego simule con alta calidad en maquinas rapidas. */
-    public static final int TICKS_PER_SEC = 60;
+    public static final int UPDATES = 60;
     /* Cantidad maxima de veces que el GameLoop PUEDE llegar a renderizar la pantalla por segundo. Cuando digo "puede",
      * significa que no siempre puede llegar al maximo especificado.
      * TIP: Sincronizar la cantidad de fps con los hz del monitor para evitar un posible "tearing" o "stuttering". */
-    public static final int MAX_FPS = 200;
+    public static final int FRAMES = 60;
     /* En caso de activar la ilimitacion de fps, el renderizado se va a realizar la mayor cantidad de veces que pueda.
      * A diferencia de MAX_FPS, los limites para la cantidad de fps son el poder de procesamiento de la computadora, el
      * rendimiento del juego, la cantidad de objetos que se renderizan en pantalla, el uso de la CPU, entre otros.

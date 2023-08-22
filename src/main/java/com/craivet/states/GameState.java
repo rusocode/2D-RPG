@@ -47,10 +47,10 @@ public class GameState implements State {
             int posY = (game.world.player.y + game.world.player.hitbox.y) / tile_size;
             g2.drawString(map + " (" + posX + ", " + posY + ")", x, y);
             y += gap;
-            if (game.showFPS) {
-                g2.drawString("FPS: " + game.framesInRender, x, y);
-                lastFrames = game.framesInRender;
-                game.showFPS = false;
+            if (game.gameTimer.showFPS) {
+                g2.drawString("FPS: " + game.gameTimer.framesInRender, x, y);
+                lastFrames = game.gameTimer.framesInRender;
+                game.gameTimer.showFPS = false;
             } else
                 g2.drawString("FPS: " + lastFrames, x, y); // Muestra los ultimos fps hasta que se complete el segundo
             y += gap;
