@@ -132,6 +132,7 @@ public class Game extends Canvas implements Runnable {
         g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
         // Renderiza los graficos en pantalla
         if (stateManager.get() != null) stateManager.get().render(g2);
+        // Cuando haya terminado de dibujar y desee presentar su informacion en la pantalla, llame a show()
         buffer.show();
         g2.dispose();
     }

@@ -31,16 +31,16 @@ public class GameTimer {
      * @return true si se debe realizar una actualizacion del juego, o false.
      */
     public boolean shouldUpdate() {
-        boolean processed = false;
+        boolean shouldUpdate = false;
         long currentTime = System.nanoTime();
         unprocessed += (currentTime - lastUpdate) / nsPerUpdate;
         lastUpdate = currentTime;
         while (unprocessed >= 1) {
             ticks++;
             unprocessed--;
-            processed = true;
+            shouldUpdate = true;
         }
-        return processed;
+        return shouldUpdate;
     }
 
     /**
@@ -50,15 +50,15 @@ public class GameTimer {
      * @return true si se debe realizar una renderizacion del juego, o false.
      */
     public boolean shouldRender() {
-        boolean processed = false;
+        boolean shouldRender = false;
         long currentTime = System.nanoTime();
         // Si la opcion FPS_UNLIMITED esta activada o si alcanzo el tiempo entre cada frame
         if (FPS_UNLIMITED || currentTime - lastFrame >= nsPerFrame) {
             framesInConsole++;
             lastFrame = System.nanoTime();
-            processed = true;
+            shouldRender = true;
         }
-        return processed;
+        return shouldRender;
     }
 
     /**

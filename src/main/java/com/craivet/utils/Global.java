@@ -33,6 +33,8 @@ public final class Global {
     public static final int ENTITY_HEIGHT = 16;
     public static final int SUBWINDOW_ALPHA = 210;
 
+    /* Una aplicacion puede ejecutarse mucho mas rápido si las imagenes que elige mostrar comparten la misma profundidad
+     * de bits que la pantalla. https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html */
     // Screen settings
     public static final int ORIGINAL_TILE_SIZE = 16;
     public static final int SCALE = 2;
