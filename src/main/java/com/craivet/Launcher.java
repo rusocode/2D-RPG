@@ -16,29 +16,6 @@ public class Launcher {
     public static void main(String[] args) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         new Game().start();
-
-     /* DisplayMode displayMode;
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice(); // Obtiene la pantalla principal
-        displayMode = gd.getDisplayMode();
-        System.out.println("display width = " + displayMode.getWidth());
-        System.out.println("display height = " + displayMode.getHeight());
-        System.out.println("display BitDepth = " + displayMode.getBitDepth());
-        System.out.println("display hz = " + displayMode.getRefreshRate());
-        */
-
-        /*
-        * if (gd.isFullScreenSupported()) {
-      gd.setFullScreenWindow(frame);
-  } else {
-     // proceed in non-full-screen mode
-     frame.setSize(...);
-     frame.setLocation(...);
-     frame.setVisible(true);
-  }
-        *
-        * */
-
     }
 
 }

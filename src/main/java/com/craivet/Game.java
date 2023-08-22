@@ -94,7 +94,8 @@ public class Game extends Canvas implements Runnable {
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(keyboard);
-        screen = new Screen(this, true);
+        // setIgnoreRepaint(true);
+        screen = new Screen(this, false);
     }
 
     @Override
@@ -158,7 +159,7 @@ public class Game extends Canvas implements Runnable {
      * Dibuja la pantalla temporal en el Canvas utilizando el ancho y alto especificado de la ventana.
      */
     private void drawToScreen() {
-        // Obtiene un nuevo contexto de graficos en cada iteracion para asegurarse de que el buffer este validado
+        // Obtienen los graficos del buffer actual
         Graphics g = buffer.getDrawGraphics();
         // Renderiza la pantalla temporal en el Canvas
         g.drawImage(tempScreen, 0, 0, screen.getWidth(), screen.getHeight(), null);

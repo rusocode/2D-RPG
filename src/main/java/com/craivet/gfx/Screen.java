@@ -16,6 +16,7 @@ import static com.craivet.utils.Global.*;
 public class Screen extends JFrame {
 
     public Screen(final Game game, boolean fullScreenMode) {
+        // setIgnoreRepaint(true);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(game);
@@ -48,12 +49,15 @@ public class Screen extends JFrame {
      * Establece la resolucion a pantalla completa en caso de que el modo exclusivo de pantalla completa este disponible.
      */
     private void setFullScreen() {
-        // Obtiene el dispositivo de pantalla local
-        GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-        GraphicsDevice gd = ge.getDefaultScreenDevice(); // Obtiene la pantalla predeterminada (la unica pantalla en un sistema de un solo monitor
-
+        // Obtiene la pantalla predeterminada (la unica pantalla en un sistema de un solo monitor) a traves del entorno de graficos local
+        GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+        DisplayMode display = gd.getDisplayMode();
+        System.out.println("width = " + display.getWidth());
+        System.out.println("height = " + display.getHeight());
+        System.out.println("BitDepth = " + display.getBitDepth());
+        System.out.println("hz = " + display.getRefreshRate());
+        // Si la pantalla principal admite el modo exclusivo de pantalla completa
         if (gd.isFullScreenSupported()) {
-            System.out.println("full-screen exclusive mode is available");
             gd.setFullScreenWindow(this);
         } else gd.setFullScreenWindow(null);
     }

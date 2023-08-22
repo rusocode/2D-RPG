@@ -535,6 +535,7 @@ public class UI {
 
         changeFontSize(22f);
 
+        // Full Screen
         // Music
         textX = frameX + tile_size;
         textY += tile_size * 2;

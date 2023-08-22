@@ -4,6 +4,8 @@ import static com.craivet.utils.Global.*;
 
 /**
  * Temporizador del GameLoop.
+ * <p>
+ * <a href="https://gameprogrammingpatterns.com/update-method.html">Update Method</a>
  */
 
 public class GameTimer {
