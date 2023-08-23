@@ -65,18 +65,18 @@ public class UI {
 
         // TODO Esto va aca o en el constructor?
         // Fuente y color por defecto
-        g2.setFont(font_medieval1);
+        g2.setFont(font_marumonica);
         g2.setColor(Color.white);
         // Suaviza los bordes de la fuente
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 
         if (game.state == MAIN_STATE) drawTitleScreen();
         if (game.state == PLAY_STATE) {
-            drawPlayerLife();
+            drawPlayerStats();
             drawConsole();
         }
         if (game.state == PAUSE_STATE) {
-            drawPlayerLife();
+            drawPlayerStats();
             drawPauseText();
         }
         if (game.state == DIALOGUE_STATE) drawDialogueScreen();
@@ -97,6 +97,7 @@ public class UI {
 
     private void drawTitleScreen() {
         if (titleScreenState == MAIN_SCREEN) {
+
             // Title
             changeFontSize(96f);
             String text = "Hersir";
@@ -106,16 +107,16 @@ public class UI {
 
             // Shadow
             g2.setColor(Color.gray);
-            g2.drawString(text, x + 5, y + 5);
+            // g2.drawString(text, x + 5, y + 5);
 
             // Main color
             g2.setColor(Color.white);
-            g2.drawString(text, x, y);
+            // g2.drawString(text, x, y);
 
             // Image
             x = SCREEN_WIDTH / 2 - (tile_size * 2) / 2;
             y += tile_size * 2;
-            g2.drawImage(world.player.down.getFirstFrame(), x, y, tile_size * 2, tile_size * 2, null);
+            // g2.drawImage(world.player.down.getFirstFrame(), x, y, tile_size, tile_size * 2, null);
 
             // Menu
             changeFontSize(48f);
@@ -200,31 +201,35 @@ public class UI {
         }
     }
 
-    private void drawPlayerLife() {
+    private void drawPlayerStats() {
 
         // world.player.life = 1;
+        // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
 
         int x = tile_size / 2;
         int y = tile_size / 2;
         int i = 0;
 
-        // Dibuja el corazon vacio
+        // Dibuja los corazones vacios
         while (i < world.player.maxHp / 2) {
             g2.drawImage(heartBlank, x, y, null);
             i++;
             x += tile_size;
         }
 
-        // Reset
+        // Resetea la posicion de x para dibujar los otros corazones (medio y lleno)
         x = tile_size / 2;
         i = 0;
 
-        // Dibuja la vida actual
+        /* Dibuja los corazones medios y llenos (vida actual) sobre los corazones vacios de izquierda a derecha mientras
+         * el player tenga vida. */
         while (i < world.player.hp) {
-            g2.drawImage(heartHalf, x, y, null);
-            i++;
-            if (i < world.player.hp) g2.drawImage(heartFull, x, y, null);
-            i++;
+            g2.drawImage(heartHalf, x, y, null); // Dibuja medio corazon
+            i++; // Incrementa la posicion del siguiente valor de vida
+            if (i < world.player.hp) { // Si todavia tiene vida, dibuja la otra parte del corazon (osea, un corazon lleno)
+                g2.drawImage(heartFull, x, y, null);
+                i++;
+            }
             x += tile_size;
         }
 
@@ -235,7 +240,7 @@ public class UI {
         while (i < world.player.maxMana) {
             g2.drawImage(manaBlank, x, y, null);
             i++;
-            x += 35;
+            x += (tile_size / 2) + 1;
         }
 
         // Dibuja la mana actual
@@ -244,7 +249,7 @@ public class UI {
         while (i < world.player.mana) {
             g2.drawImage(manaFull, x, y, null);
             i++;
-            x += 35;
+            x += (tile_size / 2) + 1;
         }
 
     }
@@ -526,14 +531,14 @@ public class UI {
         int textX, textY;
 
         // Title
-        changeFontSize(33f);
+        changeFontSize(28f);
         String text = "Options";
         textX = getXForCenteredText(text);
         textY = frameY + tile_size;
         g2.drawString(text, textX, textY);
         // Title
 
-        changeFontSize(22f);
+        changeFontSize(28f);
 
         // Full Screen
         // Music

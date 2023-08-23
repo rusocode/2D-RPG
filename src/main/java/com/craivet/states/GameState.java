@@ -7,6 +7,7 @@ import com.craivet.Minimap;
 
 import java.awt.*;
 
+import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class GameState implements State {
@@ -39,9 +40,9 @@ public class GameState implements State {
 
         // Debug mode
         if (game.keyboard.t) {
-            g2.setFont(new Font("Consolas", Font.ITALIC, 20));
+            g2.setFont(font_marumonica);
             g2.setColor(Color.white);
-            int x = 8, y = SCREEN_HEIGHT - 55, gap = 25;
+            int x = 8, y = SCREEN_HEIGHT - tile_size * 2, gap = 25;
             String map = game.world.maps.get(game.world.map);
             int posX = (game.world.player.x + game.world.player.hitbox.x) / tile_size;
             int posY = (game.world.player.y + game.world.player.hitbox.y) / tile_size;

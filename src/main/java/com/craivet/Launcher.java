@@ -1,7 +1,6 @@
 package com.craivet;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * <h3>Notas</h3>

@@ -37,11 +37,11 @@ public final class Global {
      * de bits que la pantalla. https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html */
     // Screen settings
     public static final int ORIGINAL_TILE_SIZE = 16;
-    public static final int SCALE = 3;
+    public static final int SCALE = 2;
     public static final int tile_size = ORIGINAL_TILE_SIZE * SCALE;
     // Tamaño en tiles de la pantalla de visualizacion
-    public static final int MAX_SCREEN_COL = 20; // 20, 17
-    public static final int MAX_SCREEN_ROW = 12; // 12, 13
+    public static final int MAX_SCREEN_COL = 17; // 20, 17
+    public static final int MAX_SCREEN_ROW = 13; // 12, 13
     public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL;
     public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW;
 

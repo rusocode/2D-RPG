@@ -19,7 +19,7 @@ public class PotionRed extends Item {
         type = Type.CONSUMABLE;
         if (pos.length > 0) image = Utils.scaleImage(potion_red, tile_size, tile_size);
         else image = Utils.scaleImage(potion_red, tile_size, tile_size);
-        value = 5;
+        value = 2; // TODO O toda la vida?
         description = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;
         this.amount = amount;

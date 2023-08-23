@@ -21,7 +21,7 @@ public final class Utils {
      * @param size tamaño de la fuente.
      * @return una nueva fuente creada con el tipo de fuente especificado.
      */
-    public static Font loadFont(String path, int size) {
+    public static Font loadFont(String path, float size) {
         try {
             return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path))).deriveFont(Font.PLAIN, size);
         } catch (IOException | FontFormatException | NullPointerException e) {
