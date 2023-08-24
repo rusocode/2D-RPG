@@ -74,7 +74,7 @@ public class Player extends Mob {
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
-        // drawRects(g2);
+        drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -116,10 +116,10 @@ public class Player extends Mob {
         attack = getAttack();
         defense = getDefense();
 
-        hitbox.x = 13;
-        hitbox.y = 70;
-        hitbox.width = 23;
-        hitbox.height = 42;
+        hitbox.x = 7;
+        hitbox.y = 32;
+        hitbox.width = 10;
+        hitbox.height = 24;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         motion1 = 5;
@@ -552,7 +552,7 @@ public class Player extends Mob {
     private void drawRects(Graphics2D g2) {
         // Imagen
         g2.setColor(Color.magenta);
-        g2.drawRect(screenX, screenY, 50, 122);
+        g2.drawRect(screenX, screenY, currentFrame.getWidth(), currentFrame.getHeight());
         // Hitbox
         g2.setColor(Color.red);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);

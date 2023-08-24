@@ -42,8 +42,9 @@ public final class Global {
     // Tamaño en tiles de la pantalla de visualizacion
     public static final int MAX_SCREEN_COL = 17; // 20, 17
     public static final int MAX_SCREEN_ROW = 13; // 12, 13
-    public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL;
-    public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW;
+    // Tiles visibles
+    public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL; // 544px
+    public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW; // 416px
 
     // Map settings
     public static final int MAX_MAP = 10;

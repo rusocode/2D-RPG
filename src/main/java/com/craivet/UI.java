@@ -65,7 +65,7 @@ public class UI {
 
         // TODO Esto va aca o en el constructor?
         // Fuente y color por defecto
-        g2.setFont(font_marumonica);
+        g2.setFont(font_minecraft);
         g2.setColor(Color.white);
         // Suaviza los bordes de la fuente
         // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -98,48 +98,28 @@ public class UI {
     private void drawTitleScreen() {
         if (titleScreenState == MAIN_SCREEN) {
 
-            // Title
-            changeFontSize(96f);
-            String text = "Hersir";
-            int x = getXForCenteredText(text);
-            int y = tile_size * 3;
-            // Title
-
-            // Shadow
-            g2.setColor(Color.gray);
-            // g2.drawString(text, x + 5, y + 5);
-
-            // Main color
-            g2.setColor(Color.white);
-            // g2.drawString(text, x, y);
-
-            // Image
-            x = SCREEN_WIDTH / 2 - (tile_size * 2) / 2;
-            y += tile_size * 2;
-            // g2.drawImage(world.player.down.getFirstFrame(), x, y, tile_size, tile_size * 2, null);
-
             // Menu
-            changeFontSize(48f);
-            text = "NEW GAME";
-            x = getXForCenteredText(text);
-            y += tile_size * 3.5;
+            changeFontSize(48);
+            String text = "NEW GAME";
+            int x = getXForCenteredText(text);
+            int y = tile_size * 5;
             g2.drawString(text, x, y);
             if (command == 0) g2.drawString(">", x - tile_size, y);
 
             text = "LOAD GAME";
             x = getXForCenteredText(text);
-            y += tile_size;
+            y += tile_size * 2;
             g2.drawString(text, x, y);
             if (command == 1) g2.drawString(">", x - tile_size, y);
 
             text = "QUIT";
             x = getXForCenteredText(text);
-            y += tile_size;
+            y += tile_size * 2;
             g2.drawString(text, x, y);
             if (command == 2) g2.drawString(">", x - tile_size, y);
         } else if (titleScreenState == SELECTION_SCREEN) {
             g2.setColor(Color.white);
-            changeFontSize(42f);
+            changeFontSize(48);
 
             String text = "Select your class!";
             int x = getXForCenteredText(text);
@@ -175,7 +155,7 @@ public class UI {
     private void drawConsole() {
         int messageX = tile_size;
         int messageY = tile_size * 4;
-        changeFontSize(29f);
+        changeFontSize(24);
 
         for (int i = 0; i < message.size(); i++) {
             if (message.get(i) != null) {
@@ -255,7 +235,7 @@ public class UI {
     }
 
     private void drawPauseText() {
-        changeFontSize(80);
+        changeFontSize(60);
         String text = "PAUSED";
         int x = getXForCenteredText(text);
         int y = getYForCenteredText(text);
@@ -321,7 +301,7 @@ public class UI {
         drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
 
         final int gap = 37; // Espacio entre lineas
-        changeFontSize(28f);
+        changeFontSize(28);
 
         // Names
         int textX = frameX + 20;
@@ -934,8 +914,8 @@ public class UI {
         g2.drawRoundRect(x, y, width, height, 10, 10);
     }
 
-    private void changeFontSize(float fontSize) {
-        g2.setFont(g2.getFont().deriveFont(fontSize));
+    private void changeFontSize(float size) {
+        g2.setFont(g2.getFont().deriveFont(size));
     }
 
     public void addMessage(String text) {

@@ -21,8 +21,8 @@ public class Orc extends Mob {
         defense = 2;
         hitbox.x = 4;
         hitbox.y = 4;
-        hitbox.width = 40;
-        hitbox.height = 44;
+        hitbox.width = tile_size - hitbox.x - 4;
+        hitbox.height = tile_size - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         attackbox.width = 44;

@@ -23,8 +23,8 @@ public class Chest extends Item {
         solid = true;
         hitbox.x = 2;
         hitbox.y = 16;
-        hitbox.width = 42;
-        hitbox.height = 32;
+        hitbox.width = tile_size - hitbox.x - 3;
+        hitbox.height = tile_size - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
     }

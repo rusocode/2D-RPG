@@ -8,6 +8,8 @@ import com.craivet.world.entity.projectile.Projectile;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import static com.craivet.utils.Global.*;
+
 /**
  * Tiene pinta de que esta clase se va a convertir en la clase Entity, y cada funcion y atributo de la clase Entity
  * va a volar a sus respectivas clases.
@@ -25,7 +27,7 @@ public class Attributes {
     public int screenX, screenY, tempScreenX, tempScreenY;
     public Item weapon, shield, light;
     public Projectile projectile;
-    public Rectangle hitbox = new Rectangle(0, 0, 48, 48), attackbox = new Rectangle(0, 0, 0, 0);
+    public Rectangle hitbox = new Rectangle(0, 0, tile_size, tile_size), attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
     public int x, y;
     public int width, height;
@@ -34,7 +36,7 @@ public class Attributes {
     public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
     public Direction direction = Direction.DOWN;
     public int speed, defaultSpeed;
-    public int hp, maxHp; // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+    public int hp, maxHp;
     public int mana, maxMana;
     public int ammo;
     public int lvl, exp, nextLvlExp;

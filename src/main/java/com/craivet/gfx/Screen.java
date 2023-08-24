@@ -17,7 +17,7 @@ public class Screen extends JFrame {
 
     public Screen(final Game game, boolean fullScreenMode) {
         // setIgnoreRepaint(true);
-        setResizable(false);
+        setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(game);
         pack();

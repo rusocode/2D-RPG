@@ -23,7 +23,7 @@ public final class Utils {
      */
     public static Font loadFont(String path, float size) {
         try {
-            return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path))).deriveFont(Font.PLAIN, size);
+            return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path))).deriveFont(size);
         } catch (IOException | FontFormatException | NullPointerException e) {
             JOptionPane.showMessageDialog(null, "Error durante la carga de fuente " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);

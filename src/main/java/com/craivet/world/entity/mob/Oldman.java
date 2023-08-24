@@ -15,8 +15,8 @@ public class Oldman extends Mob {
         speed = 1;
         hitbox.x = 8;
         hitbox.y = 16;
-        hitbox.width = 32;
-        hitbox.height = 32;
+        hitbox.width = tile_size - hitbox.x - 4;
+        hitbox.height = tile_size - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogueSet = -1;

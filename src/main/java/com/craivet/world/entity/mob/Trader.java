@@ -17,8 +17,8 @@ public class Trader extends Mob {
         image = Utils.scaleImage(trader, tile_size, tile_size);
         hitbox.x = 7;
         hitbox.y = 16;
-        hitbox.width = 33;
-        hitbox.height = 32;
+        hitbox.width = tile_size - hitbox.x - 4;
+        hitbox.height = tile_size - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         initDialogue();
