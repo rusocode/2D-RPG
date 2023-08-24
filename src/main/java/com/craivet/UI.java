@@ -728,7 +728,7 @@ public class UI {
     }
 
     /**
-     * Cuando el efecto de transicion termina, entonces teletransporta al player.
+     * Dibuja el efecto de transicion y cuando este termina, teletransporta al player.
      */
     private void drawTransition() {
         counter++;
@@ -738,8 +738,8 @@ public class UI {
             counter = 0;
             game.state = PLAY_STATE;
             world.map = game.event.map;
-            world.player.x = tile_size * game.event.col;
-            world.player.y = tile_size * game.event.row - 122 / 2;
+            world.player.x = (game.event.col * tile_size) + world.player.hitbox.width / 2;
+            world.player.y = (game.event.row * tile_size) - world.player.hitbox.height;
             game.event.previousEventX = world.player.x;
             game.event.previousEventY = world.player.y;
             world.changeArea();

@@ -29,14 +29,13 @@ public class Player extends Mob {
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity entity;
-
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
         super(game, world);
         centerOnScreen();
-        setDefaultPos();
         setDefaultValues();
+        setDefaultPos();
         keyboard = game.keyboard;
         mechanics = new Mechanics(this);
     }
@@ -74,24 +73,13 @@ public class Player extends Mob {
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
-        drawRects(g2);
+        // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
     private void centerOnScreen() {
         screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
         screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
-    }
-
-    public void setDefaultPos() {
-        world.area = OUTSIDE;
-        world.map = NIX;
-        direction = Direction.DOWN;
-        // TODO Se podria comprobar si la posicion es valida o no
-        x = 23 * tile_size;
-        /* Al usar una imagen mas grande para el player en donde los tiles son de 48x48 hay que ajustar la posicion
-         * restando la mitad del alto escalado de la imagen para que respete la coordenada especificada. */
-        y = 23 * tile_size - 122 / 2;
     }
 
     public void setDefaultValues() {
@@ -135,6 +123,22 @@ public class Player extends Mob {
         right = new Animation(animationSpeed, ss.right);
         currentFrame = down.getFirstFrame();
         addItemsToInventory();
+    }
+
+    /**
+     * Establece la posicion por defecto.
+     */
+    public void setDefaultPos() {
+        world.area = OUTSIDE;
+        world.map = NIX;
+        direction = Direction.DOWN;
+        // Posiciona la hitbox, NO la imagen
+        int startCol = 23, startRow = 21;
+        // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
+        x = (startCol * tile_size) + hitbox.width / 2;
+        /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
+         * player ocupa dos tiles verticales. */
+        y = (startRow * tile_size) - hitbox.height;
     }
 
     /**
@@ -549,6 +553,7 @@ public class Player extends Mob {
         inventory.add(new Tent(game, world));
     }
 
+    // TODO Activar con tecla
     private void drawRects(Graphics2D g2) {
         // Imagen
         g2.setColor(Color.magenta);

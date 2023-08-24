@@ -1,7 +1,7 @@
 ## Detalles técnicos
 
-A continuación voy a resumir conceptos técnicos clave del Argentum y proporcionar soluciones para los problemas que
-puedan surgir.
+A continuación voy a explicar los detalles técnicos en Argentum y proporcionar soluciones para los problemas que puedan 
+surgir.
 
 ### Tile
 
@@ -55,5 +55,8 @@ resolución sin "romper" el formato clásico, permitiendo ver solo los graficos 
 
 Con respecto a la cámara que es de tipo top-down, solo se dibujan los tiles que estan dentro de esta, evitando
 renderizar todos los tiles que ocupa el mapa de 100x100 tiles.
+
+### Movimiento
+Creo que la velocidad que se usa es de 2 (entero) y al hacer un paso el player se ajusta al siguiente tile.
 
 ### Estilo artístico
