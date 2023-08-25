@@ -41,7 +41,7 @@ public final class Global {
     public static final int tile_size = ORIGINAL_TILE_SIZE * SCALE;
     // Tamaño en tiles de la pantalla de visualizacion
     public static final int MAX_SCREEN_COL = 17; // 20, 17
-    public static final int MAX_SCREEN_ROW = 13; // 12, 13
+    public static final int MAX_SCREEN_ROW = 13; // 12, 13 TODO Por que no coiciden la cantidad de tiles visibles (6) hacia arriba de la cabeza con los del ao (5)?
     // Tiles visibles
     public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL; // 544px
     public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW; // 416px

@@ -57,6 +57,6 @@ Con respecto a la cámara que es de tipo top-down, solo se dibujan los tiles que
 renderizar todos los tiles que ocupa el mapa de 100x100 tiles.
 
 ### Movimiento
-Creo que la velocidad que se usa es de 2 (entero) y al hacer un paso el player se ajusta al siguiente tile.
+Creo que la velocidad que se usa es de 2 (int) y al hacer un paso el player se ajusta al siguiente tile.
 
 ### Estilo artístico

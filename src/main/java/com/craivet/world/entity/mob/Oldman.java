@@ -13,9 +13,9 @@ public class Oldman extends Mob {
         name = "Oldman";
         type = Type.NPC;
         speed = 1;
-        hitbox.x = 8;
+        hitbox.x = 6;
         hitbox.y = 16;
-        hitbox.width = tile_size - hitbox.x - 4;
+        hitbox.width = (tile_size - hitbox.x) - 4;
         hitbox.height = tile_size - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;

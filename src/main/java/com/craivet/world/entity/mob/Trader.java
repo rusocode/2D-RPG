@@ -15,9 +15,9 @@ public class Trader extends Mob {
         name = "Trader";
         type = Type.NPC;
         image = Utils.scaleImage(trader, tile_size, tile_size);
-        hitbox.x = 7;
+        hitbox.x = 8;
         hitbox.y = 16;
-        hitbox.width = tile_size - hitbox.x - 4;
+        hitbox.width = (tile_size - hitbox.x) - 9;
         hitbox.height = tile_size - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;

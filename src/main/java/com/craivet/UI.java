@@ -97,12 +97,10 @@ public class UI {
 
     private void drawTitleScreen() {
         if (titleScreenState == MAIN_SCREEN) {
-
-            // Menu
             changeFontSize(48);
             String text = "NEW GAME";
             int x = getXForCenteredText(text);
-            int y = tile_size * 5;
+            int y = (int) (tile_size * 5.5);
             g2.drawString(text, x, y);
             if (command == 0) g2.drawString(">", x - tile_size, y);
 
