@@ -38,15 +38,15 @@ public class Lighting {
      */
     public void illuminate() {
         // Crea una imagen en buffer
-        darknessFilter = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        darknessFilter = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
         if (world.player.light == null) g2.setColor(new Color(0, 0, 0, 0.98f));
         else { // Si el player selecciono la linterna
 
             // Obtiene el centro del player
-            int centerX = world.player.screenX + (tile_size / 2);
-            int centerY = world.player.screenY + (tile_size / 2);
+            int centerX = world.player.screenX + (tile / 2);
+            int centerY = world.player.screenY + (tile / 2);
 
             // Crea un efecto de gradacion para el circulo de luz
             Color[] color = new Color[12];
@@ -85,7 +85,7 @@ public class Lighting {
             g2.setPaint(gPaint);
         }
 
-        g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         g2.dispose();
     }
 

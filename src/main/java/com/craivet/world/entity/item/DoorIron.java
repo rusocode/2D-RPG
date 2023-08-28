@@ -16,7 +16,7 @@ public class DoorIron extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.OBSTACLE;
-        image = Utils.scaleImage(door_iron, tile_size, tile_size);
+        image = Utils.scaleImage(door_iron, tile, tile);
         solid = true;
         hitbox.x = 0;
         hitbox.y = 16;

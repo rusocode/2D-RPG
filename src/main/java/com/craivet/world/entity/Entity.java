@@ -26,7 +26,7 @@ import static com.craivet.utils.Global.*;
  * TODO No tendria que ser una clase abstracta?
  */
 
-public class Entity extends Attributes {
+public class Entity extends Stats {
 
     protected final Game game;
     protected final World world;
@@ -53,8 +53,8 @@ public class Entity extends Attributes {
         this.game = game;
         this.world = world;
         // TODO Verificar posicion invalida (dentro de los limites del mapa y sobre tiles que no sean solidos, ni sobre otra entidad)
-        this.x = x * tile_size;
-        this.y = y * tile_size;
+        this.x = x * tile;
+        this.y = y * tile;
     }
 
     // TODO Creo que el update y render se pueden mover a mob
@@ -337,7 +337,7 @@ public class Entity extends Attributes {
     }
 
     private void drawHpBar(Graphics2D g2) {
-        double oneScale = (double) tile_size / maxHp;
+        double oneScale = (double) tile / maxHp;
         double hpBarValue = oneScale * hp;
 
         /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se
@@ -345,10 +345,10 @@ public class Entity extends Attributes {
         if (hpBarValue < 0) hpBarValue = 0;
 
         g2.setColor(new Color(35, 35, 35));
-        g2.fillRect(screenX - 1, screenY + tile_size + 4, tile_size + 2, 7);
+        g2.fillRect(screenX - 1, screenY + tile + 4, tile + 2, 7);
 
         g2.setColor(new Color(255, 0, 30));
-        g2.fillRect(screenX, screenY + tile_size + 5, (int) hpBarValue, 5);
+        g2.fillRect(screenX, screenY + tile + 5, (int) hpBarValue, 5);
 
         timer.timeHpBar(this, INTERVAL_HP_BAR);
     }
@@ -359,10 +359,10 @@ public class Entity extends Attributes {
      * @return true si la entidad esta dentro de la camara o false.
      */
     private boolean isOnCamera() {
-        return x + tile_size > world.player.x - world.player.screenX &&
-                x - tile_size < world.player.x + world.player.screenX &&
-                y + tile_size > world.player.y - world.player.screenY &&
-                y - tile_size < world.player.y + world.player.screenY;
+        return x + tile > world.player.x - world.player.screenX &&
+                x - tile < world.player.x + world.player.screenX &&
+                y + tile > world.player.y - world.player.screenY &&
+                y - tile < world.player.y + world.player.screenY;
     }
 
     /**
@@ -390,11 +390,11 @@ public class Entity extends Attributes {
             switch (direction) {
                 case DOWN -> frameIndex = ss.attackNum == 1 ? 0 : 1;
                 case UP -> {
-                    tempScreenY -= tile_size;
+                    tempScreenY -= tile;
                     frameIndex = ss.attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
-                    tempScreenX -= tile_size;
+                    tempScreenX -= tile;
                     frameIndex = ss.attackNum == 1 ? 4 : 5;
                 }
                 case RIGHT -> frameIndex = ss.attackNum == 1 ? 6 : 7;

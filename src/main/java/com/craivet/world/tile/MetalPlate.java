@@ -14,7 +14,7 @@ public class MetalPlate extends Interactive {
     public MetalPlate(Game game, World world, int x, int y) {
         super(game, world, x, y);
         name = item_name;
-        image = Utils.scaleImage(itile_metalplate, tile_size, tile_size);
+        image = Utils.scaleImage(itile_metalplate, tile, tile);
         hitbox.x = 0;
         hitbox.y = 0;
         hitbox.width = 0;

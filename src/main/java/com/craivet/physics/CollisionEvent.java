@@ -62,7 +62,7 @@ public class CollisionEvent {
         int xDis = Math.abs(world.player.x - previousEventX);
         int yDis = Math.abs(world.player.y - previousEventY);
         int dis = Math.max(xDis, yDis);
-        if (dis > tile_size) canTouchEvent = true;
+        if (dis > tile) canTouchEvent = true;
 
         if (canTouchEvent) {
             if (checkCollision(NIX, 27, 16, Direction.RIGHT)) hurt();
@@ -98,8 +98,8 @@ public class CollisionEvent {
         if (map == world.map) {
             world.player.hitbox.x += world.player.x;
             world.player.hitbox.y += world.player.y;
-            event[map][row][col].x += col * tile_size;
-            event[map][row][col].y += row * tile_size;
+            event[map][row][col].x += col * tile;
+            event[map][row][col].y += row * tile;
 
             // Si el player colisiona con el evento y si la direccion coincide con la del evento
             if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.direction == direction || direction == Direction.ANY)) {

@@ -64,7 +64,7 @@ public class EntityManager implements State {
         if (game.state == MAIN_STATE) {
             // Creo que evitaba un mal renderizado cuando estaba en pantalla completa
             g2.setColor(Color.black);
-            g2.fillRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+            g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
             game.ui.render(g2);
         } else {
 

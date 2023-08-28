@@ -102,7 +102,7 @@ public class Mob extends Entity {
      * @return the target row.
      */
     protected int getGoalRow(Entity target) {
-        return (target.y + target.hitbox.y) / tile_size;
+        return (target.y + target.hitbox.y) / tile;
     }
 
     /**
@@ -112,7 +112,7 @@ public class Mob extends Entity {
      * @return the target column.
      */
     protected int getGoalCol(Entity target) {
-        return (target.x + target.hitbox.x) / tile_size;
+        return (target.x + target.hitbox.x) / tile;
     }
 
     /**
@@ -143,7 +143,7 @@ public class Mob extends Entity {
      * @return the distance of the target in tiles.
      */
     private int getTileDistance(Entity target) {
-        return (getXDistance(target) + getYDistance(target)) / tile_size;
+        return (getXDistance(target) + getYDistance(target)) / tile;
     }
 
     /**

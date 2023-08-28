@@ -21,11 +21,11 @@ public class Bat extends Mob {
         defense = 1;
         hitbox.x = 3;
         hitbox.y = 15;
-        hitbox.width = tile_size - hitbox.x - 4;
-        hitbox.height = tile_size - hitbox.y;
+        hitbox.width = tile - hitbox.x - 4;
+        hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        ss.loadMovementFrames(bat, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        ss.loadMovementFrames(bat, ENTITY_WIDTH, ENTITY_HEIGHT, tile);
         mobImage = ss.movement[0];
     }
 

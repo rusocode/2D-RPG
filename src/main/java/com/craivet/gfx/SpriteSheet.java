@@ -68,15 +68,15 @@ public class SpriteSheet {
         int i = 0;
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                if (y == 0) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 0, 16, 32), tile_size, tile_size * 2);
-                if (y == 1) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 32, 16, 32), tile_size, tile_size * 2);
+                if (y == 0) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 0, 16, 32), tile, tile * 2);
+                if (y == 1) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 32, 16, 32), tile, tile * 2);
                 if (y == 2) {
-                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 64, 32, 16), tile_size * 2, tile_size);
-                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 80, 32, 16), tile_size * 2, tile_size);
+                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 64, 32, 16), tile * 2, tile);
+                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 80, 32, 16), tile * 2, tile);
                 }
                 if (y == 3) {
-                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 96, 32, 16), tile_size * 2, tile_size);
-                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 112, 32, 16), tile_size * 2, tile_size);
+                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 96, 32, 16), tile * 2, tile);
+                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 112, 32, 16), tile * 2, tile);
                 }
             }
             if (y == 3) break; // Evita iterar hasta los espacios sobrantes de la matriz
@@ -85,19 +85,14 @@ public class SpriteSheet {
 
     public void loadMovementFramesOfPlayer(SpriteSheet ss, int scale) {
 
-        final int col = 6;
-        final int row = 4;
-        int w = ss.getWidth() / col;
-        int h = ss.getHeight() / row;
+        int col = 6, row = 4;
+        int w = ss.getWidth() / col, h = ss.getHeight() / row;
+        int numberFramesDown = 6, numberFramesUp = 6, numberFramesLeft = 5, numberFramesRight = 5;
 
-        final int number_frame_down = 6;
-        final int number_frame_up = 6;
-        final int number_frame_left = 5;
-        final int number_frame_right = 5;
-        down = new BufferedImage[number_frame_down];
-        up = new BufferedImage[number_frame_up];
-        left = new BufferedImage[number_frame_left];
-        right = new BufferedImage[number_frame_right];
+        down = new BufferedImage[numberFramesDown];
+        up = new BufferedImage[numberFramesUp];
+        left = new BufferedImage[numberFramesLeft];
+        right = new BufferedImage[numberFramesRight];
 
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
@@ -106,11 +101,11 @@ public class SpriteSheet {
                     case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     // Los frames izquierdos y derechos solo tienen 5 frames, por lo tanto comprueba hasta el limite 5 para evitar un ArrayIndexOutOfBoundsException
                     case 2 -> {
-                        if (x < number_frame_left)
+                        if (x < numberFramesLeft)
                             left[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                     case 3 -> {
-                        if (x < number_frame_right)
+                        if (x < numberFramesRight)
                             right[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                 }

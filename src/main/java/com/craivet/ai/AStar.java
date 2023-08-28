@@ -33,8 +33,8 @@ public class AStar {
      * @param goalCol columna objetivo.
      */
     public void searchPath(Entity entity, int goalRow, int goalCol) {
-        int startRow = (entity.y + entity.hitbox.y) / tile_size;
-        int startCol = (entity.x + entity.hitbox.x) / tile_size;
+        int startRow = (entity.y + entity.hitbox.y) / tile;
+        int startCol = (entity.x + entity.hitbox.x) / tile;
 
         setNodes(startRow, startCol, goalRow, goalCol);
 
@@ -42,8 +42,8 @@ public class AStar {
         if (search()) {
 
             // Obtiene la siguiente posicion x/y de la ruta
-            int nextX = pathList.get(0).col * tile_size;
-            int nextY = pathList.get(0).row * tile_size;
+            int nextX = pathList.get(0).col * tile;
+            int nextY = pathList.get(0).row * tile;
             // Obtiene la posicion de la entidad
             int left = entity.x + entity.hitbox.x;
             int right = entity.x + entity.hitbox.x + entity.hitbox.width;
@@ -53,10 +53,10 @@ public class AStar {
             // Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
             /* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces
              * se define su movimiento hacia arriba o abajo. */
-            if (left >= nextX && right < nextX + tile_size) entity.direction = top > nextY ? Direction.UP : Direction.DOWN;
+            if (left >= nextX && right < nextX + tile) entity.direction = top > nextY ? Direction.UP : Direction.DOWN;
             /* Si el lado superior y inferior de la entidad estan entre la siguiente posicion y de la ruta, entonces
              * se define su movimiento hacia la izquierda o derecha. */
-            if (top >= nextY && bottom < nextY + tile_size) entity.direction = left > nextX ? Direction.LEFT : Direction.RIGHT;
+            if (top >= nextY && bottom < nextY + tile) entity.direction = left > nextX ? Direction.LEFT : Direction.RIGHT;
 
                 /* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
                  * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
@@ -144,8 +144,8 @@ public class AStar {
 
                 for (int i = 0; i < world.interactives[1].length; i++) {
                     if (world.interactives[world.map][i] != null && world.interactives[world.map][i].destructible) {
-                        int itRow = world.interactives[world.map][i].y / tile_size; // TODO Falta sumarle la hitbox
-                        int itCol = world.interactives[world.map][i].x / tile_size;
+                        int itRow = world.interactives[world.map][i].y / tile; // TODO Falta sumarle la hitbox
+                        int itCol = world.interactives[world.map][i].x / tile;
                         node[itRow][itCol].solid = true;
                     }
                 }
@@ -153,24 +153,24 @@ public class AStar {
                 // Funciona bien, pero cuando la entidad esta en una posicion cerrada (no literalmente) de tiles interactivos, se queda atascada
                 for (int i = 0; i < world.items[1].length; i++) {
                     if (world.items[world.map][i] != null && world.items[world.map][i].solid) {
-                        int itRow = (world.items[world.map][i].y + world.items[world.map][i].hitbox.y) / tile_size;
-                        int itCol = (world.items[world.map][i].x + world.items[world.map][i].hitbox.x) / tile_size;
+                        int itRow = (world.items[world.map][i].y + world.items[world.map][i].hitbox.y) / tile;
+                        int itCol = (world.items[world.map][i].x + world.items[world.map][i].hitbox.x) / tile;
                         node[itRow][itCol].solid = true;
                     }
                 }
 
                 for (int i = 0; i < world.mobs[1].length; i++) {
                     if (world.mobs[world.map][i] != null) {
-                        int itRow = (world.mobs[world.map][i].y + world.mobs[world.map][i].hitbox.y) / tile_size;
-                        int itCol = (world.mobs[world.map][i].x + world.mobs[world.map][i].hitbox.x) / tile_size;
+                        int itRow = (world.mobs[world.map][i].y + world.mobs[world.map][i].hitbox.y) / tile;
+                        int itCol = (world.mobs[world.map][i].x + world.mobs[world.map][i].hitbox.x) / tile;
                         node[itRow][itCol].solid = true;
                     }
                 }
 
                 for (int i = 0; i < world.mobs[1].length; i++) {
                     if (world.mobs[world.map][i] != null) {
-                        int itRow = (world.mobs[world.map][i].y + world.mobs[world.map][i].hitbox.y) / tile_size;
-                        int itCol = (world.mobs[world.map][i].x + world.mobs[world.map][i].hitbox.x) / tile_size;
+                        int itRow = (world.mobs[world.map][i].y + world.mobs[world.map][i].hitbox.y) / tile;
+                        int itCol = (world.mobs[world.map][i].x + world.mobs[world.map][i].hitbox.x) / tile;
                         node[itRow][itCol].solid = true;
                     }
                 }

@@ -30,11 +30,11 @@ public class Keyboard extends KeyAdapter {
             throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
         if (lastKey != e.getKeyCode()) {
             lastKey = e.getKeyCode();
-            if (game.state == MAIN_STATE) titleState(lastKey);
+            if (game.state == MAIN_STATE) mainState(lastKey);
             else if (game.state == PLAY_STATE) playState(lastKey);
             else if (game.state == PAUSE_STATE) pauseState(lastKey);
             else if (game.state == DIALOGUE_STATE) dialogueState(lastKey);
-            else if (game.state == CHARACTER_STATE) characterState(lastKey);
+            else if (game.state == STATS_STATE) statsState(lastKey);
             else if (game.state == INVENTORY_STATE) inventoryState(lastKey);
             else if (game.state == OPTION_STATE) optionState(lastKey);
             else if (game.state == GAME_OVER_STATE) gameOverState(lastKey);
@@ -74,8 +74,8 @@ public class Keyboard extends KeyAdapter {
         l = false;
     }
 
-    private void titleState(int code) {
-        if (game.ui.titleScreenState == MAIN_SCREEN) {
+    private void mainState(int code) {
+        if (game.ui.mainWindowState == MAIN_WINDOW) {
             if (code == KeyEvent.VK_W) {
                 game.playSound(sound_slot);
                 game.ui.command--;
@@ -100,7 +100,7 @@ public class Keyboard extends KeyAdapter {
                 }
                 if (game.ui.command == 2) System.exit(0);
             }
-        } else if (game.ui.titleScreenState == SELECTION_SCREEN) {
+        } else if (game.ui.mainWindowState == SELECTION_WINDOW) {
             if (code == KeyEvent.VK_W) {
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = 3;
@@ -114,7 +114,7 @@ public class Keyboard extends KeyAdapter {
                     game.state = PLAY_STATE;
                 if (game.ui.command == 3) {
                     game.ui.command = 0;
-                    game.ui.titleScreenState = MAIN_SCREEN;
+                    game.ui.mainWindowState = MAIN_WINDOW;
                 }
             }
         }
@@ -130,7 +130,7 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_L) l = true;
         if (code == KeyEvent.VK_T) t = !t;
         if (code == KeyEvent.VK_P) game.state = PAUSE_STATE;
-        if (code == KeyEvent.VK_C) game.state = CHARACTER_STATE;
+        if (code == KeyEvent.VK_C) game.state = STATS_STATE;
         if (code == KeyEvent.VK_I) game.state = INVENTORY_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;
         if (code == KeyEvent.VK_M) game.minimap.minimapOn = !game.minimap.minimapOn;
@@ -152,7 +152,7 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_ENTER) enter = true;
     }
 
-    private void characterState(int code) {
+    private void statsState(int code) {
         if (code == KeyEvent.VK_C || code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
     }
 
@@ -192,7 +192,7 @@ public class Keyboard extends KeyAdapter {
             }
         }
 
-        // Para bajar el volumen
+        // Baja el volumen
         if (code == KeyEvent.VK_A) {
             if (game.ui.subState == 0) {
                 if (game.ui.command == 0 && game.music.volumeScale > 0) { // Musica
@@ -207,7 +207,7 @@ public class Keyboard extends KeyAdapter {
                 }
             }
         }
-        // Para subir el volumen
+        // Sube el volumen
         if (code == KeyEvent.VK_D) {
             if (game.ui.subState == 0) {
                 if (game.ui.command == 0 && game.music.volumeScale < 5) {

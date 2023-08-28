@@ -16,7 +16,7 @@ public class DestructibleWall extends Interactive {
 
     public DestructibleWall(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        image = Utils.scaleImage(itile_destructiblewall, tile_size, tile_size);
+        image = Utils.scaleImage(itile_destructiblewall, tile, tile);
         destructible = true;
         hp = 3;
     }

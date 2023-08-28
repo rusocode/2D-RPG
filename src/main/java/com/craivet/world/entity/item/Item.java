@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
 
-import static com.craivet.utils.Global.tile_size;
+import static com.craivet.utils.Global.tile;
 
 /**
  * Los items se representan en el suelo en la dimension de 32x32, y en 48x48 en el inventario.
@@ -65,8 +65,8 @@ public class Item extends Entity {
             case RIGHT -> nextX = getRightHitbox() + entity.speed;
         }
 
-        int row = nextY / tile_size;
-        int col = nextX / tile_size;
+        int row = nextY / tile;
+        int col = nextX / tile;
 
         // Si el item iterado es igual a la posicion adyacente de la entidad
         for (int i = 0; i < items[1].length; i++) {
@@ -120,7 +120,7 @@ public class Item extends Entity {
      * @return la fila de la entiad.
      */
     private int getRow() {
-        return (y + hitbox.y) / tile_size;
+        return (y + hitbox.y) / tile;
     }
 
     /**
@@ -129,7 +129,7 @@ public class Item extends Entity {
      * @return la columna de la entiad.
      */
     private int getCol() {
-        return (x + hitbox.x) / tile_size;
+        return (x + hitbox.x) / tile;
     }
 
 }

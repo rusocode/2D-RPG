@@ -24,7 +24,7 @@ public class Player extends Mob {
 
     private final Keyboard keyboard;
     private final Mechanics mechanics;
-    private BufferedImage currentFrame;
+    public BufferedImage currentFrame;
     public Animation down, up, left, right;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
@@ -78,8 +78,8 @@ public class Player extends Mob {
     }
 
     private void centerOnScreen() {
-        screenX = SCREEN_WIDTH / 2 - (tile_size / 2);
-        screenY = SCREEN_HEIGHT / 2 - (tile_size / 2);
+        screenX = WINDOW_WIDTH / 2 - (tile / 2);
+        screenY = WINDOW_HEIGHT / 2 - (tile / 2);
     }
 
     public void setDefaultValues() {
@@ -113,7 +113,6 @@ public class Player extends Mob {
         motion1 = 5;
         motion2 = 25;
 
-        // frame.loadWeaponFrames(player_sword, 16, 16);
         ss.loadMovementFramesOfPlayer(player_movement, 1);
 
         int animationSpeed = 90;
@@ -135,10 +134,10 @@ public class Player extends Mob {
         // Posiciona la hitbox, NO la imagen
         int startCol = 10, startRow = 40; // 23,21
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
-        x = (startCol * tile_size) + hitbox.width / 2;
+        x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
          * player ocupa dos tiles verticales. */
-        y = (startRow * tile_size) - hitbox.height;
+        y = (startRow * tile) - hitbox.height;
     }
 
     /**
@@ -149,11 +148,11 @@ public class Player extends Mob {
         if (map == NIX_INDOOR_01) world.area = INDOOR;
         if (map == DUNGEON_01 || map == DUNGEON_02) world.area = DUNGEON;
         world.map = map;
-        this.x = x * tile_size;
-        this.y = y * tile_size;
+        this.x = x * tile;
+        this.y = y * tile;
     }
 
-    public void restoreStatus() {
+    public void resetStats() {
         hp = maxHp;
         mana = maxMana;
         flags.invincible = false;
@@ -538,7 +537,7 @@ public class Player extends Mob {
     }
 
     public void initSleepImage(BufferedImage image) {
-        Arrays.fill(ss.movement, image);
+        currentFrame = image;
     }
 
     private void addItemsToInventory() {

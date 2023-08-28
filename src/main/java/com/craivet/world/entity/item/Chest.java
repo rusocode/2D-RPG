@@ -18,13 +18,13 @@ public class Chest extends Item {
         name = NAME;
         type = Type.OBSTACLE;
         // TODO Unir en una imagen
-        image = Utils.scaleImage(chest_closed, tile_size, tile_size);
-        image2 = Utils.scaleImage(chest_opened, tile_size, tile_size);
+        image = Utils.scaleImage(chest_closed, tile, tile);
+        image2 = Utils.scaleImage(chest_opened, tile, tile);
         solid = true;
         hitbox.x = 2;
         hitbox.y = 16;
-        hitbox.width = tile_size - hitbox.x - 3;
-        hitbox.height = tile_size - hitbox.y;
+        hitbox.width = tile - hitbox.x - 3;
+        hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
     }

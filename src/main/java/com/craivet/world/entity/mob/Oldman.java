@@ -15,12 +15,12 @@ public class Oldman extends Mob {
         speed = 1;
         hitbox.x = 6;
         hitbox.y = 16;
-        hitbox.width = (tile_size - hitbox.x) - 4;
-        hitbox.height = tile_size - hitbox.y;
+        hitbox.width = (tile - hitbox.x) - 4;
+        hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogueSet = -1;
-        ss.loadMovementFrames(oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        ss.loadMovementFrames(oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile);
         initDialogue();
     }
 

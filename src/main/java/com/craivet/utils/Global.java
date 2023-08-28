@@ -35,16 +35,16 @@ public final class Global {
 
     /* Una aplicacion puede ejecutarse mucho mas rápido si las imagenes que elige mostrar comparten la misma profundidad
      * de bits que la pantalla. https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html */
-    // Screen settings
-    public static final int ORIGINAL_TILE_SIZE = 16;
-    public static final int SCALE = 2;
-    public static final int tile_size = ORIGINAL_TILE_SIZE * SCALE;
-    // Tamaño en tiles de la pantalla de visualizacion
-    public static final int MAX_SCREEN_COL = 17; // 20, 17
-    public static final int MAX_SCREEN_ROW = 13; // 12, 13 TODO Por que no coiciden la cantidad de tiles visibles (6) hacia arriba de la cabeza con los del ao (5)?
-    // Tiles visibles
-    public static final int SCREEN_WIDTH = tile_size * MAX_SCREEN_COL; // 544px
-    public static final int SCREEN_HEIGHT = tile_size * MAX_SCREEN_ROW; // 416px
+    // Window settings
+    private static final int original_tile = 16;
+    private static final int scale = 2;
+    public static final int tile = original_tile * scale;
+    // Cantidad de tiles visibles
+    public static final int MAX_WINDOW_COL = 17; // 20, 17 TODO o MAX_TILES_COL?
+    public static final int MAX_WINDOW_ROW = 13; // 12, 13 TODO Por que no coiciden la cantidad de tiles visibles (6) hacia arriba de la cabeza con los del ao (5)?
+    // Tamaño de la ventana
+    public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL; // 544px
+    public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW; // 416px
 
     // Map settings
     public static final int MAX_MAP = 10;
@@ -54,14 +54,14 @@ public final class Global {
     public static final int NIX_INDOOR_01 = 1;
     public static final int DUNGEON_01 = 2;
     public static final int DUNGEON_02 = 3;
-    // Areas (or zones)
+    // Zones (areas)
     public static final int OUTSIDE = 0;
     public static final int INDOOR = 1;
     public static final int DUNGEON = 2;
 
-    // Screen titles
-    public static final int MAIN_SCREEN = 0;
-    public static final int SELECTION_SCREEN = 1;
+    // Main window
+    public static final int MAIN_WINDOW = 0;
+    public static final int SELECTION_WINDOW = 1;
 
     // Probabilitys %
     public static final int PROBABILITY_GOLD_DROP = 47;
@@ -90,7 +90,7 @@ public final class Global {
     public static final int PLAY_STATE = 1;
     public static final int PAUSE_STATE = 2;
     public static final int DIALOGUE_STATE = 3;
-    public static final int CHARACTER_STATE = 4;
+    public static final int STATS_STATE = 4;
     public static final int OPTION_STATE = 5;
     public static final int GAME_OVER_STATE = 6;
     public static final int TRANSITION_STATE = 7;

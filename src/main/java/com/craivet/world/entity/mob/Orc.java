@@ -21,15 +21,15 @@ public class Orc extends Mob {
         defense = 2;
         hitbox.x = 4;
         hitbox.y = 4;
-        hitbox.width = tile_size - hitbox.x - 4;
-        hitbox.height = tile_size - hitbox.y;
+        hitbox.width = tile - hitbox.x - 4;
+        hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         attackbox.width = 44;
         attackbox.height = 48;
         motion1 = 15;
         motion2 = 30;
-        ss.loadMovementFrames(orc_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile_size);
+        ss.loadMovementFrames(orc_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile);
         ss.loadWeaponFrames(orc_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
         mobImage = ss.movement[0];
     }
@@ -43,7 +43,7 @@ public class Orc extends Mob {
             checkFollow(world.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
-        if (!flags.hitting) checkAttackOrNot(tile_size * 2, tile_size, 30);
+        if (!flags.hitting) checkAttackOrNot(tile * 2, tile, 30);
     }
 
     @Override

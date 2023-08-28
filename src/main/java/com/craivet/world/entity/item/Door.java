@@ -16,12 +16,12 @@ public class Door extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.OBSTACLE;
-        image = Utils.scaleImage(door, tile_size, tile_size);
+        image = Utils.scaleImage(door, tile, tile);
         solid = true;
         hitbox.x = 0;
         hitbox.y = 16;
-        hitbox.width = tile_size - hitbox.x - 1;
-        hitbox.height = tile_size - hitbox.y;
+        hitbox.width = tile - hitbox.x - 1;
+        hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         initDialogue();

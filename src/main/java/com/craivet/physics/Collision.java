@@ -32,10 +32,10 @@ public class Collision {
         int entityLeftWorldX = entity.x + entity.hitbox.x;
         int entityRightWorldX = entity.x + entity.hitbox.x + entity.hitbox.width;
 
-        int entityBottomRow = entityBottomWorldY / tile_size;
-        int entityTopRow = entityTopWorldY / tile_size;
-        int entityLeftCol = entityLeftWorldX / tile_size;
-        int entityRightCol = entityRightWorldX / tile_size;
+        int entityBottomRow = entityBottomWorldY / tile;
+        int entityTopRow = entityTopWorldY / tile;
+        int entityLeftCol = entityLeftWorldX / tile;
+        int entityRightCol = entityRightWorldX / tile;
 
         // En caso de que la entidad colisione en el medio de dos tiles solidos
         int tile1, tile2;
@@ -47,25 +47,25 @@ public class Collision {
 
         switch (direction) {
             case DOWN -> {
-                entityBottomRow = (entityBottomWorldY + entity.speed) / tile_size;
+                entityBottomRow = (entityBottomWorldY + entity.speed) / tile;
                 tile1 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
                 tile2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
                 if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.flags.colliding = true;
             }
             case UP -> {
-                entityTopRow = (entityTopWorldY - entity.speed) / tile_size;
+                entityTopRow = (entityTopWorldY - entity.speed) / tile;
                 tile1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
                 tile2 = world.tileIndex[world.map][entityTopRow][entityRightCol];
                 if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.flags.colliding = true;
             }
             case LEFT -> {
-                entityLeftCol = (entityLeftWorldX - entity.speed) / tile_size;
+                entityLeftCol = (entityLeftWorldX - entity.speed) / tile;
                 tile1 = world.tileIndex[world.map][entityTopRow][entityLeftCol];
                 tile2 = world.tileIndex[world.map][entityBottomRow][entityLeftCol];
                 if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.flags.colliding = true;
             }
             case RIGHT -> {
-                entityRightCol = (entityRightWorldX + entity.speed) / tile_size;
+                entityRightCol = (entityRightWorldX + entity.speed) / tile;
                 tile1 = world.tileIndex[world.map][entityTopRow][entityRightCol];
                 tile2 = world.tileIndex[world.map][entityBottomRow][entityRightCol];
                 if (world.tileData[tile1].solid || world.tileData[tile2].solid) entity.flags.colliding = true;

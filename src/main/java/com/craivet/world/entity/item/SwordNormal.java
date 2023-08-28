@@ -16,7 +16,7 @@ public class SwordNormal extends Item {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 		name = NAME;
 		type = Type.SWORD;
-		image = Utils.scaleImage(sword_normal, tile_size, tile_size);
+		image = Utils.scaleImage(sword_normal, tile, tile);
 		description = "[" + name + "]\nAn old sword.";
 		price = 20;
 		attackValue = 1;

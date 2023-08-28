@@ -16,7 +16,7 @@ public class Pickaxe extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.PICKAXE;
-        image = Utils.scaleImage(pickaxe, tile_size, tile_size);
+        image = Utils.scaleImage(pickaxe, tile, tile);
         attackbox.width = 30;
         attackbox.height = 30;
         description = "[" + name + "]\nYou will big it!";

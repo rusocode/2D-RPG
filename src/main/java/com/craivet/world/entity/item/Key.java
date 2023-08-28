@@ -18,8 +18,8 @@ public class Key extends Item {
         name = NAME;
         type = Type.CONSUMABLE;
         // Si se especifica una posicion entonces la imagen es mas pequenia
-        if (pos.length > 0) image = Utils.scaleImage(key, tile_size, tile_size);
-        else image = Utils.scaleImage(key, tile_size, tile_size);
+        if (pos.length > 0) image = Utils.scaleImage(key, tile, tile);
+        else image = Utils.scaleImage(key, tile, tile);
         description = "[" + name + "]\nIt opens a door.";
         price = 100;
         this.amount = amount;

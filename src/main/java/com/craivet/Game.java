@@ -90,7 +90,7 @@ public class Game extends Canvas implements Runnable {
     private boolean running;
 
     public Game() {
-        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+        setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(keyboard);
@@ -118,7 +118,7 @@ public class Game extends Canvas implements Runnable {
         stateManager.set(new GameState(this, world, ui, minimap));
 
         // Crea una pantalla temporal para el fullscreen
-        tempScreen = new BufferedImage(SCREEN_WIDTH, SCREEN_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+        tempScreen = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         // Utiliza el "pincel" (g2) de la pantalla temporal
         g2 = (Graphics2D) tempScreen.getGraphics();
 
@@ -130,7 +130,7 @@ public class Game extends Canvas implements Runnable {
 
     private void render2() {
         Graphics2D g2 = (Graphics2D) buffer.getDrawGraphics();
-        g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        g2.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         // Renderiza los graficos en pantalla
         if (stateManager.get() != null) stateManager.get().render(g2);
         // Cuando haya terminado de dibujar y desee presentar su informacion en la pantalla, llame a show()
@@ -148,7 +148,7 @@ public class Game extends Canvas implements Runnable {
      */
     private void drawToTempScreen() {
         // Limpia la ventana usando el color de fondo actual
-        g2.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+        g2.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         // Renderiza los graficos en el buffer de la pantalla temporal
         if (stateManager.get() != null) stateManager.get().render(g2);
         // Muestra el buffer
@@ -191,7 +191,7 @@ public class Game extends Canvas implements Runnable {
         stopMusic();
         ui.message.clear();
         world.player.setDefaultPos();
-        world.player.restoreStatus();
+        world.player.resetStats();
         world.player.timer.resetCounter();
         world.createMOBs();
         if (restart) {

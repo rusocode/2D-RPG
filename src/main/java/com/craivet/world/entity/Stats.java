@@ -21,13 +21,13 @@ import static com.craivet.utils.Global.*;
  * obtener la posicion exacta del rectangulo colisionador y no de la imagen.
  */
 
-public class Attributes {
+public class Stats {
 
     // Generals attributes
     public int screenX, screenY, tempScreenX, tempScreenY;
     public Item weapon, shield, light;
     public Projectile projectile;
-    public Rectangle hitbox = new Rectangle(0, 0, tile_size, tile_size), attackbox = new Rectangle(0, 0, 0, 0);
+    public Rectangle hitbox = new Rectangle(0, 0, tile, tile), attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
     public int x, y;
     public int width, height;

@@ -17,7 +17,7 @@ public class Tent extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.CONSUMABLE;
-        image = Utils.scaleImage(tent, tile_size, tile_size);
+        image = Utils.scaleImage(tent, tile, tile);
         description = "[" + name + "]\nYou can sleep until\nnext morning.";
         price = 1200;
     }

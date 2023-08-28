@@ -15,7 +15,7 @@ public class DryTree extends Interactive {
 
     public DryTree(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        image = Utils.scaleImage(itile_drytree, tile_size, tile_size);
+        image = Utils.scaleImage(itile_drytree, tile, tile);
         destructible = true;
         hp = 1;
     }

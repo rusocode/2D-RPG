@@ -24,7 +24,7 @@ public class Screen extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (game.state == PLAY_STATE || game.state == OPTION_STATE || game.state == CHARACTER_STATE || game.state == INVENTORY_STATE || game.state == PAUSE_STATE) {
+                if (game.state == PLAY_STATE || game.state == OPTION_STATE || game.state == STATS_STATE || game.state == INVENTORY_STATE || game.state == PAUSE_STATE) {
                     int option = JOptionPane.showConfirmDialog(null, "Do you want to save the changes?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
                     switch (option) {
                         case JOptionPane.YES_OPTION -> {
