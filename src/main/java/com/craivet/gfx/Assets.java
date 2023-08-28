@@ -54,7 +54,7 @@ public final class Assets {
 
     // FONT
     // TODO El tamaño de fuente tendria que cambiar con respecto a la visualizacion de pantalla
-    public static final Font font_minecraft = Utils.loadFont("font/Minecraftia-Regular.ttf", 24);
+    public static final Font font_minecraft = Utils.loadFont("font/minecraft.ttf", 24);
     public static final Font font_marumonica = Utils.loadFont("font/MaruMonica.ttf", 24);
     public static final Font font_medieval1 = Utils.loadFont("font/medieval1.ttf", 22);
     public static final Font font_medieval2 = Utils.loadFont("font/medieval2.ttf", 32);

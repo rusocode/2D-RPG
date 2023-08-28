@@ -97,7 +97,7 @@ public class Entity extends Attributes {
                 // Si es una imagen estatica
             else g2.drawImage(image, screenX, screenY, null);
 
-            drawRects(g2, screenX, screenY);
+            // drawRects(g2, screenX, screenY);
 
             Utils.changeAlpha(g2, 1);
         }

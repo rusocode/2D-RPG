@@ -35,6 +35,7 @@ public class Keyboard extends KeyAdapter {
             else if (game.state == PAUSE_STATE) pauseState(lastKey);
             else if (game.state == DIALOGUE_STATE) dialogueState(lastKey);
             else if (game.state == CHARACTER_STATE) characterState(lastKey);
+            else if (game.state == INVENTORY_STATE) inventoryState(lastKey);
             else if (game.state == OPTION_STATE) optionState(lastKey);
             else if (game.state == GAME_OVER_STATE) gameOverState(lastKey);
             else if (game.state == TRADE_STATE) tradeState(lastKey);
@@ -130,6 +131,7 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_T) t = !t;
         if (code == KeyEvent.VK_P) game.state = PAUSE_STATE;
         if (code == KeyEvent.VK_C) game.state = CHARACTER_STATE;
+        if (code == KeyEvent.VK_I) game.state = INVENTORY_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;
         if (code == KeyEvent.VK_M) game.minimap.minimapOn = !game.minimap.minimapOn;
         /* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
@@ -152,7 +154,11 @@ public class Keyboard extends KeyAdapter {
 
     private void characterState(int code) {
         if (code == KeyEvent.VK_C || code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
-        playerInventory(code);
+    }
+
+    private void inventoryState(int code) {
+        if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
+        playerInventoryState(code);
         if (code == KeyEvent.VK_ENTER) game.world.player.selectItem();
     }
 
@@ -257,14 +263,14 @@ public class Keyboard extends KeyAdapter {
             if (code == KeyEvent.VK_ESCAPE) game.ui.command = 0;
         }
         if (game.ui.subState == 1) {
-            npcInventory(code);
+            npcInventoryState(code);
             if (code == KeyEvent.VK_ESCAPE) {
                 esc = false;
                 game.ui.subState = 0;
             }
         }
         if (game.ui.subState == 2) {
-            playerInventory(code);
+            playerInventoryState(code);
             if (code == KeyEvent.VK_ESCAPE) {
                 esc = false;
                 game.ui.subState = 0;
@@ -272,7 +278,7 @@ public class Keyboard extends KeyAdapter {
         }
     }
 
-    private void playerInventory(int code) {
+    private void playerInventoryState(int code) {
         if (code == KeyEvent.VK_W) {
             if (game.ui.playerSlotRow > 0) {
                 game.playSound(sound_slot);
@@ -299,7 +305,7 @@ public class Keyboard extends KeyAdapter {
         }
     }
 
-    private void npcInventory(int code) {
+    private void npcInventoryState(int code) {
         if (code == KeyEvent.VK_W) {
             if (game.ui.npcSlotRow > 0) {
                 game.playSound(sound_slot);

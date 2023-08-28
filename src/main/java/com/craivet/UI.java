@@ -15,7 +15,7 @@ import static com.craivet.gfx.Assets.*;
 /**
  * Interfaz de usuario.
  *
- * <p>TODO Reemplazar estas UI por GUIS echas como MC
+ * <p>TODO Reemplazar estas UI por GUIS echas como MC y VOLARLAS A LA MIERDA!!
  * <p>TODO Implementar musica para pantalla de titulo (<a href="https://www.youtube.com/watch?v=blyK-QkZkQ8">...</a>)
  */
 
@@ -80,10 +80,8 @@ public class UI {
             drawPauseText();
         }
         if (game.state == DIALOGUE_STATE) drawDialogueScreen();
-        if (game.state == CHARACTER_STATE) {
-            drawCharacterScreen();
-            drawInventory(world.player, true);
-        }
+        if (game.state == CHARACTER_STATE) drawCharacterScreen();
+        if (game.state == INVENTORY_STATE) drawInventory(world.player, true);
         if (game.state == OPTION_STATE) drawOptionScreen();
         if (game.state == GAME_OVER_STATE) drawGameOverScreen();
         if (game.state == TRANSITION_STATE) drawTransition();
@@ -247,7 +245,7 @@ public class UI {
         final int frameHeight = tile_size * 4;
         drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
 
-        changeFontSize(22f);
+        changeFontSize(14f);
 
         // Text
         int textX = frameX + tile_size;
@@ -292,18 +290,19 @@ public class UI {
     }
 
     private void drawCharacterScreen() {
-        final int frameWidth = tile_size * 10;
-        final int frameHeight = tile_size * 11;
-        final int frameX = (SCREEN_WIDTH / 2 - frameWidth / 2) - tile_size * 4;
-        final int frameY = tile_size - 15;
-        drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
+        int x, y, width, height;
+        width = tile_size * 9;
+        height = tile_size * 11;
+        x = (SCREEN_WIDTH / 2 - width / 2);
+        y = tile_size - 15;
+        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
-        final int gap = 37; // Espacio entre lineas
-        changeFontSize(28);
+        int gap = 24; // Espacio entre lineas
+        changeFontSize(16);
 
         // Names
-        int textX = frameX + 20;
-        int textY = frameY + tile_size;
+        int textX = x + 20;
+        int textY = y + tile_size;
         g2.drawString("Level", textX, textY);
         textY += gap;
         g2.drawString("Life", textX, textY);
@@ -329,9 +328,9 @@ public class UI {
         g2.drawString("Shield", textX, textY);
 
         // Values
-        int tailX = (frameX + frameWidth) - 30; // Cola de la posicion x
+        int tailX = (x + width) - 30; // Cola de la posicion x
         // Reset textY
-        textY = frameY + tile_size;
+        textY = y + tile_size;
         String value;
 
         value = String.valueOf(world.player.lvl);
@@ -384,73 +383,62 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        g2.drawImage(world.player.weapon.image, tailX - 40, textY - 15, null);
+        g2.drawImage(world.player.weapon.image, tailX - 35, textY - 5, null);
         textY += gap;
 
-        g2.drawImage(world.player.shield.image, tailX - 40, textY - 5, null);
+        g2.drawImage(world.player.shield.image, tailX - 35, textY + 5, null);
 
     }
 
     private void drawInventory(Entity entity, boolean cursor) {
-        int frameX, frameY;
-        int frameWidth, frameHeight;
+        int x, y, width, height;
         int slotCol, slotRow;
 
-        // Inventario del lado derecho (player)
+        width = (int) (tile_size * 6.5);
+        height = tile_size * 5;
+        // Dependiendo del tipo de entidad, dibuja el inventario del lado derecho (player) o izquierdo (npc)
         if (entity == world.player) {
-            frameWidth = tile_size * 6;
-            frameHeight = tile_size * 5;
-            frameX = (SCREEN_WIDTH / 2 - frameWidth / 2) + tile_size * 5;
-            frameY = tile_size - 15;
+            x = (int) ((SCREEN_WIDTH / 2 - width / 2) + tile_size * 4.5);
             slotCol = playerSlotCol;
             slotRow = playerSlotRow;
-        } else { // Inventario del lado izquierdo (npc)
-            frameWidth = tile_size * 6;
-            frameHeight = tile_size * 5;
-            frameX = (SCREEN_WIDTH / 2 - frameWidth / 2) - tile_size * 5;
-            frameY = tile_size - 15;
+        } else {
+            x = (int) ((SCREEN_WIDTH / 2 - width / 2) - tile_size * 4.5);
             slotCol = npcSlotCol;
             slotRow = npcSlotRow;
         }
-
-        drawSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
+        y = tile_size - 15;
+        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
         // Slots
-        final int slotXStart = frameX + 20;
-        final int slotYStart = frameY + 20;
-        int slotX = slotXStart;
-        int slotY = slotYStart;
+        final int slotXStart = x + 20, slotYStart = y + 20;
+        int slotX = slotXStart, slotY = slotYStart;
         int gap = tile_size + 3;
-        // TODO Estas constantes y variables no tendrian que declararse como globales?
+        changeFontSize(14);
 
-        // Draw player´s items
         for (int i = 0; i < entity.inventory.size(); i++) {
-            // Remarca de color amarillo el item seleccionado
+
+            // Marca de color amarillo el item seleccionado
             if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield || entity.inventory.get(i) == entity.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRect(slotX, slotY, tile_size, tile_size);
             }
 
+            // Dibuja el item
             g2.drawImage(entity.inventory.get(i).image, slotX, slotY, null);
 
+            // Dibuja la cantidad del item si este tiene mas de 1
             if (entity.inventory.get(i).amount > 1) {
-                g2.setFont(new Font("Consolas", Font.BOLD, 18));
                 int amountX, amountY;
                 String amount = String.valueOf(entity.inventory.get(i).amount);
-                amountX = getXforAlignToRightText(amount, slotX + 44);
+                amountX = getXforAlignToRightText(amount, slotX + gap);
                 amountY = slotY + tile_size - 2;
-
-                // Number
                 g2.setColor(Color.white);
                 g2.drawString(amount, amountX, amountY);
-
-                g2.setFont(font_medieval1);
-
             }
 
             slotX += gap;
 
-            // Salta la fila
+            // Salta a la siguiente fila
             if (i == 4 || i == 9 || i == 14) {
                 slotX = slotXStart;
                 slotY += gap;
@@ -463,22 +451,22 @@ public class UI {
             int cursorX = slotXStart + (gap * slotCol);
             int cursorY = slotYStart + (gap * slotRow);
 
-            // Draw cursor
+            // Dibuja el cursor
             g2.setColor(Color.white);
             g2.setStroke(new BasicStroke(2));
             g2.drawRect(cursorX, cursorY, tile_size, tile_size);
 
-            // Description frame
-            int dFrameY = frameY + frameHeight;
-            int dFrameHeight = tile_size * 3;
+            // Ventana de descripcion
+            int dFrameY = y + height;
+            int dFrameHeight = tile_size * 4;
 
-            // Draw description text
-            int textX = frameX + 20;
+            // Dibuja la descripcion
+            int textX = x + 20;
             int textY = dFrameY + tile_size + 5;
-            int itemIndex = getItemIndexOnSlot(slotCol, slotRow);
+            int itemIndex = getItemIndexOnInventory(slotCol, slotRow);
             if (itemIndex < entity.inventory.size()) {
-                drawSubwindow(frameX, dFrameY, frameWidth, dFrameHeight, SUBWINDOW_ALPHA);
-                changeFontSize(18f);
+                drawSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
+                changeFontSize(14);
                 for (String line : entity.inventory.get(itemIndex).description.split("\n")) {
                     g2.drawString(line, textX, textY);
                     textY += 32;
@@ -537,8 +525,8 @@ public class UI {
                 subState = 1;
                 command = 0;
             }
+            // Save Game
         }
-        // Save Game
         textY += tile_size;
         g2.drawString("Save Game", textX, textY);
         if (command == 3) {
@@ -562,8 +550,8 @@ public class UI {
         }
 
         // Music volume
-        textX = frameX + frameWidth - tile_size * 3;
-        textY = frameY + tile_size * 2 + 28;
+        textX = frameX + frameWidth - (tile_size * 4);
+        textY = frameY + (tile_size * 2 + 7);
         g2.drawRect(textX, textY, 120, 24);
         int volumeWidth = 24 * game.music.volumeScale;
         g2.fillRect(textX, textY, volumeWidth, 24);
@@ -762,7 +750,7 @@ public class UI {
         // Draw texts
         g2.drawString("Buy", x, y);
         if (command == 0) {
-            g2.drawString(">", x - 24, y);
+            g2.drawString(">", x - 14, y);
             if (game.keyboard.enter) subState = 1;
         }
 
@@ -770,48 +758,34 @@ public class UI {
 
         g2.drawString("Sell", x, y);
         if (command == 1) {
-            g2.drawString(">", x - 24, y);
+            g2.drawString(">", x - 14, y);
             if (game.keyboard.enter) subState = 2;
         }
     }
 
     private void tradeBuy() {
-        drawInventory(world.player, false);
+        int x, y, width, height;
+
         drawInventory(entity, true);
+        drawInventory(world.player, false); // TODO El player forma parte de una entidad, creo que se podria especificar el argumento del metodo de otra forma
 
-        // Draw hint window
-        int x = tile_size * 2;
-        int y = tile_size * 9;
-        int width = tile_size * 6;
-        int height = tile_size * 2;
-        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        changeFontSize(23f);
-        g2.drawString("[esc] Back", x + 24, y + 60);
-
-        // Draw player gold window
-        x = tile_size * 12;
-        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Your gold: " + world.player.gold, x + 24, y + 60);
-
-        int itemIndex = getItemIndexOnSlot(npcSlotCol, npcSlotRow);
+        // Ventana del precio
+        int itemIndex = getItemIndexOnInventory(npcSlotCol, npcSlotRow);
         if (itemIndex < entity.inventory.size()) {
-            // Draw price window
-            x = (int) (tile_size * 5.5);
-            y = (int) (tile_size * 5.2);
+            x = tile_size * 5;
+            y = tile_size * 5;
             width = (int) (tile_size * 2.5);
             height = tile_size;
-            drawSubwindow(x, y, width, height, 240);
-
-            // Draw image gold
-            g2.drawImage(gold, x + 14, y + 10, 32, 32, null);
-
-            // Draw price item
+            drawSubwindow(x, y, width, height, 255);
+            // Imagen del oro
+            g2.drawImage(gold, x + 6, y + 10, null);
+            // Precio de compra del item
             int price = entity.inventory.get(itemIndex).price;
             String text = String.valueOf(price);
-            x = getXforAlignToRightText(text, tile_size * 8 - 20);
-            g2.drawString(text, x, y + 32);
+            x = getXforAlignToRightText(text, x + width);
+            g2.drawString(text, x, y + 24);
 
-            // BUY AN ITEM
+            // Compra un item
             if (game.keyboard.enter) {
                 if (entity.inventory.get(itemIndex).price > world.player.gold)
                     addMessage("You need more gold to buy that!");
@@ -826,44 +800,38 @@ public class UI {
 
         }
 
+        // Ventana del oro disponible
+        x = (int) (tile_size * 9.75);
+        y = (int) (tile_size * 5.68);
+        width = (int) (tile_size * 6.5);
+        height = tile_size * 2;
+        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
+        g2.drawString("Gold: " + world.player.gold, x + 24, y + 40);
+
     }
 
     private void tradeSell() {
+        int x, y, width, height;
+
         drawInventory(world.player, true);
 
-        // Draw hint window
-        int x = tile_size * 2;
-        int y = tile_size * 9;
-        int width = tile_size * 6;
-        int height = tile_size * 2;
-        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        changeFontSize(23f);
-        g2.drawString("[esc] Back", x + 24, y + 60);
-
-        // Draw player gold window
-        x = tile_size * 12;
-        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Your gold: " + world.player.gold, x + 24, y + 60);
-
-        int itemIndex = getItemIndexOnSlot(playerSlotCol, playerSlotRow);
+        // Ventana del precio
+        int itemIndex = getItemIndexOnInventory(playerSlotCol, playerSlotRow);
         if (itemIndex < world.player.inventory.size()) {
-            // Draw price window
-            x = (int) (tile_size * 15.5);
-            y = (int) (tile_size * 5.2);
+            x = tile_size * 14;
+            y = tile_size * 5;
             width = (int) (tile_size * 2.5);
             height = tile_size;
             drawSubwindow(x, y, width, height, 255);
-
-            // Draw image icon
-            g2.drawImage(gold, x + 14, y + 10, 32, 32, null);
-
-            // Draw price item
+            // Imagen del oro
+            g2.drawImage(gold, x + 6, y + 10, null);
+            // Precio de venta del item
             int price = world.player.inventory.get(itemIndex).price / 2;
             String text = String.valueOf(price);
-            x = getXforAlignToRightText(text, tile_size * 18 - 20);
-            g2.drawString(text, x, y + 32);
+            x = getXforAlignToRightText(text, x + width);
+            g2.drawString(text, x, y + 24);
 
-            // SELL AN ITEM
+            // Vende un item
             if (game.keyboard.enter) {
                 if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
                     addMessage("You cannot sell an equipped item!");
@@ -875,7 +843,16 @@ public class UI {
                     world.player.gold += price;
                 }
             }
+
         }
+
+        // Ventana del oro disponible
+        x = (int) (tile_size * 9.75);
+        y = (int) (tile_size * 9.68);
+        width = (int) (tile_size * 6.5);
+        height = tile_size * 2;
+        drawSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
+        g2.drawString("Gold: " + world.player.gold, x + 24, y + 40);
 
     }
 
@@ -922,9 +899,13 @@ public class UI {
     }
 
     /**
-     * Obtiene el indice del item en el slot.
+     * Obtiene el indice del item en el inventario.
+     *
+     * @param slotCol columna de ranura.
+     * @param slotRow fila de ranura.
+     * @return el indice del item en el inventario.
      */
-    public int getItemIndexOnSlot(int slotCol, int slotRow) {
+    public int getItemIndexOnInventory(int slotCol, int slotRow) {
         return slotCol + (slotRow * 5);
     }
 
@@ -936,7 +917,9 @@ public class UI {
      */
     private int getXforAlignToRightText(String text, int tailX) {
         int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        return tailX - textLength;
+        // Valor adicional para que el texto (por ejemplo, cantidad de oro) no quede tan pegado al borde derecho de la ventana
+        int distanceToTheRightBorder = 2;
+        return tailX - textLength - distanceToTheRightBorder;
     }
 
     /**

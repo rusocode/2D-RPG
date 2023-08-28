@@ -36,11 +36,11 @@ public class Chest extends Item {
             image = image2;
             opened = true;
             if (world.player.canPickup(loot)) {
-                dialogues[0][0] = "You open the chest and find a " + loot.name + "!\nYou obtain the " + loot.name + "!";
+                dialogues[0][0] = "You open the chest and find a \n" + loot.name +"!" /* + "!You obtain the " + loot.name + "!"*/;
                 startDialogue(DIALOGUE_STATE, this, 0);
                 empty = true;
             } else {
-                dialogues[1][0] = "You open the chest and find a " + loot.name + "!\n...But you cannot carry any more!";
+                dialogues[1][0] = "You open the chest and find a \n" + loot.name + "! But you cannot carry \nany more!";
                 startDialogue(DIALOGUE_STATE, this, 1);
             }
         } else if (!empty) {

@@ -32,7 +32,7 @@ public class Trader extends Mob {
     }
 
     private void initDialogue() {
-        dialogues[0][0] = "He he, so you found me. I have some good \nstuff. Do you want to trade?";
+        dialogues[0][0] = "He he, so you found me. I have some \ngood stuff. Do you want to trade?";
     }
 
     private void setItems() {

@@ -133,7 +133,7 @@ public class Player extends Mob {
         world.map = NIX;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 23, startRow = 21;
+        int startCol = 10, startRow = 40; // 23,21
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile_size) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
@@ -372,7 +372,7 @@ public class Player extends Mob {
      * Selecciona el item del array de inventario utilizando el indice del slot del inventario UI.
      */
     public void selectItem() {
-        int itemIndex = game.ui.getItemIndexOnSlot(game.ui.playerSlotCol, game.ui.playerSlotRow);
+        int itemIndex = game.ui.getItemIndexOnInventory(game.ui.playerSlotCol, game.ui.playerSlotRow);
         if (itemIndex < inventory.size()) {
             Item selectedItem = inventory.get(itemIndex);
             if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordNormal) {
@@ -545,9 +545,9 @@ public class Player extends Mob {
         inventory.clear();
         inventory.add(weapon);
         inventory.add(shield);
-        inventory.add(new Key(game, world, 2));
-        inventory.add(new PotionRed(game, world, 1));
         inventory.add(new Lantern(game, world));
+        inventory.add(new PotionRed(game, world, 2));
+        inventory.add(new Key(game, world, 2));
         inventory.add(new Pickaxe(game, world));
         inventory.add(new Axe(game, world));
         inventory.add(new Tent(game, world));

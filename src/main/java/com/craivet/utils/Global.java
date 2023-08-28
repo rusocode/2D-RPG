@@ -96,5 +96,6 @@ public final class Global {
     public static final int TRANSITION_STATE = 7;
     public static final int TRADE_STATE = 8;
     public static final int SLEEP_STATE = 9;
+    public static final int INVENTORY_STATE = 10;
 
 }
