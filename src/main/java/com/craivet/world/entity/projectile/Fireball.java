@@ -13,10 +13,6 @@ public class Fireball extends Projectile {
 
 	public Fireball(Game game, World world) {
 		super(game, world);
-		setDefaultValues();
-	}
-
-	private void setDefaultValues() {
 		name = "Fireball";
 		speed = 7;
 		hp = maxHp = 80;

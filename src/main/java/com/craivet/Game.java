@@ -192,7 +192,7 @@ public class Game extends Canvas implements Runnable {
         ui.console.clear();
         world.player.setDefaultPos();
         world.player.resetStats();
-        world.player.timer.resetCounter();
+        world.player.timer.resetCounters();
         world.createMOBs();
         if (restart) {
             playMusic(music_main);

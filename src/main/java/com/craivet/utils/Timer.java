@@ -26,13 +26,16 @@ public class Timer {
     public int projectileCounter;
 
     /**
-     * Temporiza el movimiento.
+     * Temporiza el movimiento de las entidades con 2 frames de movimiento.
      * <p>
      * Si se completo el intervalo y si la entidad esta en el frame de movimiento 1, cambia al frame de movimiento 2 y
-     * resetea el contador. Si se completo el intervalo y si la entidad esta en el frame de movimiento 2, cambia al frame
-     * de movimiento 1 y resetea el contador.
+     * resetea el contador. Si se completo el intervalo y si la entidad esta en el frame de movimiento 2, cambia al
+     * frame de movimiento 1 y resetea el contador.
+     *
+     * @param entity   entidad.
+     * @param interval intervalo de tiempo en ms.
      */
-    public void timeMovement(Entity entity, final int interval) {
+    public void timeMovement(Entity entity, int interval) {
         if (++movementCounter >= interval - entity.speed) {
             if (entity.ss.movementNum == 1) entity.ss.movementNum = 2;
             else if (entity.ss.movementNum == 2) entity.ss.movementNum = 1;
@@ -40,7 +43,7 @@ public class Timer {
         }
     }
 
-    public void timeStopMovement(Entity entity, final int interval) {
+    public void timeStopMovement(Entity entity, int interval) {
         if (++stopMovementCounter >= interval) {
             entity.ss.movementNum = 1;
             stopMovementCounter = 0;
@@ -52,7 +55,7 @@ public class Timer {
      * <p>
      * Si se completo el intervalo, deja de ser invencible y resetea el contador.
      */
-    public void timeInvincible(Entity entity, final int interval) {
+    public void timeInvincible(Entity entity, int interval) {
         if (++invincibleCounter >= interval) {
             entity.flags.invincible = false;
             invincibleCounter = 0;
@@ -67,7 +70,7 @@ public class Timer {
      * incluidos, cambia a "up" y resetea el contador. Si el numero esta entre 51 y 75, ambos incluidos, cambia a "left"
      * y resetea el contador. Si el numero es mayor a 75, cambia a "right" y resetea el contador.
      */
-    public void timeDirection(Entity entity, final int interval) {
+    public void timeDirection(Entity entity, int interval) {
         if (++directionCounter >= interval) {
             int i = Utils.azar(100);
             if (i <= 25) entity.direction = Direction.DOWN;
@@ -83,7 +86,7 @@ public class Timer {
      * <p>
      * Calcula la transparencia basandose en el residuo de la division del contador por el intervalo.
      */
-    public void timeDeadAnimation(Entity entity, final int interval, Graphics2D g2) {
+    public void timeDeadAnimation(Entity entity, int interval, Graphics2D g2) {
         int alpha = (++deadCounter / interval) % 2 == 0 ? 0 : 1;
         Utils.changeAlpha(g2, alpha);
         if (deadCounter > interval * 8) entity.flags.alive = false;
@@ -94,14 +97,14 @@ public class Timer {
      * <p>
      * Si se completo el intervalo, desactiva la barra de vida y resetea el contador.
      */
-    public void timeHpBar(Entity entity, final int interval) {
+    public void timeHpBar(Entity entity, int interval) {
         if (++hpBarCounter >= interval) {
             entity.hpBar = false;
             hpBarCounter = 0;
         }
     }
 
-    public void timerKnockback(Entity entity, final int interval) {
+    public void timerKnockback(Entity entity, int interval) {
         if (++knockbackCounter >= interval) {
             entity.flags.knockback = false;
             entity.speed = entity.defaultSpeed;
@@ -112,7 +115,7 @@ public class Timer {
     /**
      * Reinicia los contadores.
      */
-    public void resetCounter() {
+    public void resetCounters() {
         attackAnimationCounter = 0;
         attackCounter = 0;
         deadCounter = 0;

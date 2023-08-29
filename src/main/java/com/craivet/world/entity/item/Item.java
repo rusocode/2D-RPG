@@ -7,7 +7,7 @@ import com.craivet.world.World;
 import static com.craivet.utils.Global.tile;
 
 /**
- * Los items se representan en el suelo en la dimension de 32x32, y en 48x48 en el inventario.
+ * Los items se representan en el suelo y en el inventario con la dimension de 32x32.
  */
 
 public class Item extends Entity {
