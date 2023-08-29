@@ -23,7 +23,7 @@ public class BigRock extends Mob {
         name = NAME;
         type = Type.NPC;
         image = Utils.scaleImage(bigrock, tile, tile);
-        speed = 2;
+        speed = 1;
         hitbox.x = 0;
         hitbox.y = 6;
         hitbox.width = tile - hitbox.x - 1;

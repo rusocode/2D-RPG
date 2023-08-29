@@ -40,7 +40,7 @@ public class GameState implements State {
         // Debug mode
         if (game.keyboard.t) {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 8));
-            int x = 8, y = (int) (WINDOW_HEIGHT - tile * 2.3), gap = 25;
+            int x = 8, y = (int) (WINDOW_HEIGHT - tile * 2.3), gap = 15;
             String map = game.world.maps.get(game.world.map);
             int posX = (game.world.player.x + game.world.player.hitbox.x) / tile;
             int posY = (game.world.player.y + game.world.player.hitbox.y) / tile;

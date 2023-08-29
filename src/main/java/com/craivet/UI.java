@@ -26,7 +26,7 @@ public class UI {
     private Graphics2D g2;
     public Entity entity;
 
-    private String currentDialogue, combinedText;
+    private String currentDialogue, combinedText = "";
     private int charIndex, counter;
 
     public final ArrayList<String> console = new ArrayList<>();

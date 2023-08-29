@@ -78,13 +78,13 @@ public class Player extends Mob {
 
     private void centerOnScreen() {
         screenX = WINDOW_WIDTH / 2 - (tile / 2);
-        screenY = WINDOW_HEIGHT / 2 - (tile / 2);
+        screenY = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
     }
 
     public void setDefaultValues() {
         type = Type.PLAYER;
         direction = Direction.DOWN;
-        speed = defaultSpeed = 3;
+        speed = defaultSpeed = 2;
         hp = maxHp = 6;
         mana = maxMana = 4;
         ammo = 5;

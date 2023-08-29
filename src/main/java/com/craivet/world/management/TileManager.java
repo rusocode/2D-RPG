@@ -32,13 +32,13 @@ public class TileManager implements State {
     @Override
     public void render(Graphics2D g2) {
         // Calcula los desplazamientos
-        int xOffset = world.player.x - world.player.screenX; // 1104 - 456 = 648
+        int xOffset = world.player.x - world.player.screenX;
         int yOffset = world.player.y - world.player.screenY;
 
         // Calcula los tiles que estan dentro de la vista de la camara
         int yStart = Math.max(0, yOffset / tile);
         int yEnd = Math.min(MAX_MAP_ROW, (yOffset + WINDOW_HEIGHT) / tile + 1);
-        int xStart = Math.max(0, xOffset / tile); // 648 / 48 = 13
+        int xStart = Math.max(0, xOffset / tile);
         int xEnd = Math.min(MAX_MAP_COL, (xOffset + WINDOW_WIDTH) / tile + 1);
 
         for (int y = yStart; y < yEnd; y++) {
@@ -46,7 +46,8 @@ public class TileManager implements State {
                 final int tileIndex = world.tileIndex[world.map][y][x];
                 final BufferedImage tileImage = world.tileData[tileIndex].texture;
                 g2.drawImage(tileImage, x * tile - xOffset, y * tile - yOffset, null);
-                // g2.drawRect(x * tile_size - xOffset, y * tile_size - yOffset, tile_size, tile_size); // Dibuja una grilla
+                g2.setStroke(new BasicStroke(0)); // Anula el grosor del borde para mantenerlo
+                g2.drawRect(x * tile - xOffset, y * tile - yOffset, tile, tile); // Dibuja una grilla
             }
         }
 

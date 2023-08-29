@@ -10,17 +10,36 @@ import java.awt.event.WindowEvent;
 import static com.craivet.utils.Global.*;
 
 /**
+ * La resolucion de pantalla se refiere tanto al numero de pixeles en la pantalla fisica como al tamaño de la ventana en
+ * la que se muestra una aplicacion o juego en particular.
+ * <p>
+ * Resoluciones mas usadas:
+ * <ul>
+ * <li>800x600 (544x416)
+ * <li>1024x768 (768x584)
+ * <li>1600x900
+ * <li>1920x1080
+ * </ul>
+ * El AO presenta diversas resoluciones graficas que se basan en la suma de los tiles visibles en el mapa y las
+ * interfaces graficas (consola, inventario, etc.). En una resolucion como 800x600, la porcion de tiles renderizados es
+ * 544x416, denominada "Vista del Mapa", mientras que los 256x184 restantes corresponden a la interfaz de usuario (UI).
+ * Optar por una resolucion mas baja afectaria la calidad visual (para el caso de Minecraft, la calidad de la fuente y
+ * los graficos se mantienen constantes). Cabe destacar que la cantidad de tiles visibles no varia, permaneciendo
+ * constante independientemente de la resolucion y siendo estirados en casos de resoluciones mas altas.
+ * <p>
  * <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html">Full-Screen Exclusive Mode</a>
  */
 
+// Como se podria llamar o hacer referencia a la parte del render que solo visualiza los tiles en el mapa ignorando la gui (consola, inventario, etc.)?
 public class Screen extends JFrame {
 
     public Screen(final Game game, boolean fullScreenMode) {
+        int renderTilesWidth = 544, renderTilesHeight = 416;
         // setIgnoreRepaint(true);
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(game);
-        pack();
+        // pack();
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
@@ -41,6 +60,7 @@ public class Screen extends JFrame {
             }
         });
         if (fullScreenMode) setFullScreen();
+        else setSize(renderTilesWidth, renderTilesHeight);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -57,9 +77,8 @@ public class Screen extends JFrame {
         System.out.println("BitDepth = " + display.getBitDepth());
         System.out.println("hz = " + display.getRefreshRate());
         // Si la pantalla principal admite el modo exclusivo de pantalla completa
-        if (gd.isFullScreenSupported()) {
-            gd.setFullScreenWindow(this);
-        } else gd.setFullScreenWindow(null);
+        if (gd.isFullScreenSupported()) gd.setFullScreenWindow(this);
+        else gd.setFullScreenWindow(null); // Establece la resolucion al tamaño del Canvas
     }
 
 }
