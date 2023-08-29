@@ -37,16 +37,16 @@ public class World {
     public int area, nextArea;
     public HashMap<Integer, String> maps = new HashMap<>();
     public Tile[] tileData;
-    public int[][][] tileIndex = new int[MAX_MAP][MAX_MAP_ROW][MAX_MAP_COL];
+    public int[][][] tileIndex = new int[MAPS][MAX_MAP_ROW][MAX_MAP_COL];
 
     // Entities
     public Player player;
     public List<Entity> particles = new ArrayList<>();
     // TODO No tendrian que declararse como HashMap o ArrayList?
-    public Item[][] items = new Item[MAX_MAP][20];
-    public Mob[][] mobs = new Mob[MAX_MAP][40];
-    public Interactive[][] interactives = new Interactive[MAX_MAP][50];
-    public Projectile[][] projectiles = new Projectile[MAX_MAP][20];
+    public Item[][] items = new Item[MAPS][20];
+    public Mob[][] mobs = new Mob[MAPS][40];
+    public Interactive[][] interactives = new Interactive[MAPS][50];
+    public Projectile[][] projectiles = new Projectile[MAPS][20];
 
     public boolean drawPath;
 

@@ -33,14 +33,10 @@ public class UI {
     private final ArrayList<Integer> consoleCounter = new ArrayList<>();
 
     public int playerSlotCol, playerSlotRow, npcSlotCol, npcSlotRow;
-    // TODO Se podrian combinar estas dos variables (mainWindowState y subState) haciendo referencia a un solo subState
-    public int mainWindowState;
-    public int subState;
-    public int command;
+    public int mainWindowState, subState, command; // TODO Se podrian combinar estas dos variables (mainWindowState y subState) haciendo referencia a un solo subState
 
     // Icons
-    private BufferedImage heartFull, heartHalf, heartBlank;
-    private BufferedImage manaFull, manaBlank;
+    private BufferedImage heartFull, heartHalf, heartBlank, manaFull, manaBlank;
 
     public UI(Game game, World world) {
         this.game = game;
@@ -214,17 +210,15 @@ public class UI {
     }
 
     private void renderDialogueWindow() {
-        final int frameX = tile * 3;
-        final int frameY = tile / 2;
-        final int frameWidth = WINDOW_WIDTH - (tile * 6);
-        final int frameHeight = tile * 4;
-        renderSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
+        int x = tile * 3, y = tile / 2;
+        int width = WINDOW_WIDTH - (tile * 6), height = tile * 4;
+        renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
-        changeFontSize(14f);
+        changeFontSize(14);
 
         // Text
-        int textX = frameX + tile;
-        int textY = frameY + tile;
+        int textX = x + tile;
+        int textY = y + tile;
 
         if (entity.dialogues[entity.dialogueSet][entity.dialogueIndex] != null) {
             char[] characters = entity.dialogues[entity.dialogueSet][entity.dialogueIndex].toCharArray();
@@ -265,17 +259,13 @@ public class UI {
     }
 
     private void renderStatsWindow() {
-        int x, y, width, height;
-        width = tile * 9;
-        height = tile * 11;
-        x = (WINDOW_WIDTH / 2 - width / 2);
-        y = tile - 15;
+        int width = tile * 9, height = tile * 11;
+        int x = (WINDOW_WIDTH / 2 - width / 2), y = tile - 15;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-
-        int gap = 24; // Espacio entre lineas
+        int gap = 24;
         changeFontSize(16);
 
-        // Names
+        // Nombres
         int textX = x + 20;
         int textY = y + tile;
         g2.drawString("Level", textX, textY);
@@ -302,9 +292,9 @@ public class UI {
         textY += gap + 15;
         g2.drawString("Shield", textX, textY);
 
-        // Values
+        // Valores
         int tailX = (x + width) - 30; // Cola de la posicion x
-        // Reset textY
+        // Resetea textY
         textY = y + tile;
         String value;
 
@@ -470,12 +460,11 @@ public class UI {
         int textX, textY;
 
         // Title
-        changeFontSize(28f);
+        changeFontSize(28);
         String text = "Options";
         textX = getXForCenteredText(text);
         textY = frameY + tile;
         g2.drawString(text, textX, textY);
-        // Title
 
         changeFontSize(28f);
 
@@ -554,7 +543,7 @@ public class UI {
         int textX, textY;
 
         // Title
-        changeFontSize(33f);
+        changeFontSize(33);
         String text = "Control";
         textX = getXForCenteredText(text);
         textY = frameY + tile;
@@ -651,13 +640,11 @@ public class UI {
     }
 
     private void renderGameOverWindow() {
-        g2.setColor(new Color(0, 0, 0, 150));
-        g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-
         int x, y;
         String text;
-
-        changeFontSize(110);
+        g2.setColor(new Color(0, 0, 0, 150));
+        g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        changeFontSize(82);
 
         text = "Game Over";
         // Sombra
@@ -688,9 +675,9 @@ public class UI {
      * Renderiza un efecto de transicion y cuando este termina, teletransporta al player.
      */
     private void renderTransitionEffect() {
-        counter++;
         g2.setColor(new Color(0, 0, 0, counter * 5));
         g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        counter++;
         if (counter >= INTERVAL_TRANSITION) {
             counter = 0;
             game.state = PLAY_STATE;
@@ -715,10 +702,8 @@ public class UI {
     private void renderTradeMainWindow() {
         renderDialogueWindow();
 
-        int x = tile * 4;
-        int y = tile * 4;
+        int x = tile * 4, y = tile * 4;
 
-        // Draw texts
         g2.drawString("Buy", x, y);
         if (command == 0) {
             g2.drawString(">", x - 14, y);
@@ -852,6 +837,15 @@ public class UI {
         }
     }
 
+    /**
+     * Dibuja una sub ventana.
+     *
+     * @param x      posicion x de la ventana.
+     * @param y      posicion y de la ventana.
+     * @param width  ancho de la ventana.
+     * @param height alto de la ventana.
+     * @param alpha  transparencia de la ventana.
+     */
     private void renderSubwindow(int x, int y, int width, int height, int alpha) {
         // Fondo negro
         g2.setColor(new Color(0, 0, 0, alpha));

@@ -103,13 +103,13 @@ public class File {
             data.currentLightSlot = world.player.getCurrentLightSlot();
 
             // Items on map
-            data.itemName = new String[MAX_MAP][world.items[1].length];
-            data.itemX = new int[MAX_MAP][world.items[1].length];
-            data.itemY = new int[MAX_MAP][world.items[1].length];
-            data.loot = new String[MAX_MAP][world.items[1].length];
-            data.opened = new boolean[MAX_MAP][world.items[1].length];
-            data.empty = new boolean[MAX_MAP][world.items[1].length];
-            for (int map = 0; map < MAX_MAP; map++) {
+            data.itemName = new String[MAPS][world.items[1].length];
+            data.itemX = new int[MAPS][world.items[1].length];
+            data.itemY = new int[MAPS][world.items[1].length];
+            data.loot = new String[MAPS][world.items[1].length];
+            data.opened = new boolean[MAPS][world.items[1].length];
+            data.empty = new boolean[MAPS][world.items[1].length];
+            for (int map = 0; map < MAPS; map++) {
                 for (int i = 0; i < world.items[1].length; i++) {
                     Entity item = world.items[map][i];
                     if (item == null) data.itemName[map][i] = "NA";
@@ -166,7 +166,7 @@ public class File {
             world.player.getDefense();
             // world.player.frame.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
-            for (int map = 0; map < MAX_MAP; map++) {
+            for (int map = 0; map < MAPS; map++) {
                 for (int i = 0; i < world.items[1].length; i++) {
                     if (data.itemName[map][i].equals("NA")) world.items[map][i] = null;
                     else {

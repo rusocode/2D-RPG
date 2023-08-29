@@ -40,14 +40,14 @@ public final class Global {
     private static final int scale = 2;
     public static final int tile = original_tile * scale;
     // Cantidad de tiles visibles
-    public static final int MAX_WINDOW_COL = 17; // 20, 17 TODO o MAX_TILES_COL?
     public static final int MAX_WINDOW_ROW = 13; // 12, 13 TODO Por que no coiciden la cantidad de tiles visibles (6) hacia arriba de la cabeza con los del ao (5)?
+    public static final int MAX_WINDOW_COL = 17; // 20, 17 TODO o MAX_TILES_COL?
     // Tamaño de la ventana
     public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL; // 544px
     public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW; // 416px
 
     // Map settings
-    public static final int MAX_MAP = 10;
+    public static final int MAPS = 10;
     public static final int MAX_MAP_ROW = 50;
     public static final int MAX_MAP_COL = 50;
     public static final int NIX = 0;

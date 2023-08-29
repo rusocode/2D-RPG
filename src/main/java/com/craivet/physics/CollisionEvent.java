@@ -31,7 +31,7 @@ public class CollisionEvent {
         this.game = game;
         this.world = world;
         entity = new Entity(game, world);
-        event = new Rectangle[MAX_MAP][MAX_MAP_ROW][MAX_MAP_COL];
+        event = new Rectangle[MAPS][MAX_MAP_ROW][MAX_MAP_COL];
     }
 
     /**
@@ -39,7 +39,7 @@ public class CollisionEvent {
      * cada tile.
      */
     public void createEvents() {
-        for (int map = 0; map < MAX_MAP; map++) {
+        for (int map = 0; map < MAPS; map++) {
             for (int row = 0; row < MAX_MAP_ROW; row++) {
                 for (int col = 0; col < MAX_MAP_COL; col++) {
                     event[map][row][col] = new Rectangle();

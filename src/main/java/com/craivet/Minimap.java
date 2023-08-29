@@ -18,10 +18,10 @@ public class Minimap {
     }
 
     public void createMinimap() {
-        minimap = new BufferedImage[MAX_MAP];
+        minimap = new BufferedImage[MAPS];
         int width = tile * MAX_MAP_COL;
         int height = tile * MAX_MAP_ROW;
-        for (int map = 0; map < MAX_MAP; map++) {
+        for (int map = 0; map < MAPS; map++) {
             minimap[map] = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g2 = minimap[map].createGraphics();
             for (int row = 0; row < MAX_MAP_ROW; row++) {
@@ -38,23 +38,21 @@ public class Minimap {
 
     public void render(final Graphics2D g2) {
         if (minimapOn) {
-            int width = 200;
-            int height = 200;
+            int width = 100;
+            int height = 100;
             int x = WINDOW_WIDTH - width - 20;
             int y = 20;
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.9f));
             g2.setColor(Color.black);
             g2.drawRect(x - 1, y - 1, width + 1, height + 1);
             g2.drawImage(minimap[world.map], x, y, width, height, null);
 
             // Dibuja un cuadrado rojo que representa la posicion del player
             double scale = (double) (tile * MAX_MAP_COL) / width;
-            int playerX = (int) (x + world.player.x / scale);
-            int playerY = (int) (y + world.player.y / scale);
+            int playerX = (int) (x + (world.player.x + world.player.hitbox.x) / scale);
+            int playerY = (int) (y + (world.player.y + world.player.hitbox.y) / scale);
             int playerSize = (int) (tile / scale);
             g2.setColor(Color.red);
             g2.fillRect(playerX, playerY, playerSize, playerSize);
-            // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f)); // Restablece el valor alpha
         }
     }
 
