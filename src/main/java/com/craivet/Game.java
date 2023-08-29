@@ -189,7 +189,7 @@ public class Game extends Canvas implements Runnable {
      */
     public void reset(boolean restart) {
         stopMusic();
-        ui.message.clear();
+        ui.console.clear();
         world.player.setDefaultPos();
         world.player.resetStats();
         world.player.timer.resetCounter();

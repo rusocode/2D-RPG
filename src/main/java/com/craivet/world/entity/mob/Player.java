@@ -2,7 +2,6 @@ package com.craivet.world.entity.mob;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 import com.craivet.Direction;
 import com.craivet.Game;
@@ -222,7 +221,7 @@ public class Player extends Mob {
                 if (item.type == Type.PICKUP) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_item_pickup);
                 else {
-                    game.ui.addMessage("You cannot carry any more!");
+                    game.ui.addMessageToConsole("You cannot carry any more!");
                     return;
                 }
                 world.items[world.map][i] = null;
@@ -286,7 +285,7 @@ public class Player extends Mob {
 
                 int damage = Math.max(attack - mob.defense, 1);
                 mob.hp -= damage;
-                game.ui.addMessage(damage + " damage!");
+                game.ui.addMessageToConsole(damage + " damage!");
                 if (mob.hp > 0) {
                     if (mob instanceof Slime || mob instanceof RedSlime) game.playSound(sound_hit_slime);
                     if (mob instanceof Orc) {
@@ -302,8 +301,8 @@ public class Player extends Mob {
                 if (mob.hp <= 0) {
                     game.playSound(sound_mob_death);
                     mob.flags.dead = true;
-                    game.ui.addMessage("Killed the " + mob.name + "!");
-                    game.ui.addMessage("Exp + " + mob.exp);
+                    game.ui.addMessageToConsole("Killed the " + mob.name + "!");
+                    game.ui.addMessageToConsole("Exp + " + mob.exp);
                     exp += mob.exp;
                     checkLevelUp();
                 }

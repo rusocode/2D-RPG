@@ -32,7 +32,6 @@ public class Keyboard extends KeyAdapter {
             lastKey = e.getKeyCode();
             if (game.state == MAIN_STATE) mainState(lastKey);
             else if (game.state == PLAY_STATE) playState(lastKey);
-            else if (game.state == PAUSE_STATE) pauseState(lastKey);
             else if (game.state == DIALOGUE_STATE) dialogueState(lastKey);
             else if (game.state == STATS_STATE) statsState(lastKey);
             else if (game.state == INVENTORY_STATE) inventoryState(lastKey);
@@ -129,7 +128,6 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_F) f = true;
         if (code == KeyEvent.VK_L) l = true;
         if (code == KeyEvent.VK_T) t = !t;
-        if (code == KeyEvent.VK_P) game.state = PAUSE_STATE;
         if (code == KeyEvent.VK_C) game.state = STATS_STATE;
         if (code == KeyEvent.VK_I) game.state = INVENTORY_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;
@@ -142,10 +140,6 @@ public class Keyboard extends KeyAdapter {
                 case 1 -> game.file.loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
             }
         }
-    }
-
-    private void pauseState(int code) {
-        if (code == KeyEvent.VK_P) game.state = PLAY_STATE;
     }
 
     private void dialogueState(int code) {

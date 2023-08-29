@@ -88,14 +88,13 @@ public final class Global {
      * paquete con los diferentes tipos de constantes en clases final. */
     public static final int MAIN_STATE = 0;
     public static final int PLAY_STATE = 1;
-    public static final int PAUSE_STATE = 2;
-    public static final int DIALOGUE_STATE = 3;
-    public static final int STATS_STATE = 4;
-    public static final int OPTION_STATE = 5;
-    public static final int GAME_OVER_STATE = 6;
-    public static final int TRANSITION_STATE = 7;
-    public static final int TRADE_STATE = 8;
-    public static final int SLEEP_STATE = 9;
-    public static final int INVENTORY_STATE = 10;
+    public static final int DIALOGUE_STATE = 2;
+    public static final int STATS_STATE = 3;
+    public static final int OPTION_STATE = 4;
+    public static final int GAME_OVER_STATE = 5;
+    public static final int TRANSITION_STATE = 6;
+    public static final int TRADE_STATE = 7;
+    public static final int SLEEP_STATE = 8;
+    public static final int INVENTORY_STATE = 9;
 
 }

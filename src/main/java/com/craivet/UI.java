@@ -29,11 +29,11 @@ public class UI {
     private String currentDialogue, combinedText;
     private int charIndex, counter;
 
-    public final ArrayList<String> message = new ArrayList<>();
-    private final ArrayList<Integer> messageCounter = new ArrayList<>();
+    public final ArrayList<String> console = new ArrayList<>();
+    private final ArrayList<Integer> consoleCounter = new ArrayList<>();
 
     public int playerSlotCol, playerSlotRow, npcSlotCol, npcSlotRow;
-    // TODO Se podrian combinar estas dos variables haciendo referencia a un subState
+    // TODO Se podrian combinar estas dos variables (mainWindowState y subState) haciendo referencia a un solo subState
     public int mainWindowState;
     public int subState;
     public int command;
@@ -64,13 +64,12 @@ public class UI {
         // Fuente y color por defecto
         g2.setFont(font_minecraft);
         g2.setColor(Color.white);
-        // Suaviza los bordes de la fuente
-        // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Suaviza los bordes de la fuente
 
+        // Renderiza las ventanas dependiendo del estado del juego
         switch (game.state) {
             case MAIN_STATE -> renderMainWindow();
             case PLAY_STATE -> renderStats();
-            case PAUSE_STATE -> renderPauseText();
             case DIALOGUE_STATE -> renderDialogueWindow();
             case STATS_STATE -> renderStatsWindow();
             case INVENTORY_STATE -> renderInventoryWindow(world.player, true);
@@ -141,42 +140,34 @@ public class UI {
     }
 
     private void renderConsole() {
-        int messageX = tile;
-        int messageY = tile * 4;
+        int x = tile, y = tile * 4, gap = 50;
         changeFontSize(24);
 
-        for (int i = 0; i < message.size(); i++) {
-            if (message.get(i) != null) {
-
+        for (int i = 0; i < console.size(); i++) {
+            if (console.get(i) != null) {
                 // Sombra
                 g2.setColor(Color.black);
-                g2.drawString(message.get(i), messageX + 2, messageY + 2);
+                g2.drawString(console.get(i), x + 2, y + 2);
                 // Color principal
                 g2.setColor(Color.white);
-                g2.drawString(message.get(i), messageX, messageY);
+                g2.drawString(console.get(i), x, y);
+                // Actua como consoleCounter++
+                consoleCounter.set(i, consoleCounter.get(i) + 1);
 
-                // Actua como messageCounter++
-                messageCounter.set(i, messageCounter.get(i) + 1);
-
-                messageY += 50;
+                y += gap;
 
                 // Despues de 3 segundos, elimina los mensajes en consola
-                if (messageCounter.get(i) > 180) {
-                    message.remove(i);
-                    messageCounter.remove(i);
+                if (consoleCounter.get(i) > 180) {
+                    console.remove(i);
+                    consoleCounter.remove(i);
                 }
             }
         }
     }
 
     private void renderStats() {
-
-        // world.player.life = 1;
         // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
-
-        int x = tile / 2;
-        int y = tile / 2;
-        int i = 0;
+        int x = tile / 2, y = tile / 2, i = 0;
 
         // Dibuja los corazones vacios
         while (i < world.player.maxHp / 2) {
@@ -220,14 +211,6 @@ public class UI {
             x += (tile / 2) + 1;
         }
 
-    }
-
-    private void renderPauseText() {
-        changeFontSize(60);
-        String text = "PAUSED";
-        int x = getXForCenteredText(text);
-        int y = getYForCenteredText(text);
-        g2.drawString(text, x, y);
     }
 
     private void renderDialogueWindow() {
@@ -469,16 +452,14 @@ public class UI {
     }
 
     private void renderOptionWindow() {
-        int frameWidth = tile * 10;
-        int frameHeight = tile * 10;
-        int frameX = (WINDOW_WIDTH / 2 - frameWidth / 2);
-        int frameY = tile;
-        renderSubwindow(frameX, frameY, frameWidth, frameHeight, SUBWINDOW_ALPHA);
+        int width = tile * 10, height = tile * 10;
+        int x = (WINDOW_WIDTH / 2 - width / 2), y = tile;
+        renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
         switch (subState) {
-            case 0 -> renderOptionMainWindow(frameX, frameY, frameWidth, frameHeight);
-            case 1 -> renderOptionControlWindow(frameX, frameY, frameWidth, frameHeight);
-            case 2 -> renderOptionEndGameConfirmationWindow(frameX, frameY);
+            case 0 -> renderOptionMainWindow(x, y, width, height);
+            case 1 -> renderOptionControlWindow(x, y, width, height);
+            case 2 -> renderOptionEndGameConfirmationWindow(x, y);
         }
 
         game.keyboard.enter = false;
@@ -526,7 +507,7 @@ public class UI {
             if (game.keyboard.enter) {
                 game.file.saveData();
                 game.state = PLAY_STATE;
-                game.ui.addMessage("Game saved!");
+                game.ui.addMessageToConsole("Game saved!");
                 command = 0;
             }
         }
@@ -635,16 +616,15 @@ public class UI {
         int textX = frameX + tile;
         int textY = frameY + tile * 3;
 
-        currentDialogue = "Quit the game and \nreturn to the title screen?";
+        currentDialogue = "Quit the game and \nreturn to the title \nscreen?";
         for (String line : currentDialogue.split("\n")) {
             g2.drawString(line, textX, textY);
             textY += 40;
         }
 
-        // YES
         String text = "Yes";
         textX = getXForCenteredText(text);
-        textY += tile * 3;
+        textY += (int) (tile * 1.9);
         g2.drawString(text, textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);
@@ -656,8 +636,7 @@ public class UI {
             }
         }
 
-        // NO
-        text = "NO";
+        text = "No";
         textX = getXForCenteredText(text);
         textY += tile;
         g2.drawString(text, textX, textY);
@@ -780,13 +759,13 @@ public class UI {
             // Compra un item
             if (game.keyboard.enter) {
                 if (entity.inventory.get(itemIndex).price > world.player.gold)
-                    addMessage("You need more gold to buy that!");
+                    addMessageToConsole("You need more gold to buy that!");
                 else {
                     // TODO Especificar la cantidad de items a comprar
                     if (world.player.canPickup(entity.inventory.get(itemIndex))) {
                         game.playSound(sound_trade_buy);
                         world.player.gold -= entity.inventory.get(itemIndex).price;
-                    } else addMessage("You cannot carry any more!");
+                    } else addMessageToConsole("You cannot carry any more!");
                 }
             }
 
@@ -826,7 +805,7 @@ public class UI {
             // Vende un item
             if (game.keyboard.enter) {
                 if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
-                    addMessage("You cannot sell an equipped item!");
+                    addMessageToConsole("You cannot sell an equipped item!");
                 else {
                     game.playSound(sound_trade_sell);
                     if (world.player.inventory.get(itemIndex).amount > 1)
@@ -887,9 +866,9 @@ public class UI {
         g2.setFont(g2.getFont().deriveFont(size));
     }
 
-    public void addMessage(String text) {
-        message.add(text);
-        messageCounter.add(0); // Creo que evita un IndexOutOfBoundsException
+    public void addMessageToConsole(String msg) {
+        console.add(msg);
+        consoleCounter.add(0); // Creo que evita un IndexOutOfBoundsException
     }
 
     /**

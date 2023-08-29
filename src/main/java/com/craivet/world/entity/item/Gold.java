@@ -24,7 +24,7 @@ public class Gold extends Item {
     @Override
     public boolean use(Entity entity) {
         game.playSound(sound_gold_pickup);
-        game.ui.addMessage("Gold +" + value);
+        game.ui.addMessageToConsole("Gold +" + value);
         entity.gold += value;
         return true;
     }
