@@ -19,6 +19,7 @@ public class Slime extends Mob {
         super(game, world, x, y);
         name = "Slime";
         type = Type.HOSTILE;
+        soundHit = sound_hit_slime;
         speed = defaultSpeed = 1;
         hp = maxHp = 4;
         exp = 2;

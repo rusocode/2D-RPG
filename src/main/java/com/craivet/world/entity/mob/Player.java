@@ -63,7 +63,7 @@ public class Player extends Mob {
 
         checkShoot();
         checkTimers();
-        checkHpMana();
+        checkStats();
     }
 
     @Override
@@ -201,7 +201,7 @@ public class Player extends Mob {
         if (timer.attackCounter < INTERVAL_WEAPON) timer.attackCounter++;
     }
 
-    private void checkHpMana() {
+    private void checkStats() {
         if (hp <= 0) die();
         if (hp > maxHp) hp = maxHp;
         if (mana > maxMana) mana = maxMana;
@@ -287,11 +287,8 @@ public class Player extends Mob {
                 mob.hp -= damage;
                 game.ui.addMessageToConsole(damage + " damage!");
                 if (mob.hp > 0) {
-                    if (mob instanceof Slime || mob instanceof RedSlime) game.playSound(sound_hit_slime);
-                    if (mob instanceof Orc) {
-                        game.playSound(sound_hit_mob);
-                        game.playSound(sound_hit_orc);
-                    }
+                    game.playSound(sound_hit_mob);
+                    game.playSound(mob.soundHit);
                 }
 
                 mob.flags.invincible = true;

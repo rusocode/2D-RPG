@@ -6,6 +6,8 @@ import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 
+import java.net.URL;
+
 import static com.craivet.utils.Global.*;
 
 /**
@@ -20,6 +22,8 @@ import static com.craivet.utils.Global.*;
  */
 
 public class Mob extends Entity {
+
+    protected URL soundHit, soundDeath;
 
     public Mob(Game game, World world, int x, int y) {
         super(game, world, x, y);

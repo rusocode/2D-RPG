@@ -7,6 +7,7 @@ import com.craivet.world.entity.projectile.Projectile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 import static com.craivet.utils.Global.*;
 

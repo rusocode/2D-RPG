@@ -14,8 +14,9 @@ public class Orc extends Mob {
         super(game, world, x, y);
         name = "Orc";
         type = Type.HOSTILE;
+        soundHit = sound_hit_orc;
         speed = defaultSpeed = 1;
-        hp = maxHp = 10;
+        hp = maxHp = 2;
         exp = 2;
         attack = 8;
         defense = 2;
