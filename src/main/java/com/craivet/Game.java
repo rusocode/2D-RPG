@@ -78,7 +78,7 @@ public class Game extends Canvas implements Runnable {
 
     // States
     public StateManager stateManager = new StateManager();
-    public int state;
+    public int state = MAIN_STATE;
 
     // Screen
     private final Screen screen;
@@ -139,14 +139,14 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void render() {
-        drawToTempScreen();
-        drawToScreen();
+        renderToTempScreen();
+        renderToScreen();
     }
 
     /**
-     * Dibuja los graficos en la pantalla temporal.
+     * Renderiza los graficos en la pantalla temporal.
      */
-    private void drawToTempScreen() {
+    private void renderToTempScreen() {
         // Limpia la ventana usando el color de fondo actual
         g2.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         // Renderiza los graficos en el buffer de la pantalla temporal
@@ -156,9 +156,9 @@ public class Game extends Canvas implements Runnable {
     }
 
     /**
-     * Dibuja la pantalla temporal en el Canvas utilizando el ancho y alto especificado de la ventana.
+     * Renderiza la pantalla temporal en el Canvas utilizando el ancho y alto especificado de la ventana.
      */
-    private void drawToScreen() {
+    private void renderToScreen() {
         // Obtienen los graficos del buffer actual
         Graphics g = buffer.getDrawGraphics();
         // Renderiza la pantalla temporal en el Canvas

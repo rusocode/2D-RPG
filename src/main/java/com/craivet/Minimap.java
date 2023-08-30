@@ -43,6 +43,7 @@ public class Minimap {
             int x = WINDOW_WIDTH - width - 20;
             int y = 20;
             g2.setColor(Color.black);
+            g2.setStroke(new BasicStroke(0));
             g2.drawRect(x - 1, y - 1, width + 1, height + 1);
             g2.drawImage(minimap[world.map], x, y, width, height, null);
 

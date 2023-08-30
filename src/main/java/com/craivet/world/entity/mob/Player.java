@@ -131,7 +131,7 @@ public class Player extends Mob {
         world.map = NIX;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 10, startRow = 40; // 23,21
+        int startCol = 14, startRow = 26; // 23,21
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
