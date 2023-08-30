@@ -97,7 +97,7 @@ public class Lighting {
             world.player.lightUpdate = false;
         }
 
-        // cycleDay();
+        cycleDay();
 
     }
 
@@ -112,7 +112,7 @@ public class Lighting {
         if (world.area == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         if (world.area == OUTSIDE || world.area == DUNGEON) g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        // debug(g2);
+        debug(g2);
     }
 
     /**
@@ -170,11 +170,8 @@ public class Lighting {
             case dawn -> "Dawn";
             default -> "";
         };
-        g2.setFont(font_medieval1);
-        g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g2.setColor(Color.white);
-        g2.setFont(g2.getFont().deriveFont(50f));
-        g2.drawString(state, 750, 500);
+        g2.setFont(g2.getFont().deriveFont(24F));
+        g2.drawString(state, WINDOW_WIDTH - tile * 3, (int) (WINDOW_HEIGHT - tile * 1.5));
     }
 
 }

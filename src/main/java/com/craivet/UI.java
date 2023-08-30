@@ -60,7 +60,7 @@ public class UI {
         // Fuente y color por defecto
         g2.setFont(font_minecraft);
         g2.setColor(Color.white);
-        // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Suaviza los bordes de la fuente
+        // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Suaviza los bordes de la fuente, pero en este caso no es necesario aplicarlo ya que se usa una fuente de tipo pixelart
 
         // Renderiza las ventanas dependiendo del estado del juego
         switch (game.state) {
