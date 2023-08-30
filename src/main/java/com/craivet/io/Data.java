@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Data implements Serializable {
 
     // TODO Falta el entorno
-    int area, map, x, y, life, maxlife, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, gold;
+    int zone, map, x, y, life, maxlife, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, gold;
     Direction direction;
 
     // TODO Creo que se podria usar un HashMap

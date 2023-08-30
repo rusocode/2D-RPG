@@ -566,7 +566,7 @@ public class UI {
         textY += tile;
         g2.drawString("Character Screen", textX, textY);
         textY += tile;
-        g2.drawString("Pause", textX, textY);
+        g2.drawString("Pickup item", textX, textY);
         textY += tile;
         g2.drawString("Options/Back", textX, textY);
 

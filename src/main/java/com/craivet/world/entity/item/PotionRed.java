@@ -3,7 +3,7 @@ package com.craivet.world.entity.item;
 import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
-import com.craivet.world.entity.mob.Type;
+import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
@@ -13,15 +13,17 @@ public class PotionRed extends Item {
 
     public static final String NAME = "Red Potion";
 
+    /**
+     * Crea el objeto en el inventario o en el World (utiliza varargs para especificar la posicion).
+     */
     public PotionRed(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.CONSUMABLE;
-        if (pos.length > 0) image = Utils.scaleImage(potion_red, tile, tile);
-        else image = Utils.scaleImage(potion_red, tile, tile);
-        value = 2; // TODO O toda la vida?
+        image = Utils.scaleImage(potion_red, tile, tile);
         description = "[" + name + "]\nHeals your life by " + value + ".";
         price = 25;
+        value = 2;
         this.amount = amount;
         stackable = true;
         hitbox.x = 3;

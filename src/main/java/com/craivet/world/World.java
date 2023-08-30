@@ -19,22 +19,20 @@ import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * La clase World represeta el escenario del Player. Este a su vez esta compuesto por tiles, entidades y un entorno.
- * <p>
- * El tamaño de cada mapa es de 50x50 tiles.
+ * La clase World represeta el escenario del juego. Cada parte del mundo se divide en mapas de 50x50 tiles que estan
+ * compuestos por tiles, entidades y un entorno (clima).
  */
 
 public class World {
 
     private final Game game;
 
-    private final TileManager tiles;
-    private final EntityManager entitites;
-    public final EnvironmentManager environment;
+    private TileManager tiles;
+    private EntityManager entities;
+    public EnvironmentManager environment;
 
     // Map
-    public int map;
-    public int area, nextArea;
+    public int map, zone, nextZone;
     public HashMap<Integer, String> maps = new HashMap<>();
     public Tile[] tileData;
     public int[][][] tileIndex = new int[MAPS][MAX_MAP_ROW][MAX_MAP_COL];
@@ -48,16 +46,11 @@ public class World {
     public Interactive[][] interactives = new Interactive[MAPS][50];
     public Projectile[][] projectiles = new Projectile[MAPS][20];
 
-    public boolean drawPath;
-
     public World(Game game) {
         this.game = game;
         player = new Player(game, this);
         createEntities();
-        // TODO Creo un metodo para estos 3 objetos?
-        tiles = new TileManager(game, this);
-        entitites = new EntityManager(game, this);
-        environment = new EnvironmentManager(this);
+        initializeManagers();
     }
 
     /**
@@ -65,7 +58,7 @@ public class World {
      */
     public void update() {
         // Actualiza las entidades solo si el juego esta en PLAY_STATE
-        if (game.state == PLAY_STATE) entitites.update();
+        if (game.state == PLAY_STATE) entities.update();
         // if (game.state != MAIN_STATE) environment.update();
     }
 
@@ -78,7 +71,7 @@ public class World {
         // Renderiza los tiles y las entidades solo si el juego es distinto a MAIN_STATE
         if (game.state != MAIN_STATE) {
             tiles.render(g2);
-            entitites.render(g2);
+            entities.render(g2);
             // environment.render(g2);
         }
         if (game.state == MAIN_STATE) {
@@ -86,15 +79,34 @@ public class World {
             g2.setColor(Color.black);
             g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         }
+
+        // Dibuja el recorrido del pathfinding
+        if (false) {
+            g2.setColor(new Color(255, 0, 0, 70));
+            for (int i = 0; i < game.aStar.pathList.size(); i++) {
+                int worldX = game.aStar.pathList.get(i).col * tile;
+                int worldY = game.aStar.pathList.get(i).row * tile;
+                int screenX = worldX - player.x + player.screenX;
+                int screenY = worldY - player.y + player.screenY;
+                g2.fillRect(screenX, screenY, tile, tile);
+            }
+        }
+
+    }
+
+    private void initializeManagers() {
+        tiles = new TileManager(this);
+        entities = new EntityManager(this);
+        environment = new EnvironmentManager(this);
     }
 
     public void changeArea() {
         // Si hay un cambio de area
-        if (nextArea != area) {
-            if (nextArea == DUNGEON) game.playMusic(music_dungeon);
-            if (area == DUNGEON && nextArea == OUTSIDE) game.stopMusic();
+        if (nextZone != zone) {
+            if (nextZone == DUNGEON) game.playMusic(music_dungeon);
+            if (zone == DUNGEON && nextZone == OUTSIDE) game.stopMusic();
         }
-        area = nextArea;
+        zone = nextZone;
         createMOBs();
     }
 

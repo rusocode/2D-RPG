@@ -7,8 +7,7 @@ import java.net.URL;
 
 /**
  * Esta clase solo lee audios en formato wav.
- *
- * <br><br>
+ * <p>
  * TODO Se podrian guardar los recursos de sonido en esta clase para mas organizacion
  */
 

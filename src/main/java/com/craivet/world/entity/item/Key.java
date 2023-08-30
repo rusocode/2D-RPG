@@ -3,11 +3,19 @@ package com.craivet.world.entity.item;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.mob.Type;
+import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
+
+/**
+ * Para especificar la textura del item sobre el suelo con un tamaño mas chico:
+ * <pre>{@code
+ *  if (pos.length > 0) image = Utils.scaleImage(key, 16, 16);
+ *  else image = Utils.scaleImage(key, tile, tile);
+ * }</pre>
+ */
 
 public class Key extends Item {
 
@@ -17,9 +25,7 @@ public class Key extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         name = NAME;
         type = Type.CONSUMABLE;
-        // Si se especifica una posicion entonces la imagen es mas pequenia
-        if (pos.length > 0) image = Utils.scaleImage(key, tile, tile);
-        else image = Utils.scaleImage(key, tile, tile);
+        image = Utils.scaleImage(key, tile, tile);
         description = "[" + name + "]\nIt opens a door.";
         price = 100;
         this.amount = amount;

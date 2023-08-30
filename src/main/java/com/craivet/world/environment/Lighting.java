@@ -5,7 +5,6 @@ import com.craivet.world.World;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.craivet.gfx.Assets.font_medieval1;
 import static com.craivet.utils.Global.*;
 
 /**
@@ -22,10 +21,7 @@ public class Lighting {
     public float filterAlpha;
 
     // Day state
-    public final int day = 0;
-    public final int dusk = 1;
-    public final int night = 2;
-    public final int dawn = 3;
+    public final int day = 0, dusk = 1, night = 2, dawn = 3;
     public int dayState = day;
 
     public Lighting(World world) {
@@ -102,15 +98,15 @@ public class Lighting {
     }
 
     /**
-     * Si el area es OUTSIDE, configura el filterAlpha y dibuja el filtro oscuro.
+     * Si la zona es OUTSIDE, configura el filterAlpha y dibuja el filtro oscuro.
      * <p>
-     * Si el area es DUNGEON, solo dibuja el filtro oscuro. Significa que permanecera oscuro todo el tiempo.
+     * Si la zona es DUNGEON, solo dibuja el filtro oscuro. Significa que permanecera oscuro todo el tiempo.
      * <p>
-     * Si el area es INDOOR, no configura ni dibuja el filtro oscuro. Significa que permanece luminoso tood el tiempo.
+     * Si la zona es INDOOR, no configura ni dibuja el filtro oscuro. Significa que permanece luminoso tood el tiempo.
      */
     public void render(Graphics2D g2) {
-        if (world.area == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
-        if (world.area == OUTSIDE || world.area == DUNGEON) g2.drawImage(darknessFilter, 0, 0, null);
+        if (world.zone == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
+        if (world.zone == OUTSIDE || world.zone == DUNGEON) g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         debug(g2);
     }

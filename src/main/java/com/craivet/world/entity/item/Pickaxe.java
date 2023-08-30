@@ -2,7 +2,7 @@ package com.craivet.world.entity.item;
 
 import com.craivet.Game;
 import com.craivet.world.World;
-import com.craivet.world.entity.mob.Type;
+import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.pickaxe;
@@ -17,10 +17,10 @@ public class Pickaxe extends Item {
         name = NAME;
         type = Type.PICKAXE;
         image = Utils.scaleImage(pickaxe, tile, tile);
-        attackbox.width = 30;
-        attackbox.height = 30;
         description = "[" + name + "]\nYou will big it!";
         price = 75;
+        attackbox.width = 30;
+        attackbox.height = 30;
         attackValue = 1;
         knockbackValue = 8;
     }

@@ -1,6 +1,5 @@
 package com.craivet.world.management;
 
-import com.craivet.*;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.states.State;
@@ -9,25 +8,20 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static com.craivet.utils.Global.*;
-
 public class EntityManager implements State {
 
-    private final Game game;
     private final World world;
 
     private final List<Entity> entities = new ArrayList<>();
     private final List<Entity> items = new ArrayList<>();
     private final List<Entity> projectiles = new ArrayList<>();
 
-    public EntityManager(Game game, World world) {
-        this.game = game;
+    public EntityManager(World world) {
         this.world = world;
     }
 
     @Override
     public void update() {
-        // TODO No se tendrian que actualizar las entidades que solo estan dentro de la vista de la camara?
         world.player.update();
         for (int i = 0; i < world.mobs[1].length; i++) {
             if (world.mobs[world.map][i] != null) {

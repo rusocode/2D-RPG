@@ -2,12 +2,10 @@ package com.craivet.world.entity;
 
 import com.craivet.Direction;
 import com.craivet.world.entity.item.Item;
-import com.craivet.world.entity.mob.Type;
 import com.craivet.world.entity.projectile.Projectile;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.net.URL;
 
 import static com.craivet.utils.Global.*;
 

@@ -1,6 +1,5 @@
 package com.craivet.world.management;
 
-import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.states.State;
 
@@ -11,11 +10,9 @@ import static com.craivet.utils.Global.*;
 
 public class TileManager implements State {
 
-    private final Game game;
     private final World world;
 
-    public TileManager(Game game, World world) {
-        this.game = game;
+    public TileManager(World world) {
         this.world = world;
     }
 
@@ -48,17 +45,6 @@ public class TileManager implements State {
                 g2.drawImage(tileImage, x * tile - xOffset, y * tile - yOffset, null);
                 // g2.setStroke(new BasicStroke(0)); // Anula el grosor del borde para mantenerlo
                 // g2.drawRect(x * tile - xOffset, y * tile - yOffset, tile, tile); // Dibuja una grilla
-            }
-        }
-
-        if (world.drawPath) {
-            g2.setColor(new Color(255, 0, 0, 70));
-            for (int i = 0; i < game.aStar.pathList.size(); i++) {
-                int worldX = game.aStar.pathList.get(i).col * tile;
-                int worldY = game.aStar.pathList.get(i).row * tile;
-                int screenX = worldX - world.player.x + world.player.screenX;
-                int screenY = worldY - world.player.y + world.player.screenY;
-                g2.fillRect(screenX, screenY, tile, tile);
             }
         }
     }

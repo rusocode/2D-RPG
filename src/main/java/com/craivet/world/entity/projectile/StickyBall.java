@@ -17,10 +17,6 @@ public class StickyBall extends Projectile {
 
     public StickyBall(Game game, World world) {
         super(game, world);
-        setDefaultValues();
-    }
-
-    private void setDefaultValues() {
         name = "Sticky Ball";
         image = Utils.scaleImage(sticky_ball, 32, 32);
         speed = 5;

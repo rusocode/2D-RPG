@@ -1,7 +1,7 @@
 package com.craivet.physics;
 
 import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.mob.Type;
+import com.craivet.world.entity.Type;
 import com.craivet.world.entity.mob.BigRock;
 import com.craivet.world.entity.mob.Player;
 

@@ -2,6 +2,7 @@ package com.craivet.world.entity.mob;
 
 import com.craivet.Game;
 import com.craivet.world.World;
+import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.Gold;
 import com.craivet.utils.*;
 
@@ -16,7 +17,7 @@ public class Orc extends Mob {
         type = Type.HOSTILE;
         soundHit = sound_hit_orc;
         speed = defaultSpeed = 1;
-        hp = maxHp = 2;
+        hp = maxHp = 10;
         exp = 2;
         attack = 8;
         defense = 2;

@@ -4,10 +4,10 @@ import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
 
-import static com.craivet.utils.Global.tile;
+import static com.craivet.utils.Global.*;
 
 /**
- * Los items se representan en el suelo y en el inventario con la dimension de 32x32.
+ * Los items se renderizan en el suelo y en el inventario con la dimension de 32x32.
  */
 
 public class Item extends Entity {

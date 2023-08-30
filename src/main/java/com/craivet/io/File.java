@@ -75,7 +75,7 @@ public class File {
             Data data = new Data();
 
             // Player status
-            data.area = world.area;
+            data.zone = world.zone;
             data.map = world.map;
             data.x = world.player.x;
             data.y = world.player.y;
@@ -138,7 +138,7 @@ public class File {
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(data))) {
             // Lee los bytes desde el flujo de entrada y los deserializa en un objeto Data
             Data data = (Data) input.readObject();
-            world.area = data.area;
+            world.zone = data.zone;
             world.map = data.map;
             world.player.x = data.x;
             world.player.y = data.y;

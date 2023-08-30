@@ -2,7 +2,7 @@ package com.craivet.world.entity.item;
 
 import com.craivet.Game;
 import com.craivet.world.World;
-import com.craivet.world.entity.mob.Type;
+import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.gfx.Assets.*;
@@ -20,13 +20,14 @@ public class DoorIron extends Item {
         solid = true;
         hitbox.x = 0;
         hitbox.y = 16;
-        hitbox.width = 48;
-        hitbox.height = 32;
+        hitbox.width = tile - hitbox.x - 1;
+        hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         initDialogue();
     }
 
+    @Override
     public void interact() {
         startDialogue(DIALOGUE_STATE, this, 0);
     }

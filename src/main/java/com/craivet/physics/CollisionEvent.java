@@ -11,7 +11,7 @@ import java.awt.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * Representa un evento en el World. Los eventos pueden ser una teletransportacion, hablar con un npc, etc.
+ * Representa un evento en el World. Los eventos pueden ser teletransportacion, hablar con un npc, etc.
  */
 
 public class CollisionEvent {
@@ -144,14 +144,14 @@ public class CollisionEvent {
     /**
      * Teletransporta al player.
      *
-     * @param area area al que se teletransporta el player.
+     * @param zone zona a la que se teletransporta el player.
      * @param map  mapa al que se teletransporta el player.
      * @param col  columna al que se teletransporta el player.
      * @param row  fila al que se teletransporta el player.
      */
-    private void teleport(int area, int map, int col, int row) {
+    private void teleport(int zone, int map, int col, int row) {
         game.state = TRANSITION_STATE;
-        world.nextArea = area;
+        world.nextZone = zone;
         this.map = map;
         this.col = col;
         this.row = row;

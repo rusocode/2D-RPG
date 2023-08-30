@@ -14,7 +14,7 @@ import static com.craivet.utils.Global.*;
 public class Keyboard extends KeyAdapter {
 
     private final Game game;
-    public boolean w, a, s, d, enter, esc, f, l, t;
+    public boolean w, a, s, d, enter, esc, f, p, t;
     private int lastKey = -1;
     private final int maxKeycode = 255;
 
@@ -65,12 +65,12 @@ public class Keyboard extends KeyAdapter {
     }
 
     public boolean checkAccionKeys() {
-        return enter || l;
+        return enter || p;
     }
 
     public void resetAccionKeys() {
         enter = false;
-        l = false;
+        p = false;
     }
 
     private void mainState(int code) {
@@ -126,7 +126,7 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_D) d = true;
         if (code == KeyEvent.VK_ENTER) enter = true;
         if (code == KeyEvent.VK_F) f = true;
-        if (code == KeyEvent.VK_L) l = true;
+        if (code == KeyEvent.VK_P) p = true;
         if (code == KeyEvent.VK_T) t = !t;
         if (code == KeyEvent.VK_C) game.state = STATS_STATE;
         if (code == KeyEvent.VK_I) game.state = INVENTORY_STATE;

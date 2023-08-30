@@ -4,6 +4,7 @@ import static com.craivet.utils.Global.*;
 
 /**
  * Temporizador del GameLoop.
+ * TODO Se podria renombrar Loop
  * <p>
  * <a href="https://gameprogrammingpatterns.com/update-method.html">Update Method</a>
  */

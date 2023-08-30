@@ -8,6 +8,7 @@ import com.craivet.Game;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.Type;
 import com.craivet.world.entity.projectile.Fireball;
 import com.craivet.input.Keyboard;
 import com.craivet.physics.Mechanics;
@@ -23,8 +24,8 @@ public class Player extends Mob {
 
     private final Keyboard keyboard;
     private final Mechanics mechanics;
+    private Animation down, up, left, right;
     public BufferedImage currentFrame;
-    public Animation down, up, left, right;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity entity;
@@ -127,7 +128,7 @@ public class Player extends Mob {
      * Establece la posicion por defecto.
      */
     public void setDefaultPos() {
-        world.area = OUTSIDE;
+        world.zone = OUTSIDE;
         world.map = NIX;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
@@ -143,9 +144,9 @@ public class Player extends Mob {
      * TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
      */
     public void setPos(int map, int x, int y) {
-        if (map == NIX) world.area = OUTSIDE;
-        if (map == NIX_INDOOR_01) world.area = INDOOR;
-        if (map == DUNGEON_01 || map == DUNGEON_02) world.area = DUNGEON;
+        if (map == NIX) world.zone = OUTSIDE;
+        if (map == NIX_INDOOR_01) world.zone = INDOOR;
+        if (map == DUNGEON_01 || map == DUNGEON_02) world.zone = DUNGEON;
         world.map = map;
         this.x = x * tile;
         this.y = y * tile;
@@ -217,7 +218,7 @@ public class Player extends Mob {
     private void pickup(int i) {
         if (i != -1) {
             Item item = world.items[world.map][i];
-            if (keyboard.l && item.type != Type.OBSTACLE) {
+            if (keyboard.p && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_item_pickup);
                 else {
@@ -286,10 +287,7 @@ public class Player extends Mob {
                 int damage = Math.max(attack - mob.defense, 1);
                 mob.hp -= damage;
                 game.ui.addMessageToConsole(damage + " damage!");
-                if (mob.hp > 0) {
-                    game.playSound(sound_hit_mob);
-                    game.playSound(mob.soundHit);
-                }
+                if (mob.hp > 0) game.playSound(mob.soundHit);
 
                 mob.flags.invincible = true;
                 mob.hpBar = true;
