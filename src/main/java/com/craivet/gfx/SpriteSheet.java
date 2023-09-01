@@ -14,6 +14,8 @@ public class SpriteSheet {
     public int movementNum = 1, attackNum = 1;
     public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
 
+    public BufferedImage[] sword;
+
     public SpriteSheet() {
     }
 
@@ -50,6 +52,16 @@ public class SpriteSheet {
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
                 movement[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale, scale);
+    }
+
+    public void loadSword(SpriteSheet ss, int w, int h) {
+        int col = ss.getWidth() / w;
+        int row = ss.getHeight() / h;
+        sword = new BufferedImage[col * row];
+        int i = 0;
+        for (int y = 0; y < row; y++)
+            for (int x = 0; x < col; x++)
+                sword[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), 16, 16);
     }
 
     /**

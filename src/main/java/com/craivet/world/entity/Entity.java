@@ -96,7 +96,7 @@ public class Entity extends Stats {
                 // Si es una imagen estatica
             else g2.drawImage(image, screenX, screenY, null);
 
-            // drawRects(g2, screenX, screenY);
+            drawRects(g2, screenX, screenY);
 
             Utils.changeAlpha(g2, 1);
         }
@@ -196,18 +196,18 @@ public class Entity extends Stats {
             if (type == Type.PLAYER) {
                 switch (direction) {
                     case DOWN -> {
-                        attackbox.x = 9;
-                        attackbox.y = 5;
-                        attackbox.width = 10;
-                        attackbox.height = 27;
-                        x += attackbox.x;
-                        y += attackbox.y + attackbox.height;
+                        attackbox.x = -5;
+                        attackbox.y = 15;
+                        attackbox.width = 4;
+                        attackbox.height = 25;
+                        x += hitbox.x;
+                        y += attackbox.y /* + attackbox.height */;
                     }
                     case UP -> {
-                        attackbox.x = 15;
-                        attackbox.y = 4;
-                        attackbox.width = 10;
-                        attackbox.height = 28;
+                        attackbox.x = 13;
+                        attackbox.y = 10;
+                        attackbox.width = 4;
+                        attackbox.height = 25;
                         x += attackbox.x;
                         y -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
                     }

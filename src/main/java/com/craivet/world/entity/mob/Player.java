@@ -25,7 +25,7 @@ public class Player extends Mob {
     private final Keyboard keyboard;
     private final Mechanics mechanics;
     private Animation down, up, left, right;
-    public BufferedImage currentFrame;
+    public BufferedImage currentFrame, currentSwordFrame;
 
     // Variable auxiliar para obtener los atributos de la entidad actual
     private Entity entity;
@@ -72,8 +72,29 @@ public class Player extends Mob {
         tempScreenX = screenX;
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
-        g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
-        // drawRects(g2);
+        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
+            // g2.drawImage(getCurrentSwordFrame(), tempScreenX, tempScreenY, null);
+        else {
+            switch (direction) {
+                case DOWN -> {
+                    g2.drawImage(ss.down[1], tempScreenX, tempScreenY, null);
+                    g2.drawImage(getCurrentSwordFrame(), tempScreenX, tempScreenY + 34, null);
+                }
+                case UP -> {
+                    g2.drawImage(ss.up[2], tempScreenX, tempScreenY, null);
+                    g2.drawImage(getCurrentSwordFrame(), tempScreenX + 13, tempScreenY + 17, null);
+                }
+                case LEFT -> {
+                    g2.drawImage(ss.left[2], tempScreenX, tempScreenY, null);
+                    g2.drawImage(getCurrentSwordFrame(), tempScreenX - 7, tempScreenY + 26, null);
+                }
+                case RIGHT -> {
+                    g2.drawImage(ss.right[4], tempScreenX, tempScreenY, null);
+                    g2.drawImage(getCurrentSwordFrame(), tempScreenX + 15, tempScreenY + 28, null);
+                }
+            }
+        }
+        drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -111,9 +132,10 @@ public class Player extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         motion1 = 5;
-        motion2 = 25;
+        motion2 = 50; // 18
 
         ss.loadMovementFramesOfPlayer(player_movement, 1);
+        ss.loadSword(sword_test, 16, 16);
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, ss.down);
@@ -132,7 +154,7 @@ public class Player extends Mob {
         world.map = NIX;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 14, startRow = 26; // 23,21
+        int startCol = 18, startRow = 20;
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
@@ -284,7 +306,7 @@ public class Player extends Mob {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
-                int damage = Math.max(attack - mob.defense, 1);
+                int damage = Math.max(attack - mob.defense, 0);
                 mob.hp -= damage;
                 game.ui.addMessageToConsole(damage + " damage!");
                 if (mob.hp > 0) game.playSound(mob.soundHit);
@@ -471,6 +493,26 @@ public class Player extends Mob {
         game.music.stop();
     }
 
+    private BufferedImage getCurrentSwordFrame() {
+        //  if (keyboard.checkAccionKeys()) {
+        switch (direction) {
+            case DOWN -> {
+                currentSwordFrame = ss.sword[0];
+            }
+            case UP -> {
+                currentSwordFrame = ss.sword[1];
+            }
+            case LEFT -> {
+                currentSwordFrame = ss.sword[2];
+            }
+            case RIGHT -> {
+                currentSwordFrame = ss.sword[3];
+            }
+        }
+        // }
+        return currentSwordFrame;
+    }
+
     /**
      * Obtiene el frame de animacion actual.
      *
@@ -550,6 +592,7 @@ public class Player extends Mob {
     private void drawRects(Graphics2D g2) {
         // Imagen
         g2.setColor(Color.magenta);
+        g2.setStroke(new BasicStroke(0));
         g2.drawRect(screenX, screenY, currentFrame.getWidth(), currentFrame.getHeight());
         // Hitbox
         g2.setColor(Color.red);
@@ -561,7 +604,7 @@ public class Player extends Mob {
                 case DOWN ->
                         g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);
                 case UP ->
-                        g2.drawRect(screenX + hitbox.x + attackbox.x, screenY - attackbox.height, attackbox.width, attackbox.height);
+                        g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y - attackbox.y, attackbox.width, attackbox.height);
                 case LEFT ->
                         g2.drawRect(screenX + attackbox.x - attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
                 case RIGHT ->

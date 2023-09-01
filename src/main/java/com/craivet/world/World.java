@@ -165,7 +165,7 @@ public class World {
 
         mobs[NIX][i++] = new Oldman(game, this, 23, 19);
         mobs[NIX][i++] = new BigRock(game, this, 26, 21);
-        mobs[NIX][i++] = new Slime(game, this, 23, 41);
+        mobs[NIX][i++] = new Slime(game, this, 18, 22);
         mobs[NIX][i++] = new Slime(game, this, 24, 37);
         mobs[NIX][i++] = new Slime(game, this, 34, 42);
         mobs[NIX][i++] = new Slime(game, this, 38, 42);

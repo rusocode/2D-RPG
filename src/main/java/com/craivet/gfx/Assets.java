@@ -62,6 +62,7 @@ public final class Assets {
 
     // TEXTURES
     // Entity
+    public static final SpriteSheet sword_test = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/sword_test.png")); // TODO Se podria usar una sola imagen y en base a la direccion se voltea y se cambia el color dependiendo del tipo de espada (piedra, hierro, diamante oro, minecraft)
     public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/attack.png"));
     public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/movement.png"));
     public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/axe.png"));
@@ -69,7 +70,6 @@ public final class Assets {
     public static final SpriteSheet player_movement2 = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player 300x360.png"));
     public static final SpriteSheet player_movement3 = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player 150x180.png"));
     public static final SpriteSheet player_pickaxe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/pickaxe.png"));
-    public static final SpriteSheet player_sword = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/sword.png")); // TODO SpriteSheet de armas?
     public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/bat.png"));
     public static final BufferedImage bigrock = Utils.loadImage(textures_entity_path + "mob/bigrock.png");
     public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/oldman.png"));

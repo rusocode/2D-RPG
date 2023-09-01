@@ -10,6 +10,8 @@ import static com.craivet.utils.Global.*;
 /**
  * La colision entre dos entidades se genera cuando uno de los limites de la hitbox se pasa 1 pixel de la hitbox de la
  * otra entidad. Pero en el caso del attackbox, solo se genera colision cuando los limites de ambos se tocan.
+ * <p>
+ * TODO Se podria cambiar los nombres de los metodos
  */
 
 public class Collision {
