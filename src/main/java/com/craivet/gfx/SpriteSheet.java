@@ -12,9 +12,9 @@ public class SpriteSheet {
     public BufferedImage[] movement; // Entidades con dos frames para cada direccion
     public BufferedImage[] weapon;
     public int movementNum = 1, attackNum = 1;
-    public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
 
-    public BufferedImage[] sword;
+    public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
+    public BufferedImage[] sword; // Espada con un frame para cada direccion
 
     public SpriteSheet() {
     }

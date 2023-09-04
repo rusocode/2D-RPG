@@ -21,14 +21,14 @@ public class Slime extends Mob {
         name = "Slime";
         type = Type.HOSTILE;
         soundHit = sound_hit_slime;
-        speed = defaultSpeed = 0; // 1
+        speed = defaultSpeed = 1;
         hp = maxHp = 4;
         exp = 2;
         attack = 2;
         defense = 1;
         hitbox.x = 3;
         hitbox.y = 18;
-        hitbox.width = tile - hitbox.x - 4;
+        hitbox.width = tile - 7;
         hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;

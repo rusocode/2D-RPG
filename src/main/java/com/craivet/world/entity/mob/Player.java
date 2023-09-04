@@ -20,6 +20,7 @@ import com.craivet.world.entity.item.*;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
+// TODO No tendria que crear el objeto UI desde aca?
 public class Player extends Mob {
 
     private final Keyboard keyboard;
@@ -27,8 +28,7 @@ public class Player extends Mob {
     private Animation down, up, left, right;
     public BufferedImage currentFrame, currentSwordFrame;
 
-    // Variable auxiliar para obtener los atributos de la entidad actual
-    private Entity entity;
+    private Entity entity; // Variable auxiliar para obtener los atributos de la entidad actual
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
@@ -59,7 +59,7 @@ public class Player extends Mob {
                 left.tick();
                 right.tick();
             }
-        } else // TODO Este else no funciona por que no se temporiza la detencion de los nuevos frames
+        } else // TODO Este else no funciona porque no se temporiza la detencion de los nuevos frames
             timer.timeStopMovement(this, 20); // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
 
         checkShoot();
@@ -73,7 +73,6 @@ public class Player extends Mob {
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
-            // g2.drawImage(getCurrentSwordFrame(), tempScreenX, tempScreenY, null);
         else {
             switch (direction) {
                 case DOWN -> {
@@ -94,7 +93,7 @@ public class Player extends Mob {
                 }
             }
         }
-        drawRects(g2);
+        // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -131,8 +130,11 @@ public class Player extends Mob {
         hitbox.height = 24;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
+        // TODO Realmente no hace falta especificar el ancho y alto desde aca porque se ajusta dependiendo de la direccion
+        attackbox.width = 14;
+        attackbox.height = 14;
         motion1 = 5;
-        motion2 = 50; // 18
+        motion2 = 18;
 
         ss.loadMovementFramesOfPlayer(player_movement, 1);
         ss.loadSword(sword_test, 16, 16);
@@ -154,7 +156,7 @@ public class Player extends Mob {
         world.map = NIX;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 18, startRow = 20;
+        int startCol = 22, startRow = 21;
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
@@ -306,7 +308,7 @@ public class Player extends Mob {
 
                 if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
 
-                int damage = Math.max(attack - mob.defense, 0);
+                int damage = Math.max(attack - mob.defense, 1);
                 mob.hp -= damage;
                 game.ui.addMessageToConsole(damage + " damage!");
                 if (mob.hp > 0) game.playSound(mob.soundHit);
@@ -494,22 +496,12 @@ public class Player extends Mob {
     }
 
     private BufferedImage getCurrentSwordFrame() {
-        //  if (keyboard.checkAccionKeys()) {
         switch (direction) {
-            case DOWN -> {
-                currentSwordFrame = ss.sword[0];
-            }
-            case UP -> {
-                currentSwordFrame = ss.sword[1];
-            }
-            case LEFT -> {
-                currentSwordFrame = ss.sword[2];
-            }
-            case RIGHT -> {
-                currentSwordFrame = ss.sword[3];
-            }
+            case DOWN -> currentSwordFrame = ss.sword[0];
+            case UP -> currentSwordFrame = ss.sword[1];
+            case LEFT -> currentSwordFrame = ss.sword[2];
+            case RIGHT -> currentSwordFrame = ss.sword[3];
         }
-        // }
         return currentSwordFrame;
     }
 
@@ -522,7 +514,7 @@ public class Player extends Mob {
         if (keyboard.checkMovementKeys()) {
             switch (direction) {
                 case DOWN -> {
-                    currentFrame = down.getFirstFrame();
+                    currentFrame = down.getFirstFrame(); // Obtiene el primer frame cuando deja de moverse hacia abajo
                     if (flags.collidingOnMob) return down.getCurrentFrame();
                     else return flags.colliding ? down.getFirstFrame() : down.getCurrentFrame();
                 }
@@ -590,26 +582,20 @@ public class Player extends Mob {
 
     // TODO Activar con tecla
     private void drawRects(Graphics2D g2) {
-        // Imagen
-        g2.setColor(Color.magenta);
         g2.setStroke(new BasicStroke(0));
+        // Frame
+        g2.setColor(Color.magenta);
         g2.drawRect(screenX, screenY, currentFrame.getWidth(), currentFrame.getHeight());
         // Hitbox
-        g2.setColor(Color.red);
+        g2.setColor(Color.green);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
-        // Area de ataque
+        // Attackbox
         if (flags.hitting) {
-            g2.setColor(Color.green);
-            switch (direction) {
-                case DOWN ->
-                        g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y + attackbox.y + attackbox.height, attackbox.width, attackbox.height);
-                case UP ->
-                        g2.drawRect(screenX + hitbox.x + attackbox.x, screenY + hitbox.y - attackbox.y, attackbox.width, attackbox.height);
-                case LEFT ->
-                        g2.drawRect(screenX + attackbox.x - attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
-                case RIGHT ->
-                        g2.drawRect(screenX + hitbox.x + attackbox.x + attackbox.width, screenY + hitbox.y + attackbox.y, attackbox.width, attackbox.height);
-            }
+            g2.setColor(Color.red);
+            /* Se suma la posicion de la attackbox a la posicion del player porque despues de verificar la deteccion del
+             * golpe en el metodo hit, se resetea la posicio del player, por lo tanto se suma desde aca para que el
+             * rectangulo dibujado coincida con la posicion especificada en el metodo hit. */
+            g2.drawRect(screenX + attackbox.x + hitbox.x, screenY + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
         }
     }
 

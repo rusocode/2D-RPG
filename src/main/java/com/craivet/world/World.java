@@ -163,9 +163,9 @@ public class World {
     public void createMOBs() {
         int i = 0, j = 0, k = 0;
 
-        mobs[NIX][i++] = new Oldman(game, this, 23, 19);
+        // mobs[NIX][i++] = new Oldman(game, this, 23, 19);
         mobs[NIX][i++] = new BigRock(game, this, 26, 21);
-        mobs[NIX][i++] = new Slime(game, this, 18, 22);
+        mobs[NIX][i++] = new Slime(game, this, 23, 20);
         mobs[NIX][i++] = new Slime(game, this, 24, 37);
         mobs[NIX][i++] = new Slime(game, this, 34, 42);
         mobs[NIX][i++] = new Slime(game, this, 38, 42);
@@ -189,7 +189,7 @@ public class World {
      */
     public void createInteractiveTile() {
         int i = 0;
-        interactives[NIX][i++] = new DryTree(game, this, 21, 20);
+        // interactives[NIX][i++] = new DryTree(game, this, 21, 20);
         // interactives[NIX][i++] = new DryTree(game, this, 23, 22);
 
         interactives[NIX][i++] = new DryTree(game, this, 25, 27);

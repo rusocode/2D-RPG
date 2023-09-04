@@ -67,7 +67,7 @@ public class CollisionEvent {
         if (canTouchEvent) {
             if (checkCollision(NIX, 27, 16, Direction.RIGHT)) hurt();
             if (checkCollision(NIX, 23, 12, Direction.UP)) heal();
-            if (checkCollision(NIX_INDOOR_01, 12, 9, Direction.ANY)) dialogue(world.mobs[1][0]);
+            if (checkCollision(NIX_INDOOR_01, 12, 9, Direction.UP)) dialogue(world.mobs[1][0]);
             if (checkCollision(NIX, 10, 39, Direction.UP))
                 teleport(INDOOR, NIX_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
             if (checkCollision(NIX_INDOOR_01, 12, 13, Direction.DOWN))

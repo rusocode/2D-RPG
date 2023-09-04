@@ -55,7 +55,7 @@ public final class Global {
     public static final int DUNGEON_01 = 2;
     public static final int DUNGEON_02 = 3;
     // Zones
-    public static final int OUTSIDE = 0;
+    public static final int OUTSIDE = 0; // TODO Terreno o Campo
     public static final int INDOOR = 1;
     public static final int DUNGEON = 2;
 

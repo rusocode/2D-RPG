@@ -137,7 +137,7 @@ public class Collision {
                 // Obtiene la posicion del area del cuerpo de la entidad y de la otra entidad
                 entity.hitbox.x += entity.x;
                 entity.hitbox.y += entity.y;
-                otherEntity[world.map][i].hitbox.x += otherEntity[world.map][i].x;
+                otherEntity[world.map][i].hitbox.x += otherEntity[world.map][i].x ;
                 otherEntity[world.map][i].hitbox.y += otherEntity[world.map][i].y;
 
                 switch (direction) {

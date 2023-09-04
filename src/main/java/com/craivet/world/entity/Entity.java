@@ -9,6 +9,7 @@ import com.craivet.Game;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
+import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.tile.Interactive;
 import com.craivet.world.World;
 import com.craivet.utils.Timer;
@@ -75,6 +76,7 @@ public class Entity extends Stats {
     }
 
     public void render(Graphics2D g2) {
+        // TODO Se podria calcular desde un metodo
         screenX = (x - world.player.x) + world.player.screenX;
         screenY = (y - world.player.y) + world.player.screenY;
         if (isOnCamera()) {
@@ -96,7 +98,7 @@ public class Entity extends Stats {
                 // Si es una imagen estatica
             else g2.drawImage(image, screenX, screenY, null);
 
-            drawRects(g2, screenX, screenY);
+            // drawRects(g2);
 
             Utils.changeAlpha(g2, 1);
         }
@@ -179,6 +181,8 @@ public class Entity extends Stats {
      * <p>
      * En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con una
      * entidad.
+     * <p>
+     * TODO Se podria mover a mecanica
      */
     protected void hit() {
         timer.attackAnimationCounter++;
@@ -186,48 +190,44 @@ public class Entity extends Stats {
         if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de motion1-motion2 ms frame de ataque 2)
             ss.attackNum = 2;
 
-            // Guarda la posicion actual de x, y y el tamaño del hitbox
-            int currentX = x;
-            int currentY = y;
-            int hitboxWidth = hitbox.width;
-            int hitboxHeight = hitbox.height;
+            // Guarda la posicion actual de x,y y el tamaño del hitbox
+            int currentX = x, currentY = y;
+            int hitboxWidth = hitbox.width, hitboxHeight = hitbox.height;
 
-            // Ajusta el area de ataque del player para cada direccion
+            /* Ajusta la attackbox (en la hoja de la espada para ser mas especificos) del player dependiendo de la
+             * direccion de ataque. Es importante aclarar que las coordenadas x,y del attackbox parten de la esquina
+             * superior izquierda de la hitbox del player (nose si es necesario partir desde esa esquina). */
             if (type == Type.PLAYER) {
                 switch (direction) {
                     case DOWN -> {
-                        attackbox.x = -5;
-                        attackbox.y = 15;
+                        attackbox.x = -2;
+                        attackbox.y = 4;
                         attackbox.width = 4;
-                        attackbox.height = 25;
-                        x += hitbox.x;
-                        y += attackbox.y /* + attackbox.height */;
+                        attackbox.height = 36;
                     }
                     case UP -> {
-                        attackbox.x = 13;
-                        attackbox.y = 10;
+                        attackbox.x = 12;
+                        attackbox.y = -43;
                         attackbox.width = 4;
-                        attackbox.height = 25;
-                        x += attackbox.x;
-                        y -= hitbox.y + attackbox.height; // TODO Por que se resta hitbox.y y no attackArea.y?
+                        attackbox.height = 42;
                     }
                     case LEFT -> {
-                        attackbox.x = 0;
-                        attackbox.y = 10;
-                        attackbox.width = 25;
-                        attackbox.height = 10;
-                        x -= hitbox.x + attackbox.x + attackbox.width;
-                        y += attackbox.y;
+                        attackbox.x = -15;
+                        attackbox.y = -1;
+                        attackbox.width = 14;
+                        attackbox.height = 4;
                     }
                     case RIGHT -> {
-                        attackbox.x = 16;
-                        attackbox.y = 10;
-                        attackbox.width = 24;
-                        attackbox.height = 10;
-                        x += attackbox.x + attackbox.width;
-                        y += attackbox.y;
+                        attackbox.x = 10;
+                        attackbox.y = 1;
+                        attackbox.width = 14;
+                        attackbox.height = 4;
                     }
                 }
+                /* Acumula la posicion del attackbox a la posicion del player (x,y) para verificar la colision con las
+                 * coordenas ajustadas de la attackbox. */
+                x += attackbox.x;
+                y += attackbox.y;
             } else if (type == Type.HOSTILE) {
                 switch (direction) {
                     case DOWN -> y += attackbox.height;
@@ -237,13 +237,13 @@ public class Entity extends Stats {
                 }
             }
 
-            // Convierte la hitbox en attackbox para verificar la colision solo con el area de ataque
+            // Convierte la hitbox (el ancho y alto) en attackbox para verificar la colision solo con la attackbox
             hitbox.width = attackbox.width;
             hitbox.height = attackbox.height;
 
             if (type == Type.HOSTILE) hitPlayer(game.collision.checkPlayer(this), attack);
             else {
-                // Verifica la colision con el mob usando la posicion y tamaño del hitbox actualizados, osea el area de ataque
+                // Verifica la colision con el mob usando la posicion y tamaño de la hitbox actualizada, osea con la attackbox
                 int mobIndex = game.collision.checkEntity(this, world.mobs);
                 world.player.hitMob(mobIndex, this, weapon.knockbackValue, attack);
 
@@ -403,10 +403,11 @@ public class Entity extends Stats {
         return !flags.hitting ? ss.movement[frameIndex] : ss.weapon[frameIndex];
     }
 
-    private void drawRects(Graphics2D g2, int screenX, int screenY) {
+    private void drawRects(Graphics2D g2) {
+        g2.setStroke(new BasicStroke(0));
+        // Hitbox
         g2.setColor(Color.blue);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
-        // g2.drawRect(screenX, screenY, tile_size, tile_size);
     }
 
 }
