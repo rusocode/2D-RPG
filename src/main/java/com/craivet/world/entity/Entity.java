@@ -174,33 +174,33 @@ public class Entity extends Stats {
     }
 
     /**
-     * Golpea a la entidad si el frame de ataque colisiona con la hitbox del objetivo.
+     * Golpea a la entidad si la attackbox en el frame de ataque colisiona con la hitbox del objetivo.
      * <p>
      * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
-     * ataque. Despues de motion2 vuelve al frame de movimiento.
+     * ataque. Despues de motion2 vuelve al frame de movimiento. Para el caso del player solo hay un frame de ataque.
      * <p>
-     * En el segundo frame de ataque, la posicion x/y se ajusta para el area de ataque y verifica si colisiona con una
+     * En el segundo frame de ataque, la posicion x/y se ajusta para la attackbox y verifica si colisiona con una
      * entidad.
      * <p>
      * TODO Se podria mover a mecanica
      */
     protected void hit() {
         timer.attackAnimationCounter++;
-        if (timer.attackAnimationCounter <= motion1) ss.attackNum = 1; // (de 0-motion1 ms frame de ataque 1)
-        if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de motion1-motion2 ms frame de ataque 2)
+        if (timer.attackAnimationCounter <= motion1) ss.attackNum = 1; // (de 0-motion1ms frame de ataque 1)
+        if (timer.attackAnimationCounter > motion1 && timer.attackAnimationCounter <= motion2) { // (de motion1-motion2ms frame de ataque 2)
             ss.attackNum = 2;
 
-            // Guarda la posicion actual de x,y y el tamaño del hitbox
+            // Guarda la posicion actual de x/y y el tamaño de la hitbox
             int currentX = x, currentY = y;
             int hitboxWidth = hitbox.width, hitboxHeight = hitbox.height;
 
             /* Ajusta la attackbox (en la hoja de la espada para ser mas especificos) del player dependiendo de la
-             * direccion de ataque. Es importante aclarar que las coordenadas x,y del attackbox parten de la esquina
+             * direccion de ataque. Es importante aclarar que las coordenadas x/y de la attackbox parten de la esquina
              * superior izquierda de la hitbox del player (nose si es necesario partir desde esa esquina). */
             if (type == Type.PLAYER) {
                 switch (direction) {
                     case DOWN -> {
-                        attackbox.x = -2;
+                        attackbox.x = -1;
                         attackbox.y = 4;
                         attackbox.width = 4;
                         attackbox.height = 36;
@@ -212,19 +212,19 @@ public class Entity extends Stats {
                         attackbox.height = 42;
                     }
                     case LEFT -> {
-                        attackbox.x = -15;
-                        attackbox.y = -1;
-                        attackbox.width = 14;
+                        attackbox.x = -20;
+                        attackbox.y = 0;
+                        attackbox.width = 19;
                         attackbox.height = 4;
                     }
                     case RIGHT -> {
                         attackbox.x = 10;
-                        attackbox.y = 1;
-                        attackbox.width = 14;
+                        attackbox.y = 2;
+                        attackbox.width = 19;
                         attackbox.height = 4;
                     }
                 }
-                /* Acumula la posicion del attackbox a la posicion del player (x,y) para verificar la colision con las
+                /* Acumula la posicion de la attackbox a la posicion del player para verificar la colision con las
                  * coordenas ajustadas de la attackbox. */
                 x += attackbox.x;
                 y += attackbox.y;
@@ -237,7 +237,7 @@ public class Entity extends Stats {
                 }
             }
 
-            // Convierte la hitbox (el ancho y alto) en attackbox para verificar la colision solo con la attackbox
+            // Convierte la hitbox (el ancho y alto) en la attackbox para verificar la colision solo con la attackbox
             hitbox.width = attackbox.width;
             hitbox.height = attackbox.height;
 

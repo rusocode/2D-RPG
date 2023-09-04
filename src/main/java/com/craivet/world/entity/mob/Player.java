@@ -28,7 +28,7 @@ public class Player extends Mob {
     private Animation down, up, left, right;
     public BufferedImage currentFrame, currentSwordFrame;
 
-    private Entity entity; // Variable auxiliar para obtener los atributos de la entidad actual
+    private Entity entity; // Variable auxiliar para obtener los atributos de la entidad actual (osea el player?)
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
@@ -130,11 +130,8 @@ public class Player extends Mob {
         hitbox.height = 24;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        // TODO Realmente no hace falta especificar el ancho y alto desde aca porque se ajusta dependiendo de la direccion
-        attackbox.width = 14;
-        attackbox.height = 14;
         motion1 = 5;
-        motion2 = 18;
+        motion2 = 60;
 
         ss.loadMovementFramesOfPlayer(player_movement, 1);
         ss.loadSword(sword_test, 16, 16);
@@ -511,10 +508,13 @@ public class Player extends Mob {
      * @return el frame de animacion actual.
      */
     private BufferedImage getCurrentAnimationFrame() {
+        /* Cuando se deja de mover, devuelve el primer frame guardado de la ultima direccion para representar la
+         * detencion del player. */
         if (keyboard.checkMovementKeys()) {
             switch (direction) {
                 case DOWN -> {
-                    currentFrame = down.getFirstFrame(); // Obtiene el primer frame cuando deja de moverse hacia abajo
+                    // Guarda el primer frame hacia abajo
+                    currentFrame = down.getFirstFrame();
                     if (flags.collidingOnMob) return down.getCurrentFrame();
                     else return flags.colliding ? down.getFirstFrame() : down.getCurrentFrame();
                 }
