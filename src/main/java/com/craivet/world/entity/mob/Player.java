@@ -28,7 +28,7 @@ public class Player extends Mob {
     private Animation down, up, left, right;
     public BufferedImage currentFrame, currentSwordFrame;
 
-    private Entity entity; // Variable auxiliar para obtener los atributos de la entidad actual (osea el player?)
+    private Entity entity; // Variable auxiliar para obtener los atributos de la entidad actual
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
@@ -60,7 +60,7 @@ public class Player extends Mob {
                 right.tick();
             }
         } else // TODO Este else no funciona porque no se temporiza la detencion de los nuevos frames
-            timer.timeStopMovement(this, 20); // Temporiza la detencion del movimiento cuando se dejan de presionar las teclas de movimiento
+            timer.timeStopMovement(this, 20);
 
         checkShoot();
         checkTimers();
@@ -73,30 +73,7 @@ public class Player extends Mob {
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
-        else {
-            switch (direction) {
-                case DOWN -> {
-                    currentFrame = down.getFirstFrame();
-                    g2.drawImage(ss.down[1], tempScreenX, tempScreenY, null);
-                    g2.drawImage(getCurrentSwordFrame(), tempScreenX, tempScreenY + 34, null);
-                }
-                case UP -> {
-                    currentFrame = up.getFirstFrame();
-                    g2.drawImage(ss.up[2], tempScreenX, tempScreenY, null);
-                    g2.drawImage(getCurrentSwordFrame(), tempScreenX + 13, tempScreenY + 17, null);
-                }
-                case LEFT -> {
-                    currentFrame = left.getFirstFrame();
-                    g2.drawImage(ss.left[2], tempScreenX, tempScreenY, null);
-                    g2.drawImage(getCurrentSwordFrame(), tempScreenX - 7, tempScreenY + 26, null);
-                }
-                case RIGHT -> {
-                    currentFrame = right.getFirstFrame();
-                    g2.drawImage(ss.right[4], tempScreenX, tempScreenY, null);
-                    g2.drawImage(getCurrentSwordFrame(), tempScreenX + 15, tempScreenY + 28, null);
-                }
-            }
-        }
+        else getCurrentSwordFrame(g2);
         // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
@@ -135,7 +112,7 @@ public class Player extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         motion1 = 5;
-        motion2 = 60;
+        motion2 = 18;
 
         ss.loadMovementFramesOfPlayer(player_movement, 1);
         ss.loadSword(sword_test, 16, 16);
@@ -496,14 +473,29 @@ public class Player extends Mob {
         game.music.stop();
     }
 
-    private BufferedImage getCurrentSwordFrame() {
+    private void getCurrentSwordFrame(Graphics2D g2) {
         switch (direction) {
-            case DOWN -> currentSwordFrame = ss.sword[0];
-            case UP -> currentSwordFrame = ss.sword[1];
-            case LEFT -> currentSwordFrame = ss.sword[2];
-            case RIGHT -> currentSwordFrame = ss.sword[3];
+            case DOWN -> {
+                currentFrame = down.getFirstFrame();
+                g2.drawImage(ss.down[1], tempScreenX, tempScreenY, null);
+                g2.drawImage(ss.sword[0], tempScreenX, tempScreenY + 34, null);
+            }
+            case UP -> {
+                currentFrame = up.getFirstFrame();
+                g2.drawImage(ss.up[2], tempScreenX, tempScreenY, null);
+                g2.drawImage(ss.sword[1], tempScreenX + 13, tempScreenY + 17, null);
+            }
+            case LEFT -> {
+                currentFrame = left.getFirstFrame();
+                g2.drawImage(ss.left[2], tempScreenX, tempScreenY, null);
+                g2.drawImage(ss.sword[2], tempScreenX - 7, tempScreenY + 26, null);
+            }
+            case RIGHT -> {
+                currentFrame = right.getFirstFrame();
+                g2.drawImage(ss.right[4], tempScreenX, tempScreenY, null);
+                g2.drawImage(ss.sword[3], tempScreenX + 15, tempScreenY + 28, null);
+            }
         }
-        return currentSwordFrame;
     }
 
     /**
