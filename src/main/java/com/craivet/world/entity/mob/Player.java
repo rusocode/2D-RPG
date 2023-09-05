@@ -76,18 +76,22 @@ public class Player extends Mob {
         else {
             switch (direction) {
                 case DOWN -> {
+                    currentFrame = down.getFirstFrame();
                     g2.drawImage(ss.down[1], tempScreenX, tempScreenY, null);
                     g2.drawImage(getCurrentSwordFrame(), tempScreenX, tempScreenY + 34, null);
                 }
                 case UP -> {
+                    currentFrame = up.getFirstFrame();
                     g2.drawImage(ss.up[2], tempScreenX, tempScreenY, null);
                     g2.drawImage(getCurrentSwordFrame(), tempScreenX + 13, tempScreenY + 17, null);
                 }
                 case LEFT -> {
+                    currentFrame = left.getFirstFrame();
                     g2.drawImage(ss.left[2], tempScreenX, tempScreenY, null);
                     g2.drawImage(getCurrentSwordFrame(), tempScreenX - 7, tempScreenY + 26, null);
                 }
                 case RIGHT -> {
+                    currentFrame = right.getFirstFrame();
                     g2.drawImage(ss.right[4], tempScreenX, tempScreenY, null);
                     g2.drawImage(getCurrentSwordFrame(), tempScreenX + 15, tempScreenY + 28, null);
                 }
