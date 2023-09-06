@@ -59,7 +59,7 @@ public class World {
     public void update() {
         // Actualiza las entidades solo si el juego esta en PLAY_STATE
         if (game.state == PLAY_STATE) entities.update();
-        // if (game.state != MAIN_STATE) environment.update();
+        if (game.state != MAIN_STATE) environment.update();
     }
 
     /**
@@ -68,11 +68,11 @@ public class World {
      * @param g2 componente grafico.
      */
     public void render(Graphics2D g2) {
-        // Renderiza los tiles y las entidades solo si el juego es distinto a MAIN_STATE
+        // Renderiza los tiles, las entidades y el clima solo si el juego es distinto a MAIN_STATE
         if (game.state != MAIN_STATE) {
             tiles.render(g2);
             entities.render(g2);
-            // environment.render(g2);
+            environment.render(g2);
         }
         if (game.state == MAIN_STATE) {
             // TODO Reemplazar por un fondo

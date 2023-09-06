@@ -42,7 +42,7 @@ public class ItemGenerator {
             case ShieldBlue.NAME -> item = new ShieldBlue(game, world);
             case ShieldWood.NAME -> item = new ShieldWood(game, world);
             case Stone.NAME -> item = new Stone(game, world, 0);
-            case SwordNormal.NAME -> item = new SwordNormal(game, world);
+            case SwordIron.NAME -> item = new SwordIron(game, world);
             case Tent.NAME -> item = new Tent(game, world);
         }
         return item;

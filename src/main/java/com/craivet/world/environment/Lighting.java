@@ -48,19 +48,6 @@ public class Lighting {
             Color[] color = new Color[12];
             float[] fraction = new float[12];
 
-            color[0] = new Color(0, 0, 0, 0.1f);
-            color[1] = new Color(0, 0, 0, 0.42f);
-            color[2] = new Color(0, 0, 0, 0.52f);
-            color[3] = new Color(0, 0, 0, 0.61f);
-            color[4] = new Color(0, 0, 0, 0.69f);
-            color[5] = new Color(0, 0, 0, 0.76f);
-            color[6] = new Color(0, 0, 0, 0.82f);
-            color[7] = new Color(0, 0, 0, 0.87f);
-            color[8] = new Color(0, 0, 0, 0.91f);
-            color[9] = new Color(0, 0, 0, 0.94f);
-            color[10] = new Color(0, 0, 0, 0.96f);
-            color[11] = new Color(0, 0, 0, 0.98f);
-
             fraction[0] = 0f;
             fraction[1] = 0.4f;
             fraction[2] = 0.5f;
@@ -73,6 +60,19 @@ public class Lighting {
             fraction[9] = 0.9f;
             fraction[10] = 0.95f;
             fraction[11] = 1f;
+
+            color[0] = new Color(0, 0, 0, 0.1f);
+            color[1] = new Color(0, 0, 0, 0.42f);
+            color[2] = new Color(0, 0, 0, 0.52f);
+            color[3] = new Color(0, 0, 0, 0.61f);
+            color[4] = new Color(0, 0, 0, 0.69f);
+            color[5] = new Color(0, 0, 0, 0.76f);
+            color[6] = new Color(0, 0, 0, 0.82f);
+            color[7] = new Color(0, 0, 0, 0.87f);
+            color[8] = new Color(0, 0, 0, 0.91f);
+            color[9] = new Color(0, 0, 0, 0.94f);
+            color[10] = new Color(0, 0, 0, 0.96f);
+            color[11] = new Color(0, 0, 0, 0.98f);
 
             // Crea el efecto de gradacion usando la posicion del player, el radio, los datos de fraccion y color
             RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, (world.player.light.lightRadius / 2), fraction, color);
@@ -93,7 +93,7 @@ public class Lighting {
             world.player.lightUpdate = false;
         }
 
-        cycleDay();
+        // cycleDay();
 
     }
 
@@ -102,7 +102,7 @@ public class Lighting {
      * <p>
      * Si la zona es DUNGEON, solo dibuja el filtro oscuro. Significa que permanecera oscuro todo el tiempo.
      * <p>
-     * Si la zona es INDOOR, no configura ni dibuja el filtro oscuro. Significa que permanece luminoso tood el tiempo.
+     * Si la zona es INDOOR, no configura ni dibuja el filtro oscuro. Significa que permanece luminoso todo el tiempo.
      */
     public void render(Graphics2D g2) {
         if (world.zone == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
@@ -166,6 +166,7 @@ public class Lighting {
             case dawn -> "Dawn";
             default -> "";
         };
+        g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(24F));
         g2.drawString(state, WINDOW_WIDTH - tile * 3, (int) (WINDOW_HEIGHT - tile * 1.5));
     }

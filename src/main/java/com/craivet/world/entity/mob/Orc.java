@@ -16,6 +16,7 @@ public class Orc extends Mob {
         name = "Orc";
         type = Type.HOSTILE;
         soundHit = sound_hit_orc;
+        soundDeath = sound_orc_death;
         speed = defaultSpeed = 1;
         hp = maxHp = 10;
         exp = 2;

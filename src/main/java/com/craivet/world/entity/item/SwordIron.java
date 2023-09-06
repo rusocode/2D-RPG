@@ -8,15 +8,15 @@ import com.craivet.utils.Utils;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
-public class SwordNormal extends Item {
+public class SwordIron extends Item {
 
-	public static final String NAME = "Normal Sword";
+	public static final String NAME = "Iron Sword";
 
-	public SwordNormal(Game game, World world, int... pos) {
+	public SwordIron(Game game, World world, int... pos) {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 		name = NAME;
 		type = Type.SWORD;
-		image = Utils.scaleImage(sword_normal, tile, tile);
+		image = Utils.scaleImage(sword_iron, tile, tile);
 		description = "[" + name + "]\nAn old sword.";
 		price = 20;
 		attackValue = 1;

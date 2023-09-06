@@ -15,6 +15,8 @@ public class Bat extends Mob {
         super(game, world, x, y);
         name = "Bat";
         type = Type.HOSTILE;
+        soundHit = sound_hit_bat;
+        soundDeath = sound_bat_death;
         speed = defaultSpeed = 4;
         hp = maxHp = 7;
         exp = 7;

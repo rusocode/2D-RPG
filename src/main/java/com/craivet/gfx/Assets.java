@@ -34,12 +34,15 @@ public final class Assets {
     public static final URL sound_door_opening = Utils.loadAudio(sounds_path + "door_opening.wav");
     public static final URL sound_door_iron_opening = Utils.loadAudio(sounds_path + "door_iron_opening.wav");
     public static final URL sound_draw_sword = Utils.loadAudio(sounds_path + "draw_sword.wav");
+    public static final URL sound_hit_bat = Utils.loadAudio(sounds_path + "hit_bat.wav");
     public static final URL sound_hit_mob = Utils.loadAudio(sounds_path + "hit_mob.wav");
     public static final URL sound_hit_orc = Utils.loadAudio(sounds_path + "hit_orc.wav");
     public static final URL sound_hit_slime = Utils.loadAudio(sounds_path + "hit_slime.wav");
     public static final URL sound_level_up = Utils.loadAudio(sounds_path + "level_up.wav");
     public static final URL sound_mine = Utils.loadAudio(sounds_path + "mine.wav");
     public static final URL sound_mob_death = Utils.loadAudio(sounds_path + "mob_death.wav");
+    public static final URL sound_orc_death = Utils.loadAudio(sounds_path + "orc_death2.wav");
+    public static final URL sound_bat_death = Utils.loadAudio(sounds_path + "bat_death.wav");
     public static final URL sound_player_damage = Utils.loadAudio(sounds_path + "player_damage.wav");
     public static final URL sound_player_death = Utils.loadAudio(sounds_path + "player_death.wav");
     public static final URL sound_drink_potion = Utils.loadAudio(sounds_path + "drink_potion.wav");
@@ -62,7 +65,6 @@ public final class Assets {
 
     // TEXTURES
     // Entity
-    public static final SpriteSheet sword_test = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/sword_test.png")); // TODO Se podria usar una sola imagen y en base a la direccion se voltea y se cambia el color dependiendo del tipo de espada (piedra, hierro, diamante oro, minecraft)
     public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/attack.png"));
     public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/movement.png"));
     public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/axe.png"));
@@ -95,8 +97,12 @@ public final class Assets {
     public static final BufferedImage shield_blue = Utils.loadImage(textures_items_path + "shield_blue.png");
     public static final BufferedImage shield_wood = Utils.loadImage(textures_items_path + "shield_wood.png");
     public static final BufferedImage stone = Utils.loadImage(textures_items_path + "stone.png");
-    public static final BufferedImage sword_normal = Utils.loadImage(textures_items_path + "sword_normal.png");
+    public static final BufferedImage sword_iron = Utils.loadImage(textures_items_path + "sword_iron.png");
     public static final BufferedImage tent = Utils.loadImage(textures_items_path + "tent.png");
+    // Items frames
+    public static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "sword_frame.png")); // TODO Se podria usar una sola imagen y en base a la direccion se voltea y se cambia el color dependiendo del tipo de espada (piedra, hierro, diamante oro, minecraft)
+    public static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "axe_frame.png"));
+    public static final SpriteSheet pickaxe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "pickaxe_frame.png"));
     // Interactive tiles
     public static final BufferedImage itile_destructiblewall = Utils.loadImage(textures_tiles_interactive_path + "destructiblewall.png");
     public static final BufferedImage itile_drytree = Utils.loadImage(textures_tiles_interactive_path + "drytree.png");

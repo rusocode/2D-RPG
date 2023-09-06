@@ -73,7 +73,7 @@ public class Player extends Mob {
         tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
-        else getCurrentSwordFrame(g2);
+        else getCurrentItemFrame(g2);
         // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
@@ -99,7 +99,7 @@ public class Player extends Mob {
         flags.invincible = false;
 
         projectile = new Fireball(game, world);
-        weapon = new SwordNormal(game, world);
+        weapon = new SwordIron(game, world);
         shield = new ShieldWood(game, world);
         light = null;
         attack = getAttack();
@@ -115,7 +115,7 @@ public class Player extends Mob {
         motion2 = 18;
 
         ss.loadMovementFramesOfPlayer(player_movement, 1);
-        ss.loadSword(sword_test, 16, 16);
+        ss.loadItem(sword_frame, 16, 16);
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, ss.down);
@@ -297,6 +297,7 @@ public class Player extends Mob {
 
                 if (mob.hp <= 0) {
                     game.playSound(sound_mob_death);
+                    if (!(mob instanceof Slime)) game.playSound(mob.soundDeath);
                     mob.flags.dead = true;
                     game.ui.addMessageToConsole("Killed the " + mob.name + "!");
                     game.ui.addMessageToConsole("Exp + " + mob.exp);
@@ -370,17 +371,17 @@ public class Player extends Mob {
         int itemIndex = game.ui.getItemIndexOnInventory(game.ui.playerSlotCol, game.ui.playerSlotRow);
         if (itemIndex < inventory.size()) {
             Item selectedItem = inventory.get(itemIndex);
-            if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordNormal) {
+            if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordIron) {
                 weapon = selectedItem;
                 attackbox = weapon.attackbox; // TODO Hace falta esto aca?
                 attack = getAttack();
                 switch (weapon.type) {
                     case SWORD -> {
-                        // frame.loadWeaponFrames(player_sword, 16, 16);
+                        ss.loadItem(sword_frame, 16, 16);
                         game.playSound(sound_draw_sword);
                     }
-                    // case AXE -> frame.loadWeaponFrames(player_axe, 16, 16);
-                    // case PICKAXE -> frame.loadWeaponFrames(player_pickaxe, 16, 16);
+                    case AXE -> ss.loadItem(axe_frame, 16, 16);
+                    case PICKAXE -> ss.loadItem(pickaxe_frame, 16, 16);
                 }
             }
             if (selectedItem.type == Type.SHIELD) {
@@ -473,27 +474,27 @@ public class Player extends Mob {
         game.music.stop();
     }
 
-    private void getCurrentSwordFrame(Graphics2D g2) {
+    private void getCurrentItemFrame(Graphics2D g2) {
         switch (direction) {
             case DOWN -> {
                 currentFrame = down.getFirstFrame();
                 g2.drawImage(ss.down[1], tempScreenX, tempScreenY, null);
-                g2.drawImage(ss.sword[0], tempScreenX, tempScreenY + 34, null);
+                g2.drawImage(ss.item[0], tempScreenX, tempScreenY + 34, null);
             }
             case UP -> {
                 currentFrame = up.getFirstFrame();
                 g2.drawImage(ss.up[2], tempScreenX, tempScreenY, null);
-                g2.drawImage(ss.sword[1], tempScreenX + 13, tempScreenY + 17, null);
+                g2.drawImage(ss.item[1], tempScreenX + 13, tempScreenY + 17, null);
             }
             case LEFT -> {
                 currentFrame = left.getFirstFrame();
                 g2.drawImage(ss.left[2], tempScreenX, tempScreenY, null);
-                g2.drawImage(ss.sword[2], tempScreenX - 7, tempScreenY + 26, null);
+                g2.drawImage(ss.item[2], tempScreenX - 7, tempScreenY + 26, null);
             }
             case RIGHT -> {
                 currentFrame = right.getFirstFrame();
                 g2.drawImage(ss.right[4], tempScreenX, tempScreenY, null);
-                g2.drawImage(ss.sword[3], tempScreenX + 15, tempScreenY + 28, null);
+                g2.drawImage(ss.item[3], tempScreenX + 15, tempScreenY + 28, null);
             }
         }
     }
