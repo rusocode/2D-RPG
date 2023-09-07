@@ -21,7 +21,7 @@ public class Oldman extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogueSet = -1;
-        ss.loadMovementFrames(oldman, ENTITY_WIDTH, ENTITY_HEIGHT, tile);
+        ss.loadMovementFrames(oldman, 16, 16, 1);
         initDialogue();
     }
 

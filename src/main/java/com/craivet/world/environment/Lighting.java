@@ -37,7 +37,7 @@ public class Lighting {
         darknessFilter = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
-        if (world.player.light == null) g2.setColor(new Color(0, 0, 0, 0.98f));
+        if (world.player.light == null) g2.setColor(new Color(0, 0, 0, 0.90f));
         else { // Si el player selecciono la linterna
 
             // Obtiene el centro del player
@@ -68,11 +68,11 @@ public class Lighting {
             color[4] = new Color(0, 0, 0, 0.69f);
             color[5] = new Color(0, 0, 0, 0.76f);
             color[6] = new Color(0, 0, 0, 0.82f);
-            color[7] = new Color(0, 0, 0, 0.87f);
-            color[8] = new Color(0, 0, 0, 0.91f);
-            color[9] = new Color(0, 0, 0, 0.94f);
-            color[10] = new Color(0, 0, 0, 0.96f);
-            color[11] = new Color(0, 0, 0, 0.98f);
+            color[7] = new Color(0, 0, 0, 0.86f);
+            color[8] = new Color(0, 0, 0, 0.87f);
+            color[9] = new Color(0, 0, 0, 0.88f);
+            color[10] = new Color(0, 0, 0, 0.89f);
+            color[11] = new Color(0, 0, 0, 0.90f);
 
             // Crea el efecto de gradacion usando la posicion del player, el radio, los datos de fraccion y color
             RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, (world.player.light.lightRadius / 2), fraction, color);

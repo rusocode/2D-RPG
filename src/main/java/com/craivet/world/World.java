@@ -153,7 +153,7 @@ public class World {
         items[DUNGEON_01][i] = new Chest(game, this, 40, 41);
         items[DUNGEON_01][i++].setLoot(new Pickaxe(game, this));
 
-        items[DUNGEON_01][i] = new DoorIron(game, this, 18, 23);
+        // items[DUNGEON_01][i] = new DoorIron(game, this, 18, 23);
 
     }
 

@@ -32,8 +32,8 @@ public class Orc extends Mob {
         attackbox.height = 48;
         motion1 = 25;
         motion2 = 30;
-        ss.loadMovementFrames(orc_movement, ENTITY_WIDTH, ENTITY_HEIGHT, tile);
-        ss.loadWeaponFrames(orc_attack, ENTITY_WIDTH, ENTITY_HEIGHT);
+        ss.loadMovementFrames(orc_movement, 16, 16, 1);
+        ss.loadAttackFrames(orc_attack, 16, 16, 1);
         mobImage = ss.movement[0];
     }
 

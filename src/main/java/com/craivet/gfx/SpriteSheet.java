@@ -35,14 +35,15 @@ public class SpriteSheet {
     }
 
     /**
-     * Obtiene los frames de movimiento.
+     * Carga los frames de movimiento.
      *
      * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
      * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
      *
-     * @param ss SpriteSheet con los frames de movimiento.
-     * @param w  ancho del frame.
-     * @param h  alto del frame.
+     * @param ss    SpriteSheet con los frames de movimiento.
+     * @param w     ancho del frame.
+     * @param h     alto del frame.
+     * @param scale valor de escala, 1 para mantener el tamaño original.
      */
     public void loadMovementFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
@@ -51,44 +52,35 @@ public class SpriteSheet {
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                movement[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale, scale);
-    }
-
-    public void loadItem(SpriteSheet ss, int w, int h) {
-        int col = ss.getWidth() / w;
-        int row = ss.getHeight() / h;
-        item = new BufferedImage[col * row];
-        int i = 0;
-        for (int y = 0; y < row; y++)
-            for (int x = 0; x < col; x++)
-                item[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), 16, 16);
+                movement[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale * tile, scale * tile);
     }
 
     /**
-     * Obtiene los frames de armas.
+     * Carga los frames de ataque.
      *
      * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
      *
-     * @param ss SpriteSheet con los frames de armas.
-     * @param w  ancho del frame.
-     * @param h  alto del frame.
+     * @param ss    SpriteSheet con los frames de ataque.
+     * @param w     ancho del frame.
+     * @param h     alto del frame.
+     * @param scale valor de escala, 1 para mantener el tamaño original.
      */
-    public void loadWeaponFrames(SpriteSheet ss, int w, int h) {
+    public void loadAttackFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
         weapon = new BufferedImage[col * row];
         int i = 0;
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                if (y == 0) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 0, 16, 32), tile, tile * 2);
-                if (y == 1) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 32, 16, 32), tile, tile * 2);
+                if (y == 0) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 0, 16, 32), tile * scale, tile * scale * 2);
+                if (y == 1) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 32, 16, 32), tile * scale, tile * scale * 2);
                 if (y == 2) {
-                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 64, 32, 16), tile * 2, tile);
-                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 80, 32, 16), tile * 2, tile);
+                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 64, 32, 16), tile * scale * 2, tile * scale);
+                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 80, 32, 16), tile * scale * 2, tile * scale);
                 }
                 if (y == 3) {
-                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 96, 32, 16), tile * 2, tile);
-                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 112, 32, 16), tile * 2, tile);
+                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 96, 32, 16), tile * scale * 2, tile * scale);
+                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 112, 32, 16), tile * scale * 2, tile * scale);
                 }
             }
             if (y == 3) break; // Evita iterar hasta los espacios sobrantes de la matriz
@@ -124,6 +116,16 @@ public class SpriteSheet {
             }
         }
 
+    }
+
+    public void loadItem(SpriteSheet ss, int w, int h) {
+        int col = ss.getWidth() / w;
+        int row = ss.getHeight() / h;
+        item = new BufferedImage[col * row];
+        int i = 0;
+        for (int y = 0; y < row; y++)
+            for (int x = 0; x < col; x++)
+                item[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), 16, 16);
     }
 
     /**

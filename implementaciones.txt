@@ -3,3 +3,4 @@
 # Crear un texture atlas con todos los items.
 # En la clase Entity al ser abstracta se podria implementar una interfaz que contenga el metodo update y render.
 # Puede que el paquete AI sea parte de una entidad.
+# Redimensionar todos los spritesheet a 256x256 para que se comprima mejor al ser potencia de 2 (averiguar).

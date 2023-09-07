@@ -66,6 +66,7 @@ public final class Global {
     // Probabilitys %
     public static final int PROBABILITY_GOLD_DROP = 47;
     public static final int PROBABILITY_STONE_DROP = 90;
+    public static final int PROBABILITY_KEY_DROP = 30;
 
     // Animations interval
     public static final int INTERVAL_DEAD_ANIMATION = 10;
@@ -79,6 +80,7 @@ public final class Global {
     public static final int INTERVAL_INVINCIBLE = 60;
     public static final int INTERVAL_INVINCIBLE_INTERACTIVE = 20;
     public static final int INTERVAL_DIRECTION = 120;
+    public static final int INTERVAL_DIRECTION_BAT = 20;
     public static final int INTERVAL_HP_BAR = 240;
     public static final int INTERVAL_KNOCKBACK = 10;
     public static final int INTERVAL_TRANSITION = 50;

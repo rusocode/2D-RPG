@@ -67,6 +67,8 @@ public final class Assets {
     // Entity
     public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/attack.png"));
     public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/movement.png"));
+    public static final SpriteSheet skeleton_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/skeleton/attack.png"));
+    public static final SpriteSheet skeleton_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/skeleton/movement.png"));
     public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/axe.png"));
     public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player.png"));
     public static final SpriteSheet player_movement2 = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player 300x360.png"));

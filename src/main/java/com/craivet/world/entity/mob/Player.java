@@ -131,15 +131,16 @@ public class Player extends Mob {
      */
     public void setDefaultPos() {
         world.zone = DUNGEON;
-        world.map = DUNGEON_01;
+        world.map = DUNGEON_02;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 31, startRow = 40; // 22, 21
+        int startCol = 26, startRow = 39; // 22, 21
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
-         * player ocupa dos tiles verticales. */
-        y = (startRow * tile) - hitbox.height;
+         * player ocupa dos tiles verticales. Por ultimo se resta un pixel en caso de que la posicion este por encima
+         * de un tile solido para evitar que se "trabe". */
+        y = (startRow * tile) - hitbox.height - 1;
     }
 
     /**
@@ -205,7 +206,7 @@ public class Player extends Mob {
     }
 
     private void checkStats() {
-        if (hp <= 0) die();
+        // if (hp <= 0) die();
         if (hp > maxHp) hp = maxHp;
         if (mana > maxMana) mana = maxMana;
     }

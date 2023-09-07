@@ -56,6 +56,8 @@ public final class Utils {
      * <p>
      * Es importante que el valor de escala para el ancho y alto sea multiplo del tamaño original para evitar
      * estiramientos o deformaciones en la imagen escalada.
+     * <p>
+     * Para mantener el tamaño original de la imagen, se especifica 1 como valor de escala.
      *
      * @param image  imagen.
      * @param width  ancho de la imagen.

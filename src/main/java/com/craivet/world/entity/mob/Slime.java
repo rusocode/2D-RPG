@@ -33,7 +33,7 @@ public class Slime extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
-        ss.loadMovementFrames(slime, ENTITY_WIDTH, ENTITY_HEIGHT, tile); // TODO Cambiar el nombre de ENTITY_WIDTH a algo mas relacionado con la subimagen del SpriteSheet
+        ss.loadMovementFrames(slime, 16, 16, 1); // TODO Cambiar el nombre de ENTITY_WIDTH a algo mas relacionado con la subimagen del SpriteSheet
         mobImage = ss.movement[0];
     }
 
@@ -51,7 +51,7 @@ public class Slime extends Mob {
 
     @Override
     public void damageReaction() {
-        timer.directionCounter = 0;
+        timer.directionCounter = 0; // TODO No creo que haga falta resetear el counter de la direccion ya que si me sigue no tendria sentido
         flags.following = true;
     }
 
