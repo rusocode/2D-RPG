@@ -9,7 +9,6 @@ import com.craivet.Game;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
-import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.tile.Interactive;
 import com.craivet.world.World;
 import com.craivet.utils.Timer;
@@ -88,19 +87,19 @@ public class Entity extends Stats {
             if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
-                if (!(this instanceof Interactive)) Utils.changeAlpha(g2, 0.4f);
+                Utils.changeAlpha(g2, 0.4f);
             }
             if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
             // Si es una animacion
-            if (ss.movement != null || ss.weapon != null)
+            if (ss.movement != null || ss.attack != null)
                 g2.drawImage(getCurrentFrame(), tempScreenX, tempScreenY, null);
-                // Si es una imagen estatica
+                // Si es una imagen estatica (item, interactive tile)
             else g2.drawImage(image, screenX, screenY, null);
 
             drawRects(g2);
 
-            Utils.changeAlpha(g2, 1);
+            Utils.changeAlpha(g2, 1f);
         }
     }
 
@@ -370,37 +369,37 @@ public class Entity extends Stats {
      * @return el frame actual.
      */
     private BufferedImage getCurrentFrame() {
-        int frameIndex = 0;
+        int i = 0;
 
         if (!flags.hitting) {
             if (ss.movement.length == 2) { // Si se trata de entidades de dos frames
                 switch (direction) {
-                    case DOWN, UP, LEFT, RIGHT -> frameIndex = ss.movementNum == 1 || flags.colliding ? 0 : 1;
+                    case DOWN, UP, LEFT, RIGHT -> i = ss.movementNum == 1 || flags.colliding ? 0 : 1;
                 }
             } else {
                 switch (direction) {
-                    case DOWN -> frameIndex = ss.movementNum == 1 || flags.colliding ? 0 : 1;
-                    case UP -> frameIndex = ss.movementNum == 1 || flags.colliding ? 2 : 3;
-                    case LEFT -> frameIndex = ss.movementNum == 1 || flags.colliding ? 4 : 5;
-                    case RIGHT -> frameIndex = ss.movementNum == 1 || flags.colliding ? 6 : 7;
+                    case DOWN -> i = ss.movementNum == 1 || flags.colliding ? 0 : 1;
+                    case UP -> i = ss.movementNum == 1 || flags.colliding ? 2 : 3;
+                    case LEFT -> i = ss.movementNum == 1 || flags.colliding ? 4 : 5;
+                    case RIGHT -> i = ss.movementNum == 1 || flags.colliding ? 6 : 7;
                 }
             }
         } else {
             switch (direction) {
-                case DOWN -> frameIndex = ss.attackNum == 1 ? 0 : 1;
+                case DOWN -> i = ss.attackNum == 1 ? 0 : 1;
                 case UP -> {
-                    tempScreenY -= tile;
-                    frameIndex = ss.attackNum == 1 ? 2 : 3;
+                    tempScreenY -= ss.attack[2].getHeight() - tile;
+                    i = ss.attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
-                    tempScreenX -= tile;
-                    frameIndex = ss.attackNum == 1 ? 4 : 5;
+                    tempScreenX -= ss.attack[4].getWidth() - tile;
+                    i = ss.attackNum == 1 ? 4 : 5;
                 }
-                case RIGHT -> frameIndex = ss.attackNum == 1 ? 6 : 7;
+                case RIGHT -> i = ss.attackNum == 1 ? 6 : 7;
             }
         }
 
-        return !flags.hitting ? ss.movement[frameIndex] : ss.weapon[frameIndex];
+        return !flags.hitting ? ss.movement[i] : ss.attack[i];
     }
 
     private void drawRects(Graphics2D g2) {

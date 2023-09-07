@@ -15,11 +15,11 @@ import java.util.ArrayList;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
-public class BigRock extends Mob {
+public class Rock extends Mob {
 
-    public static final String NAME = "Big Rock";
+    public static final String NAME = "Rock";
 
-    public BigRock(Game game, World world, int x, int y) {
+    public Rock(Game game, World world, int x, int y) {
         super(game, world, x, y);
         name = NAME;
         type = Type.NPC;
@@ -83,7 +83,7 @@ public class BigRock extends Mob {
 
         // Agrega las rocas a la lista
         for (int i = 0; i < world.mobs[1].length; i++) {
-            if (world.mobs[world.map][i] != null && world.mobs[world.map][i].name.equals(BigRock.NAME))
+            if (world.mobs[world.map][i] != null && world.mobs[world.map][i].name.equals(Rock.NAME))
                 rocks.add(world.mobs[world.map][i]);
         }
 

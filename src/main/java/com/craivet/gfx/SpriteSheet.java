@@ -9,8 +9,8 @@ import static com.craivet.utils.Global.*;
 public class SpriteSheet {
 
     private BufferedImage image;
-    public BufferedImage[] movement; // Entidades con dos frames para cada direccion
-    public BufferedImage[] weapon;
+    public BufferedImage[] movement; // Entidades de movimiento con dos frames para cada direccion
+    public BufferedImage[] attack;
     public int movementNum = 1, attackNum = 1;
 
     public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
@@ -43,7 +43,7 @@ public class SpriteSheet {
      * @param ss    SpriteSheet con los frames de movimiento.
      * @param w     ancho del frame.
      * @param h     alto del frame.
-     * @param scale valor de escala, 1 para mantener el tamaño original.
+     * @param scale valor de escala, 1 para no cambiar el tamaño.
      */
     public void loadMovementFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
@@ -68,22 +68,18 @@ public class SpriteSheet {
     public void loadAttackFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
-        weapon = new BufferedImage[col * row];
+        attack = new BufferedImage[col * row];
         int i = 0;
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                if (y == 0) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 0, 16, 32), tile * scale, tile * scale * 2);
-                if (y == 1) weapon[i++] = Utils.scaleImage(ss.crop(x * w, 32, 16, 32), tile * scale, tile * scale * 2);
-                if (y == 2) {
-                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 64, 32, 16), tile * scale * 2, tile * scale);
-                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 80, 32, 16), tile * scale * 2, tile * scale);
-                }
-                if (y == 3) {
-                    if (x == 0) weapon[i++] = Utils.scaleImage(ss.crop(0, 96, 32, 16), tile * scale * 2, tile * scale);
-                    if (x == 1) weapon[i++] = Utils.scaleImage(ss.crop(0, 112, 32, 16), tile * scale * 2, tile * scale);
-                }
+                if (y < 2)
+                    attack[i++] = Utils.scaleImage(ss.crop(x * w, y == 0 ? 0 : h * 2, w, h * 2), tile * scale, tile * scale * 2);
+                if (y == 2)
+                    attack[i++] = Utils.scaleImage(ss.crop(0, h * (4 + x), w * 2, h), tile * scale * 2, tile * scale);
+                if (y == 3)
+                    attack[i++] = Utils.scaleImage(ss.crop(0, h * (6 + x), w * 2, h), tile * scale * 2, tile * scale);
+                // attack[i++] = Utils.scaleImage(ss.crop(y >= 4 ? 0 : x * w, y < 4 ? y == 0 ? 0 : (y + 1) * h : y * h, y < 4 ? w : w * 2, y >= 4 ? h : h * 2), y <= 2 ? tile * scale : tile * scale * 2, y > 2 ? tile * scale : tile * scale * 2);
             }
-            if (y == 3) break; // Evita iterar hasta los espacios sobrantes de la matriz
         }
     }
 

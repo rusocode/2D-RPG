@@ -20,7 +20,7 @@ public class Fireball extends Projectile {
 		knockbackValue = 5;
 		cost = 1;
 		flags.alive = false;
-		ss.loadMovementFrames(fireball, ENTITY_WIDTH, ENTITY_HEIGHT, tile);
+		ss.loadMovementFrames(fireball, 16, 16, 1);
 	}
 
 	@Override

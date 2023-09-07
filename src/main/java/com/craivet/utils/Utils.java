@@ -73,13 +73,13 @@ public final class Utils {
     }
 
     /**
-     * Establece la transparencia a la imagen.
+     * Cambia la transparencia de la imagen.
      *
-     * @param g2         componente grafico.
-     * @param alphaValue valor de transparencia.
+     * @param g2    componente grafico.
+     * @param alpha valor de transparencia.
      */
-    public static void changeAlpha(Graphics2D g2, float alphaValue) {
-        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alphaValue));
+    public static void changeAlpha(Graphics2D g2, float alpha) {
+        g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
     }
 
     /**

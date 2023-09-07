@@ -164,7 +164,7 @@ public class World {
         int i = 0, j = 0, k = 0;
 
         mobs[NIX][i++] = new Oldman(game, this, 23, 19);
-        mobs[NIX][i++] = new BigRock(game, this, 26, 21);
+        mobs[NIX][i++] = new Rock(game, this, 26, 21);
         mobs[NIX][i++] = new Slime(game, this, 24, 37);
         mobs[NIX][i++] = new Slime(game, this, 34, 42);
         mobs[NIX][i++] = new Slime(game, this, 38, 42);
@@ -172,9 +172,9 @@ public class World {
 
         mobs[NIX_INDOOR_01][j++] = new Trader(game, this, 12, 7);
 
-        mobs[DUNGEON_01][k++] = new BigRock(game, this, 20, 25);
-        mobs[DUNGEON_01][k++] = new BigRock(game, this, 11, 18);
-        mobs[DUNGEON_01][k++] = new BigRock(game, this, 23, 14);
+        mobs[DUNGEON_01][k++] = new Rock(game, this, 20, 25);
+        mobs[DUNGEON_01][k++] = new Rock(game, this, 11, 18);
+        mobs[DUNGEON_01][k++] = new Rock(game, this, 23, 14);
         mobs[DUNGEON_01][k++] = new Bat(game, this, 34, 39);
         mobs[DUNGEON_01][k++] = new Bat(game, this, 36, 25);
         mobs[DUNGEON_01][k++] = new Bat(game, this, 39, 26);

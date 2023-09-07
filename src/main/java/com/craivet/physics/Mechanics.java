@@ -2,7 +2,7 @@ package com.craivet.physics;
 
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
-import com.craivet.world.entity.mob.BigRock;
+import com.craivet.world.entity.mob.Rock;
 import com.craivet.world.entity.mob.Player;
 
 /**
@@ -87,7 +87,7 @@ public class Mechanics {
     private void unite(Entity mob) {
         player.speed = mob.speed;
         united = true;
-        if (!(mob instanceof BigRock)) {
+        if (!(mob instanceof Rock)) {
             switch (player.direction) {
                 case DOWN -> player.y++;
                 case UP -> player.y--;

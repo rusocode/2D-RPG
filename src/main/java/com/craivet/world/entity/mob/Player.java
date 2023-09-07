@@ -130,11 +130,11 @@ public class Player extends Mob {
      * Establece la posicion por defecto.
      */
     public void setDefaultPos() {
-        world.zone = DUNGEON;
-        world.map = DUNGEON_02;
+        // world.zone = INDOOR; // TODO No hace falta creo
+        world.map = NIX;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 26, startRow = 39; // 22, 21
+        int startCol = 22, startRow = 21; // 26, 39
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
