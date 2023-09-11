@@ -11,11 +11,11 @@ public class SpriteSheet {
     private BufferedImage image;
 
     // Entidades con dos frames para cada direccion (movimiento y ataque)
-    public BufferedImage[] movement, attack;
+    public BufferedImage[] movement, attack, item;
     public int movementNum = 1, attackNum = 1;
 
     public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
-    public BufferedImage[] item; // Item con un frame para cada direccion
+    public BufferedImage[] weapon; // Item con un frame para cada direccion
 
     public SpriteSheet() {
     }
@@ -33,6 +33,16 @@ public class SpriteSheet {
             for (int x = 0; x < col; x++)
                 subimages[i++] = ss.crop(x * w, y * h, w, h);
         return subimages;
+    }
+
+    public void loadItemFrames(SpriteSheet ss, int w, int h, int scale) {
+        int col = ss.getWidth() / w;
+        int row = ss.getHeight() / h;
+        item = new BufferedImage[col * row];
+        int i = 0;
+        for (int y = 0; y < row; y++)
+            for (int x = 0; x < col; x++)
+                item[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale * tile, scale * tile);
     }
 
     /**
@@ -73,17 +83,11 @@ public class SpriteSheet {
         int i = 0;
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                if (y < 2) // Controla la fila 0 y 1 de 16x32px
+                // if (y == 4) break;
+                if (y < 2)
                     attack[i++] = Utils.scaleImage(ss.crop(x * w, y == 0 ? 0 : h * 2, w, h * 2), tile * scale, tile * scale * 2);
-                if (y >= 2) // Controla la fila 2 y 3 de 32x16px, PERO NO FUNCIONA PARA EL SS del skeleton
+                if (y >= 2)
                     attack[i++] = Utils.scaleImage(ss.crop(0, y == 2 ? h * (4 + x) : h * (6 + x), w * 2, h), tile * scale * 2, tile * scale);
-                if (y == 2) {
-                    if (x == 0) attack[i++] = Utils.scaleImage(ss.crop(0, h * 4, w * 2, h), tile * scale * 2, tile * scale);
-                    if (x == 1) attack[i++] = Utils.scaleImage(ss.crop(0, h * 5, w * 2, h), tile * scale * 2, tile * scale);
-                }
-                if (y == 3) {
-
-                }
             }
         }
     }
@@ -118,14 +122,14 @@ public class SpriteSheet {
 
     }
 
-    public void loadItem(SpriteSheet ss, int w, int h) {
+    public void loadWeaponFrames(SpriteSheet ss, int w, int h) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
-        item = new BufferedImage[col * row];
+        weapon = new BufferedImage[col * row];
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                item[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w, h);
+                weapon[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), 16, 16);
     }
 
     /**

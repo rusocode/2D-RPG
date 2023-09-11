@@ -43,10 +43,13 @@ public class Skeleton extends Mob {
     @Override
     public void doActions() {
         if (flags.following) {
-
+            System.out.println();
         } else {
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
+        /* TODO Comprobar que este en la misma direccion del player cuando ataque para que no ataque cuando este en
+         * distinta direccion. Esto sucede ya que aunque no esten en la misma direccion pero el player se mantenga
+         * cerca del mob, este ataca ya que esta dentro de su rango de ataque. */
         if (!flags.hitting) checkAttackOrNot(tile * 10, tile * 5, 60);
     }
 

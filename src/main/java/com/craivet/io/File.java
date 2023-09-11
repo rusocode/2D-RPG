@@ -177,7 +177,7 @@ public class File {
                             world.items[map][i].loot = game.itemGenerator.generate(data.loot[map][i]);
                         world.items[map][i].opened = data.opened[map][i];
                         world.items[map][i].empty = data.empty[map][i];
-                        if (world.items[map][i].opened) world.items[map][i].image = world.items[map][i].image2;
+                        if (world.items[map][i].opened) world.items[map][i].image = world.items[map][i].ss.item[1];
                     }
                 }
             }

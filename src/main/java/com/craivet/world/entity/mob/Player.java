@@ -69,10 +69,8 @@ public class Player extends Mob {
 
     @Override
     public void render(Graphics2D g2) {
-        tempScreenX = screenX;
-        tempScreenY = screenY;
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
-        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), tempScreenX, tempScreenY, null);
+        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screenX, screenY, null);
         else getCurrentItemFrame(g2);
         // drawRects(g2);
         Utils.changeAlpha(g2, 1);
@@ -115,7 +113,8 @@ public class Player extends Mob {
         motion2 = 18;
 
         ss.loadPlayerMovementFrames(player_movement, 1);
-        ss.loadItem(sword_frame, 16, 16);
+        ss.loadWeaponFrames(sword_frame, 16, 16);
+        mobImage = ss.down[0];
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, ss.down);
@@ -130,11 +129,11 @@ public class Player extends Mob {
      * Establece la posicion por defecto.
      */
     public void setDefaultPos() {
-        // world.zone = INDOOR; // TODO No hace falta creo
-        world.map = DUNGEON_02;
+        // world.zone = DUNGEON; // TODO No hace falta creo
+        world.map = NIX;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 10, startRow = 45; // 26, 39
+        int startCol = 10, startRow = 27; // 26, 39 // 10, 27
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
@@ -378,11 +377,11 @@ public class Player extends Mob {
                 attack = getAttack();
                 switch (weapon.type) {
                     case SWORD -> {
-                        ss.loadItem(sword_frame, 16, 16);
+                        ss.loadWeaponFrames(sword_frame, 16, 16);
                         game.playSound(sound_draw_sword);
                     }
-                    case AXE -> ss.loadItem(axe_frame, 16, 16);
-                    case PICKAXE -> ss.loadItem(pickaxe_frame, 16, 16);
+                    case AXE -> ss.loadWeaponFrames(axe_frame, 16, 16);
+                    case PICKAXE -> ss.loadWeaponFrames(pickaxe_frame, 16, 16);
                 }
             }
             if (selectedItem.type == Type.SHIELD) {
@@ -479,23 +478,23 @@ public class Player extends Mob {
         switch (direction) {
             case DOWN -> {
                 currentFrame = down.getFirstFrame();
-                g2.drawImage(ss.down[1], tempScreenX, tempScreenY, null);
-                g2.drawImage(ss.item[0], tempScreenX, tempScreenY + 34, null);
+                g2.drawImage(ss.down[1], screenX, screenY, null);
+                g2.drawImage(ss.weapon[0], screenX, screenY + 34, null);
             }
             case UP -> {
                 currentFrame = up.getFirstFrame();
-                g2.drawImage(ss.up[2], tempScreenX, tempScreenY, null);
-                g2.drawImage(ss.item[1], tempScreenX + 13, tempScreenY + 17, null);
+                g2.drawImage(ss.up[2], screenX, screenY, null);
+                g2.drawImage(ss.weapon[1], screenX + 13, screenY + 17, null);
             }
             case LEFT -> {
                 currentFrame = left.getFirstFrame();
-                g2.drawImage(ss.left[2], tempScreenX, tempScreenY, null);
-                g2.drawImage(ss.item[2], tempScreenX - 7, tempScreenY + 26, null);
+                g2.drawImage(ss.left[2], screenX, screenY, null);
+                g2.drawImage(ss.weapon[2], screenX - 7, screenY + 26, null);
             }
             case RIGHT -> {
                 currentFrame = right.getFirstFrame();
-                g2.drawImage(ss.right[4], tempScreenX, tempScreenY, null);
-                g2.drawImage(ss.item[3], tempScreenX + 15, tempScreenY + 28, null);
+                g2.drawImage(ss.right[4], screenX, screenY, null);
+                g2.drawImage(ss.weapon[3], screenX + 15, screenY + 28, null);
             }
         }
     }

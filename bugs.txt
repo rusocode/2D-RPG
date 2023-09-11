@@ -3,3 +3,4 @@ cuadro de descripcion del item. Creo que puede ser un error de sincronizacion cu
 y se muestra la descripcion del item.
 # Cuando estoy parado sobre un item (Stone) y arriba hay otro item agarrable, agarra el de arriba.
 # Se genera como un "nerviosismo" al mover la roca.
+# Al abrir un cofre y guardar el juego, luego de cerrar y cargar el juego, al abrir los siguientes cofres estan vacios.

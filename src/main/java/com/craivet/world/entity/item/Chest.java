@@ -18,8 +18,10 @@ public class Chest extends Item {
         name = NAME;
         type = Type.OBSTACLE;
         // TODO Unir en una imagen
-        image = Utils.scaleImage(chest_closed, tile, tile);
-        image2 = Utils.scaleImage(chest_opened, tile, tile);
+        // image = Utils.scaleImage(chest_closed, tile, tile);
+        // image2 = Utils.scaleImage(chest_opened, tile, tile);
+        ss.loadItemFrames(chest, 16, 16, 1);
+        image = ss.item[0];
         solid = true;
         hitbox.x = 2;
         hitbox.y = 16;
@@ -33,7 +35,7 @@ public class Chest extends Item {
     public void interact() {
         if (!opened) {
             game.playSound(sound_chest_opening);
-            image = image2;
+            image = ss.item[1];
             opened = true;
             if (world.player.canPickup(loot)) {
                 dialogues[0][0] = "You open the chest and find a \n" + loot.name +"!" /* + "!You obtain the " + loot.name + "!"*/;

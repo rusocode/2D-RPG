@@ -23,7 +23,7 @@ import static com.craivet.utils.Global.*;
 public class Stats {
 
     // Generals attributes
-    public int screenX, screenY, tempScreenX, tempScreenY;
+    public int screenX, screenY;
     public Item weapon, shield, light;
     public Projectile projectile;
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile), attackbox = new Rectangle(0, 0, 0, 0);

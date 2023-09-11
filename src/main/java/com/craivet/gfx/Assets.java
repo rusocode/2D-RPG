@@ -16,8 +16,9 @@ public final class Assets {
     }
 
     private static final String sounds_path = "audio/sounds/";
-    private static final String textures_entity_path = "textures/entity/";
-    private static final String textures_items_path = "textures/items/";
+    private static final String textures_items_path = "textures/entity/items/";
+    private static final String textures_mob_path = "textures/entity/mob/";
+    private static final String textures_projectile_path = "textures/entity/projectile/";
     private static final String textures_tiles_interactive_path = "textures/tiles/interactive/";
 
     // AUDIO (ambient, music and sounds)
@@ -64,29 +65,10 @@ public final class Assets {
     public static final Font font_medieval3 = Utils.loadFont("font/medieval3.ttf", 32);
 
     // TEXTURES
-    // Entity
-    public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/attack.png"));
-    public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/orc/movement.png"));
-    public static final SpriteSheet skeleton_attack = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/skeleton/attack.png"));
-    public static final SpriteSheet skeleton_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/skeleton/movement.png"));
-    public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/axe.png"));
-    public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player.png"));
-    public static final SpriteSheet player_movement2 = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player 300x360.png"));
-    public static final SpriteSheet player_movement3 = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/player 150x180.png"));
-    public static final SpriteSheet player_pickaxe = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/player/pickaxe.png"));
-    public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/bat.png"));
-    public static final BufferedImage bigrock = Utils.loadImage(textures_entity_path + "mob/bigrock.png");
-    public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/oldman.png"));
-    public static final SpriteSheet redslime = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/redslime.png"));
-    public static final SpriteSheet slime = new SpriteSheet(Utils.loadImage(textures_entity_path + "mob/slime.png"));
-    public static final BufferedImage trader = Utils.loadImage(textures_entity_path + "mob/trader.png");
-    public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage(textures_entity_path + "projectile/fireball.png"));
-    public static final BufferedImage sticky_ball = Utils.loadImage(textures_entity_path + "projectile/sticky_ball.png");
-    // Gui
-    public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));
     // Items
     public static final BufferedImage axe = Utils.loadImage(textures_items_path + "axe.png");
     public static final BufferedImage boots = Utils.loadImage(textures_items_path + "boots.png");
+    public static final SpriteSheet chest = new SpriteSheet(Utils.loadImage(textures_items_path + "chest.png"));
     public static final BufferedImage chest_closed = Utils.loadImage(textures_items_path + "chest_closed.png");
     public static final BufferedImage chest_opened = Utils.loadImage(textures_items_path + "chest_opened.png");
     public static final BufferedImage door = Utils.loadImage(textures_items_path + "door.png");
@@ -105,6 +87,27 @@ public final class Assets {
     public static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "sword_frame.png")); // TODO Se podria usar una sola imagen y en base a la direccion se voltea y se cambia el color dependiendo del tipo de espada (piedra, hierro, diamante oro, minecraft)
     public static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "axe_frame.png"));
     public static final SpriteSheet pickaxe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "pickaxe_frame.png"));
+    // Mobs
+    public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc/attack.png"));
+    public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc/movement.png"));
+    public static final SpriteSheet skeleton_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/attack.png"));
+    public static final SpriteSheet skeleton_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/movement.png"));
+    public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/axe.png"));
+    public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player.png"));
+    public static final SpriteSheet player_movement2 = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player 300x360.png"));
+    public static final SpriteSheet player_movement3 = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player 150x180.png"));
+    public static final SpriteSheet player_pickaxe = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/pickaxe.png"));
+    public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_mob_path + "bat.png"));
+    public static final BufferedImage bigrock = Utils.loadImage(textures_mob_path + "bigrock.png");
+    public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage(textures_mob_path + "oldman.png"));
+    public static final SpriteSheet redslime = new SpriteSheet(Utils.loadImage(textures_mob_path + "redslime.png"));
+    public static final SpriteSheet slime = new SpriteSheet(Utils.loadImage(textures_mob_path + "slime.png"));
+    public static final BufferedImage trader = Utils.loadImage(textures_mob_path + "trader.png");
+    // Projectile
+    public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage(textures_projectile_path + "fireball.png"));
+    public static final BufferedImage sticky_ball = Utils.loadImage(textures_projectile_path + "sticky_ball.png");
+    // Gui
+    public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));
     // Interactive tiles
     public static final BufferedImage itile_destructiblewall = Utils.loadImage(textures_tiles_interactive_path + "destructiblewall.png");
     public static final BufferedImage itile_drytree = Utils.loadImage(textures_tiles_interactive_path + "drytree.png");
