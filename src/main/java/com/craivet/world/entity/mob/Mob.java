@@ -78,16 +78,20 @@ public class Mob extends Entity {
         int yDis = getYDistance(world.player);
         switch (direction) {
             case DOWN -> {
-                if (world.player.y > y && yDis < vertical && xDis < horizontal) targetInRage = true;
+                if (world.player.getCenterY() > getCenterY() && yDis < vertical && xDis < horizontal)
+                    targetInRage = true;
             }
             case UP -> {
-                if (world.player.y < y && yDis < vertical && xDis < horizontal) targetInRage = true;
+                if (world.player.getCenterY() < getCenterY() && yDis < vertical && xDis < horizontal)
+                    targetInRage = true;
             }
             case LEFT -> {
-                if (world.player.x < x && xDis < vertical && yDis < horizontal) targetInRage = true;
+                if (world.player.getCenterX() < getCenterX() && xDis < vertical && yDis < horizontal)
+                    targetInRage = true;
             }
             case RIGHT -> {
-                if (world.player.x > x && xDis < vertical && yDis < horizontal) targetInRage = true;
+                if (world.player.getCenterX() > getCenterX() && xDis < vertical && yDis < horizontal)
+                    targetInRage = true;
             }
         }
         // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
@@ -100,7 +104,7 @@ public class Mob extends Entity {
     }
 
     /**
-     * Gets the row of the target.
+     * Gets the target row.
      *
      * @param target target.
      * @return the target row.
@@ -151,23 +155,23 @@ public class Mob extends Entity {
     }
 
     /**
-     * Gets the difference between the x position of the mob and the x position of the target.
+     * Gets the difference between the mob x center position and the target x center position.
      *
      * @param target target.
-     * @return the difference between the x position of the mob and the x position of the target.
+     * @return the difference between the mob x center position and the target x center position.
      */
     private int getXDistance(Entity target) {
-        return Math.abs(x - target.x);
+        return Math.abs(getCenterX() - target.getCenterX()); // TODO No se podria reemplazar a target con this?
     }
 
     /**
-     * Gets the difference between the y position of the mob and the y position of the target.
+     * Gets the difference between the mob y center position and the target y center position.
      *
      * @param target target.
-     * @return the difference between the y position of the mob and the y position of the target.
+     * @return the difference between the mob y center position and the target y center position.
      */
     private int getYDistance(Entity target) {
-        return Math.abs(y - target.y);
+        return Math.abs(getCenterY() - target.getCenterY());
     }
 
 }

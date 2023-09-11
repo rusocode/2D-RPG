@@ -26,7 +26,7 @@ public class Timer {
     public int projectileCounter;
 
     /**
-     * Temporiza el movimiento de las entidades con 2 frames de movimiento.
+     * Temporiza el movimiento de las entidades de 2 frames.
      * <p>
      * Si se completo el intervalo y si la entidad esta en el frame de movimiento 1, cambia al frame de movimiento 2 y
      * resetea el contador. Si se completo el intervalo y si la entidad esta en el frame de movimiento 2, cambia al

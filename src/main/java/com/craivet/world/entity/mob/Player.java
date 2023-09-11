@@ -114,7 +114,7 @@ public class Player extends Mob {
         motion1 = 5;
         motion2 = 18;
 
-        ss.loadMovementFramesOfPlayer(player_movement, 1);
+        ss.loadPlayerMovementFrames(player_movement, 1);
         ss.loadItem(sword_frame, 16, 16);
 
         int animationSpeed = 90;
@@ -131,10 +131,10 @@ public class Player extends Mob {
      */
     public void setDefaultPos() {
         // world.zone = INDOOR; // TODO No hace falta creo
-        world.map = NIX;
+        world.map = DUNGEON_02;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 22, startRow = 21; // 26, 39
+        int startCol = 10, startRow = 45; // 26, 39
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del

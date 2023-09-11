@@ -15,8 +15,8 @@ public class Skeleton extends Mob {
         super(game, world, x, y);
         name = "Skeleton";
         type = Type.HOSTILE;
-        soundHit = sound_hit_orc;
-        soundDeath = sound_orc_death;
+        soundHit = sound_hit_mob;
+        soundDeath = sound_mob_death;
         speed = defaultSpeed = 1;
         hp = maxHp = 50;
         exp = 50;
@@ -43,19 +43,16 @@ public class Skeleton extends Mob {
     @Override
     public void doActions() {
         if (flags.following) {
-            checkUnfollow(world.player, 15);
-            game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
+
         } else {
-            checkFollow(world.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
-        if (!flags.hitting) checkAttackOrNot(tile * 2, tile, 30);
+        if (!flags.hitting) checkAttackOrNot(tile * 10, tile * 5, 60);
     }
 
     @Override
     public void damageReaction() {
         timer.directionCounter = 0;
-        flags.following = true;
     }
 
     @Override

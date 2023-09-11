@@ -20,7 +20,7 @@ import static com.craivet.utils.Global.*;
  * <li>1600x900
  * <li>1920x1080
  * </ul>
- * El AO presenta diversas resoluciones graficas que se basan en la suma de los tiles visibles en el mapa y las
+ * El AO presenta diversas resoluciones graficas que se basan en la cantidad de tiles visibles dentro de la camara y las
  * interfaces graficas (consola, inventario, etc.). En una resolucion como 800x600, la porcion de tiles renderizados es
  * 544x416, denominada "Vista del Mapa", mientras que los 256x184 restantes corresponden a la interfaz de usuario (UI).
  * Optar por una resolucion mas baja afectaria la calidad visual (para el caso de Minecraft, la calidad de la fuente y
@@ -30,7 +30,6 @@ import static com.craivet.utils.Global.*;
  * <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html">Full-Screen Exclusive Mode</a>
  */
 
-// Como se podria llamar o hacer referencia a la parte del render que solo visualiza los tiles en el mapa ignorando la gui (consola, inventario, etc.)?
 public class Screen extends JFrame {
 
     public Screen(final Game game, boolean fullScreenMode) {

@@ -9,6 +9,7 @@ import com.craivet.Game;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
+import com.craivet.world.entity.mob.Player;
 import com.craivet.world.tile.Interactive;
 import com.craivet.world.World;
 import com.craivet.utils.Timer;
@@ -388,7 +389,7 @@ public class Entity extends Stats {
             switch (direction) {
                 case DOWN -> i = ss.attackNum == 1 ? 0 : 1;
                 case UP -> {
-                    tempScreenY -= ss.attack[2].getHeight() - tile;
+                    tempScreenY -= ss.attack[2].getHeight() - tile; // En caso de comprobar la posicion y de una imagen mas grande al tile, se utiliza el metodo getHeight()
                     i = ss.attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
@@ -407,6 +408,15 @@ public class Entity extends Stats {
         // Hitbox
         g2.setColor(Color.blue);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
+    }
+
+    public int getCenterX() {
+        // Verifico si la entidad se trata del player ya que este utiliza una sola imagen para representar el tamaño y el mob un array
+        return x + ((this instanceof Player) ? world.player.currentFrame.getWidth() / 2 : ss.movement[4].getWidth() / 2); // TODO Se podria usar mobImage para obtener el ancho de la imagen del mob?
+    }
+
+    public int getCenterY() {
+        return y + ((this instanceof Player) ? world.player.currentFrame.getHeight() / 2 : ss.movement[2].getHeight() / 2);
     }
 
 }

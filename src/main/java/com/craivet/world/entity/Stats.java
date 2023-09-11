@@ -32,6 +32,7 @@ public class Stats {
     public int width, height;
     public String name;
     public Type type = Type.HOSTILE;
+    // TODO No se podria resumir en una variable?
     public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
     public Direction direction = Direction.DOWN;
     public int speed, defaultSpeed;

@@ -161,7 +161,7 @@ public class World {
      * Crea los mobs.
      */
     public void createMOBs() {
-        int i = 0, j = 0, k = 0;
+        int i = 0, j = 0, k = 0, z = 0;
 
         mobs[NIX][i++] = new Oldman(game, this, 23, 19);
         mobs[NIX][i++] = new Rock(game, this, 26, 21);
@@ -180,6 +180,8 @@ public class World {
         mobs[DUNGEON_01][k++] = new Bat(game, this, 39, 26);
         mobs[DUNGEON_01][k++] = new Bat(game, this, 28, 11);
         mobs[DUNGEON_01][k++] = new Bat(game, this, 10, 19);
+
+        mobs[DUNGEON_02][z++] = new Skeleton(game, this, 23, 16);
 
     }
 

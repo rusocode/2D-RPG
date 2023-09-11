@@ -9,8 +9,9 @@ import static com.craivet.utils.Global.*;
 public class SpriteSheet {
 
     private BufferedImage image;
-    public BufferedImage[] movement; // Entidades de movimiento con dos frames para cada direccion
-    public BufferedImage[] attack;
+
+    // Entidades con dos frames para cada direccion (movimiento y ataque)
+    public BufferedImage[] movement, attack;
     public int movementNum = 1, attackNum = 1;
 
     public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
@@ -43,7 +44,7 @@ public class SpriteSheet {
      * @param ss    SpriteSheet con los frames de movimiento.
      * @param w     ancho del frame.
      * @param h     alto del frame.
-     * @param scale valor de escala, 1 para no cambiar el tamaño.
+     * @param scale valor de escala o 1 para mantener el tamaño.
      */
     public void loadMovementFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
@@ -63,7 +64,7 @@ public class SpriteSheet {
      * @param ss    SpriteSheet con los frames de ataque.
      * @param w     ancho del frame.
      * @param h     alto del frame.
-     * @param scale valor de escala, 1 para mantener el tamaño original.
+     * @param scale valor de escala o 1 para mantener el tamaño.
      */
     public void loadAttackFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
@@ -72,19 +73,22 @@ public class SpriteSheet {
         int i = 0;
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                if (y < 2)
+                if (y < 2) // Controla la fila 0 y 1 de 16x32px
                     attack[i++] = Utils.scaleImage(ss.crop(x * w, y == 0 ? 0 : h * 2, w, h * 2), tile * scale, tile * scale * 2);
-                if (y == 2)
-                    attack[i++] = Utils.scaleImage(ss.crop(0, h * (4 + x), w * 2, h), tile * scale * 2, tile * scale);
-                if (y == 3)
-                    attack[i++] = Utils.scaleImage(ss.crop(0, h * (6 + x), w * 2, h), tile * scale * 2, tile * scale);
-                // attack[i++] = Utils.scaleImage(ss.crop(y >= 4 ? 0 : x * w, y < 4 ? y == 0 ? 0 : (y + 1) * h : y * h, y < 4 ? w : w * 2, y >= 4 ? h : h * 2), y <= 2 ? tile * scale : tile * scale * 2, y > 2 ? tile * scale : tile * scale * 2);
+                if (y >= 2) // Controla la fila 2 y 3 de 32x16px, PERO NO FUNCIONA PARA EL SS del skeleton
+                    attack[i++] = Utils.scaleImage(ss.crop(0, y == 2 ? h * (4 + x) : h * (6 + x), w * 2, h), tile * scale * 2, tile * scale);
+                if (y == 2) {
+                    if (x == 0) attack[i++] = Utils.scaleImage(ss.crop(0, h * 4, w * 2, h), tile * scale * 2, tile * scale);
+                    if (x == 1) attack[i++] = Utils.scaleImage(ss.crop(0, h * 5, w * 2, h), tile * scale * 2, tile * scale);
+                }
+                if (y == 3) {
+
+                }
             }
         }
     }
 
-    public void loadMovementFramesOfPlayer(SpriteSheet ss, int scale) {
-
+    public void loadPlayerMovementFrames(SpriteSheet ss, int scale) {
         int col = 6, row = 4;
         int w = ss.getWidth() / col, h = ss.getHeight() / row;
         int numberFramesDown = 6, numberFramesUp = 6, numberFramesLeft = 5, numberFramesRight = 5;
@@ -121,7 +125,7 @@ public class SpriteSheet {
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                item[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), 16, 16);
+                item[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w, h);
     }
 
     /**
