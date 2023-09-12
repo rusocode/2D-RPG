@@ -3,8 +3,8 @@ package com.craivet.world.entity.mob;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
-import com.craivet.world.entity.item.Gold;
 import com.craivet.utils.*;
+import com.craivet.world.entity.item.*;
 
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
@@ -23,7 +23,7 @@ public class Orc extends Mob {
         attack = 8;
         defense = 2;
         hitbox.x = 4;
-        hitbox.y = 4;
+        hitbox.y = 15;
         hitbox.width = tile - hitbox.x - 4;
         hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
@@ -34,7 +34,7 @@ public class Orc extends Mob {
         motion2 = 30;
         ss.loadMovementFrames(orc_movement, 16, 16, 1);
         ss.loadAttackFrames(orc_attack, 16, 16, 1);
-        mobImage = ss.movement[0];
+        image = ss.movement[0];
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Orc extends Mob {
 
     @Override
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILITY_GOLD_DROP) dropItem(this, new Gold(game, world));
+        if (Utils.azar(100) <= PROBABILITY_KEY_DROP) dropItem(this, new Key(game, world, 1));
     }
 
 }

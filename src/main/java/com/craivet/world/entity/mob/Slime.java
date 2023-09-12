@@ -33,8 +33,8 @@ public class Slime extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
-        ss.loadMovementFrames(slime, 16, 16, 1); // TODO Cambiar el nombre de ENTITY_WIDTH a algo mas relacionado con la subimagen del SpriteSheet
-        mobImage = ss.movement[0];
+        ss.loadMovementFrames(slime, 16, 16, 1);
+        image = ss.movement[0];
     }
 
     @Override

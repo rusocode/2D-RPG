@@ -26,14 +26,13 @@ public class Stats {
     public int screenX, screenY;
     public Item weapon, shield, light;
     public Projectile projectile;
+    // TODO No creo que haga falta especificar el ancho y alto de la hitbox desde aca
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile), attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
     public int x, y;
-    public int width, height;
     public String name;
     public Type type = Type.HOSTILE;
-    // TODO No se podria resumir en una variable?
-    public BufferedImage image, image2, mobImage; // Imagenes estaticas para los items y mobs
+    public BufferedImage image; // Representa el primer frame de cada entidad
     public Direction direction = Direction.DOWN;
     public int speed, defaultSpeed;
     public int hp, maxHp;

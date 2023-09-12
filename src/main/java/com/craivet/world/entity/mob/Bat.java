@@ -29,7 +29,7 @@ public class Bat extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         ss.loadMovementFrames(bat, 16, 16, 1);
-        mobImage = ss.movement[0];
+        image = ss.movement[0];
     }
 
     @Override

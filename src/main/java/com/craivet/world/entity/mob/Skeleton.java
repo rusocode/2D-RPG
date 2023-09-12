@@ -37,7 +37,7 @@ public class Skeleton extends Mob {
         motion2 = 50;
         ss.loadMovementFrames(skeleton_movement, 32, 32, scale);
         ss.loadAttackFrames(skeleton_attack, 32, 32, scale);
-        mobImage = ss.movement[0];
+        image = ss.movement[0];
     }
 
     @Override

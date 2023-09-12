@@ -163,13 +163,9 @@ public class Entity extends Stats {
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] == null) {
                 world.items[world.map][i] = item;
-                if (entity instanceof Mob) {
-                    world.items[world.map][i].x = x + (mobImage.getWidth() / 2 - item.image.getWidth() / 2);
-                    world.items[world.map][i].y = y + (mobImage.getHeight() / 2 - item.image.getHeight() / 2) + 11;
-                } else if (entity instanceof Interactive) {
-                    world.items[world.map][i].x = x + (image.getWidth() / 2 - item.image.getWidth() / 2);
-                    world.items[world.map][i].y = y + (image.getHeight() / 2 - item.image.getHeight() / 2);
-                }
+                world.items[world.map][i].x = x + (image.getWidth() / 2 - item.image.getWidth() / 2);
+                // Suma la mitad de la hitbox solo de los mobs a la posicion y del item
+                world.items[world.map][i].y = y + (image.getHeight() / 2 + (entity instanceof Mob ? hitbox.height / 2 : 0) - item.image.getHeight() / 2);
                 break;
             }
         }
@@ -391,12 +387,12 @@ public class Entity extends Stats {
             switch (direction) {
                 case DOWN -> i = ss.attackNum == 1 ? 0 : 1;
                 case UP -> {
-                    // En caso de comprobar la posicion y de una imagen mas grande al tile, se utiliza el metodo getHeight()
-                    tempScreenY -= mobImage.getHeight();
+                    // Se resta el ancho de la imagen en caso de que el frame sea mas grande al tile
+                    tempScreenY -= image.getHeight();
                     i = ss.attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
-                    tempScreenX -= mobImage.getWidth();
+                    tempScreenX -= image.getWidth();
                     i = ss.attackNum == 1 ? 4 : 5;
                 }
                 case RIGHT -> i = ss.attackNum == 1 ? 6 : 7;
@@ -414,11 +410,11 @@ public class Entity extends Stats {
     }
 
     public int getCenterX() {
-        return x + mobImage.getWidth() / 2;
+        return x + image.getWidth() / 2;
     }
 
     public int getCenterY() {
-        return y + mobImage.getHeight() / 2;
+        return y + image.getHeight() / 2;
     }
 
 }

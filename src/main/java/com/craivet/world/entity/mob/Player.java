@@ -114,7 +114,7 @@ public class Player extends Mob {
 
         ss.loadPlayerMovementFrames(player_movement, 1);
         ss.loadWeaponFrames(sword_frame, 16, 16);
-        mobImage = ss.down[0];
+        image = ss.down[0];
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, ss.down);
@@ -133,7 +133,7 @@ public class Player extends Mob {
         world.map = NIX;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 10, startRow = 27; // 26, 39 // 10, 27
+        int startCol = 23, startRow = 20; // 26, 39 // 10, 27
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
