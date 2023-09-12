@@ -355,9 +355,14 @@ public class Entity extends Stats {
      * @return true si la entidad esta dentro de la camara o false.
      */
     private boolean isOnCamera() {
-        return x + tile > world.player.x - world.player.screenX &&
+        /* Si el render se encuentra con una entidad mas grande (por ejemplo, Skeleton) de lo normal, no lo va a
+         * representar cuando el player visualice solo los pies de este, ya que la distancia del boss que comienza desde
+         * la esquina superior izquierda es mucha con respecto a la vision del player en pantalla. Por lo tanto se
+         * aumenta esa vision multiplicando el bossArea. */
+        int bossArea = 5;
+        return x + tile * bossArea > world.player.x - world.player.screenX &&
                 x - tile < world.player.x + world.player.screenX &&
-                y + tile > world.player.y - world.player.screenY &&
+                y + tile * bossArea > world.player.y - world.player.screenY &&
                 y - tile < world.player.y + world.player.screenY;
     }
 
