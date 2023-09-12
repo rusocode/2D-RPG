@@ -69,8 +69,6 @@ public final class Assets {
     public static final BufferedImage axe = Utils.loadImage(textures_items_path + "axe.png");
     public static final BufferedImage boots = Utils.loadImage(textures_items_path + "boots.png");
     public static final SpriteSheet chest = new SpriteSheet(Utils.loadImage(textures_items_path + "chest.png"));
-    public static final BufferedImage chest_closed = Utils.loadImage(textures_items_path + "chest_closed.png");
-    public static final BufferedImage chest_opened = Utils.loadImage(textures_items_path + "chest_opened.png");
     public static final BufferedImage door = Utils.loadImage(textures_items_path + "door.png");
     public static final BufferedImage door_iron = Utils.loadImage(textures_items_path + "door_iron.png");
     public static final BufferedImage gold = Utils.loadImage(textures_items_path + "gold.png");

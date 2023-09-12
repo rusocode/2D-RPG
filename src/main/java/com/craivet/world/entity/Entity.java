@@ -9,8 +9,6 @@ import com.craivet.Game;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
-import com.craivet.world.entity.mob.Player;
-import com.craivet.world.tile.Interactive;
 import com.craivet.world.World;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
@@ -51,10 +49,11 @@ public class Entity extends Stats {
         this.world = world;
     }
 
+    // TODO Verificar posicion invalida (dentro de los limites del mapa y sobre tiles que no sean solidos, ni sobre otra entidad)
     public Entity(Game game, World world, int x, int y) {
         this.game = game;
         this.world = world;
-        // TODO Verificar posicion invalida (dentro de los limites del mapa y sobre tiles que no sean solidos, ni sobre otra entidad)
+
         this.x = x * tile;
         this.y = y * tile;
     }
@@ -404,9 +403,17 @@ public class Entity extends Stats {
 
     private void drawRects(Graphics2D g2) {
         g2.setStroke(new BasicStroke(0));
+        // Frame
+        g2.setColor(Color.magenta);
+        g2.drawRect(screenX, screenY, image.getWidth(), image.getHeight());
         // Hitbox
-        g2.setColor(Color.blue);
+        g2.setColor(Color.green);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
+        // Attackbox
+        if (flags.hitting) {
+            g2.setColor(Color.red);
+            g2.drawRect(screenX + attackbox.x + hitbox.x, screenY + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
+        }
     }
 
     public int getCenterX() {

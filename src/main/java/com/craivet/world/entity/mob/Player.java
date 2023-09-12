@@ -72,7 +72,7 @@ public class Player extends Mob {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screenX, screenY, null);
         else getCurrentItemFrame(g2);
-        // drawRects(g2);
+        drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -129,11 +129,11 @@ public class Player extends Mob {
      * Establece la posicion por defecto.
      */
     public void setDefaultPos() {
-        // world.zone = DUNGEON; // TODO No hace falta creo
-        world.map = NIX;
+        world.zone = DUNGEON;
+        world.map = DUNGEON_02;
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 23, startRow = 20; // 26, 39 // 10, 27
+        int startCol = 26, startRow = 39; // 26, 39 // 10, 27
         // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
         x = (startCol * tile) + hitbox.width / 2;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
@@ -146,8 +146,8 @@ public class Player extends Mob {
      * TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
      */
     public void setPos(int map, int x, int y) {
-        if (map == NIX) world.zone = OUTSIDE;
-        if (map == NIX_INDOOR_01) world.zone = INDOOR;
+        if (map == NASHE) world.zone = OUTSIDE;
+        if (map == NASHE_INDOOR_01) world.zone = INDOOR;
         if (map == DUNGEON_01 || map == DUNGEON_02) world.zone = DUNGEON;
         world.map = map;
         this.x = x * tile;
@@ -205,7 +205,7 @@ public class Player extends Mob {
     }
 
     private void checkStats() {
-        // if (hp <= 0) die();
+        if (!keyboard.godMode) if (hp <= 0) die();
         if (hp > maxHp) hp = maxHp;
         if (mana > maxMana) mana = maxMana;
     }
@@ -582,7 +582,7 @@ public class Player extends Mob {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(screenX, screenY, currentFrame.getWidth(), currentFrame.getHeight());
+        g2.drawRect(screenX, screenY, currentFrame.getWidth(), currentFrame.getHeight()); // TODO Creo que se podria reemplazar por image.getWidth()
         // Hitbox
         g2.setColor(Color.green);
         g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);

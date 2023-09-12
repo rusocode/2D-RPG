@@ -32,6 +32,7 @@ public class Stats {
     public int x, y;
     public String name;
     public Type type = Type.HOSTILE;
+    // TODO O frame?
     public BufferedImage image; // Representa el primer frame de cada entidad
     public Direction direction = Direction.DOWN;
     public int speed, defaultSpeed;

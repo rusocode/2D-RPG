@@ -28,6 +28,7 @@ public class TileManager implements State {
      */
     @Override
     public void render(Graphics2D g2) {
+        // TODO Se podria calcular desde una clase Camera
         // Calcula los desplazamientos
         int xOffset = world.player.x - world.player.screenX;
         int yOffset = world.player.y - world.player.screenY;

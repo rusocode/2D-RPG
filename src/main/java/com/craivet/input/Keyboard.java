@@ -15,6 +15,7 @@ public class Keyboard extends KeyAdapter {
 
     private final Game game;
     public boolean w, a, s, d, enter, esc, f, p, t;
+    public boolean godMode;
     private int lastKey = -1;
     private final int maxKeycode = 255;
 
@@ -128,6 +129,7 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_F) f = true;
         if (code == KeyEvent.VK_P) p = true;
         if (code == KeyEvent.VK_T) t = !t;
+        if (code == KeyEvent.VK_G) godMode = !godMode;
         if (code == KeyEvent.VK_C) game.state = STATS_STATE;
         if (code == KeyEvent.VK_I) game.state = INVENTORY_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;
@@ -136,8 +138,8 @@ public class Keyboard extends KeyAdapter {
          * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
         if (code == KeyEvent.VK_R) {
             switch (game.world.map) {
-                case 0 -> game.file.loadMap("maps/nix.txt", NIX, "Nix");
-                case 1 -> game.file.loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
+                case 0 -> game.file.loadMap("maps/nashe.txt", NASHE, "Nashe");
+                case 1 -> game.file.loadMap("maps/nashe_indoor01.txt", NASHE_INDOOR_01, "Nashe Indoor 01");
             }
         }
     }

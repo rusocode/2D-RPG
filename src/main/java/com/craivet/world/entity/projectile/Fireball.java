@@ -21,6 +21,7 @@ public class Fireball extends Projectile {
 		cost = 1;
 		flags.alive = false;
 		ss.loadMovementFrames(fireball, 16, 16, 1);
+		image = ss.movement[0];
 	}
 
 	@Override

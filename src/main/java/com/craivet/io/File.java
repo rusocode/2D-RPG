@@ -210,8 +210,8 @@ public class File {
      * Carga todos los mapas que componen al mundo.
      */
     public void loadMaps() {
-        loadMap("maps/nix.txt", NIX, "Nix");
-        loadMap("maps/nix_indoor01.txt", NIX_INDOOR_01, "Nix Indoor 01");
+        loadMap("maps/nashe.txt", NASHE, "Nashe");
+        loadMap("maps/nashe_indoor01.txt", NASHE_INDOOR_01, "Nashe Indoor 01");
         loadMap("maps/dungeon01.txt", DUNGEON_01, "Dungeon 01");
         loadMap("maps/dungeon02.txt", DUNGEON_02, "Dungeon 02");
     }

@@ -124,25 +124,25 @@ public class World {
      */
     public void createItems() {
         int i = 0;
-        items[NIX][i++] = new Axe(game, this, 33, 7);
-        items[NIX][i++] = new PotionRed(game, this, 5, 23, 23);
-        items[NIX][i++] = new Key(game, this, 1, 21, 21);
-        items[NIX][i++] = new Door(game, this, 14, 28);
-        items[NIX][i++] = new Door(game, this, 12, 12);
+        items[NASHE][i++] = new Axe(game, this, 33, 7);
+        items[NASHE][i++] = new PotionRed(game, this, 5, 23, 23);
+        items[NASHE][i++] = new Key(game, this, 1, 21, 21);
+        items[NASHE][i++] = new Door(game, this, 14, 28);
+        items[NASHE][i++] = new Door(game, this, 12, 12);
 
-        items[NIX][i] = new Chest(game, this, 30, 29);
-        items[NIX][i++].setLoot(new Key(game, this, 1));
+        items[NASHE][i] = new Chest(game, this, 30, 29);
+        items[NASHE][i++].setLoot(new Key(game, this, 1));
 
         /* items[NIX][i] = new Chest(game, this, 17, 21);
         items[NIX][i++].setLoot(new Tent(game, this)); */
 
-        items[NIX][i] = new Chest(game, this, 16, 21);
+        items[NASHE][i] = new Chest(game, this, 16, 21);
         // FIXME Se podria reemplazar el mal uso del Setter creando un nuevo item como argumento desde el constructor del objeto Chest
         // TODO Y si son muchos items?
-        items[NIX][i++].setLoot(new PotionRed(game, this, 5));
+        items[NASHE][i++].setLoot(new PotionRed(game, this, 5));
 
-        items[NIX][i] = new Chest(game, this, 23, 40);
-        items[NIX][i++].setLoot(new PotionRed(game, this, 30));
+        items[NASHE][i] = new Chest(game, this, 23, 40);
+        items[NASHE][i++].setLoot(new PotionRed(game, this, 30));
 
         items[DUNGEON_01][i] = new Chest(game, this, 13, 16);
         items[DUNGEON_01][i++].setLoot(new PotionRed(game, this, 20));
@@ -163,14 +163,14 @@ public class World {
     public void createMOBs() {
         int i = 0, j = 0, k = 0, z = 0;
 
-        mobs[NIX][i++] = new Oldman(game, this, 23, 19);
-        mobs[NIX][i++] = new Rock(game, this, 26, 21);
-        mobs[NIX][i++] = new Slime(game, this, 24, 37);
-        mobs[NIX][i++] = new Slime(game, this, 34, 42);
-        mobs[NIX][i++] = new Slime(game, this, 38, 42);
-        mobs[NIX][i++] = new Orc(game, this, 12, 33);
+        mobs[NASHE][i++] = new Oldman(game, this, 23, 19);
+        mobs[NASHE][i++] = new Rock(game, this, 26, 21);
+        mobs[NASHE][i++] = new Slime(game, this, 24, 37);
+        mobs[NASHE][i++] = new Slime(game, this, 34, 42);
+        mobs[NASHE][i++] = new Slime(game, this, 38, 42);
+        mobs[NASHE][i++] = new Orc(game, this, 12, 33);
 
-        mobs[NIX_INDOOR_01][j++] = new Trader(game, this, 12, 7);
+        mobs[NASHE_INDOOR_01][j++] = new Trader(game, this, 12, 7);
 
         mobs[DUNGEON_01][k++] = new Rock(game, this, 20, 25);
         mobs[DUNGEON_01][k++] = new Rock(game, this, 11, 18);
@@ -193,16 +193,16 @@ public class World {
         // interactives[NIX][i++] = new DryTree(game, this, 21, 20);
         // interactives[NIX][i++] = new DryTree(game, this, 23, 22);
 
-        interactives[NIX][i++] = new DryTree(game, this, 25, 27);
-        interactives[NIX][i++] = new DryTree(game, this, 26, 27);
-        interactives[NIX][i++] = new DryTree(game, this, 27, 27);
-        interactives[NIX][i++] = new DryTree(game, this, 27, 28);
-        interactives[NIX][i++] = new DryTree(game, this, 27, 29);
-        interactives[NIX][i++] = new DryTree(game, this, 27, 30);
-        interactives[NIX][i++] = new DryTree(game, this, 27, 31);
-        interactives[NIX][i++] = new DryTree(game, this, 28, 31);
-        interactives[NIX][i++] = new DryTree(game, this, 29, 31);
-        interactives[NIX][i++] = new DryTree(game, this, 30, 31);
+        interactives[NASHE][i++] = new DryTree(game, this, 25, 27);
+        interactives[NASHE][i++] = new DryTree(game, this, 26, 27);
+        interactives[NASHE][i++] = new DryTree(game, this, 27, 27);
+        interactives[NASHE][i++] = new DryTree(game, this, 27, 28);
+        interactives[NASHE][i++] = new DryTree(game, this, 27, 29);
+        interactives[NASHE][i++] = new DryTree(game, this, 27, 30);
+        interactives[NASHE][i++] = new DryTree(game, this, 27, 31);
+        interactives[NASHE][i++] = new DryTree(game, this, 28, 31);
+        interactives[NASHE][i++] = new DryTree(game, this, 29, 31);
+        interactives[NASHE][i++] = new DryTree(game, this, 30, 31);
 
         interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 30);
         interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 17, 31);

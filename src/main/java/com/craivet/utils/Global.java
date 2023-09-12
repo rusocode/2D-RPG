@@ -48,8 +48,8 @@ public final class Global {
     public static final int MAPS = 10;
     public static final int MAX_MAP_ROW = 50;
     public static final int MAX_MAP_COL = 50;
-    public static final int NIX = 0;
-    public static final int NIX_INDOOR_01 = 1;
+    public static final int NASHE = 0;
+    public static final int NASHE_INDOOR_01 = 1;
     public static final int DUNGEON_01 = 2;
     public static final int DUNGEON_02 = 3;
     // Zones

@@ -44,9 +44,8 @@ public class Skeleton extends Mob {
     public void doActions() {
         if (flags.following) {
             System.out.println();
-        } else {
-            timer.timeDirection(this, INTERVAL_DIRECTION);
-        }
+        } else timer.timeDirection(this, INTERVAL_DIRECTION);
+        // TODO No tiene que afectarle el knockback
         /* TODO Comprobar que este en la misma direccion del player cuando ataque para que no ataque cuando este en
          * distinta direccion. Esto sucede ya que aunque no esten en la misma direccion pero el player se mantenga
          * cerca del mob, este ataca ya que esta dentro de su rango de ataque. */
