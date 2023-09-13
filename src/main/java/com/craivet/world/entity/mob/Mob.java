@@ -66,36 +66,40 @@ public class Mob extends Entity {
     }
 
     /**
-     * It checks if it can attack or not by checking if the target is within the specified range.
+     * Checks if the player is within the mob's attack range. In case this is true, the mob can hit.
      *
-     * @param vertical   indicates the vertical distance.
-     * @param horizontal indicates the horizontal distance.
-     * @param rate       rate that determines if the mob attacks.
+     * @param vertical   vertical distance within attack range.
+     * @param horizontal horizontal distance within the attack range.
+     * @param rate       rate that determines if the mob attacks the player.
      */
-    protected void checkAttackOrNot(int vertical, int horizontal, int rate) {
-        boolean targetInRage = false;
+    protected void isPlayerWithinAttackRange(int vertical, int horizontal, int rate) {
+        boolean inRange = false;
         int xDis = getXDistance(world.player);
         int yDis = getYDistance(world.player);
         switch (direction) {
             case DOWN -> {
+                /* Si la posicion y central del player es mayor a la posicion y central del mob, y si la distancia en y
+                 * del player con respecto al mob es menor a la distancia vertical dentro del rango de ataque, y si la
+                 * distancia en x del player con respecto al mob es menor a la distancia horizontal dentro del rango
+                 * de ataque. */
                 if (world.player.getCenterY() > getCenterY() && yDis < vertical && xDis < horizontal)
-                    targetInRage = true;
+                    inRange = true;
             }
             case UP -> {
                 if (world.player.getCenterY() < getCenterY() && yDis < vertical && xDis < horizontal)
-                    targetInRage = true;
+                    inRange = true;
             }
             case LEFT -> {
-                if (world.player.getCenterX() < getCenterX() && xDis < vertical && yDis < horizontal)
-                    targetInRage = true;
+                if (world.player.getCenterX() < getCenterX() && xDis < horizontal && yDis < vertical)
+                    inRange = true;
             }
             case RIGHT -> {
-                if (world.player.getCenterX() > getCenterX() && xDis < vertical && yDis < horizontal)
-                    targetInRage = true;
+                if (world.player.getCenterX() > getCenterX() && xDis < vertical && yDis < horizontal) // TODO No esta al reves?
+                    inRange = true;
             }
         }
-        // Calcula la probabilidad de atacar si el objetivo esta dentro del rango
-        if (targetInRage && Utils.azar(rate) == 1) {
+        // Si el player esta dentro del rango de ataque del mob y si el rate se cumple
+        if (inRange && Utils.azar(rate) == 1) {
             flags.hitting = true;
             ss.movementNum = 1;
             timer.movementCounter = 0; // TODO O se referia al contador de ataque?
@@ -104,38 +108,38 @@ public class Mob extends Entity {
     }
 
     /**
-     * Gets the target row.
+     * Gets the target's goal row.
      *
      * @param target target.
-     * @return the target row.
+     * @return the target's goal row.
      */
     protected int getGoalRow(Entity target) {
         return (target.y + target.hitbox.y) / tile;
     }
 
     /**
-     * Gets the target column.
+     * Gets the target's goal column.
      *
      * @param target target.
-     * @return the target column.
+     * @return the target's goal column.
      */
     protected int getGoalCol(Entity target) {
         return (target.x + target.hitbox.x) / tile;
     }
 
     /**
-     * Check if it starts following the target.
+     * Check if the mob starts following the target.
      *
      * @param target   target.
      * @param distance distance in tiles.
-     * @param rate     rate that determines if follows the target.
+     * @param rate     rate that determines if the mob follows the target.
      */
     protected void checkFollow(Entity target, int distance, int rate) {
         if (getTileDistance(target) < distance && Utils.azar(rate) == 1) flags.following = true;
     }
 
     /**
-     * Check if it stops following the target.
+     * Check if the mob stops following the target.
      *
      * @param target   target.
      * @param distance distance in tiles.
@@ -145,19 +149,23 @@ public class Mob extends Entity {
     }
 
     /**
-     * Mueve la entidad hacia el player cuando este se encuentre en el rango de ataque.
+     * Mueve el mob hacia el player.
      * <p>
-     * Si se completo el intervalo, verifica si la distancia x del player es mayor a la distancia y del player, entonces
-     * verifica si la posicion central de x del player es menor a la posicion central de x del boss, entonces cambia la
-     * direccion del boss hacia la izquierda. En caso contrario cambia la direccion del boss hacia la derecha.
+     * Si se completo el intervalo, verifica si la distancia en x del player con respecto al mob es mayor a la
+     * distancia en y del player con respecto al mob. Si se cumple la anterior condicion, verifica si la posicion
+     * central x del player es menor a la posicion central x del mob. Si se cumple la anterior condicion, cambia la
+     * direccion del mob hacia la izquierda, y en caso contrario cambia la direccion del mob hacia la derecha. Pero si
+     * la distancia en x del player con respecto al mob es menor a la distancia en y del player con respecto al mob,
+     * entonces verifica si la posicion central y del player es menor a la posicion central y del mob. Si se cumple la
+     * anterior condicion, cambia la direccion del mob hacia arriba, y en caso contrario cambia la direccion del mob
+     * hacia abajo.
      * <p>
-     * En caso contrario verifica si la distancia x del player es menor a la distancia y del player, entonces verifica
-     * si la posicion central de y del player es menor a la posicion central de y del boss, entonces cambia la direccion
-     * del boss hacia la arriba. En caso contrario cambia la direccion del boss hacia la abajo.
+     * TODO Es necesario el intervalo?
+     *
+     * @param interval intervalo de tiempo en ms.
      */
     protected void moveTowardPlayer(int interval) {
-        // timer.directionCounter++;
-        if (timer.directionCounter++ > interval) {
+        if (++timer.directionCounter > interval) { // TODO o =?
             if (getXDistance(game.world.player) > getYDistance(game.world.player))
                 direction = game.world.player.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
             else if (getXDistance(game.world.player) < getYDistance(game.world.player))
@@ -167,30 +175,30 @@ public class Mob extends Entity {
     }
 
     /**
-     * Gets the distance of the target in tiles.
+     * Gets the distance in tiles of the target with respect to the mob.
      *
      * @param target target.
-     * @return the distance of the target in tiles.
+     * @return the distance in tiles of the target with respect to the mob.
      */
     protected int getTileDistance(Entity target) {
         return (getXDistance(target) + getYDistance(target)) / tile;
     }
 
     /**
-     * Gets the difference between the mob x center position and the target x center position.
+     * Gets the distance in x of the target with respect to the mob.
      *
      * @param target target.
-     * @return the difference between the mob x center position and the target x center position.
+     * @return the distance in x of the target with respect to the mob.
      */
     private int getXDistance(Entity target) {
-        return Math.abs(getCenterX() - target.getCenterX()); // TODO No se podria reemplazar a target con this?
+        return Math.abs(getCenterX() - target.getCenterX());
     }
 
     /**
-     * Gets the difference between the mob y center position and the target y center position.
+     * Gets the distance in y of the target with respect to the mob.
      *
      * @param target target.
-     * @return the difference between the mob y center position and the target y center position.
+     * @return the distance in y of the target with respect to the mob.
      */
     private int getYDistance(Entity target) {
         return Math.abs(getCenterY() - target.getCenterY());

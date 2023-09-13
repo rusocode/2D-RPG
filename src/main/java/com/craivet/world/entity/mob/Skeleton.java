@@ -42,14 +42,10 @@ public class Skeleton extends Mob {
 
     @Override
     public void doActions() {
-        // Mueve el boss hacia el player si la distancia que hay entre el boss y el player es menor a 10 tiles
+        // Si la distancia del player con respecto al mob es menor a 10 tiles
         if (getTileDistance(game.world.player) < 10) moveTowardPlayer(60);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
-        // TODO No tiene que afectarle el knockback
-        /* TODO Comprobar que este en la misma direccion del player cuando ataque para que no ataque cuando este en
-         * distinta direccion. Esto sucede ya que aunque no esten en la misma direccion pero el player se mantenga
-         * cerca del mob, este ataca ya que esta dentro de su rango de ataque. */
-        if (!flags.hitting) checkAttackOrNot(tile * 6, tile * 3, 60);
+        if (!flags.hitting) isPlayerWithinAttackRange(tile * 6, tile * 6, 60);
     }
 
     @Override
