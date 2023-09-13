@@ -29,6 +29,7 @@ public class Stats {
     // TODO No creo que haga falta especificar el ancho y alto de la hitbox desde aca
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile), attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
+    // Las coordenadas xy del player dentro del mapa se calculan a partir desde la esquina superior izquierda de la hitbox
     public int x, y;
     public String name;
     public Type type = Type.HOSTILE;

@@ -145,12 +145,34 @@ public class Mob extends Entity {
     }
 
     /**
+     * Mueve la entidad hacia el player cuando este se encuentre en el rango de ataque.
+     * <p>
+     * Si se completo el intervalo, verifica si la distancia x del player es mayor a la distancia y del player, entonces
+     * verifica si la posicion central de x del player es menor a la posicion central de x del boss, entonces cambia la
+     * direccion del boss hacia la izquierda. En caso contrario cambia la direccion del boss hacia la derecha.
+     * <p>
+     * En caso contrario verifica si la distancia x del player es menor a la distancia y del player, entonces verifica
+     * si la posicion central de y del player es menor a la posicion central de y del boss, entonces cambia la direccion
+     * del boss hacia la arriba. En caso contrario cambia la direccion del boss hacia la abajo.
+     */
+    protected void moveTowardPlayer(int interval) {
+        // timer.directionCounter++;
+        if (timer.directionCounter++ > interval) {
+            if (getXDistance(game.world.player) > getYDistance(game.world.player))
+                direction = game.world.player.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
+            else if (getXDistance(game.world.player) < getYDistance(game.world.player))
+                direction = game.world.player.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
+            timer.directionCounter = 0;
+        }
+    }
+
+    /**
      * Gets the distance of the target in tiles.
      *
      * @param target target.
      * @return the distance of the target in tiles.
      */
-    private int getTileDistance(Entity target) {
+    protected int getTileDistance(Entity target) {
         return (getXDistance(target) + getYDistance(target)) / tile;
     }
 

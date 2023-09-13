@@ -8,9 +8,11 @@ import java.awt.*;
 
 public class EnvironmentManager implements State {
 
+    private final World world;
     public final Lighting lighting;
 
     public EnvironmentManager(World world) {
+        this.world = world;
         lighting = new Lighting(world);
     }
 
@@ -21,6 +23,6 @@ public class EnvironmentManager implements State {
 
     @Override
     public void render(Graphics2D g2) {
-        // lighting.render(g2);
+        if (!world.player.keyboard.godMode) lighting.render(g2);
     }
 }

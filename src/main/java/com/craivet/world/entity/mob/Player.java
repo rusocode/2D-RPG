@@ -23,7 +23,7 @@ import static com.craivet.gfx.Assets.*;
 // TODO No tendria que crear el objeto UI desde aca?
 public class Player extends Mob {
 
-    private final Keyboard keyboard;
+    public final Keyboard keyboard;
     private final Mechanics mechanics;
     private Animation down, up, left, right;
     public BufferedImage currentFrame, currentSwordFrame;
@@ -134,8 +134,8 @@ public class Player extends Mob {
         direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
         int startCol = 26, startRow = 39; // 26, 39 // 10, 27
-        // Suma la mitad del ancho de la hitbox para centrar la posicion horizontal dentro del tile
-        x = (startCol * tile) + hitbox.width / 2;
+        // Suma la mitad del ancho de la hitbox y resta un pixel para centrar la posicion horizontal dentro del tile
+        x = (startCol * tile) + hitbox.width / 2 - 1;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
          * player ocupa dos tiles verticales. Por ultimo se resta un pixel en caso de que la posicion este por encima
          * de un tile solido para evitar que se "trabe". */
@@ -144,6 +144,7 @@ public class Player extends Mob {
 
     /**
      * TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
+     * TODO Falta agregar el parametro zone
      */
     public void setPos(int map, int x, int y) {
         if (map == NASHE) world.zone = OUTSIDE;
@@ -454,7 +455,7 @@ public class Player extends Mob {
     @Override
     public void checkCollision() {
         flags.colliding = false;
-        game.collision.checkTile(this);
+        if (!keyboard.godMode) game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.mobs));
         hurt(game.collision.checkEntity(this, world.mobs));

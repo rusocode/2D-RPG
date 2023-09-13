@@ -357,8 +357,8 @@ public class Entity extends Stats {
     private boolean isOnCamera() {
         /* Si el render se encuentra con una entidad mas grande (por ejemplo, Skeleton) de lo normal, no lo va a
          * representar cuando el player visualice solo los pies de este, ya que la distancia del boss que comienza desde
-         * la esquina superior izquierda es mucha con respecto a la vision del player en pantalla. Por lo tanto se
-         * aumenta esa vision multiplicando el bossArea. */
+         * la esquina superior izquierda (o del centro?) es mucha con respecto a la vision del player en pantalla. Por
+         * lo tanto se aumenta esa vision multiplicando el bossArea. */
         int bossArea = 5;
         return x + tile * bossArea > world.player.x - world.player.screenX &&
                 x - tile < world.player.x + world.player.screenX &&
@@ -421,10 +421,20 @@ public class Entity extends Stats {
         }
     }
 
+    /**
+     * Obtiene la posicion central de x.
+     *
+     * @return la posicion central de x.
+     */
     public int getCenterX() {
         return x + image.getWidth() / 2;
     }
 
+    /**
+     * Obtiene la posicion central de y.
+     *
+     * @return la posicion central de y.
+     */
     public int getCenterY() {
         return y + image.getHeight() / 2;
     }
