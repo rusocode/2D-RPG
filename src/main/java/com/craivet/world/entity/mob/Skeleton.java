@@ -43,9 +43,9 @@ public class Skeleton extends Mob {
     @Override
     public void doActions() {
         // Si la distancia del player con respecto al mob es menor a 10 tiles
-        if (getTileDistance(game.world.player) < 10) moveTowardPlayer(60);
+        if (getTileDistance(game.world.player) < 10) moveTowardPlayer(30);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
-        if (!flags.hitting) isPlayerWithinAttackRange(tile * 6, tile * 6, 60);
+        if (!flags.hitting) isPlayerWithinAttackRange(tile * 6, tile * 4, 60);
     }
 
     @Override

@@ -90,11 +90,11 @@ public class Mob extends Entity {
                     inRange = true;
             }
             case LEFT -> {
-                if (world.player.getCenterX() < getCenterX() && xDis < horizontal && yDis < vertical)
+                if (world.player.getCenterX() < getCenterX() && yDis < vertical && xDis < horizontal)
                     inRange = true;
             }
             case RIGHT -> {
-                if (world.player.getCenterX() > getCenterX() && xDis < vertical && yDis < horizontal) // TODO No esta al reves?
+                if (world.player.getCenterX() > getCenterX() && yDis < vertical && xDis < horizontal)
                     inRange = true;
             }
         }
@@ -160,7 +160,7 @@ public class Mob extends Entity {
      * anterior condicion, cambia la direccion del mob hacia arriba, y en caso contrario cambia la direccion del mob
      * hacia abajo.
      * <p>
-     * TODO Es necesario el intervalo?
+     * El intervalo evita que el mob cambie de direccion de manera brusca.
      *
      * @param interval intervalo de tiempo en ms.
      */
