@@ -40,7 +40,7 @@ public class Orc extends Mob {
     @Override
     public void doActions() {
         if (flags.following) {
-            checkUnfollow(world.player, 15);
+            checkUnfollow(world.player, 10);
             game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
         } else {
             checkFollow(world.player, 5, 100);
@@ -57,7 +57,8 @@ public class Orc extends Mob {
 
     @Override
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILITY_KEY_DROP) dropItem(this, new Key(game, world, 1));
+        int probabilityKeyDrop = 100;
+        if (Utils.azar(100) <= probabilityKeyDrop) dropItem(this, new Key(game, world, 1));
     }
 
 }

@@ -73,36 +73,10 @@ public class Mob extends Entity {
      * @param rate       rate that determines if the mob attacks the player.
      */
     protected void isPlayerWithinAttackRange(int vertical, int horizontal, int rate) {
-        boolean inRange = false;
-        int xDis = getXDistance(world.player);
-        int yDis = getYDistance(world.player);
-        switch (direction) {
-            case DOWN -> {
-                /* Si la posicion y central del player es mayor a la posicion y central del mob, y si la distancia en y
-                 * del player con respecto al mob es menor a la distancia vertical dentro del rango de ataque, y si la
-                 * distancia en x del player con respecto al mob es menor a la distancia horizontal dentro del rango
-                 * de ataque. */
-                if (world.player.getCenterY() > getCenterY() && yDis < vertical && xDis < horizontal)
-                    inRange = true;
-            }
-            case UP -> {
-                if (world.player.getCenterY() < getCenterY() && yDis < vertical && xDis < horizontal)
-                    inRange = true;
-            }
-            case LEFT -> {
-                if (world.player.getCenterX() < getCenterX() && yDis < vertical && xDis < horizontal)
-                    inRange = true;
-            }
-            case RIGHT -> {
-                if (world.player.getCenterX() > getCenterX() && yDis < vertical && xDis < horizontal)
-                    inRange = true;
-            }
-        }
-        // Si el player esta dentro del rango de ataque del mob y si el rate se cumple
-        if (inRange && Utils.azar(rate) == 1) {
+        if (getXDistance(world.player) < horizontal && getYDistance(world.player) < vertical && Utils.azar(rate) == 1) {
             flags.hitting = true;
-            ss.movementNum = 1;
-            timer.movementCounter = 0; // TODO O se referia al contador de ataque?
+            ss.movementNum = 1; // ?
+            timer.attackAnimationCounter = 0; // ?
             timer.projectileCounter = 0;
         }
     }
