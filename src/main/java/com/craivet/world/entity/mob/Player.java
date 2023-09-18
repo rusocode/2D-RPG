@@ -11,7 +11,6 @@ import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.projectile.Fireball;
 import com.craivet.input.Keyboard;
-import com.craivet.physics.Mechanics;
 import com.craivet.world.entity.projectile.Projectile;
 import com.craivet.world.tile.Interactive;
 import com.craivet.utils.*;
@@ -24,7 +23,6 @@ import static com.craivet.gfx.Assets.*;
 public class Player extends Mob {
 
     public final Keyboard keyboard;
-    private final Mechanics mechanics;
     private Animation down, up, left, right;
     public BufferedImage currentFrame, currentSwordFrame;
 
@@ -37,7 +35,6 @@ public class Player extends Mob {
         setDefaultValues();
         setDefaultPos();
         keyboard = game.keyboard;
-        mechanics = new Mechanics(this);
     }
 
     /**
@@ -45,12 +42,12 @@ public class Player extends Mob {
      */
     @Override
     public void update() {
-        if (flags.hitting) hit();
+        if (flags.hitting) mechanics.hit(this);
         if (keyboard.checkKeys()) {
             getDirection();
             checkCollision();
             if (!flags.colliding && !keyboard.checkAccionKeys()) updatePosition(direction);
-            mechanics.checkDirectionSpeed(entity);
+            mechanics.checkDirectionSpeed(this, entity);
             checkAttack();
             keyboard.resetAccionKeys();
             if (keyboard.checkMovementKeys()) {
@@ -63,7 +60,7 @@ public class Player extends Mob {
             timer.timeStopMovement(this, 20);
 
         checkShoot();
-        checkTimers();
+        timer.checkTimers(this);
         checkStats();
     }
 
@@ -72,7 +69,7 @@ public class Player extends Mob {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screenX, screenY, null);
         else getCurrentItemFrame(g2);
-        drawRects(g2);
+        // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -172,7 +169,6 @@ public class Player extends Mob {
             if (weapon.type == Type.SWORD) game.playSound(sound_swing_weapon);
             if (weapon.type != Type.SWORD) game.playSound(sound_swing_axe);
             flags.hitting = true;
-            timer.attackAnimationCounter = 0;
             timer.attackCounter = 0;
         }
         flags.shooting = false;
@@ -197,12 +193,6 @@ public class Player extends Mob {
             projectile.subtractResource(this);
             timer.projectileCounter = 0;
         }
-    }
-
-    private void checkTimers() {
-        if (flags.invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE);
-        if (timer.projectileCounter < INTERVAL_PROJECTILE) timer.projectileCounter++;
-        if (timer.attackCounter < INTERVAL_WEAPON) timer.attackCounter++;
     }
 
     private void checkStats() {
@@ -285,7 +275,7 @@ public class Player extends Mob {
             Mob mob = world.mobs[world.map][i];
             if (!mob.flags.invincible && mob.type != Type.NPC) {
 
-                if (knockbackValue > 0) setKnockback(mob, attacker, knockbackValue);
+                if (knockbackValue > 0) mechanics.setKnockback(mob, attacker, knockbackValue);
 
                 int damage = Math.max(attack - mob.defense, 1);
                 mob.hp -= damage;

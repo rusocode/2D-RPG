@@ -80,6 +80,23 @@ public class UI {
 
     }
 
+    public void drawHpBar(Graphics2D g2, Entity entity) {
+        double oneScale = (double) tile / entity.maxHp;
+        double hpBarValue = oneScale * entity.hp;
+
+        /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se
+         * dibuje como valor negativo hacia la izquierda. */
+        if (hpBarValue < 0) hpBarValue = 0;
+
+        g2.setColor(new Color(35, 35, 35));
+        g2.fillRect(entity.screenX - 1, entity.screenY + tile + 4, tile + 2, 7);
+
+        g2.setColor(new Color(255, 0, 30));
+        g2.fillRect(entity.screenX, entity.screenY + tile + 5, (int) hpBarValue, 5);
+
+        entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
+    }
+
     private void renderMainWindow() {
         if (mainWindowState == MAIN_WINDOW) {
             changeFontSize(48);

@@ -46,7 +46,7 @@ public class Orc extends Mob {
             checkFollow(world.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
-        if (!flags.hitting) isPlayerWithinAttackRange(tile * 2, tile * 2, 30);
+        if (!flags.hitting) isPlayerWithinAttackRange(60, tile * 2, tile * 2, 30);
     }
 
     @Override

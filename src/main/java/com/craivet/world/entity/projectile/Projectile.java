@@ -18,22 +18,6 @@ public class Projectile extends Entity {
         super(game, world);
     }
 
-    public boolean haveResource(Entity entity) {
-        return false;
-    }
-
-    public void subtractResource(Entity entity) {
-    }
-
-    public void set(int worldX, int worldY, Direction direction, boolean alive, Entity entity) {
-        this.x = worldX;
-        this.y = worldY;
-        this.direction = direction;
-        flags.alive = alive;
-        this.entity = entity;
-        this.hp = this.maxHp; // Resetea la vida al valor maximo cada vez que lanza un proyectil
-    }
-
     /**
      * Actualiza la posicion del proyectil si no colisiona con un mob o si no se termina la vida de este. En caso
      * contrario, deja de vivir.
@@ -78,6 +62,22 @@ public class Projectile extends Entity {
             }
             timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);
         }
+    }
+
+    public boolean haveResource(Entity entity) {
+        return false;
+    }
+
+    public void subtractResource(Entity entity) {
+    }
+
+    public void set(int worldX, int worldY, Direction direction, boolean alive, Entity entity) {
+        this.x = worldX;
+        this.y = worldY;
+        this.direction = direction;
+        flags.alive = alive;
+        this.entity = entity;
+        this.hp = this.maxHp; // Resetea la vida al valor maximo cada vez que lanza un proyectil
     }
 
 }

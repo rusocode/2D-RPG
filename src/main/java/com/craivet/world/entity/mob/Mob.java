@@ -68,16 +68,18 @@ public class Mob extends Entity {
     /**
      * Checks if the player is within the mob's attack range. In case this is true, the mob can hit.
      *
+     * @param interval   interval between each attack.
      * @param vertical   vertical distance within attack range.
      * @param horizontal horizontal distance within the attack range.
      * @param rate       rate that determines if the mob attacks the player.
      */
-    protected void isPlayerWithinAttackRange(int vertical, int horizontal, int rate) {
-        if (getXDistance(world.player) < horizontal && getYDistance(world.player) < vertical && Utils.azar(rate) == 1) {
-            flags.hitting = true;
-            ss.movementNum = 1; // ?
-            timer.attackAnimationCounter = 0; // ?
-            timer.projectileCounter = 0;
+    protected void isPlayerWithinAttackRange(int interval, int vertical, int horizontal, int rate) {
+        if (++timer.attackCounter > interval) {
+            if (getXDistance(world.player) < horizontal && getYDistance(world.player) < vertical && Utils.azar(rate) == 1) {
+                flags.hitting = true;
+                timer.projectileCounter = 0;
+                timer.attackCounter = 0;
+            }
         }
     }
 
@@ -139,6 +141,7 @@ public class Mob extends Entity {
      * @param interval intervalo de tiempo en ms.
      */
     protected void moveTowardPlayer(int interval) {
+        // TODO El metodo de arriba tendria que combinarse con este y que el mob pegue cuando esten en la misma direccion
         if (++timer.directionCounter > interval) { // TODO o =?
             if (getXDistance(game.world.player) > getYDistance(game.world.player))
                 direction = game.world.player.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;

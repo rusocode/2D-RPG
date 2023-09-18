@@ -2,8 +2,11 @@ package com.craivet.utils;
 
 import com.craivet.Direction;
 import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.Type;
 
 import java.awt.*;
+
+import static com.craivet.utils.Global.*;
 
 /**
  * Temporiza las acciones del juego.
@@ -14,7 +17,7 @@ import java.awt.*;
 public class Timer {
 
     // Contadores
-    public int attackAnimationCounter;
+    public int attackAnimationCounter; // Contador para la animacion de ataque que cambia entre el frame de ataque 1 y 2
     public int attackCounter;
     public int deadCounter;
     public int directionCounter;
@@ -113,10 +116,24 @@ public class Timer {
     }
 
     /**
+     * Controla los temporizadores.
+     *
+     * @param entity entidad.
+     */
+    public void checkTimers(Entity entity) {
+        // Temporiza el movimiento si la entidad no es un player
+        if (entity.type != Type.PLAYER) timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
+        // Controla el intervalo de ataque si la entidad es un player
+        if (entity.type == Type.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
+        if (entity.flags.invincible) timeInvincible(entity, INTERVAL_INVINCIBLE);
+        if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
+    }
+
+    /**
      * Reinicia los contadores.
      */
     public void resetCounters() {
-        attackAnimationCounter = 0;
+        attackAnimationCounter = 0; // TODO Hace falta esto?
         attackCounter = 0;
         deadCounter = 0;
         directionCounter = 0;

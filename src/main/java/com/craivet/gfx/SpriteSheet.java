@@ -1,6 +1,7 @@
 package com.craivet.gfx;
 
 import com.craivet.utils.Utils;
+import com.craivet.world.entity.Entity;
 
 import java.awt.image.BufferedImage;
 
@@ -144,6 +145,47 @@ public class SpriteSheet {
      */
     private BufferedImage crop(int x, int y, int w, int h) {
         return image.getSubimage(x, y, w, h);
+    }
+
+    /**
+     * Obtiene el frame actual.
+     *
+     * @param entity entidad.
+     * @return el frame actual de la entidad.
+     */
+    public BufferedImage getCurrentFrame(Entity entity) {
+        int i = 0;
+
+        if (!entity.flags.hitting) {
+            if (movement.length == 2) { // Si se trata de entidades de dos frames
+                switch (entity.direction) {
+                    case DOWN, UP, LEFT, RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
+                }
+            } else {
+                switch (entity.direction) {
+                    case DOWN -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
+                    case UP -> i = movementNum == 1 || entity.flags.colliding ? 2 : 3;
+                    case LEFT -> i = movementNum == 1 || entity.flags.colliding ? 4 : 5;
+                    case RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 6 : 7;
+                }
+            }
+        } else {
+            switch (entity.direction) {
+                case DOWN -> i = attackNum == 1 ? 0 : 1;
+                case UP -> {
+                    // Se resta el ancho de la imagen en caso de que el frame sea mas grande al tile
+                    entity.tempScreenY -= entity.image.getHeight();
+                    i = attackNum == 1 ? 2 : 3;
+                }
+                case LEFT -> {
+                    entity.tempScreenX -= entity.image.getWidth();
+                    i = attackNum == 1 ? 4 : 5;
+                }
+                case RIGHT -> i = attackNum == 1 ? 6 : 7;
+            }
+        }
+
+        return !entity.flags.hitting ? movement[i] : attack[i];
     }
 
     private int getWidth() {

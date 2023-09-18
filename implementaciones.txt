@@ -6,3 +6,4 @@
 # Redimensionar todos los spritesheet a 256x256 para que se comprima mejor al ser potencia de 2 (averiguar).
 # Los items no tienen que dropear en el mismo lugar donde ya hay otro.
 # Para que el drop se tenga que ajustar al tile, el movimiento de los mobs y del player tendrian que ser speed += tile?
+# Rellenar los espacios sobrantes de los dungeons con tiles
