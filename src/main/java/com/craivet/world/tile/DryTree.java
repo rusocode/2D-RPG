@@ -15,13 +15,13 @@ public class DryTree extends Interactive {
 
     public DryTree(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        image = Utils.scaleImage(itile_drytree, tile, tile);
+        sheet.frame = Utils.scaleImage(itile_drytree, tile, tile);
         destructible = true;
-        hp = 1;
+        stats.hp = 1;
     }
 
     public boolean isCorrectWeapon(Item weapon) {
-        return weapon.type == Type.AXE;
+        return weapon.stats.type == Type.AXE;
     }
 
     public Color getParticleColor() {

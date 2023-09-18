@@ -49,8 +49,8 @@ public class Minimap {
 
             // Dibuja un cuadrado rojo que representa la posicion del player
             double scale = (double) (tile * MAX_MAP_COL) / width;
-            int playerX = (int) (x + (world.player.x + world.player.hitbox.x) / scale);
-            int playerY = (int) (y + (world.player.y + world.player.hitbox.y) / scale);
+            int playerX = (int) (x + (world.player.pos.x + world.player.stats.hitbox.x) / scale);
+            int playerY = (int) (y + (world.player.pos.y + world.player.stats.hitbox.y) / scale);
             int playerSize = (int) (tile / scale);
             g2.setColor(Color.red);
             g2.fillRect(playerX, playerY, playerSize, playerSize);

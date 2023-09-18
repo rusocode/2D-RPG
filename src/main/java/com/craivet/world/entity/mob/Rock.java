@@ -21,16 +21,16 @@ public class Rock extends Mob {
 
     public Rock(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        name = NAME;
-        type = Type.NPC;
-        image = Utils.scaleImage(bigrock, tile, tile);
-        speed = 1;
-        hitbox.x = 0;
-        hitbox.y = 6;
-        hitbox.width = tile - hitbox.x - 1;
-        hitbox.height = tile - hitbox.y;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
+        stats.name = NAME;
+        stats.type = Type.NPC;
+        sheet.frame = Utils.scaleImage(bigrock, tile, tile);
+        stats.speed = 1;
+        stats.hitbox.x = 0;
+        stats.hitbox.y = 6;
+        stats.hitbox.width = tile - stats.hitbox.x - 1;
+        stats.hitbox.height = tile - stats.hitbox.y;
+        stats.hitboxDefaultX = stats.hitbox.x;
+        stats.hitboxDefaultY = stats.hitbox.y;
         dialogueSet = -1;
         initDialogue();
     }
@@ -42,14 +42,14 @@ public class Rock extends Mob {
 
     @Override
     public void move(Direction direction) {
-        this.direction = direction;
+        stats.direction = direction;
         checkCollision();
         if (!flags.colliding) {
             switch (direction) {
-                case DOWN -> y += speed;
-                case UP -> y -= speed;
-                case LEFT -> x -= speed;
-                case RIGHT -> x += speed;
+                case DOWN -> pos.y += stats.speed;
+                case UP -> pos.y -= stats.speed;
+                case LEFT -> pos.x -= stats.speed;
+                case RIGHT -> pos.x += stats.speed;
             }
         }
 
@@ -77,20 +77,20 @@ public class Rock extends Mob {
 
         // Agrega las placas a la lista
         for (int i = 0; i < world.interactives[1].length; i++) {
-            if (world.interactives[world.map][i] != null && world.interactives[world.map][i].name != null && world.interactives[world.map][i].name.equals(MetalPlate.item_name))
+            if (world.interactives[world.map][i] != null && world.interactives[world.map][i].stats.name != null && world.interactives[world.map][i].stats.name.equals(MetalPlate.item_name))
                 plates.add(world.interactives[world.map][i]);
         }
 
         // Agrega las rocas a la lista
         for (int i = 0; i < world.mobs[1].length; i++) {
-            if (world.mobs[world.map][i] != null && world.mobs[world.map][i].name.equals(Rock.NAME))
+            if (world.mobs[world.map][i] != null && world.mobs[world.map][i].stats.name.equals(Rock.NAME))
                 rocks.add(world.mobs[world.map][i]);
         }
 
         // Itera las placas y verifica la distancia con la roca
         for (Interactive plate : plates) {
-            int xDistance = Math.abs(x - plate.x);
-            int yDistance = Math.abs(y - plate.y);
+            int xDistance = Math.abs(pos.x - plate.pos.x);
+            int yDistance = Math.abs(pos.y - plate.pos.y);
             int distance = Math.max(xDistance, yDistance);
             if (distance < 8) { // Vincula la roca a la placa si esta a menos de 8 pixeles de distancia
                 if (linkedEntity == null) {
@@ -108,7 +108,7 @@ public class Rock extends Mob {
         // Si todas las rocas estan en las placas, la puerta de hierro se abre
         if (c == rocks.size()) {
             for (int i = 0; i < world.items[1].length; i++) {
-                if (world.items[world.map][i] != null && world.items[world.map][i].name.equals(DoorIron.NAME)) {
+                if (world.items[world.map][i] != null && world.items[world.map][i].stats.name.equals(DoorIron.NAME)) {
                     world.items[world.map][i] = null;
                     game.playSound(sound_door_iron_opening);
                 }

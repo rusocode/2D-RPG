@@ -39,16 +39,16 @@ public class Timer {
      * @param interval intervalo de tiempo en ms.
      */
     public void timeMovement(Entity entity, int interval) {
-        if (++movementCounter >= interval - entity.speed) {
-            if (entity.ss.movementNum == 1) entity.ss.movementNum = 2;
-            else if (entity.ss.movementNum == 2) entity.ss.movementNum = 1;
+        if (++movementCounter >= interval - entity.stats.speed) {
+            if (entity.sheet.movementNum == 1) entity.sheet.movementNum = 2;
+            else if (entity.sheet.movementNum == 2) entity.sheet.movementNum = 1;
             movementCounter = 0;
         }
     }
 
     public void timeStopMovement(Entity entity, int interval) {
         if (++stopMovementCounter >= interval) {
-            entity.ss.movementNum = 1;
+            entity.sheet.movementNum = 1;
             stopMovementCounter = 0;
         }
     }
@@ -76,10 +76,10 @@ public class Timer {
     public void timeDirection(Entity entity, int interval) {
         if (++directionCounter >= interval) {
             int i = Utils.azar(100);
-            if (i <= 25) entity.direction = Direction.DOWN;
-            if (i > 25 && i <= 50) entity.direction = Direction.UP;
-            if (i > 50 && i <= 75) entity.direction = Direction.LEFT;
-            if (i > 75) entity.direction = Direction.RIGHT;
+            if (i <= 25) entity.stats.direction = Direction.DOWN;
+            if (i > 25 && i <= 50) entity.stats.direction = Direction.UP;
+            if (i > 50 && i <= 75) entity.stats.direction = Direction.LEFT;
+            if (i > 75) entity.stats.direction = Direction.RIGHT;
             directionCounter = 0;
         }
     }
@@ -110,7 +110,7 @@ public class Timer {
     public void timerKnockback(Entity entity, int interval) {
         if (++knockbackCounter >= interval) {
             entity.flags.knockback = false;
-            entity.speed = entity.defaultSpeed;
+            entity.stats.speed = entity.stats.defaultSpeed;
             knockbackCounter = 0;
         }
     }
@@ -122,9 +122,9 @@ public class Timer {
      */
     public void checkTimers(Entity entity) {
         // Temporiza el movimiento si la entidad no es un player
-        if (entity.type != Type.PLAYER) timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
+        if (entity.stats.type != Type.PLAYER) timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
         // Controla el intervalo de ataque si la entidad es un player
-        if (entity.type == Type.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
+        if (entity.stats.type == Type.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
         if (entity.flags.invincible) timeInvincible(entity, INTERVAL_INVINCIBLE);
         if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
     }

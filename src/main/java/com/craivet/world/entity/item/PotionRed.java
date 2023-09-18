@@ -18,27 +18,27 @@ public class PotionRed extends Item {
      */
     public PotionRed(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = NAME;
-        type = Type.CONSUMABLE;
-        image = Utils.scaleImage(potion_red, tile, tile);
-        description = "[" + name + "]\nHeals your life by " + value + ".";
-        price = 25;
+        stats.name = NAME;
+        stats.type = Type.CONSUMABLE;
+        sheet.frame = Utils.scaleImage(potion_red, tile, tile);
+        stats.description = "[" + stats.name + "]\nHeals your life by " + value + ".";
+        stats.price = 25;
         value = 2;
-        this.amount = amount;
-        stackable = true;
-        hitbox.x = 3;
-        hitbox.y = 0;
-        hitbox.width = 25;
-        hitbox.height = 32;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
+        stats.amount = amount;
+        stats.stackable = true;
+        stats.hitbox.x = 3;
+        stats.hitbox.y = 0;
+        stats.hitbox.width = 25;
+        stats.hitbox.height = 32;
+        stats.hitboxDefaultX = stats.hitbox.x;
+        stats.hitboxDefaultY = stats.hitbox.y;
     }
 
     @Override
     public boolean use(Entity entity) {
         game.playSound(sound_drink_potion);
-        entity.hp += value;
-        if (entity.hp > entity.maxHp) entity.hp = entity.maxHp;
+        entity.stats.hp += value;
+        if (entity.stats.hp > entity.stats.maxHp) entity.stats.hp = entity.stats.maxHp;
         return true;
     }
 

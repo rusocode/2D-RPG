@@ -14,12 +14,12 @@ public class Lantern extends Item {
 
     public Lantern(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = NAME;
-        type = Type.LIGHT;
-        image = Utils.scaleImage(lantern, tile, tile);
-        description = "[" + name + "]\nIlluminaties your \nsurroundings.";
-        price = 200;
-        lightRadius = 350;
+        stats.name = NAME;
+        stats.type = Type.LIGHT;
+        sheet.frame = Utils.scaleImage(lantern, tile, tile);
+        stats.description = "[" + stats.name + "]\nIlluminaties your \nsurroundings.";
+        stats.price = 200;
+        stats.lightRadius = 350;
     }
 
 }

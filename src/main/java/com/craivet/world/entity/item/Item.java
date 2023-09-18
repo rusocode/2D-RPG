@@ -58,11 +58,11 @@ public class Item extends Entity {
         int nextX = getLeftHitbox();
         int nextY = getTopHitbox();
 
-        switch (entity.direction) {
-            case DOWN -> nextY = getBottomHitbox() + entity.speed;
-            case UP -> nextY = getTopHitbox() - entity.speed;
-            case LEFT -> nextX = getLeftHitbox() - entity.speed;
-            case RIGHT -> nextX = getRightHitbox() + entity.speed;
+        switch (entity.stats.direction) {
+            case DOWN -> nextY = getBottomHitbox() + entity.stats.speed;
+            case UP -> nextY = getTopHitbox() - entity.stats.speed;
+            case LEFT -> nextX = getLeftHitbox() - entity.stats.speed;
+            case RIGHT -> nextX = getRightHitbox() + entity.stats.speed;
         }
 
         int row = nextY / tile;
@@ -71,7 +71,7 @@ public class Item extends Entity {
         // Si el item iterado es igual a la posicion adyacente de la entidad
         for (int i = 0; i < items[1].length; i++) {
             if (items[world.map][i] != null)
-                if (items[world.map][i].getRow() == row && items[world.map][i].getCol() == col && items[world.map][i].name.equals(name))
+                if (items[world.map][i].getRow() == row && items[world.map][i].getCol() == col && items[world.map][i].stats.name.equals(name))
                     return i;
         }
 
@@ -84,7 +84,7 @@ public class Item extends Entity {
      * @return la posicion superior de la hitbox.
      */
     private int getTopHitbox() {
-        return entity.y + entity.hitbox.y;
+        return entity.pos.y + entity.stats.hitbox.y;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Item extends Entity {
      * @return la posicion inferior de la hitbox.
      */
     private int getBottomHitbox() {
-        return entity.y + entity.hitbox.y + entity.hitbox.height;
+        return entity.pos.y + entity.stats.hitbox.y + entity.stats.hitbox.height;
     }
 
     /**
@@ -102,7 +102,7 @@ public class Item extends Entity {
      * @return la posicion izquierda de la hitbox.
      */
     private int getLeftHitbox() {
-        return entity.x + entity.hitbox.x;
+        return entity.pos.x + entity.stats.hitbox.x;
     }
 
     /**
@@ -111,7 +111,7 @@ public class Item extends Entity {
      * @return la posicion derecha de la hitbox.
      */
     private int getRightHitbox() {
-        return entity.x + entity.hitbox.x + entity.hitbox.width;
+        return entity.pos.x + entity.stats.hitbox.x + entity.stats.hitbox.width;
     }
 
     /**
@@ -120,7 +120,7 @@ public class Item extends Entity {
      * @return la fila de la entiad.
      */
     private int getRow() {
-        return (y + hitbox.y) / tile;
+        return (pos.y + stats.hitbox.y) / tile;
     }
 
     /**
@@ -129,7 +129,7 @@ public class Item extends Entity {
      * @return la columna de la entiad.
      */
     private int getCol() {
-        return (x + hitbox.x) / tile;
+        return (pos.x + stats.hitbox.x) / tile;
     }
 
 }

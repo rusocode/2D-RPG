@@ -86,8 +86,8 @@ public class World {
             for (int i = 0; i < game.aStar.pathList.size(); i++) {
                 int worldX = game.aStar.pathList.get(i).col * tile;
                 int worldY = game.aStar.pathList.get(i).row * tile;
-                int screenX = worldX - player.x + player.screenX;
-                int screenY = worldY - player.y + player.screenY;
+                int screenX = worldX - player.pos.x + player.stats.screenX;
+                int screenY = worldY - player.pos.y + player.stats.screenY;
                 g2.fillRect(screenX, screenY, tile, tile);
             }
         }

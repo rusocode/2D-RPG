@@ -14,12 +14,12 @@ public class ShieldWood extends Item {
 
 	public ShieldWood(Game game, World world, int... pos) {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-		name = NAME;
-		type = Type.SHIELD;
-		image = Utils.scaleImage(shield_wood, tile, tile);
-		description = "[" + name + "]\nMade by wood.";
-		price = 25;
-		defenseValue = 1;
+		stats.name = NAME;
+		stats.type = Type.SHIELD;
+		sheet.frame = Utils.scaleImage(shield_wood, tile, tile);
+		stats.description = "[" + stats.name + "]\nMade by wood.";
+		stats.price = 25;
+		stats.defenseValue = 1;
 	}
 
 }

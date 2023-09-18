@@ -14,22 +14,22 @@ public class RedSlime extends Mob {
 
     public RedSlime(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        name = "Red Slime";
-        type = Type.HOSTILE;
-        speed = defaultSpeed = 2;
-        hp = maxHp = 5;
-        exp = 3;
-        attack = 3;
-        defense = 1;
-        hitbox.x = 3;
-        hitbox.y = 18;
-        hitbox.width = tile - hitbox.x - 4;
-        hitbox.height = tile - hitbox.y;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
-        projectile = new StickyBall(game, world);
-        ss.loadMovementFrames(redslime, 16, 16, 1);
-        image = ss.movement[0];
+        stats.name = "Red Slime";
+        stats.type = Type.HOSTILE;
+        stats.speed = stats.defaultSpeed = 2;
+        stats.hp = stats.maxHp = 5;
+        stats.exp = 3;
+        stats.attack = 3;
+        stats.defense = 1;
+        stats.hitbox.x = 3;
+        stats.hitbox.y = 18;
+        stats.hitbox.width = tile - stats.hitbox.x - 4;
+        stats.hitbox.height = tile - stats.hitbox.y;
+        stats.hitboxDefaultX = stats.hitbox.x;
+        stats.hitboxDefaultY = stats.hitbox.y;
+        stats.projectile = new StickyBall(game, world);
+        sheet.loadMovementFrames(redslime, 16, 16, 1);
+        sheet.frame = sheet.movement[0];
     }
 
     @Override
@@ -56,11 +56,11 @@ public class RedSlime extends Mob {
     }
 
     private void checkShoot() {
-        if (Utils.azar(100) == 1 && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
-            projectile.set(x + 8, y + 17, direction, true, this);
+        if (Utils.azar(100) == 1 && !stats.projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
+            stats.projectile.set(pos.x + 8, pos.y + 17, stats.direction, true, this);
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {
-                    world.projectiles[world.map][i] = projectile;
+                    world.projectiles[world.map][i] = stats.projectile;
                     break;
                 }
             }

@@ -42,13 +42,13 @@ public class GameState implements State {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 8));
             int x = 8, y = (int) (WINDOW_HEIGHT - tile * 3.2), gap = 15;
             String map = game.world.maps.get(game.world.map);
-            int posX = (game.world.player.x + game.world.player.hitbox.x) / tile;
-            int posY = (game.world.player.y + game.world.player.hitbox.y) / tile;
+            int posX = (game.world.player.pos.x + game.world.player.stats.hitbox.x) / tile;
+            int posY = (game.world.player.pos.y + game.world.player.stats.hitbox.y) / tile;
             g2.drawString("God Mode: " + game.keyboard.godMode, x, y);
             y += gap;
             g2.drawString(map + " (" + posX + ", " + posY + ")", x, y);
             y += gap;
-            g2.drawString("x: " + (game.world.player.x + game.world.player.hitbox.x) + " y: " + (game.world.player.y + game.world.player.hitbox.y), x, y);
+            g2.drawString("x: " + (game.world.player.pos.x + game.world.player.stats.hitbox.x) + " y: " + (game.world.player.pos.y + game.world.player.stats.hitbox.y), x, y);
             y += gap;
             if (game.gameTimer.showFPS) {
                 g2.drawString("FPS: " + game.gameTimer.framesInRender, x, y);

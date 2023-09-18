@@ -81,18 +81,18 @@ public class UI {
     }
 
     public void drawHpBar(Graphics2D g2, Entity entity) {
-        double oneScale = (double) tile / entity.maxHp;
-        double hpBarValue = oneScale * entity.hp;
+        double oneScale = (double) tile / entity.stats.maxHp;
+        double hpBarValue = oneScale * entity.stats.hp;
 
         /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se
          * dibuje como valor negativo hacia la izquierda. */
         if (hpBarValue < 0) hpBarValue = 0;
 
         g2.setColor(new Color(35, 35, 35));
-        g2.fillRect(entity.screenX - 1, entity.screenY + tile + 4, tile + 2, 7);
+        g2.fillRect(entity.stats.screenX - 1, entity.stats.screenY + tile + 4, tile + 2, 7);
 
         g2.setColor(new Color(255, 0, 30));
-        g2.fillRect(entity.screenX, entity.screenY + tile + 5, (int) hpBarValue, 5);
+        g2.fillRect(entity.stats.screenX, entity.stats.screenY + tile + 5, (int) hpBarValue, 5);
 
         entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
     }
@@ -183,7 +183,7 @@ public class UI {
         int x = tile / 2, y = tile / 2, i = 0;
 
         // Dibuja los corazones vacios
-        while (i < world.player.maxHp / 2) {
+        while (i < world.player.stats.maxHp / 2) {
             g2.drawImage(heartBlank, x, y, null);
             i++;
             x += tile;
@@ -195,10 +195,10 @@ public class UI {
 
         /* Dibuja los corazones medios y llenos (vida actual) sobre los corazones vacios de izquierda a derecha mientras
          * el player tenga vida. */
-        while (i < world.player.hp) {
+        while (i < world.player.stats.hp) {
             g2.drawImage(heartHalf, x, y, null); // Dibuja medio corazon
             i++; // Incrementa la posicion del siguiente valor de vida
-            if (i < world.player.hp) { // Si todavia tiene vida, dibuja la otra parte del corazon (osea, un corazon lleno)
+            if (i < world.player.stats.hp) { // Si todavia tiene vida, dibuja la otra parte del corazon (osea, un corazon lleno)
                 g2.drawImage(heartFull, x, y, null);
                 i++;
             }
@@ -209,7 +209,7 @@ public class UI {
         x = (tile / 2) - 4;
         y = (int) (tile * 1.5);
         i = 0;
-        while (i < world.player.maxMana) {
+        while (i < world.player.stats.maxMana) {
             g2.drawImage(manaBlank, x, y, null);
             i++;
             x += (tile / 2) + 1;
@@ -218,7 +218,7 @@ public class UI {
         // Dibuja la mana actual
         x = (tile / 2) - 4;
         i = 0;
-        while (i < world.player.mana) {
+        while (i < world.player.stats.mana) {
             g2.drawImage(manaFull, x, y, null);
             i++;
             x += (tile / 2) + 1;
@@ -315,60 +315,60 @@ public class UI {
         textY = y + tile;
         String value;
 
-        value = String.valueOf(world.player.lvl);
+        value = String.valueOf(world.player.stats.lvl);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = world.player.hp + "/" + world.player.maxHp;
+        value = world.player.stats.hp + "/" + world.player.stats.maxHp;
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = world.player.mana + "/" + world.player.maxMana;
+        value = world.player.stats.mana + "/" + world.player.stats.maxMana;
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.strength);
+        value = String.valueOf(world.player.stats.strength);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.dexterity);
+        value = String.valueOf(world.player.stats.dexterity);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.attack);
+        value = String.valueOf(world.player.stats.attack);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.defense);
+        value = String.valueOf(world.player.stats.defense);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.exp);
+        value = String.valueOf(world.player.stats.exp);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.nextLvlExp);
+        value = String.valueOf(world.player.stats.nextLvlExp);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.gold);
+        value = String.valueOf(world.player.stats.gold);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        g2.drawImage(world.player.weapon.image, tailX - 35, textY - 5, null);
+        g2.drawImage(world.player.stats.weapon.sheet.frame, tailX - 35, textY - 5, null);
         textY += gap;
 
-        g2.drawImage(world.player.shield.image, tailX - 35, textY + 5, null);
+        g2.drawImage(world.player.stats.shield.sheet.frame, tailX - 35, textY + 5, null);
 
     }
 
@@ -400,18 +400,18 @@ public class UI {
         for (int i = 0; i < entity.inventory.size(); i++) {
 
             // Marca de color amarillo el item seleccionado
-            if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield || entity.inventory.get(i) == entity.light) {
+            if (entity.inventory.get(i) == entity.stats.weapon || entity.inventory.get(i) == entity.stats.shield || entity.inventory.get(i) == entity.stats.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRect(slotX, slotY, tile, tile);
             }
 
             // Dibuja el item
-            g2.drawImage(entity.inventory.get(i).image, slotX, slotY, null);
+            g2.drawImage(entity.inventory.get(i).sheet.frame, slotX, slotY, null);
 
             // Dibuja la cantidad del item si este tiene mas de 1
-            if (entity.inventory.get(i).amount > 1) {
+            if (entity.inventory.get(i).stats.amount > 1) {
                 int amountX, amountY;
-                String amount = String.valueOf(entity.inventory.get(i).amount);
+                String amount = String.valueOf(entity.inventory.get(i).stats.amount);
                 amountX = getXforAlignToRightText(amount, slotX + gap);
                 amountY = slotY + tile - 2;
                 g2.setColor(Color.white);
@@ -449,7 +449,7 @@ public class UI {
             if (itemIndex < entity.inventory.size()) {
                 renderSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
                 changeFontSize(14);
-                for (String line : entity.inventory.get(itemIndex).description.split("\n")) {
+                for (String line : entity.inventory.get(itemIndex).stats.description.split("\n")) {
                     g2.drawString(line, textX, textY);
                     textY += 32;
                 }
@@ -699,10 +699,10 @@ public class UI {
             counter = 0;
             game.state = PLAY_STATE;
             world.map = game.event.map;
-            world.player.x = (game.event.col * tile) + world.player.hitbox.width / 2;
-            world.player.y = (game.event.row * tile) - world.player.hitbox.height;
-            game.event.previousEventX = world.player.x;
-            game.event.previousEventY = world.player.y;
+            world.player.pos.x = (game.event.col * tile) + world.player.stats.hitbox.width / 2;
+            world.player.pos.y = (game.event.row * tile) - world.player.stats.hitbox.height;
+            game.event.previousEventX = world.player.pos.x;
+            game.event.previousEventY = world.player.pos.y;
             world.changeArea();
         }
     }
@@ -753,20 +753,20 @@ public class UI {
             // Imagen del oro
             g2.drawImage(gold, x + 6, y + 10, null);
             // Precio de compra del item
-            int price = entity.inventory.get(itemIndex).price;
+            int price = entity.inventory.get(itemIndex).stats.price;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
             g2.drawString(text, x, y + 24);
 
             // Compra un item
             if (game.keyboard.enter) {
-                if (entity.inventory.get(itemIndex).price > world.player.gold)
+                if (entity.inventory.get(itemIndex).stats.price > world.player.stats.gold)
                     addMessageToConsole("You need more gold to buy that!");
                 else {
                     // TODO Especificar la cantidad de items a comprar
                     if (world.player.canPickup(entity.inventory.get(itemIndex))) {
                         game.playSound(sound_trade_buy);
-                        world.player.gold -= entity.inventory.get(itemIndex).price;
+                        world.player.stats.gold -= entity.inventory.get(itemIndex).stats.price;
                     } else addMessageToConsole("You cannot carry any more!");
                 }
             }
@@ -779,7 +779,7 @@ public class UI {
         width = (int) (tile * 6.5);
         height = tile * 2;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Gold: " + world.player.gold, x + 24, y + 40);
+        g2.drawString("Gold: " + world.player.stats.gold, x + 24, y + 40);
 
     }
 
@@ -799,21 +799,21 @@ public class UI {
             // Imagen del oro
             g2.drawImage(gold, x + 6, y + 10, null);
             // Precio de venta del item
-            int price = world.player.inventory.get(itemIndex).price / 2;
+            int price = world.player.inventory.get(itemIndex).stats.price / 2;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
             g2.drawString(text, x, y + 24);
 
             // Vende un item
             if (game.keyboard.enter) {
-                if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
+                if (world.player.inventory.get(itemIndex) == world.player.stats.weapon || world.player.inventory.get(itemIndex) == world.player.stats.shield)
                     addMessageToConsole("You cannot sell an equipped item!");
                 else {
                     game.playSound(sound_trade_sell);
-                    if (world.player.inventory.get(itemIndex).amount > 1)
-                        world.player.inventory.get(itemIndex).amount--;
+                    if (world.player.inventory.get(itemIndex).stats.amount > 1)
+                        world.player.inventory.get(itemIndex).stats.amount--;
                     else world.player.inventory.remove(itemIndex);
-                    world.player.gold += price;
+                    world.player.stats.gold += price;
                 }
             }
 
@@ -825,7 +825,7 @@ public class UI {
         width = (int) (tile * 6.5);
         height = tile * 2;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Gold: " + world.player.gold, x + 24, y + 40);
+        g2.drawString("Gold: " + world.player.stats.gold, x + 24, y + 40);
 
     }
 
@@ -847,7 +847,7 @@ public class UI {
                 world.environment.lighting.filterAlpha = 0F;
                 world.environment.lighting.dayState = world.environment.lighting.day;
                 world.environment.lighting.dayCounter = 0;
-                world.player.currentFrame = world.player.ss.down[0];
+                world.player.currentFrame = world.player.sheet.down[0];
                 game.state = PLAY_STATE;
                 counter = 0; // Resetea el contador para volver a generar el efecto desde 0
             }

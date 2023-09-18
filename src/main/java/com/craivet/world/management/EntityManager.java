@@ -64,7 +64,7 @@ public class EntityManager implements State {
                 /* Agrega los items solidos (door, chest, etc.) a la lista de entidades para poder ordenarlos
                  * con respecto a la posicion y del player. Los items que no son solidos se agregan a la lista de
                  * items. */
-                if (!world.items[world.map][i].solid) items.add(world.items[world.map][i]);
+                if (!world.items[world.map][i].stats.solid) items.add(world.items[world.map][i]);
                 else entities.add(world.items[world.map][i]);
             }
         }
@@ -84,7 +84,7 @@ public class EntityManager implements State {
          * item solido o un mob, este se dibuja por debajo, y cuando el player se posiciona por debajo, este se
          * dibuja por arriba. Esto se debe porque estan todos en una misma lista y se ordenan de manera ascendente
          * por la posicion de la coordena y de cada entidad. */
-        entities.sort(Comparator.comparingInt(e -> e.y + e.hitbox.y));
+        entities.sort(Comparator.comparingInt(e -> e.pos.y + e.stats.hitbox.y));
 
         // Ahora se dibujan por orden ascendente
         for (Entity item : items) item.render(g2);

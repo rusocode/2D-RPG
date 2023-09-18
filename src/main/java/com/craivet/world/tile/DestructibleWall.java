@@ -16,13 +16,13 @@ public class DestructibleWall extends Interactive {
 
     public DestructibleWall(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        image = Utils.scaleImage(itile_destructiblewall, tile, tile);
+        sheet.frame = Utils.scaleImage(itile_destructiblewall, tile, tile);
         destructible = true;
-        hp = 3;
+        stats.hp = 3;
     }
 
     public boolean isCorrectWeapon(Item weapon) {
-        return weapon.type == Type.PICKAXE;
+        return weapon.stats.type == Type.PICKAXE;
     }
 
     public Color getParticleColor() {

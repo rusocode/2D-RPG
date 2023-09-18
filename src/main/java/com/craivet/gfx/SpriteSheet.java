@@ -18,6 +18,9 @@ public class SpriteSheet {
     public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
     public BufferedImage[] weapon; // Item con un frame para cada direccion
 
+    // Representa el primer frame de cada entidad
+    public BufferedImage frame;
+
     public SpriteSheet() {
     }
 
@@ -158,11 +161,11 @@ public class SpriteSheet {
 
         if (!entity.flags.hitting) {
             if (movement.length == 2) { // Si se trata de entidades de dos frames
-                switch (entity.direction) {
+                switch (entity.stats.direction) {
                     case DOWN, UP, LEFT, RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
                 }
             } else {
-                switch (entity.direction) {
+                switch (entity.stats.direction) {
                     case DOWN -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
                     case UP -> i = movementNum == 1 || entity.flags.colliding ? 2 : 3;
                     case LEFT -> i = movementNum == 1 || entity.flags.colliding ? 4 : 5;
@@ -170,15 +173,15 @@ public class SpriteSheet {
                 }
             }
         } else {
-            switch (entity.direction) {
+            switch (entity.stats.direction) {
                 case DOWN -> i = attackNum == 1 ? 0 : 1;
                 case UP -> {
                     // Se resta el ancho de la imagen en caso de que el frame sea mas grande al tile
-                    entity.tempScreenY -= entity.image.getHeight();
+                    entity.tempScreenY -= entity.sheet.frame.getHeight();
                     i = attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
-                    entity.tempScreenX -= entity.image.getWidth();
+                    entity.tempScreenX -= entity.sheet.frame.getWidth();
                     i = attackNum == 1 ? 4 : 5;
                 }
                 case RIGHT -> i = attackNum == 1 ? 6 : 7;

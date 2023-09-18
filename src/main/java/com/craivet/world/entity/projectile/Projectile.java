@@ -33,10 +33,10 @@ public class Projectile extends Entity {
              * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
              * movimiento 2. La siguiente linea soluciona este problema. */
             flags.colliding = false;
-            if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible && world.mobs[world.map][mobIndex].type != Type.NPC) {
-                world.player.hitMob(mobIndex, this, knockbackValue, attack);
+            if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible && world.mobs[world.map][mobIndex].stats.type != Type.NPC) {
+                world.player.hitMob(mobIndex, this, stats.knockbackValue, stats.attack);
                 // En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
-                generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
+                generateParticle(entity.stats.projectile, world.mobs[world.map][mobIndex]);
                 flags.alive = false;
             }
         }
@@ -45,20 +45,20 @@ public class Projectile extends Entity {
         if (!(entity instanceof Player)) {
             boolean contact = game.collision.checkPlayer(this);
             if (contact && !world.player.flags.invincible) {
-                hitPlayer(true, attack);
-                generateParticle(entity.projectile, world.player);
+                hitPlayer(true, stats.attack);
+                generateParticle(entity.stats.projectile, world.player);
                 flags.alive = false;
             }
         }
 
-        if (hp-- <= 0) flags.alive = false;
+        if (stats.hp-- <= 0) flags.alive = false;
 
         if (flags.alive) {
-            switch (direction) {
-                case DOWN -> y += speed;
-                case UP -> y -= speed;
-                case LEFT -> x -= speed;
-                case RIGHT -> x += speed;
+            switch (stats.direction) {
+                case DOWN -> pos.y += stats.speed;
+                case UP -> pos.y -= stats.speed;
+                case LEFT -> pos.x -= stats.speed;
+                case RIGHT -> pos.x += stats.speed;
             }
             timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);
         }
@@ -71,13 +71,14 @@ public class Projectile extends Entity {
     public void subtractResource(Entity entity) {
     }
 
-    public void set(int worldX, int worldY, Direction direction, boolean alive, Entity entity) {
-        this.x = worldX;
-        this.y = worldY;
-        this.direction = direction;
+    public void set(int x, int y, Direction direction, boolean alive, Entity entity) {
+        pos.x = x;
+        pos.y = y;
+        stats.direction = direction;
         flags.alive = alive;
         this.entity = entity;
-        this.hp = this.maxHp; // Resetea la vida al valor maximo cada vez que lanza un proyectil
+        // TODO Porque hace esto?
+        stats.hp = stats.maxHp; // Resetea la vida al valor maximo cada vez que lanza un proyectil
     }
 
 }

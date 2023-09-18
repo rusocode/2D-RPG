@@ -7,6 +7,7 @@ import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.physics.Mechanics;
+import com.craivet.world.Position;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.World;
@@ -21,19 +22,23 @@ import static com.craivet.utils.Global.*;
  * TODO Los metodos update() y render() se podrian implementar desde una interfaz
  * <p>
  * TODO No tendria que ser una clase abstracta?
+ * <p>
+ * TODO Las entidades abarcan los mobs, items, y projectiles
  */
 
-public class Entity extends Stats {
+public abstract class Entity {
 
     public final Game game;
     public final World world;
 
-    public SpriteSheet ss = new SpriteSheet();
+    public Stats stats = new Stats();
+    public Position pos = new Position();
+    public SpriteSheet sheet = new SpriteSheet();
     public Flags flags = new Flags();
     public Timer timer = new Timer();
     public Mechanics mechanics = new Mechanics();
-
     public ArrayList<Item> inventory = new ArrayList<>();
+
     public Entity linkedEntity;
     public boolean hpBar;
     /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
@@ -53,9 +58,8 @@ public class Entity extends Stats {
     public Entity(Game game, World world, int x, int y) {
         this.game = game;
         this.world = world;
-
-        this.x = x * tile;
-        this.y = y * tile;
+        pos.x = x * tile;
+        pos.y = y * tile;
     }
 
     public void update() {
@@ -70,21 +74,21 @@ public class Entity extends Stats {
             // Es importante que realize las acciones antes de comprobar las colisiones
             doActions();
             checkCollision();
-            if (!flags.colliding) updatePosition(direction);
+            if (!flags.colliding) updatePosition(stats.direction);
         }
         timer.checkTimers(this);
     }
 
     public void render(Graphics2D g2) {
         // TODO Se podria calcular desde un metodo
-        screenX = (x - world.player.x) + world.player.screenX;
-        screenY = (y - world.player.y) + world.player.screenY;
+        stats.screenX = (pos.x - world.player.pos.x) + world.player.stats.screenX;
+        stats.screenY = (pos.y - world.player.pos.y) + world.player.stats.screenY;
         if (isOnCamera()) {
-            tempScreenX = screenX;
-            tempScreenY = screenY;
+            tempScreenX = stats.screenX;
+            tempScreenY = stats.screenY;
 
             // Si el mob hostil tiene activada la barra de vida
-            if (type == Type.HOSTILE && hpBar) game.ui.drawHpBar(g2, this);
+            if (stats.type == Type.HOSTILE && hpBar) game.ui.drawHpBar(g2, this);
             if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
@@ -93,10 +97,10 @@ public class Entity extends Stats {
             if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
             // Si es una animacion
-            if (ss.movement != null || ss.attack != null)
-                g2.drawImage(ss.getCurrentFrame(this), tempScreenX, tempScreenY, null);
+            if (sheet.movement != null || sheet.attack != null)
+                g2.drawImage(sheet.getCurrentFrame(this), tempScreenX, tempScreenY, null);
                 // Si es una imagen estatica (item, interactive tile)
-            else g2.drawImage(image, screenX, screenY, null);
+            else g2.drawImage(sheet.frame, stats.screenX, stats.screenY, null);
 
             // drawRects(g2);
 
@@ -163,9 +167,9 @@ public class Entity extends Stats {
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] == null) {
                 world.items[world.map][i] = item;
-                world.items[world.map][i].x = x + (image.getWidth() / 2 - item.image.getWidth() / 2);
+                world.items[world.map][i].pos.x = pos.x + (sheet.frame.getWidth() / 2 - item.sheet.frame.getWidth() / 2);
                 // Suma la mitad de la hitbox solo de los mobs a la posicion y del item
-                world.items[world.map][i].y = y + (image.getHeight() / 2 + (entity instanceof Mob ? hitbox.height / 2 : 0) - item.image.getHeight() / 2);
+                world.items[world.map][i].pos.y = pos.y + (sheet.frame.getHeight() / 2 + (entity instanceof Mob ? stats.hitbox.height / 2 : 0) - item.sheet.frame.getHeight() / 2);
                 break;
             }
         }
@@ -179,11 +183,11 @@ public class Entity extends Stats {
      */
     public void hitPlayer(boolean contact, int attack) {
         // Si la entidad es hostil y hace contacto con el player que no es invencible
-        if (type == Type.HOSTILE && contact && !world.player.flags.invincible) {
+        if (stats.type == Type.HOSTILE && contact && !world.player.flags.invincible) {
             game.playSound(sound_player_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
-            int damage = Math.max(attack - world.player.defense, 1);
-            world.player.hp -= damage;
+            int damage = Math.max(attack - world.player.stats.defense, 1);
+            world.player.stats.hp -= damage;
             world.player.flags.invincible = true;
         }
     }
@@ -197,7 +201,7 @@ public class Entity extends Stats {
         game.collision.checkItem(this);
         game.collision.checkEntity(this, world.mobs);
         game.collision.checkEntity(this, world.interactives);
-        hitPlayer(game.collision.checkPlayer(this), attack);
+        hitPlayer(game.collision.checkPlayer(this), stats.attack);
     }
 
     /**
@@ -207,10 +211,10 @@ public class Entity extends Stats {
      */
     protected void updatePosition(Direction direction) {
         switch (direction) {
-            case DOWN -> y += speed;
-            case UP -> y -= speed;
-            case LEFT -> x -= speed;
-            case RIGHT -> x += speed;
+            case DOWN -> pos.y += stats.speed;
+            case UP -> pos.y -= stats.speed;
+            case LEFT -> pos.x -= stats.speed;
+            case RIGHT -> pos.x += stats.speed;
         }
     }
 
@@ -225,24 +229,24 @@ public class Entity extends Stats {
          * la esquina superior izquierda (o del centro?) es mucha con respecto a la vision del player en pantalla. Por
          * lo tanto se aumenta esa vision multiplicando el bossArea. */
         int bossArea = 5;
-        return x + tile * bossArea > world.player.x - world.player.screenX &&
-                x - tile < world.player.x + world.player.screenX &&
-                y + tile * bossArea > world.player.y - world.player.screenY &&
-                y - tile < world.player.y + world.player.screenY;
+        return pos.x + tile * bossArea > world.player.pos.x - world.player.stats.screenX &&
+                pos.x - tile < world.player.pos.x + world.player.stats.screenX &&
+                pos.y + tile * bossArea > world.player.pos.y - world.player.stats.screenY &&
+                pos.y - tile < world.player.pos.y + world.player.stats.screenY;
     }
 
     private void drawRects(Graphics2D g2) {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(screenX, screenY, image.getWidth(), image.getHeight());
+        g2.drawRect(stats.screenX, stats.screenY, sheet.frame.getWidth(), sheet.frame.getHeight());
         // Hitbox
         g2.setColor(Color.green);
-        g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
+        g2.drawRect(stats.screenX + stats.hitbox.x, stats.screenY + stats.hitbox.y, stats.hitbox.width, stats.hitbox.height);
         // Attackbox
         if (flags.hitting) {
             g2.setColor(Color.red);
-            g2.drawRect(screenX + attackbox.x + hitbox.x, screenY + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
+            g2.drawRect(stats.screenX + stats.attackbox.x + stats.hitbox.x, stats.screenY + stats.attackbox.y + stats.hitbox.y, stats.attackbox.width, stats.attackbox.height);
         }
     }
 
@@ -252,7 +256,7 @@ public class Entity extends Stats {
      * @return la posicion central de x.
      */
     public int getCenterX() {
-        return x + image.getWidth() / 2;
+        return pos.x + sheet.frame.getWidth() / 2;
     }
 
     /**
@@ -261,7 +265,7 @@ public class Entity extends Stats {
      * @return la posicion central de y.
      */
     public int getCenterY() {
-        return y + image.getHeight() / 2;
+        return pos.y + sheet.frame.getHeight() / 2;
     }
 
 }

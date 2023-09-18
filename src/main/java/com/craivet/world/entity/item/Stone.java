@@ -14,12 +14,12 @@ public class Stone extends Item {
 
     public Stone(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = NAME;
-        type = Type.CONSUMABLE;
-        image = Utils.scaleImage(stone, tile, tile);
-        description = "[" + name + "]\nIt's just a stone.";
-        this.amount = amount;
-        stackable = true;
+        stats.name = NAME;
+        stats.type = Type.CONSUMABLE;
+        sheet.frame = Utils.scaleImage(stone, tile, tile);
+        stats.description = "[" + stats.name + "]\nIt's just a stone.";
+        stats.amount = amount;
+        stats.stackable = true;
     }
 
 }

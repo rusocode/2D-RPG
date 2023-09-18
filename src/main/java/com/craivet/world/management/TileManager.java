@@ -30,8 +30,8 @@ public class TileManager implements State {
     public void render(Graphics2D g2) {
         // TODO Se podria calcular desde una clase Camera
         // Calcula los desplazamientos
-        int xOffset = world.player.x - world.player.screenX;
-        int yOffset = world.player.y - world.player.screenY;
+        int xOffset = world.player.pos.x - world.player.stats.screenX;
+        int yOffset = world.player.pos.y - world.player.stats.screenY;
 
         // Calcula los tiles que estan dentro de la vista de la camara
         int yStart = Math.max(0, yOffset / tile);

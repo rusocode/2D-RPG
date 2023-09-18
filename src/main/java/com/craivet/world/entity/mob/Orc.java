@@ -13,28 +13,28 @@ public class Orc extends Mob {
 
     public Orc(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        name = "Orc";
-        type = Type.HOSTILE;
+        stats.name = "Orc";
+        stats.type = Type.HOSTILE;
         soundHit = sound_hit_orc;
         soundDeath = sound_orc_death;
-        speed = defaultSpeed = 1;
-        hp = maxHp = 10;
-        exp = 2;
-        attack = 8;
-        defense = 2;
-        hitbox.x = 4;
-        hitbox.y = 15;
-        hitbox.width = tile - hitbox.x - 4;
-        hitbox.height = tile - hitbox.y;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
-        attackbox.width = 44;
-        attackbox.height = 48;
-        motion1 = 25;
-        motion2 = 30;
-        ss.loadMovementFrames(orc_movement, 16, 16, 1);
-        ss.loadAttackFrames(orc_attack, 16, 16, 1);
-        image = ss.movement[0];
+        stats.speed = stats.defaultSpeed = 1;
+        stats.hp = stats.maxHp = 10;
+        stats.exp = 2;
+        stats.attack = 8;
+        stats.defense = 2;
+        stats.hitbox.x = 4;
+        stats.hitbox.y = 15;
+        stats.hitbox.width = tile - stats.hitbox.x - 4;
+        stats.hitbox.height = tile - stats.hitbox.y;
+        stats.hitboxDefaultX = stats.hitbox.x;
+        stats.hitboxDefaultY = stats.hitbox.y;
+        stats.attackbox.width = 44;
+        stats.attackbox.height = 48;
+        stats.motion1 = 25;
+        stats.motion2 = 30;
+        sheet.loadMovementFrames(orc_movement, 16, 16, 1);
+        sheet.loadAttackFrames(orc_attack, 16, 16, 1);
+        sheet.frame = sheet.movement[0];
     }
 
     @Override

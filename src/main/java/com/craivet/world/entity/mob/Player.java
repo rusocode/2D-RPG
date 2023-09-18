@@ -20,6 +20,7 @@ import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 // TODO No tendria que crear el objeto UI desde aca?
+// TODO No tendria que convertirse en la fomasa clase Client?
 public class Player extends Mob {
 
     public final Keyboard keyboard;
@@ -46,7 +47,7 @@ public class Player extends Mob {
         if (keyboard.checkKeys()) {
             getDirection();
             checkCollision();
-            if (!flags.colliding && !keyboard.checkAccionKeys()) updatePosition(direction);
+            if (!flags.colliding && !keyboard.checkAccionKeys()) updatePosition(stats.direction);
             mechanics.checkDirectionSpeed(this, entity);
             checkAttack();
             keyboard.resetAccionKeys();
@@ -67,57 +68,57 @@ public class Player extends Mob {
     @Override
     public void render(Graphics2D g2) {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
-        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screenX, screenY, null);
+        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), stats.screenX, stats.screenY, null);
         else getCurrentItemFrame(g2);
         // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
     private void centerOnScreen() {
-        screenX = WINDOW_WIDTH / 2 - (tile / 2);
-        screenY = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
+        stats.screenX = WINDOW_WIDTH / 2 - (tile / 2);
+        stats.screenY = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
     }
 
     public void setDefaultValues() {
-        type = Type.PLAYER;
-        direction = Direction.DOWN;
-        speed = defaultSpeed = 2;
-        hp = maxHp = 6;
-        mana = maxMana = 4;
-        ammo = 5;
-        lvl = 1;
-        exp = 0;
-        nextLvlExp = 5;
-        gold = 500;
-        strength = 1;
-        dexterity = 1;
+        stats.type = Type.PLAYER;
+        stats.direction = Direction.DOWN;
+        stats.speed = stats.defaultSpeed = 2;
+        stats.hp = stats.maxHp = 6;
+        stats.mana = stats.maxMana = 4;
+        stats.ammo = 5;
+        stats.lvl = 1;
+        stats.exp = 0;
+        stats.nextLvlExp = 5;
+        stats.gold = 500;
+        stats.strength = 1;
+        stats.dexterity = 1;
         flags.invincible = false;
 
-        projectile = new Fireball(game, world);
-        weapon = new SwordIron(game, world);
-        shield = new ShieldWood(game, world);
-        light = null;
-        attack = getAttack();
-        defense = getDefense();
+        stats.projectile = new Fireball(game, world);
+        stats.weapon = new SwordIron(game, world);
+        stats.shield = new ShieldWood(game, world);
+        stats.light = null;
+        stats.attack = getAttack();
+        stats.defense = getDefense();
 
-        hitbox.x = 7;
-        hitbox.y = 32;
-        hitbox.width = 10;
-        hitbox.height = 24;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
-        motion1 = 5;
-        motion2 = 18;
+        stats.hitbox.x = 7;
+        stats.hitbox.y = 32;
+        stats.hitbox.width = 10;
+        stats.hitbox.height = 24;
+        stats.hitboxDefaultX = stats.hitbox.x;
+        stats.hitboxDefaultY = stats.hitbox.y;
+        stats.motion1 = 5;
+        stats.motion2 = 18;
 
-        ss.loadPlayerMovementFrames(player_movement, 1);
-        ss.loadWeaponFrames(sword_frame, 16, 16);
-        image = ss.down[0];
+        sheet.loadPlayerMovementFrames(player_movement, 1);
+        sheet.loadWeaponFrames(sword_frame, 16, 16);
+        sheet.frame = sheet.down[0];
 
         int animationSpeed = 90;
-        down = new Animation(animationSpeed, ss.down);
-        up = new Animation(animationSpeed, ss.up);
-        left = new Animation(animationSpeed, ss.left);
-        right = new Animation(animationSpeed, ss.right);
+        down = new Animation(animationSpeed, sheet.down);
+        up = new Animation(animationSpeed, sheet.up);
+        left = new Animation(animationSpeed, sheet.left);
+        right = new Animation(animationSpeed, sheet.right);
         currentFrame = down.getFirstFrame();
         addItemsToInventory();
     }
@@ -126,17 +127,17 @@ public class Player extends Mob {
      * Establece la posicion por defecto.
      */
     public void setDefaultPos() {
-        world.zone = DUNGEON;
-        world.map = DUNGEON_02;
-        direction = Direction.DOWN;
+        world.zone = OUTSIDE;
+        world.map = NASHE;
+        stats.direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
-        int startCol = 26, startRow = 39; // 26, 39 // 10, 27
+        int startCol = 21, startRow = 22; // 26, 39 // 10, 27
         // Suma la mitad del ancho de la hitbox y resta un pixel para centrar la posicion horizontal dentro del tile
-        x = (startCol * tile) + hitbox.width / 2 - 1;
+        pos.x = (startCol * tile) + stats.hitbox.width / 2 - 1;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
          * player ocupa dos tiles verticales. Por ultimo se resta un pixel en caso de que la posicion este por encima
          * de un tile solido para evitar que se "trabe". */
-        y = (startRow * tile) - hitbox.height - 1;
+        pos.y = (startRow * tile) - stats.hitbox.height - 1;
     }
 
     /**
@@ -148,13 +149,13 @@ public class Player extends Mob {
         if (map == NASHE_INDOOR_01) world.zone = INDOOR;
         if (map == DUNGEON_01 || map == DUNGEON_02) world.zone = DUNGEON;
         world.map = map;
-        this.x = x * tile;
-        this.y = y * tile;
+        pos.x = x * tile;
+        pos.y = y * tile;
     }
 
     public void resetStats() {
-        hp = maxHp;
-        mana = maxMana;
+        stats.hp = stats.maxHp;
+        stats.mana = stats.maxMana;
         flags.invincible = false;
         flags.hitting = false;
         flags.knockback = false;
@@ -166,8 +167,8 @@ public class Player extends Mob {
      */
     private void checkAttack() {
         if (keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting) {
-            if (weapon.type == Type.SWORD) game.playSound(sound_swing_weapon);
-            if (weapon.type != Type.SWORD) game.playSound(sound_swing_axe);
+            if (stats.weapon.stats.type == Type.SWORD) game.playSound(sound_swing_weapon);
+            if (stats.weapon.stats.type != Type.SWORD) game.playSound(sound_swing_axe);
             flags.hitting = true;
             timer.attackCounter = 0;
         }
@@ -179,26 +180,26 @@ public class Player extends Mob {
      * Comprueba si puede lanzar un proyectil.
      */
     private void checkShoot() {
-        if (keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+        if (keyboard.f && !stats.projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && stats.projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
             game.playSound(sound_fireball);
-            projectile.set(x, y, direction, true, this);
+            stats.projectile.set(pos.x, pos.y, stats.direction, true, this);
             // Comprueba vacante para agregar el proyectil
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {
-                    world.projectiles[world.map][i] = projectile;
+                    world.projectiles[world.map][i] = stats.projectile;
                     break;
                 }
             }
-            projectile.subtractResource(this);
+            stats.projectile.subtractResource(this);
             timer.projectileCounter = 0;
         }
     }
 
     private void checkStats() {
-        if (!keyboard.godMode) if (hp <= 0) die();
-        if (hp > maxHp) hp = maxHp;
-        if (mana > maxMana) mana = maxMana;
+        if (!keyboard.godMode) if (stats.hp <= 0) die();
+        if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
+        if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
     }
 
     /**
@@ -211,8 +212,8 @@ public class Player extends Mob {
     private void pickup(int i) {
         if (i != -1) {
             Item item = world.items[world.map][i];
-            if (keyboard.p && item.type != Type.OBSTACLE) {
-                if (item.type == Type.PICKUP) item.use(this);
+            if (keyboard.p && item.stats.type != Type.OBSTACLE) {
+                if (item.stats.type == Type.PICKUP) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_item_pickup);
                 else {
                     game.ui.addMessageToConsole("You cannot carry any more!");
@@ -220,7 +221,7 @@ public class Player extends Mob {
                 }
                 world.items[world.map][i] = null;
             }
-            if (keyboard.enter && item.type == Type.OBSTACLE) {
+            if (keyboard.enter && item.stats.type == Type.OBSTACLE) {
                 attackCanceled = true;
                 item.interact();
             }
@@ -236,10 +237,10 @@ public class Player extends Mob {
         if (i != -1) {
             entity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
-            if (keyboard.enter && mob.type == Type.NPC) {
+            if (keyboard.enter && mob.stats.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
-            } else mob.move(direction);
+            } else mob.move(stats.direction);
         }
     }
 
@@ -252,10 +253,10 @@ public class Player extends Mob {
         if (i != -1) {
             entity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
-            if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
+            if (!flags.invincible && !mob.flags.dead && mob.stats.type == Type.HOSTILE) {
                 game.playSound(sound_player_damage);
-                int damage = Math.max(mob.attack - defense, 1);
-                hp -= damage;
+                int damage = Math.max(mob.stats.attack - stats.defense, 1);
+                stats.hp -= damage;
                 flags.invincible = true;
             }
         }
@@ -273,26 +274,26 @@ public class Player extends Mob {
         if (i != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
             entity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
-            if (!mob.flags.invincible && mob.type != Type.NPC) {
+            if (!mob.flags.invincible && mob.stats.type != Type.NPC) {
 
                 if (knockbackValue > 0) mechanics.setKnockback(mob, attacker, knockbackValue);
 
-                int damage = Math.max(attack - mob.defense, 1);
-                mob.hp -= damage;
+                int damage = Math.max(attack - mob.stats.defense, 1);
+                mob.stats.hp -= damage;
                 game.ui.addMessageToConsole(damage + " damage!");
-                if (mob.hp > 0) game.playSound(mob.soundHit);
+                if (mob.stats.hp > 0) game.playSound(mob.soundHit);
 
                 mob.flags.invincible = true;
                 mob.hpBar = true;
                 mob.damageReaction();
 
-                if (mob.hp <= 0) {
+                if (mob.stats.hp <= 0) {
                     game.playSound(sound_mob_death);
                     if (!(mob instanceof Slime)) game.playSound(mob.soundDeath);
                     mob.flags.dead = true;
-                    game.ui.addMessageToConsole("Killed the " + mob.name + "!");
-                    game.ui.addMessageToConsole("Exp + " + mob.exp);
-                    exp += mob.exp;
+                    game.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
+                    game.ui.addMessageToConsole("Exp + " + mob.stats.exp);
+                    stats.exp += mob.stats.exp;
                     checkLevelUp();
                 }
             }
@@ -308,14 +309,14 @@ public class Player extends Mob {
         if (i != -1) {
             entity = world.interactives[world.map][i];
             Interactive interactive = world.interactives[world.map][i];
-            if (interactive.destructible && interactive.isCorrectWeapon(weapon) && !interactive.flags.invincible) {
+            if (interactive.destructible && interactive.isCorrectWeapon(stats.weapon) && !interactive.flags.invincible) {
                 interactive.playSound();
-                interactive.hp--;
+                interactive.stats.hp--;
                 interactive.flags.invincible = true;
 
                 generateParticle(interactive, interactive);
 
-                if (interactive.hp == 0) {
+                if (interactive.stats.hp == 0) {
                     interactive.checkDrop();
                     world.interactives[world.map][i] = interactive.replaceBy();
                 }
@@ -328,7 +329,7 @@ public class Player extends Mob {
             entity = world.projectiles[world.map][i];
             Projectile projectile = world.projectiles[world.map][i];
             // Evita dañar el propio proyectil
-            if (projectile != this.projectile) {
+            if (projectile != this.stats.projectile) {
                 game.playSound(sound_player_damage);
                 projectile.flags.alive = false;
                 generateParticle(projectile, projectile);
@@ -340,17 +341,17 @@ public class Player extends Mob {
      * Comprueba si subio de nivel.
      */
     private void checkLevelUp() {
-        if (exp >= nextLvlExp) {
-            lvl++;
-            exp = 0;
-            nextLvlExp *= 2;
-            maxHp += 2;
-            strength++;
-            dexterity++;
-            attack = getAttack();
-            defense = getDefense();
+        if (stats.exp >= stats.nextLvlExp) {
+            stats.lvl++;
+            stats.exp = 0;
+            stats.nextLvlExp *= 2;
+            stats.maxHp += 2;
+            stats.strength++;
+            stats.dexterity++;
+            stats.attack = getAttack();
+            stats.defense = getDefense();
             game.playSound(sound_level_up);
-            dialogues[0][0] = "You are level " + lvl + "!";
+            dialogues[0][0] = "You are level " + stats.lvl + "!";
             startDialogue(DIALOGUE_STATE, this, 0);
         }
     }
@@ -363,29 +364,29 @@ public class Player extends Mob {
         if (itemIndex < inventory.size()) {
             Item selectedItem = inventory.get(itemIndex);
             if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordIron) {
-                weapon = selectedItem;
-                attackbox = weapon.attackbox; // TODO Hace falta esto aca?
-                attack = getAttack();
-                switch (weapon.type) {
+                stats.weapon = selectedItem;
+                stats.attackbox = stats.weapon.stats.attackbox; // TODO Hace falta esto aca?
+                stats.attack = getAttack();
+                switch (stats.weapon.stats.type) {
                     case SWORD -> {
-                        ss.loadWeaponFrames(sword_frame, 16, 16);
+                        sheet.loadWeaponFrames(sword_frame, 16, 16);
                         game.playSound(sound_draw_sword);
                     }
-                    case AXE -> ss.loadWeaponFrames(axe_frame, 16, 16);
-                    case PICKAXE -> ss.loadWeaponFrames(pickaxe_frame, 16, 16);
+                    case AXE -> sheet.loadWeaponFrames(axe_frame, 16, 16);
+                    case PICKAXE -> sheet.loadWeaponFrames(pickaxe_frame, 16, 16);
                 }
             }
-            if (selectedItem.type == Type.SHIELD) {
-                shield = selectedItem;
-                defense = getDefense();
+            if (selectedItem.stats.type == Type.SHIELD) {
+                stats.shield = selectedItem;
+                stats.defense = getDefense();
             }
-            if (selectedItem.type == Type.LIGHT) {
-                light = light == selectedItem ? null : selectedItem;
+            if (selectedItem.stats.type == Type.LIGHT) {
+                stats.light = stats.light == selectedItem ? null : selectedItem;
                 lightUpdate = true;
             }
-            if (selectedItem.type == Type.CONSUMABLE) {
+            if (selectedItem.stats.type == Type.CONSUMABLE) {
                 if (selectedItem.use(this)) {
-                    if (selectedItem.amount > 1) selectedItem.amount--;
+                    if (selectedItem.stats.amount > 1) selectedItem.stats.amount--;
                     else inventory.remove(itemIndex);
                 }
             }
@@ -399,18 +400,18 @@ public class Player extends Mob {
      * @return true si se puede recoger el item o false.
      */
     public boolean canPickup(Entity item) {
-        Item newItem = game.itemGenerator.generate(item.name);
-        if (item.stackable) {
-            int itemIndex = searchItemInInventory(item.name);
+        Item newItem = game.itemGenerator.generate(item.stats.name);
+        if (item.stats.stackable) {
+            int itemIndex = searchItemInInventory(item.stats.name);
             // Si existe en el inventario, entonces solo aumenta la cantidad
             if (itemIndex != -1) {
-                inventory.get(itemIndex).amount += item.amount;
+                inventory.get(itemIndex).stats.amount += item.stats.amount;
                 return true;
                 // Si no existe en el inventario, lo agrega como nuevo item con su respectiva cantidad
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
                 inventory.add(newItem);
                 // Al agregar un nuevo item, no puede utilizar el indice del item anterior, tiene que buscar el indice a partir del nuevo item
-                inventory.get(searchItemInInventory(item.name)).amount += item.amount;
+                inventory.get(searchItemInInventory(item.stats.name)).stats.amount += item.stats.amount;
                 return true;
             }
         } else if (inventory.size() != MAX_INVENTORY_SIZE) {
@@ -428,7 +429,7 @@ public class Player extends Mob {
      */
     private int searchItemInInventory(String name) {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i).name.equals(name)) return i;
+            if (inventory.get(i).stats.name.equals(name)) return i;
         return -1;
     }
 
@@ -436,10 +437,10 @@ public class Player extends Mob {
      * Obtiene la direccion dependiendo de la tecla seleccionada.
      */
     private void getDirection() {
-        if (keyboard.s) direction = Direction.DOWN;
-        else if (keyboard.w) direction = Direction.UP;
-        else if (keyboard.a) direction = Direction.LEFT;
-        else if (keyboard.d) direction = Direction.RIGHT;
+        if (keyboard.s) stats.direction = Direction.DOWN;
+        else if (keyboard.w) stats.direction = Direction.UP;
+        else if (keyboard.a) stats.direction = Direction.LEFT;
+        else if (keyboard.d) stats.direction = Direction.RIGHT;
     }
 
     @Override
@@ -451,7 +452,7 @@ public class Player extends Mob {
         hurt(game.collision.checkEntity(this, world.mobs));
         setCurrentInteractive(game.collision.checkEntity(this, world.interactives));
         // game.collision.checkEntity(this, world.interactives);
-        game.event.checkEvent();
+        game.event.checkEvent(this);
     }
 
     private void setCurrentInteractive(int i) {
@@ -466,26 +467,26 @@ public class Player extends Mob {
     }
 
     private void getCurrentItemFrame(Graphics2D g2) {
-        switch (direction) {
+        switch (stats.direction) {
             case DOWN -> {
                 currentFrame = down.getFirstFrame();
-                g2.drawImage(ss.down[1], screenX, screenY, null);
-                g2.drawImage(ss.weapon[0], screenX, screenY + 34, null);
+                g2.drawImage(sheet.down[1], stats.screenX, stats.screenY, null);
+                g2.drawImage(sheet.weapon[0], stats.screenX, stats.screenY + 34, null);
             }
             case UP -> {
                 currentFrame = up.getFirstFrame();
-                g2.drawImage(ss.up[2], screenX, screenY, null);
-                g2.drawImage(ss.weapon[1], screenX + 13, screenY + 17, null);
+                g2.drawImage(sheet.up[2], stats.screenX, stats.screenY, null);
+                g2.drawImage(sheet.weapon[1], stats.screenX + 13, stats.screenY + 17, null);
             }
             case LEFT -> {
                 currentFrame = left.getFirstFrame();
-                g2.drawImage(ss.left[2], screenX, screenY, null);
-                g2.drawImage(ss.weapon[2], screenX - 7, screenY + 26, null);
+                g2.drawImage(sheet.left[2], stats.screenX, stats.screenY, null);
+                g2.drawImage(sheet.weapon[2], stats.screenX - 7, stats.screenY + 26, null);
             }
             case RIGHT -> {
                 currentFrame = right.getFirstFrame();
-                g2.drawImage(ss.right[4], screenX, screenY, null);
-                g2.drawImage(ss.weapon[3], screenX + 15, screenY + 28, null);
+                g2.drawImage(sheet.right[4], stats.screenX, stats.screenY, null);
+                g2.drawImage(sheet.weapon[3], stats.screenX + 15, stats.screenY + 28, null);
             }
         }
     }
@@ -499,7 +500,7 @@ public class Player extends Mob {
         /* Cuando se deja de mover, devuelve el primer frame guardado de la ultima direccion para representar la
          * detencion del player. */
         if (keyboard.checkMovementKeys()) {
-            switch (direction) {
+            switch (stats.direction) {
                 case DOWN -> {
                     // Guarda el primer frame hacia abajo
                     currentFrame = down.getFirstFrame();
@@ -527,28 +528,28 @@ public class Player extends Mob {
     }
 
     public int getAttack() {
-        return strength * weapon.attackValue;
+        return stats.strength * stats.weapon.stats.attackValue;
     }
 
     public int getDefense() {
-        return dexterity * shield.defenseValue;
+        return stats.dexterity * stats.shield.stats.defenseValue;
     }
 
     public int getCurrentWeaponSlot() {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == weapon) return i;
+            if (inventory.get(i) == stats.weapon) return i;
         return 0; // TODO No es -1?
     }
 
     public int getCurrentShieldSlot() {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == shield) return i;
+            if (inventory.get(i) == stats.shield) return i;
         return 0;
     }
 
     public int getCurrentLightSlot() {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == light) return i;
+            if (inventory.get(i) == stats.light) return i;
         return 0;
     }
 
@@ -558,8 +559,8 @@ public class Player extends Mob {
 
     private void addItemsToInventory() {
         inventory.clear();
-        inventory.add(weapon);
-        inventory.add(shield);
+        inventory.add(stats.weapon);
+        inventory.add(stats.shield);
         inventory.add(new Lantern(game, world));
         inventory.add(new PotionRed(game, world, 2));
         inventory.add(new Key(game, world, 2));
@@ -573,17 +574,17 @@ public class Player extends Mob {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(screenX, screenY, currentFrame.getWidth(), currentFrame.getHeight()); // TODO Creo que se podria reemplazar por image.getWidth()
+        g2.drawRect(stats.screenX, stats.screenY, currentFrame.getWidth(), currentFrame.getHeight()); // TODO Creo que se podria reemplazar por image.getWidth()
         // Hitbox
         g2.setColor(Color.green);
-        g2.drawRect(screenX + hitbox.x, screenY + hitbox.y, hitbox.width, hitbox.height);
+        g2.drawRect(stats.screenX + stats.hitbox.x, stats.screenY + stats.hitbox.y, stats.hitbox.width, stats.hitbox.height);
         // Attackbox
         if (flags.hitting) {
             g2.setColor(Color.red);
             /* Se suma la posicion de la attackbox a la posicion del player porque despues de verificar la deteccion del
              * golpe en el metodo hit, se resetea la posicio del player, por lo tanto se suma desde aca para que el
              * rectangulo dibujado coincida con la posicion especificada en el metodo hit. */
-            g2.drawRect(screenX + attackbox.x + hitbox.x, screenY + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
+            g2.drawRect(stats.screenX + stats.attackbox.x + stats.hitbox.x, stats.screenY + stats.attackbox.y + stats.hitbox.y, stats.attackbox.width, stats.attackbox.height);
         }
     }
 

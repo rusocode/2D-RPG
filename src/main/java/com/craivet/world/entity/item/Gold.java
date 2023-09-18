@@ -16,9 +16,9 @@ public class Gold extends Item {
 
     public Gold(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = NAME;
-        type = Type.PICKUP;
-        image = Utils.scaleImage(Assets.gold, tile, tile);
+        stats.name = NAME;
+        stats.type = Type.PICKUP;
+        sheet.frame = Utils.scaleImage(Assets.gold, tile, tile);
         value = 1;
     }
 
@@ -26,7 +26,7 @@ public class Gold extends Item {
     public boolean use(Entity entity) {
         game.playSound(sound_gold_pickup);
         game.ui.addMessageToConsole("Gold +" + value);
-        entity.gold += value;
+        entity.stats.gold += value;
         return true;
     }
 

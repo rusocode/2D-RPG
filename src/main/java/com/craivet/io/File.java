@@ -77,24 +77,24 @@ public class File {
             // Player status
             data.zone = world.zone;
             data.map = world.map;
-            data.x = world.player.x;
-            data.y = world.player.y;
-            data.direction = world.player.direction;
-            data.life = world.player.hp;
-            data.maxlife = world.player.maxHp;
-            data.mana = world.player.mana;
-            data.maxMana = world.player.maxMana;
-            data.strength = world.player.strength;
-            data.dexterity = world.player.dexterity;
-            data.lvl = world.player.lvl;
-            data.exp = world.player.exp;
-            data.nextLvlExp = world.player.nextLvlExp;
-            data.gold = world.player.gold;
+            data.x = world.player.pos.x;
+            data.y = world.player.pos.y;
+            data.direction = world.player.stats.direction;
+            data.life = world.player.stats.hp;
+            data.maxlife = world.player.stats.maxHp;
+            data.mana = world.player.stats.mana;
+            data.maxMana = world.player.stats.maxMana;
+            data.strength = world.player.stats.strength;
+            data.dexterity = world.player.stats.dexterity;
+            data.lvl = world.player.stats.lvl;
+            data.exp = world.player.stats.exp;
+            data.nextLvlExp = world.player.stats.nextLvlExp;
+            data.gold = world.player.stats.gold;
 
             // Player inventory
             for (int i = 0; i < world.player.inventory.size(); i++) {
-                data.names.add(world.player.inventory.get(i).name);
-                data.amounts.add(world.player.inventory.get(i).amount);
+                data.names.add(world.player.inventory.get(i).stats.name);
+                data.amounts.add(world.player.inventory.get(i).stats.amount);
             }
 
             // Player equipment
@@ -114,12 +114,12 @@ public class File {
                     Entity item = world.items[map][i];
                     if (item == null) data.itemName[map][i] = "NA";
                     else {
-                        data.itemName[map][i] = item.name;
-                        data.itemX[map][i] = item.x;
-                        data.itemY[map][i] = item.y;
-                        if (item.loot != null) data.loot[map][i] = item.loot.name;
-                        data.opened[map][i] = item.opened;
-                        data.empty[map][i] = item.empty;
+                        data.itemName[map][i] = item.stats.name;
+                        data.itemX[map][i] = item.pos.x;
+                        data.itemY[map][i] = item.pos.y;
+                        if (item.stats.loot != null) data.loot[map][i] = item.stats.loot.stats.name;
+                        data.opened[map][i] = item.stats.opened;
+                        data.empty[map][i] = item.stats.empty;
                     }
                 }
             }
@@ -140,28 +140,28 @@ public class File {
             Data data = (Data) input.readObject();
             world.zone = data.zone;
             world.map = data.map;
-            world.player.x = data.x;
-            world.player.y = data.y;
-            world.player.direction = data.direction;
-            world.player.hp = data.life;
-            world.player.maxHp = data.maxlife;
-            world.player.mana = data.mana;
-            world.player.maxMana = data.maxMana;
-            world.player.strength = data.strength;
-            world.player.dexterity = data.dexterity;
-            world.player.lvl = data.lvl;
-            world.player.exp = data.exp;
-            world.player.nextLvlExp = data.nextLvlExp;
-            world.player.gold = data.gold;
+            world.player.pos.x = data.x;
+            world.player.pos.y = data.y;
+            world.player.stats.direction = data.direction;
+            world.player.stats.hp = data.life;
+            world.player.stats.maxHp = data.maxlife;
+            world.player.stats.mana = data.mana;
+            world.player.stats.maxMana = data.maxMana;
+            world.player.stats.strength = data.strength;
+            world.player.stats.dexterity = data.dexterity;
+            world.player.stats.lvl = data.lvl;
+            world.player.stats.exp = data.exp;
+            world.player.stats.nextLvlExp = data.nextLvlExp;
+            world.player.stats.gold = data.gold;
 
             world.player.inventory.clear();
             for (int i = 0; i < data.names.size(); i++) {
                 world.player.inventory.add(game.itemGenerator.generate(data.names.get(i)));
-                world.player.inventory.get(i).amount = data.amounts.get(i);
+                world.player.inventory.get(i).stats.amount = data.amounts.get(i);
             }
-            world.player.weapon = world.player.inventory.get(data.currentWeaponSlot);
-            world.player.shield = world.player.inventory.get(data.currentShieldSlot);
-            world.player.light = world.player.inventory.get(data.currentLightSlot);
+            world.player.stats.weapon = world.player.inventory.get(data.currentWeaponSlot);
+            world.player.stats.shield = world.player.inventory.get(data.currentShieldSlot);
+            world.player.stats.light = world.player.inventory.get(data.currentLightSlot);
             world.player.getAttack();
             world.player.getDefense();
             // world.player.frame.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -171,13 +171,13 @@ public class File {
                     if (data.itemName[map][i].equals("NA")) world.items[map][i] = null;
                     else {
                         world.items[map][i] = game.itemGenerator.generate(data.itemName[map][i]);
-                        world.items[map][i].x = data.itemX[map][i];
-                        world.items[map][i].y = data.itemY[map][i];
+                        world.items[map][i].pos.x = data.itemX[map][i];
+                        world.items[map][i].pos.y = data.itemY[map][i];
                         if (data.loot[map][i] != null && !data.empty[map][i])
-                            world.items[map][i].loot = game.itemGenerator.generate(data.loot[map][i]);
-                        world.items[map][i].opened = data.opened[map][i];
-                        world.items[map][i].empty = data.empty[map][i];
-                        if (world.items[map][i].opened) world.items[map][i].image = world.items[map][i].ss.item[1];
+                            world.items[map][i].stats.loot = game.itemGenerator.generate(data.loot[map][i]);
+                        world.items[map][i].stats.opened = data.opened[map][i];
+                        world.items[map][i].stats.empty = data.empty[map][i];
+                        if (world.items[map][i].stats.opened) world.items[map][i].sheet.frame = world.items[map][i].sheet.item[1];
                     }
                 }
             }

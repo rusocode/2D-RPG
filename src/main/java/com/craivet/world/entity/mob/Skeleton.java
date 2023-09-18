@@ -13,31 +13,31 @@ public class Skeleton extends Mob {
 
     public Skeleton(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        name = "Skeleton";
-        type = Type.HOSTILE;
+        stats.name = "Skeleton";
+        stats.type = Type.HOSTILE;
         soundHit = sound_hit_mob;
         soundDeath = sound_mob_death;
-        speed = defaultSpeed = 1;
-        hp = maxHp = 50;
-        exp = 50;
-        attack = 10;
-        defense = 2;
+        stats.speed = stats.defaultSpeed = 1;
+        stats.hp = stats.maxHp = 50;
+        stats.exp = 50;
+        stats.attack = 10;
+        stats.defense = 2;
 
         int scale = 5;
         int size = tile * scale;
-        hitbox.x = tile;
-        hitbox.y = tile;
-        hitbox.width = size - tile * 2;
-        hitbox.height = size - tile;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
-        attackbox.width = 90;
-        attackbox.height = 90;
-        motion1 = 25;
-        motion2 = 50;
-        ss.loadMovementFrames(skeleton_movement, 32, 32, scale);
-        ss.loadAttackFrames(skeleton_attack, 32, 32, scale);
-        image = ss.movement[0];
+        stats.hitbox.x = tile;
+        stats.hitbox.y = tile;
+        stats.hitbox.width = size - tile * 2;
+        stats.hitbox.height = size - tile;
+        stats.hitboxDefaultX = stats.hitbox.x;
+        stats.hitboxDefaultY = stats.hitbox.y;
+        stats.attackbox.width = 90;
+        stats.attackbox.height = 90;
+        stats.motion1 = 25;
+        stats.motion2 = 50;
+        sheet.loadMovementFrames(skeleton_movement, 32, 32, scale);
+        sheet.loadAttackFrames(skeleton_attack, 32, 32, scale);
+        sheet.frame = sheet.movement[0];
     }
 
     @Override

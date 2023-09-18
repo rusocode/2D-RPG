@@ -11,18 +11,18 @@ public class Oldman extends Mob {
 
     public Oldman(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        name = "Oldman";
-        type = Type.NPC;
-        speed = 1;
-        hitbox.x = 6;
-        hitbox.y = 16;
-        hitbox.width = (tile - hitbox.x) - 4;
-        hitbox.height = tile - hitbox.y;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
+        stats.name = "Oldman";
+        stats.type = Type.NPC;
+        stats.speed = 1;
+        stats.hitbox.x = 6;
+        stats.hitbox.y = 16;
+        stats.hitbox.width = (tile - stats.hitbox.x) - 4;
+        stats.hitbox.height = tile - stats.hitbox.y;
+        stats.hitboxDefaultX = stats.hitbox.x;
+        stats. hitboxDefaultY = stats.hitbox.y;
         dialogueSet = -1;
-        ss.loadMovementFrames(oldman, 16, 16, 1);
-        image = ss.movement[0];
+        sheet.loadMovementFrames(oldman, 16, 16, 1);
+        sheet.frame = sheet.movement[0];
         initDialogue();
     }
 

@@ -57,11 +57,11 @@ public class Mob extends Entity {
      * Look at the Player.
      */
     protected void lookPlayer() {
-        switch (world.player.direction) {
-            case DOWN -> direction = Direction.UP;
-            case UP -> direction = Direction.DOWN;
-            case LEFT -> direction = Direction.RIGHT;
-            case RIGHT -> direction = Direction.LEFT;
+        switch (world.player.stats.direction) {
+            case DOWN -> stats.direction = Direction.UP;
+            case UP -> stats.direction = Direction.DOWN;
+            case LEFT -> stats.direction = Direction.RIGHT;
+            case RIGHT -> stats.direction = Direction.LEFT;
         }
     }
 
@@ -90,7 +90,7 @@ public class Mob extends Entity {
      * @return the target's goal row.
      */
     protected int getGoalRow(Entity target) {
-        return (target.y + target.hitbox.y) / tile;
+        return (target.pos.y + target.stats.hitbox.y) / tile;
     }
 
     /**
@@ -100,7 +100,7 @@ public class Mob extends Entity {
      * @return the target's goal column.
      */
     protected int getGoalCol(Entity target) {
-        return (target.x + target.hitbox.x) / tile;
+        return (target.pos.x + target.stats.hitbox.x) / tile;
     }
 
     /**
@@ -144,9 +144,9 @@ public class Mob extends Entity {
         // TODO El metodo de arriba tendria que combinarse con este y que el mob pegue cuando esten en la misma direccion
         if (++timer.directionCounter > interval) { // TODO o =?
             if (getXDistance(game.world.player) > getYDistance(game.world.player))
-                direction = game.world.player.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
+                stats.direction = game.world.player.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
             else if (getXDistance(game.world.player) < getYDistance(game.world.player))
-                direction = game.world.player.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
+                stats.direction = game.world.player.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
             timer.directionCounter = 0;
         }
     }

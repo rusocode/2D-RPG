@@ -23,19 +23,19 @@ public class Key extends Item {
 
     public Key(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        name = NAME;
-        type = Type.CONSUMABLE;
-        image = Utils.scaleImage(key, tile, tile);
-        description = "[" + name + "]\nIt opens a door.";
-        price = 100;
-        this.amount = amount;
-        stackable = true;
-        hitbox.x = 2;
-        hitbox.y = 0;
-        hitbox.width = 27;
-        hitbox.height = 32;
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
+        stats.name = NAME;
+        stats.type = Type.CONSUMABLE;
+        sheet.frame = Utils.scaleImage(key, tile, tile);
+        stats.description = "[" + stats.name + "]\nIt opens a door.";
+        stats.price = 100;
+        stats.amount = amount;
+        stats.stackable = true;
+        stats.hitbox.x = 2;
+        stats.hitbox.y = 0;
+        stats.hitbox.width = 27;
+        stats.hitbox.height = 32;
+        stats.hitboxDefaultX = stats.hitbox.x;
+        stats.hitboxDefaultY = stats.hitbox.y;
     }
 
     @Override
