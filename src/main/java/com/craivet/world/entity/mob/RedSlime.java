@@ -21,12 +21,12 @@ public class RedSlime extends Mob {
         stats.exp = 3;
         stats.attack = 3;
         stats.defense = 1;
-        stats.hitbox.x = 3;
-        stats.hitbox.y = 18;
-        stats.hitbox.width = tile - stats.hitbox.x - 4;
-        stats.hitbox.height = tile - stats.hitbox.y;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 3;
+        hitbox.y = 18;
+        hitbox.width = tile - hitbox.x - 4;
+        hitbox.height = tile - hitbox.y;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
         stats.projectile = new StickyBall(game, world);
         sheet.loadMovementFrames(redslime, 16, 16, 1);
         sheet.frame = sheet.movement[0];

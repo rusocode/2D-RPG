@@ -19,8 +19,8 @@ public class Pickaxe extends Item {
         sheet.frame = Utils.scaleImage(pickaxe, tile, tile);
         stats.description = "[" + stats.name + "]\nYou will big it!";
         stats.price = 75;
-        stats.attackbox.width = 30;
-        stats.attackbox.height = 30;
+       attackbox.width = 30;
+        attackbox.height = 30;
         stats.attackValue = 1;
         stats.knockbackValue = 8;
     }

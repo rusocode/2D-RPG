@@ -89,10 +89,10 @@ public class UI {
         if (hpBarValue < 0) hpBarValue = 0;
 
         g2.setColor(new Color(35, 35, 35));
-        g2.fillRect(entity.stats.screenX - 1, entity.stats.screenY + tile + 4, tile + 2, 7);
+        g2.fillRect(entity.screen.x - 1, entity.screen.y + tile + 4, tile + 2, 7);
 
         g2.setColor(new Color(255, 0, 30));
-        g2.fillRect(entity.stats.screenX, entity.stats.screenY + tile + 5, (int) hpBarValue, 5);
+        g2.fillRect(entity.screen.x, entity.screen.y + tile + 5, (int) hpBarValue, 5);
 
         entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
     }
@@ -699,8 +699,8 @@ public class UI {
             counter = 0;
             game.state = PLAY_STATE;
             world.map = game.event.map;
-            world.player.pos.x = (game.event.col * tile) + world.player.stats.hitbox.width / 2;
-            world.player.pos.y = (game.event.row * tile) - world.player.stats.hitbox.height;
+            world.player.pos.x = (game.event.col * tile) + world.player.hitbox.width / 2;
+            world.player.pos.y = (game.event.row * tile) - world.player.hitbox.height;
             game.event.previousEventX = world.player.pos.x;
             game.event.previousEventY = world.player.pos.y;
             world.changeArea();

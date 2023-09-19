@@ -35,7 +35,7 @@ public class Item extends Entity {
      *
      * @param loot loot from the chest.
      */
-    public void setLoot(Entity loot) {
+    public void setLoot(Item loot) {
     }
 
     /**
@@ -84,7 +84,7 @@ public class Item extends Entity {
      * @return la posicion superior de la hitbox.
      */
     private int getTopHitbox() {
-        return entity.pos.y + entity.stats.hitbox.y;
+        return entity.pos.y + entity.hitbox.y;
     }
 
     /**
@@ -93,7 +93,7 @@ public class Item extends Entity {
      * @return la posicion inferior de la hitbox.
      */
     private int getBottomHitbox() {
-        return entity.pos.y + entity.stats.hitbox.y + entity.stats.hitbox.height;
+        return entity.pos.y + entity.hitbox.y + entity.hitbox.height;
     }
 
     /**
@@ -102,7 +102,7 @@ public class Item extends Entity {
      * @return la posicion izquierda de la hitbox.
      */
     private int getLeftHitbox() {
-        return entity.pos.x + entity.stats.hitbox.x;
+        return entity.pos.x + entity.hitbox.x;
     }
 
     /**
@@ -111,7 +111,7 @@ public class Item extends Entity {
      * @return la posicion derecha de la hitbox.
      */
     private int getRightHitbox() {
-        return entity.pos.x + entity.stats.hitbox.x + entity.stats.hitbox.width;
+        return entity.pos.x + entity.hitbox.x + entity.hitbox.width;
     }
 
     /**
@@ -120,7 +120,7 @@ public class Item extends Entity {
      * @return la fila de la entiad.
      */
     private int getRow() {
-        return (pos.y + stats.hitbox.y) / tile;
+        return (pos.y + hitbox.y) / tile;
     }
 
     /**
@@ -129,7 +129,7 @@ public class Item extends Entity {
      * @return la columna de la entiad.
      */
     private int getCol() {
-        return (pos.x + stats.hitbox.x) / tile;
+        return (pos.x + hitbox.x) / tile;
     }
 
 }

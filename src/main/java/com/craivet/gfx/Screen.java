@@ -11,7 +11,7 @@ import static com.craivet.utils.Global.*;
 
 /**
  * La resolucion de pantalla se refiere tanto al numero de pixeles en la pantalla fisica como al tamaño de la ventana en
- * la que se muestra una aplicacion o juego en particular.
+ * la que se muestra el juego.
  * <p>
  * Resoluciones mas usadas:
  * <ul>
@@ -32,19 +32,23 @@ import static com.craivet.utils.Global.*;
 
 public class Screen extends JFrame {
 
-    public Screen(final Game game, boolean fullScreenMode) {
-        int renderTilesWidth = 544, renderTilesHeight = 416;
+    public int x, y;
+
+    public Screen() {
+    }
+
+    public Screen(Game game, boolean fullScreenMode) {
         // setIgnoreRepaint(true);
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(game);
-        // pack();
+        // pack(); // TODO Nose porque se deforman los graficos al comprimir la ventana con pack()
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (game.state == PLAY_STATE || game.state == OPTION_STATE || game.state == STATS_STATE || game.state == INVENTORY_STATE) {
-                    int option = JOptionPane.showConfirmDialog(null, "Do you want to save the changes?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
-                    switch (option) {
+                if (game.state != MAIN_STATE) {
+                    int op = JOptionPane.showConfirmDialog(null, "Do you want to save the changes?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
+                    switch (op) {
                         case JOptionPane.YES_OPTION -> {
                             game.file.saveData();
                             System.exit(0);
@@ -59,7 +63,7 @@ public class Screen extends JFrame {
             }
         });
         if (fullScreenMode) setFullScreen();
-        else setSize(renderTilesWidth, renderTilesHeight);
+        else setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setLocationRelativeTo(null);
         setVisible(true);
     }
@@ -70,11 +74,7 @@ public class Screen extends JFrame {
     private void setFullScreen() {
         // Obtiene la pantalla predeterminada (la unica pantalla en un sistema de un solo monitor) a traves del entorno de graficos local
         GraphicsDevice gd = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-        DisplayMode display = gd.getDisplayMode();
-        System.out.println("width = " + display.getWidth());
-        System.out.println("height = " + display.getHeight());
-        System.out.println("BitDepth = " + display.getBitDepth());
-        System.out.println("hz = " + display.getRefreshRate());
+        // DisplayMode display = gd.getDisplayMode();
         // Si la pantalla principal admite el modo exclusivo de pantalla completa
         if (gd.isFullScreenSupported()) gd.setFullScreenWindow(this);
         else gd.setFullScreenWindow(null); // Establece la resolucion al tamaño del Canvas

@@ -93,13 +93,13 @@ public class CollisionEvent {
 
         // Si el player esta en el mismo mapa que el evento
         if (map == world.map) {
-            world.player.stats.hitbox.x += world.player.pos.x;
-            world.player.stats.hitbox.y += world.player.pos.y;
+            world.player.hitbox.x += world.player.pos.x;
+            world.player.hitbox.y += world.player.pos.y;
             event[map][row][col].x += col * tile;
             event[map][row][col].y += row * tile;
 
             // Si el player colisiona con el evento y si la direccion coincide con la del evento
-            if (world.player.stats.hitbox.intersects(event[map][row][col]) && (world.player.stats.direction == direction || direction == Direction.ANY)) {
+            if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.stats.direction == direction || direction == Direction.ANY)) {
                 isColliding = true;
                 world.player.attackCanceled = true; // Cancela el ataque en caso de interactuar con un evento usando enter (tecla que se utiliza para atacar)
                 // En base a esta informacion verifica la distancia entre el player y el ultimo evento
@@ -108,8 +108,8 @@ public class CollisionEvent {
             }
 
             // Resetea la posicion del hitbox del player y la posicion del evento
-            world.player.stats.hitbox.x = world.player.stats.hitboxDefaultX;
-            world.player.stats.hitbox.y = world.player.stats.hitboxDefaultY;
+            world.player.hitbox.x = world.player.hitboxDefaultX;
+            world.player.hitbox.y = world.player.hitboxDefaultY;
             event[map][row][col].x = 5;
             event[map][row][col].y = 7;
         }

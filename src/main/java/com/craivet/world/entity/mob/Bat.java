@@ -22,12 +22,12 @@ public class Bat extends Mob {
         stats.exp = 7;
         stats.attack = 1;
         stats.defense = 1;
-        stats.hitbox.x = 3;
-        stats.hitbox.y = 15;
-        stats.hitbox.width = tile - stats.hitbox.x;
-        stats.hitbox.height = tile - stats.hitbox.y;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 0;
+        hitbox.y = 0;
+        hitbox.width = tile;
+        hitbox.height = tile;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
         sheet.loadMovementFrames(bat, 16, 16, 1);
         sheet.frame = sheet.movement[0];
     }

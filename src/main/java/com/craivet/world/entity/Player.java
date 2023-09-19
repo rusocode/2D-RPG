@@ -1,4 +1,4 @@
-package com.craivet.world.entity.mob;
+package com.craivet.world.entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -9,6 +9,8 @@ import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
+import com.craivet.world.entity.mob.Mob;
+import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.entity.projectile.Fireball;
 import com.craivet.input.Keyboard;
 import com.craivet.world.entity.projectile.Projectile;
@@ -68,15 +70,15 @@ public class Player extends Mob {
     @Override
     public void render(Graphics2D g2) {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
-        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), stats.screenX, stats.screenY, null);
+        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.x, screen.y, null);
         else getCurrentItemFrame(g2);
-        // drawRects(g2);
+        drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
     private void centerOnScreen() {
-        stats.screenX = WINDOW_WIDTH / 2 - (tile / 2);
-        stats.screenY = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
+        screen.x = WINDOW_WIDTH / 2 - (tile / 2);
+        screen.y = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
     }
 
     public void setDefaultValues() {
@@ -92,7 +94,7 @@ public class Player extends Mob {
         stats.gold = 500;
         stats.strength = 1;
         stats.dexterity = 1;
-        flags.invincible = false;
+        flags.invincible = false; // TODO Hace falta?
 
         stats.projectile = new Fireball(game, world);
         stats.weapon = new SwordIron(game, world);
@@ -101,12 +103,12 @@ public class Player extends Mob {
         stats.attack = getAttack();
         stats.defense = getDefense();
 
-        stats.hitbox.x = 7;
-        stats.hitbox.y = 32;
-        stats.hitbox.width = 10;
-        stats.hitbox.height = 24;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 7;
+        hitbox.y = 32;
+        hitbox.width = 10;
+        hitbox.height = 24;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
         stats.motion1 = 5;
         stats.motion2 = 18;
 
@@ -133,11 +135,11 @@ public class Player extends Mob {
         // Posiciona la hitbox, NO la imagen
         int startCol = 21, startRow = 22; // 26, 39 // 10, 27
         // Suma la mitad del ancho de la hitbox y resta un pixel para centrar la posicion horizontal dentro del tile
-        pos.x = (startCol * tile) + stats.hitbox.width / 2 - 1;
+        pos.x = (startCol * tile) + hitbox.width / 2 - 1;
         /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
          * player ocupa dos tiles verticales. Por ultimo se resta un pixel en caso de que la posicion este por encima
          * de un tile solido para evitar que se "trabe". */
-        pos.y = (startRow * tile) - stats.hitbox.height - 1;
+        pos.y = (startRow * tile) - hitbox.height - 1;
     }
 
     /**
@@ -240,7 +242,7 @@ public class Player extends Mob {
             if (keyboard.enter && mob.stats.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
-            } else mob.move(stats.direction);
+            } else mob.move(stats.direction); // En caso de que sea la roca
         }
     }
 
@@ -365,7 +367,7 @@ public class Player extends Mob {
             Item selectedItem = inventory.get(itemIndex);
             if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordIron) {
                 stats.weapon = selectedItem;
-                stats.attackbox = stats.weapon.stats.attackbox; // TODO Hace falta esto aca?
+                attackbox = stats.weapon.attackbox; // TODO Hace falta esto aca?
                 stats.attack = getAttack();
                 switch (stats.weapon.stats.type) {
                     case SWORD -> {
@@ -470,23 +472,23 @@ public class Player extends Mob {
         switch (stats.direction) {
             case DOWN -> {
                 currentFrame = down.getFirstFrame();
-                g2.drawImage(sheet.down[1], stats.screenX, stats.screenY, null);
-                g2.drawImage(sheet.weapon[0], stats.screenX, stats.screenY + 34, null);
+                g2.drawImage(sheet.down[1], screen.x, screen.y, null);
+                g2.drawImage(sheet.weapon[0], screen.x, screen.y + 34, null);
             }
             case UP -> {
                 currentFrame = up.getFirstFrame();
-                g2.drawImage(sheet.up[2], stats.screenX, stats.screenY, null);
-                g2.drawImage(sheet.weapon[1], stats.screenX + 13, stats.screenY + 17, null);
+                g2.drawImage(sheet.up[2], screen.x, screen.y, null);
+                g2.drawImage(sheet.weapon[1], screen.x + 13, screen.y + 17, null);
             }
             case LEFT -> {
                 currentFrame = left.getFirstFrame();
-                g2.drawImage(sheet.left[2], stats.screenX, stats.screenY, null);
-                g2.drawImage(sheet.weapon[2], stats.screenX - 7, stats.screenY + 26, null);
+                g2.drawImage(sheet.left[2], screen.x, screen.y, null);
+                g2.drawImage(sheet.weapon[2], screen.x - 7, screen.y + 26, null);
             }
             case RIGHT -> {
                 currentFrame = right.getFirstFrame();
-                g2.drawImage(sheet.right[4], stats.screenX, stats.screenY, null);
-                g2.drawImage(sheet.weapon[3], stats.screenX + 15, stats.screenY + 28, null);
+                g2.drawImage(sheet.right[4], screen.x, screen.y, null);
+                g2.drawImage(sheet.weapon[3], screen.x + 15, screen.y + 28, null);
             }
         }
     }
@@ -574,17 +576,17 @@ public class Player extends Mob {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(stats.screenX, stats.screenY, currentFrame.getWidth(), currentFrame.getHeight()); // TODO Creo que se podria reemplazar por image.getWidth()
+        g2.drawRect(screen.x, screen.y, currentFrame.getWidth(), currentFrame.getHeight()); // TODO Creo que se podria reemplazar por image.getWidth()
         // Hitbox
         g2.setColor(Color.green);
-        g2.drawRect(stats.screenX + stats.hitbox.x, stats.screenY + stats.hitbox.y, stats.hitbox.width, stats.hitbox.height);
+        g2.drawRect(screen.x + hitbox.x, screen.y + hitbox.y, hitbox.width, hitbox.height);
         // Attackbox
         if (flags.hitting) {
             g2.setColor(Color.red);
             /* Se suma la posicion de la attackbox a la posicion del player porque despues de verificar la deteccion del
              * golpe en el metodo hit, se resetea la posicio del player, por lo tanto se suma desde aca para que el
              * rectangulo dibujado coincida con la posicion especificada en el metodo hit. */
-            g2.drawRect(stats.screenX + stats.attackbox.x + stats.hitbox.x, stats.screenY + stats.attackbox.y + stats.hitbox.y, stats.attackbox.width, stats.attackbox.height);
+            g2.drawRect(screen.x + attackbox.x + hitbox.x, screen.y + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
         }
     }
 

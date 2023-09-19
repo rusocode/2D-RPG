@@ -20,8 +20,8 @@ public class Axe extends Item {
         stats.description = "[" + stats.name + "]\nA bit rusty but still \ncan cut some trees.";
         stats.price = 75;
         // TODO No haria falta porque se ajusta en Entity
-        stats.attackbox.width = 30;
-        stats.attackbox.height = 30;
+        attackbox.width = 30;
+        attackbox.height = 30;
         stats.attackValue = 1;
         stats.knockbackValue = 8;
     }

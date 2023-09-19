@@ -25,12 +25,12 @@ public class Rock extends Mob {
         stats.type = Type.NPC;
         sheet.frame = Utils.scaleImage(bigrock, tile, tile);
         stats.speed = 1;
-        stats.hitbox.x = 0;
-        stats.hitbox.y = 6;
-        stats.hitbox.width = tile - stats.hitbox.x - 1;
-        stats.hitbox.height = tile - stats.hitbox.y;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 1;
+        hitbox.y = 6;
+        hitbox.width = tile - hitbox.x - 1;
+        hitbox.height = tile - hitbox.y;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
         dialogueSet = -1;
         initDialogue();
     }

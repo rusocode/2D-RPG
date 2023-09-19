@@ -26,12 +26,12 @@ public class Slime extends Mob {
         stats.exp = 2;
         stats.attack = 2;
         stats.defense = 1;
-        stats.hitbox.x = 3;
-        stats.hitbox.y = 18;
-        stats.hitbox.width = tile - 7;
-        stats.hitbox.height = tile - stats.hitbox.y;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 3;
+        hitbox.y = 18;
+        hitbox.width = tile - 7;
+        hitbox.height = tile - hitbox.y;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
         stats.projectile = new StickyBall(game, world);
         sheet.loadMovementFrames(slime, 16, 16, 1);
         sheet.frame = sheet.movement[0];

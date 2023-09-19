@@ -24,12 +24,12 @@ public class StickyBall extends Projectile {
         stats.attack = 3;
         cost = 1;
         flags.alive = false;
-        stats.hitbox.x = 8;
-        stats.hitbox.y = 8;
-        stats.hitbox.width = 15;
-        stats.hitbox.height = 15;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 8;
+        hitbox.y = 8;
+        hitbox.width = 15;
+        hitbox.height = 15;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
     }
 
     @Override

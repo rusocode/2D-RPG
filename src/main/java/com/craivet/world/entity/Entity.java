@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import com.craivet.Direction;
 import com.craivet.Game;
+import com.craivet.gfx.Screen;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.physics.Mechanics;
 import com.craivet.world.Position;
@@ -21,8 +22,6 @@ import static com.craivet.utils.Global.*;
  * <p>
  * TODO Los metodos update() y render() se podrian implementar desde una interfaz
  * <p>
- * TODO No tendria que ser una clase abstracta?
- * <p>
  * TODO Las entidades abarcan los mobs, items, y projectiles
  */
 
@@ -31,6 +30,7 @@ public abstract class Entity {
     public final Game game;
     public final World world;
 
+    public Screen screen = new Screen();
     public Stats stats = new Stats();
     public Position pos = new Position();
     public SpriteSheet sheet = new SpriteSheet();
@@ -38,6 +38,9 @@ public abstract class Entity {
     public Timer timer = new Timer();
     public Mechanics mechanics = new Mechanics();
     public ArrayList<Item> inventory = new ArrayList<>();
+    public Rectangle hitbox = new Rectangle(0, 0, tile, tile);
+    public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
+    public int hitboxDefaultX, hitboxDefaultY;
 
     public Entity linkedEntity;
     public boolean hpBar;
@@ -81,11 +84,11 @@ public abstract class Entity {
 
     public void render(Graphics2D g2) {
         // TODO Se podria calcular desde un metodo
-        stats.screenX = (pos.x - world.player.pos.x) + world.player.stats.screenX;
-        stats.screenY = (pos.y - world.player.pos.y) + world.player.stats.screenY;
+        screen.x = (pos.x - world.player.pos.x) + world.player.screen.x;
+        screen.y = (pos.y - world.player.pos.y) + world.player.screen.y;
         if (isOnCamera()) {
-            tempScreenX = stats.screenX;
-            tempScreenY = stats.screenY;
+            tempScreenX = screen.x;
+            tempScreenY = screen.y;
 
             // Si el mob hostil tiene activada la barra de vida
             if (stats.type == Type.HOSTILE && hpBar) game.ui.drawHpBar(g2, this);
@@ -100,9 +103,9 @@ public abstract class Entity {
             if (sheet.movement != null || sheet.attack != null)
                 g2.drawImage(sheet.getCurrentFrame(this), tempScreenX, tempScreenY, null);
                 // Si es una imagen estatica (item, interactive tile)
-            else g2.drawImage(sheet.frame, stats.screenX, stats.screenY, null);
+            else g2.drawImage(sheet.frame, screen.x, screen.y, null);
 
-            // drawRects(g2);
+            drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }
@@ -169,7 +172,7 @@ public abstract class Entity {
                 world.items[world.map][i] = item;
                 world.items[world.map][i].pos.x = pos.x + (sheet.frame.getWidth() / 2 - item.sheet.frame.getWidth() / 2);
                 // Suma la mitad de la hitbox solo de los mobs a la posicion y del item
-                world.items[world.map][i].pos.y = pos.y + (sheet.frame.getHeight() / 2 + (entity instanceof Mob ? stats.hitbox.height / 2 : 0) - item.sheet.frame.getHeight() / 2);
+                world.items[world.map][i].pos.y = pos.y + (sheet.frame.getHeight() / 2 + (entity instanceof Mob ? hitbox.height / 2 : 0) - item.sheet.frame.getHeight() / 2);
                 break;
             }
         }
@@ -229,24 +232,24 @@ public abstract class Entity {
          * la esquina superior izquierda (o del centro?) es mucha con respecto a la vision del player en pantalla. Por
          * lo tanto se aumenta esa vision multiplicando el bossArea. */
         int bossArea = 5;
-        return pos.x + tile * bossArea > world.player.pos.x - world.player.stats.screenX &&
-                pos.x - tile < world.player.pos.x + world.player.stats.screenX &&
-                pos.y + tile * bossArea > world.player.pos.y - world.player.stats.screenY &&
-                pos.y - tile < world.player.pos.y + world.player.stats.screenY;
+        return pos.x + tile * bossArea > world.player.pos.x - world.player.screen.x &&
+                pos.x - tile < world.player.pos.x + world.player.screen.x &&
+                pos.y + tile * bossArea > world.player.pos.y - world.player.screen.y &&
+                pos.y - tile < world.player.pos.y + world.player.screen.y;
     }
 
     private void drawRects(Graphics2D g2) {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(stats.screenX, stats.screenY, sheet.frame.getWidth(), sheet.frame.getHeight());
+        g2.drawRect(screen.x, screen.y, sheet.frame.getWidth(), sheet.frame.getHeight());
         // Hitbox
         g2.setColor(Color.green);
-        g2.drawRect(stats.screenX + stats.hitbox.x, stats.screenY + stats.hitbox.y, stats.hitbox.width, stats.hitbox.height);
+        g2.drawRect(screen.x + hitbox.x, screen.y + hitbox.y, hitbox.width, hitbox.height);
         // Attackbox
         if (flags.hitting) {
             g2.setColor(Color.red);
-            g2.drawRect(stats.screenX + stats.attackbox.x + stats.hitbox.x, stats.screenY + stats.attackbox.y + stats.hitbox.y, stats.attackbox.width, stats.attackbox.height);
+            g2.drawRect(screen.x + attackbox.x + hitbox.x, screen.y + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
         }
     }
 

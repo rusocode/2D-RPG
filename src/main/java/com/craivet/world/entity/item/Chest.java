@@ -19,12 +19,12 @@ public class Chest extends Item {
         sheet.loadItemFrames(chest, 16, 16, 1);
         sheet.frame = sheet.item[0];
         stats.solid = true;
-        stats.hitbox.x = 2;
-        stats.hitbox.y = 16;
-        stats.hitbox.width = tile - stats.hitbox.x - 3;
-        stats.hitbox.height = tile - stats.hitbox.y;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 2;
+        hitbox.y = 16;
+        hitbox.width = tile - hitbox.x - 3;
+        hitbox.height = tile - hitbox.y;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
     }
 
     @Override
@@ -57,7 +57,7 @@ public class Chest extends Item {
     }
 
     @Override
-    public void setLoot(Entity loot) {
+    public void setLoot(Item loot) {
         stats.loot = loot;
     }
 

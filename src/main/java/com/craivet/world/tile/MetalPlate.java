@@ -15,12 +15,12 @@ public class MetalPlate extends Interactive {
         super(game, world, x, y);
         stats.name = item_name;
         sheet.frame = Utils.scaleImage(itile_metalplate, tile, tile);
-        stats.hitbox.x = 0;
-        stats.hitbox.y = 0;
-        stats.hitbox.width = 0;
-        stats.hitbox.height = 0;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 0;
+        hitbox.y = 0;
+        hitbox.width = 0;
+        hitbox.height = 0;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
     }
 
 

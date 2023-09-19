@@ -25,14 +25,14 @@ public class Skeleton extends Mob {
 
         int scale = 5;
         int size = tile * scale;
-        stats.hitbox.x = tile;
-        stats.hitbox.y = tile;
-        stats.hitbox.width = size - tile * 2;
-        stats.hitbox.height = size - tile;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
-        stats.attackbox.width = 90;
-        stats.attackbox.height = 90;
+        hitbox.x = tile;
+        hitbox.y = tile;
+        hitbox.width = size - tile * 2;
+        hitbox.height = size - tile;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
+        attackbox.width = 90;
+        attackbox.height = 90;
         stats.motion1 = 25;
         stats.motion2 = 50;
         sheet.loadMovementFrames(skeleton_movement, 32, 32, scale);

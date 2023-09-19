@@ -84,7 +84,7 @@ public class EntityManager implements State {
          * item solido o un mob, este se dibuja por debajo, y cuando el player se posiciona por debajo, este se
          * dibuja por arriba. Esto se debe porque estan todos en una misma lista y se ordenan de manera ascendente
          * por la posicion de la coordena y de cada entidad. */
-        entities.sort(Comparator.comparingInt(e -> e.pos.y + e.stats.hitbox.y));
+        entities.sort(Comparator.comparingInt(e -> e.pos.y + e.hitbox.y));
 
         // Ahora se dibujan por orden ascendente
         for (Entity item : items) item.render(g2);

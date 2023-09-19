@@ -11,10 +11,15 @@ import java.net.URL;
 import static com.craivet.utils.Global.*;
 
 /**
- * Los mobs se dividen en
+ * Mob (Enemigo o NPC - Personaje No Jugable): Un "mob" (termino abreviado de "mobile" o "mobility") es un termino
+ * generalmente utilizado para referirse a personajes o criaturas en el juego que no son controlados por el jugador. Los
+ * mobs pueden incluir enemigos, monstruos, personajes no jugables (NPC), aliados controlados por la inteligencia
+ * artificial (IA), y otros personajes dentro del juego. Los mobs pueden tener roles variados, como ser enemigos que el
+ * jugador debe derrotar, vendedores en una ciudad, aliados en una mision, etc.
+ * <p>
+ * Para este juego los mobs se dividen en
  * <ul>
- * <li>PLAYER: jugador principal.
- * <li>NPC: entidades con las que se interactura, comercia, etc.
+ * <li>NPC: entidades con las que se interactura, comercia, etc. TODO o NO_HOSTILE
  * <li>HOSTILE: son entidades agresivas que pueden atacar y ser atacadas.
  * </ul>
  * <p>
@@ -23,7 +28,7 @@ import static com.craivet.utils.Global.*;
 
 public class Mob extends Entity {
 
-    protected URL soundHit, soundDeath;
+    public URL soundHit, soundDeath;
 
     public Mob(Game game, World world, int x, int y) {
         super(game, world, x, y);
@@ -38,7 +43,7 @@ public class Mob extends Entity {
      *
      * @param direction direction in which it moves.
      */
-    protected void move(Direction direction) {
+    public void move(Direction direction) {
     }
 
     /**
@@ -90,7 +95,7 @@ public class Mob extends Entity {
      * @return the target's goal row.
      */
     protected int getGoalRow(Entity target) {
-        return (target.pos.y + target.stats.hitbox.y) / tile;
+        return (target.pos.y + target.hitbox.y) / tile;
     }
 
     /**
@@ -100,7 +105,7 @@ public class Mob extends Entity {
      * @return the target's goal column.
      */
     protected int getGoalCol(Entity target) {
-        return (target.pos.x + target.stats.hitbox.x) / tile;
+        return (target.pos.x + target.hitbox.x) / tile;
     }
 
     /**

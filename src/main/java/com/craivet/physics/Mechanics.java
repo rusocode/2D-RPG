@@ -34,7 +34,7 @@ public class Mechanics {
 
             // Guarda la posicion actual de x/y y el tamaño de la hitbox
             int currentX = e.pos.x, currentY = e.pos.y;
-            int hitboxWidth = e.stats.hitbox.width, hitboxHeight = e.stats.hitbox.height;
+            int hitboxWidth = e.hitbox.width, hitboxHeight = e.hitbox.height;
 
             /* Ajusta la attackbox (en la hoja de la espada para ser mas especificos) del player dependiendo de la
              * direccion de ataque. Es importante aclarar que las coordenadas x/y de la attackbox parten de la esquina
@@ -42,46 +42,46 @@ public class Mechanics {
             if (e.stats.type == Type.PLAYER) {
                 switch (e.stats.direction) {
                     case DOWN -> {
-                        e.stats.attackbox.x = -1;
-                        e.stats.attackbox.y = 4;
-                        e.stats.attackbox.width = 4;
-                        e.stats.attackbox.height = 36;
+                        e.attackbox.x = -1;
+                        e.attackbox.y = 4;
+                        e.attackbox.width = 4;
+                        e.attackbox.height = 36;
                     }
                     case UP -> {
-                        e.stats.attackbox.x = 12;
-                        e.stats.attackbox.y = -43;
-                        e.stats.attackbox.width = 4;
-                        e.stats.attackbox.height = 42;
+                        e.attackbox.x = 12;
+                        e.attackbox.y = -43;
+                        e.attackbox.width = 4;
+                        e.attackbox.height = 42;
                     }
                     case LEFT -> {
-                        e.stats.attackbox.x = -20;
-                        e.stats.attackbox.y = 0;
-                        e.stats.attackbox.width = 19;
-                        e.stats.attackbox.height = 4;
+                        e.attackbox.x = -20;
+                        e.attackbox.y = 0;
+                        e.attackbox.width = 19;
+                        e.attackbox.height = 4;
                     }
                     case RIGHT -> {
-                        e.stats.attackbox.x = 10;
-                        e.stats.attackbox.y = 2;
-                        e.stats.attackbox.width = 19;
-                        e.stats.attackbox.height = 4;
+                        e.attackbox.x = 10;
+                        e.attackbox.y = 2;
+                        e.attackbox.width = 19;
+                        e.attackbox.height = 4;
                     }
                 }
                 /* Acumula la posicion de la attackbox a la posicion del player para verificar la colision con las
                  * coordenas ajustadas de la attackbox. */
-                e.pos.x += e.stats.attackbox.x;
-                e.pos.y += e.stats.attackbox.y;
+                e.pos.x += e.attackbox.x;
+                e.pos.y += e.attackbox.y;
             } else if (e.stats.type == Type.HOSTILE) {
                 switch (e.stats.direction) {
-                    case DOWN -> e.pos.y += e.stats.attackbox.height;
-                    case UP -> e.pos.y -= e.stats.attackbox.height;
-                    case LEFT -> e.pos.x -= e.stats.attackbox.width;
-                    case RIGHT -> e.pos.x += e.stats.attackbox.width;
+                    case DOWN -> e.pos.y += e.attackbox.height;
+                    case UP -> e.pos.y -= e.attackbox.height;
+                    case LEFT -> e.pos.x -= e.attackbox.width;
+                    case RIGHT -> e.pos.x += e.attackbox.width;
                 }
             }
 
             // Convierte la hitbox (el ancho y alto) en la attackbox para verificar la colision solo con la attackbox
-            e.stats.hitbox.width = e.stats.attackbox.width;
-            e.stats.hitbox.height = e.stats.attackbox.height;
+            e.hitbox.width = e.attackbox.width;
+            e.hitbox.height = e.attackbox.height;
 
             if (e.stats.type == Type.HOSTILE) e.hitPlayer(e.game.collision.checkPlayer(e), e.stats.attack);
             else {
@@ -99,8 +99,8 @@ public class Mechanics {
             // Despues de verificar la colision, resetea los datos originales
             e.pos.x = currentX;
             e.pos.y = currentY;
-            e.stats.hitbox.width = hitboxWidth;
-            e.stats.hitbox.height = hitboxHeight;
+            e.hitbox.width = hitboxWidth;
+            e.hitbox.height = hitboxHeight;
         }
         if (e.timer.attackAnimationCounter > e.stats.motion2) {
             e.sheet.attackNum = 1;
@@ -167,16 +167,16 @@ public class Mechanics {
     private boolean isDistanceWithMob(Entity player, Entity mob) {
         switch (mob.stats.direction) {
             case DOWN -> {
-                if (player.pos.y + player.stats.hitbox.y + player.stats.hitbox.height + mob.stats.speed < mob.pos.y + mob.stats.hitbox.y) return true;
+                if (player.pos.y + player.hitbox.y + player.hitbox.height + mob.stats.speed < mob.pos.y + mob.hitbox.y) return true;
             }
             case UP -> {
-                if (player.pos.y + player.stats.hitbox.y - mob.stats.speed > mob.pos.y + mob.stats.hitbox.y + mob.stats.hitbox.height) return true;
+                if (player.pos.y + player.hitbox.y - mob.stats.speed > mob.pos.y + mob.hitbox.y + mob.hitbox.height) return true;
             }
             case LEFT -> {
-                if (player.pos.x + player.stats.hitbox.x - mob.stats.speed > mob.pos.x + mob.stats.hitbox.x + mob.stats.hitbox.width) return true;
+                if (player.pos.x + player.hitbox.x - mob.stats.speed > mob.pos.x + mob.hitbox.x + mob.hitbox.width) return true;
             }
             case RIGHT -> {
-                if (player.pos.x + player.stats.hitbox.x + player.stats.hitbox.width + mob.stats.speed < mob.pos.x + mob.stats.hitbox.x) return true;
+                if (player.pos.x + player.hitbox.x + player.hitbox.width + mob.stats.speed < mob.pos.x + mob.hitbox.x) return true;
             }
         }
         return false;

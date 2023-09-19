@@ -16,12 +16,12 @@ public class Trader extends Mob {
         stats.name = "Trader";
         stats.type = Type.NPC;
         sheet.frame = Utils.scaleImage(trader, tile, tile);
-        stats.hitbox.x = 8;
-        stats.hitbox.y = 16;
-        stats.hitbox.width = (tile - stats.hitbox.x) - 9;
-        stats.hitbox.height = tile - stats.hitbox.y;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 8;
+        hitbox.y = 16;
+        hitbox.width = (tile - hitbox.x) - 9;
+        hitbox.height = tile - hitbox.y;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
         initDialogue();
         setItems();
     }

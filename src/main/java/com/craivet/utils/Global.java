@@ -41,8 +41,8 @@ public final class Global {
     public static final int MAX_WINDOW_ROW = 13; // 12, 13 TODO Por que no coiciden la cantidad de tiles visibles (6) hacia arriba de la cabeza con los del ao (5)?
     public static final int MAX_WINDOW_COL = 17; // 20, 17 TODO o MAX_TILES_COL?
     // Tamaño de la ventana
-    public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL; // 544px
-    public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW; // 416px
+    public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL; // 544px conocido como renderTilesWidth
+    public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW; // 416px conocido como renderTilesHeight
 
     // Map settings
     public static final int MAPS = 10;
@@ -78,7 +78,7 @@ public final class Global {
     public static final int INTERVAL_INVINCIBLE = 60;
     public static final int INTERVAL_INVINCIBLE_INTERACTIVE = 20;
     public static final int INTERVAL_DIRECTION = 120;
-    public static final int INTERVAL_DIRECTION_BAT = 20;
+    public static final int INTERVAL_DIRECTION_BAT = 50;
     public static final int INTERVAL_HP_BAR = 240;
     public static final int INTERVAL_KNOCKBACK = 10;
     public static final int INTERVAL_TRANSITION = 50;

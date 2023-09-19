@@ -3,7 +3,7 @@ package com.craivet.physics;
 import com.craivet.Direction;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.mob.Player;
+import com.craivet.world.entity.Player;
 
 import static com.craivet.utils.Global.*;
 
@@ -29,10 +29,10 @@ public class Collision {
      */
     public void checkTile(Entity entity) {
 
-        int entityBottomWorldY = entity.pos.y + entity.stats.hitbox.y + entity.stats.hitbox.height;
-        int entityTopWorldY = entity.pos.y + entity.stats.hitbox.y;
-        int entityLeftWorldX = entity.pos.x + entity.stats.hitbox.x;
-        int entityRightWorldX = entity.pos.x + entity.stats.hitbox.x + entity.stats.hitbox.width;
+        int entityBottomWorldY = entity.pos.y + entity.hitbox.y + entity.hitbox.height;
+        int entityTopWorldY = entity.pos.y + entity.hitbox.y;
+        int entityLeftWorldX = entity.pos.x + entity.hitbox.x;
+        int entityRightWorldX = entity.pos.x + entity.hitbox.x + entity.hitbox.width;
 
         int entityBottomRow = entityBottomWorldY / tile;
         int entityTopRow = entityTopWorldY / tile;
@@ -87,30 +87,30 @@ public class Collision {
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] != null) {
                 // Obtiene la posicion del hitbox de la entidad y del item
-                entity.stats.hitbox.x += entity.pos.x;
-                entity.stats.hitbox.y += entity.pos.y;
-                world.items[world.map][i].stats.hitbox.x += world.items[world.map][i].pos.x;
-                world.items[world.map][i].stats.hitbox.y += world.items[world.map][i].pos.y;
+                entity.hitbox.x += entity.pos.x;
+                entity.hitbox.y += entity.pos.y;
+                world.items[world.map][i].hitbox.x += world.items[world.map][i].pos.x;
+                world.items[world.map][i].hitbox.y += world.items[world.map][i].pos.y;
 
                 Direction direction = entity.stats.direction;
                 if (entity.flags.knockback) direction = entity.knockbackDirection;
 
                 switch (direction) {
-                    case DOWN -> entity.stats.hitbox.y += entity.stats.speed;
-                    case UP -> entity.stats.hitbox.y -= entity.stats.speed;
-                    case LEFT -> entity.stats.hitbox.x -= entity.stats.speed;
-                    case RIGHT -> entity.stats.hitbox.x += entity.stats.speed;
+                    case DOWN -> entity.hitbox.y += entity.stats.speed;
+                    case UP -> entity.hitbox.y -= entity.stats.speed;
+                    case LEFT -> entity.hitbox.x -= entity.stats.speed;
+                    case RIGHT -> entity.hitbox.x += entity.stats.speed;
                 }
 
-                if (entity.stats.hitbox.intersects(world.items[world.map][i].stats.hitbox)) {
+                if (entity.hitbox.intersects(world.items[world.map][i].hitbox)) {
                     if (world.items[world.map][i].stats.solid) entity.flags.colliding = true;
                     if (entity instanceof Player) index = i;
                 }
 
-                entity.stats.hitbox.x = entity.stats.hitboxDefaultX;
-                entity.stats.hitbox.y = entity.stats.hitboxDefaultY;
-                world.items[world.map][i].stats.hitbox.x = world.items[world.map][i].stats.hitboxDefaultX;
-                world.items[world.map][i].stats.hitbox.y = world.items[world.map][i].stats.hitboxDefaultY;
+                entity.hitbox.x = entity.hitboxDefaultX;
+                entity.hitbox.y = entity.hitboxDefaultY;
+                world.items[world.map][i].hitbox.x = world.items[world.map][i].hitboxDefaultX;
+                world.items[world.map][i].hitbox.y = world.items[world.map][i].hitboxDefaultY;
             }
         }
         return index;
@@ -135,19 +135,19 @@ public class Collision {
         for (int i = 0; i < otherEntity[1].length; i++) {
             if (otherEntity[world.map][i] != null) {
                 // Obtiene la posicion del area del cuerpo de la entidad y de la otra entidad
-                entity.stats.hitbox.x += entity.pos.x;
-                entity.stats.hitbox.y += entity.pos.y;
-                otherEntity[world.map][i].stats.hitbox.x += otherEntity[world.map][i].pos.x ;
-                otherEntity[world.map][i].stats.hitbox.y += otherEntity[world.map][i].pos.y;
+                entity.hitbox.x += entity.pos.x;
+                entity.hitbox.y += entity.pos.y;
+                otherEntity[world.map][i].hitbox.x += otherEntity[world.map][i].pos.x;
+                otherEntity[world.map][i].hitbox.y += otherEntity[world.map][i].pos.y;
 
                 switch (direction) {
-                    case DOWN -> entity.stats.hitbox.y += speed;
-                    case UP -> entity.stats.hitbox.y -= speed;
-                    case LEFT -> entity.stats.hitbox.x -= speed;
-                    case RIGHT -> entity.stats.hitbox.x += speed;
+                    case DOWN -> entity.hitbox.y += speed;
+                    case UP -> entity.hitbox.y -= speed;
+                    case LEFT -> entity.hitbox.x -= speed;
+                    case RIGHT -> entity.hitbox.x += speed;
                 }
 
-                if (entity.stats.hitbox.intersects(otherEntity[world.map][i].stats.hitbox)) {
+                if (entity.hitbox.intersects(otherEntity[world.map][i].hitbox)) {
                     if (otherEntity[world.map][i] != entity) { // Evita la colision en si misma
                         entity.flags.colliding = true;
                         entity.flags.collidingOnMob = true;
@@ -155,10 +155,10 @@ public class Collision {
                     }
                 }
 
-                entity.stats.hitbox.x = entity.stats.hitboxDefaultX;
-                entity.stats.hitbox.y = entity.stats.hitboxDefaultY;
-                otherEntity[world.map][i].stats.hitbox.x = otherEntity[world.map][i].stats.hitboxDefaultX;
-                otherEntity[world.map][i].stats.hitbox.y = otherEntity[world.map][i].stats.hitboxDefaultY;
+                entity.hitbox.x = entity.hitboxDefaultX;
+                entity.hitbox.y = entity.hitboxDefaultY;
+                otherEntity[world.map][i].hitbox.x = otherEntity[world.map][i].hitboxDefaultX;
+                otherEntity[world.map][i].hitbox.y = otherEntity[world.map][i].hitboxDefaultY;
             }
         }
         return index;
@@ -174,27 +174,27 @@ public class Collision {
      */
     public boolean checkPlayer(Entity entity) {
         boolean contact = false;
-        entity.stats.hitbox.x += entity.pos.x;
-        entity.stats.hitbox.y += entity.pos.y;
-        world.player.stats.hitbox.x += world.player.pos.x;
-        world.player.stats.hitbox.y += world.player.pos.y;
+        entity.hitbox.x += entity.pos.x;
+        entity.hitbox.y += entity.pos.y;
+        world.player.hitbox.x += world.player.pos.x;
+        world.player.hitbox.y += world.player.pos.y;
 
         switch (entity.stats.direction) {
-            case DOWN -> entity.stats.hitbox.y += entity.stats.speed;
-            case UP -> entity.stats.hitbox.y -= entity.stats.speed;
-            case LEFT -> entity.stats.hitbox.x -= entity.stats.speed;
-            case RIGHT -> entity.stats.hitbox.x += entity.stats.speed;
+            case DOWN -> entity.hitbox.y += entity.stats.speed;
+            case UP -> entity.hitbox.y -= entity.stats.speed;
+            case LEFT -> entity.hitbox.x -= entity.stats.speed;
+            case RIGHT -> entity.hitbox.x += entity.stats.speed;
         }
 
-        if (entity.stats.hitbox.intersects(world.player.stats.hitbox)) {
+        if (entity.hitbox.intersects(world.player.hitbox)) {
             entity.flags.colliding = true;
             contact = true;
         }
 
-        entity.stats.hitbox.x = entity.stats.hitboxDefaultX;
-        entity.stats.hitbox.y = entity.stats.hitboxDefaultY;
-        world.player.stats.hitbox.x = world.player.stats.hitboxDefaultX;
-        world.player.stats.hitbox.y = world.player.stats.hitboxDefaultY;
+        entity.hitbox.x = entity.hitboxDefaultX;
+        entity.hitbox.y = entity.hitboxDefaultY;
+        world.player.hitbox.x = world.player.hitboxDefaultX;
+        world.player.hitbox.y = world.player.hitboxDefaultY;
 
         return contact;
 

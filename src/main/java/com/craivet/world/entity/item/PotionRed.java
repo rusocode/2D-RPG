@@ -26,12 +26,12 @@ public class PotionRed extends Item {
         value = 2;
         stats.amount = amount;
         stats.stackable = true;
-        stats.hitbox.x = 3;
-        stats.hitbox.y = 0;
-        stats.hitbox.width = 25;
-        stats.hitbox.height = 32;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 3;
+        hitbox.y = 0;
+        hitbox.width = 25;
+        hitbox.height = 32;
+       hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
     }
 
     @Override

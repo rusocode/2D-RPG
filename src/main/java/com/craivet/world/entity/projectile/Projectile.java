@@ -3,7 +3,7 @@ package com.craivet.world.entity.projectile;
 import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.mob.Player;
+import com.craivet.world.entity.Player;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 

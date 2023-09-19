@@ -18,12 +18,12 @@ public class Door extends Item {
         stats.type = Type.OBSTACLE;
         sheet.frame = Utils.scaleImage(door, tile, tile);
         stats.solid = true;
-        stats.hitbox.x = 0;
-        stats.hitbox.y = 16;
-        stats.hitbox.width = tile - stats.hitbox.x - 1;
-        stats.hitbox.height = tile - stats.hitbox.y;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 0;
+        hitbox.y = 16;
+        hitbox.width = tile - hitbox.x;
+        hitbox.height = tile - hitbox.y;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
         initDialogue();
     }
 

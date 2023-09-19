@@ -30,12 +30,12 @@ public class Key extends Item {
         stats.price = 100;
         stats.amount = amount;
         stats.stackable = true;
-        stats.hitbox.x = 2;
-        stats.hitbox.y = 0;
-        stats.hitbox.width = 27;
-        stats.hitbox.height = 32;
-        stats.hitboxDefaultX = stats.hitbox.x;
-        stats.hitboxDefaultY = stats.hitbox.y;
+        hitbox.x = 2;
+        hitbox.y = 0;
+        hitbox.width = 27;
+        hitbox.height = 32;
+        hitboxDefaultX = hitbox.x;
+        hitboxDefaultY = hitbox.y;
     }
 
     @Override

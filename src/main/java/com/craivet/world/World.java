@@ -2,6 +2,7 @@ package com.craivet.world;
 
 import com.craivet.Game;
 import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.Player;
 import com.craivet.world.entity.item.*;
 import com.craivet.world.entity.mob.*;
 import com.craivet.world.entity.projectile.Projectile;
@@ -86,8 +87,8 @@ public class World {
             for (int i = 0; i < game.aStar.pathList.size(); i++) {
                 int worldX = game.aStar.pathList.get(i).col * tile;
                 int worldY = game.aStar.pathList.get(i).row * tile;
-                int screenX = worldX - player.pos.x + player.stats.screenX;
-                int screenY = worldY - player.pos.y + player.stats.screenY;
+                int screenX = worldX - player.pos.x + player.screen.x;
+                int screenY = worldY - player.pos.y + player.screen.y;
                 g2.fillRect(screenX, screenY, tile, tile);
             }
         }
@@ -153,7 +154,7 @@ public class World {
         items[DUNGEON_01][i] = new Chest(game, this, 40, 41);
         items[DUNGEON_01][i++].setLoot(new Pickaxe(game, this));
 
-        // items[DUNGEON_01][i] = new DoorIron(game, this, 18, 23);
+        items[DUNGEON_01][i] = new DoorIron(game, this, 18, 23);
 
     }
 
@@ -190,8 +191,6 @@ public class World {
      */
     public void createInteractiveTile() {
         int i = 0;
-        // interactives[NIX][i++] = new DryTree(game, this, 21, 20);
-        // interactives[NIX][i++] = new DryTree(game, this, 23, 22);
 
         interactives[NASHE][i++] = new DryTree(game, this, 25, 27);
         interactives[NASHE][i++] = new DryTree(game, this, 26, 27);
