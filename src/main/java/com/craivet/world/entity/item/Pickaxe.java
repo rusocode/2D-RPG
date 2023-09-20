@@ -17,12 +17,12 @@ public class Pickaxe extends Item {
         stats.name = NAME;
         stats.type = Type.PICKAXE;
         sheet.frame = Utils.scaleImage(pickaxe, tile, tile);
-        stats.description = "[" + stats.name + "]\nYou will big it!";
-        stats.price = 75;
-       attackbox.width = 30;
+        description = "[" + stats.name + "]\nYou will big it!";
+        price = 75;
+        attackbox.width = 30;
         attackbox.height = 30;
-        stats.attackValue = 1;
-        stats.knockbackValue = 8;
+        attackValue = 1;
+        knockbackValue = 8;
     }
 
 }

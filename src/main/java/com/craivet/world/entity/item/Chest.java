@@ -18,7 +18,7 @@ public class Chest extends Item {
         stats.type = Type.OBSTACLE;
         sheet.loadItemFrames(chest, 16, 16, 1);
         sheet.frame = sheet.item[0];
-        stats.solid = true;
+        solid = true;
         hitbox.x = 2;
         hitbox.y = 16;
         hitbox.width = tile - hitbox.x - 3;
@@ -29,23 +29,23 @@ public class Chest extends Item {
 
     @Override
     public void interact() {
-        if (!stats.opened) {
+        if (!opened) {
             game.playSound(sound_chest_opening);
             sheet.frame = sheet.item[1];
-            stats.opened = true;
-            if (world.player.canPickup(stats.loot)) {
-                dialogues[0][0] = "You open the chest and find a \n" + stats.loot.stats.name + "!";
+            opened = true;
+            if (world.player.canPickup(loot)) {
+                dialogues[0][0] = "You open the chest and find a \n" + loot.stats.name + "!";
                 startDialogue(DIALOGUE_STATE, this, 0);
-                stats.empty = true;
+                empty = true;
             } else {
-                dialogues[1][0] = "You open the chest and find a \n" + stats.loot.stats.name + "! But you cannot carry \nany more!";
+                dialogues[1][0] = "You open the chest and find a \n" + loot.stats.name + "! But you cannot carry \nany more!";
                 startDialogue(DIALOGUE_STATE, this, 1);
             }
-        } else if (!stats.empty) {
-            if (world.player.canPickup(stats.loot)) {
-                dialogues[2][0] = "You obtain the " + stats.loot.stats.name + "!";
+        } else if (!empty) {
+            if (world.player.canPickup(loot)) {
+                dialogues[2][0] = "You obtain the " + loot.stats.name + "!";
                 startDialogue(DIALOGUE_STATE, this, 2);
-                stats.empty = true;
+                empty = true;
             } else {
                 dialogues[3][0] = "You cannot carry any more!";
                 startDialogue(DIALOGUE_STATE, this, 3);
@@ -58,7 +58,7 @@ public class Chest extends Item {
 
     @Override
     public void setLoot(Item loot) {
-        stats.loot = loot;
+        this.loot = loot;
     }
 
 }

@@ -103,7 +103,7 @@ public class Collision {
                 }
 
                 if (entity.hitbox.intersects(world.items[world.map][i].hitbox)) {
-                    if (world.items[world.map][i].stats.solid) entity.flags.colliding = true;
+                    if (world.items[world.map][i].solid) entity.flags.colliding = true;
                     if (entity instanceof Player) index = i;
                 }
 

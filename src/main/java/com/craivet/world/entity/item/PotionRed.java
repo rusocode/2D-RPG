@@ -21,11 +21,11 @@ public class PotionRed extends Item {
         stats.name = NAME;
         stats.type = Type.CONSUMABLE;
         sheet.frame = Utils.scaleImage(potion_red, tile, tile);
-        stats.description = "[" + stats.name + "]\nHeals your life by " + value + ".";
-        stats.price = 25;
         value = 2;
-        stats.amount = amount;
-        stats.stackable = true;
+        description = "[" + stats.name + "]\nHeals your life by " + value + ".";
+        price = 25;
+        this.amount = amount;
+        stackable = true;
         hitbox.x = 3;
         hitbox.y = 0;
         hitbox.width = 25;

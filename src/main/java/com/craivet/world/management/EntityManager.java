@@ -64,7 +64,7 @@ public class EntityManager implements State {
                 /* Agrega los items solidos (door, chest, etc.) a la lista de entidades para poder ordenarlos
                  * con respecto a la posicion y del player. Los items que no son solidos se agregan a la lista de
                  * items. */
-                if (!world.items[world.map][i].stats.solid) items.add(world.items[world.map][i]);
+                if (!world.items[world.map][i].solid) items.add(world.items[world.map][i]);
                 else entities.add(world.items[world.map][i]);
             }
         }

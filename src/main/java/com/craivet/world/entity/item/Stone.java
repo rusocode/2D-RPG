@@ -17,9 +17,9 @@ public class Stone extends Item {
         stats.name = NAME;
         stats.type = Type.CONSUMABLE;
         sheet.frame = Utils.scaleImage(stone, tile, tile);
-        stats.description = "[" + stats.name + "]\nIt's just a stone.";
-        stats.amount = amount;
-        stats.stackable = true;
+        description = "[" + stats.name + "]\nIt's just a stone.";
+        this.amount = amount;
+        stackable = true;
     }
 
 }

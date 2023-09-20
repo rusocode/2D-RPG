@@ -26,10 +26,10 @@ public class Key extends Item {
         stats.name = NAME;
         stats.type = Type.CONSUMABLE;
         sheet.frame = Utils.scaleImage(key, tile, tile);
-        stats.description = "[" + stats.name + "]\nIt opens a door.";
-        stats.price = 100;
-        stats.amount = amount;
-        stats.stackable = true;
+        description = "[" + stats.name + "]\nIt opens a door.";
+        price = 100;
+        this.amount = amount;
+        stackable = true;
         hitbox.x = 2;
         hitbox.y = 0;
         hitbox.width = 27;

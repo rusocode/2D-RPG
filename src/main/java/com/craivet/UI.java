@@ -365,10 +365,10 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        g2.drawImage(world.player.stats.weapon.sheet.frame, tailX - 35, textY - 5, null);
+        g2.drawImage(world.player.weapon.sheet.frame, tailX - 35, textY - 5, null);
         textY += gap;
 
-        g2.drawImage(world.player.stats.shield.sheet.frame, tailX - 35, textY + 5, null);
+        g2.drawImage(world.player.shield.sheet.frame, tailX - 35, textY + 5, null);
 
     }
 
@@ -400,7 +400,7 @@ public class UI {
         for (int i = 0; i < entity.inventory.size(); i++) {
 
             // Marca de color amarillo el item seleccionado
-            if (entity.inventory.get(i) == entity.stats.weapon || entity.inventory.get(i) == entity.stats.shield || entity.inventory.get(i) == entity.stats.light) {
+            if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield || entity.inventory.get(i) == entity.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRect(slotX, slotY, tile, tile);
             }
@@ -409,9 +409,9 @@ public class UI {
             g2.drawImage(entity.inventory.get(i).sheet.frame, slotX, slotY, null);
 
             // Dibuja la cantidad del item si este tiene mas de 1
-            if (entity.inventory.get(i).stats.amount > 1) {
+            if (entity.inventory.get(i).amount > 1) {
                 int amountX, amountY;
-                String amount = String.valueOf(entity.inventory.get(i).stats.amount);
+                String amount = String.valueOf(entity.inventory.get(i).amount);
                 amountX = getXforAlignToRightText(amount, slotX + gap);
                 amountY = slotY + tile - 2;
                 g2.setColor(Color.white);
@@ -449,7 +449,7 @@ public class UI {
             if (itemIndex < entity.inventory.size()) {
                 renderSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
                 changeFontSize(14);
-                for (String line : entity.inventory.get(itemIndex).stats.description.split("\n")) {
+                for (String line : entity.inventory.get(itemIndex).description.split("\n")) {
                     g2.drawString(line, textX, textY);
                     textY += 32;
                 }
@@ -753,20 +753,20 @@ public class UI {
             // Imagen del oro
             g2.drawImage(gold, x + 6, y + 10, null);
             // Precio de compra del item
-            int price = entity.inventory.get(itemIndex).stats.price;
+            int price = entity.inventory.get(itemIndex).price;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
             g2.drawString(text, x, y + 24);
 
             // Compra un item
             if (game.keyboard.enter) {
-                if (entity.inventory.get(itemIndex).stats.price > world.player.stats.gold)
+                if (entity.inventory.get(itemIndex).price > world.player.stats.gold)
                     addMessageToConsole("You need more gold to buy that!");
                 else {
                     // TODO Especificar la cantidad de items a comprar
                     if (world.player.canPickup(entity.inventory.get(itemIndex))) {
                         game.playSound(sound_trade_buy);
-                        world.player.stats.gold -= entity.inventory.get(itemIndex).stats.price;
+                        world.player.stats.gold -= entity.inventory.get(itemIndex).price;
                     } else addMessageToConsole("You cannot carry any more!");
                 }
             }
@@ -799,19 +799,19 @@ public class UI {
             // Imagen del oro
             g2.drawImage(gold, x + 6, y + 10, null);
             // Precio de venta del item
-            int price = world.player.inventory.get(itemIndex).stats.price / 2;
+            int price = world.player.inventory.get(itemIndex).price / 2;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
             g2.drawString(text, x, y + 24);
 
             // Vende un item
             if (game.keyboard.enter) {
-                if (world.player.inventory.get(itemIndex) == world.player.stats.weapon || world.player.inventory.get(itemIndex) == world.player.stats.shield)
+                if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
                     addMessageToConsole("You cannot sell an equipped item!");
                 else {
                     game.playSound(sound_trade_sell);
-                    if (world.player.inventory.get(itemIndex).stats.amount > 1)
-                        world.player.inventory.get(itemIndex).stats.amount--;
+                    if (world.player.inventory.get(itemIndex).amount > 1)
+                        world.player.inventory.get(itemIndex).amount--;
                     else world.player.inventory.remove(itemIndex);
                     world.player.stats.gold += price;
                 }

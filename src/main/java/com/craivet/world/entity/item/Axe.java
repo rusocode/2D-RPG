@@ -17,13 +17,13 @@ public class Axe extends Item {
         stats.name = NAME;
         stats.type = Type.AXE;
         sheet.frame = Utils.scaleImage(axe, tile, tile);
-        stats.description = "[" + stats.name + "]\nA bit rusty but still \ncan cut some trees.";
-        stats.price = 75;
+        description = "[" + stats.name + "]\nA bit rusty but still \ncan cut some trees.";
+        price = 75;
         // TODO No haria falta porque se ajusta en Entity
         attackbox.width = 30;
         attackbox.height = 30;
-        stats.attackValue = 1;
-        stats.knockbackValue = 8;
+        attackValue = 1;
+        knockbackValue = 8;
     }
 
 }

@@ -3,7 +3,7 @@ package com.craivet.io;
 import com.craivet.Game;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
-import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.item.Item;
 import com.craivet.world.tile.Tile;
 
 import javax.swing.*;
@@ -94,7 +94,7 @@ public class File {
             // Player inventory
             for (int i = 0; i < world.player.inventory.size(); i++) {
                 data.names.add(world.player.inventory.get(i).stats.name);
-                data.amounts.add(world.player.inventory.get(i).stats.amount);
+                data.amounts.add(world.player.inventory.get(i).amount);
             }
 
             // Player equipment
@@ -111,15 +111,15 @@ public class File {
             data.empty = new boolean[MAPS][world.items[1].length];
             for (int map = 0; map < MAPS; map++) {
                 for (int i = 0; i < world.items[1].length; i++) {
-                    Entity item = world.items[map][i];
+                    Item item = world.items[map][i];
                     if (item == null) data.itemName[map][i] = "NA";
                     else {
                         data.itemName[map][i] = item.stats.name;
                         data.itemX[map][i] = item.pos.x;
                         data.itemY[map][i] = item.pos.y;
-                        if (item.stats.loot != null) data.loot[map][i] = item.stats.loot.stats.name;
-                        data.opened[map][i] = item.stats.opened;
-                        data.empty[map][i] = item.stats.empty;
+                        if (item.loot != null) data.loot[map][i] = item.loot.stats.name;
+                        data.opened[map][i] = item.opened;
+                        data.empty[map][i] = item.empty;
                     }
                 }
             }
@@ -157,11 +157,11 @@ public class File {
             world.player.inventory.clear();
             for (int i = 0; i < data.names.size(); i++) {
                 world.player.inventory.add(game.itemGenerator.generate(data.names.get(i)));
-                world.player.inventory.get(i).stats.amount = data.amounts.get(i);
+                world.player.inventory.get(i).amount = data.amounts.get(i);
             }
-            world.player.stats.weapon = world.player.inventory.get(data.currentWeaponSlot);
-            world.player.stats.shield = world.player.inventory.get(data.currentShieldSlot);
-            world.player.stats.light = world.player.inventory.get(data.currentLightSlot);
+            world.player.weapon = world.player.inventory.get(data.currentWeaponSlot);
+            world.player.shield = world.player.inventory.get(data.currentShieldSlot);
+            world.player.light = world.player.inventory.get(data.currentLightSlot);
             world.player.getAttack();
             world.player.getDefense();
             // world.player.frame.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
@@ -174,10 +174,10 @@ public class File {
                         world.items[map][i].pos.x = data.itemX[map][i];
                         world.items[map][i].pos.y = data.itemY[map][i];
                         if (data.loot[map][i] != null && !data.empty[map][i])
-                            world.items[map][i].stats.loot = game.itemGenerator.generate(data.loot[map][i]);
-                        world.items[map][i].stats.opened = data.opened[map][i];
-                        world.items[map][i].stats.empty = data.empty[map][i];
-                        if (world.items[map][i].stats.opened) world.items[map][i].sheet.frame = world.items[map][i].sheet.item[1];
+                            world.items[map][i].loot = game.itemGenerator.generate(data.loot[map][i]);
+                        world.items[map][i].opened = data.opened[map][i];
+                        world.items[map][i].empty = data.empty[map][i];
+                        if (world.items[map][i].opened) world.items[map][i].sheet.frame = world.items[map][i].sheet.item[1];
                     }
                 }
             }

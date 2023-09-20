@@ -14,24 +14,22 @@ import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.World;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
+import com.craivet.world.entity.projectile.Projectile;
 
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
-/**
- * <p>
- * TODO Los metodos update() y render() se podrian implementar desde una interfaz
- * <p>
- * TODO Las entidades abarcan los mobs, items, y projectiles
- */
-
 public abstract class Entity {
 
-    public final Game game;
-    public final World world;
+    protected final Game game;
+    protected final World world;
+
+    public Projectile projectile;
+    public Item weapon, shield, light;
 
     public Screen screen = new Screen();
-    public Stats stats = new Stats();
+    public Stats stats = new Stats(); // TODO Cambiar a CharacterStats
+    // TODO Porque no creeas la ItemStats aca
     public Position pos = new Position();
     public SpriteSheet sheet = new SpriteSheet();
     public Flags flags = new Flags();
@@ -47,6 +45,7 @@ public abstract class Entity {
     /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
      * ataque para actualizar la posicion de la entidad mientras el frame de esta se mantiene en la misma direccion. */
     public Direction knockbackDirection;
+    public int knockbackValue;
     public String[][] dialogues = new String[20][20];
     public int dialogueSet, dialogueIndex;
 
@@ -72,7 +71,7 @@ public abstract class Entity {
             if (!flags.colliding) updatePosition(knockbackDirection);
             else mechanics.stopKnockback(this); // Si colisiona, detiene el knockback
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
-        } else if (flags.hitting) mechanics.hit(this);
+        } else if (flags.hitting) hit();
         else {
             // Es importante que realize las acciones antes de comprobar las colisiones
             doActions();
@@ -156,6 +155,48 @@ public abstract class Entity {
         world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
         world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
         world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
+    }
+
+    /**
+     * Golpea a la entidad si la attackbox en el frame de ataque colisiona con la hitbox del objetivo.
+     * <p>
+     * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
+     * ataque. Despues de motion2 vuelve al frame de movimiento. Para el caso del player solo hay un frame de ataque.
+     * <p>
+     * En el segundo frame de ataque, la posicion x/y se ajusta para la attackbox y verifica si colisiona con una
+     * entidad.
+     */
+    public void hit() {
+        timer.attackAnimationCounter++;
+        if (timer.attackAnimationCounter <= stats.motion1) sheet.attackNum = 1;
+        if (timer.attackAnimationCounter > stats.motion1 && timer.attackAnimationCounter <= stats.motion2) {
+            sheet.attackNum = 2;
+
+            int currentX = pos.x, currentY = pos.y;
+            int hitboxWidth = hitbox.width, hitboxHeight = hitbox.height;
+
+            switch (stats.direction) {
+                case DOWN -> pos.y += attackbox.height;
+                case UP -> pos.y -= attackbox.height;
+                case LEFT -> pos.x -= attackbox.width;
+                case RIGHT -> pos.x += attackbox.width;
+            }
+
+            hitbox.width = attackbox.width;
+            hitbox.height = attackbox.height;
+
+            hitPlayer(game.collision.checkPlayer(this), stats.attack);
+
+            pos.x = currentX;
+            pos.y = currentY;
+            hitbox.width = hitboxWidth;
+            hitbox.height = hitboxHeight;
+        }
+        if (timer.attackAnimationCounter > stats.motion2) {
+            sheet.attackNum = 1;
+            timer.attackAnimationCounter = 0;
+            flags.hitting = false;
+        }
     }
 
     /**

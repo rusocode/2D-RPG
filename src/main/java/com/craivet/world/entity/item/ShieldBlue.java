@@ -17,9 +17,9 @@ public class ShieldBlue extends Item {
 		stats.name = NAME;
 		stats.type = Type.SHIELD;
 		sheet.frame = Utils.scaleImage(shield_blue, tile, tile);
-		stats.description = "[" + stats.name + "]\nA shiny blue shield.";
-		stats.price = 250;
-		stats.defenseValue = 2;
+		description = "[" + stats.name + "]\nA shiny blue shield.";
+		price = 250;
+		defenseValue = 2;
 	}
 
 }

@@ -152,7 +152,7 @@ public class AStar {
 
                 // Funciona bien, pero cuando la entidad esta en una posicion cerrada (no literalmente) de tiles interactivos, se queda atascada
                 for (int i = 0; i < world.items[1].length; i++) {
-                    if (world.items[world.map][i] != null && world.items[world.map][i].stats.solid) {
+                    if (world.items[world.map][i] != null && world.items[world.map][i].solid) {
                         int itRow = (world.items[world.map][i].pos.y + world.items[world.map][i].hitbox.y) / tile;
                         int itCol = (world.items[world.map][i].pos.x + world.items[world.map][i].hitbox.x) / tile;
                         node[itRow][itCol].solid = true;

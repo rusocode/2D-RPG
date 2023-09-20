@@ -16,7 +16,7 @@ public class Fireball extends Projectile {
         stats.speed = 7;
         stats.hp = stats.maxHp = 80;
         stats.attack = 2;
-        stats.knockbackValue = 5;
+        knockbackValue = 5;
         cost = 1;
         flags.alive = false;
         sheet.loadMovementFrames(fireball, 16, 16, 1);

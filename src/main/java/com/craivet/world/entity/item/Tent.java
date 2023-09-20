@@ -18,8 +18,8 @@ public class Tent extends Item {
         stats.name = NAME;
         stats.type = Type.CONSUMABLE;
         sheet.frame = Utils.scaleImage(tent, tile, tile);
-        stats.description = "[" +stats. name + "]\nYou can sleep until\nnext morning.";
-        stats.price = 1200;
+        description = "[" +stats. name + "]\nYou can sleep until\nnext morning.";
+        price = 1200;
     }
 
     @Override

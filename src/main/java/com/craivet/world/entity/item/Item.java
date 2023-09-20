@@ -12,9 +12,18 @@ import static com.craivet.utils.Global.*;
 
 public class Item extends Entity {
 
+    private Entity entity;
+
     protected int value;
 
-    private Entity entity;
+    public Item loot;
+    public int price;
+    public int amount;
+    public int lightRadius = 350;
+    public int attackValue, defenseValue;
+    public boolean solid, stackable;
+    public boolean opened, empty;
+    public String description;
 
     public Item(Game game, World world, int x, int y) {
         super(game, world, x, y);

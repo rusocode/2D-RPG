@@ -7,8 +7,6 @@ import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
-import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.Type;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.entity.projectile.Fireball;
@@ -23,7 +21,7 @@ import static com.craivet.gfx.Assets.*;
 
 // TODO No tendria que crear el objeto UI desde aca?
 // TODO No tendria que convertirse en la fomasa clase Client?
-public class Player extends Mob {
+public class Player extends Entity {
 
     public final Keyboard keyboard;
     private Animation down, up, left, right;
@@ -45,7 +43,7 @@ public class Player extends Mob {
      */
     @Override
     public void update() {
-        if (flags.hitting) mechanics.hit(this);
+        if (flags.hitting) hit();
         if (keyboard.checkKeys()) {
             getDirection();
             checkCollision();
@@ -96,10 +94,10 @@ public class Player extends Mob {
         stats.dexterity = 1;
         flags.invincible = false; // TODO Hace falta?
 
-        stats.projectile = new Fireball(game, world);
-        stats.weapon = new SwordIron(game, world);
-        stats.shield = new ShieldWood(game, world);
-        stats.light = null;
+        projectile = new Fireball(game, world);
+        weapon = new SwordIron(game, world);
+        shield = new ShieldWood(game, world);
+        light = null;
         stats.attack = getAttack();
         stats.defense = getDefense();
 
@@ -165,12 +163,93 @@ public class Player extends Mob {
     }
 
     /**
+     * Golpea a la entidad si la attackbox en el frame de ataque colisiona con la hitbox del objetivo.
+     * <p>
+     * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
+     * ataque. Despues de motion2 vuelve al frame de movimiento. Para el caso del player solo hay un frame de ataque.
+     * <p>
+     * En el segundo frame de ataque, la posicion x/y se ajusta para la attackbox y verifica si colisiona con una
+     * entidad.
+     */
+    public void hit() {
+
+        timer.attackAnimationCounter++;
+        if (timer.attackAnimationCounter <= stats.motion1) sheet.attackNum = 1; // (de 0-motion1ms frame de ataque 1)
+        if (timer.attackAnimationCounter > stats.motion1 && timer.attackAnimationCounter <= stats.motion2) { // (de motion1-motion2ms frame de ataque 2)
+            sheet.attackNum = 2;
+
+            // Guarda la posicion actual de x/y y el tamaño de la hitbox
+            int currentX = pos.x, currentY = pos.y;
+            int hitboxWidth = hitbox.width, hitboxHeight = hitbox.height;
+
+            /* Ajusta la attackbox (en la hoja de la espada para ser mas especificos) del player dependiendo de la
+             * direccion de ataque. Es importante aclarar que las coordenadas x/y de la attackbox parten de la esquina
+             * superior izquierda de la hitbox del player (nose si es necesario partir desde esa esquina). */
+            switch (stats.direction) {
+                case DOWN -> {
+                    attackbox.x = -1;
+                    attackbox.y = 4;
+                    attackbox.width = 4;
+                    attackbox.height = 36;
+                }
+                case UP -> {
+                    attackbox.x = 12;
+                    attackbox.y = -43;
+                    attackbox.width = 4;
+                    attackbox.height = 42;
+                }
+                case LEFT -> {
+                    attackbox.x = -20;
+                    attackbox.y = 0;
+                    attackbox.width = 19;
+                    attackbox.height = 4;
+                }
+                case RIGHT -> {
+                    attackbox.x = 10;
+                    attackbox.y = 2;
+                    attackbox.width = 19;
+                    attackbox.height = 4;
+                }
+            }
+            /* Acumula la posicion de la attackbox a la posicion del player para verificar la colision con las
+             * coordenas ajustadas de la attackbox. */
+            pos.x += attackbox.x;
+            pos.y += attackbox.y;
+
+            // Convierte la hitbox (el ancho y alto) en la attackbox para verificar la colision solo con la attackbox
+            hitbox.width = attackbox.width;
+            hitbox.height = attackbox.height;
+
+            // Verifica la colision con el mob usando la posicion y tamaño de la hitbox actualizada, osea con la attackbox
+            int mobIndex = game.collision.checkEntity(this, world.mobs);
+            world.player.hitMob(mobIndex, this, weapon.knockbackValue, stats.attack);
+
+            int interactiveIndex = game.collision.checkEntity(this, world.interactives);
+            world.player.hitInteractive(interactiveIndex);
+
+            int projectileIndex = game.collision.checkEntity(this, world.projectiles);
+            world.player.hitProjectile(projectileIndex);
+
+            // Despues de verificar la colision, resetea los datos originales
+            pos.x = currentX;
+            pos.y = currentY;
+            hitbox.width = hitboxWidth;
+            hitbox.height = hitboxHeight;
+        }
+        if (timer.attackAnimationCounter > stats.motion2) {
+            sheet.attackNum = 1;
+            timer.attackAnimationCounter = 0;
+            flags.hitting = false;
+        }
+    }
+
+    /**
      * Comprueba si puede atacar.
      */
     private void checkAttack() {
         if (keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting) {
-            if (stats.weapon.stats.type == Type.SWORD) game.playSound(sound_swing_weapon);
-            if (stats.weapon.stats.type != Type.SWORD) game.playSound(sound_swing_axe);
+            if (weapon.stats.type == Type.SWORD) game.playSound(sound_swing_weapon);
+            if (weapon.stats.type != Type.SWORD) game.playSound(sound_swing_axe);
             flags.hitting = true;
             timer.attackCounter = 0;
         }
@@ -182,18 +261,18 @@ public class Player extends Mob {
      * Comprueba si puede lanzar un proyectil.
      */
     private void checkShoot() {
-        if (keyboard.f && !stats.projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && stats.projectile.haveResource(this) && !flags.hitting) {
+        if (keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
             game.playSound(sound_fireball);
-            stats.projectile.set(pos.x, pos.y, stats.direction, true, this);
+            projectile.set(pos.x, pos.y, stats.direction, true, this);
             // Comprueba vacante para agregar el proyectil
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {
-                    world.projectiles[world.map][i] = stats.projectile;
+                    world.projectiles[world.map][i] = projectile;
                     break;
                 }
             }
-            stats.projectile.subtractResource(this);
+            projectile.subtractResource(this);
             timer.projectileCounter = 0;
         }
     }
@@ -311,7 +390,7 @@ public class Player extends Mob {
         if (i != -1) {
             entity = world.interactives[world.map][i];
             Interactive interactive = world.interactives[world.map][i];
-            if (interactive.destructible && interactive.isCorrectWeapon(stats.weapon) && !interactive.flags.invincible) {
+            if (interactive.destructible && interactive.isCorrectWeapon(weapon) && !interactive.flags.invincible) {
                 interactive.playSound();
                 interactive.stats.hp--;
                 interactive.flags.invincible = true;
@@ -331,7 +410,7 @@ public class Player extends Mob {
             entity = world.projectiles[world.map][i];
             Projectile projectile = world.projectiles[world.map][i];
             // Evita dañar el propio proyectil
-            if (projectile != this.stats.projectile) {
+            if (projectile != this.projectile) {
                 game.playSound(sound_player_damage);
                 projectile.flags.alive = false;
                 generateParticle(projectile, projectile);
@@ -366,10 +445,10 @@ public class Player extends Mob {
         if (itemIndex < inventory.size()) {
             Item selectedItem = inventory.get(itemIndex);
             if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordIron) {
-                stats.weapon = selectedItem;
-                attackbox = stats.weapon.attackbox; // TODO Hace falta esto aca?
+                weapon = selectedItem;
+                attackbox = weapon.attackbox; // TODO Hace falta esto aca?
                 stats.attack = getAttack();
-                switch (stats.weapon.stats.type) {
+                switch (weapon.stats.type) {
                     case SWORD -> {
                         sheet.loadWeaponFrames(sword_frame, 16, 16);
                         game.playSound(sound_draw_sword);
@@ -379,16 +458,16 @@ public class Player extends Mob {
                 }
             }
             if (selectedItem.stats.type == Type.SHIELD) {
-                stats.shield = selectedItem;
+                shield = selectedItem;
                 stats.defense = getDefense();
             }
             if (selectedItem.stats.type == Type.LIGHT) {
-                stats.light = stats.light == selectedItem ? null : selectedItem;
+                light = light == selectedItem ? null : selectedItem;
                 lightUpdate = true;
             }
             if (selectedItem.stats.type == Type.CONSUMABLE) {
                 if (selectedItem.use(this)) {
-                    if (selectedItem.stats.amount > 1) selectedItem.stats.amount--;
+                    if (selectedItem.amount > 1) selectedItem.amount--;
                     else inventory.remove(itemIndex);
                 }
             }
@@ -401,19 +480,19 @@ public class Player extends Mob {
      * @param item item.
      * @return true si se puede recoger el item o false.
      */
-    public boolean canPickup(Entity item) {
+    public boolean canPickup(Item item) {
         Item newItem = game.itemGenerator.generate(item.stats.name);
-        if (item.stats.stackable) {
+        if (item.stackable) {
             int itemIndex = searchItemInInventory(item.stats.name);
             // Si existe en el inventario, entonces solo aumenta la cantidad
             if (itemIndex != -1) {
-                inventory.get(itemIndex).stats.amount += item.stats.amount;
+                inventory.get(itemIndex).amount += item.amount;
                 return true;
                 // Si no existe en el inventario, lo agrega como nuevo item con su respectiva cantidad
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
                 inventory.add(newItem);
                 // Al agregar un nuevo item, no puede utilizar el indice del item anterior, tiene que buscar el indice a partir del nuevo item
-                inventory.get(searchItemInInventory(item.stats.name)).stats.amount += item.stats.amount;
+                inventory.get(searchItemInInventory(item.stats.name)).amount += item.amount;
                 return true;
             }
         } else if (inventory.size() != MAX_INVENTORY_SIZE) {
@@ -530,28 +609,28 @@ public class Player extends Mob {
     }
 
     public int getAttack() {
-        return stats.strength * stats.weapon.stats.attackValue;
+        return stats.strength * weapon.attackValue;
     }
 
     public int getDefense() {
-        return stats.dexterity * stats.shield.stats.defenseValue;
+        return stats.dexterity * shield.defenseValue;
     }
 
     public int getCurrentWeaponSlot() {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == stats.weapon) return i;
+            if (inventory.get(i) == weapon) return i;
         return 0; // TODO No es -1?
     }
 
     public int getCurrentShieldSlot() {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == stats.shield) return i;
+            if (inventory.get(i) == shield) return i;
         return 0;
     }
 
     public int getCurrentLightSlot() {
         for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == stats.light) return i;
+            if (inventory.get(i) == light) return i;
         return 0;
     }
 
@@ -561,8 +640,8 @@ public class Player extends Mob {
 
     private void addItemsToInventory() {
         inventory.clear();
-        inventory.add(stats.weapon);
-        inventory.add(stats.shield);
+        inventory.add(weapon);
+        inventory.add(shield);
         inventory.add(new Lantern(game, world));
         inventory.add(new PotionRed(game, world, 2));
         inventory.add(new Key(game, world, 2));

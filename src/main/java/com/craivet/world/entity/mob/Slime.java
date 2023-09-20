@@ -32,7 +32,7 @@ public class Slime extends Mob {
         hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        stats.projectile = new StickyBall(game, world);
+        projectile = new StickyBall(game, world);
         sheet.loadMovementFrames(slime, 16, 16, 1);
         sheet.frame = sheet.movement[0];
     }
@@ -61,11 +61,11 @@ public class Slime extends Mob {
     }
 
     private void checkShoot() {
-        if (Utils.azar(100) == 1 && !stats.projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
-            stats.projectile.set(pos.x + 8, pos.y + 17, stats.direction, true, this);
+        if (Utils.azar(100) == 1 && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
+            projectile.set(pos.x + 8, pos.y + 17, stats.direction, true, this);
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {
-                    world.projectiles[world.map][i] = stats.projectile;
+                    world.projectiles[world.map][i] = projectile;
                     break;
                 }
             }
