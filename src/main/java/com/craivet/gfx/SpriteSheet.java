@@ -177,11 +177,11 @@ public class SpriteSheet {
                 case DOWN -> i = attackNum == 1 ? 0 : 1;
                 case UP -> {
                     // Se resta el ancho de la imagen en caso de que el frame sea mas grande al tile
-                    entity.tempScreenY -= entity.sheet.frame.getHeight();
+                    entity.screen.tempScreenY -= entity.sheet.frame.getHeight();
                     i = attackNum == 1 ? 2 : 3;
                 }
                 case LEFT -> {
-                    entity.tempScreenX -= entity.sheet.frame.getWidth();
+                    entity.screen.tempScreenX -= entity.sheet.frame.getWidth();
                     i = attackNum == 1 ? 4 : 5;
                 }
                 case RIGHT -> i = attackNum == 1 ? 6 : 7;

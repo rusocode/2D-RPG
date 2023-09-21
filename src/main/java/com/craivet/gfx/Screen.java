@@ -27,12 +27,17 @@ import static com.craivet.utils.Global.*;
  * los graficos se mantienen constantes). Cabe destacar que la cantidad de tiles visibles no varia, permaneciendo
  * constante independientemente de la resolucion y siendo estirados en casos de resoluciones mas altas.
  * <p>
+ * A diferencia de las coordenadas del World, las variables x/y representan las coordenadas en pantalla y las variables
+ * tempScreenX/tempScreenY se utilizan como coordenadas temporales para representar solo los frames de animacion left y
+ * up, y evitar modificar las coordenas originales en pantalla de las entidades.
+ * <p>
  * <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html">Full-Screen Exclusive Mode</a>
  */
 
 public class Screen extends JFrame {
 
     public int x, y;
+    public int tempScreenX, tempScreenY;
 
     public Screen() {
     }

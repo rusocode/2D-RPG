@@ -127,8 +127,8 @@ public class Player extends Entity {
      * Establece la posicion por defecto.
      */
     public void setDefaultPos() {
-        world.zone = OUTSIDE;
-        world.map = NASHE;
+        world.zone = DUNGEON;
+        world.map = DUNGEON_01;
         stats.direction = Direction.DOWN;
         // Posiciona la hitbox, NO la imagen
         int startCol = 21, startRow = 22; // 26, 39 // 10, 27
@@ -365,7 +365,7 @@ public class Player extends Entity {
                 if (mob.stats.hp > 0) game.playSound(mob.soundHit);
 
                 mob.flags.invincible = true;
-                mob.hpBar = true;
+                mob.flags.hpBar = true;
                 mob.damageReaction();
 
                 if (mob.stats.hp <= 0) {

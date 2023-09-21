@@ -14,9 +14,6 @@ public class Launcher {
 
     public static void main(String[] args) throws Exception {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        int a =4, b = -5;
-        a += b;
-        // System.out.println(a);
         new Game().start();
     }
 

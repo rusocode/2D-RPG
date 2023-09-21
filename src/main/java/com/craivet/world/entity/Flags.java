@@ -18,5 +18,6 @@ public final class Flags {
     public boolean knockback;
     public boolean following;
     public boolean shooting;
+    public boolean hpBar;
 
 }

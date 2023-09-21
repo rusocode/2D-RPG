@@ -19,17 +19,22 @@ import com.craivet.world.entity.projectile.Projectile;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
+/**
+ * Cuando se crea un item (por ejemplo, Key) se crean todos los objetos declarados en la clase Entity (Screen, Stats,
+ * Position, Flags, etc.). Algunos de estos objetos no son relevantes para el item Key, por ejemplo el objeto Flags no
+ * es utilizado por Key. Por lo tanto nose si es necesario crear todos los objetos para cada entidad creada.
+ */
+
 public abstract class Entity {
 
-    protected final Game game;
-    protected final World world;
+    public final Game game;
+    public final World world;
 
     public Projectile projectile;
     public Item weapon, shield, light;
 
     public Screen screen = new Screen();
-    public Stats stats = new Stats(); // TODO Cambiar a CharacterStats
-    // TODO Porque no creeas la ItemStats aca
+    public Stats stats = new Stats();
     public Position pos = new Position();
     public SpriteSheet sheet = new SpriteSheet();
     public Flags flags = new Flags();
@@ -41,15 +46,12 @@ public abstract class Entity {
     public int hitboxDefaultX, hitboxDefaultY;
 
     public Entity linkedEntity;
-    public boolean hpBar;
     /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
      * ataque para actualizar la posicion de la entidad mientras el frame de esta se mantiene en la misma direccion. */
     public Direction knockbackDirection;
     public int knockbackValue;
     public String[][] dialogues = new String[20][20];
     public int dialogueSet, dialogueIndex;
-
-    public int tempScreenX, tempScreenY;
 
     public Entity(Game game, World world) {
         this.game = game;
@@ -86,11 +88,11 @@ public abstract class Entity {
         screen.x = (pos.x - world.player.pos.x) + world.player.screen.x;
         screen.y = (pos.y - world.player.pos.y) + world.player.screen.y;
         if (isOnCamera()) {
-            tempScreenX = screen.x;
-            tempScreenY = screen.y;
+            screen.tempScreenX = screen.x;
+            screen.tempScreenY = screen.y;
 
             // Si el mob hostil tiene activada la barra de vida
-            if (stats.type == Type.HOSTILE && hpBar) game.ui.drawHpBar(g2, this);
+            if (stats.type == Type.HOSTILE && flags.hpBar) game.ui.drawHpBar(g2, this);
             if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
@@ -100,7 +102,7 @@ public abstract class Entity {
 
             // Si es una animacion
             if (sheet.movement != null || sheet.attack != null)
-                g2.drawImage(sheet.getCurrentFrame(this), tempScreenX, tempScreenY, null);
+                g2.drawImage(sheet.getCurrentFrame(this), screen.tempScreenX, screen.tempScreenY, null);
                 // Si es una imagen estatica (item, interactive tile)
             else g2.drawImage(sheet.frame, screen.x, screen.y, null);
 

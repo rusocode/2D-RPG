@@ -102,7 +102,7 @@ public class Timer {
      */
     public void timeHpBar(Entity entity, int interval) {
         if (++hpBarCounter >= interval) {
-            entity.hpBar = false;
+            entity.flags.hpBar = false;
             hpBarCounter = 0;
         }
     }
