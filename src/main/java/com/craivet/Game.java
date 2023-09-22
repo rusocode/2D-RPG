@@ -185,18 +185,14 @@ public class Game extends Canvas implements Runnable {
     /**
      * Reinicia el juego.
      *
-     * @param restart vuelve a establecer los valores por defecto del player.
+     * @param fullReset true para reiniciar por completo el juego; falso en caso contrario.
      */
-    public void reset(boolean restart) {
-        stopMusic();
+    public void reset(boolean fullReset) {
         ui.console.clear();
-        world.player.setDefaultPos();
-        world.player.resetStats();
-        world.player.timer.resetCounters();
-        world.createMOBs();
-        if (restart) {
+        world.player.reset(fullReset);
+        world.createMobs();
+        if (fullReset) {
             playMusic(music_main);
-            world.player.setDefaultValues();
             world.createItems();
             world.createInteractiveTile();
             world.environment.lighting.resetDay();

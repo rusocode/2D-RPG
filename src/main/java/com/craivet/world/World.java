@@ -108,7 +108,7 @@ public class World {
             if (zone == DUNGEON && nextZone == OUTSIDE) game.stopMusic();
         }
         zone = nextZone;
-        createMOBs();
+        createMobs();
     }
 
     /**
@@ -116,7 +116,7 @@ public class World {
      */
     public void createEntities() {
         createItems();
-        createMOBs();
+        createMobs();
         createInteractiveTile();
     }
 
@@ -161,7 +161,7 @@ public class World {
     /**
      * Crea los mobs.
      */
-    public void createMOBs() {
+    public void createMobs() {
         int i = 0, j = 0, k = 0, z = 0;
 
         mobs[NASHE][i++] = new Oldman(game, this, 23, 19);

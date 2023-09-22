@@ -132,7 +132,7 @@ public class Timer {
     /**
      * Reinicia los contadores.
      */
-    public void resetCounters() {
+    public void reset() {
         attackAnimationCounter = 0; // TODO Hace falta esto?
         attackCounter = 0;
         deadCounter = 0;

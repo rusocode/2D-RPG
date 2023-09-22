@@ -1,10 +1,12 @@
 package com.craivet.world.entity;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.craivet.Direction;
 import com.craivet.Game;
+import com.craivet.gfx.Animation;
 import com.craivet.gfx.Screen;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.physics.Mechanics;
@@ -29,6 +31,9 @@ public abstract class Entity {
 
     public final Game game;
     public final World world;
+
+    public Animation down, up, left, right;
+    public BufferedImage currentFrame, currentSwordFrame;
 
     public Projectile projectile;
     public Item weapon, shield, light;
@@ -102,7 +107,7 @@ public abstract class Entity {
 
             // Si es una animacion
             if (sheet.movement != null || sheet.attack != null)
-                g2.drawImage(sheet.getCurrentFrame(this), screen.tempScreenX, screen.tempScreenY, null);
+                g2.drawImage(sheet.getCurrentAnimationFrame(this), screen.tempScreenX, screen.tempScreenY, null);
                 // Si es una imagen estatica (item, interactive tile)
             else g2.drawImage(sheet.frame, screen.x, screen.y, null);
 

@@ -75,8 +75,8 @@ public class File {
             Data data = new Data();
 
             // Player status
-            data.zone = world.zone;
             data.map = world.map;
+            data.zone = world.zone;
             data.x = world.player.pos.x;
             data.y = world.player.pos.y;
             data.direction = world.player.stats.direction;
@@ -138,10 +138,16 @@ public class File {
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(data))) {
             // Lee los bytes desde el flujo de entrada y los deserializa en un objeto Data
             Data data = (Data) input.readObject();
-            world.zone = data.zone;
             world.map = data.map;
+            world.zone = data.zone;
             world.player.pos.x = data.x;
             world.player.pos.y = data.y;
+            switch (data.direction) {
+                case DOWN -> world.player.currentFrame = world.player.down.getFirstFrame();
+                case UP -> world.player.currentFrame = world.player.up.getFirstFrame();
+                case LEFT -> world.player.currentFrame = world.player.left.getFirstFrame();
+                case RIGHT -> world.player.currentFrame = world.player.right.getFirstFrame();
+            }
             world.player.stats.direction = data.direction;
             world.player.stats.hp = data.life;
             world.player.stats.maxHp = data.maxlife;

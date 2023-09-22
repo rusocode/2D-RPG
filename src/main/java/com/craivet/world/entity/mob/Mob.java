@@ -24,6 +24,7 @@ import static com.craivet.utils.Global.*;
  * </ul>
  * <p>
  * TODO Es posible crear el enum aca?
+ * TODO Podria crear una clase MobStats y crearla desde aca, en donde esa clase solo va a tener los atributos de mobs
  */
 
 public class Mob extends Entity {

@@ -13,7 +13,7 @@ public class Fireball extends Projectile {
     public Fireball(Game game, World world) {
         super(game, world);
         stats.name = "Fireball";
-        stats.speed = 7;
+        stats.speed = 2; // 7
         stats.hp = stats.maxHp = 80;
         stats.attack = 2;
         knockbackValue = 5;

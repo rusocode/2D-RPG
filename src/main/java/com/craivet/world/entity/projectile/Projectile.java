@@ -77,8 +77,9 @@ public class Projectile extends Entity {
         stats.direction = direction;
         flags.alive = alive;
         this.entity = entity;
-        // TODO Porque hace esto?
-        stats.hp = stats.maxHp; // Resetea la vida al valor maximo cada vez que lanza un proyectil
+        /* Una vez que el projectil muere (alive=false) el hp queda en 0, por lo tanto para lanzar el proximo se
+         * necesita establecer la vida al maximo de nuevo. */
+        stats.hp = stats.maxHp;
     }
 
 }

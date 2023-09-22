@@ -10,7 +10,6 @@ import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.entity.projectile.Fireball;
-import com.craivet.input.Keyboard;
 import com.craivet.world.entity.projectile.Projectile;
 import com.craivet.world.tile.Interactive;
 import com.craivet.utils.*;
@@ -23,19 +22,14 @@ import static com.craivet.gfx.Assets.*;
 // TODO No tendria que convertirse en la fomasa clase Client?
 public class Player extends Entity {
 
-    public final Keyboard keyboard;
-    private Animation down, up, left, right;
-    public BufferedImage currentFrame, currentSwordFrame;
-
-    private Entity entity; // Variable auxiliar para obtener los atributos de la entidad actual
+    private Entity auxEntity; // Variable auxiliar para obtener los atributos de la entidad actual
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
         super(game, world);
         centerOnScreen();
         setDefaultValues();
-        setDefaultPos();
-        keyboard = game.keyboard;
+        pos.setPos(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
     }
 
     /**
@@ -44,14 +38,14 @@ public class Player extends Entity {
     @Override
     public void update() {
         if (flags.hitting) hit();
-        if (keyboard.checkKeys()) {
+        if (game.keyboard.checkKeys()) {
             getDirection();
             checkCollision();
-            if (!flags.colliding && !keyboard.checkAccionKeys()) updatePosition(stats.direction);
-            mechanics.checkDirectionSpeed(this, entity);
+            if (!flags.colliding && !game.keyboard.checkAccionKeys()) updatePosition(stats.direction);
+            mechanics.checkDirectionSpeed(this, auxEntity);
             checkAttack();
-            keyboard.resetAccionKeys();
-            if (keyboard.checkMovementKeys()) {
+            game.keyboard.resetAccionKeys();
+            if (game.keyboard.checkMovementKeys()) {
                 down.tick();
                 up.tick();
                 left.tick();
@@ -79,16 +73,15 @@ public class Player extends Entity {
         screen.y = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
     }
 
-    public void setDefaultValues() {
+    private void setDefaultValues() {
         stats.type = Type.PLAYER;
-        stats.direction = Direction.DOWN;
         stats.speed = stats.defaultSpeed = 2;
         stats.hp = stats.maxHp = 6;
         stats.mana = stats.maxMana = 4;
         stats.ammo = 5;
         stats.lvl = 1;
         stats.exp = 0;
-        stats.nextLvlExp = 5;
+        // stats.nextLvlExp = 5;
         stats.gold = 500;
         stats.strength = 1;
         stats.dexterity = 1;
@@ -121,45 +114,6 @@ public class Player extends Entity {
         right = new Animation(animationSpeed, sheet.right);
         currentFrame = down.getFirstFrame();
         addItemsToInventory();
-    }
-
-    /**
-     * Establece la posicion por defecto.
-     */
-    public void setDefaultPos() {
-        world.zone = DUNGEON;
-        world.map = DUNGEON_01;
-        stats.direction = Direction.DOWN;
-        // Posiciona la hitbox, NO la imagen
-        int startCol = 21, startRow = 22; // 26, 39 // 10, 27
-        // Suma la mitad del ancho de la hitbox y resta un pixel para centrar la posicion horizontal dentro del tile
-        pos.x = (startCol * tile) + hitbox.width / 2 - 1;
-        /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
-         * player ocupa dos tiles verticales. Por ultimo se resta un pixel en caso de que la posicion este por encima
-         * de un tile solido para evitar que se "trabe". */
-        pos.y = (startRow * tile) - hitbox.height - 1;
-    }
-
-    /**
-     * TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
-     * TODO Falta agregar el parametro zone
-     */
-    public void setPos(int map, int x, int y) {
-        if (map == NASHE) world.zone = OUTSIDE;
-        if (map == NASHE_INDOOR_01) world.zone = INDOOR;
-        if (map == DUNGEON_01 || map == DUNGEON_02) world.zone = DUNGEON;
-        world.map = map;
-        pos.x = x * tile;
-        pos.y = y * tile;
-    }
-
-    public void resetStats() {
-        stats.hp = stats.maxHp;
-        stats.mana = stats.maxMana;
-        flags.invincible = false;
-        flags.hitting = false;
-        flags.knockback = false;
-        lightUpdate = true;
     }
 
     /**
@@ -247,7 +201,7 @@ public class Player extends Entity {
      * Comprueba si puede atacar.
      */
     private void checkAttack() {
-        if (keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting) {
+        if (game.keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting) {
             if (weapon.stats.type == Type.SWORD) game.playSound(sound_swing_weapon);
             if (weapon.stats.type != Type.SWORD) game.playSound(sound_swing_axe);
             flags.hitting = true;
@@ -261,7 +215,7 @@ public class Player extends Entity {
      * Comprueba si puede lanzar un proyectil.
      */
     private void checkShoot() {
-        if (keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+        if (game.keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
             game.playSound(sound_fireball);
             projectile.set(pos.x, pos.y, stats.direction, true, this);
@@ -278,7 +232,7 @@ public class Player extends Entity {
     }
 
     private void checkStats() {
-        if (!keyboard.godMode) if (stats.hp <= 0) die();
+        if (!game.keyboard.godMode) if (stats.hp <= 0) die();
         if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
         if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
     }
@@ -293,7 +247,7 @@ public class Player extends Entity {
     private void pickup(int i) {
         if (i != -1) {
             Item item = world.items[world.map][i];
-            if (keyboard.p && item.stats.type != Type.OBSTACLE) {
+            if (game.keyboard.p && item.stats.type != Type.OBSTACLE) {
                 if (item.stats.type == Type.PICKUP) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_item_pickup);
                 else {
@@ -302,7 +256,7 @@ public class Player extends Entity {
                 }
                 world.items[world.map][i] = null;
             }
-            if (keyboard.enter && item.stats.type == Type.OBSTACLE) {
+            if (game.keyboard.enter && item.stats.type == Type.OBSTACLE) {
                 attackCanceled = true;
                 item.interact();
             }
@@ -316,9 +270,9 @@ public class Player extends Entity {
      */
     private void interactNpc(int i) {
         if (i != -1) {
-            entity = world.mobs[world.map][i];
+            auxEntity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
-            if (keyboard.enter && mob.stats.type == Type.NPC) {
+            if (game.keyboard.enter && mob.stats.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
             } else mob.move(stats.direction); // En caso de que sea la roca
@@ -332,7 +286,7 @@ public class Player extends Entity {
      */
     private void hurt(int i) {
         if (i != -1) {
-            entity = world.mobs[world.map][i];
+            auxEntity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
             if (!flags.invincible && !mob.flags.dead && mob.stats.type == Type.HOSTILE) {
                 game.playSound(sound_player_damage);
@@ -353,7 +307,7 @@ public class Player extends Entity {
      */
     public void hitMob(int i, Entity attacker, int knockbackValue, int attack) {
         if (i != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
-            entity = world.mobs[world.map][i];
+            auxEntity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
             if (!mob.flags.invincible && mob.stats.type != Type.NPC) {
 
@@ -388,7 +342,7 @@ public class Player extends Entity {
      */
     public void hitInteractive(int i) {
         if (i != -1) {
-            entity = world.interactives[world.map][i];
+            auxEntity = world.interactives[world.map][i];
             Interactive interactive = world.interactives[world.map][i];
             if (interactive.destructible && interactive.isCorrectWeapon(weapon) && !interactive.flags.invincible) {
                 interactive.playSound();
@@ -407,7 +361,7 @@ public class Player extends Entity {
 
     public void hitProjectile(int i) {
         if (i != -1) {
-            entity = world.projectiles[world.map][i];
+            auxEntity = world.projectiles[world.map][i];
             Projectile projectile = world.projectiles[world.map][i];
             // Evita dañar el propio proyectil
             if (projectile != this.projectile) {
@@ -518,16 +472,16 @@ public class Player extends Entity {
      * Obtiene la direccion dependiendo de la tecla seleccionada.
      */
     private void getDirection() {
-        if (keyboard.s) stats.direction = Direction.DOWN;
-        else if (keyboard.w) stats.direction = Direction.UP;
-        else if (keyboard.a) stats.direction = Direction.LEFT;
-        else if (keyboard.d) stats.direction = Direction.RIGHT;
+        if (game.keyboard.s) stats.direction = Direction.DOWN;
+        else if (game.keyboard.w) stats.direction = Direction.UP;
+        else if (game.keyboard.a) stats.direction = Direction.LEFT;
+        else if (game.keyboard.d) stats.direction = Direction.RIGHT;
     }
 
     @Override
     public void checkCollision() {
         flags.colliding = false;
-        if (!keyboard.godMode) game.collision.checkTile(this);
+        if (!game.keyboard.godMode) game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.mobs));
         hurt(game.collision.checkEntity(this, world.mobs));
@@ -537,7 +491,7 @@ public class Player extends Entity {
     }
 
     private void setCurrentInteractive(int i) {
-        if (i != -1) entity = world.interactives[world.map][i];
+        if (i != -1) auxEntity = world.interactives[world.map][i];
     }
 
     private void die() {
@@ -580,7 +534,7 @@ public class Player extends Entity {
     private BufferedImage getCurrentAnimationFrame() {
         /* Cuando se deja de mover, devuelve el primer frame guardado de la ultima direccion para representar la
          * detencion del player. */
-        if (keyboard.checkMovementKeys()) {
+        if (game.keyboard.checkMovementKeys()) {
             switch (stats.direction) {
                 case DOWN -> {
                     // Guarda el primer frame hacia abajo
@@ -636,6 +590,18 @@ public class Player extends Entity {
 
     public void initSleepImage(BufferedImage image) {
         currentFrame = image;
+    }
+
+    /**
+     * Reinicia el Player.
+     *
+     * @param fullReset true para reiniciar por completo el Player; falso en caso contrario.
+     */
+    public void reset(boolean fullReset) {
+        pos.setPos(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
+        stats.reset(fullReset);
+        flags.reset();
+        if (fullReset) addItemsToInventory();
     }
 
     private void addItemsToInventory() {

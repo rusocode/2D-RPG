@@ -20,4 +20,13 @@ public final class Flags {
     public boolean shooting;
     public boolean hpBar;
 
+    /**
+     * Reinicia las flags.
+     */
+    public void reset() {
+        hitting = false;
+        invincible = false;
+        knockback = false;
+    }
+
 }

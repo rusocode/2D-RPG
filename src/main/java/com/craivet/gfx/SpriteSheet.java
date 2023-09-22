@@ -3,6 +3,7 @@ package com.craivet.gfx;
 import com.craivet.utils.Utils;
 import com.craivet.world.entity.Entity;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
@@ -156,7 +157,7 @@ public class SpriteSheet {
      * @param entity entidad.
      * @return el frame actual de la entidad.
      */
-    public BufferedImage getCurrentFrame(Entity entity) {
+    public BufferedImage getCurrentAnimationFrame(Entity entity) {
         int i = 0;
 
         if (!entity.flags.hitting) {
