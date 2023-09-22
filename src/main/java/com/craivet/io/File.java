@@ -79,7 +79,7 @@ public class File {
             data.zone = world.zone;
             data.x = world.player.pos.x;
             data.y = world.player.pos.y;
-            data.direction = world.player.stats.direction;
+            data.direction = world.player.direction;
             data.life = world.player.stats.hp;
             data.maxlife = world.player.stats.maxHp;
             data.mana = world.player.stats.mana;
@@ -148,7 +148,7 @@ public class File {
                 case LEFT -> world.player.currentFrame = world.player.left.getFirstFrame();
                 case RIGHT -> world.player.currentFrame = world.player.right.getFirstFrame();
             }
-            world.player.stats.direction = data.direction;
+            world.player.direction = data.direction;
             world.player.stats.hp = data.life;
             world.player.stats.maxHp = data.maxlife;
             world.player.stats.mana = data.mana;

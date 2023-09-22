@@ -27,9 +27,9 @@ public class Player extends Entity {
 
     public Player(Game game, World world) {
         super(game, world);
-        centerOnScreen();
+        screen.center();
         setDefaultValues();
-        pos.setPos(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
+        pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
     }
 
     /**
@@ -39,9 +39,9 @@ public class Player extends Entity {
     public void update() {
         if (flags.hitting) hit();
         if (game.keyboard.checkKeys()) {
-            getDirection();
+            direction.get(this);
             checkCollision();
-            if (!flags.colliding && !game.keyboard.checkAccionKeys()) updatePosition(stats.direction);
+            if (!flags.colliding && !game.keyboard.checkAccionKeys()) pos.update(this, direction);
             mechanics.checkDirectionSpeed(this, auxEntity);
             checkAttack();
             game.keyboard.resetAccionKeys();
@@ -68,11 +68,6 @@ public class Player extends Entity {
         Utils.changeAlpha(g2, 1);
     }
 
-    private void centerOnScreen() {
-        screen.x = WINDOW_WIDTH / 2 - (tile / 2);
-        screen.y = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
-    }
-
     private void setDefaultValues() {
         stats.type = Type.PLAYER;
         stats.speed = stats.defaultSpeed = 2;
@@ -81,7 +76,7 @@ public class Player extends Entity {
         stats.ammo = 5;
         stats.lvl = 1;
         stats.exp = 0;
-        // stats.nextLvlExp = 5;
+        // stats.nextLvlExp = 5; // TODO No tendria que ir en una clase Level?
         stats.gold = 500;
         stats.strength = 1;
         stats.dexterity = 1;
@@ -139,7 +134,7 @@ public class Player extends Entity {
             /* Ajusta la attackbox (en la hoja de la espada para ser mas especificos) del player dependiendo de la
              * direccion de ataque. Es importante aclarar que las coordenadas x/y de la attackbox parten de la esquina
              * superior izquierda de la hitbox del player (nose si es necesario partir desde esa esquina). */
-            switch (stats.direction) {
+            switch (direction) {
                 case DOWN -> {
                     attackbox.x = -1;
                     attackbox.y = 4;
@@ -218,7 +213,7 @@ public class Player extends Entity {
         if (game.keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
             game.playSound(sound_fireball);
-            projectile.set(pos.x, pos.y, stats.direction, true, this);
+            projectile.set(pos.x, pos.y, direction, true, this);
             // Comprueba vacante para agregar el proyectil
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {
@@ -275,7 +270,7 @@ public class Player extends Entity {
             if (game.keyboard.enter && mob.stats.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
-            } else mob.move(stats.direction); // En caso de que sea la roca
+            } else mob.move(direction); // En caso de que sea la roca
         }
     }
 
@@ -322,6 +317,7 @@ public class Player extends Entity {
                 mob.flags.hpBar = true;
                 mob.damageReaction();
 
+                // TODO Tendria que ir un metodo?
                 if (mob.stats.hp <= 0) {
                     game.playSound(sound_mob_death);
                     if (!(mob instanceof Slime)) game.playSound(mob.soundDeath);
@@ -468,16 +464,6 @@ public class Player extends Entity {
         return -1;
     }
 
-    /**
-     * Obtiene la direccion dependiendo de la tecla seleccionada.
-     */
-    private void getDirection() {
-        if (game.keyboard.s) stats.direction = Direction.DOWN;
-        else if (game.keyboard.w) stats.direction = Direction.UP;
-        else if (game.keyboard.a) stats.direction = Direction.LEFT;
-        else if (game.keyboard.d) stats.direction = Direction.RIGHT;
-    }
-
     @Override
     public void checkCollision() {
         flags.colliding = false;
@@ -502,7 +488,7 @@ public class Player extends Entity {
     }
 
     private void getCurrentItemFrame(Graphics2D g2) {
-        switch (stats.direction) {
+        switch (direction) {
             case DOWN -> {
                 currentFrame = down.getFirstFrame();
                 g2.drawImage(sheet.down[1], screen.x, screen.y, null);
@@ -535,7 +521,7 @@ public class Player extends Entity {
         /* Cuando se deja de mover, devuelve el primer frame guardado de la ultima direccion para representar la
          * detencion del player. */
         if (game.keyboard.checkMovementKeys()) {
-            switch (stats.direction) {
+            switch (direction) {
                 case DOWN -> {
                     // Guarda el primer frame hacia abajo
                     currentFrame = down.getFirstFrame();
@@ -595,10 +581,10 @@ public class Player extends Entity {
     /**
      * Reinicia el Player.
      *
-     * @param fullReset true para reiniciar por completo el Player; falso en caso contrario.
+     * @param fullReset true para reiniciar por completo; falso en caso contrario.
      */
     public void reset(boolean fullReset) {
-        pos.setPos(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
+        pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
         stats.reset(fullReset);
         flags.reset();
         if (fullReset) addItemsToInventory();

@@ -21,7 +21,6 @@ public class Stats {
     public int attack, defense;
     public int motion1, motion2;
     public Type type = Type.HOSTILE;
-    public Direction direction = Direction.DOWN;
 
     /**
      * Reinicia las estadisticas.

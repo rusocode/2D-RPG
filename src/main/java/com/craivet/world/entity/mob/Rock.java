@@ -42,7 +42,7 @@ public class Rock extends Mob {
 
     @Override
     public void move(Direction direction) {
-        stats.direction = direction;
+        this.direction = direction;
         checkCollision();
         if (!flags.colliding) {
             switch (direction) {

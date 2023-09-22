@@ -99,7 +99,7 @@ public class CollisionEvent {
             event[map][row][col].y += row * tile;
 
             // Si el player colisiona con el evento y si la direccion coincide con la del evento
-            if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.stats.direction == direction || direction == Direction.ANY)) {
+            if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.direction == direction || direction == Direction.ANY)) {
                 isColliding = true;
                 world.player.attackCanceled = true; // Cancela el ataque en caso de interactuar con un evento usando enter (tecla que se utiliza para atacar)
                 // En base a esta informacion verifica la distancia entre el player y el ultimo evento

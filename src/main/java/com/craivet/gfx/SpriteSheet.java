@@ -10,6 +10,7 @@ import static com.craivet.utils.Global.*;
 
 public class SpriteSheet {
 
+    // SpriteSheet
     private BufferedImage image;
 
     // Entidades con dos frames para cada direccion (movimiento y ataque)
@@ -162,11 +163,11 @@ public class SpriteSheet {
 
         if (!entity.flags.hitting) {
             if (movement.length == 2) { // Si se trata de entidades de dos frames
-                switch (entity.stats.direction) {
+                switch (entity.direction) {
                     case DOWN, UP, LEFT, RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
                 }
             } else {
-                switch (entity.stats.direction) {
+                switch (entity.direction) {
                     case DOWN -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
                     case UP -> i = movementNum == 1 || entity.flags.colliding ? 2 : 3;
                     case LEFT -> i = movementNum == 1 || entity.flags.colliding ? 4 : 5;
@@ -174,7 +175,7 @@ public class SpriteSheet {
                 }
             }
         } else {
-            switch (entity.stats.direction) {
+            switch (entity.direction) {
                 case DOWN -> i = attackNum == 1 ? 0 : 1;
                 case UP -> {
                     // Se resta el ancho de la imagen en caso de que el frame sea mas grande al tile

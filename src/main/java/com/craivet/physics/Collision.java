@@ -42,7 +42,7 @@ public class Collision {
         // En caso de que la entidad colisione en el medio de dos tiles solidos
         int tile1, tile2;
 
-        Direction direction = entity.stats.direction;
+        Direction direction = entity.direction;
         /* Obtiene la direccion del atacante si la entidad es retrocedida para evitar que la verificacion de la colision
          * se vuelva inexacta. */
         if (entity.flags.knockback) direction = entity.knockbackDirection;
@@ -92,7 +92,7 @@ public class Collision {
                 world.items[world.map][i].hitbox.x += world.items[world.map][i].pos.x;
                 world.items[world.map][i].hitbox.y += world.items[world.map][i].pos.y;
 
-                Direction direction = entity.stats.direction;
+                Direction direction = entity.direction;
                 if (entity.flags.knockback) direction = entity.knockbackDirection;
 
                 switch (direction) {
@@ -127,7 +127,7 @@ public class Collision {
         int index = -1;
 
         // Direccion temporal de la entidad
-        Direction direction = entity.stats.direction;
+        Direction direction = entity.direction;
         // Obtiene la direccion del atacante si la entidad es retrocedida
         if (entity.flags.knockback) direction = entity.knockbackDirection;
         int speed = entity.stats.speed;
@@ -179,7 +179,7 @@ public class Collision {
         world.player.hitbox.x += world.player.pos.x;
         world.player.hitbox.y += world.player.pos.y;
 
-        switch (entity.stats.direction) {
+        switch (entity.direction) {
             case DOWN -> entity.hitbox.y += entity.stats.speed;
             case UP -> entity.hitbox.y -= entity.stats.speed;
             case LEFT -> entity.hitbox.x -= entity.stats.speed;

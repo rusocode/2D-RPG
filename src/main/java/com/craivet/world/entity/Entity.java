@@ -38,6 +38,8 @@ public abstract class Entity {
     public Projectile projectile;
     public Item weapon, shield, light;
 
+    public Direction direction = Direction.DOWN;
+
     public Screen screen = new Screen();
     public Stats stats = new Stats();
     public Position pos = new Position();
@@ -75,7 +77,7 @@ public abstract class Entity {
         if (flags.knockback) {
             checkCollision();
             // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion del atacante
-            if (!flags.colliding) updatePosition(knockbackDirection);
+            if (!flags.colliding) pos.update(this, knockbackDirection);
             else mechanics.stopKnockback(this); // Si colisiona, detiene el knockback
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
         } else if (flags.hitting) hit();
@@ -83,7 +85,7 @@ public abstract class Entity {
             // Es importante que realize las acciones antes de comprobar las colisiones
             doActions();
             checkCollision();
-            if (!flags.colliding) updatePosition(stats.direction);
+            if (!flags.colliding) pos.update(this, direction);
         }
         timer.checkTimers(this);
     }
@@ -182,7 +184,7 @@ public abstract class Entity {
             int currentX = pos.x, currentY = pos.y;
             int hitboxWidth = hitbox.width, hitboxHeight = hitbox.height;
 
-            switch (stats.direction) {
+            switch (direction) {
                 case DOWN -> pos.y += attackbox.height;
                 case UP -> pos.y -= attackbox.height;
                 case LEFT -> pos.x -= attackbox.width;
@@ -253,20 +255,6 @@ public abstract class Entity {
         game.collision.checkEntity(this, world.mobs);
         game.collision.checkEntity(this, world.interactives);
         hitPlayer(game.collision.checkPlayer(this), stats.attack);
-    }
-
-    /**
-     * Actualiza la posicion de la entidad.
-     *
-     * @param direction direccion de la entidad.
-     */
-    protected void updatePosition(Direction direction) {
-        switch (direction) {
-            case DOWN -> pos.y += stats.speed;
-            case UP -> pos.y -= stats.speed;
-            case LEFT -> pos.x -= stats.speed;
-            case RIGHT -> pos.x += stats.speed;
-        }
     }
 
     /**

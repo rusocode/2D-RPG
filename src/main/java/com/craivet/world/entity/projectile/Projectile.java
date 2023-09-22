@@ -54,7 +54,7 @@ public class Projectile extends Entity {
         if (stats.hp-- <= 0) flags.alive = false;
 
         if (flags.alive) {
-            switch (stats.direction) {
+            switch (direction) {
                 case DOWN -> pos.y += stats.speed;
                 case UP -> pos.y -= stats.speed;
                 case LEFT -> pos.x -= stats.speed;
@@ -74,7 +74,7 @@ public class Projectile extends Entity {
     public void set(int x, int y, Direction direction, boolean alive, Entity entity) {
         pos.x = x;
         pos.y = y;
-        stats.direction = direction;
+        this.direction = direction;
         flags.alive = alive;
         this.entity = entity;
         /* Una vez que el projectil muere (alive=false) el hp queda en 0, por lo tanto para lanzar el proximo se

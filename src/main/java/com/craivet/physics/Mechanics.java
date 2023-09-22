@@ -24,7 +24,7 @@ public class Mechanics {
      * @param knockbackValue valor de knockback.
      */
     public void setKnockback(Entity target, Entity attacker, int knockbackValue) {
-        target.knockbackDirection = attacker.stats.direction;
+        target.knockbackDirection = attacker.direction;
         target.stats.speed += knockbackValue;
         target.flags.knockback = true;
     }
@@ -57,7 +57,7 @@ public class Mechanics {
      */
     private boolean checkConditionsForUnion(Entity player, Entity mob) {
         return mob != null && mob.stats.type == Type.NPC && player.flags.collidingOnMob
-                && player.stats.direction == mob.stats.direction && !isDistanceWithMob(player, mob) && !mob.flags.colliding;
+                && player.direction == mob.direction && !isDistanceWithMob(player, mob) && !mob.flags.colliding;
     }
 
     /**
@@ -72,18 +72,22 @@ public class Mechanics {
      * @return true si hay distancia o false.
      */
     private boolean isDistanceWithMob(Entity player, Entity mob) {
-        switch (mob.stats.direction) {
+        switch (mob.direction) {
             case DOWN -> {
-                if (player.pos.y + player.hitbox.y + player.hitbox.height + mob.stats.speed < mob.pos.y + mob.hitbox.y) return true;
+                if (player.pos.y + player.hitbox.y + player.hitbox.height + mob.stats.speed < mob.pos.y + mob.hitbox.y)
+                    return true;
             }
             case UP -> {
-                if (player.pos.y + player.hitbox.y - mob.stats.speed > mob.pos.y + mob.hitbox.y + mob.hitbox.height) return true;
+                if (player.pos.y + player.hitbox.y - mob.stats.speed > mob.pos.y + mob.hitbox.y + mob.hitbox.height)
+                    return true;
             }
             case LEFT -> {
-                if (player.pos.x + player.hitbox.x - mob.stats.speed > mob.pos.x + mob.hitbox.x + mob.hitbox.width) return true;
+                if (player.pos.x + player.hitbox.x - mob.stats.speed > mob.pos.x + mob.hitbox.x + mob.hitbox.width)
+                    return true;
             }
             case RIGHT -> {
-                if (player.pos.x + player.hitbox.x + player.hitbox.width + mob.stats.speed < mob.pos.x + mob.hitbox.x) return true;
+                if (player.pos.x + player.hitbox.x + player.hitbox.width + mob.stats.speed < mob.pos.x + mob.hitbox.x)
+                    return true;
             }
         }
         return false;
@@ -101,7 +105,7 @@ public class Mechanics {
         player.stats.speed = mob.stats.speed;
         united = true;
         if (!(mob instanceof Rock)) {
-            switch (player.stats.direction) {
+            switch (player.direction) {
                 case DOWN -> player.pos.y++;
                 case UP -> player.pos.y--;
                 case LEFT -> player.pos.x--;
@@ -120,7 +124,7 @@ public class Mechanics {
         player.stats.speed = player.stats.defaultSpeed;
         player.flags.collidingOnMob = false;
         if (united) {
-            switch (player.stats.direction) {
+            switch (player.direction) {
                 case DOWN -> player.pos.y--;
                 case UP -> player.pos.y++;
                 case LEFT -> player.pos.x++;

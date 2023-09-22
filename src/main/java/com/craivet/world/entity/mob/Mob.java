@@ -63,11 +63,11 @@ public class Mob extends Entity {
      * Look at the Player.
      */
     protected void lookPlayer() {
-        switch (world.player.stats.direction) {
-            case DOWN -> stats.direction = Direction.UP;
-            case UP -> stats.direction = Direction.DOWN;
-            case LEFT -> stats.direction = Direction.RIGHT;
-            case RIGHT -> stats.direction = Direction.LEFT;
+        switch (world.player.direction) {
+            case DOWN -> direction = Direction.UP;
+            case UP -> direction = Direction.DOWN;
+            case LEFT -> direction = Direction.RIGHT;
+            case RIGHT -> direction = Direction.LEFT;
         }
     }
 
@@ -150,9 +150,9 @@ public class Mob extends Entity {
         // TODO El metodo de arriba tendria que combinarse con este y que el mob pegue cuando esten en la misma direccion
         if (++timer.directionCounter > interval) { // TODO o =?
             if (getXDistance(game.world.player) > getYDistance(game.world.player))
-                stats.direction = game.world.player.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
+                direction = game.world.player.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
             else if (getXDistance(game.world.player) < getYDistance(game.world.player))
-                stats.direction = game.world.player.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
+                direction = game.world.player.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
             timer.directionCounter = 0;
         }
     }

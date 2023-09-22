@@ -67,7 +67,7 @@ public class Item extends Entity {
         int nextX = getLeftHitbox();
         int nextY = getTopHitbox();
 
-        switch (entity.stats.direction) {
+        switch (entity.direction) {
             case DOWN -> nextY = getBottomHitbox() + entity.stats.speed;
             case UP -> nextY = getTopHitbox() - entity.stats.speed;
             case LEFT -> nextX = getLeftHitbox() - entity.stats.speed;

@@ -3,14 +3,13 @@ package com.craivet.world;
 import com.craivet.Direction;
 import com.craivet.world.entity.Entity;
 
-import static com.craivet.utils.Global.UPDATES;
 import static com.craivet.utils.Global.tile;
 
 /**
  * Estas coordenadas no son mas que la suma de pixeles a partir de la esquina superior izquierda del mapa (0, 0). Cuando
- * se divide esa suma por el tamaño del tile, se obtiene la posicion en filas y columnas (row y col). Esto se hace para
- * facilitar el manejo de las coordenadas. Otra cosa a tener en cuenta, es que a las coordenadas x-y se le suma la
- * hitbox para obtener la posicion exacta del rectangulo colisionador y no del frame.
+ * se divide esa suma por el tamaño del tile, se obtiene la posicion en filas y columnas. Esto se hace para facilitar el
+ * manejo de las coordenadas. Otra cosa a tener en cuenta, es que a las coordenadas x-y se le suma la hitbox para
+ * obtener la posicion exacta del rectangulo colisionador y no del frame.
  */
 
 public class Position {
@@ -22,7 +21,7 @@ public class Position {
      * <p>
      * TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
      */
-    public void setPos(World world, Entity entity, int map, int zone, int col, int row, Direction dir) {
+    public void set(World world, Entity entity, int map, int zone, int col, int row, Direction dir) {
         world.map = map;
         world.zone = zone;
         // Suma la mitad del ancho de la hitbox y resta un pixel para centrar la posicion horizontal dentro del tile
@@ -36,6 +35,21 @@ public class Position {
             case UP -> entity.currentFrame = entity.up.getFirstFrame();
             case LEFT -> entity.currentFrame = entity.left.getFirstFrame();
             case RIGHT -> entity.currentFrame = entity.right.getFirstFrame();
+        }
+    }
+
+    /**
+     * Actualiza la posicion de la entidad.
+     *
+     * @param entity entidad.
+     * @param direction direccion de la entidad.
+     */
+    public void update(Entity entity, Direction direction) {
+        switch (direction) {
+            case DOWN -> y += entity.stats.speed;
+            case UP -> y -= entity.stats.speed;
+            case LEFT -> x -= entity.stats.speed;
+            case RIGHT -> x += entity.stats.speed;
         }
     }
 

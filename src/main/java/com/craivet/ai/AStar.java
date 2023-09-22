@@ -53,33 +53,34 @@ public class AStar {
             // Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
             /* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces
              * se define su movimiento hacia arriba o abajo. */
-            if (left >= nextX && right < nextX + tile) entity.stats.direction = top > nextY ? Direction.UP : Direction.DOWN;
+            if (left >= nextX && right < nextX + tile) entity.direction = top > nextY ? Direction.UP : Direction.DOWN;
             /* Si el lado superior y inferior de la entidad estan entre la siguiente posicion y de la ruta, entonces
              * se define su movimiento hacia la izquierda o derecha. */
-            if (top >= nextY && bottom < nextY + tile) entity.stats.direction = left > nextX ? Direction.LEFT : Direction.RIGHT;
+            if (top >= nextY && bottom < nextY + tile)
+                entity.direction = left > nextX ? Direction.LEFT : Direction.RIGHT;
 
                 /* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
                  * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
             else if (top > nextY && left > nextX) {
                 // up o left
-                entity.stats.direction = Direction.UP;
+                entity.direction = Direction.UP;
                 entity.checkCollision();
-                if (entity.flags.colliding) entity.stats.direction = Direction.LEFT;
+                if (entity.flags.colliding) entity.direction = Direction.LEFT;
             } else if (top > nextY && left < nextX) {
                 // up o right
-                entity.stats.direction = Direction.UP;
+                entity.direction = Direction.UP;
                 entity.checkCollision();
-                if (entity.flags.colliding) entity.stats.direction = Direction.RIGHT;
+                if (entity.flags.colliding) entity.direction = Direction.RIGHT;
             } else if (top < nextY && left > nextX) {
                 // down o left
-                entity.stats.direction = Direction.DOWN;
+                entity.direction = Direction.DOWN;
                 entity.checkCollision();
-                if (entity.flags.colliding) entity.stats.direction = Direction.LEFT;
+                if (entity.flags.colliding) entity.direction = Direction.LEFT;
             } else if (top < nextY && left < nextX) {
                 // down o right
-                entity.stats.direction = Direction.DOWN;
+                entity.direction = Direction.DOWN;
                 entity.checkCollision();
-                if (entity.flags.colliding) entity.stats.direction = Direction.RIGHT;
+                if (entity.flags.colliding) entity.direction = Direction.RIGHT;
             }
 
         }

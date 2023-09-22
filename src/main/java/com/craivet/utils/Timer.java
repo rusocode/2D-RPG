@@ -76,10 +76,10 @@ public class Timer {
     public void timeDirection(Entity entity, int interval) {
         if (++directionCounter >= interval) {
             int i = Utils.azar(100);
-            if (i <= 25) entity.stats.direction = Direction.DOWN;
-            if (i > 25 && i <= 50) entity.stats.direction = Direction.UP;
-            if (i > 50 && i <= 75) entity.stats.direction = Direction.LEFT;
-            if (i > 75) entity.stats.direction = Direction.RIGHT;
+            if (i <= 25) entity.direction = Direction.DOWN;
+            if (i > 25 && i <= 50) entity.direction = Direction.UP;
+            if (i > 50 && i <= 75) entity.direction = Direction.LEFT;
+            if (i > 75) entity.direction = Direction.RIGHT;
             directionCounter = 0;
         }
     }

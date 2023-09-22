@@ -23,7 +23,7 @@ public class Trader extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         initDialogue();
-        setItems();
+        addItemsToInventory();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class Trader extends Mob {
         dialogues[0][0] = "He he, so you found me. I have some \ngood stuff. Do you want to trade?";
     }
 
-    private void setItems() {
+    private void addItemsToInventory() {
         inventory.add(new PotionRed(game, world, 1));
         inventory.add(new Key(game, world, 1));
         inventory.add(new SwordIron(game, world));
