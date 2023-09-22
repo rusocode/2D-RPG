@@ -41,6 +41,7 @@ public class Screen extends JFrame {
     public int tempScreenX, tempScreenY;
 
     public Screen() {
+        centerPlayer();
     }
 
     public Screen(Game game, boolean fullScreenMode) {
@@ -75,9 +76,9 @@ public class Screen extends JFrame {
     }
 
     /**
-     * Centra la entidad en la pantalla.
+     * Centra el player en la pantalla.
      */
-    public void center() {
+    private void centerPlayer() {
         x = WINDOW_WIDTH / 2 - (tile / 2);
         y = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
     }

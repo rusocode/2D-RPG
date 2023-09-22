@@ -9,8 +9,8 @@ import static com.craivet.gfx.Assets.*;
 
 public class Oldman extends Mob {
 
-    public Oldman(Game game, World world, int x, int y) {
-        super(game, world, x, y);
+    public Oldman(Game game, World world, int col, int row) {
+        super(game, world, col, row);
         stats.name = "Oldman";
         stats.type = Type.NPC;
         stats.speed = 1;

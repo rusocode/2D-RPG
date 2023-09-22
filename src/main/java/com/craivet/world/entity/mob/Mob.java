@@ -31,8 +31,8 @@ public class Mob extends Entity {
 
     public URL soundHit, soundDeath;
 
-    public Mob(Game game, World world, int x, int y) {
-        super(game, world, x, y);
+    public Mob(Game game, World world, int col, int row) {
+        super(game, world, col, row);
     }
 
     public Mob(Game game, World world) {

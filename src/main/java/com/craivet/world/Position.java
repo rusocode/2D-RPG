@@ -9,7 +9,8 @@ import static com.craivet.utils.Global.tile;
  * Estas coordenadas no son mas que la suma de pixeles a partir de la esquina superior izquierda del mapa (0, 0). Cuando
  * se divide esa suma por el tamaño del tile, se obtiene la posicion en filas y columnas. Esto se hace para facilitar el
  * manejo de las coordenadas. Otra cosa a tener en cuenta, es que a las coordenadas x-y se le suma la hitbox para
- * obtener la posicion exacta del rectangulo colisionador y no del frame.
+ * obtener la posicion exacta del rectangulo colisionador y no del frame. Es importante aclarar que se posiciona la
+ * hitbox, NO la imagen.
  */
 
 public class Position {
@@ -17,9 +18,17 @@ public class Position {
     public int x, y;
 
     /**
-     * Establece la posicion. Es importante aclarar que se posiciona la hitbox, NO la imagen.
+     * Establece la posicion de la entidad.
+     */
+    public void set(int col, int row) {
+        x = col * tile;
+        y = row * tile;
+    }
+
+    /**
+     * Establece la posicion del player.
      * <p>
-     * TODO Evitar que el player aparezca sobre una entidad solida o fuera de los limites del mapa
+     * TODO Evitar que la entidad aparezca sobre una entidad solida, tile solido o fuera de los limites del mapa.
      */
     public void set(World world, Entity entity, int map, int zone, int col, int row, Direction dir) {
         world.map = map;
@@ -41,7 +50,7 @@ public class Position {
     /**
      * Actualiza la posicion de la entidad.
      *
-     * @param entity entidad.
+     * @param entity    entidad.
      * @param direction direccion de la entidad.
      */
     public void update(Entity entity, Direction direction) {

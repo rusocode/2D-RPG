@@ -27,7 +27,6 @@ public class Player extends Entity {
 
     public Player(Game game, World world) {
         super(game, world);
-        screen.center();
         setDefaultValues();
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
     }

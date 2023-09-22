@@ -39,7 +39,6 @@ public abstract class Entity {
     public Item weapon, shield, light;
 
     public Direction direction = Direction.DOWN;
-
     public Screen screen = new Screen();
     public Stats stats = new Stats();
     public Position pos = new Position();
@@ -65,12 +64,10 @@ public abstract class Entity {
         this.world = world;
     }
 
-    // TODO Verificar posicion invalida (dentro de los limites del mapa y sobre tiles que no sean solidos, ni sobre otra entidad)
-    public Entity(Game game, World world, int x, int y) {
+    public Entity(Game game, World world, int col, int row) {
         this.game = game;
         this.world = world;
-        pos.x = x * tile;
-        pos.y = y * tile;
+        pos.set(col, row);
     }
 
     public void update() {

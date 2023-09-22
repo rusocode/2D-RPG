@@ -12,8 +12,8 @@ import static com.craivet.utils.Global.*;
 
 public class RedSlime extends Mob {
 
-    public RedSlime(Game game, World world, int x, int y) {
-        super(game, world, x, y);
+    public RedSlime(Game game, World world, int col, int row) {
+        super(game, world, col, row);
         stats.name = "Red Slime";
         stats.type = Type.HOSTILE;
         stats.speed = stats.defaultSpeed = 2;

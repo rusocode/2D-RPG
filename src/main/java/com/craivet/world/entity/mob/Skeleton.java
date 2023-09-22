@@ -11,8 +11,8 @@ import static com.craivet.utils.Global.*;
 
 public class Skeleton extends Mob {
 
-    public Skeleton(Game game, World world, int x, int y) {
-        super(game, world, x, y);
+    public Skeleton(Game game, World world, int col, int row) {
+        super(game, world, col, row);
         stats.name = "Skeleton";
         stats.type = Type.HOSTILE;
         soundHit = sound_hit_mob;
