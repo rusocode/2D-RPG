@@ -22,7 +22,7 @@ public class Rock extends Mob {
     public Rock(Game game, World world, int x, int y) {
         super(game, world, x, y);
         stats.name = NAME;
-        stats.type = Type.NPC;
+        type = Type.NPC;
         sheet.frame = Utils.scaleImage(bigrock, tile, tile);
         stats.speed = 1;
         hitbox.x = 1;

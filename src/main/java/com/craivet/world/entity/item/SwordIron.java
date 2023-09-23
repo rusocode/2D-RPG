@@ -15,7 +15,7 @@ public class SwordIron extends Item {
     public SwordIron(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         stats.name = NAME;
-        stats.type = Type.SWORD;
+        type = Type.SWORD;
         sheet.frame = Utils.scaleImage(sword_iron, tile, tile);
         description = "[" + stats.name + "]\nAn old sword.";
         price = 20;

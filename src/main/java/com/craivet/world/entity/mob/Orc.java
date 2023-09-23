@@ -14,7 +14,7 @@ public class Orc extends Mob {
     public Orc(Game game, World world, int x, int y) {
         super(game, world, x, y);
         stats.name = "Orc";
-        stats.type = Type.HOSTILE;
+        type = Type.HOSTILE;
         soundHit = sound_hit_orc;
         soundDeath = sound_orc_death;
         stats.speed = stats.defaultSpeed = 1;

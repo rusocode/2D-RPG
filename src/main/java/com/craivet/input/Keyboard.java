@@ -1,6 +1,7 @@
 package com.craivet.input;
 
 import com.craivet.Game;
+import com.craivet.world.entity.Entity;
 
 import java.awt.event.*;
 
@@ -14,6 +15,7 @@ import static com.craivet.utils.Global.*;
 public class Keyboard extends KeyAdapter {
 
     private final Game game;
+
     public boolean w, a, s, d, enter, esc, f, p, t;
     public boolean godMode;
     private int lastKey = -1;
@@ -155,7 +157,7 @@ public class Keyboard extends KeyAdapter {
     private void inventoryState(int code) {
         if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
         playerInventoryState(code);
-        if (code == KeyEvent.VK_ENTER) game.world.player.selectItem();
+        if (code == KeyEvent.VK_ENTER) game.world.player.inventory.select();
     }
 
     private void optionState(int code) {
@@ -276,54 +278,54 @@ public class Keyboard extends KeyAdapter {
 
     private void playerInventoryState(int code) {
         if (code == KeyEvent.VK_W) {
-            if (game.ui.playerSlotRow > 0) {
+            if (game.world.player.inventory.playerSlotRow > 0) {
                 game.playSound(sound_slot);
-                game.ui.playerSlotRow--;
+                game.world.player.inventory.playerSlotRow--;
             }
         }
         if (code == KeyEvent.VK_A) {
-            if (game.ui.playerSlotCol > 0) {
+            if (game.world.player.inventory.playerSlotCol > 0) {
                 game.playSound(sound_slot);
-                game.ui.playerSlotCol--;
+                game.world.player.inventory.playerSlotCol--;
             }
         }
         if (code == KeyEvent.VK_S) {
-            if (game.ui.playerSlotRow < 3) {
+            if (game.world.player.inventory.playerSlotRow < 3) {
                 game.playSound(sound_slot);
-                game.ui.playerSlotRow++;
+                game.world.player.inventory.playerSlotRow++;
             }
         }
         if (code == KeyEvent.VK_D) {
-            if (game.ui.playerSlotCol < 4) {
+            if (game.world.player.inventory.playerSlotCol < 4) {
                 game.playSound(sound_slot);
-                game.ui.playerSlotCol++;
+                game.world.player.inventory.playerSlotCol++;
             }
         }
     }
 
     private void npcInventoryState(int code) {
         if (code == KeyEvent.VK_W) {
-            if (game.ui.npcSlotRow > 0) {
+            if (game.world.player.inventory.npcSlotRow > 0) {
                 game.playSound(sound_slot);
-                game.ui.npcSlotRow--;
+                game.world.player.inventory.npcSlotRow--;
             }
         }
         if (code == KeyEvent.VK_A) {
-            if (game.ui.npcSlotCol > 0) {
+            if (game.world.player.inventory.npcSlotCol > 0) {
                 game.playSound(sound_slot);
-                game.ui.npcSlotCol--;
+                game.world.player.inventory.npcSlotCol--;
             }
         }
         if (code == KeyEvent.VK_S) {
-            if (game.ui.npcSlotRow < 3) {
+            if (game.world.player.inventory.npcSlotRow < 3) {
                 game.playSound(sound_slot);
-                game.ui.npcSlotRow++;
+                game.world.player.inventory.npcSlotRow++;
             }
         }
         if (code == KeyEvent.VK_D) {
-            if (game.ui.npcSlotCol < 4) {
+            if (game.world.player.inventory.npcSlotCol < 4) {
                 game.playSound(sound_slot);
-                game.ui.npcSlotCol++;
+                game.world.player.inventory.npcSlotCol++;
             }
         }
     }

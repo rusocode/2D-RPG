@@ -12,7 +12,7 @@ public class Oldman extends Mob {
     public Oldman(Game game, World world, int col, int row) {
         super(game, world, col, row);
         stats.name = "Oldman";
-        stats.type = Type.NPC;
+        type = Type.NPC;
         stats.speed = 1;
         hitbox.x = 6;
         hitbox.y = 16;

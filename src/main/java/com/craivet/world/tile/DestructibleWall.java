@@ -22,7 +22,7 @@ public class DestructibleWall extends Interactive {
     }
 
     public boolean isCorrectWeapon(Item weapon) {
-        return weapon.stats.type == Type.PICKAXE;
+        return weapon.type == Type.PICKAXE;
     }
 
     public Color getParticleColor() {

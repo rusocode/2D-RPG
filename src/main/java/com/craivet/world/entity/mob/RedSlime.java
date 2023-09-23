@@ -15,7 +15,7 @@ public class RedSlime extends Mob {
     public RedSlime(Game game, World world, int col, int row) {
         super(game, world, col, row);
         stats.name = "Red Slime";
-        stats.type = Type.HOSTILE;
+        type = Type.HOSTILE;
         stats.speed = stats.defaultSpeed = 2;
         stats.hp = stats.maxHp = 5;
         stats.exp = 3;

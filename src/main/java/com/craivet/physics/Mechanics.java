@@ -56,7 +56,7 @@ public class Mechanics {
      * @return true si se cumplen todas las condiciones especificadas o false.
      */
     private boolean checkConditionsForUnion(Entity player, Entity mob) {
-        return mob != null && mob.stats.type == Type.NPC && player.flags.collidingOnMob
+        return mob != null && mob.type == Type.NPC && player.flags.collidingOnMob
                 && player.direction == mob.direction && !isDistanceWithMob(player, mob) && !mob.flags.colliding;
     }
 

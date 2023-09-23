@@ -38,8 +38,9 @@ public abstract class Entity {
     public BufferedImage currentFrame, currentSwordFrame;
 
     public Projectile projectile;
-    public Item weapon, shield, light;
+    public Item weapon, shield, light; // TODO Se podria mover a una clase, como PlayerInventory (como la clase de AO-Java)
 
+    public Type type = Type.HOSTILE;
     public Direction direction = Direction.DOWN;
     public Screen screen = new Screen();
     public Stats stats = new Stats();
@@ -48,7 +49,7 @@ public abstract class Entity {
     public Flags flags = new Flags();
     public Timer timer = new Timer();
     public Mechanics mechanics = new Mechanics();
-    public Inventory inventory = new Inventory(); // TODO O formaria parte del objeto Game?
+    public Inventory inventory;
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile);
     public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
@@ -98,7 +99,7 @@ public abstract class Entity {
             screen.tempScreenY = screen.y;
 
             // Si el mob hostil tiene activada la barra de vida
-            if (stats.type == Type.HOSTILE && flags.hpBar) game.ui.drawHpBar(g2, this);
+            if (type == Type.HOSTILE && flags.hpBar) game.ui.drawHpBar(g2, this);
             if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
@@ -235,7 +236,7 @@ public abstract class Entity {
      */
     public void hitPlayer(boolean contact, int attack) {
         // Si la entidad es hostil y hace contacto con el player que no es invencible
-        if (stats.type == Type.HOSTILE && contact && !world.player.flags.invincible) {
+        if (type == Type.HOSTILE && contact && !world.player.flags.invincible) {
             game.playSound(sound_player_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.player.stats.defense, 1);

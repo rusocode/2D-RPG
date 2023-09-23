@@ -14,7 +14,7 @@ public class Skeleton extends Mob {
     public Skeleton(Game game, World world, int col, int row) {
         super(game, world, col, row);
         stats.name = "Skeleton";
-        stats.type = Type.HOSTILE;
+        type = Type.HOSTILE;
         soundHit = sound_hit_mob;
         soundDeath = sound_mob_death;
         stats.speed = stats.defaultSpeed = 1;

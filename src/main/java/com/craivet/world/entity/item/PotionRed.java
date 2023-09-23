@@ -19,7 +19,7 @@ public class PotionRed extends Item {
     public PotionRed(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         stats.name = NAME;
-        stats.type = Type.CONSUMABLE;
+        type = Type.CONSUMABLE;
         sheet.frame = Utils.scaleImage(potion_red, tile, tile);
         value = 2;
         description = "[" + stats.name + "]\nHeals your life by " + value + ".";
@@ -30,7 +30,7 @@ public class PotionRed extends Item {
         hitbox.y = 0;
         hitbox.width = 25;
         hitbox.height = 32;
-       hitboxDefaultX = hitbox.x;
+        hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
     }
 

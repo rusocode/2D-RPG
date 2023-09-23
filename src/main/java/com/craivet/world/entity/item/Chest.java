@@ -15,7 +15,7 @@ public class Chest extends Item {
     public Chest(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         stats.name = NAME;
-        stats.type = Type.OBSTACLE;
+        type = Type.OBSTACLE;
         sheet.loadItemFrames(chest, 16, 16, 1);
         sheet.frame = sheet.item[0];
         solid = true;

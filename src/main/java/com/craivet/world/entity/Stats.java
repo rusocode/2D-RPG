@@ -20,7 +20,6 @@ public class Stats {
     public int strength, dexterity;
     public int attack, defense;
     public int motion1, motion2;
-    public Type type = Type.HOSTILE;
 
     /**
      * Reinicia las estadisticas.

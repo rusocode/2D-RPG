@@ -24,7 +24,7 @@ public class Key extends Item {
     public Key(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         stats.name = NAME;
-        stats.type = Type.CONSUMABLE;
+        type = Type.CONSUMABLE;
         sheet.frame = Utils.scaleImage(key, tile, tile);
         description = "[" + stats.name + "]\nIt opens a door.";
         price = 100;

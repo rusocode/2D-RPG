@@ -122,9 +122,9 @@ public class Timer {
      */
     public void checkTimers(Entity entity) {
         // Temporiza el movimiento si la entidad no es un player
-        if (entity.stats.type != Type.PLAYER) timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
+        if (entity.type != Type.PLAYER) timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
         // Controla el intervalo de ataque si la entidad es un player
-        if (entity.stats.type == Type.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
+        if (entity.type == Type.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
         if (entity.flags.invincible) timeInvincible(entity, INTERVAL_INVINCIBLE);
         if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
     }

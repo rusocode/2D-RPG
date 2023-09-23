@@ -1,6 +1,7 @@
 package com.craivet.world.entity.mob;
 
 import com.craivet.Game;
+import com.craivet.Inventory;
 import com.craivet.world.World;
 import com.craivet.utils.*;
 import com.craivet.world.entity.Type;
@@ -13,8 +14,9 @@ public class Trader extends Mob {
 
     public Trader(Game game, World world, int x, int y) {
         super(game, world, x, y);
+        inventory = new Inventory();
         stats.name = "Trader";
-        stats.type = Type.NPC;
+        type = Type.NPC;
         sheet.frame = Utils.scaleImage(trader, tile, tile);
         hitbox.x = 8;
         hitbox.y = 16;

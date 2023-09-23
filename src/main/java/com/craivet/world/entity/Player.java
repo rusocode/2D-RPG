@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 import com.craivet.Direction;
 import com.craivet.Game;
+import com.craivet.Inventory;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
@@ -27,6 +28,7 @@ public class Player extends Entity {
 
     public Player(Game game, World world) {
         super(game, world);
+        inventory = new Inventory(this);
         setDefaultValues();
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
     }
@@ -68,7 +70,7 @@ public class Player extends Entity {
     }
 
     private void setDefaultValues() {
-        stats.type = Type.PLAYER;
+        type = Type.PLAYER;
         stats.speed = stats.defaultSpeed = 2;
         stats.hp = stats.maxHp = 6;
         stats.mana = stats.maxMana = 4;
@@ -195,9 +197,9 @@ public class Player extends Entity {
      * Comprueba si puede atacar.
      */
     private void checkAttack() {
-        if (game.keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting) {
-            if (weapon.stats.type == Type.SWORD) game.playSound(sound_swing_weapon);
-            if (weapon.stats.type != Type.SWORD) game.playSound(sound_swing_axe);
+        if (game.keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
+            if (weapon.type == Type.SWORD) game.playSound(sound_swing_weapon);
+            if (weapon.type != Type.SWORD) game.playSound(sound_swing_axe);
             flags.hitting = true;
             timer.attackCounter = 0;
         }
@@ -241,8 +243,8 @@ public class Player extends Entity {
     private void pickup(int i) {
         if (i != -1) {
             Item item = world.items[world.map][i];
-            if (game.keyboard.p && item.stats.type != Type.OBSTACLE) {
-                if (item.stats.type == Type.PICKUP) item.use(this);
+            if (game.keyboard.p && item.type != Type.OBSTACLE) {
+                if (item.type == Type.PICKUP) item.use(this);
                 else if (canPickup(item)) game.playSound(sound_item_pickup);
                 else {
                     game.ui.addMessageToConsole("You cannot carry any more!");
@@ -250,7 +252,7 @@ public class Player extends Entity {
                 }
                 world.items[world.map][i] = null;
             }
-            if (game.keyboard.enter && item.stats.type == Type.OBSTACLE) {
+            if (game.keyboard.enter && item.type == Type.OBSTACLE) {
                 attackCanceled = true;
                 item.interact();
             }
@@ -266,7 +268,7 @@ public class Player extends Entity {
         if (i != -1) {
             auxEntity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
-            if (game.keyboard.enter && mob.stats.type == Type.NPC) {
+            if (game.keyboard.enter && mob.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
             } else mob.move(direction); // En caso de que sea la roca
@@ -282,7 +284,7 @@ public class Player extends Entity {
         if (i != -1) {
             auxEntity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
-            if (!flags.invincible && !mob.flags.dead && mob.stats.type == Type.HOSTILE) {
+            if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
                 game.playSound(sound_player_damage);
                 int damage = Math.max(mob.stats.attack - stats.defense, 1);
                 stats.hp -= damage;
@@ -303,7 +305,7 @@ public class Player extends Entity {
         if (i != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
             auxEntity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
-            if (!mob.flags.invincible && mob.stats.type != Type.NPC) {
+            if (!mob.flags.invincible && mob.type != Type.NPC) {
 
                 if (knockbackValue > 0) mechanics.setKnockback(mob, attacker, knockbackValue);
 
@@ -383,43 +385,6 @@ public class Player extends Entity {
             game.playSound(sound_level_up);
             dialogues[0][0] = "You are level " + stats.lvl + "!";
             startDialogue(DIALOGUE_STATE, this, 0);
-        }
-    }
-
-    /**
-     * Selecciona el item del array de inventario utilizando el indice del slot del inventario UI.
-     */
-    public void selectItem() {
-        int itemIndex = game.ui.getItemIndexOnInventory(game.ui.playerSlotCol, game.ui.playerSlotRow);
-        if (itemIndex < inventory.size()) {
-            Item selectedItem = inventory.get(itemIndex);
-            if (selectedItem instanceof Axe || selectedItem instanceof Pickaxe || selectedItem instanceof SwordIron) {
-                weapon = selectedItem;
-                attackbox = weapon.attackbox; // TODO Hace falta esto aca?
-                stats.attack = getAttack();
-                switch (weapon.stats.type) {
-                    case SWORD -> {
-                        sheet.loadWeaponFrames(sword_frame, 16, 16);
-                        game.playSound(sound_draw_sword);
-                    }
-                    case AXE -> sheet.loadWeaponFrames(axe_frame, 16, 16);
-                    case PICKAXE -> sheet.loadWeaponFrames(pickaxe_frame, 16, 16);
-                }
-            }
-            if (selectedItem.stats.type == Type.SHIELD) {
-                shield = selectedItem;
-                stats.defense = getDefense();
-            }
-            if (selectedItem.stats.type == Type.LIGHT) {
-                light = light == selectedItem ? null : selectedItem;
-                lightUpdate = true;
-            }
-            if (selectedItem.stats.type == Type.CONSUMABLE) {
-                if (selectedItem.use(this)) {
-                    if (selectedItem.amount > 1) selectedItem.amount--;
-                    else inventory.remove(itemIndex);
-                }
-            }
         }
     }
 

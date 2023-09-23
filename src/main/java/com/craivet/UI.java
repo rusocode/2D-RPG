@@ -29,10 +29,10 @@ public class UI {
     private String currentDialogue, combinedText = "";
     private int charIndex, counter;
 
+    // TODO La consola tendria que ser una clase aparte
     public final ArrayList<String> console = new ArrayList<>();
     private final ArrayList<Integer> consoleCounter = new ArrayList<>();
 
-    public int playerSlotCol, playerSlotRow, npcSlotCol, npcSlotRow;
     public int mainWindowState, subState, command; // TODO Se podrian combinar estas dos variables (mainWindowState y subState) haciendo referencia a un solo subState
 
     // Icons
@@ -381,12 +381,12 @@ public class UI {
         // Dependiendo del tipo de entidad, renderiza el inventario del lado derecho (player) o izquierdo (npc)
         if (entity == world.player) {
             x = (int) ((WINDOW_WIDTH / 2 - width / 2) + tile * 4.5);
-            slotCol = playerSlotCol;
-            slotRow = playerSlotRow;
+            slotCol = world.player.inventory.playerSlotCol;
+            slotRow = world.player.inventory.playerSlotRow;
         } else {
             x = (int) ((WINDOW_WIDTH / 2 - width / 2) - tile * 4.5);
-            slotCol = npcSlotCol;
-            slotRow = npcSlotRow;
+            slotCol = world.player.inventory.npcSlotCol;
+            slotRow = world.player.inventory.npcSlotRow;
         }
         y = tile - 15;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
@@ -445,7 +445,7 @@ public class UI {
             // Dibuja la descripcion
             int textX = x + 20;
             int textY = dFrameY + tile + 5;
-            int itemIndex = getItemIndexOnInventory(slotCol, slotRow);
+            int itemIndex = world.player.inventory.getSlot(slotCol, slotRow);
             if (itemIndex < entity.inventory.size()) {
                 renderSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
                 changeFontSize(14);
@@ -743,7 +743,7 @@ public class UI {
         renderInventoryWindow(world.player, false); // TODO El player forma parte de una entidad, creo que se podria especificar el argumento del metodo de otra forma
 
         // Ventana del precio
-        int itemIndex = getItemIndexOnInventory(npcSlotCol, npcSlotRow);
+        int itemIndex = world.player.inventory.getSlot(world.player.inventory.npcSlotCol, world.player.inventory.npcSlotRow);
         if (itemIndex < entity.inventory.size()) {
             x = tile * 5;
             y = tile * 5;
@@ -789,7 +789,7 @@ public class UI {
         renderInventoryWindow(world.player, true);
 
         // Ventana del precio
-        int itemIndex = getItemIndexOnInventory(playerSlotCol, playerSlotRow);
+        int itemIndex = world.player.inventory.getSlot(world.player.inventory.playerSlotCol, world.player.inventory.playerSlotRow);
         if (itemIndex < world.player.inventory.size()) {
             x = tile * 14;
             y = tile * 5;
@@ -880,17 +880,6 @@ public class UI {
     public void addMessageToConsole(String msg) {
         console.add(msg);
         consoleCounter.add(0); // Creo que evita un IndexOutOfBoundsException
-    }
-
-    /**
-     * Obtiene el indice del item en el inventario.
-     *
-     * @param slotCol columna de ranura.
-     * @param slotRow fila de ranura.
-     * @return el indice del item en el inventario.
-     */
-    public int getItemIndexOnInventory(int slotCol, int slotRow) {
-        return slotCol + (slotRow * 5);
     }
 
     /**

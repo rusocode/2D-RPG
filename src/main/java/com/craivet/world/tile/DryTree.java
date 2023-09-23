@@ -21,7 +21,7 @@ public class DryTree extends Interactive {
     }
 
     public boolean isCorrectWeapon(Item weapon) {
-        return weapon.stats.type == Type.AXE;
+        return weapon.type == Type.AXE;
     }
 
     public Color getParticleColor() {

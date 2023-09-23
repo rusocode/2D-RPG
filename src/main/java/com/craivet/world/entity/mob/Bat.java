@@ -14,7 +14,7 @@ public class Bat extends Mob {
     public Bat(Game game, World world, int x, int y) {
         super(game, world, x, y);
         stats.name = "Bat";
-        stats.type = Type.HOSTILE;
+        type = Type.HOSTILE;
         soundHit = sound_hit_bat;
         soundDeath = sound_bat_death;
         stats.speed = stats.defaultSpeed = 3;
