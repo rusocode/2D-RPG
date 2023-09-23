@@ -432,7 +432,7 @@ public class Player extends Entity {
     public boolean canPickup(Item item) {
         Item newItem = game.itemGenerator.generate(item.stats.name);
         if (item.stackable) {
-            int itemIndex = searchItemInInventory(item.stats.name);
+            int itemIndex = inventory.search(item.stats.name); // TODO Al crear una clase Inventory se podria reemplazar el nombre a "search"
             // Si existe en el inventario, entonces solo aumenta la cantidad
             if (itemIndex != -1) {
                 inventory.get(itemIndex).amount += item.amount;
@@ -441,7 +441,7 @@ public class Player extends Entity {
             } else if (inventory.size() != MAX_INVENTORY_SIZE) {
                 inventory.add(newItem);
                 // Al agregar un nuevo item, no puede utilizar el indice del item anterior, tiene que buscar el indice a partir del nuevo item
-                inventory.get(searchItemInInventory(item.stats.name)).amount += item.amount;
+                inventory.get(inventory.search(item.stats.name)).amount += item.amount;
                 return true;
             }
         } else if (inventory.size() != MAX_INVENTORY_SIZE) {
@@ -449,18 +449,6 @@ public class Player extends Entity {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Busca el item en el inventario.
-     *
-     * @param name nombre del item.
-     * @return el indice del item o -1 si no esta.
-     */
-    private int searchItemInInventory(String name) {
-        for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i).stats.name.equals(name)) return i;
-        return -1;
     }
 
     @Override
@@ -553,24 +541,6 @@ public class Player extends Entity {
 
     public int getDefense() {
         return stats.dexterity * shield.defenseValue;
-    }
-
-    public int getCurrentWeaponSlot() {
-        for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == weapon) return i;
-        return 0; // TODO No es -1?
-    }
-
-    public int getCurrentShieldSlot() {
-        for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == shield) return i;
-        return 0;
-    }
-
-    public int getCurrentLightSlot() {
-        for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == light) return i;
-        return 0;
     }
 
     public void initSleepImage(BufferedImage image) {

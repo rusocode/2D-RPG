@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import com.craivet.Direction;
 import com.craivet.Game;
+import com.craivet.Inventory;
 import com.craivet.gfx.Animation;
 import com.craivet.gfx.Screen;
 import com.craivet.gfx.SpriteSheet;
@@ -24,7 +25,8 @@ import static com.craivet.utils.Global.*;
 /**
  * Cuando se crea un item (por ejemplo, Key) se crean todos los objetos declarados en la clase Entity (Screen, Stats,
  * Position, Flags, etc.). Algunos de estos objetos no son relevantes para el item Key, por ejemplo el objeto Flags no
- * es utilizado por Key. Por lo tanto nose si es necesario crear todos los objetos para cada entidad creada.
+ * es utilizado por Key. Por lo tanto nose si es necesario crear todos los objetos para cada entidad creada. Por lo
+ * tanto, para solucionar esto se podria crear los objetos en cada constructor de las clases hijas.
  */
 
 public abstract class Entity {
@@ -46,7 +48,7 @@ public abstract class Entity {
     public Flags flags = new Flags();
     public Timer timer = new Timer();
     public Mechanics mechanics = new Mechanics();
-    public ArrayList<Item> inventory = new ArrayList<>();
+    public Inventory inventory = new Inventory(); // TODO O formaria parte del objeto Game?
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile);
     public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;

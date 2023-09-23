@@ -98,9 +98,9 @@ public class File {
             }
 
             // Player equipment
-            data.currentWeaponSlot = world.player.getCurrentWeaponSlot();
-            data.currentShieldSlot = world.player.getCurrentShieldSlot();
-            data.currentLightSlot = world.player.getCurrentLightSlot();
+            data.currentWeaponSlot = world.player.inventory.getCurrentWeaponSlot(world.player.weapon);
+            data.currentShieldSlot = world.player.inventory.getCurrentShieldSlot(world.player.shield);
+            data.currentLightSlot = world.player.inventory.getCurrentLightSlot(world.player.light);
 
             // Items on map
             data.itemName = new String[MAPS][world.items[1].length];
@@ -183,7 +183,8 @@ public class File {
                             world.items[map][i].loot = game.itemGenerator.generate(data.loot[map][i]);
                         world.items[map][i].opened = data.opened[map][i];
                         world.items[map][i].empty = data.empty[map][i];
-                        if (world.items[map][i].opened) world.items[map][i].sheet.frame = world.items[map][i].sheet.item[1];
+                        if (world.items[map][i].opened)
+                            world.items[map][i].sheet.frame = world.items[map][i].sheet.item[1];
                     }
                 }
             }
