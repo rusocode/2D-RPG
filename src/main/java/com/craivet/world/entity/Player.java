@@ -3,10 +3,7 @@ package com.craivet.world.entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import com.craivet.Dialogue;
-import com.craivet.Direction;
-import com.craivet.Game;
-import com.craivet.Inventory;
+import com.craivet.*;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
@@ -22,14 +19,15 @@ import static com.craivet.gfx.Assets.*;
 
 // TODO No tendria que crear el objeto UI desde aca?
 // TODO No tendria que convertirse en la fomasa clase Client?
-public class Player extends Entity {
+public class Player extends Mob {
 
+    // public PlayerInventory inventory;
     private Entity auxEntity; // Variable auxiliar para obtener los atributos de la entidad actual
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
         super(game, world);
-        inventory = new Inventory(this);
+        inventory = new Inventory(game, world);
         dialogue = new Dialogue();
         setDefaultValues();
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
@@ -83,7 +81,6 @@ public class Player extends Entity {
         stats.gold = 500;
         stats.strength = 1;
         stats.dexterity = 1;
-        flags.invincible = false; // TODO Hace falta?
 
         projectile = new Fireball(game, world);
         weapon = new SwordIron(game, world);
@@ -110,7 +107,7 @@ public class Player extends Entity {
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
         currentFrame = down.getFirstFrame();
-        addItemsToInventory();
+        addItems();
     }
 
     /**
@@ -232,32 +229,6 @@ public class Player extends Entity {
         if (!game.keyboard.godMode) if (stats.hp <= 0) die();
         if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
         if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
-    }
-
-    /**
-     * Recoge un item.
-     * <p>
-     * TODO No tendria que ir en la clase Item?
-     *
-     * @param i indice del item.
-     */
-    private void pickup(int i) {
-        if (i != -1) {
-            Item item = world.items[world.map][i];
-            if (game.keyboard.p && item.type != Type.OBSTACLE) {
-                if (item.type == Type.PICKUP) item.use(this);
-                else if (canPickup(item)) game.playSound(sound_item_pickup);
-                else {
-                    game.ui.addMessageToConsole("You cannot carry any more!");
-                    return;
-                }
-                world.items[world.map][i] = null;
-            }
-            if (game.keyboard.enter && item.type == Type.OBSTACLE) {
-                attackCanceled = true;
-                item.interact();
-            }
-        }
     }
 
     /**
@@ -389,39 +360,11 @@ public class Player extends Entity {
         }
     }
 
-    /**
-     * Verifica si puede recoger el item y en caso afirmativo lo agrega al inventario.
-     *
-     * @param item item.
-     * @return true si se puede recoger el item o false.
-     */
-    public boolean canPickup(Item item) {
-        Item newItem = game.itemGenerator.generate(item.stats.name);
-        if (item.stackable) {
-            int i = inventory.search(item.stats.name);
-            // Si existe en el inventario, entonces solo aumenta la cantidad
-            if (i != -1) {
-                inventory.get(i).amount += item.amount;
-                return true;
-                // Si no existe en el inventario, lo agrega como nuevo item con su respectiva cantidad
-            } else if (inventory.size() != MAX_INVENTORY_SLOTS) {
-                inventory.add(newItem);
-                // Al agregar un nuevo item, no puede utilizar el indice del item anterior, tiene que buscar el indice a partir del nuevo item
-                inventory.get(inventory.search(item.stats.name)).amount += item.amount;
-                return true;
-            }
-        } else if (inventory.size() != MAX_INVENTORY_SLOTS) { // TODO o < MAX_INVENTORY_SLOTS
-            inventory.add(newItem);
-            return true;
-        }
-        return false;
-    }
-
     @Override
     public void checkCollision() {
         flags.colliding = false;
         if (!game.keyboard.godMode) game.collision.checkTile(this);
-        pickup(game.collision.checkItem(this));
+        inventory.pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.mobs));
         hurt(game.collision.checkEntity(this, world.mobs));
         setCurrentInteractive(game.collision.checkEntity(this, world.interactives));
@@ -522,10 +465,11 @@ public class Player extends Entity {
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
         stats.reset(fullReset);
         flags.reset();
-        if (fullReset) addItemsToInventory();
+        if (fullReset) addItems();
     }
 
-    private void addItemsToInventory() {
+
+    public void addItems() {
         inventory.clear(); // TODO Hace falta?
         inventory.add(weapon);
         inventory.add(shield);

@@ -1,17 +1,14 @@
 package com.craivet;
 
+import com.craivet.world.World;
 import com.craivet.world.entity.Player;
 import com.craivet.world.entity.Type;
-import com.craivet.world.entity.item.Axe;
-import com.craivet.world.entity.item.Item;
-import com.craivet.world.entity.item.Pickaxe;
-import com.craivet.world.entity.item.SwordIron;
+import com.craivet.world.entity.item.*;
 
 import java.util.ArrayList;
 
 import static com.craivet.gfx.Assets.*;
-import static com.craivet.gfx.Assets.pickaxe_frame;
-import static com.craivet.utils.Global.MAX_INVENTORY_SLOTS;
+import static com.craivet.utils.Global.*;
 
 /**
  * FIXME El inventario no tiene limites de items, usar 20 slots
@@ -19,16 +16,19 @@ import static com.craivet.utils.Global.MAX_INVENTORY_SLOTS;
 
 public class Inventory {
 
-    private Player player;
-    private final ArrayList<Item> inventory;
+    private Game game;
+    private World world;
+    protected ArrayList<Item> inventory;
+    // Variables que utiliza el cursor para representar su posicion en el inventario
     public int playerSlotCol, playerSlotRow, npcSlotCol, npcSlotRow;
 
     public Inventory() {
         inventory = new ArrayList<>();
     }
 
-    public Inventory(Player player) {
-        this.player = player;
+    public Inventory(Game game, World world) {
+        this.game = game;
+        this.world = world;
         inventory = new ArrayList<>();
     }
 
@@ -59,15 +59,27 @@ public class Inventory {
     }
 
     /**
-     * Obtiene el slot del item.
+     * Obtiene el indice del slot.
      *
-     * @param slotCol columna del slot.
-     * @param slotRow fila del slot.
-     * @return el slot del item.
+     * @param col columna del slot.
+     * @param row fila del slot.
+     * @return el indice del slot.
      */
-    public int getSlot(int slotCol, int slotRow) {
+    public int getSlot(int col, int row) {
         int lastColumn = 5;
-        return slotCol + (slotRow * lastColumn);
+        return col + (row * lastColumn);
+    }
+
+    /**
+     * Obtiene el indice del slot.
+     *
+     * @param item item.
+     * @return el indice del item.
+     */
+    public int getSlot(Item item) {
+        for (int i = 0; i < inventory.size(); i++)
+            if (inventory.get(i) == item) return i;
+        return 0;
     }
 
     /**
@@ -99,27 +111,57 @@ public class Inventory {
     }
 
     /**
-     * Obtiene el indice del slot del weapon actual.
+     * Recoge un item.
+     * <p>
+     * TODO No tendria que ir en la clase Item?
      *
-     * @param weapon weapon.
-     * @return el indice del slot del weapon actual o 0 si no esta.
+     * @param i indice del item.
      */
-    public int getCurrentWeaponSlot(Item weapon) {
-        for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == weapon) return i;
-        return 0; // TODO No es -1?
+    public void pickup(int i) {
+        if (i != -1) {
+            Item item = world.items[world.map][i];
+            if (game.keyboard.p && item.type != Type.OBSTACLE) {
+                if (item.type == Type.PICKUP) item.use(world.player);
+                else if (canPickup(item)) game.playSound(sound_item_pickup);
+                else {
+                    game.ui.addMessageToConsole("You cannot carry any more!");
+                    return;
+                }
+                world.items[world.map][i] = null;
+            }
+            if (game.keyboard.enter && item.type == Type.OBSTACLE) {
+                world.player.attackCanceled = true;
+                item.interact();
+            }
+        }
     }
 
-    public int getCurrentShieldSlot(Item shield) {
-        for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == shield) return i;
-        return 0;
-    }
-
-    public int getCurrentLightSlot(Item light) {
-        for (int i = 0; i < inventory.size(); i++)
-            if (inventory.get(i) == light) return i;
-        return 0;
+    /**
+     * Verifica si puede recoger el item y en caso afirmativo lo agrega al inventario.
+     *
+     * @param item item.
+     * @return true si se puede recoger el item o false.
+     */
+    public boolean canPickup(Item item) {
+        Item newItem = game.itemGenerator.generate(item.stats.name);
+        if (item.stackable) {
+            int i = search(item.stats.name);
+            // Si existe en el inventario, entonces solo aumenta la cantidad
+            if (i != -1) {
+                get(i).amount += item.amount;
+                return true;
+                // Si no existe en el inventario, lo agrega como nuevo item con su respectiva cantidad
+            } else if (size() != MAX_INVENTORY_SLOTS) {
+                add(newItem);
+                // Al agregar un nuevo item, no puede utilizar el indice del item anterior, tiene que buscar el indice a partir del nuevo item
+                get(search(item.stats.name)).amount += item.amount;
+                return true;
+            }
+        } else if (size() != MAX_INVENTORY_SLOTS) { // TODO o < MAX_INVENTORY_SLOTS
+            add(newItem);
+            return true;
+        }
+        return false;
     }
 
     /**
@@ -141,26 +183,26 @@ public class Inventory {
      */
     private void equip(Item item) {
         if (item.type == Type.AXE || item.type == Type.PICKAXE || item.type == Type.SWORD) {
-            player.weapon = player.weapon == item ? null : item; // Verifica si ya tiene equipada el weapon
-            if (player.weapon != null) {
-                player.stats.attack = player.getAttack();
-                switch (player.weapon.type) {
+            world.player.weapon = world.player.weapon == item ? null : item; // Verifica si ya tiene equipada el weapon
+            if (world.player.weapon != null) {
+                world.player.stats.attack = world.player.getAttack();
+                switch (world.player.weapon.type) {
                     case SWORD -> {
-                        player.sheet.loadWeaponFrames(sword_frame, 16, 16);
-                        player.game.playSound(sound_draw_sword);
+                        world.player.sheet.loadWeaponFrames(sword_frame, 16, 16);
+                        world.player.game.playSound(sound_draw_sword);
                     }
-                    case AXE -> player.sheet.loadWeaponFrames(axe_frame, 16, 16);
-                    case PICKAXE -> player.sheet.loadWeaponFrames(pickaxe_frame, 16, 16);
+                    case AXE -> world.player.sheet.loadWeaponFrames(axe_frame, 16, 16);
+                    case PICKAXE -> world.player.sheet.loadWeaponFrames(pickaxe_frame, 16, 16);
                 }
             }
         }
         if (item.type == Type.SHIELD) {
-            player.shield = item;
-            player.stats.defense = player.getDefense();
+            world.player.shield = item;
+            world.player.stats.defense = world.player.getDefense();
         }
         if (item.type == Type.LIGHT) {
-            player.light = player.light == item ? null : item;
-            player.lightUpdate = true;
+            world.player.light = world.player.light == item ? null : item;
+            world.player.lightUpdate = true;
         }
     }
 
@@ -171,7 +213,7 @@ public class Inventory {
      * @param i    indice del item.
      */
     private void consume(Item item, int i) {
-        if (item.use(player)) {
+        if (item.use(world.player)) {
             if (item.amount > 1) item.amount--;
             else inventory.remove(i);
         }

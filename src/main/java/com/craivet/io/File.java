@@ -98,9 +98,9 @@ public class File {
             }
 
             // Player equipment
-            data.currentWeaponSlot = world.player.inventory.getCurrentWeaponSlot(world.player.weapon);
-            data.currentShieldSlot = world.player.inventory.getCurrentShieldSlot(world.player.shield);
-            data.currentLightSlot = world.player.inventory.getCurrentLightSlot(world.player.light);
+            data.weapon = world.player.inventory.getSlot(world.player.weapon);
+            data.shield = world.player.inventory.getSlot(world.player.shield);
+            data.light = world.player.inventory.getSlot(world.player.light);
 
             // Items on map
             data.itemName = new String[MAPS][world.items[1].length];
@@ -165,9 +165,9 @@ public class File {
                 world.player.inventory.add(game.itemGenerator.generate(data.names.get(i)));
                 world.player.inventory.get(i).amount = data.amounts.get(i);
             }
-            world.player.weapon = world.player.inventory.get(data.currentWeaponSlot);
-            world.player.shield = world.player.inventory.get(data.currentShieldSlot);
-            world.player.light = world.player.inventory.get(data.currentLightSlot);
+            world.player.weapon = world.player.inventory.get(data.weapon);
+            world.player.shield = world.player.inventory.get(data.shield);
+            world.player.light = world.player.inventory.get(data.light);
             world.player.getAttack();
             world.player.getDefense();
             // world.player.frame.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);

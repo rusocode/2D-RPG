@@ -35,6 +35,10 @@ public class Mob extends Entity {
         super(game, world, col, row);
     }
 
+    public Mob(Game game, World world) {
+        super(game, world);
+    }
+
     /**
      * Moves the mob in a specified direction.
      *
@@ -112,7 +116,7 @@ public class Mob extends Entity {
      * @param distance distance in tiles.
      * @param rate     rate that determines if the mob follows the target.
      */
-    protected void checkFollow(Entity target, int distance, int rate) {
+    protected void checkFollow(Mob target, int distance, int rate) {
         if (getTileDistance(target) < distance && Utils.azar(rate) == 1) flags.following = true;
     }
 
@@ -122,7 +126,7 @@ public class Mob extends Entity {
      * @param target   target.
      * @param distance distance in tiles.
      */
-    protected void checkUnfollow(Entity target, int distance) {
+    protected void checkUnfollow(Mob target, int distance) {
         if (getTileDistance(target) > distance) flags.following = false;
     }
 
@@ -140,15 +144,15 @@ public class Mob extends Entity {
      * <p>
      * El intervalo evita que el mob cambie de direccion de manera brusca.
      *
+     * @param target   target.
      * @param interval intervalo de tiempo en ms.
      */
-    protected void moveTowardPlayer(int interval) {
-        // TODO El metodo de arriba tendria que combinarse con este y que el mob pegue cuando esten en la misma direccion
+    protected void moveTowardPlayer(Mob target, int interval) {
         if (++timer.directionCounter > interval) { // TODO o =?
             if (getXDistance(game.world.player) > getYDistance(game.world.player))
-                direction = game.world.player.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
+                direction = target.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
             else if (getXDistance(game.world.player) < getYDistance(game.world.player))
-                direction = game.world.player.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
+                direction = target.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
             timer.directionCounter = 0;
         }
     }
@@ -159,7 +163,7 @@ public class Mob extends Entity {
      * @param target target.
      * @return the distance in tiles of the target with respect to the mob.
      */
-    protected int getTileDistance(Entity target) {
+    protected int getTileDistance(Mob target) {
         return (getXDistance(target) + getYDistance(target)) / tile;
     }
 
@@ -169,7 +173,7 @@ public class Mob extends Entity {
      * @param target target.
      * @return the distance in x of the target with respect to the mob.
      */
-    private int getXDistance(Entity target) {
+    private int getXDistance(Mob target) {
         return Math.abs(getCenterX() - target.getCenterX());
     }
 
@@ -179,8 +183,27 @@ public class Mob extends Entity {
      * @param target target.
      * @return the distance in y of the target with respect to the mob.
      */
-    private int getYDistance(Entity target) {
+    private int getYDistance(Mob target) {
         return Math.abs(getCenterY() - target.getCenterY());
+    }
+
+
+    /**
+     * Obtiene la posicion central de x de la entidad.
+     *
+     * @return la posicion central de x de la entidad.
+     */
+    private int getCenterX() {
+        return pos.x + sheet.frame.getWidth() / 2;
+    }
+
+    /**
+     * Obtiene la posicion central de y de la entidad.
+     *
+     * @return la posicion central de y de la entidad.
+     */
+    private int getCenterY() {
+        return pos.y + sheet.frame.getHeight() / 2;
     }
 
 }

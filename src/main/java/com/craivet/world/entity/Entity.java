@@ -3,10 +3,7 @@ package com.craivet.world.entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import com.craivet.Dialogue;
-import com.craivet.Direction;
-import com.craivet.Game;
-import com.craivet.Inventory;
+import com.craivet.*;
 import com.craivet.gfx.Animation;
 import com.craivet.gfx.Screen;
 import com.craivet.gfx.SpriteSheet;
@@ -275,24 +272,6 @@ public abstract class Entity {
             g2.setColor(Color.red);
             g2.drawRect(screen.x + attackbox.x + hitbox.x, screen.y + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
         }
-    }
-
-    /**
-     * Obtiene la posicion central de x.
-     *
-     * @return la posicion central de x.
-     */
-    public int getCenterX() {
-        return pos.x + sheet.frame.getWidth() / 2;
-    }
-
-    /**
-     * Obtiene la posicion central de y.
-     *
-     * @return la posicion central de y.
-     */
-    public int getCenterY() {
-        return pos.y + sheet.frame.getHeight() / 2;
     }
 
 }
