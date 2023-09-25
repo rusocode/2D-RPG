@@ -110,6 +110,7 @@ public class Inventory {
         return -1;
     }
 
+    // TODO ESTE METODO VA EN EL PLAYER!
     /**
      * Recoge un item.
      * <p>
