@@ -20,7 +20,6 @@ public class Fireball extends Projectile {
         cost = 1;
         flags.alive = false;
         sheet.loadMovementFrames(fireball, 16, 16, 1);
-        sheet.frame = sheet.movement[0];
     }
 
     @Override

@@ -35,10 +35,6 @@ public class Mob extends Entity {
         super(game, world, col, row);
     }
 
-    public Mob(Game game, World world) {
-        super(game, world);
-    }
-
     /**
      * Moves the mob in a specified direction.
      *

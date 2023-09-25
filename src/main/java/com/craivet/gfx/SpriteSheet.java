@@ -49,6 +49,7 @@ public class SpriteSheet {
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
                 item[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale * tile, scale * tile);
+        frame = item[0];
     }
 
     /**
@@ -70,6 +71,8 @@ public class SpriteSheet {
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
                 movement[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale * tile, scale * tile);
+        // Almacena el primer frame de movimiento
+        frame = movement[0];
     }
 
     /**
@@ -125,6 +128,8 @@ public class SpriteSheet {
                 }
             }
         }
+
+        frame = down[0];
 
     }
 

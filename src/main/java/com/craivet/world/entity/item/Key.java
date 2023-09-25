@@ -12,8 +12,7 @@ import static com.craivet.gfx.Assets.*;
 /**
  * Para especificar la textura del item sobre el suelo con un tamaño mas chico:
  * <pre>{@code
- *  if (pos.length > 0) image = Utils.scaleImage(key, 16, 16);
- *  else image = Utils.scaleImage(key, tile, tile);
+ * sheet.frame = pos.length > 0 ? Utils.scaleImage(key, tile / 2, tile / 2) : Utils.scaleImage(key, tile, tile);
  * }</pre>
  */
 
@@ -23,9 +22,8 @@ public class Key extends Item {
 
     public Key(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        stats.name = NAME;
         type = Type.CONSUMABLE;
-        sheet.frame = Utils.scaleImage(key, tile, tile);
+        stats.name = NAME;
         description = "[" + stats.name + "]\nIt opens a door.";
         price = 100;
         this.amount = amount;
@@ -36,6 +34,7 @@ public class Key extends Item {
         hitbox.height = 32;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
+        sheet.frame = Utils.scaleImage(key, tile, tile);
     }
 
     @Override

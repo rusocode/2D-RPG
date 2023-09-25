@@ -14,13 +14,13 @@ public class Pickaxe extends Item {
 
     public Pickaxe(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        stats.name = NAME;
         type = Type.PICKAXE;
-        sheet.frame = Utils.scaleImage(pickaxe, tile, tile);
+        stats.name = NAME;
         description = "[" + stats.name + "]\nYou will big it!";
         price = 75;
         attackValue = 1;
         knockbackValue = 8;
+        sheet.frame = Utils.scaleImage(pickaxe, tile, tile);
     }
 
 }

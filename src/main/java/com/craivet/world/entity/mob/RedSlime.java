@@ -14,8 +14,8 @@ public class RedSlime extends Mob {
 
     public RedSlime(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        stats.name = "Red Slime";
         type = Type.HOSTILE;
+        stats.name = "Red Slime";
         stats.speed = stats.defaultSpeed = 2;
         stats.hp = stats.maxHp = 5;
         stats.exp = 3;
@@ -29,7 +29,6 @@ public class RedSlime extends Mob {
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
         sheet.loadMovementFrames(redslime, 16, 16, 1);
-        sheet.frame = sheet.movement[0];
     }
 
     @Override

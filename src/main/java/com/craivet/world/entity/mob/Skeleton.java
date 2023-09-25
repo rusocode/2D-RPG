@@ -13,8 +13,8 @@ public class Skeleton extends Mob {
 
     public Skeleton(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        stats.name = "Skeleton";
         type = Type.HOSTILE;
+        stats.name = "Skeleton";
         soundHit = sound_hit_mob;
         soundDeath = sound_mob_death;
         stats.speed = stats.defaultSpeed = 1;
@@ -35,9 +35,8 @@ public class Skeleton extends Mob {
         attackbox.height = 90;
         stats.motion1 = 25;
         stats.motion2 = 50;
-        sheet.loadMovementFrames(skeleton_movement, 32, 32, scale);
-        sheet.loadAttackFrames(skeleton_attack, 32, 32, scale);
-        sheet.frame = sheet.movement[0];
+        sheet.loadMovementFrames(skeleton_movement, tile, tile, scale);
+        sheet.loadAttackFrames(skeleton_attack, tile, tile, scale);
     }
 
     @Override

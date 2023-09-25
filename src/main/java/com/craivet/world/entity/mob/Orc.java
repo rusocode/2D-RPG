@@ -11,10 +11,10 @@ import static com.craivet.utils.Global.*;
 
 public class Orc extends Mob {
 
-    public Orc(Game game, World world, int x, int y) {
-        super(game, world, x, y);
-        stats.name = "Orc";
+    public Orc(Game game, World world, int col, int row) {
+        super(game, world, col, row);
         type = Type.HOSTILE;
+        stats.name = "Orc";
         soundHit = sound_hit_orc;
         soundDeath = sound_orc_death;
         stats.speed = stats.defaultSpeed = 1;
@@ -32,9 +32,8 @@ public class Orc extends Mob {
         attackbox.height = 48;
         stats.motion1 = 25;
         stats.motion2 = 30;
-        sheet.loadMovementFrames(orc_movement, 16, 16, 1);
+        sheet.loadMovementFrames(orc_movement, 16, 16, 1); // TODO No tendria que dividir el tile?
         sheet.loadAttackFrames(orc_attack, 16, 16, 1);
-        sheet.frame = sheet.movement[0];
     }
 
     @Override

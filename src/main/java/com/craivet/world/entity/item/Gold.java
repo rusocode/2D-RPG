@@ -16,10 +16,10 @@ public class Gold extends Item {
 
     public Gold(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        stats.name = NAME;
         type = Type.PICKUP;
-        sheet.frame = Utils.scaleImage(Assets.gold, tile, tile);
+        stats.name = NAME;
         value = 1;
+        sheet.frame = Utils.scaleImage(Assets.gold, tile, tile);
     }
 
     @Override

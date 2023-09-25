@@ -14,13 +14,13 @@ public class SwordIron extends Item {
 
     public SwordIron(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        stats.name = NAME;
         type = Type.SWORD;
-        sheet.frame = Utils.scaleImage(sword_iron, tile, tile);
+        stats.name = NAME;
         description = "[" + stats.name + "]\nAn old sword.";
         price = 20;
         attackValue = 1;
         knockbackValue = 2;
+        sheet.frame = Utils.scaleImage(sword_iron, tile, tile);
     }
 
 }

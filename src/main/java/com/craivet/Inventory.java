@@ -52,6 +52,7 @@ public class Inventory {
      * Obtiene el item.
      *
      * @param i indice del item.
+     * @return el item.
      */
     public Item get(int i) {
         return inventory.get(i);
@@ -65,7 +66,8 @@ public class Inventory {
      * @return el slot del item.
      */
     public int getSlot(int slotCol, int slotRow) {
-        return slotCol + (slotRow * 5);
+        int lastColumn = 5;
+        return slotCol + (slotRow * lastColumn);
     }
 
     /**
@@ -97,10 +99,10 @@ public class Inventory {
     }
 
     /**
-     * Obtiene el indice del slot en el que se encuentra el weapon.
+     * Obtiene el indice del slot del weapon actual.
      *
      * @param weapon weapon.
-     * @return el indice del slot o 0 si no esta.
+     * @return el indice del slot del weapon actual o 0 si no esta.
      */
     public int getCurrentWeaponSlot(Item weapon) {
         for (int i = 0; i < inventory.size(); i++)

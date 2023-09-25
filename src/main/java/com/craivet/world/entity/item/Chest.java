@@ -14,10 +14,9 @@ public class Chest extends Item {
 
     public Chest(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        stats.name = NAME;
+        dialogues = new String[20][20];
         type = Type.OBSTACLE;
-        sheet.loadItemFrames(chest, 16, 16, 1);
-        sheet.frame = sheet.item[0];
+        stats.name = NAME;
         solid = true;
         hitbox.x = 2;
         hitbox.y = 16;
@@ -25,6 +24,7 @@ public class Chest extends Item {
         hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
+        sheet.loadItemFrames(chest, 16, 16, 1);
     }
 
     @Override

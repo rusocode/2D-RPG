@@ -14,13 +14,13 @@ public class Axe extends Item {
 
     public Axe(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        stats.name = NAME;
         type = Type.AXE;
-        sheet.frame = Utils.scaleImage(axe, tile, tile);
+        stats.name = NAME;
         description = "[" + stats.name + "]\nA bit rusty but still \ncan cut some trees.";
         price = 75;
         attackValue = 1;
         knockbackValue = 8;
+        sheet.frame = Utils.scaleImage(axe, tile, tile);
     }
 
 }

@@ -14,9 +14,9 @@ public class DoorIron extends Item {
 
     public DoorIron(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        stats.name = NAME;
+        dialogues = new String[20][20];
         type = Type.OBSTACLE;
-        sheet.frame = Utils.scaleImage(door_iron, tile, tile);
+        stats.name = NAME;
         solid = true;
         hitbox.x = 0;
         hitbox.y = 16;
@@ -24,6 +24,7 @@ public class DoorIron extends Item {
         hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
+        sheet.frame = Utils.scaleImage(door_iron, tile, tile);
         initDialogue();
     }
 

@@ -8,9 +8,10 @@ import com.craivet.utils.Utils;
 import java.awt.*;
 
 import static com.craivet.gfx.Assets.*;
+import static com.craivet.utils.Global.*;
 
 /**
- * TODO Implementar la disminucion de la velocidad del player cuando la bola pegajosa impacte con el player.
+ * TODO Implementar la disminucion en la velocidad del player cuando la bola pegajosa impacte con el.
  */
 
 public class StickyBall extends Projectile {
@@ -18,7 +19,6 @@ public class StickyBall extends Projectile {
     public StickyBall(Game game, World world) {
         super(game, world);
         stats.name = "Sticky Ball";
-        sheet.frame = Utils.scaleImage(sticky_ball, 32, 32);
         stats.speed = 5;
         stats.hp = stats.maxHp = 120;
         stats.attack = 3;
@@ -30,6 +30,7 @@ public class StickyBall extends Projectile {
         hitbox.height = 15;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
+        sheet.frame = Utils.scaleImage(stickyball, tile, tile);
     }
 
     @Override

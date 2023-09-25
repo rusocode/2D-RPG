@@ -14,12 +14,12 @@ public class ShieldBlue extends Item {
 
 	public ShieldBlue(Game game, World world, int... pos) {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-		stats.name = NAME;
 		type = Type.SHIELD;
-		sheet.frame = Utils.scaleImage(shield_blue, tile, tile);
+		stats.name = NAME;
 		description = "[" + stats.name + "]\nA shiny blue shield.";
 		price = 250;
 		defenseValue = 2;
+		sheet.frame = Utils.scaleImage(shield_blue, tile, tile);
 	}
 
 }

@@ -29,6 +29,7 @@ public class Player extends Entity {
     public Player(Game game, World world) {
         super(game, world);
         inventory = new Inventory(this);
+        dialogues = new String[20][20];
         setDefaultValues();
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
     }
@@ -101,7 +102,6 @@ public class Player extends Entity {
 
         sheet.loadPlayerMovementFrames(player_movement, 1);
         sheet.loadWeaponFrames(sword_frame, 16, 16);
-        sheet.frame = sheet.down[0];
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, sheet.down);
@@ -525,7 +525,7 @@ public class Player extends Entity {
     }
 
     private void addItemsToInventory() {
-        inventory.clear();
+        inventory.clear(); // TODO Hace falta?
         inventory.add(weapon);
         inventory.add(shield);
         inventory.add(new Lantern(game, world));

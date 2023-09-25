@@ -10,16 +10,12 @@ import com.craivet.utils.*;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
-/**
- * El Slime usa dos frames para todos los movimientos.
- */
-
 public class Slime extends Mob {
 
-    public Slime(Game game, World world, int x, int y) {
-        super(game, world, x, y);
-        stats.name = "Slime";
+    public Slime(Game game, World world, int col, int row) {
+        super(game, world, col, row);
         type = Type.HOSTILE;
+        stats.name = "Slime";
         soundHit = sound_hit_slime;
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 4;
@@ -34,7 +30,6 @@ public class Slime extends Mob {
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
         sheet.loadMovementFrames(slime, 16, 16, 1);
-        sheet.frame = sheet.movement[0];
     }
 
     @Override

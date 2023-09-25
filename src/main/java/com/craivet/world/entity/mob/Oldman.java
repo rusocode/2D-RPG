@@ -11,8 +11,9 @@ public class Oldman extends Mob {
 
     public Oldman(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        stats.name = "Oldman";
+        dialogues = new String[20][20];
         type = Type.NPC;
+        stats.name = "Oldman";
         stats.speed = 1;
         hitbox.x = 6;
         hitbox.y = 16;
@@ -22,7 +23,6 @@ public class Oldman extends Mob {
         hitboxDefaultY = hitbox.y;
         dialogueSet = -1;
         sheet.loadMovementFrames(oldman, 16, 16, 1);
-        sheet.frame = sheet.movement[0];
         initDialogue();
     }
 

@@ -33,16 +33,9 @@ public abstract class Entity {
     public final Game game;
     public final World world;
 
-    public Animation down, up, left, right;
-    public BufferedImage currentFrame, currentSwordFrame;
-
-    public Projectile projectile;
-    public Item weapon, shield, light; // TODO Se podria mover a una clase, como PlayerInventory (como la clase de AO-Java)
-
     public Type type = Type.HOSTILE;
-    public Direction direction = Direction.DOWN;
-    public Screen screen = new Screen();
     public Stats stats = new Stats();
+    public Screen screen = new Screen();
     public Position pos = new Position();
     public SpriteSheet sheet = new SpriteSheet();
     public Flags flags = new Flags();
@@ -52,13 +45,20 @@ public abstract class Entity {
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile);
     public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
+    public Direction direction = Direction.DOWN;
+
+    public Animation down, up, left, right;
+    public BufferedImage currentFrame, currentSwordFrame;
+
+    public Item weapon, shield, light; // TODO Se podria mover a una clase, como PlayerInventory (como la clase de AO-Java)
+    public Projectile projectile;
 
     public Entity linkedEntity;
     /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
      * ataque para actualizar la posicion de la entidad mientras el frame de esta se mantiene en la misma direccion. */
     public Direction knockbackDirection;
     public int knockbackValue;
-    public String[][] dialogues = new String[20][20];
+    public String[][] dialogues;
     public int dialogueSet, dialogueIndex;
 
     public Entity(Game game, World world) {

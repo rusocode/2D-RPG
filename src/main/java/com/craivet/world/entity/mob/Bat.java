@@ -11,10 +11,10 @@ import static com.craivet.utils.Global.*;
 
 public class Bat extends Mob {
 
-    public Bat(Game game, World world, int x, int y) {
-        super(game, world, x, y);
-        stats.name = "Bat";
+    public Bat(Game game, World world, int col, int row) {
+        super(game, world, col, row);
         type = Type.HOSTILE;
+        stats.name = "Bat";
         soundHit = sound_hit_bat;
         soundDeath = sound_bat_death;
         stats.speed = stats.defaultSpeed = 3;
@@ -29,7 +29,6 @@ public class Bat extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.loadMovementFrames(bat, 16, 16, 1);
-        sheet.frame = sheet.movement[0];
     }
 
     @Override

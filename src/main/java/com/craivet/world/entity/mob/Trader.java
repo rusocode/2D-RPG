@@ -12,18 +12,19 @@ import static com.craivet.gfx.Assets.*;
 
 public class Trader extends Mob {
 
-    public Trader(Game game, World world, int x, int y) {
-        super(game, world, x, y);
+    public Trader(Game game, World world, int col, int row) {
+        super(game, world, col, row);
         inventory = new Inventory();
-        stats.name = "Trader";
+        dialogues = new String[20][20];
         type = Type.NPC;
-        sheet.frame = Utils.scaleImage(trader, tile, tile);
+        stats.name = "Trader";
         hitbox.x = 8;
         hitbox.y = 16;
         hitbox.width = (tile - hitbox.x) - 9;
         hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
+        sheet.frame = Utils.scaleImage(trader, tile, tile);
         initDialogue();
         addItemsToInventory();
     }

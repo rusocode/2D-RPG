@@ -7,26 +7,24 @@ import com.craivet.world.World;
 import static com.craivet.utils.Global.*;
 
 /**
- * Los items se renderizan en el suelo y en el inventario con la dimension de 32x32.
+ * Los items se renderizan en el suelo y en el inventario.
  */
 
 public class Item extends Entity {
 
-    private Entity entity;
-
-    protected int value;
-
     public Item loot;
+    public String description;
     public int price;
     public int amount;
     public int lightRadius = 350;
     public int attackValue, defenseValue;
     public boolean solid, stackable;
     public boolean opened, empty;
-    public String description;
 
-    public Item(Game game, World world, int x, int y) {
-        super(game, world, x, y);
+    protected int value;
+
+    public Item(Game game, World world, int col, int row) {
+        super(game, world, col, row);
     }
 
     /**
@@ -62,16 +60,15 @@ public class Item extends Entity {
      * @return el indice del item especificado a la posicion adyacente de la entidad o -1 si no existe.
      */
     protected int detect(Entity entity, Item[][] items, String name) {
-        this.entity = entity;
         // Verifica el item adyacente a la entidad
-        int nextX = getLeftHitbox();
-        int nextY = getTopHitbox();
+        int nextX = getLeftHitbox(entity);
+        int nextY = getTopHitbox(entity);
 
         switch (entity.direction) {
-            case DOWN -> nextY = getBottomHitbox() + entity.stats.speed;
-            case UP -> nextY = getTopHitbox() - entity.stats.speed;
-            case LEFT -> nextX = getLeftHitbox() - entity.stats.speed;
-            case RIGHT -> nextX = getRightHitbox() + entity.stats.speed;
+            case DOWN -> nextY = getBottomHitbox(entity) + entity.stats.speed;
+            case UP -> nextY = getTopHitbox(entity) - entity.stats.speed;
+            case LEFT -> nextX = getLeftHitbox(entity) - entity.stats.speed;
+            case RIGHT -> nextX = getRightHitbox(entity) + entity.stats.speed;
         }
 
         int row = nextY / tile;
@@ -90,36 +87,40 @@ public class Item extends Entity {
     /**
      * Obtiene la posicion superior de la hitbox.
      *
+     * @param entity entidad.
      * @return la posicion superior de la hitbox.
      */
-    private int getTopHitbox() {
+    private int getTopHitbox(Entity entity) {
         return entity.pos.y + entity.hitbox.y;
     }
 
     /**
      * Obtiene la posicion inferior de la hitbox.
      *
+     * @param entity entidad.
      * @return la posicion inferior de la hitbox.
      */
-    private int getBottomHitbox() {
+    private int getBottomHitbox(Entity entity) {
         return entity.pos.y + entity.hitbox.y + entity.hitbox.height;
     }
 
     /**
      * Obtiene la posicion izquierda de la hitbox.
      *
+     * @param entity entidad.
      * @return la posicion izquierda de la hitbox.
      */
-    private int getLeftHitbox() {
+    private int getLeftHitbox(Entity entity) {
         return entity.pos.x + entity.hitbox.x;
     }
 
     /**
      * Obtiene la posicion derecha de la hitbox.
      *
+     * @param entity entidad.
      * @return la posicion derecha de la hitbox.
      */
-    private int getRightHitbox() {
+    private int getRightHitbox(Entity entity) {
         return entity.pos.x + entity.hitbox.x + entity.hitbox.width;
     }
 

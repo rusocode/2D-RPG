@@ -96,14 +96,14 @@ public final class Assets {
     public static final SpriteSheet player_movement3 = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player 150x180.png"));
     public static final SpriteSheet player_pickaxe = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/pickaxe.png"));
     public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_mob_path + "bat.png"));
-    public static final BufferedImage bigrock = Utils.loadImage(textures_mob_path + "bigrock.png");
+    public static final BufferedImage rock = Utils.loadImage(textures_mob_path + "rock.png");
     public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage(textures_mob_path + "oldman.png"));
     public static final SpriteSheet redslime = new SpriteSheet(Utils.loadImage(textures_mob_path + "redslime.png"));
     public static final SpriteSheet slime = new SpriteSheet(Utils.loadImage(textures_mob_path + "slime.png"));
     public static final BufferedImage trader = Utils.loadImage(textures_mob_path + "trader.png");
     // Projectile
     public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage(textures_projectile_path + "fireball.png"));
-    public static final BufferedImage sticky_ball = Utils.loadImage(textures_projectile_path + "sticky_ball.png");
+    public static final BufferedImage stickyball = Utils.loadImage(textures_projectile_path + "stickyball.png");
     // Gui
     public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));
     // Interactive tiles

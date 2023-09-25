@@ -19,11 +19,11 @@ public class Rock extends Mob {
 
     public static final String NAME = "Rock";
 
-    public Rock(Game game, World world, int x, int y) {
-        super(game, world, x, y);
-        stats.name = NAME;
+    public Rock(Game game, World world, int col, int row) {
+        super(game, world, col, row);
+        dialogues = new String[20][20];
         type = Type.NPC;
-        sheet.frame = Utils.scaleImage(bigrock, tile, tile);
+        stats.name = NAME;
         stats.speed = 1;
         hitbox.x = 1;
         hitbox.y = 6;
@@ -32,6 +32,7 @@ public class Rock extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogueSet = -1;
+        sheet.frame = Utils.scaleImage(rock, tile, tile);
         initDialogue();
     }
 
