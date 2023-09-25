@@ -1,5 +1,6 @@
 package com.craivet.world.entity.mob;
 
+import com.craivet.Dialogue;
 import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.world.World;
@@ -21,7 +22,7 @@ public class Rock extends Mob {
 
     public Rock(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        dialogues = new String[20][20];
+        dialogue = new Dialogue();
         type = Type.NPC;
         stats.name = NAME;
         stats.speed = 1;
@@ -31,7 +32,7 @@ public class Rock extends Mob {
         hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        dialogueSet = -1;
+        dialogue.set = -1;
         sheet.frame = Utils.scaleImage(rock, tile, tile);
         initDialogue();
     }
@@ -59,13 +60,13 @@ public class Rock extends Mob {
 
     @Override
     public void dialogue() {
-        startDialogue(DIALOGUE_STATE, this, dialogueSet);
-        dialogueSet++;
-        if (dialogues[dialogueSet][dialogueIndex] == null) dialogueSet = 0;
+        startDialogue(DIALOGUE_STATE, this, dialogue.set);
+        dialogue.set++;
+        if ( dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
     }
 
     private void initDialogue() {
-        dialogues[0][0] = "It's a giant rock.";
+        dialogue.dialogues[0][0] = "It's a giant rock.";
     }
 
     /**

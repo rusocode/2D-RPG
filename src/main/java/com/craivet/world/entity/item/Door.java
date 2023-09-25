@@ -1,5 +1,6 @@
 package com.craivet.world.entity.item;
 
+import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
@@ -14,7 +15,7 @@ public class Door extends Item {
 
     public Door(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        dialogues = new String[20][20];
+        dialogue = new Dialogue();
         type = Type.OBSTACLE;
         stats.name = NAME;
         solid = true;
@@ -34,7 +35,7 @@ public class Door extends Item {
     }
 
     private void initDialogue() {
-        dialogues[0][0] = "You need a key to open this.";
+        dialogue.dialogues[0][0] = "You need a key to open this.";
     }
 
 }

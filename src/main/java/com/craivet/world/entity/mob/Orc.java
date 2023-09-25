@@ -15,13 +15,15 @@ public class Orc extends Mob {
         super(game, world, col, row);
         type = Type.HOSTILE;
         stats.name = "Orc";
-        soundHit = sound_hit_orc;
-        soundDeath = sound_orc_death;
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 10;
         stats.exp = 2;
         stats.attack = 8;
         stats.defense = 2;
+        stats.motion1 = 25;
+        stats.motion2 = 30;
+        soundHit = sound_hit_orc;
+        soundDeath = sound_orc_death;
         hitbox.x = 4;
         hitbox.y = 15;
         hitbox.width = tile - hitbox.x - 4;
@@ -30,8 +32,6 @@ public class Orc extends Mob {
         hitboxDefaultY = hitbox.y;
         attackbox.width = 44;
         attackbox.height = 48;
-        stats.motion1 = 25;
-        stats.motion2 = 30;
         sheet.loadMovementFrames(orc_movement, 16, 16, 1); // TODO No tendria que dividir el tile?
         sheet.loadAttackFrames(orc_attack, 16, 16, 1);
     }

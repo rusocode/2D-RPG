@@ -15,13 +15,13 @@ public class Bat extends Mob {
         super(game, world, col, row);
         type = Type.HOSTILE;
         stats.name = "Bat";
-        soundHit = sound_hit_bat;
-        soundDeath = sound_bat_death;
         stats.speed = stats.defaultSpeed = 3;
         stats.hp = stats.maxHp = 7;
         stats.exp = 7;
         stats.attack = 1;
         stats.defense = 1;
+        soundHit = sound_hit_bat;
+        soundDeath = sound_bat_death;
         hitbox.x = 0;
         hitbox.y = 0;
         hitbox.width = tile;

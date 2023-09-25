@@ -20,6 +20,7 @@ public class Stats {
     public int strength, dexterity;
     public int attack, defense;
     public int motion1, motion2;
+    public int knockbackValue;
 
     /**
      * Reinicia las estadisticas.

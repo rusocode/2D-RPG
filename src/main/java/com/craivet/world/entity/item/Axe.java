@@ -16,10 +16,10 @@ public class Axe extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         type = Type.AXE;
         stats.name = NAME;
+        stats.knockbackValue = 8;
         description = "[" + stats.name + "]\nA bit rusty but still \ncan cut some trees.";
         price = 75;
         attackValue = 1;
-        knockbackValue = 8;
         sheet.frame = Utils.scaleImage(axe, tile, tile);
     }
 

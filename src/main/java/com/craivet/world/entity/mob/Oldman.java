@@ -1,5 +1,6 @@
 package com.craivet.world.entity.mob;
 
+import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
@@ -11,7 +12,7 @@ public class Oldman extends Mob {
 
     public Oldman(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        dialogues = new String[20][20];
+        dialogue = new Dialogue();
         type = Type.NPC;
         stats.name = "Oldman";
         stats.speed = 1;
@@ -21,7 +22,7 @@ public class Oldman extends Mob {
         hitbox.height = tile - hitbox.y;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        dialogueSet = -1;
+        dialogue.set = -1;
         sheet.loadMovementFrames(oldman, 16, 16, 1);
         initDialogue();
     }
@@ -35,18 +36,18 @@ public class Oldman extends Mob {
     @Override
     public void dialogue() {
         lookPlayer();
-        startDialogue(DIALOGUE_STATE, this, dialogueSet);
-        dialogueSet++;
-        if (dialogues[dialogueSet][dialogueIndex] == null) dialogueSet = 0;
+        startDialogue(DIALOGUE_STATE, this, dialogue.set);
+        dialogue.set++;
+        if (dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
     }
 
     private void initDialogue() {
-        dialogues[0][0] = "Hola forastero!";
-        dialogues[0][1] = "Hacia el norte hay una pequenia \nlaguna con una hermosa vista...";
+        dialogue.dialogues[0][0] = "Hola forastero!";
+        dialogue.dialogues[0][1] = "Hacia el norte hay una pequenia \nlaguna con una hermosa vista...";
 
-        dialogues[1][0] = "Empiezo a creer que hay algo \nextranio en estos bosques.";
-        dialogues[1][1] = "Todo empezo a suceder desde que \nese sujeto raro llego a la isla.";
-        dialogues[1][2] = "Voy a seguir explorando, hasta \nluego viajero!";
+        dialogue.dialogues[1][0] = "Empiezo a creer que hay algo \nextranio en estos bosques.";
+        dialogue.dialogues[1][1] = "Todo empezo a suceder desde que \nese sujeto raro llego a la isla.";
+        dialogue.dialogues[1][2] = "Voy a seguir explorando, hasta \nluego viajero!";
     }
 
 }

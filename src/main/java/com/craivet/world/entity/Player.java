@@ -3,6 +3,7 @@ package com.craivet.world.entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import com.craivet.Dialogue;
 import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.Inventory;
@@ -29,7 +30,7 @@ public class Player extends Entity {
     public Player(Game game, World world) {
         super(game, world);
         inventory = new Inventory(this);
-        dialogues = new String[20][20];
+        dialogue = new Dialogue();
         setDefaultValues();
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
     }
@@ -172,7 +173,7 @@ public class Player extends Entity {
 
             // Verifica la colision con el mob usando la posicion y tamaño de la hitbox actualizada, osea con la attackbox
             int mobIndex = game.collision.checkEntity(this, world.mobs);
-            world.player.hitMob(mobIndex, this, weapon.knockbackValue, stats.attack);
+            world.player.hitMob(mobIndex, this, weapon.stats.knockbackValue, stats.attack);
 
             int interactiveIndex = game.collision.checkEntity(this, world.interactives);
             world.player.hitInteractive(interactiveIndex);
@@ -383,7 +384,7 @@ public class Player extends Entity {
             stats.attack = getAttack();
             stats.defense = getDefense();
             game.playSound(sound_level_up);
-            dialogues[0][0] = "You are level " + stats.lvl + "!";
+            dialogue.dialogues[0][0] = "You are level " + stats.lvl + "!";
             startDialogue(DIALOGUE_STATE, this, 0);
         }
     }

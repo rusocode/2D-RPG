@@ -16,12 +16,12 @@ public class Slime extends Mob {
         super(game, world, col, row);
         type = Type.HOSTILE;
         stats.name = "Slime";
-        soundHit = sound_hit_slime;
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 4;
         stats.exp = 2;
         stats.attack = 2;
         stats.defense = 1;
+        soundHit = sound_hit_slime;
         hitbox.x = 3;
         hitbox.y = 18;
         hitbox.width = tile - 7;

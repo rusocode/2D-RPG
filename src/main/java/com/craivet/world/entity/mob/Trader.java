@@ -1,5 +1,6 @@
 package com.craivet.world.entity.mob;
 
+import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.Inventory;
 import com.craivet.world.World;
@@ -15,7 +16,7 @@ public class Trader extends Mob {
     public Trader(Game game, World world, int col, int row) {
         super(game, world, col, row);
         inventory = new Inventory();
-        dialogues = new String[20][20];
+        dialogue = new Dialogue();
         type = Type.NPC;
         stats.name = "Trader";
         hitbox.x = 8;
@@ -36,7 +37,7 @@ public class Trader extends Mob {
     }
 
     private void initDialogue() {
-        dialogues[0][0] = "He he, so you found me. I have some \ngood stuff. Do you want to trade?";
+        dialogue.dialogues[0][0] = "He he, so you found me. I have some \ngood stuff. Do you want to trade?";
     }
 
     private void addItemsToInventory() {

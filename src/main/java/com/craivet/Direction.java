@@ -15,4 +15,8 @@ public enum Direction {
         else if (entity.game.keyboard.d) entity.direction = RIGHT;
     }
 
+    /* Variable temporal que almacena la direccion del atacante al momento del ataque para actualizar la posicion de la
+     * entidad mientras el frame de esta se mantiene en la misma direccion. */
+    public Direction knockbackDirection;
+
 }

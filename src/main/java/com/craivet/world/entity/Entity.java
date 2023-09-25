@@ -3,6 +3,7 @@ package com.craivet.world.entity;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
+import com.craivet.Dialogue;
 import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.Inventory;
@@ -21,19 +22,13 @@ import com.craivet.world.entity.projectile.Projectile;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
-/**
- * Cuando se crea un item (por ejemplo, Key) se crean todos los objetos declarados en la clase Entity (Screen, Stats,
- * Position, Flags, etc.). Algunos de estos objetos no son relevantes para el item Key, por ejemplo el objeto Flags no
- * es utilizado por Key. Por lo tanto nose si es necesario crear todos los objetos para cada entidad creada. Por lo
- * tanto, para solucionar esto se podria crear los objetos en cada constructor de las clases hijas.
- */
-
 public abstract class Entity {
 
     public final Game game;
     public final World world;
 
     public Type type = Type.HOSTILE;
+    public Direction direction = Direction.DOWN;
     public Stats stats = new Stats();
     public Screen screen = new Screen();
     public Position pos = new Position();
@@ -42,10 +37,10 @@ public abstract class Entity {
     public Timer timer = new Timer();
     public Mechanics mechanics = new Mechanics();
     public Inventory inventory;
+    public Dialogue dialogue;
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile);
     public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
     public int hitboxDefaultX, hitboxDefaultY;
-    public Direction direction = Direction.DOWN;
 
     public Animation down, up, left, right;
     public BufferedImage currentFrame, currentSwordFrame;
@@ -54,12 +49,6 @@ public abstract class Entity {
     public Projectile projectile;
 
     public Entity linkedEntity;
-    /* La variable knockbackDirection es una variable temporal que almacena la direccion del atacante al momento del
-     * ataque para actualizar la posicion de la entidad mientras el frame de esta se mantiene en la misma direccion. */
-    public Direction knockbackDirection;
-    public int knockbackValue;
-    public String[][] dialogues;
-    public int dialogueSet, dialogueIndex;
 
     public Entity(Game game, World world) {
         this.game = game;
@@ -76,7 +65,7 @@ public abstract class Entity {
         if (flags.knockback) {
             checkCollision();
             // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion del atacante
-            if (!flags.colliding) pos.update(this, knockbackDirection);
+            if (!flags.colliding) pos.update(this, direction.knockbackDirection);
             else mechanics.stopKnockback(this); // Si colisiona, detiene el knockback
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
         } else if (flags.hitting) hit();
@@ -133,7 +122,7 @@ public abstract class Entity {
     public void startDialogue(int state, Entity entity, int set) {
         game.state = state;
         game.ui.entity = entity;
-        dialogueSet = set;
+        dialogue.set = set;
     }
 
     public Color getParticleColor() {

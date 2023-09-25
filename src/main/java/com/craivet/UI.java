@@ -237,8 +237,8 @@ public class UI {
         int textX = x + tile;
         int textY = y + tile;
 
-        if (entity.dialogues[entity.dialogueSet][entity.dialogueIndex] != null) {
-            char[] characters = entity.dialogues[entity.dialogueSet][entity.dialogueIndex].toCharArray();
+        if (entity.dialogue.dialogues[entity.dialogue.set][entity.dialogue.index] != null) {
+            char[] characters = entity.dialogue.dialogues[entity.dialogue.set][entity.dialogue.index].toCharArray();
 
             if (charIndex < characters.length) {
                 combinedText += String.valueOf(characters[charIndex]);
@@ -251,7 +251,7 @@ public class UI {
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == DIALOGUE_STATE) {
-                    entity.dialogueIndex++;
+                    entity.dialogue.index++;
                     game.keyboard.enter = false;
                 }
             }
@@ -259,13 +259,13 @@ public class UI {
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == TRADE_STATE) {
-                    entity.dialogueIndex++;
+                    entity.dialogue.index++;
                     game.keyboard.esc = false;
                 }
             }
 
         } else { // Si la conversacion termino
-            entity.dialogueIndex = 0;
+            entity.dialogue.index = 0;
             game.state = PLAY_STATE;
         }
 

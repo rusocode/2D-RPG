@@ -34,7 +34,7 @@ public class Projectile extends Entity {
              * movimiento 2. La siguiente linea soluciona este problema. */
             flags.colliding = false;
             if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible && world.mobs[world.map][mobIndex].type != Type.NPC) {
-                world.player.hitMob(mobIndex, this, knockbackValue, stats.attack);
+                world.player.hitMob(mobIndex, this, stats.knockbackValue, stats.attack);
                 // En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
                 generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
                 flags.alive = false;

@@ -15,14 +15,15 @@ public class Skeleton extends Mob {
         super(game, world, col, row);
         type = Type.HOSTILE;
         stats.name = "Skeleton";
-        soundHit = sound_hit_mob;
-        soundDeath = sound_mob_death;
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 50;
         stats.exp = 50;
         stats.attack = 10;
         stats.defense = 2;
-
+        stats.motion1 = 25;
+        stats.motion2 = 50;
+        soundHit = sound_hit_mob;
+        soundDeath = sound_mob_death;
         int scale = 5;
         int size = tile * scale;
         hitbox.x = tile;
@@ -33,8 +34,6 @@ public class Skeleton extends Mob {
         hitboxDefaultY = hitbox.y;
         attackbox.width = 90;
         attackbox.height = 90;
-        stats.motion1 = 25;
-        stats.motion2 = 50;
         sheet.loadMovementFrames(skeleton_movement, tile, tile, scale);
         sheet.loadAttackFrames(skeleton_attack, tile, tile, scale);
     }

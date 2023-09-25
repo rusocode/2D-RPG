@@ -24,7 +24,7 @@ public class Mechanics {
      * @param knockbackValue valor de knockback.
      */
     public void setKnockback(Entity target, Entity attacker, int knockbackValue) {
-        target.knockbackDirection = attacker.direction;
+        target.direction.knockbackDirection = attacker.direction;
         target.stats.speed += knockbackValue;
         target.flags.knockback = true;
     }

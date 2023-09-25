@@ -16,10 +16,10 @@ public class Pickaxe extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         type = Type.PICKAXE;
         stats.name = NAME;
+        stats.knockbackValue = 8;
         description = "[" + stats.name + "]\nYou will big it!";
         price = 75;
         attackValue = 1;
-        knockbackValue = 8;
         sheet.frame = Utils.scaleImage(pickaxe, tile, tile);
     }
 

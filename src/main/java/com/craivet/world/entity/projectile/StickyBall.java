@@ -22,8 +22,8 @@ public class StickyBall extends Projectile {
         stats.speed = 5;
         stats.hp = stats.maxHp = 120;
         stats.attack = 3;
-        cost = 1;
         flags.alive = false;
+        cost = 1;
         hitbox.x = 8;
         hitbox.y = 8;
         hitbox.width = 15;

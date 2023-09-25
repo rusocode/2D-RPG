@@ -29,7 +29,7 @@ import static com.craivet.utils.Global.*;
  * <p>
  * A diferencia de las coordenadas del World, estas coordenadas representan la posicion en pantalla. Las variables
  * tempScreenX-tempScreenY se utilizan como coordenadas temporales para representar los frames de ataque left y up de la
- * entidad evitando modificar las coordenadas originales en pantalla. Igual creo que no son realmente necesarios, solo
+ * entidad evitando modificar las coordenadas originales en pantalla. Igual creo que no son realmente necesarias, solo
  * difiere en el renderizado de los rectangulos pero no afecta la colision.
  * <p>
  * <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html">Full-Screen Exclusive Mode</a>
