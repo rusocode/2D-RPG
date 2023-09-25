@@ -397,19 +397,19 @@ public class Player extends Entity {
     public boolean canPickup(Item item) {
         Item newItem = game.itemGenerator.generate(item.stats.name);
         if (item.stackable) {
-            int itemIndex = inventory.search(item.stats.name); // TODO Al crear una clase Inventory se podria reemplazar el nombre a "search"
+            int i = inventory.search(item.stats.name);
             // Si existe en el inventario, entonces solo aumenta la cantidad
-            if (itemIndex != -1) {
-                inventory.get(itemIndex).amount += item.amount;
+            if (i != -1) {
+                inventory.get(i).amount += item.amount;
                 return true;
                 // Si no existe en el inventario, lo agrega como nuevo item con su respectiva cantidad
-            } else if (inventory.size() != MAX_INVENTORY_SIZE) {
+            } else if (inventory.size() != MAX_INVENTORY_SLOTS) {
                 inventory.add(newItem);
                 // Al agregar un nuevo item, no puede utilizar el indice del item anterior, tiene que buscar el indice a partir del nuevo item
                 inventory.get(inventory.search(item.stats.name)).amount += item.amount;
                 return true;
             }
-        } else if (inventory.size() != MAX_INVENTORY_SIZE) {
+        } else if (inventory.size() != MAX_INVENTORY_SLOTS) { // TODO o < MAX_INVENTORY_SLOTS
             inventory.add(newItem);
             return true;
         }

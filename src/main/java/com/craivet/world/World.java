@@ -126,6 +126,7 @@ public class World {
     public void createItems() {
         int i = 0;
         items[NASHE][i++] = new Axe(game, this, 33, 7);
+        items[NASHE][i++] = new Axe(game, this, 23, 21);
         items[NASHE][i++] = new PotionRed(game, this, 5, 23, 23);
         items[NASHE][i++] = new Key(game, this, 1, 21, 21);
         items[NASHE][i++] = new Door(game, this, 14, 28);

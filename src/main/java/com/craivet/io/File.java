@@ -74,7 +74,7 @@ public class File {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(data))) {
             Data data = new Data();
 
-            // Player status
+            // Player stats
             data.map = world.map;
             data.zone = world.zone;
             data.x = world.player.pos.x;

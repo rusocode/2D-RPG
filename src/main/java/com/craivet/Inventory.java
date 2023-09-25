@@ -11,6 +11,7 @@ import java.util.ArrayList;
 
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.gfx.Assets.pickaxe_frame;
+import static com.craivet.utils.Global.MAX_INVENTORY_SLOTS;
 
 /**
  * FIXME El inventario no tiene limites de items, usar 20 slots
@@ -37,7 +38,7 @@ public class Inventory {
      * @param item item.
      */
     public void add(Item item) {
-        inventory.add(item);
+        if (inventory.size() < MAX_INVENTORY_SLOTS) inventory.add(item);
     }
 
     /**
@@ -87,7 +88,7 @@ public class Inventory {
      * Busca el item.
      *
      * @param name nombre del item.
-     * @return el indice del item; -1 si no lo encuentra.
+     * @return el indice del item o -1 si no lo encuentra.
      */
     public int search(String name) {
         for (int i = 0; i < inventory.size(); i++)
@@ -99,7 +100,7 @@ public class Inventory {
      * Obtiene el indice del slot en el que se encuentra el weapon.
      *
      * @param weapon weapon.
-     * @return el indice del slot; 0 si no esta.
+     * @return el indice del slot o 0 si no esta.
      */
     public int getCurrentWeaponSlot(Item weapon) {
         for (int i = 0; i < inventory.size(); i++)

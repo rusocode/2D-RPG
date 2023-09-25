@@ -65,7 +65,7 @@ public class UI {
         // Renderiza las ventanas dependiendo del estado del juego
         switch (game.state) {
             case MAIN_STATE -> renderMainWindow();
-            case PLAY_STATE -> renderStats();
+            case PLAY_STATE -> renderHUD();
             case DIALOGUE_STATE -> renderDialogueWindow();
             case STATS_STATE -> renderStatsWindow();
             case INVENTORY_STATE -> renderInventoryWindow(world.player, true);
@@ -80,7 +80,7 @@ public class UI {
 
     }
 
-    public void drawHpBar(Graphics2D g2, Entity entity) {
+    public void renderHpBar(Graphics2D g2, Entity entity) {
         double oneScale = (double) tile / entity.stats.maxHp;
         double hpBarValue = oneScale * entity.stats.hp;
 
@@ -178,7 +178,7 @@ public class UI {
         }
     }
 
-    private void renderStats() {
+    private void renderHUD() {
         // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
         int x = tile / 2, y = tile / 2, i = 0;
 

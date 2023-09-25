@@ -2,7 +2,6 @@ package com.craivet.world.entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 import com.craivet.Direction;
 import com.craivet.Game;
@@ -99,7 +98,7 @@ public abstract class Entity {
             screen.tempScreenY = screen.y;
 
             // Si el mob hostil tiene activada la barra de vida
-            if (type == Type.HOSTILE && flags.hpBar) game.ui.drawHpBar(g2, this);
+            if (type == Type.HOSTILE && flags.hpBar) game.ui.renderHpBar(g2, this);
             if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
