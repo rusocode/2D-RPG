@@ -4,6 +4,7 @@ import com.craivet.world.entity.Entity;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
+import com.craivet.world.entity.Player;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -44,15 +45,6 @@ public class UI {
         initHUD();
     }
 
-    private void initHUD() {
-        BufferedImage[] subimages = SpriteSheet.getIconsSubimages(icons, 16, 16);
-        heartFull = Utils.scaleImage(subimages[0], tile, tile);
-        heartHalf = Utils.scaleImage(subimages[1], tile, tile);
-        heartBlank = Utils.scaleImage(subimages[2], tile, tile);
-        manaFull = Utils.scaleImage(subimages[3], tile, tile);
-        manaBlank = Utils.scaleImage(subimages[4], tile, tile);
-    }
-
     public void render(Graphics2D g2) {
 
         this.g2 = g2;
@@ -68,7 +60,7 @@ public class UI {
             case PLAY_STATE -> renderHUD();
             case DIALOGUE_STATE -> renderDialogueWindow();
             case STATS_STATE -> renderStatsWindow();
-            case INVENTORY_STATE -> renderInventoryWindow(world.player, true);
+            case INVENTORY_STATE -> renderPlayerInventoryWindow(world.player, true);
             case OPTION_STATE -> renderOptionWindow();
             case GAME_OVER_STATE -> renderGameOverWindow();
             case TRANSITION_STATE -> renderTransitionEffect();
@@ -372,22 +364,94 @@ public class UI {
 
     }
 
-    private void renderInventoryWindow(Entity entity, boolean cursor) {
+    private void renderPlayerInventoryWindow(Player player, boolean cursor) {
         int x, y, width, height;
         int slotCol, slotRow;
 
         width = (int) (tile * 6.5);
         height = tile * 5;
-        // Dependiendo del tipo de entidad, renderiza el inventario del lado derecho (player) o izquierdo (npc)
-        if (entity == world.player) {
-            x = (int) ((WINDOW_WIDTH / 2 - width / 2) + tile * 4.5);
-            slotCol = world.player.inventory.playerSlotCol;
-            slotRow = world.player.inventory.playerSlotRow;
-        } else {
-            x = (int) ((WINDOW_WIDTH / 2 - width / 2) - tile * 4.5);
-            slotCol = world.player.inventory.npcSlotCol;
-            slotRow = world.player.inventory.npcSlotRow;
+        x = (int) ((WINDOW_WIDTH / 2 - width / 2) + tile * 4.5);
+        slotCol = world.player.inventory.playerSlotCol;
+        slotRow = world.player.inventory.playerSlotRow;
+        y = tile - 15;
+        renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
+
+        // Slots
+        final int slotXStart = x + 20, slotYStart = y + 20;
+        int slotX = slotXStart, slotY = slotYStart;
+        int gap = tile + 3;
+        changeFontSize(14);
+
+        for (int i = 0; i < player.inventory.size(); i++) {
+
+            // Marca de color amarillo el item seleccionado
+            if (player.inventory.get(i) == player.weapon || player.inventory.get(i) == player.shield || player.inventory.get(i) == player.light) {
+                g2.setColor(new Color(240, 190, 90));
+                g2.fillRect(slotX, slotY, tile, tile);
+            }
+
+            // Dibuja el item
+            g2.drawImage(player.inventory.get(i).sheet.frame, slotX, slotY, null);
+
+            // Dibuja la cantidad del item si este tiene mas de 1
+            if (player.inventory.get(i).amount > 1) {
+                int amountX, amountY;
+                String amount = String.valueOf(player.inventory.get(i).amount);
+                amountX = getXforAlignToRightText(amount, slotX + gap);
+                amountY = slotY + tile - 2;
+                g2.setColor(Color.white);
+                g2.drawString(amount, amountX, amountY);
+            }
+
+            slotX += gap;
+
+            // Salta a la siguiente fila
+            if (i == 4 || i == 9 || i == 14) {
+                slotX = slotXStart;
+                slotY += gap;
+            }
+
         }
+
+        // Cursor
+        if (cursor) {
+            int cursorX = slotXStart + (gap * slotCol);
+            int cursorY = slotYStart + (gap * slotRow);
+
+            // Dibuja el cursor
+            g2.setColor(Color.white);
+            g2.setStroke(new BasicStroke(2));
+            g2.drawRect(cursorX, cursorY, tile, tile);
+
+            // Ventana de descripcion
+            int dFrameY = y + height;
+            int dFrameHeight = tile * 4;
+
+            // Dibuja la descripcion
+            int textX = x + 20;
+            int textY = dFrameY + tile + 5;
+            int itemIndex = world.player.inventory.getSlot(slotCol, slotRow);
+            if (itemIndex < player.inventory.size()) {
+                renderSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
+                changeFontSize(14);
+                for (String line : player.inventory.get(itemIndex).description.split("\n")) {
+                    g2.drawString(line, textX, textY);
+                    textY += 32;
+                }
+            }
+        }
+
+    }
+
+    private void renderTraderInventoryWindow(Entity entity) {
+        int x, y, width, height;
+        int slotCol, slotRow;
+
+        width = (int) (tile * 6.5);
+        height = tile * 5;
+        x = (int) ((WINDOW_WIDTH / 2 - width / 2) - tile * 4.5);
+        slotCol = world.player.inventory.npcSlotCol;
+        slotRow = world.player.inventory.npcSlotRow;
         y = tile - 15;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
@@ -429,34 +493,32 @@ public class UI {
         }
 
         // Cursor
-        if (cursor) {
-            int cursorX = slotXStart + (gap * slotCol);
-            int cursorY = slotYStart + (gap * slotRow);
+        int cursorX = slotXStart + (gap * slotCol);
+        int cursorY = slotYStart + (gap * slotRow);
 
-            // Dibuja el cursor
-            g2.setColor(Color.white);
-            g2.setStroke(new BasicStroke(2));
-            g2.drawRect(cursorX, cursorY, tile, tile);
+        // Dibuja el cursor
+        g2.setColor(Color.white);
+        g2.setStroke(new BasicStroke(2));
+        g2.drawRect(cursorX, cursorY, tile, tile);
 
-            // Ventana de descripcion
-            int dFrameY = y + height;
-            int dFrameHeight = tile * 4;
+        // Ventana de descripcion
+        int dFrameY = y + height;
+        int dFrameHeight = tile * 4;
 
-            // Dibuja la descripcion
-            int textX = x + 20;
-            int textY = dFrameY + tile + 5;
-            int itemIndex = world.player.inventory.getSlot(slotCol, slotRow);
-            if (itemIndex < entity.inventory.size()) {
-                renderSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
-                changeFontSize(14);
-                for (String line : entity.inventory.get(itemIndex).description.split("\n")) {
-                    g2.drawString(line, textX, textY);
-                    textY += 32;
-                }
+        // Dibuja la descripcion
+        int textX = x + 20;
+        int textY = dFrameY + tile + 5;
+        int itemIndex = world.player.inventory.getSlot(slotCol, slotRow);
+        if (itemIndex < entity.inventory.size()) {
+            renderSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
+            changeFontSize(14);
+            for (String line : entity.inventory.get(itemIndex).description.split("\n")) {
+                g2.drawString(line, textX, textY);
+                textY += 32;
             }
         }
-
     }
+
 
     private void renderOptionWindow() {
         int width = tile * 10, height = tile * 10;
@@ -739,8 +801,9 @@ public class UI {
     private void renderTradeBuyWindow() {
         int x, y, width, height;
 
-        renderInventoryWindow(entity, true);
-        renderInventoryWindow(world.player, false); // TODO El player forma parte de una entidad, creo que se podria especificar el argumento del metodo de otra forma
+        // Dependiendo del tipo de entidad, renderiza el inventario del lado derecho (player) o izquierdo (npc)
+        renderPlayerInventoryWindow(world.player, false);
+        renderTraderInventoryWindow(entity);
 
         // Ventana del precio
         int itemIndex = world.player.inventory.getSlot(world.player.inventory.npcSlotCol, world.player.inventory.npcSlotRow);
@@ -786,7 +849,7 @@ public class UI {
     private void renderTradeSellWindow() {
         int x, y, width, height;
 
-        renderInventoryWindow(world.player, true);
+        renderPlayerInventoryWindow(world.player, true);
 
         // Ventana del precio
         int itemIndex = world.player.inventory.getSlot(world.player.inventory.playerSlotCol, world.player.inventory.playerSlotRow);
@@ -871,6 +934,15 @@ public class UI {
         g2.setColor(new Color(255, 255, 255));
         g2.setStroke(new BasicStroke(3)); // Grosor del borde
         g2.drawRoundRect(x, y, width, height, 10, 10);
+    }
+
+    private void initHUD() {
+        BufferedImage[] subimages = SpriteSheet.getIconsSubimages(icons, 16, 16);
+        heartFull = Utils.scaleImage(subimages[0], tile, tile);
+        heartHalf = Utils.scaleImage(subimages[1], tile, tile);
+        heartBlank = Utils.scaleImage(subimages[2], tile, tile);
+        manaFull = Utils.scaleImage(subimages[3], tile, tile);
+        manaBlank = Utils.scaleImage(subimages[4], tile, tile);
     }
 
     private void changeFontSize(float size) {

@@ -37,7 +37,7 @@ import static com.craivet.utils.Global.*;
 
 public class Screen extends JFrame {
 
-    public int x, y;
+    public int x, y; // TODO No podrian llamarse xOffset/yOffset?
     public int tempScreenX, tempScreenY;
 
     public Screen() {

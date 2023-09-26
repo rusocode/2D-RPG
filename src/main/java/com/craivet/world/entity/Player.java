@@ -21,13 +21,13 @@ import static com.craivet.gfx.Assets.*;
 // TODO No tendria que convertirse en la fomasa clase Client?
 public class Player extends Mob {
 
-    // public PlayerInventory inventory;
+    public PlayerInventory inventory;
     private Entity auxEntity; // Variable auxiliar para obtener los atributos de la entidad actual
     public boolean attackCanceled, lightUpdate;
 
     public Player(Game game, World world) {
         super(game, world);
-        inventory = new Inventory(game, world);
+        inventory = new PlayerInventory(game, world, this);
         dialogue = new Dialogue();
         setDefaultValues();
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
@@ -107,7 +107,7 @@ public class Player extends Mob {
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
         currentFrame = down.getFirstFrame();
-        addItems();
+        inventory.init();
     }
 
     /**
@@ -360,11 +360,35 @@ public class Player extends Mob {
         }
     }
 
+    /**
+     * Recoge un item.
+     *
+     * @param i indice del item.
+     */
+    public void pickup(int i) { // TODO Seria el metodo getObj() de la clase Client en AO-Java
+        if (i != -1) {
+            Item item = world.items[world.map][i];
+            if (game.keyboard.p && item.type != Type.OBSTACLE) {
+                if (item.type == Type.PICKUP) item.use(world.player);
+                else if (inventory.canPickup(item)) game.playSound(sound_item_pickup);
+                else {
+                    game.ui.addMessageToConsole("You cannot carry any more!");
+                    return;
+                }
+                world.items[world.map][i] = null;
+            }
+            if (game.keyboard.enter && item.type == Type.OBSTACLE) {
+                world.player.attackCanceled = true;
+                item.interact();
+            }
+        }
+    }
+
     @Override
     public void checkCollision() {
         flags.colliding = false;
         if (!game.keyboard.godMode) game.collision.checkTile(this);
-        inventory.pickup(game.collision.checkItem(this));
+        pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.mobs));
         hurt(game.collision.checkEntity(this, world.mobs));
         setCurrentInteractive(game.collision.checkEntity(this, world.interactives));
@@ -465,20 +489,7 @@ public class Player extends Mob {
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
         stats.reset(fullReset);
         flags.reset();
-        if (fullReset) addItems();
-    }
-
-
-    public void addItems() {
-        inventory.clear(); // TODO Hace falta?
-        inventory.add(weapon);
-        inventory.add(shield);
-        inventory.add(new Lantern(game, world));
-        inventory.add(new PotionRed(game, world, 2));
-        inventory.add(new Key(game, world, 2));
-        inventory.add(new Pickaxe(game, world));
-        inventory.add(new Axe(game, world));
-        inventory.add(new Tent(game, world));
+        if (fullReset) inventory.init();
     }
 
     // TODO Activar con tecla
