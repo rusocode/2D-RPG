@@ -77,11 +77,11 @@ public abstract class Entity {
 
     public void render(Graphics2D g2) {
         // TODO Se podria calcular desde un metodo
-        screen.x = (pos.x - world.player.pos.x) + world.player.screen.x;
-        screen.y = (pos.y - world.player.pos.y) + world.player.screen.y;
+        screen.xOffset = pos.x - world.player.pos.x + world.player.screen.xOffset;
+        screen.yOffset = pos.y - world.player.pos.y + world.player.screen.yOffset;
         if (isOnCamera()) {
-            screen.tempScreenX = screen.x;
-            screen.tempScreenY = screen.y;
+            screen.tempScreenX = screen.xOffset;
+            screen.tempScreenY = screen.yOffset;
 
             // Si el mob hostil tiene activada la barra de vida
             if (type == Type.HOSTILE && flags.hpBar) game.ui.renderHpBar(g2, this);
@@ -96,7 +96,7 @@ public abstract class Entity {
             if (sheet.movement != null || sheet.attack != null)
                 g2.drawImage(sheet.getCurrentAnimationFrame(this), screen.tempScreenX, screen.tempScreenY, null);
                 // Si es una imagen estatica (item, interactive tile)
-            else g2.drawImage(sheet.frame, screen.x, screen.y, null);
+            else g2.drawImage(sheet.frame, screen.xOffset, screen.yOffset, null);
 
             drawRects(g2);
 
@@ -195,13 +195,11 @@ public abstract class Entity {
 
     /**
      * Dropea un item.
-     * <p>
-     * TODO Se podria cambiar el nombre a dropObject, ya que dropea items y objetos que dejan los tiles interactivos
      *
      * @param entity entidad.
-     * @param item   item que dropea la entidad.
+     * @param item   objeto que dropea la entidad.
      */
-    protected void dropItem(Entity entity, Item item) {
+    protected void drop(Entity entity, Item item) {
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] == null) {
                 world.items[world.map][i] = item;
@@ -253,24 +251,24 @@ public abstract class Entity {
          * la esquina superior izquierda (o del centro?) es mucha con respecto a la vision del player en pantalla. Por
          * lo tanto se aumenta esa vision multiplicando el bossArea. */
         int bossArea = 5;
-        return pos.x + tile * bossArea > world.player.pos.x - world.player.screen.x &&
-                pos.x - tile < world.player.pos.x + world.player.screen.x &&
-                pos.y + tile * bossArea > world.player.pos.y - world.player.screen.y &&
-                pos.y - tile < world.player.pos.y + world.player.screen.y;
+        return pos.x + tile * bossArea > world.player.pos.x - world.player.screen.xOffset &&
+                pos.x - tile < world.player.pos.x + world.player.screen.xOffset &&
+                pos.y + tile * bossArea > world.player.pos.y - world.player.screen.yOffset &&
+                pos.y - tile < world.player.pos.y + world.player.screen.yOffset;
     }
 
     private void drawRects(Graphics2D g2) {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(screen.x, screen.y, sheet.frame.getWidth(), sheet.frame.getHeight());
+        g2.drawRect(screen.xOffset, screen.yOffset, sheet.frame.getWidth(), sheet.frame.getHeight());
         // Hitbox
         g2.setColor(Color.green);
-        g2.drawRect(screen.x + hitbox.x, screen.y + hitbox.y, hitbox.width, hitbox.height);
+        g2.drawRect(screen.xOffset + hitbox.x, screen.yOffset + hitbox.y, hitbox.width, hitbox.height);
         // Attackbox
         if (flags.hitting) {
             g2.setColor(Color.red);
-            g2.drawRect(screen.x + attackbox.x + hitbox.x, screen.y + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
+            g2.drawRect(screen.xOffset + attackbox.x + hitbox.x, screen.yOffset + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
         }
     }
 

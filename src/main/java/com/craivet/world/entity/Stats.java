@@ -1,7 +1,5 @@
 package com.craivet.world.entity;
 
-import com.craivet.Direction;
-
 /**
  * Estadisticas de los mobs y del player.
  *
@@ -22,6 +20,10 @@ public class Stats {
     public int motion1, motion2;
     public int knockbackValue;
 
+    public void subirStats() {
+
+    }
+
     /**
      * Reinicia las estadisticas.
      *
@@ -38,5 +40,7 @@ public class Stats {
             dexterity = 1;
         }
     }
+
+
 
 }

@@ -27,7 +27,7 @@ import static com.craivet.utils.Global.*;
  * los graficos se mantienen constantes). Cabe destacar que la cantidad de tiles visibles no varia, permaneciendo
  * constante independientemente de la resolucion y siendo estirados en casos de resoluciones mas altas.
  * <p>
- * A diferencia de las coordenadas del World, estas coordenadas representan la posicion en pantalla. Las variables
+ * A diferencia de las coordenadas del World, estas coordenadas representan el desplazamiento en pantalla. Las variables
  * tempScreenX-tempScreenY se utilizan como coordenadas temporales para representar los frames de ataque left y up de la
  * entidad evitando modificar las coordenadas originales en pantalla. Igual creo que no son realmente necesarias, solo
  * difiere en el renderizado de los rectangulos pero no afecta la colision.
@@ -37,7 +37,7 @@ import static com.craivet.utils.Global.*;
 
 public class Screen extends JFrame {
 
-    public int x, y; // TODO No podrian llamarse xOffset/yOffset?
+    public int xOffset, yOffset;
     public int tempScreenX, tempScreenY;
 
     public Screen() {
@@ -76,11 +76,11 @@ public class Screen extends JFrame {
     }
 
     /**
-     * Centra el player en la pantalla.
+     * Centra el player en la pantalla calculando los desplazamientos.
      */
     private void centerPlayer() {
-        x = WINDOW_WIDTH / 2 - (tile / 2);
-        y = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
+        xOffset = WINDOW_WIDTH / 2 - (tile / 2);
+        yOffset = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
     }
 
     /**

@@ -41,8 +41,8 @@ public class Lighting {
         else { // Si el player selecciono la linterna
 
             // Obtiene el centro del player
-            int centerX = world.player.screen.x + (tile / 2);
-            int centerY = world.player.screen.y + (tile / 2);
+            int centerX = world.player.screen.xOffset + (tile / 2);
+            int centerY = world.player.screen.yOffset + (tile / 2);
 
             // Crea un efecto de gradacion para el circulo de luz
             Color[] color = new Color[12];

@@ -63,7 +63,7 @@ public class Player extends Mob {
     @Override
     public void render(Graphics2D g2) {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
-        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.x, screen.y, null);
+        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
         else getCurrentItemFrame(g2);
         drawRects(g2);
         Utils.changeAlpha(g2, 1);
@@ -345,7 +345,13 @@ public class Player extends Mob {
      * Comprueba si subio de nivel.
      */
     private void checkLevelUp() {
+        if (stats.lvl == MAX_LVL) {
+            stats.exp = 0;
+            stats.nextLvlExp = 0;
+            return;
+        }
         if (stats.exp >= stats.nextLvlExp) {
+            // TODO Separar el aumento de las estadisticas en otra clase (Stats o otra)
             stats.lvl++;
             stats.exp = 0;
             stats.nextLvlExp *= 2;
@@ -411,23 +417,23 @@ public class Player extends Mob {
         switch (direction) {
             case DOWN -> {
                 currentFrame = down.getFirstFrame();
-                g2.drawImage(sheet.down[1], screen.x, screen.y, null);
-                g2.drawImage(sheet.weapon[0], screen.x, screen.y + 34, null);
+                g2.drawImage(sheet.down[1], screen.xOffset, screen.yOffset, null);
+                g2.drawImage(sheet.weapon[0], screen.xOffset, screen.yOffset + 34, null);
             }
             case UP -> {
                 currentFrame = up.getFirstFrame();
-                g2.drawImage(sheet.up[2], screen.x, screen.y, null);
-                g2.drawImage(sheet.weapon[1], screen.x + 13, screen.y + 17, null);
+                g2.drawImage(sheet.up[2], screen.xOffset, screen.yOffset, null);
+                g2.drawImage(sheet.weapon[1], screen.xOffset + 13, screen.yOffset + 17, null);
             }
             case LEFT -> {
                 currentFrame = left.getFirstFrame();
-                g2.drawImage(sheet.left[2], screen.x, screen.y, null);
-                g2.drawImage(sheet.weapon[2], screen.x - 7, screen.y + 26, null);
+                g2.drawImage(sheet.left[2], screen.xOffset, screen.yOffset, null);
+                g2.drawImage(sheet.weapon[2], screen.xOffset - 7, screen.yOffset + 26, null);
             }
             case RIGHT -> {
                 currentFrame = right.getFirstFrame();
-                g2.drawImage(sheet.right[4], screen.x, screen.y, null);
-                g2.drawImage(sheet.weapon[3], screen.x + 15, screen.y + 28, null);
+                g2.drawImage(sheet.right[4], screen.xOffset, screen.yOffset, null);
+                g2.drawImage(sheet.weapon[3], screen.xOffset + 15, screen.yOffset + 28, null);
             }
         }
     }
@@ -497,17 +503,17 @@ public class Player extends Mob {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(screen.x, screen.y, currentFrame.getWidth(), currentFrame.getHeight()); // TODO Creo que se podria reemplazar por image.getWidth()
+        g2.drawRect(screen.xOffset, screen.yOffset, currentFrame.getWidth(), currentFrame.getHeight()); // TODO Creo que se podria reemplazar por image.getWidth()
         // Hitbox
         g2.setColor(Color.green);
-        g2.drawRect(screen.x + hitbox.x, screen.y + hitbox.y, hitbox.width, hitbox.height);
+        g2.drawRect(screen.xOffset + hitbox.x, screen.yOffset + hitbox.y, hitbox.width, hitbox.height);
         // Attackbox
         if (flags.hitting) {
             g2.setColor(Color.red);
             /* Se suma la posicion de la attackbox a la posicion del player porque despues de verificar la deteccion del
              * golpe en el metodo hit, se resetea la posicio del player, por lo tanto se suma desde aca para que el
              * rectangulo dibujado coincida con la posicion especificada en el metodo hit. */
-            g2.drawRect(screen.x + attackbox.x + hitbox.x, screen.y + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
+            g2.drawRect(screen.xOffset + attackbox.x + hitbox.x, screen.yOffset + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
         }
     }
 

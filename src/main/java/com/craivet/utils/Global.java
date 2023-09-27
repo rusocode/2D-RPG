@@ -29,6 +29,7 @@ public final class Global {
 
     // Others
     public static final int MAX_INVENTORY_SLOTS = 20;
+    public static final int MAX_LVL = 50;
     public static final int SUBWINDOW_ALPHA = 210;
 
     /* Una aplicacion puede ejecutarse mucho mas rápido si las imagenes que elige mostrar comparten la misma profundidad

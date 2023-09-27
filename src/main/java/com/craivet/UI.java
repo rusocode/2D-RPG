@@ -81,10 +81,10 @@ public class UI {
         if (hpBarValue < 0) hpBarValue = 0;
 
         g2.setColor(new Color(35, 35, 35));
-        g2.fillRect(entity.screen.x - 1, entity.screen.y + tile + 4, tile + 2, 7);
+        g2.fillRect(entity.screen.xOffset - 1, entity.screen.yOffset + tile + 4, tile + 2, 7);
 
         g2.setColor(new Color(255, 0, 30));
-        g2.fillRect(entity.screen.x, entity.screen.y + tile + 5, (int) hpBarValue, 5);
+        g2.fillRect(entity.screen.xOffset, entity.screen.yOffset + tile + 5, (int) hpBarValue, 5);
 
         entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
     }

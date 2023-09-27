@@ -54,7 +54,7 @@ public class Skeleton extends Mob {
 
     @Override
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILITY_GOLD_DROP) dropItem(this, new Gold(game, world));
+        if (Utils.azar(100) <= PROBABILITY_GOLD_DROP) drop(this, new Gold(game, world));
     }
 
 
