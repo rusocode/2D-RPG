@@ -27,10 +27,10 @@ public class Keyboard extends KeyAdapter {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() < 0)
-            throw new IllegalArgumentException("keycode cannot be negative, keycode: " + e.getKeyCode());
-        if (e.getKeyCode() > maxKeycode)
-            throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
+        if (e.getKeyCode() < 0 || e.getKeyCode() > maxKeycode) {
+            System.out.println("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
+            return;
+        }
         if (lastKey != e.getKeyCode()) {
             lastKey = e.getKeyCode();
             if (game.state == MAIN_STATE) mainState(lastKey);
@@ -46,10 +46,10 @@ public class Keyboard extends KeyAdapter {
 
     @Override
     public void keyReleased(KeyEvent e) {
-        if (e.getKeyCode() < 0)
-            throw new IllegalArgumentException("keycode cannot be negative, keycode: " + e.getKeyCode());
-        if (e.getKeyCode() > maxKeycode)
-            throw new IllegalArgumentException("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
+        if (e.getKeyCode() < 0 || e.getKeyCode() > maxKeycode) {
+            System.out.println("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
+            return;
+        }
         lastKey = -1;
         int code = e.getKeyCode();
         if (code == KeyEvent.VK_W) w = false;
