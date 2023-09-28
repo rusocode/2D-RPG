@@ -1,6 +1,4 @@
-# Rara vez sucede que al navegar por el inventario del player lanza un ArrayIndexOutOfBoundsException que lo genera el
-cuadro de descripcion del item. Creo que puede ser un error de sincronizacion cuando se remueve el item del inventario
-y se muestra la descripcion del item.
-# Cuando estoy parado sobre un item (Stone) y arriba hay otro item agarrable, agarra el de arriba.
-# Se genera como un "nerviosismo" al mover la roca.
-# Al abrir un cofre y guardar el juego, luego de cerrar y cargar el juego, al abrir los siguientes cofres estan vacios.
+# Cuando el Player esta sobre un item y si hay otro item a 1 tile de distancia, agarra el otro
+# Se genera como un "nerviosismo" al mover la roca
+# Los items pueden dropear donde ya hay otro
+# Luego de abrir un cofre, guardar, cerrar y cargar el juego, sucede que los siguientes cofres a abrir se encuentran vacios

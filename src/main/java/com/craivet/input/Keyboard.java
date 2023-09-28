@@ -1,16 +1,11 @@
 package com.craivet.input;
 
 import com.craivet.Game;
-import com.craivet.world.entity.Entity;
 
 import java.awt.event.*;
 
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
-
-/**
- * TODO Se podria llamar Keyboard (Teclado)?
- */
 
 public class Keyboard extends KeyAdapter {
 
@@ -28,7 +23,7 @@ public class Keyboard extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() < 0 || e.getKeyCode() > maxKeycode) {
-            System.out.println("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
+            System.out.println("keycode cannot be greater than 255 or negative, keycode: " + e.getKeyCode());
             return;
         }
         if (lastKey != e.getKeyCode()) {
@@ -47,7 +42,7 @@ public class Keyboard extends KeyAdapter {
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() < 0 || e.getKeyCode() > maxKeycode) {
-            System.out.println("keycode cannot be greater than 255, keycode: " + e.getKeyCode());
+            System.out.println("keycode cannot be greater than 255 or negative, keycode: " + e.getKeyCode());
             return;
         }
         lastKey = -1;
