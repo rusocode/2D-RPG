@@ -1,5 +1,0 @@
-# Centrar los minimpas
-# Crear un texture atlas con todos los items
-# Puede que el paquete AI sea parte de una entidad
-# Redimensionar todos los spritesheet a 256x256 para que se comprima mejor al ser potencia de 2 (averiguar)
-# Para que el drop se tenga que ajustar al tile, el movimiento de los mobs y del player tendrian que ser speed += tile?
