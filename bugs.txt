@@ -1,4 +1,0 @@
-# Cuando el Player esta sobre un item y si hay otro item a 1 tile de distancia, agarra el otro
-# Se genera como un "nerviosismo" al mover la roca
-# Los items pueden dropear donde ya hay otro
-# Luego de abrir un cofre, guardar, cerrar y cargar el juego, sucede que los siguientes cofres a abrir se encuentran vacios
