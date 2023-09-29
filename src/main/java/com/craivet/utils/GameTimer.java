@@ -13,7 +13,7 @@ public class GameTimer {
 
     public int framesInRender;
     public boolean showFPS;
-    private int ticks = 0, framesInConsole = 0;
+    private int ticks, framesInConsole;
     private long lastUpdate, lastFrame;
     private final double nsPerUpdate, nsPerFrame;
     private double unprocessed;
@@ -31,7 +31,7 @@ public class GameTimer {
      * Verifica si ha pasado el tiempo necesario para realizar una actualizacion del juego en funcion del timestep fijo
      * de actualizacion definido.
      *
-     * @return true si se debe realizar una actualizacion del juego, o false.
+     * @return true si se debe realizar una actualizacion del juego o false.
      */
     public boolean shouldUpdate() {
         boolean shouldUpdate = false;
@@ -50,7 +50,7 @@ public class GameTimer {
      * Verifica si ha pasado el tiempo necesario para realizar una renderizacion del juego en funcion del timestep fijo
      * de renderizacion definido.
      *
-     * @return true si se debe realizar una renderizacion del juego, o false.
+     * @return true si se debe realizar una renderizacion del juego o false.
      */
     public boolean shouldRender() {
         boolean shouldRender = false;

@@ -1,7 +1,9 @@
 package com.craivet.world.entity;
 
 /**
- * Estadisticas de los mobs y del player.
+ * Estadisticas de las entidades.
+ * <p>
+ * Los atributos dependen de la raza (que todavia no esta implementado),
  *
  * @author Juan Debenedetti
  */
@@ -9,38 +11,64 @@ package com.craivet.world.entity;
 public class Stats {
 
     public String name;
+    public int lvl, exp, nextLvlExp;
     public int speed, defaultSpeed; // TODO Deberia ser float
     public int hp, maxHp;
     public int mana, maxMana;
     public int ammo;
-    public int lvl, exp, nextLvlExp = 5;
     public int gold;
     public int strength, dexterity;
     public int attack, defense;
     public int motion1, motion2;
     public int knockbackValue;
 
-    public void subirStats() {
+    /**
+     * Inicializa las estadisticas del player.
+     */
+    public void init() {
+        lvl = 1;
+        exp = 0;
+        nextLvlExp = 10;
+        speed = defaultSpeed = 2;
+        hp = maxHp = 6;
+        mana = maxMana = 4;
+        ammo = 5;
+        gold = 0;
+        strength = 1;
+        dexterity = 1;
+        motion1 = 5;
+        motion2 = 18;
+    }
 
+    /**
+     * Sube las estadisticas del player.
+     */
+    public void up() {
+        lvl++;
+        exp = 0;
+        nextLvlExp *= 2;
+        maxHp += 2;
+        strength++;
+        dexterity++;
     }
 
     /**
      * Reinicia las estadisticas.
      *
-     * @param fullReset true para reiniciar el lvl, exp, gold, strenght y dexterity; falso en caso contrario.
+     * @param fullReset true para reiniciar el lvl, exp, nextLvlExp, strenght y dexterity; falso en caso contrario.
      */
     public void reset(boolean fullReset) {
         hp = maxHp;
         mana = maxMana;
+        ammo = 5;
+        gold = 0;
         if (fullReset) {
             lvl = 1;
             exp = 0;
-            gold = 500;
+            nextLvlExp = 10;
             strength = 1;
             dexterity = 1;
         }
     }
-
-
 
 }

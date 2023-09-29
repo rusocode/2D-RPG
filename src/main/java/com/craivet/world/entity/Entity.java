@@ -42,7 +42,7 @@ public abstract class Entity {
     public Animation down, up, left, right;
     public BufferedImage currentFrame, currentSwordFrame;
 
-    public Item weapon, shield, light; // TODO Se podria mover a una clase, como PlayerInventory (como la clase de AO-Java)
+    public Item weapon, shield, light; // TODO Se podria mover a PlayerInventory?
     public Projectile projectile;
 
     public Entity linkedEntity;
@@ -98,7 +98,7 @@ public abstract class Entity {
                 // Si es una imagen estatica (item, interactive tile)
             else g2.drawImage(sheet.frame, screen.xOffset, screen.yOffset, null);
 
-            drawRects(g2);
+            // drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }
@@ -257,6 +257,9 @@ public abstract class Entity {
                 pos.y - tile < world.player.pos.y + world.player.screen.yOffset;
     }
 
+    /**
+     * Dibuja los rectangulos que representan los frames, hitbox y attackbox.
+     */
     private void drawRects(Graphics2D g2) {
         g2.setStroke(new BasicStroke(0));
         // Frame

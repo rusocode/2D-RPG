@@ -519,7 +519,6 @@ public class UI {
         }
     }
 
-
     private void renderOptionWindow() {
         int width = tile * 10, height = tile * 10;
         int x = (WINDOW_WIDTH / 2 - width / 2), y = tile;

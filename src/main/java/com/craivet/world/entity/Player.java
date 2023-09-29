@@ -17,7 +17,6 @@ import com.craivet.world.entity.item.*;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
-// TODO No tendria que crear el objeto UI desde aca?
 // TODO No tendria que convertirse en la fomasa clase Client?
 public class Player extends Mob {
 
@@ -27,17 +26,12 @@ public class Player extends Mob {
 
     public Player(Game game, World world) {
         super(game, world);
-        inventory = new PlayerInventory(game, world, this);
-        dialogue = new Dialogue();
-        setDefaultValues();
-        pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
+        init();
     }
 
-    /**
-     * Es muy importante el orden de los metodos.
-     */
     @Override
     public void update() {
+        // Es muy importante el orden de los metodos
         if (flags.hitting) hit();
         if (game.keyboard.checkKeys()) {
             direction.get(this);
@@ -65,22 +59,16 @@ public class Player extends Mob {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
         else getCurrentItemFrame(g2);
-        drawRects(g2);
+        // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
-    private void setDefaultValues() {
+    private void init() {
+        inventory = new PlayerInventory(game, world, this);
+        dialogue = new Dialogue();
+
         type = Type.PLAYER;
-        stats.speed = stats.defaultSpeed = 2;
-        stats.hp = stats.maxHp = 6;
-        stats.mana = stats.maxMana = 4;
-        stats.ammo = 5;
-        stats.lvl = 1;
-        stats.exp = 0;
-        // stats.nextLvlExp = 5; // TODO No tendria que ir en una clase Level?
-        stats.gold = 500;
-        stats.strength = 1;
-        stats.dexterity = 1;
+        stats.init();
 
         projectile = new Fireball(game, world);
         weapon = new SwordIron(game, world);
@@ -95,8 +83,6 @@ public class Player extends Mob {
         hitbox.height = 24;
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        stats.motion1 = 5;
-        stats.motion2 = 18;
 
         sheet.loadPlayerMovementFrames(player_movement, 1);
         sheet.loadWeaponFrames(sword_frame, 16, 16);
@@ -107,7 +93,10 @@ public class Player extends Mob {
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
         currentFrame = down.getFirstFrame();
+
         inventory.init();
+
+        pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
     }
 
     /**
@@ -116,7 +105,7 @@ public class Player extends Mob {
      * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
      * ataque. Despues de motion2 vuelve al frame de movimiento. Para el caso del player solo hay un frame de ataque.
      * <p>
-     * En el segundo frame de ataque, la posicion x/y se ajusta para la attackbox y verifica si colisiona con una
+     * En el segundo frame de ataque, la posicion x-y se ajusta para la attackbox y verifica si colisiona con una
      * entidad.
      */
     public void hit() {
@@ -351,13 +340,7 @@ public class Player extends Mob {
             return;
         }
         if (stats.exp >= stats.nextLvlExp) {
-            // TODO Separar el aumento de las estadisticas en otra clase (Stats o otra)
-            stats.lvl++;
-            stats.exp = 0;
-            stats.nextLvlExp *= 2;
-            stats.maxHp += 2;
-            stats.strength++;
-            stats.dexterity++;
+            stats.up();
             stats.attack = getAttack();
             stats.defense = getDefense();
             game.playSound(sound_level_up);

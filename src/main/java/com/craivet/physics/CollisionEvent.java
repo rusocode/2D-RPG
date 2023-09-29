@@ -66,11 +66,11 @@ public class CollisionEvent {
             if (checkCollision(NASHE, 23, 12, Direction.UP)) heal(entity);
             if (checkCollision(NASHE_INDOOR_01, 12, 9, Direction.UP)) dialogue(world.mobs[1][0]);
             if (checkCollision(NASHE, 10, 39, Direction.UP))
-                teleport(INDOOR, NASHE_INDOOR_01, 12, 13); // De Nix a Nix Indoor 1
+                teleport(INDOOR, NASHE_INDOOR_01, 12, 13); // De Nashe a Nashe Indoor 1
             if (checkCollision(NASHE_INDOOR_01, 12, 13, Direction.DOWN))
                 teleport(OUTSIDE, NASHE, 10, 39); // De Nix Indoor 1 a Nix
-            if (checkCollision(NASHE, 12, 9, Direction.ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nix a Dungeon 1
-            if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY)) teleport(OUTSIDE, NASHE, 12, 9); // De Dungeon 1 a Nix
+            if (checkCollision(NASHE, 12, 9, Direction.ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nashe a Dungeon 1
+            if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY)) teleport(OUTSIDE, NASHE, 12, 9); // De Dungeon 1 a Nashe
             if (checkCollision(DUNGEON_01, 8, 7, Direction.ANY))
                 teleport(DUNGEON, DUNGEON_02, 26, 41); // De Dungeon 1 a Dungeon 2
             if (checkCollision(DUNGEON_02, 26, 41, Direction.ANY))

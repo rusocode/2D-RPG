@@ -22,9 +22,9 @@ public final class Global {
      * TIP: Sincronizar la cantidad de fps con los hz del monitor para evitar un posible "tearing" o "stuttering". */
     public static final int FRAMES = 60;
     /* En caso de activar la ilimitacion de fps, el renderizado se va a realizar la mayor cantidad de veces que pueda.
-     * A diferencia de MAX_FPS, los limites para la cantidad de fps son el poder de procesamiento de la computadora, el
-     * rendimiento del juego, la cantidad de objetos que se renderizan en pantalla, el uso de la CPU, entre otros.
-     * TIP: Activa esta opcion para testear bajones de fps en diferentes areas del juego. */
+     * El limite para la cantidad de fps se rigen por el poder de procesamiento de la computadora, el rendimiento del
+     * juego, la cantidad de objetos que se renderizan en pantalla, el uso de la CPU, entre otros.
+     * TIP: Activar esta opcion para testear bajones de fps en diferentes areas del juego. */
     public static final boolean FPS_UNLIMITED = false;
 
     // Others
@@ -47,14 +47,15 @@ public final class Global {
 
     // Map settings
     public static final int MAPS = 10;
-    public static final int MAX_MAP_ROW = 50;
+    public static final int MAX_MAP_ROW = 50; // Cantidad de tiles
     public static final int MAX_MAP_COL = 50;
+    // Map list
     public static final int NASHE = 0;
     public static final int NASHE_INDOOR_01 = 1;
     public static final int DUNGEON_01 = 2;
     public static final int DUNGEON_02 = 3;
     // Zones
-    public static final int OUTSIDE = 0; // TODO Terreno o Campo
+    public static final int OUTSIDE = 0; // TODO Cambiar a TERRENO o CAMPO
     public static final int INDOOR = 1;
     public static final int DUNGEON = 2;
 
@@ -72,7 +73,7 @@ public final class Global {
     public static final int INTERVAL_MOVEMENT_ANIMATION = 15;
     public static final int INTERVAL_PROJECTILE_ANIMATION = 10;
     // Weapons interval
-    public static final int INTERVAL_WEAPON = 30; // TODO o INTERVAL_ATTACK
+    public static final int INTERVAL_WEAPON = 30; // TODO o INTERVAL_ATTACK?
     // Projectiles interval
     public static final int INTERVAL_PROJECTILE = 80;
     // Others interval
