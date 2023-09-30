@@ -57,7 +57,7 @@ public class Orc extends Mob {
     @Override
     public void checkDrop() {
         int probabilityKeyDrop = 100;
-        if (Utils.azar(100) <= probabilityKeyDrop) drop(this, new Key(game, world, 1));
+        if (Utils.random(100) <= probabilityKeyDrop) drop(this, new Key(game, world, 1));
     }
 
 }

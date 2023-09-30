@@ -75,7 +75,7 @@ public class Timer {
      */
     public void timeDirection(Entity entity, int interval) {
         if (++directionCounter >= interval) {
-            int i = Utils.azar(100);
+            int i = Utils.random(100);
             if (i <= 25) entity.direction = Direction.DOWN;
             if (i > 25 && i <= 50) entity.direction = Direction.UP;
             if (i > 50 && i <= 75) entity.direction = Direction.LEFT;

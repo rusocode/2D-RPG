@@ -39,7 +39,7 @@ public final class Assets {
     public static final URL sound_hit_mob = Utils.loadAudio(sounds_path + "hit_mob.wav");
     public static final URL sound_hit_orc = Utils.loadAudio(sounds_path + "hit_orc.wav");
     public static final URL sound_hit_slime = Utils.loadAudio(sounds_path + "hit_slime.wav");
-    public static final URL sound_level_up = Utils.loadAudio(sounds_path + "level_up.wav");
+    public static final URL sound_level_up = Utils.loadAudio(sounds_path + "level_up2.wav");
     public static final URL sound_mine = Utils.loadAudio(sounds_path + "mine.wav");
     public static final URL sound_mob_death = Utils.loadAudio(sounds_path + "mob_death.wav");
     public static final URL sound_orc_death = Utils.loadAudio(sounds_path + "orc_death2.wav");

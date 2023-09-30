@@ -81,7 +81,7 @@ public class Mob extends Entity {
      */
     protected void isPlayerWithinAttackRange(int interval, int vertical, int horizontal, int rate) {
         if (++timer.attackCounter > interval) {
-            if (getXDistance(world.player) < horizontal && getYDistance(world.player) < vertical && Utils.azar(rate) == 1) {
+            if (getXDistance(world.player) < horizontal && getYDistance(world.player) < vertical && Utils.random(rate) == 1) {
                 flags.hitting = true;
                 timer.projectileCounter = 0;
                 timer.attackCounter = 0;
@@ -117,7 +117,7 @@ public class Mob extends Entity {
      * @param rate     rate that determines if the mob follows the target.
      */
     protected void checkFollow(Mob target, int distance, int rate) {
-        if (getTileDistance(target) < distance && Utils.azar(rate) == 1) flags.following = true;
+        if (getTileDistance(target) < distance && Utils.random(rate) == 1) flags.following = true;
     }
 
     /**

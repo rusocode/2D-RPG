@@ -41,15 +41,35 @@ public class Stats {
     }
 
     /**
-     * Sube las estadisticas del player.
+     * Disminuye el hp de la entidad.
+     *
+     * @param damage daño que recibe la entidad.
      */
-    public void up() {
-        lvl++;
-        exp = 0;
-        nextLvlExp *= 2;
-        maxHp += 2;
-        strength++;
-        dexterity++;
+    public void decreaseHp(int damage) {
+        hp -= damage;
+        if (hp < 0) hp = 0;
+    }
+
+    public void increaseMaxHp(int amount) {
+        maxHp += amount;
+    }
+
+    public void increaseMaxMana(int amount) {
+        maxMana += amount;
+    }
+
+    /**
+     * Llena el hp.
+     */
+    public void fullHp() {
+        hp = maxHp;
+    }
+
+    /**
+     * Llena la mana.
+     */
+    public void fullMana() {
+        mana = maxMana;
     }
 
     /**

@@ -4,6 +4,8 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import com.craivet.*;
+import com.craivet.classes.Character;
+import com.craivet.classes.Jester;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
@@ -23,6 +25,7 @@ public class Player extends Mob {
     public PlayerInventory inventory;
     private Entity auxEntity; // Variable auxiliar para obtener los atributos de la entidad actual
     public boolean attackCanceled, lightUpdate;
+    public Character character = Jester.getInstance();
 
     public Player(Game game, World world) {
         super(game, world);
@@ -248,7 +251,7 @@ public class Player extends Mob {
             if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
                 game.playSound(sound_player_damage);
                 int damage = Math.max(mob.stats.attack - stats.defense, 1);
-                stats.hp -= damage;
+                stats.decreaseHp(damage);
                 flags.invincible = true;
             }
         }
@@ -271,7 +274,7 @@ public class Player extends Mob {
                 if (knockbackValue > 0) mechanics.setKnockback(mob, attacker, knockbackValue);
 
                 int damage = Math.max(attack - mob.stats.defense, 1);
-                mob.stats.hp -= damage;
+                mob.stats.decreaseHp(damage);
                 game.ui.addMessageToConsole(damage + " damage!");
                 if (mob.stats.hp > 0) game.playSound(mob.soundHit);
 
@@ -287,7 +290,7 @@ public class Player extends Mob {
                     game.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
                     game.ui.addMessageToConsole("Exp + " + mob.stats.exp);
                     stats.exp += mob.stats.exp;
-                    checkLevelUp();
+                    checkLevel();
                 }
             }
         }
@@ -333,17 +336,20 @@ public class Player extends Mob {
     /**
      * Comprueba si subio de nivel.
      */
-    private void checkLevelUp() {
+    private void checkLevel() {
         if (stats.lvl == MAX_LVL) {
             stats.exp = 0;
             stats.nextLvlExp = 0;
             return;
         }
-        if (stats.exp >= stats.nextLvlExp) {
-            stats.up();
+        /* Comprueba la exp con un bucle while para verificar si supero la cantida de exp para el siguiente nivel varias
+         * veces (por ejemplo, matar a un mob que de mucha exp). Por lo tanto, sube de lvl mientras la exp sea mayor a
+         * la exp del siguiente lvl. */
+        while (stats.exp >= stats.nextLvlExp) {
+            game.playSound(sound_level_up);
+            character.upStats(this);
             stats.attack = getAttack();
             stats.defense = getDefense();
-            game.playSound(sound_level_up);
             dialogue.dialogues[0][0] = "You are level " + stats.lvl + "!";
             startDialogue(DIALOGUE_STATE, this, 0);
         }

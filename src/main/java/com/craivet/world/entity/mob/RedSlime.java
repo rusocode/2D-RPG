@@ -51,11 +51,11 @@ public class RedSlime extends Mob {
 
     @Override
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILITY_GOLD_DROP) drop(this, new Gold(game, world));
+        if (Utils.random(100) <= PROBABILITY_GOLD_DROP) drop(this, new Gold(game, world));
     }
 
     private void checkShoot() {
-        if (Utils.azar(100) == 1 && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
+        if (Utils.random(100) == 1 && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
             projectile.set(pos.x + 8, pos.y + 17, direction, true, this);
             for (int i = 0; i < world.projectiles[1].length; i++) {
                 if (world.projectiles[world.map][i] == null) {

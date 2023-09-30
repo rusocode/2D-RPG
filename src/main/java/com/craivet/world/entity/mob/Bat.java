@@ -38,7 +38,7 @@ public class Bat extends Mob {
 
     @Override
     public void checkDrop() {
-        if (Utils.azar(100) <= PROBABILITY_KEY_DROP) drop(this, new Key(game, world, 1));
+        if (Utils.random(100) <= PROBABILITY_KEY_DROP) drop(this, new Key(game, world, 1));
     }
 
 }

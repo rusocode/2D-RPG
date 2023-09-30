@@ -157,7 +157,7 @@ public abstract class Entity {
      * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
      * ataque. Despues de motion2 vuelve al frame de movimiento. Para el caso del player solo hay un frame de ataque.
      * <p>
-     * En el segundo frame de ataque, la posicion x/y se ajusta para la attackbox y verifica si colisiona con una
+     * En el segundo frame de ataque, la posicion x-y se ajusta para la attackbox y verifica si colisiona con una
      * entidad.
      */
     public void hit() {
@@ -223,7 +223,7 @@ public abstract class Entity {
             game.playSound(sound_player_damage);
             // Resta la defensa del player al ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.player.stats.defense, 1);
-            world.player.stats.hp -= damage;
+            world.player.stats.decreaseHp(damage);
             world.player.flags.invincible = true;
         }
     }

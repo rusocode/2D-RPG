@@ -83,23 +83,23 @@ public final class Utils {
     }
 
     /**
-     * Devuelve un valor pseudoaleatorio entre un minimo y maximo especificado.
+     * Devuelve un valor pseudoaleatorio entre un minimo y maximo especificado, ambos incluidos.
      *
      * @param min valor minimo.
      * @param max valor maximo.
      * @return el valor pseudoaleatorio.
      */
-    public static int azar(int min, int max) {
+    public static int random(int min, int max) {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
     /**
-     * Devuelve un valor pseudoaleatorio entre 1 y el maximo especificado.
+     * Devuelve un valor pseudoaleatorio entre 1 y el maximo especificado, ambos incluidos.
      *
      * @param max valor maximo.
      * @return el valor pseudoaleatorio.
      */
-    public static int azar(int max) {
+    public static int random(int max) {
         return (int) (Math.random() * max) + 1;
     }
 
