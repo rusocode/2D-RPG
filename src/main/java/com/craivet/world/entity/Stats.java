@@ -41,12 +41,22 @@ public class Stats {
     }
 
     /**
-     * Disminuye el hp de la entidad.
+     * Incrementa el hp.
      *
-     * @param damage daño que recibe la entidad.
+     * @param amount cantidad de hp que se va a incrementar.
      */
-    public void decreaseHp(int damage) {
-        hp -= damage;
+    public void increaseHp(int amount) {
+        hp += amount;
+        if (hp > maxHp) hp = maxHp;
+    }
+
+    /**
+     * Decrementa el hp.
+     *
+     * @param amount cantidad de hp que se va a decrementar.
+     */
+    public void decreaseHp(int amount) {
+        hp -= amount;
         if (hp < 0) hp = 0;
     }
 

@@ -7,6 +7,7 @@ import com.craivet.world.World;
 import java.awt.*;
 
 import static com.craivet.gfx.Assets.*;
+import static com.craivet.utils.Global.tile;
 
 public class Fireball extends Projectile {
 
@@ -19,6 +20,7 @@ public class Fireball extends Projectile {
         stats.knockbackValue = 5;
         flags.alive = false;
         cost = 1;
+        hitbox = new Rectangle(0, 0, tile, tile);
         sheet.loadMovementFrames(fireball, 16, 16, 1);
     }
 

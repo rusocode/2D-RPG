@@ -7,6 +7,8 @@ import com.craivet.world.entity.item.Gold;
 import com.craivet.world.entity.projectile.StickyBall;
 import com.craivet.utils.*;
 
+import java.awt.*;
+
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
@@ -21,10 +23,7 @@ public class RedSlime extends Mob {
         stats.exp = 3;
         stats.attack = 3;
         stats.defense = 1;
-        hitbox.x = 3;
-        hitbox.y = 18;
-        hitbox.width = tile - hitbox.x - 4;
-        hitbox.height = tile - hitbox.y;
+        hitbox = new Rectangle(3, 18, tile - 7, tile - 18);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);

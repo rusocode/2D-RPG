@@ -6,6 +6,8 @@ import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.Gold;
 
+import java.awt.*;
+
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
@@ -26,10 +28,7 @@ public class Skeleton extends Mob {
         soundDeath = sound_mob_death;
         int scale = 5;
         int size = tile * scale;
-        hitbox.x = tile;
-        hitbox.y = tile;
-        hitbox.width = size - tile * 2;
-        hitbox.height = size - tile;
+        hitbox = new Rectangle(tile, tile, size - tile * 2, size - tile);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         attackbox.width = 90;

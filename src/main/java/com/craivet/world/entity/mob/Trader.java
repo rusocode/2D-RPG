@@ -8,6 +8,8 @@ import com.craivet.utils.*;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.*;
 
+import java.awt.*;
+
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
@@ -19,10 +21,7 @@ public class Trader extends Mob {
         dialogue = new Dialogue();
         type = Type.NPC;
         stats.name = "Trader";
-        hitbox.x = 8;
-        hitbox.y = 16;
-        hitbox.width = (tile - hitbox.x) - 9;
-        hitbox.height = tile - hitbox.y;
+        hitbox = new Rectangle(8, 16, tile - 17, tile - 16);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.frame = Utils.scaleImage(trader, tile, tile);

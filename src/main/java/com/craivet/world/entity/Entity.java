@@ -98,7 +98,7 @@ public abstract class Entity {
                 // Si es una imagen estatica (item, interactive tile)
             else g2.drawImage(sheet.frame, screen.xOffset, screen.yOffset, null);
 
-            // drawRects(g2);
+            drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }

@@ -6,6 +6,8 @@ import com.craivet.world.entity.Type;
 import com.craivet.utils.*;
 import com.craivet.world.entity.item.Key;
 
+import java.awt.*;
+
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
@@ -22,10 +24,7 @@ public class Bat extends Mob {
         stats.defense = 1;
         soundHit = sound_hit_bat;
         soundDeath = sound_bat_death;
-        hitbox.x = 0;
-        hitbox.y = 0;
-        hitbox.width = tile;
-        hitbox.height = tile;
+        hitbox = new Rectangle(0, 0, tile, tile);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.loadMovementFrames(bat, 16, 16, 1);

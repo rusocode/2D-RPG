@@ -5,6 +5,8 @@ import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 
+import java.awt.*;
+
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
@@ -16,10 +18,7 @@ public class Oldman extends Mob {
         type = Type.NPC;
         stats.name = "Oldman";
         stats.speed = 1;
-        hitbox.x = 6;
-        hitbox.y = 16;
-        hitbox.width = (tile - hitbox.x) - 4;
-        hitbox.height = tile - hitbox.y;
+        hitbox = new Rectangle(6, 16, tile - 10, tile - 16);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogue.set = -1;

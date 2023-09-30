@@ -18,6 +18,7 @@ public class DryTree extends Interactive {
         sheet.frame = Utils.scaleImage(itile_drytree, tile, tile);
         destructible = true;
         stats.hp = 1;
+        hitbox = new Rectangle(0, 0, tile, tile);
     }
 
     public boolean isCorrectWeapon(Item weapon) {

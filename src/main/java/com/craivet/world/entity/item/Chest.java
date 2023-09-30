@@ -6,6 +6,8 @@ import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
 
+import java.awt.*;
+
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
@@ -19,10 +21,7 @@ public class Chest extends Item {
         type = Type.OBSTACLE;
         stats.name = NAME;
         solid = true;
-        hitbox.x = 2;
-        hitbox.y = 16;
-        hitbox.width = tile - hitbox.x - 3;
-        hitbox.height = tile - hitbox.y;
+        hitbox = new Rectangle(2, 16, tile - 5, tile - 16);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.loadItemFrames(chest, 16, 16, 1);

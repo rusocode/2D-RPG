@@ -19,6 +19,7 @@ public class DestructibleWall extends Interactive {
         sheet.frame = Utils.scaleImage(itile_destructiblewall, tile, tile);
         destructible = true;
         stats.hp = 3;
+        hitbox = new Rectangle(0, 0, tile, tile);
     }
 
     public boolean isCorrectWeapon(Item weapon) {

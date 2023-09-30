@@ -62,7 +62,7 @@ public class Player extends Mob {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
         else getCurrentItemFrame(g2);
-        // drawRects(g2);
+        drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -80,10 +80,7 @@ public class Player extends Mob {
         stats.attack = getAttack();
         stats.defense = getDefense();
 
-        hitbox.x = 7;
-        hitbox.y = 32;
-        hitbox.width = 10;
-        hitbox.height = 24;
+        hitbox = new Rectangle(7, 32, 10, 24);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
 

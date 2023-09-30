@@ -12,6 +12,8 @@ import static com.craivet.utils.Global.*;
 
 /**
  * Representa un evento en el World. Los eventos pueden ser teletransportacion, hablar con un npc, etc.
+ * <p>
+ * TODO O podria llamarse solo Event?
  */
 
 public class CollisionEvent {
@@ -39,13 +41,8 @@ public class CollisionEvent {
     public void createEvents() {
         for (int map = 0; map < MAPS; map++) {
             for (int row = 0; row < MAX_MAP_ROW; row++) {
-                for (int col = 0; col < MAX_MAP_COL; col++) {
-                    event[map][row][col] = new Rectangle();
-                    event[map][row][col].x = 5;
-                    event[map][row][col].y = 7;
-                    event[map][row][col].width = 22;
-                    event[map][row][col].height = 18;
-                }
+                for (int col = 0; col < MAX_MAP_COL; col++)
+                    event[map][row][col] = new Rectangle(5, 7, 22, 18);
             }
         }
     }
@@ -69,8 +66,10 @@ public class CollisionEvent {
                 teleport(INDOOR, NASHE_INDOOR_01, 12, 13); // De Nashe a Nashe Indoor 1
             if (checkCollision(NASHE_INDOOR_01, 12, 13, Direction.DOWN))
                 teleport(OUTSIDE, NASHE, 10, 39); // De Nix Indoor 1 a Nix
-            if (checkCollision(NASHE, 12, 9, Direction.ANY)) teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nashe a Dungeon 1
-            if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY)) teleport(OUTSIDE, NASHE, 12, 9); // De Dungeon 1 a Nashe
+            if (checkCollision(NASHE, 12, 9, Direction.ANY))
+                teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nashe a Dungeon 1
+            if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY))
+                teleport(OUTSIDE, NASHE, 12, 9); // De Dungeon 1 a Nashe
             if (checkCollision(DUNGEON_01, 8, 7, Direction.ANY))
                 teleport(DUNGEON, DUNGEON_02, 26, 41); // De Dungeon 1 a Dungeon 2
             if (checkCollision(DUNGEON_02, 26, 41, Direction.ANY))

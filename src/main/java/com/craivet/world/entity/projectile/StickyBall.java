@@ -24,10 +24,7 @@ public class StickyBall extends Projectile {
         stats.attack = 3;
         flags.alive = false;
         cost = 1;
-        hitbox.x = 8;
-        hitbox.y = 8;
-        hitbox.width = 15;
-        hitbox.height = 15;
+        hitbox = new Rectangle(8, 8, 15, 15);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.frame = Utils.scaleImage(stickyball, tile, tile);

@@ -7,6 +7,8 @@ import com.craivet.world.entity.item.Gold;
 import com.craivet.world.entity.projectile.StickyBall;
 import com.craivet.utils.*;
 
+import java.awt.*;
+
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
@@ -22,10 +24,7 @@ public class Slime extends Mob {
         stats.attack = 2;
         stats.defense = 1;
         soundHit = sound_hit_slime;
-        hitbox.x = 3;
-        hitbox.y = 18;
-        hitbox.width = tile - 7;
-        hitbox.height = tile - hitbox.y;
+        hitbox = new Rectangle(3, 18, tile - 7, tile - 18);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);

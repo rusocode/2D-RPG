@@ -4,6 +4,8 @@ import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.utils.Utils;
 
+import java.awt.*;
+
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
@@ -15,10 +17,7 @@ public class MetalPlate extends Interactive {
         super(game, world, x, y);
         stats.name = item_name;
         sheet.frame = Utils.scaleImage(itile_metalplate, tile, tile);
-        hitbox.x = 0;
-        hitbox.y = 0;
-        hitbox.width = 0;
-        hitbox.height = 0;
+        hitbox = new Rectangle(0, 0, 0, 0);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
     }

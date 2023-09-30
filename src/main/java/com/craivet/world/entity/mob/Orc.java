@@ -6,6 +6,8 @@ import com.craivet.world.entity.Type;
 import com.craivet.utils.*;
 import com.craivet.world.entity.item.*;
 
+import java.awt.*;
+
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
@@ -24,10 +26,7 @@ public class Orc extends Mob {
         stats.motion2 = 30;
         soundHit = sound_hit_orc;
         soundDeath = sound_orc_death;
-        hitbox.x = 4;
-        hitbox.y = 15;
-        hitbox.width = tile - hitbox.x - 4;
-        hitbox.height = tile - hitbox.y;
+        hitbox = new Rectangle(4, 15, tile - 8, tile - 15);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         attackbox.width = 44;

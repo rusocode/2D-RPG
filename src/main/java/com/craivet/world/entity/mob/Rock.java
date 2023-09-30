@@ -11,6 +11,7 @@ import com.craivet.utils.*;
 import com.craivet.world.tile.Interactive;
 import com.craivet.world.tile.MetalPlate;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static com.craivet.gfx.Assets.*;
@@ -26,10 +27,7 @@ public class Rock extends Mob {
         type = Type.NPC;
         stats.name = NAME;
         stats.speed = 1;
-        hitbox.x = 1;
-        hitbox.y = 6;
-        hitbox.width = tile - hitbox.x - 1;
-        hitbox.height = tile - hitbox.y;
+        hitbox = new Rectangle(1, 6, tile - 2, tile - 6);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogue.set = -1;
