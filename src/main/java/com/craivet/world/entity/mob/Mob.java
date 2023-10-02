@@ -30,7 +30,6 @@ import static com.craivet.utils.Global.*;
 public class Mob extends Entity {
 
     public URL soundHit, soundDeath;
-    public boolean boss;
 
     public Mob(Game game, World world, int col, int row) {
         super(game, world, col, row);

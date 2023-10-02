@@ -46,6 +46,8 @@ public abstract class Entity {
     public Projectile projectile;
 
     public Entity linkedEntity;
+    // TODO Mover a Mob
+    public boolean boss;
 
     public Entity(Game game, World world) {
         this.game = game;
@@ -80,8 +82,8 @@ public abstract class Entity {
             screen.tempScreenX = getScreenX();
             screen.tempScreenY = getScreenY();
 
-            // Si el mob hostil tiene activada la barra de vida
-            // if (type == Type.HOSTILE && flags.hpBar) game.ui.renderHpBar(g2, this);
+            // Si el mob hostil que no es un boss tiene activada la barra de vida
+            if (type == Type.HOSTILE && flags.hpBar && !boss) game.ui.renderHpBar(this);
             if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;

@@ -61,7 +61,7 @@ public class UI {
             case MAIN_STATE -> renderMainWindow();
             case PLAY_STATE -> {
                 renderHUD();
-                renderHpBar();
+                renderBossHpBar();
             }
             case DIALOGUE_STATE -> renderDialogueWindow();
             case STATS_STATE -> renderStatsWindow();
@@ -208,47 +208,44 @@ public class UI {
 
     }
 
-    private void renderHpBar() {
+    public void renderHpBar(Entity mob) {
+        double oneScale = (double) tile / mob.stats.maxHp;
+        double hpBarValue = oneScale * mob.stats.hp;
+
+        /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se dibuje como
+         * valor negativo hacia la izquierda. */
+        if (hpBarValue < 0) hpBarValue = 0;
+
+        g2.setColor(new Color(35, 35, 35));
+        g2.fillRect(mob.getScreenX() - 1, mob.getScreenY() + tile + 4, tile + 2, 7);
+
+        g2.setColor(new Color(255, 0, 30));
+        g2.fillRect(mob.getScreenX(), mob.getScreenY() + tile + 5, (int) hpBarValue, 5);
+
+        mob.timer.timeHpBar(mob, INTERVAL_HP_BAR);
+    }
+
+    private void renderBossHpBar() {
         for (int i = 0; i < world.mobs[1].length; i++) {
-
             Mob mob = world.mobs[world.map][i];
+            if (mob != null && mob.isOnCamera() && mob.boss) {
+                double oneScale = (double) tile * 8 / mob.stats.maxHp;
+                double hpBarValue = oneScale * mob.stats.hp;
 
-            if (mob != null && mob.isOnCamera()) {
-                // Si el mob hostil tiene activada la barra de vida y no es un boss
-                if (mob.type == Type.HOSTILE && mob.flags.hpBar && !mob.boss) {
-                    double oneScale = (double) tile / mob.stats.maxHp;
-                    double hpBarValue = oneScale * mob.stats.hp;
+                int x = WINDOW_WIDTH / 2 - tile * 4;
+                int y = (int) (tile * 10.5);
 
-                    /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se dibuje como
-                     * valor negativo hacia la izquierda. */
-                    if (hpBarValue < 0) hpBarValue = 0;
+                if (hpBarValue < 0) hpBarValue = 0;
 
-                    g2.setColor(new Color(35, 35, 35));
-                    g2.fillRect(mob.getScreenX() - 1, mob.getScreenY() + tile + 4, tile + 2, 7);
+                g2.setColor(new Color(35, 35, 35));
+                g2.fillRect(x - 1, y - 1, tile * 8 + 2, 22);
 
-                    g2.setColor(new Color(255, 0, 30));
-                    g2.fillRect(mob.getScreenX(), mob.getScreenY() + tile + 5, (int) hpBarValue, 5);
+                g2.setColor(new Color(255, 0, 30));
+                g2.fillRect(x, y, (int) hpBarValue, 20); // TODO O 21?
 
-                    mob.timer.timeHpBar(mob, INTERVAL_HP_BAR);
-                } else if (mob.boss) {
-                    double oneScale = (double) tile * 8 / mob.stats.maxHp;
-                    double hpBarValue = oneScale * mob.stats.hp;
-
-                    int x = WINDOW_WIDTH / 2 - tile * 4;
-                    int y = (int) (tile * 10.5);
-
-                    if (hpBarValue < 0) hpBarValue = 0;
-
-                    g2.setColor(new Color(35, 35, 35));
-                    g2.fillRect(x - 1, y - 1, tile * 8 + 2, 22);
-
-                    g2.setColor(new Color(255, 0, 30));
-                    g2.fillRect(x, y, (int) hpBarValue, 20);
-
-                    changeFontSize(24);
-                    g2.setColor(Color.white);
-                    g2.drawString(mob.stats.name, x + 4, y - 10);
-                }
+                changeFontSize(24);
+                g2.setColor(Color.white);
+                g2.drawString(mob.stats.name, x + 4, y - 10);
             }
         }
     }

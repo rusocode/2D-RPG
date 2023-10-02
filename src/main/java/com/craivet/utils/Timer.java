@@ -101,9 +101,9 @@ public class Timer {
      * <p>
      * Si se completo el intervalo, desactiva la barra de vida y resetea el contador.
      */
-    public void timeHpBar(Mob mob, int interval) {
+    public void timeHpBar(Entity entity, int interval) {
         if (++hpBarCounter >= interval) {
-            mob.flags.hpBar = false;
+            entity.flags.hpBar = false;
             hpBarCounter = 0;
         }
     }
