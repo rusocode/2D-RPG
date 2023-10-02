@@ -5,6 +5,8 @@ import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Player;
+import com.craivet.world.entity.Type;
+import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -57,7 +59,10 @@ public class UI {
         // Renderiza las ventanas dependiendo del estado del juego
         switch (game.state) {
             case MAIN_STATE -> renderMainWindow();
-            case PLAY_STATE -> renderHUD();
+            case PLAY_STATE -> {
+                renderHUD();
+                renderBossHpBar();
+            }
             case DIALOGUE_STATE -> renderDialogueWindow();
             case STATS_STATE -> renderStatsWindow();
             case INVENTORY_STATE -> renderPlayerInventoryWindow(world.player, true);
@@ -70,23 +75,6 @@ public class UI {
 
         renderConsole();
 
-    }
-
-    public void renderHpBar(Graphics2D g2, Entity entity) {
-        double oneScale = (double) tile / entity.stats.maxHp;
-        double hpBarValue = oneScale * entity.stats.hp;
-
-        /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se
-         * dibuje como valor negativo hacia la izquierda. */
-        if (hpBarValue < 0) hpBarValue = 0;
-
-        g2.setColor(new Color(35, 35, 35));
-        g2.fillRect(entity.screen.xOffset - 1, entity.screen.yOffset + tile + 4, tile + 2, 7);
-
-        g2.setColor(new Color(255, 0, 30));
-        g2.fillRect(entity.screen.xOffset, entity.screen.yOffset + tile + 5, (int) hpBarValue, 5);
-
-        entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
     }
 
     private void renderMainWindow() {
@@ -171,51 +159,95 @@ public class UI {
     }
 
     private void renderHUD() {
+        int iconSize = 16;
+
         // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
-        int x = tile / 2, y = tile / 2, i = 0;
+        int x = iconSize / 2, y = iconSize / 2, i = 0;
 
         // Dibuja los corazones vacios
         while (i < world.player.stats.maxHp / 2) {
-            g2.drawImage(heartBlank, x, y, null);
+            g2.drawImage(heartBlank, x, y, iconSize, iconSize, null);
             i++;
-            x += tile;
+            x += iconSize;
         }
 
         // Resetea la posicion de x para dibujar los otros corazones (medio y lleno)
-        x = tile / 2;
+        x = iconSize / 2;
         i = 0;
 
         /* Dibuja los corazones medios y llenos (vida actual) sobre los corazones vacios de izquierda a derecha mientras
          * el player tenga vida. */
         while (i < world.player.stats.hp) {
-            g2.drawImage(heartHalf, x, y, null); // Dibuja medio corazon
+            g2.drawImage(heartHalf, x, y, iconSize, iconSize, null); // Dibuja medio corazon
             i++; // Incrementa la posicion del siguiente valor de vida
             if (i < world.player.stats.hp) { // Si todavia tiene vida, dibuja la otra parte del corazon (osea, un corazon lleno)
-                g2.drawImage(heartFull, x, y, null);
+                g2.drawImage(heartFull, x, y, iconSize, iconSize, null);
                 i++;
             }
-            x += tile;
+            x += iconSize;
         }
 
         // Dibuja la mana vacia
-        x = (tile / 2) - 4;
-        y = (int) (tile * 1.5);
+        x = (iconSize / 2) - 4;
+        y = (int) (iconSize * 1.5);
         i = 0;
         while (i < world.player.stats.maxMana) {
-            g2.drawImage(manaBlank, x, y, null);
+            g2.drawImage(manaBlank, x, y, iconSize, iconSize, null);
             i++;
-            x += (tile / 2) + 1;
+            x += (iconSize / 2) + 1;
         }
 
         // Dibuja la mana actual
-        x = (tile / 2) - 4;
+        x = (iconSize / 2) - 4;
         i = 0;
         while (i < world.player.stats.mana) {
-            g2.drawImage(manaFull, x, y, null);
+            g2.drawImage(manaFull, x, y, iconSize, iconSize, null);
             i++;
-            x += (tile / 2) + 1;
+            x += (iconSize / 2) + 1;
         }
 
+    }
+
+    public void renderHpBar(Entity mob) {
+        double oneScale = (double) tile / mob.stats.maxHp;
+        double hpBarValue = oneScale * mob.stats.hp;
+
+        /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se dibuje como
+         * valor negativo hacia la izquierda. */
+        if (hpBarValue < 0) hpBarValue = 0;
+
+        g2.setColor(new Color(35, 35, 35));
+        g2.fillRect(mob.getScreenX() - 1, mob.getScreenY() + tile + 4, tile + 2, 7);
+
+        g2.setColor(new Color(255, 0, 30));
+        g2.fillRect(mob.getScreenX(), mob.getScreenY() + tile + 5, (int) hpBarValue, 5);
+
+        mob.timer.timeHpBar(mob, INTERVAL_HP_BAR);
+    }
+
+    private void renderBossHpBar() {
+        for (int i = 0; i < world.mobs[1].length; i++) {
+            Mob mob = world.mobs[world.map][i];
+            if (mob != null && mob.isOnCamera() && mob.boss) {
+                double oneScale = (double) tile * 8 / mob.stats.maxHp;
+                double hpBarValue = oneScale * mob.stats.hp;
+
+                int x = WINDOW_WIDTH / 2 - tile * 4;
+                int y = (int) (tile * 10.5);
+
+                if (hpBarValue < 0) hpBarValue = 0;
+
+                g2.setColor(new Color(35, 35, 35));
+                g2.fillRect(x - 1, y - 1, tile * 8 + 2, 22);
+
+                g2.setColor(new Color(255, 0, 30));
+                g2.fillRect(x, y, (int) hpBarValue, 20); // TODO O 21?
+
+                changeFontSize(24);
+                g2.setColor(Color.white);
+                g2.drawString(mob.stats.name, x + 4, y - 10);
+            }
+        }
     }
 
     private void renderDialogueWindow() {
