@@ -20,7 +20,7 @@ public class Slime extends Mob {
         stats.name = "Slime";
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 4;
-        stats.exp = 2;
+        stats.exp = 5;
         stats.attack = 2;
         stats.defense = 1;
         soundHit = sound_hit_slime;

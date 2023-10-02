@@ -1,7 +1,7 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
-import com.craivet.utils.GameTimer;
+import com.craivet.utils.Loop;
 import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
 import com.craivet.io.File;
@@ -74,7 +74,7 @@ public class Game extends Canvas implements Runnable {
     public Collision collision = new Collision(world);
     public CollisionEvent event = new CollisionEvent(this, world);
     public AStar aStar = new AStar(world);
-    public GameTimer gameTimer = new GameTimer();
+    public Loop loop = new Loop();
 
     // States
     public StateManager stateManager = new StateManager();
@@ -102,9 +102,9 @@ public class Game extends Canvas implements Runnable {
     public void run() {
         init();
         while (isRunning()) {
-            if (gameTimer.shouldUpdate()) update();
-            if (gameTimer.shouldRender()) render();
-            gameTimer.timer(1000);
+            if (loop.shouldUpdate()) update();
+            if (loop.shouldRender()) render();
+            loop.timer(1000);
         }
     }
 

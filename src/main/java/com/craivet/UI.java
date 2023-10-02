@@ -464,7 +464,7 @@ public class UI {
         for (int i = 0; i < entity.inventory.size(); i++) {
 
             // Marca de color amarillo el item seleccionado
-            if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield || entity.inventory.get(i) == entity.light) {
+            if (entity.inventory.get(i) == world.player.weapon || entity.inventory.get(i) == world.player.shield || entity.inventory.get(i) == world.player.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRect(slotX, slotY, tile, tile);
             }

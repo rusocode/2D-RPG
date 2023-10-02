@@ -88,8 +88,8 @@ public class Stats {
      * @param fullReset true para reiniciar el lvl, exp, nextLvlExp, strenght y dexterity; falso en caso contrario.
      */
     public void reset(boolean fullReset) {
-        hp = maxHp;
-        mana = maxMana;
+        hp = maxHp = 6;
+        mana = maxMana = 4;
         ammo = 5;
         gold = 0;
         if (fullReset) {

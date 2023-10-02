@@ -4,12 +4,11 @@ import static com.craivet.utils.Global.*;
 
 /**
  * Temporizador del GameLoop.
- * TODO Se podria renombrar Loop
  * <p>
  * <a href="https://gameprogrammingpatterns.com/update-method.html">Update Method</a>
  */
 
-public class GameTimer {
+public class Loop {
 
     public int framesInRender;
     public boolean showFPS;
@@ -19,7 +18,7 @@ public class GameTimer {
     private double unprocessed;
     private long timer;
 
-    public GameTimer() {
+    public Loop() {
         lastUpdate = System.nanoTime();
         lastFrame = System.nanoTime();
         timer = System.currentTimeMillis();

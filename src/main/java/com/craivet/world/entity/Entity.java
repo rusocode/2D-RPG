@@ -26,23 +26,22 @@ public abstract class Entity {
 
     public Type type = Type.HOSTILE;
     public Direction direction = Direction.DOWN;
-    public Stats stats = new Stats();
-    public Screen screen = new Screen();
     public Position pos = new Position();
-    public SpriteSheet sheet = new SpriteSheet();
+    public Stats stats = new Stats();
     public Flags flags = new Flags();
+    public Screen screen = new Screen();
+    public SpriteSheet sheet = new SpriteSheet();
     public Timer timer = new Timer();
     public Mechanics mechanics = new Mechanics();
-    public Inventory inventory;
-    public Dialogue dialogue;
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile);
     public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
+    public Inventory inventory;
+    public Dialogue dialogue;
     public int hitboxDefaultX, hitboxDefaultY;
 
     public Animation down, up, left, right;
     public BufferedImage currentFrame, currentSwordFrame;
 
-    public Item weapon, shield, light; // TODO Se podria mover a PlayerInventory?
     public Projectile projectile;
 
     public Entity linkedEntity;

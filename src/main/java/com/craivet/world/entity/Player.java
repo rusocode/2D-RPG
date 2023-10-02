@@ -22,10 +22,11 @@ import static com.craivet.gfx.Assets.*;
 // TODO No tendria que convertirse en la fomasa clase Client?
 public class Player extends Mob {
 
+    public Character character = Jester.getInstance();
+    public Item weapon, shield, light;
     public PlayerInventory inventory;
     private Entity auxEntity; // Variable auxiliar para obtener los atributos de la entidad actual
     public boolean attackCanceled, lightUpdate;
-    public Character character = Jester.getInstance();
 
     public Player(Game game, World world) {
         super(game, world);
@@ -97,6 +98,102 @@ public class Player extends Mob {
         inventory.init();
 
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
+    }
+
+    /**
+     * Comprueba si puede atacar.
+     */
+    private void checkAttack() {
+        if (game.keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
+            if (weapon.type == Type.SWORD) game.playSound(sound_swing_weapon);
+            if (weapon.type != Type.SWORD) game.playSound(sound_swing_axe);
+            flags.hitting = true;
+            timer.attackCounter = 0;
+        }
+        flags.shooting = false;
+        attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
+    }
+
+    /**
+     * Comprueba si puede lanzar un proyectil.
+     */
+    private void checkShoot() {
+        if (game.keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+            flags.shooting = true;
+            game.playSound(sound_fireball);
+            projectile.set(pos.x, pos.y, direction, true, this);
+            // Comprueba vacante para agregar el proyectil
+            for (int i = 0; i < world.projectiles[1].length; i++) {
+                if (world.projectiles[world.map][i] == null) {
+                    world.projectiles[world.map][i] = projectile;
+                    break;
+                }
+            }
+            projectile.subtractResource(this);
+            timer.projectileCounter = 0;
+        }
+    }
+
+    private void checkStats() {
+        if (!game.keyboard.godMode) if (stats.hp <= 0) die();
+        if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
+        if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
+    }
+
+    /**
+     * Comprueba si subio de nivel.
+     */
+    private void checkLevel() {
+        if (stats.lvl == MAX_LVL) {
+            stats.exp = 0;
+            stats.nextLvlExp = 0;
+            return;
+        }
+        /* Comprueba la exp con un bucle while para verificar si supero la cantida de exp para el siguiente nivel varias
+         * veces (por ejemplo, matar a un mob que de mucha exp). Por lo tanto, sube de lvl mientras la exp sea mayor a
+         * la exp del siguiente lvl. */
+        while (stats.exp >= stats.nextLvlExp) {
+            game.playSound(sound_level_up);
+            character.upStats(this);
+            stats.attack = getAttack();
+            stats.defense = getDefense();
+            dialogue.dialogues[0][0] = "You are level " + stats.lvl + "!";
+            startDialogue(DIALOGUE_STATE, this, 0);
+        }
+    }
+
+    /**
+     * Interactua con el npc.
+     *
+     * @param i indice del npc.
+     */
+    private void interactNpc(int i) {
+        if (i != -1) {
+            auxEntity = world.mobs[world.map][i];
+            Mob mob = world.mobs[world.map][i];
+            if (game.keyboard.enter && mob.type == Type.NPC) {
+                attackCanceled = true;
+                mob.dialogue();
+            } else mob.move(direction); // En caso de que sea la roca
+        }
+    }
+
+    /**
+     * Daña al player si colisiona con un mob hostil.
+     *
+     * @param i indice del mob.
+     */
+    private void hurt(int i) {
+        if (i != -1) {
+            auxEntity = world.mobs[world.map][i];
+            Mob mob = world.mobs[world.map][i];
+            if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
+                game.playSound(sound_player_damage);
+                int damage = Math.max(mob.stats.attack - stats.defense, 1);
+                stats.decreaseHp(damage);
+                flags.invincible = true;
+            }
+        }
     }
 
     /**
@@ -181,80 +278,6 @@ public class Player extends Mob {
     }
 
     /**
-     * Comprueba si puede atacar.
-     */
-    private void checkAttack() {
-        if (game.keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
-            if (weapon.type == Type.SWORD) game.playSound(sound_swing_weapon);
-            if (weapon.type != Type.SWORD) game.playSound(sound_swing_axe);
-            flags.hitting = true;
-            timer.attackCounter = 0;
-        }
-        flags.shooting = false;
-        attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
-    }
-
-    /**
-     * Comprueba si puede lanzar un proyectil.
-     */
-    private void checkShoot() {
-        if (game.keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
-            flags.shooting = true;
-            game.playSound(sound_fireball);
-            projectile.set(pos.x, pos.y, direction, true, this);
-            // Comprueba vacante para agregar el proyectil
-            for (int i = 0; i < world.projectiles[1].length; i++) {
-                if (world.projectiles[world.map][i] == null) {
-                    world.projectiles[world.map][i] = projectile;
-                    break;
-                }
-            }
-            projectile.subtractResource(this);
-            timer.projectileCounter = 0;
-        }
-    }
-
-    private void checkStats() {
-        if (!game.keyboard.godMode) if (stats.hp <= 0) die();
-        if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
-        if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
-    }
-
-    /**
-     * Interactua con el npc.
-     *
-     * @param i indice del npc.
-     */
-    private void interactNpc(int i) {
-        if (i != -1) {
-            auxEntity = world.mobs[world.map][i];
-            Mob mob = world.mobs[world.map][i];
-            if (game.keyboard.enter && mob.type == Type.NPC) {
-                attackCanceled = true;
-                mob.dialogue();
-            } else mob.move(direction); // En caso de que sea la roca
-        }
-    }
-
-    /**
-     * Daña al player si colisiona con un mob hostil.
-     *
-     * @param i indice del mob.
-     */
-    private void hurt(int i) {
-        if (i != -1) {
-            auxEntity = world.mobs[world.map][i];
-            Mob mob = world.mobs[world.map][i];
-            if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
-                game.playSound(sound_player_damage);
-                int damage = Math.max(mob.stats.attack - stats.defense, 1);
-                stats.decreaseHp(damage);
-                flags.invincible = true;
-            }
-        }
-    }
-
-    /**
      * Golpea al mob.
      *
      * @param i              indice del mob.
@@ -327,28 +350,6 @@ public class Player extends Mob {
                 projectile.flags.alive = false;
                 generateParticle(projectile, projectile);
             }
-        }
-    }
-
-    /**
-     * Comprueba si subio de nivel.
-     */
-    private void checkLevel() {
-        if (stats.lvl == MAX_LVL) {
-            stats.exp = 0;
-            stats.nextLvlExp = 0;
-            return;
-        }
-        /* Comprueba la exp con un bucle while para verificar si supero la cantida de exp para el siguiente nivel varias
-         * veces (por ejemplo, matar a un mob que de mucha exp). Por lo tanto, sube de lvl mientras la exp sea mayor a
-         * la exp del siguiente lvl. */
-        while (stats.exp >= stats.nextLvlExp) {
-            game.playSound(sound_level_up);
-            character.upStats(this);
-            stats.attack = getAttack();
-            stats.defense = getDefense();
-            dialogue.dialogues[0][0] = "You are level " + stats.lvl + "!";
-            startDialogue(DIALOGUE_STATE, this, 0);
         }
     }
 

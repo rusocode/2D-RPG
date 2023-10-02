@@ -3,6 +3,7 @@ package com.craivet.world.entity.projectile;
 import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.world.entity.Entity;
+import com.craivet.world.entity.Particle;
 import com.craivet.world.entity.Player;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
@@ -62,6 +63,19 @@ public class Projectile extends Entity {
             }
             timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);
         }
+    }
+
+    /**
+     * Genera 4 particulas en el objetivo.
+     *
+     * @param generator entidad que va a generar las particulas.
+     * @param target    objetivo en donde se van a generar las particulas.
+     */
+    protected void generateParticle(Entity generator, Entity target) {
+        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
     }
 
     public boolean haveResource(Entity entity) {

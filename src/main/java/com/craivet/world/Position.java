@@ -11,9 +11,13 @@ import static com.craivet.utils.Global.tile;
  * manejo de las coordenadas. Otra cosa a tener en cuenta, es que a las coordenadas x-y se le suma la hitbox de la
  * entidad para obtener la posicion exacta del rectangulo colisionador y no del frame. Es importante aclarar que se
  * posiciona la hitbox, NO la imagen.
+ *
+ * <a href="https://github.com/AlmasB/FXGL/blob/dev/fxgl-scene/src/main/java/com/almasb/fxgl/ui/Position.java">...</a>
  */
 
 public class Position {
+
+    // TODO Agregar metodo spawn como inicial de posicion
 
     public int x, y;
 
