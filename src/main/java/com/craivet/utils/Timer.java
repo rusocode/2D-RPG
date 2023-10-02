@@ -3,6 +3,7 @@ package com.craivet.utils;
 import com.craivet.Direction;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
+import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
 
@@ -100,9 +101,9 @@ public class Timer {
      * <p>
      * Si se completo el intervalo, desactiva la barra de vida y resetea el contador.
      */
-    public void timeHpBar(Entity entity, int interval) {
+    public void timeHpBar(Mob mob, int interval) {
         if (++hpBarCounter >= interval) {
-            entity.flags.hpBar = false;
+            mob.flags.hpBar = false;
             hpBarCounter = 0;
         }
     }

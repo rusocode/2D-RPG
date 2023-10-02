@@ -16,7 +16,7 @@ public class Fireball extends Projectile {
         stats.name = "Fireball";
         stats.speed = 5;
         stats.hp = stats.maxHp = 80;
-        stats.attack = 2;
+        stats.attack = 1;
         stats.knockbackValue = 5;
         flags.alive = false;
         cost = 1;

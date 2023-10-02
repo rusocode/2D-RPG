@@ -34,7 +34,7 @@ public class Projectile extends Entity {
              * movimiento 2. La siguiente linea soluciona este problema. */
             flags.colliding = false;
             if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible && world.mobs[world.map][mobIndex].type != Type.NPC) {
-                world.player.hitMob(mobIndex, this, stats.knockbackValue, stats.attack);
+                world.player.hitMob(mobIndex, this, stats.knockbackValue, stats.attack * (entity.stats.lvl / 2));
                 // En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
                 generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
                 flags.alive = false;
@@ -64,13 +64,6 @@ public class Projectile extends Entity {
         }
     }
 
-    public boolean haveResource(Entity entity) {
-        return false;
-    }
-
-    public void subtractResource(Entity entity) {
-    }
-
     public void set(int x, int y, Direction direction, boolean alive, Entity entity) {
         pos.x = x;
         pos.y = y;
@@ -81,5 +74,11 @@ public class Projectile extends Entity {
          * necesita establecer la vida al maximo de nuevo. */
         stats.hp = stats.maxHp;
     }
+
+    public boolean haveResource(Entity entity) {
+        return false;
+    }
+
+    public void subtractResource(Entity entity) {}
 
 }

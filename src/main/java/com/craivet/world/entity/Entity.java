@@ -76,15 +76,12 @@ public abstract class Entity {
     }
 
     public void render(Graphics2D g2) {
-        // TODO Se podria calcular desde un metodo
-        screen.xOffset = pos.x - world.player.pos.x + world.player.screen.xOffset;
-        screen.yOffset = pos.y - world.player.pos.y + world.player.screen.yOffset;
         if (isOnCamera()) {
-            screen.tempScreenX = screen.xOffset;
-            screen.tempScreenY = screen.yOffset;
+            screen.tempScreenX = getScreenX();
+            screen.tempScreenY = getScreenY();
 
             // Si el mob hostil tiene activada la barra de vida
-            if (type == Type.HOSTILE && flags.hpBar) game.ui.renderHpBar(g2, this);
+            // if (type == Type.HOSTILE && flags.hpBar) game.ui.renderHpBar(g2, this);
             if (flags.invincible) {
                 // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
                 timer.hpBarCounter = 0;
@@ -96,7 +93,7 @@ public abstract class Entity {
             if (sheet.movement != null || sheet.attack != null)
                 g2.drawImage(sheet.getCurrentAnimationFrame(this), screen.tempScreenX, screen.tempScreenY, null);
                 // Si es una imagen estatica (item, interactive tile)
-            else g2.drawImage(sheet.frame, screen.xOffset, screen.yOffset, null);
+            else g2.drawImage(sheet.frame, getScreenX(), getScreenY(), null);
 
             drawRects(g2);
 
@@ -245,7 +242,7 @@ public abstract class Entity {
      *
      * @return true si la entidad esta dentro de la camara o false.
      */
-    private boolean isOnCamera() {
+    public boolean isOnCamera() {
         /* Si el render se encuentra con una entidad mas grande (por ejemplo, Skeleton) de lo normal, no lo va a
          * representar cuando el player visualice solo los pies de este, ya que la distancia del boss que comienza desde
          * la esquina superior izquierda (o del centro?) es mucha con respecto a la vision del player en pantalla. Por
@@ -257,6 +254,14 @@ public abstract class Entity {
                 pos.y - tile < world.player.pos.y + world.player.screen.yOffset;
     }
 
+    public int getScreenX() {
+        return pos.x - world.player.pos.x + world.player.screen.xOffset;
+    }
+
+    public int getScreenY() {
+        return pos.y - world.player.pos.y + world.player.screen.yOffset;
+    }
+
     /**
      * Dibuja los rectangulos que representan los frames, hitbox y attackbox.
      */
@@ -264,14 +269,14 @@ public abstract class Entity {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(screen.xOffset, screen.yOffset, sheet.frame.getWidth(), sheet.frame.getHeight());
+        g2.drawRect(getScreenX(), getScreenY(), sheet.frame.getWidth(), sheet.frame.getHeight());
         // Hitbox
         g2.setColor(Color.green);
-        g2.drawRect(screen.xOffset + hitbox.x, screen.yOffset + hitbox.y, hitbox.width, hitbox.height);
+        g2.drawRect(getScreenX() + hitbox.x, getScreenY() + hitbox.y, hitbox.width, hitbox.height);
         // Attackbox
         if (flags.hitting) {
             g2.setColor(Color.red);
-            g2.drawRect(screen.xOffset + attackbox.x + hitbox.x, screen.yOffset + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
+            g2.drawRect(getScreenX() + attackbox.x + hitbox.x, getScreenY() + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
         }
     }
 

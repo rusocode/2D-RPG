@@ -26,6 +26,7 @@ public class Skeleton extends Mob {
         stats.motion2 = 50;
         soundHit = sound_hit_mob;
         soundDeath = sound_mob_death;
+        boss = true;
         int scale = 5;
         int size = tile * scale;
         hitbox = new Rectangle(tile, tile, size - tile * 2, size - tile);
