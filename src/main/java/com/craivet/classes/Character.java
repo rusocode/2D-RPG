@@ -4,7 +4,7 @@ import com.craivet.world.entity.Player;
 import com.craivet.world.entity.Stats;
 
 /**
- * Representa las diferentes clases que forman parte del juego.
+ * It represents the different classes that are part of the game.
  */
 
 public abstract class Character {
@@ -13,25 +13,25 @@ public abstract class Character {
     protected boolean magic;
 
     /**
-     * Obtiene el incremento de maxHp.
+     * Gets the maxHp increase.
      *
-     * @return el incremento de maxHp.
+     * @return the increase of maxHp.
      */
     protected int getIncreaseMaxHp() {
         return 0;
     }
 
     /**
-     * Obtiene el incremento de maxMana.
+     * Gets the maxMana increase.
      *
-     * @return el incremento de maxMana.
+     * @return the increase of maxMana.
      */
     protected int getIncreaseMaxMana() {
         return 0;
     }
 
     /**
-     * Sube las estadisticas segun la clase.
+     * Upload stats according to class.
      *
      * @param player player.
      */

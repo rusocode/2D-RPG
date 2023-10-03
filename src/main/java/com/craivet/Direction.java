@@ -6,7 +6,7 @@ public enum Direction {
     DOWN, UP, LEFT, RIGHT, ANY;
 
     /**
-     * Obtiene la direccion dependiendo de la tecla seleccionada.
+     * Gets the direction depending on the selected key.
      */
     public void get(Entity entity) {
         if (entity.game.keyboard.s) entity.direction = DOWN;
@@ -15,8 +15,8 @@ public enum Direction {
         else if (entity.game.keyboard.d) entity.direction = RIGHT;
     }
 
-    /* Variable temporal que almacena la direccion del atacante al momento del ataque para actualizar la posicion de la
-     * entidad mientras el frame de esta se mantiene en la misma direccion. */
+    /* Temporary variable that stores the direction of the attacker at the time of the attack to update the position of
+     * the entity while its frame remains in the same direction. */
     public Direction knockbackDirection;
 
 }

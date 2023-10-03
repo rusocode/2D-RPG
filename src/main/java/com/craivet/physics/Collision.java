@@ -8,10 +8,10 @@ import com.craivet.world.entity.Player;
 import static com.craivet.utils.Global.*;
 
 /**
- * La colision entre dos entidades se genera cuando uno de los limites de la hitbox se pasa 1 pixel de la hitbox de la
- * otra entidad. Pero en el caso del attackbox, solo se genera colision cuando los limites de ambos se tocan.
+ * The collision between two entities is generated when one of the limits of the hitbox passes 1 pixel of the hitbox of
+ * the other entity. But in the case of the attackbox, a collision is only generated when the limits of both touch.
  * <p>
- * TODO Se podria cambiar los nombres de los metodos
+ * TODO You could change the names of the methods
  */
 
 public class Collision {
@@ -23,9 +23,9 @@ public class Collision {
     }
 
     /**
-     * Comprueba si la entidad colisiona con un tile solido.
+     * Checks if the entity collides with a solid tile.
      *
-     * @param entity la entidad.
+     * @param entity the entity.
      */
     public void checkTile(Entity entity) {
 
@@ -39,12 +39,12 @@ public class Collision {
         int entityLeftCol = entityLeftWorldX / tile;
         int entityRightCol = entityRightWorldX / tile;
 
-        // En caso de que la entidad colisione en el medio de dos tiles solidos
+        // In case the entity collides in the middle of two solid tools
         int tile1, tile2;
 
         Direction direction = entity.direction;
-        /* Obtiene la direccion del atacante si la entidad es retrocedida para evitar que la verificacion de la colision
-         * se vuelva inexacta. */
+
+        // Gets the direction of the attacker if the entity is knockback to prevent the collision check from becoming inaccurate
         if (entity.flags.knockback) direction = entity.direction.knockbackDirection;
 
         switch (direction) {
@@ -77,16 +77,16 @@ public class Collision {
     }
 
     /**
-     * Comprueba si la entidad colisiona con un item.
+     * Checks if the entity collides with an item.
      *
-     * @param entity la entidad.
-     * @return el indice del item en caso de que el player colisione con este.
+     * @param entity the entity.
+     * @return the index of the item in case the player collides with it.
      */
     public int checkItem(Entity entity) {
         int index = -1;
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] != null) {
-                // Obtiene la posicion del hitbox de la entidad y del item
+                // Gets the hitbox position of the entity and the item
                 entity.hitbox.x += entity.pos.x;
                 entity.hitbox.y += entity.pos.y;
                 world.items[world.map][i].hitbox.x += world.items[world.map][i].pos.x;
@@ -117,24 +117,24 @@ public class Collision {
     }
 
     /**
-     * Comprueba la colision entre entidades.
+     * Check the collision between entities.
      *
-     * @param entity      entidad.
-     * @param otherEntity otra entidad.
-     * @return el indice de la otra entidad en caso de que la entidad colisione con esta.
+     * @param entity      entity.
+     * @param otherEntity another entity.
+     * @return the index of the other entity in case the entity collides with it.
      */
     public int checkEntity(Entity entity, Entity[][] otherEntity) {
         int index = -1;
 
-        // Direccion temporal de la entidad
+        // Temporary direction of the entity
         Direction direction = entity.direction;
-        // Obtiene la direccion del atacante si la entidad es retrocedida
+        // Gets the direction of the attacker if the entity is knockback
         if (entity.flags.knockback) direction = entity.direction.knockbackDirection;
         int speed = entity.stats.speed;
 
         for (int i = 0; i < otherEntity[1].length; i++) {
             if (otherEntity[world.map][i] != null) {
-                // Obtiene la posicion del area del cuerpo de la entidad y de la otra entidad
+                // Gets the position of the hitbox of the entity and the other entity
                 entity.hitbox.x += entity.pos.x;
                 entity.hitbox.y += entity.pos.y;
                 otherEntity[world.map][i].hitbox.x += otherEntity[world.map][i].pos.x;
@@ -148,7 +148,7 @@ public class Collision {
                 }
 
                 if (entity.hitbox.intersects(otherEntity[world.map][i].hitbox)) {
-                    if (otherEntity[world.map][i] != entity) { // Evita la colision en si misma
+                    if (otherEntity[world.map][i] != entity) { // Avoid the collision itself
                         entity.flags.colliding = true;
                         entity.flags.collidingOnMob = true;
                         index = i;
@@ -165,12 +165,12 @@ public class Collision {
     }
 
     /**
-     * Comprueba si la entidad colisiona con el player.
+     * Checks if the entity collides with the player.
      *
-     * <p>TODO Se puede fucionar con el metodo checkEntity()?
+     * <p>TODO Can it work with the checkEntity() method?
      *
-     * @param entity la entidad.
-     * @return true si la entidad colisiona con el player.
+     * @param entity the entity.
+     * @return true if the entity collides with the player.
      */
     public boolean checkPlayer(Entity entity) {
         boolean contact = false;

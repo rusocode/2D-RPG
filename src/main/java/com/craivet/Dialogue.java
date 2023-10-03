@@ -1,8 +1,8 @@
 package com.craivet;
 
 /**
- * Los dialogos son los textos que se generan cuando se dialoga con un npc, se interactua con un item especifico o
- * cuando se produce un evento. Estos textos se visualizan dentro de la ventana de dialogo.
+ * Dialogues are the texts that are generated when you dialogue with an NPC, interact with a specific item or when an
+ * event occurs. These texts are displayed within the dialog window.
  */
 
 public class Dialogue {

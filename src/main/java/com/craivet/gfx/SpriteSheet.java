@@ -3,7 +3,6 @@ package com.craivet.gfx;
 import com.craivet.utils.Utils;
 import com.craivet.world.entity.Entity;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
@@ -13,14 +12,14 @@ public class SpriteSheet {
     // SpriteSheet
     private BufferedImage image;
 
-    // Entidades con dos frames para cada direccion (movimiento y ataque)
+    // Entities with two frames for each direction (movement and attack)
     public BufferedImage[] movement, attack, item;
     public int movementNum = 1, attackNum = 1;
 
-    public BufferedImage[] down, up, left, right; // Player con mas de un frame para cada direccion
-    public BufferedImage[] weapon; // Item con un frame para cada direccion
+    public BufferedImage[] down, up, left, right; // Player with more than one frame for each direction
+    public BufferedImage[] weapon; // Item with a frame for each address
 
-    // Representa el primer frame de cada entidad
+    // Represents the first frame of each entity
     public BufferedImage frame;
 
     public SpriteSheet() {
@@ -53,15 +52,15 @@ public class SpriteSheet {
     }
 
     /**
-     * Carga los frames de movimiento.
+     * Load movement frames.
      *
-     * <p>TODO Incluir funcion para anchos y altos de subimagenes diferentes (por ejemplo, si el parametro es true uso switch)
-     * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
+     * <p>TODO Include functions for different subimage widths and heights (for example, if the parameter is true use switch)
+     * <p>FIXED Fix the number of iterations that the for y
      *
-     * @param ss    SpriteSheet con los frames de movimiento.
-     * @param w     ancho del frame.
-     * @param h     alto del frame.
-     * @param scale valor de escala o 1 para mantener el tamaño.
+     * @param ss    SpriteSheet with the movement frames.
+     * @param w     frame width.
+     * @param h     frame height.
+     * @param scale scale value or 1 to maintain size.
      */
     public void loadMovementFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
@@ -71,19 +70,19 @@ public class SpriteSheet {
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
                 movement[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale * tile, scale * tile);
-        // Almacena el primer frame de movimiento
+        // Stores the first frame of motion
         frame = movement[0];
     }
 
     /**
-     * Carga los frames de ataque.
+     * Load attack frames.
      *
-     * <p>TODO Arreglar la cantidad de iteraciones que hace el for y
+     * <p>FIXED Fix the number of iterations that the for y
      *
-     * @param ss    SpriteSheet con los frames de ataque.
-     * @param w     ancho del frame.
-     * @param h     alto del frame.
-     * @param scale valor de escala o 1 para mantener el tamaño.
+     * @param w     frame width.
+     * @param h     frame height.
+     * @param scale scale value or 1 to maintain size.
+     * @@param ss    SpriteSheet with the movement frames.
      */
     public void loadAttackFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
@@ -113,10 +112,10 @@ public class SpriteSheet {
 
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
-                switch (y) { // Controla las filas
+                switch (y) { // Control the lines
                     case 0 -> down[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
                     case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
-                    // Los frames izquierdos y derechos solo tienen 5 frames, por lo tanto comprueba hasta el limite 5 para evitar un ArrayIndexOutOfBoundsException
+                    // The left and right frames only have 5 frames, so check up to the limit 5 to avoid an ArrayIndexOutOfBoundsException
                     case 2 -> {
                         if (x < numberFramesLeft)
                             left[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
@@ -144,30 +143,30 @@ public class SpriteSheet {
     }
 
     /**
-     * Devuelve una subimagen definida por una region rectangular especificada. La BufferedImage devuelta comparte la
-     * misma matriz de datos que la imagen original. En otras palabras, corta la subimagen del SpriteSheet.
+     * Returns a subimage defined by a specified rectangular region. The returned BufferedImage shares the same data
+     * array as the original image. In other words, it cuts the subimage from the SpriteSheet.
      *
-     * @param x coordenada x de la esquina superior izquierda de la region rectangular especificada.
-     * @param y coordenada y de la esquina superior izquierda de la region rectangular especificada.
-     * @param w ancho de la region rectangular especificada.
-     * @param h altura de la region rectangular especificada.
-     * @return una BufferedImage que es la subimagen de esta BufferedImage.
+     * @param x x coordinate of the upper left corner of the specified rectangular region.
+     * @param y y coordinate of the upper left corner of the specified rectangular region.
+     * @param w width of the specified rectangular region.
+     * @param h height of the specified rectangular region.
+     * @return a BufferedImage that is the subimage of this BufferedImage.
      */
     private BufferedImage crop(int x, int y, int w, int h) {
         return image.getSubimage(x, y, w, h);
     }
 
     /**
-     * Obtiene el frame actual.
+     * Gets the current frame.
      *
-     * @param entity entidad.
-     * @return el frame actual de la entidad.
+     * @param entity entity.
+     * @return the current frame of the entity.
      */
     public BufferedImage getCurrentAnimationFrame(Entity entity) {
         int i = 0;
 
         if (!entity.flags.hitting) {
-            if (movement.length == 2) { // Si se trata de entidades de dos frames
+            if (movement.length == 2) { // If these are entities with two frames
                 switch (entity.direction) {
                     case DOWN, UP, LEFT, RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
                 }
@@ -183,7 +182,7 @@ public class SpriteSheet {
             switch (entity.direction) {
                 case DOWN -> i = attackNum == 1 ? 0 : 1;
                 case UP -> {
-                    // Se resta el ancho de la imagen en caso de que el frame sea mas grande al tile
+                    // The width of the image is subtracted in case the frame is larger than the tile
                     entity.screen.tempScreenY -= entity.sheet.frame.getHeight();
                     i = attackNum == 1 ? 2 : 3;
                 }

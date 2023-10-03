@@ -47,7 +47,7 @@ public class Minimap {
             g2.drawRect(x - 1, y - 1, width + 1, height + 1);
             g2.drawImage(minimap[world.map], x, y, width, height, null);
 
-            // Dibuja un cuadrado rojo que representa la posicion del player
+            // Draw a red square that represents the player's position
             double scale = (double) (tile * MAX_MAP_COL) / width;
             int playerX = (int) (x + (world.player.pos.x + world.player.hitbox.x) / scale);
             int playerY = (int) (y + (world.player.pos.y + world.player.hitbox.y) / scale);

@@ -7,7 +7,7 @@ import java.net.URL;
 import com.craivet.utils.Utils;
 
 /**
- * Esta clase carga los recursos solo una vez al iniciar el juego.
+ * This class loads resources only once when starting the game.
  */
 
 public final class Assets {
@@ -57,7 +57,7 @@ public final class Assets {
     public static final URL sound_trade_sell = Utils.loadAudio(sounds_path + "trade_sell.wav");
 
     // FONT
-    // TODO El tamaño de fuente tendria que cambiar con respecto a la visualizacion de pantalla
+    // TODO The font size would have to change with respect to the screen display
     public static final Font font_minecraft = Utils.loadFont("font/minecraft.ttf", 24);
     public static final Font font_marumonica = Utils.loadFont("font/MaruMonica.ttf", 24);
     public static final Font font_medieval1 = Utils.loadFont("font/medieval1.ttf", 22);
@@ -82,7 +82,7 @@ public final class Assets {
     public static final BufferedImage sword_iron = Utils.loadImage(textures_items_path + "sword_iron.png");
     public static final BufferedImage tent = Utils.loadImage(textures_items_path + "tent.png");
     // Items frames
-    public static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "sword_frame.png")); // TODO Se podria usar una sola imagen y en base a la direccion se voltea y se cambia el color dependiendo del tipo de espada (piedra, hierro, diamante oro, minecraft)
+    public static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "sword_frame.png")); // TODO You could use a single image and based on the direction it is flipped and the color is changed depending on the type of sword (stone, iron, gold diamond, minecraft)
     public static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "axe_frame.png"));
     public static final SpriteSheet pickaxe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "pickaxe_frame.png"));
     // Mobs

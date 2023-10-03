@@ -50,12 +50,12 @@ public class GameState implements State {
             y += gap;
             g2.drawString("x: " + (game.world.player.pos.x + game.world.player.hitbox.x) + " y: " + (game.world.player.pos.y + game.world.player.hitbox.y), x, y);
             y += gap;
-            if (game.gameTimer.showFPS) {
-                g2.drawString("FPS: " + game.gameTimer.framesInRender, x, y);
-                lastFrames = game.gameTimer.framesInRender;
-                game.gameTimer.showFPS = false;
+            if (game.loop.showFPS) {
+                g2.drawString("FPS: " + game.loop.framesInRender, x, y);
+                lastFrames = game.loop.framesInRender;
+                game.loop.showFPS = false;
             } else
-                g2.drawString("FPS: " + lastFrames, x, y); // Muestra los ultimos fps hasta que se complete el segundo
+                g2.drawString("FPS: " + lastFrames, x, y); // Shows the last fps until the second is completed
             y += gap;
             g2.drawString("Render time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
         }

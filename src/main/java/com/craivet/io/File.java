@@ -14,7 +14,7 @@ import java.util.Objects;
 import static com.craivet.utils.Global.*;
 
 /**
- * Archivos del juego.
+ * Game files.
  *
  * @author Juan Debenedetti
  */
@@ -39,7 +39,7 @@ public class File {
     }
 
     /**
-     * Guarda la configuracion del juego.
+     * Save the game settings.
      */
     public void saveConfig() {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(config))) {
@@ -54,7 +54,7 @@ public class File {
     }
 
     /**
-     * Carga la configuracion del juego.
+     * Load the game configuration.
      */
     public void loadConfig() {
         try (BufferedReader br = new BufferedReader(new FileReader(config))) {
@@ -68,7 +68,7 @@ public class File {
     }
 
     /**
-     * Guarda los datos del juego.
+     * Save game data.
      */
     public void saveData() {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(data))) {
@@ -132,11 +132,11 @@ public class File {
     }
 
     /**
-     * Carga los datos del juego.
+     * Load game data.
      */
     public void loadData() {
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(data))) {
-            // Lee los bytes desde el flujo de entrada y los deserializa en un objeto Data
+            // Reads the bytes from the input stream and deserializes them into a Data object
             Data data = (Data) input.readObject();
             world.map = data.map;
             world.zone = data.zone;
@@ -195,8 +195,8 @@ public class File {
     }
 
     /**
-     * Lee los datos de cada tile (nombre y estado solido) desde el archivo "tile_data.txt" y los agrega a sus
-     * respectivas listas. Luego utiliza esos datos para cargar todos los tiles dentro de un array.
+     * Reads the data of each tile (name and solid state) from the "tile_data.txt" file and adds them to their
+     * respective lists. It then uses that data to load all the tiles into an array.
      */
     public void loadTiles() {
         String line;
@@ -214,7 +214,7 @@ public class File {
     }
 
     /**
-     * Carga todos los mapas que componen al mundo.
+     * Load all the maps that make up the world.
      */
     public void loadMaps() {
         loadMap("maps/nashe.txt", NASHE, "Nashe");
@@ -224,11 +224,11 @@ public class File {
     }
 
     /**
-     * Carga el tile.
+     * Load the tile.
      *
-     * @param i     indice del tile.
-     * @param name  nombre del tile.
-     * @param solid si es solido o no.
+     * @param i     index of the tile.
+     * @param name  name of the tile.
+     * @param solid whether it is solid or not.
      */
     private void loadTile(int i, String name, boolean solid) {
         world.tileData[i] = new Tile();
@@ -237,11 +237,11 @@ public class File {
     }
 
     /**
-     * Carga el mapa utilizando la ruta especificada y almacena cada valor (tile) leido del archivo en la matriz.
+     * Loads the map using the specified path and stores each tile read from the file in the array.
      *
-     * @param path ruta del recurso.
-     * @param map  numero del mapa como clave.
-     * @param name nombre del mapa como valor.
+     * @param path path of the resource.
+     * @param map  map number as key.
+     * @param name map name as value.
      */
     public void loadMap(String path, int map, String name) {
         world.maps.put(map, name);

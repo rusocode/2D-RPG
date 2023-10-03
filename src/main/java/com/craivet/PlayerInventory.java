@@ -9,8 +9,8 @@ import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * Esta clase representa las funciones adicionales del inventario del player, como equipar o desequipar un item, agarrar
- * un item, seleccionar un item, entre otros.
+ * This class represents the additional functions of the player's inventory, such as equipping or unequipping an item,
+ * grabbing an item, select an item, among others.
  */
 
 public class PlayerInventory extends Inventory {
@@ -19,7 +19,7 @@ public class PlayerInventory extends Inventory {
     private final World world;
     private final Player player;
 
-    // Variables que utiliza el cursor para representar su posicion en el inventario
+    // Variables that the cursor uses to represent its position in the inventory
     public int playerSlotCol, playerSlotRow, npcSlotCol, npcSlotRow;
 
     public PlayerInventory(Game game, World world, Player player) {
@@ -30,10 +30,10 @@ public class PlayerInventory extends Inventory {
     }
 
     /**
-     * Inicializa el inventario del player con los items por defecto.
+     * Initializes the player's inventory with the default items.
      */
     public void init() {
-        clear(); // Limpia el inventario en caso de que se cree un nuevo juego desde el menu sin cerrar la ventana
+        clear(); // Clear the inventory in case a new game is created from the menu without closing the window
         add(player.weapon);
         add(player.shield);
         add(new Lantern(game, world));
@@ -45,27 +45,27 @@ public class PlayerInventory extends Inventory {
     }
 
     /**
-     * Verifica si puede recoger el item y en caso afirmativo lo agrega al inventario.
+     * It checks if it can pick up the item and if so it adds it to the inventory.
      *
      * @param item item.
-     * @return true si se puede recoger el item o false.
+     * @return true if the item can be picked up or false.
      */
     public boolean canPickup(Item item) {
         Item newItem = game.itemGenerator.generate(item.stats.name);
         if (item.stackable) {
             int i = search(item.stats.name);
-            // Si existe en el inventario, entonces solo aumenta la cantidad
+            // If it exists in inventory, then just increase the quantity
             if (i != -1) {
                 get(i).amount += item.amount;
                 return true;
-                // Si no existe en el inventario, lo agrega como nuevo item con su respectiva cantidad
+                // If it does not exist in the inventory, add it as a new item with its respective quantity
             } else if (size() != MAX_INVENTORY_SLOTS) {
                 add(newItem);
-                // Al agregar un nuevo item, no puede utilizar el indice del item anterior, tiene que buscar el indice a partir del nuevo item
+                // When adding a new item, you cannot use the index of the previous item, you have to search the index from the new item
                 get(search(item.stats.name)).amount += item.amount;
                 return true;
             }
-        } else if (size() != MAX_INVENTORY_SLOTS) { // TODO o < MAX_INVENTORY_SLOTS
+        } else if (size() != MAX_INVENTORY_SLOTS) {
             add(newItem);
             return true;
         }
@@ -73,7 +73,7 @@ public class PlayerInventory extends Inventory {
     }
 
     /**
-     * Selecciona el item.
+     * Select the item.
      */
     public void select() {
         int i = getSlot(playerSlotCol, playerSlotRow);
@@ -85,13 +85,13 @@ public class PlayerInventory extends Inventory {
     }
 
     /**
-     * Equipa el item.
+     * Equip the item.
      *
      * @param item item.
      */
     private void equip(Item item) {
         if (item.type == Type.AXE || item.type == Type.PICKAXE || item.type == Type.SWORD) {
-            player.weapon = player.weapon == item ? null : item; // Verifica si ya tiene equipada el weapon
+            player.weapon = player.weapon == item ? null : item; // Check if the weapon is already equipped
             if (player.weapon != null) {
                 player.stats.attack = player.getAttack();
                 switch (player.weapon.type) {
@@ -115,10 +115,10 @@ public class PlayerInventory extends Inventory {
     }
 
     /**
-     * Consume el item.
+     * Consume the item.
      *
      * @param item item.
-     * @param i    indice del item.
+     * @param i    index of the item.
      */
     private void consume(Item item, int i) {
         if (item.use(player)) {
