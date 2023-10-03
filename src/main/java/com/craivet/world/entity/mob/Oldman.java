@@ -41,12 +41,12 @@ public class Oldman extends Mob {
     }
 
     private void initDialogue() {
-        dialogue.dialogues[0][0] = "Hola forastero!";
-        dialogue.dialogues[0][1] = "Hacia el norte hay una pequenia \nlaguna con una hermosa vista...";
+        dialogue.dialogues[0][0] = "Hello stranger!";
+        dialogue.dialogues[0][1] = "To the north there is a small \nlagoon with a beautiful view...";
 
-        dialogue.dialogues[1][0] = "Empiezo a creer que hay algo \nextranio en estos bosques.";
-        dialogue.dialogues[1][1] = "Todo empezo a suceder desde que \nese sujeto raro llego a la isla.";
-        dialogue.dialogues[1][2] = "Voy a seguir explorando, hasta \nluego viajero!";
+        dialogue.dialogues[1][0] = "I'm starting to believe that there \nis something stranger in these \nforests.";
+        dialogue.dialogues[1][1] = "Everything started happening since \nthat strange guy arrived on the \nisland.";
+        dialogue.dialogues[1][2] = "I will continue exploring, until \nthen traveler!";
     }
 
 }

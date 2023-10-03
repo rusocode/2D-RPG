@@ -8,7 +8,7 @@ import java.awt.image.BufferedImage;
 import static com.craivet.utils.Global.*;
 
 /**
- * Activa la iluminacion.
+ * Activate the lighting.
  */
 
 public class Lighting {
@@ -26,25 +26,25 @@ public class Lighting {
 
     public Lighting(World world) {
         this.world = world;
-        illuminate(); // TODO Por que se llama desde aca este metodo?
+        illuminate(); // TODO Why is this method called from here?
     }
 
     /**
-     * Ilumina.
+     * Illuminate.
      */
     public void illuminate() {
-        // Crea una imagen en buffer
+        // Create a buffered image
         darknessFilter = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
         if (world.player.light == null) g2.setColor(new Color(0, 0, 0, 0.90f));
-        else { // Si el player selecciono la linterna
+        else { // If the player selected the latern
 
-            // Obtiene el centro del player
+            // Gets the center of the player
             int centerX = world.player.screen.xOffset + (tile / 2);
             int centerY = world.player.screen.yOffset + (tile / 2);
 
-            // Crea un efecto de gradacion para el circulo de luz
+            // Create a gradation effect for the light circle
             Color[] color = new Color[12];
             float[] fraction = new float[12];
 
@@ -74,10 +74,10 @@ public class Lighting {
             color[10] = new Color(0, 0, 0, 0.89f);
             color[11] = new Color(0, 0, 0, 0.90f);
 
-            // Crea el efecto de gradacion usando la posicion del player, el radio, los datos de fraccion y color
+            // Create the gradation effect using the player position, radius, fraction and color data
             RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, ((float) world.player.light.lightRadius / 2), fraction, color);
 
-            // Establece los datos de gradacion en g2
+            // Set the gradation data to g2
             g2.setPaint(gPaint);
         }
 
@@ -86,8 +86,8 @@ public class Lighting {
     }
 
     public void update() {
-        /* Actualiza la iluminacion del item solo cuando el player selecciona el item especificado, evitando que el
-         * metodo illuminate() se llame 60 veces por segundo afectando el rendimiemto del juego. */
+        /* Updates the item's lighting only when the player selects the specified item, preventing the illuminate()
+         * method from being called 60 times per second, affecting game performance. */
         if (world.player.lightUpdate) {
             illuminate();
             world.player.lightUpdate = false;
@@ -98,11 +98,12 @@ public class Lighting {
     }
 
     /**
-     * Si la zona es OUTSIDE, configura el filterAlpha y dibuja el filtro oscuro.
+     * If the zone is OUTSIDE, set the filterAlpha and draw the dark filter.
      * <p>
-     * Si la zona es DUNGEON, solo dibuja el filtro oscuro. Significa que permanecera oscuro todo el tiempo.
+     * If the zone is DUNGEON, just draw the dark filter. It means that it will remain dark all the time.
      * <p>
-     * Si la zona es INDOOR, no configura ni dibuja el filtro oscuro. Significa que permanece luminoso todo el tiempo.
+     * If the zone is INDOOR, it does not configure or draw the dark filter. It means that it remains luminous all the
+     * time.
      */
     public void render(Graphics2D g2) {
         if (world.zone == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
@@ -112,15 +113,15 @@ public class Lighting {
     }
 
     /**
-     * Cicla el dia cada un cierto tiempo. El ciclo del dia cuenta con 4 estados: dia, oscuridad, noche y amanecer.
+     * Cycles the day every certain time. The day cycle has 4 states: day, dusk, night and dawn.
      * <p>
-     * Para determinar el tiempo que duran los estados dia y noche, es necesario multiplicar la cantidad de segundos por
-     * la cantidad de veces que se actualiza el Game Loop. Por ejemplo, si el Game Loop se ejecuta a 60 ticks y el dia
-     * dura 10 segundos, entonces esto equivale a sumar 600 veces el contador.
+     * To determine how long the day and night states last, it is necessary to multiply the number of seconds by the
+     * number of times the Game Loop is updated. For example, if the Game Loop runs at 60 ticks and the day lasts 10
+     * seconds, then this is equivalent to adding 600 times the counter.
      * <p>
-     * Para determinar la velocidad de transicion entre la oscuridad y la noche, y entre la noche y el amanecer, es
-     * necesario modificar el valor alpha. Por ejemplo, usando el valor 0,0001f se necesitan 10.000 fps para completar
-     * el maximo valor alpha (1f). Por lo que el tiempo que tarda en completarse es de 166 segundos.
+     * To determine the speed of transition between dusk and night, and between night and dawn, it is necessary to
+     * modify the alpha value. For example, using the value 0.0001f, 10,000 fps are needed to complete the maximum alpha
+     * value (1f). So the time it takes to complete is 166 seconds.
      */
     private void cycleDay() {
         if (dayState == day) {
@@ -131,7 +132,7 @@ public class Lighting {
         }
         if (dayState == dusk) {
             filterAlpha += 0.001f;
-            // Evita que el valor alpha supere el maximo (1f) para evitar errores
+            // Prevent the alpha value from exceeding the maximum (1f) to avoid errors
             if (filterAlpha > 1f) {
                 filterAlpha = 1f;
                 dayState = night;

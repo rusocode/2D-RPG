@@ -11,7 +11,7 @@ import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * TODO Implementar la disminucion en la velocidad del player cuando la bola pegajosa impacte con el.
+ * TODO Implement the decrease in the player's speed when the sticky ball hits him.
  */
 
 public class StickyBall extends Projectile {

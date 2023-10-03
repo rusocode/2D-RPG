@@ -182,7 +182,7 @@ public class Game extends Canvas implements Runnable {
     /**
      * Reset the game.
      *
-     * @param fullReset true to completely reset; false otherwise.
+     * @param fullReset true to fully reset; false otherwise.
      */
     public void reset(boolean fullReset) {
         ui.console.clear();

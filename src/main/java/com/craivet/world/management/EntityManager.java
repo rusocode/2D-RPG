@@ -25,9 +25,9 @@ public class EntityManager implements State {
         world.player.update();
         for (int i = 0; i < world.mobs[1].length; i++) {
             if (world.mobs[world.map][i] != null) {
-                /* Cuando muere el mob, primero establece el estado dead a true evitando que siga moviendose. Luego
-                 * genera la animacion de muerte y al finalizarla, establece alive en false para que no genere
-                 * movimiento y elimine el objeto. */
+                /* When the mob dies, first set the dead state to true preventing it from moving further. Then generate
+                 * the death animation and when finished, set alive to false so that it does not generate movement and
+                 * eliminates the object. */
                 if (world.mobs[world.map][i].flags.alive && !world.mobs[world.map][i].flags.dead)
                     world.mobs[world.map][i].update();
                 if (!world.mobs[world.map][i].flags.alive) {
@@ -61,9 +61,8 @@ public class EntityManager implements State {
 
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] != null) {
-                /* Agrega los items solidos (door, chest, etc.) a la lista de entidades para poder ordenarlos
-                 * con respecto a la posicion y del player. Los items que no son solidos se agregan a la lista de
-                 * items. */
+                /* Adds the solid items (door, chest, etc.) to the list of entities to be able to sort them with respect
+                 * to the position and the player. Items that are not solid are added to the item list. */
                 if (!world.items[world.map][i].solid) items.add(world.items[world.map][i]);
                 else entities.add(world.items[world.map][i]);
             }
@@ -78,15 +77,14 @@ public class EntityManager implements State {
         for (Entity particle : world.particles)
             if (particle != null) entities.add(particle);
 
-        /* Ordena la lista de entidades dependiendo de la posicion y. Es decir, si el player esta por encima del mob,
-         * entonces este se dibuja por debajo. Pero si el player esta por debajo del mob, este se dibuja por encima.
-         * Lo mismo se aplica para los items solidos. Es decir que cuando el player se posiciona por encima de un
-         * item solido o un mob, este se dibuja por debajo, y cuando el player se posiciona por debajo, este se
-         * dibuja por arriba. Esto se debe porque estan todos en una misma lista y se ordenan de manera ascendente
-         * por la posicion de la coordena y de cada entidad. */
+        /* Sorts the list of entities depending on the position y. That is, if the player is above the mob, then it is
+         * drawn below. But if the player is below the mob, it is drawn above it. The same applies for solid items. That
+         * is, when the player is positioned above a solid item or a mob, it is drawn below, and when the player is
+         * positioned below, it is drawn above. This is because they are all in the same list and are ordered in
+         * ascending order by the position of the y coordinate of each entity. */
         entities.sort(Comparator.comparingInt(e -> e.pos.y + e.hitbox.y));
 
-        // Ahora se dibujan por orden ascendente
+        // They are now drawn in ascending order
         for (Entity item : items) item.render(g2);
         for (Entity entity : entities) entity.render(g2);
         for (Entity projectile : projectiles) projectile.render(g2);

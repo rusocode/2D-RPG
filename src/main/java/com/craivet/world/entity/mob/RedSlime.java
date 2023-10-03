@@ -44,7 +44,6 @@ public class RedSlime extends Mob {
 
     @Override
     public void damageReaction() {
-        timer.directionCounter = 0;
         flags.following = true;
     }
 

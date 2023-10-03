@@ -6,11 +6,11 @@ import com.craivet.world.entity.Entity;
 import static com.craivet.utils.Global.tile;
 
 /**
- * Estas coordenadas no son mas que la suma de pixeles a partir de la esquina superior izquierda del mapa (0, 0). Cuando
- * se divide esa suma por el tamaño del tile, se obtiene la posicion en filas y columnas. Esto se hace para facilitar el
- * manejo de las coordenadas. Otra cosa a tener en cuenta, es que a las coordenadas x-y se le suma la hitbox de la
- * entidad para obtener la posicion exacta del rectangulo colisionador y no del frame. Es importante aclarar que se
- * posiciona la hitbox, NO la imagen.
+ * These coordinates are nothing more than the sum of pixels starting from the upper left corner of the map (0, 0). When
+ * this sum is divided by the size of the tile, the position in rows and columns is obtained. This is done to facilitate
+ * the handling of coordinates. Another thing to keep in mind is that the entity's hitbox is added to the x-y
+ * coordinates to obtain the exact position of the collider rectangle and not the frame. It is important to clarify that
+ * the hitbox is positioned, NOT the image.
  */
 
 public class Position {
@@ -26,18 +26,18 @@ public class Position {
     }
 
     /**
-     * Establece la posicion del player.
+     * Sets the position of the player.
      * <p>
-     * TODO Evitar que la entidad aparezca sobre una entidad solida, tile solido o fuera de los limites del mapa.
+     * TODO Prevent the entity from appearing on a solid entity, solid tile or outside the map boundaries.
      */
     public void set(World world, Entity entity, int map, int zone, int col, int row, Direction dir) {
         world.map = map;
         world.zone = zone;
-        // Suma la mitad del ancho de la hitbox y resta un pixel para centrar la posicion horizontal dentro del tile
+        // Add half the width of the hitbox and subtract one pixel to center the horizontal position within the tile
         x = (col * tile) + entity.hitbox.width / 2 - 1;
-        /* Resta el alto de la hitbox para que la posicion se ajuste en la fila especificada, ya que la imagen del
-         * player ocupa dos tiles verticales. Por ultimo se resta un pixel en caso de que la posicion este por encima
-         * de un tile solido para evitar que se "trabe". */
+        /* Subtracts the height of the hitbox so that the position fits in the specified row, since the player image
+         * occupies two vertical tiles. Finally, a pixel is subtracted in case the position is above a solid tile to
+         * prevent it from "locking". */
         y = (row * tile) - entity.hitbox.height - 1;
         switch (dir) {
             case DOWN -> entity.currentFrame = entity.down.getFirstFrame();
@@ -48,10 +48,10 @@ public class Position {
     }
 
     /**
-     * Actualiza la posicion de la entidad.
+     * Updates the position of the entity.
      *
-     * @param entity    entidad.
-     * @param direction direccion de la entidad.
+     * @param entity    entity.
+     * @param direction direction of the entity.
      */
     public void update(Entity entity, Direction direction) {
         switch (direction) {

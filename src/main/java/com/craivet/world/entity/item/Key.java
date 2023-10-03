@@ -12,7 +12,7 @@ import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
- * Para especificar la textura del item sobre el suelo con un tamaño mas chico:
+ * To specify the texture of the item on the ground with a smaller size:
  * <pre>{@code
  * sheet.frame = pos.length > 0 ? Utils.scaleImage(key, tile / 2, tile / 2) : Utils.scaleImage(key, tile, tile);
  * }</pre>
@@ -38,7 +38,7 @@ public class Key extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        // Si detecta una puerta, entonces puede usar la llave
+        // If the entity detects a door, then it can use the key
         int i = detect(entity, world.items, Door.NAME);
         if (i != -1) {
             game.playSound(sound_door_opening);

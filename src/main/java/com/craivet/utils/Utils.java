@@ -15,17 +15,17 @@ public final class Utils {
     }
 
     /**
-     * Carga la fuente utilizando la ruta especificada.
+     * Load the font.
      *
-     * @param path ruta del recurso.
-     * @param size tamaño de la fuente.
-     * @return una nueva fuente creada con el tipo de fuente especificado.
+     * @param path path of the resource.
+     * @param size font size.
+     * @return a new font created with the specified font type.
      */
     public static Font loadFont(String path, float size) {
         try {
             return Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path))).deriveFont(size);
         } catch (IOException | FontFormatException | NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Error durante la carga de fuente " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error during font loading " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
         return null;
@@ -36,68 +36,68 @@ public final class Utils {
     }
 
     /**
-     * Carga la imagen utilizando la ruta especificada.
+     * Load the image.
      *
-     * @param path ruta del recurso.
-     * @return una BufferedImage que contiene el contenido decodificado de la entrada.
+     * @param path path of the resource.
+     * @return a BufferedImage containing the decoded content of the input.
      */
     public static BufferedImage loadImage(String path) {
         try {
             return ImageIO.read(Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path)));
         } catch (IOException | NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Error durante la carga de imagen " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error during image loading " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
         return null;
     }
 
     /**
-     * Escala la imagen antes de renderizarla para un mejor rendimiento.
+     * Scale the image before rendering for better performance.
      * <p>
-     * Es importante que el valor de escala para el ancho y alto sea multiplo del tamaño original para evitar
-     * estiramientos o deformaciones en la imagen escalada.
+     * It is important that the scale value for the width and height be a multiple of the original size to avoid
+     * stretching or deformations in the scaled image.
      * <p>
-     * Para mantener el tamaño original de la imagen, se especifica 1 como valor de escala.
+     * To maintain the original size of the image, 1 is specified as the scale value.
      *
-     * @param image  imagen.
-     * @param width  ancho de la imagen.
-     * @param height alto de la imagen.
-     * @return la imagen escalada.
+     * @param image  image.
+     * @param width  width of the image.
+     * @param height height of the image.
+     * @return the scaled image.
      */
     public static BufferedImage scaleImage(BufferedImage image, int width, int height) {
         BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = scaledImage.createGraphics(); // Crea un Graphics2D, que se puede usar para dibujar en este BufferedImage
+        Graphics2D g2 = scaledImage.createGraphics(); // Creates a Graphics2D, which can be used to draw on this BufferedImage
         g2.drawImage(image, 0, 0, width, height, null);
         g2.dispose();
         return scaledImage;
     }
 
     /**
-     * Cambia la transparencia de la imagen.
+     * Change the transparency of the image.
      *
-     * @param g2    componente grafico.
-     * @param alpha valor de transparencia.
+     * @param g2    graphic component.
+     * @param alpha transparency value.
      */
     public static void changeAlpha(Graphics2D g2, float alpha) {
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
     }
 
     /**
-     * Devuelve un valor pseudoaleatorio entre un minimo y maximo especificado, ambos incluidos.
+     * Returns a pseudorandom value between a specified minimum and maximum, both included.
      *
-     * @param min valor minimo.
-     * @param max valor maximo.
-     * @return el valor pseudoaleatorio.
+     * @param min minimum value.
+     * @param max maximum value.
+     * @return the pseudorandom value.
      */
     public static int random(int min, int max) {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
     /**
-     * Devuelve un valor pseudoaleatorio entre 1 y el maximo especificado, ambos incluidos.
+     * Returns a pseudorandom value between 1 and the specified maximum, both included.
      *
-     * @param max valor maximo.
-     * @return el valor pseudoaleatorio.
+     * @param max maximum value.
+     * @return the pseudorandom value.
      */
     public static int random(int max) {
         return (int) (Math.random() * max) + 1;

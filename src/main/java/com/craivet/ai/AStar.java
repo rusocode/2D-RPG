@@ -64,22 +64,22 @@ public class AStar {
             else if (top > nextY && left > nextX) {
                 // up o left
                 entity.direction = Direction.UP;
-                entity.checkCollision();
+                entity.checkCollisions();
                 if (entity.flags.colliding) entity.direction = Direction.LEFT;
             } else if (top > nextY && left < nextX) {
                 // up o right
                 entity.direction = Direction.UP;
-                entity.checkCollision();
+                entity.checkCollisions();
                 if (entity.flags.colliding) entity.direction = Direction.RIGHT;
             } else if (top < nextY && left > nextX) {
                 // down o left
                 entity.direction = Direction.DOWN;
-                entity.checkCollision();
+                entity.checkCollisions();
                 if (entity.flags.colliding) entity.direction = Direction.LEFT;
             } else if (top < nextY && left < nextX) {
                 // down o right
                 entity.direction = Direction.DOWN;
-                entity.checkCollision();
+                entity.checkCollisions();
                 if (entity.flags.colliding) entity.direction = Direction.RIGHT;
             }
 

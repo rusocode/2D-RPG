@@ -1,7 +1,7 @@
 package com.craivet.utils;
 
 /**
- * TODO Estos valores no tendrian que ir en un JSON?
+ * TODO Shouldn't these values go in JSON?
  */
 
 public final class Global {
@@ -9,22 +9,20 @@ public final class Global {
     private Global() {
     }
 
-    /* Define el numero de actualizaciones (ticks) por segundo. Al usar un valor como 40 (cantidad de ticks que usa el
-     * AO, creo), se genera un efecto de tartamudeo en el renderizado de tiles cuando el player se mueve (probar en
-     * pantalla completa y aumentar la velocidad del player para apreciar mejor el efecto) ¿A que se debe esto?.
-     * Cuanto mas alto sean los ticks (pasos cortos, poca diferencia de tiempo entre ciclos), mas tiempo de
-     * procesamiento se necesita para ponerse al dia en tiempo real. Cuanto mas bajo es (pasos largos, mucha diferencia
-     * de tiempo entre ciclos), mas entrecortado es el juego. Lo ideal es que sea bastante alto, a menudo mas rapido que
-     * 60 FPS, para que el juego simule con alta calidad en maquinas rapidas. */
+    /* Defines the number of updates (ticks) per second. When using a value like 40, a stuttering effect is generated in
+     * the rendering of tiles when the player moves (try in full screen and increase the speed of the player to better
+     * appreciate the effect). Why is this? The higher the ticks (short steps, little time difference between cycles),
+     * the more processing time is needed to catch up in real time. The lower it is (long steps, a lot of time
+     * difference between cycles), the more choppy the game is. Ideally, it should be quite high, often faster than 60
+     * FPS, so that the game simulates with high quality on fast machines. */
     public static final int UPDATES = 60;
-    /* Cantidad maxima de veces que el GameLoop PUEDE llegar a renderizar la pantalla por segundo. Cuando digo "puede",
-     * significa que no siempre puede llegar al maximo especificado.
-     * TIP: Sincronizar la cantidad de fps con los hz del monitor para evitar un posible "tearing" o "stuttering". */
+    /* Maximum number of times that GameLoop CAN render the screen per second. When I say "can", it means that it can't
+     * always reach the specified maximum. TIP: Synchronize the amount of fps with the monitor's Hz to avoid possible
+     * "tearing" or "stuttering". */
     public static final int FRAMES = 60;
-    /* En caso de activar la ilimitacion de fps, el renderizado se va a realizar la mayor cantidad de veces que pueda.
-     * El limite para la cantidad de fps se rigen por el poder de procesamiento de la computadora, el rendimiento del
-     * juego, la cantidad de objetos que se renderizan en pantalla, el uso de la CPU, entre otros.
-     * TIP: Activar esta opcion para testear bajones de fps en diferentes areas del juego. */
+    /* If unlimited fps is activated, the rendering will be performed as many times as possible. The limit for the
+     * number of fps is governed by the computer's processing power, game performance, the number of objects rendered on
+     * the screen, CPU usage, among others. TIP: Activate this option to test fps drops in different areas of the game. */
     public static final boolean FPS_UNLIMITED = false;
 
     // Others
@@ -32,22 +30,22 @@ public final class Global {
     public static final int MAX_LVL = 50;
     public static final int SUBWINDOW_ALPHA = 210;
 
-    /* Una aplicacion puede ejecutarse mucho mas rápido si las imagenes que elige mostrar comparten la misma profundidad
-     * de bits que la pantalla. https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html */
+    /* An application can run much faster if the images it chooses to display share the same bit depth as the screen.
+     * https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html */
     // Window settings
     private static final int original_tile = 16;
     private static final int scale = 2;
     public static final int tile = original_tile * scale;
-    // Cantidad de tiles visibles
-    public static final int MAX_WINDOW_ROW = 13; // 12, 13 TODO Por que no coiciden la cantidad de tiles visibles (6) hacia arriba de la cabeza con los del ao (5)?
-    public static final int MAX_WINDOW_COL = 17; // 20, 17 TODO o MAX_TILES_COL?
-    // Tamaño de la ventana
-    public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL; // 544px conocido como renderTilesWidth
-    public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW; // 416px conocido como renderTilesHeight
+    // Number of visible tiles
+    public static final int MAX_WINDOW_ROW = 13;
+    public static final int MAX_WINDOW_COL = 17; // TODO o MAX_TILES_COL?
+    // Window size
+    public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL; // 544px known as renderTilesWidth
+    public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW; // 416px known as renderTilesHeight
 
     // Map settings
     public static final int MAPS = 10;
-    public static final int MAX_MAP_ROW = 50; // Cantidad de tiles
+    public static final int MAX_MAP_ROW = 50; // Number of tiles
     public static final int MAX_MAP_COL = 50;
     // Map list
     public static final int NASHE = 0;
@@ -55,7 +53,7 @@ public final class Global {
     public static final int DUNGEON_01 = 2;
     public static final int DUNGEON_02 = 3;
     // Zones
-    public static final int OUTSIDE = 0; // TODO Cambiar a TERRENO o CAMPO
+    public static final int OUTSIDE = 0; // TODO Change to TERRAIN or FIELD
     public static final int INDOOR = 1;
     public static final int DUNGEON = 2;
 
@@ -86,8 +84,8 @@ public final class Global {
     public static final int INTERVAL_TRANSITION = 50;
 
     // Game states
-    /* TODO Se podrian separar estas constantes en un enum tal vez? GameState con enums TITLE, PLAY, etc. o en un
-     * paquete con los diferentes tipos de constantes en clases final. */
+    /* TODO Could these constants be separated into an enum perhaps? GameState with enums TITLE, PLAY, etc. or in a
+     * package with the different types of constants in final classes. */
     public static final int MAIN_STATE = 0;
     public static final int PLAY_STATE = 1;
     public static final int DIALOGUE_STATE = 2;

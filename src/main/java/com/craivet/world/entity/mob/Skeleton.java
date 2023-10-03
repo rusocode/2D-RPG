@@ -40,8 +40,8 @@ public class Skeleton extends Mob {
 
     @Override
     public void doActions() {
-        // TODO Hacer que siga al player cuando el mob este trabado en un tile
-        // Si la distancia del player con respecto al mob es menor a 10 tiles
+        // TODO Make it follow the player when the Skeleton is stuck on a tile
+        // If the distance of the player with respect to the mob is less than 10 tiles
         if (getTileDistance(game.world.player) < 10) moveTowardPlayer(game.world.player, 30);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
         if (!flags.hitting) isPlayerWithinAttackRange(60, tile * 6, tile * 4, 60);
@@ -49,7 +49,7 @@ public class Skeleton extends Mob {
 
     @Override
     public void damageReaction() {
-        timer.directionCounter = 0;
+       // timer.directionCounter = 0;
     }
 
     @Override

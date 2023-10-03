@@ -22,18 +22,18 @@ public class TileManager implements State {
     }
 
     /**
-     * Renderiza los tiles dentro de la vista de la camara aplicando los desplazamientos a cada uno.
+     * Renders the tiles within the camera view by applying offsets to each one.
      *
-     * @param g2 componente grafico.
+     * @param g2 graphic component.
      */
     @Override
     public void render(Graphics2D g2) {
-        // TODO Se podria calcular desde una clase Camera
-        // Calcula los desplazamientos
+        // TODO It could be calculated from a Camera class
+        // Calculate the offsets
         int xOffset = world.player.pos.x - world.player.screen.xOffset;
         int yOffset = world.player.pos.y - world.player.screen.yOffset;
 
-        // Calcula los tiles que estan dentro de la vista de la camara
+        // Calculates the tiles that are within the camera view
         int yStart = Math.max(0, yOffset / tile);
         int yEnd = Math.min(MAX_MAP_ROW, (yOffset + WINDOW_HEIGHT) / tile + 1);
         int xStart = Math.max(0, xOffset / tile);

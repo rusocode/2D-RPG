@@ -256,7 +256,7 @@ public class UI {
         changeFontSize(14);
 
         // Text
-        int textX = x + tile;
+        int textX = x + tile - 10;
         int textY = y + tile;
 
         if (entity.dialogue.dialogues[entity.dialogue.set][entity.dialogue.index] != null) {
@@ -493,7 +493,7 @@ public class UI {
 
         for (int i = 0; i < entity.inventory.size(); i++) {
 
-            if (entity.inventory.get(i) == entity.weapon || entity.inventory.get(i) == entity.shield || entity.inventory.get(i) == entity.light) {
+            if (entity.inventory.get(i) == world.player.weapon || entity.inventory.get(i) == world.player.shield || entity.inventory.get(i) == world.player.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRect(slotX, slotY, tile, tile);
             }

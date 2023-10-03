@@ -20,8 +20,8 @@ import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * La clase World represeta el escenario del juego. Cada parte del mundo se divide en mapas de 50x50 tiles que estan
- * compuestos por tiles, entidades y un entorno (clima).
+ * The World class represents the scenery of the game. Each part of the world is divided into 50x50 tile maps that are
+ * composed of tiles, entities and an environment (weather).
  */
 
 public class World {
@@ -41,7 +41,7 @@ public class World {
     // Entities
     public Player player;
     public List<Entity> particles = new ArrayList<>();
-    // TODO No tendrian que declararse como HashMap o ArrayList?
+    // TODO Shouldn't they be declared as HashMap or ArrayList?
     public Item[][] items = new Item[MAPS][20];
     public Mob[][] mobs = new Mob[MAPS][40];
     public Interactive[][] interactives = new Interactive[MAPS][50];
@@ -55,28 +55,28 @@ public class World {
     }
 
     /**
-     * Actualiza las entidades y el entorno.
+     * Updates the entities and environment.
      */
     public void update() {
-        // Actualiza las entidades solo si el juego esta en PLAY_STATE
+        // Update entities only if the game is in PLAY_STATE
         if (game.state == PLAY_STATE) entities.update();
         if (game.state != MAIN_STATE) environment.update();
     }
 
     /**
-     * Renderiza los tiles, las entidades y el entorno.
+     * Renders the tiles, entities and the environment.
      *
-     * @param g2 componente grafico.
+     * @param g2 graphic component.
      */
     public void render(Graphics2D g2) {
-        // Renderiza los tiles, las entidades y el clima solo si el juego es distinto a MAIN_STATE
+        // Render tiles, entities, and weather only if the game is other than MAIN_STATE
         if (game.state != MAIN_STATE) {
             tiles.render(g2);
             entities.render(g2);
             environment.render(g2);
         }
         if (game.state == MAIN_STATE) {
-            // TODO Reemplazar por un fondo
+            // TODO Replace with a background with an image
             g2.setColor(Color.black);
             g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         }
@@ -102,7 +102,7 @@ public class World {
     }
 
     public void changeArea() {
-        // Si hay un cambio de area
+        // If there is a change of area
         if (nextZone != zone) {
             if (nextZone == DUNGEON) game.playMusic(music_dungeon);
             if (zone == DUNGEON && nextZone == OUTSIDE) game.stopMusic();
@@ -112,7 +112,7 @@ public class World {
     }
 
     /**
-     * Crea las entidades.
+     * Create the entities.
      */
     public void createEntities() {
         createItems();
@@ -121,7 +121,7 @@ public class World {
     }
 
     /**
-     * Crea los items.
+     * Create the items.
      */
     public void createItems() {
         int i = 0;
@@ -139,8 +139,7 @@ public class World {
         items[NIX][i++].setLoot(new Tent(game, this)); */
 
         items[NASHE][i] = new Chest(game, this, 16, 21);
-        // FIXME Se podria reemplazar el mal uso del Setter creando un nuevo item como argumento desde el constructor del objeto Chest
-        // TODO Y si son muchos items?
+        // TODO What if there are many items?
         items[NASHE][i++].setLoot(new PotionRed(game, this, 5));
 
         items[NASHE][i] = new Chest(game, this, 23, 40);
@@ -160,7 +159,7 @@ public class World {
     }
 
     /**
-     * Crea los mobs.
+     * Create the mobs.
      */
     public void createMobs() {
         int i = 0, j = 0, k = 0, z = 0;
@@ -188,7 +187,7 @@ public class World {
     }
 
     /**
-     * Crea los tiles interactivos.
+     * Create the interactive tiles.
      */
     public void createInteractiveTile() {
         int i = 0;
