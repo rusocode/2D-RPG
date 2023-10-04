@@ -63,7 +63,7 @@ public class Player extends Mob {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
         else getCurrentItemFrame(g2);
-        drawRects(g2);
+        // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -264,7 +264,10 @@ public class Player extends Mob {
                 int damage = Math.max(attack - mob.stats.defense, 1);
                 mob.stats.decreaseHp(damage);
                 game.ui.addMessageToConsole(damage + " damage!");
-                if (mob.stats.hp > 0) game.playSound(mob.soundHit);
+                if (mob.stats.hp > 0) {
+                    game.playSound(mob.soundHit);
+                    if (!(mob instanceof Slime)) game.playSound(sound_hit_mob);
+                }
 
                 mob.flags.invincible = true;
                 mob.flags.hpBar = true;
@@ -387,7 +390,7 @@ public class Player extends Mob {
         game.playSound(sound_player_death);
         game.state = GAME_OVER_STATE;
         game.ui.command = -1;
-        game.music.stop();
+        // game.music.stop();
     }
 
     private void getCurrentItemFrame(Graphics2D g2) {

@@ -189,6 +189,7 @@ public class Game extends Canvas implements Runnable {
         world.player.reset(fullReset);
         world.createMobs();
         if (fullReset) {
+            stopMusic();
             playMusic(music_main);
             world.createItems();
             world.createInteractiveTile();
@@ -198,6 +199,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     public void playMusic(URL url) {
+        // TODO Se podria detener la musica desde aca para evitar hacer dos llamadas
         music.play(url);
         music.loop();
     }

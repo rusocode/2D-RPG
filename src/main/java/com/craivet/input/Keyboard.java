@@ -87,12 +87,14 @@ public class Keyboard extends KeyAdapter {
                 if (game.ui.command == 0) {
                     game.state = PLAY_STATE;
                     game.stopMusic();
+                    game.playMusic(music_overworld);
                     game.playSound(sound_spawn);
                 }
                 if (game.ui.command == 1) {
                     game.file.loadData();
                     game.state = PLAY_STATE;
                     game.stopMusic();
+                    game.playMusic(music_overworld);
                     game.playSound(sound_spawn);
                 }
                 if (game.ui.command == 2) System.exit(0);

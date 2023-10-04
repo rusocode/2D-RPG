@@ -104,8 +104,14 @@ public class World {
     public void changeArea() {
         // If there is a change of area
         if (nextZone != zone) {
-            if (nextZone == DUNGEON) game.playMusic(music_dungeon);
-            if (zone == DUNGEON && nextZone == OUTSIDE) game.stopMusic();
+            if (nextZone == DUNGEON) {
+                game.stopMusic();
+                game.playMusic(music_dungeon);
+            }
+            if (zone == DUNGEON && nextZone == OUTSIDE) {
+                game.stopMusic();
+                game.playMusic(music_overworld);
+            }
         }
         zone = nextZone;
         createMobs();

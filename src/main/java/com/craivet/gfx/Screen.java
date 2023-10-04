@@ -53,20 +53,12 @@ public class Screen extends JFrame {
         addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                if (game.state != MAIN_STATE) {
-                    int op = JOptionPane.showConfirmDialog(null, "Do you want to save the changes?", "Save changes", JOptionPane.YES_NO_CANCEL_OPTION);
-                    switch (op) {
-                        case JOptionPane.YES_OPTION -> {
-                            game.file.saveData();
-                            System.exit(0);
-                        }
-                        case JOptionPane.NO_OPTION -> {
-                            game.file.saveConfig(); // TODO Is it necessary?
-                            System.exit(0);
-                        }
-                        case JOptionPane.CANCEL_OPTION -> setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-                    }
+                int op = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit?", "Confirm Exit", JOptionPane.YES_NO_OPTION);
+                switch (op) {
+                    case JOptionPane.YES_OPTION -> System.exit(0);
+                    case JOptionPane.NO_OPTION -> setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 }
+
             }
         });
         if (fullScreenMode) setFullScreen();
