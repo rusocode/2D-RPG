@@ -132,14 +132,14 @@ public class SpriteSheet {
 
     }
 
-    public void loadWeaponFrames(SpriteSheet ss, int w, int h) {
+    public void loadWeaponFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
         weapon = new BufferedImage[col * row];
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                weapon[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), 16, 16);
+                weapon[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
     }
 
     /**

@@ -63,7 +63,7 @@ public class Player extends Mob {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
         else getCurrentItemFrame(g2);
-        // drawRects(g2);
+        drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
@@ -81,12 +81,13 @@ public class Player extends Mob {
         stats.attack = getAttack();
         stats.defense = getDefense();
 
+        sheet.loadPlayerMovementFrames(player_movement, 1);
+        sheet.loadWeaponFrames(sword_frame, 16, 16, 1);
+
         hitbox = new Rectangle(7, 32, 10, 24);
+        // hitbox = new Rectangle(sheet.frame.getWidth() / 2 - 6, sheet.frame.getHeight() / 2 - 6, sheet.frame.getWidth() / 2, sheet.frame.getHeight() / 2);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-
-        sheet.loadPlayerMovementFrames(player_movement, 1);
-        sheet.loadWeaponFrames(sword_frame, 16, 16);
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, sheet.down);

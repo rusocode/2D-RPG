@@ -35,7 +35,7 @@ public class Skeleton extends Mob {
         attackbox.width = 90;
         attackbox.height = 90;
         sheet.loadMovementFrames(skeleton_movement, tile, tile, scale);
-        sheet.loadAttackFrames(skeleton_attack, tile, tile, scale);
+        //sheet.loadAttackFrames(skeleton_attack, tile, tile, scale);
     }
 
     @Override

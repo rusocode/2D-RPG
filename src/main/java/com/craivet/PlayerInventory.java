@@ -96,11 +96,11 @@ public class PlayerInventory extends Inventory {
                 player.stats.attack = player.getAttack();
                 switch (player.weapon.type) {
                     case SWORD -> {
-                        player.sheet.loadWeaponFrames(sword_frame, 16, 16);
+                        player.sheet.loadWeaponFrames(sword_frame, 16, 16, 1);
                         player.game.playSound(sound_draw_sword);
                     }
-                    case AXE -> player.sheet.loadWeaponFrames(axe_frame, 16, 16);
-                    case PICKAXE -> player.sheet.loadWeaponFrames(pickaxe_frame, 16, 16);
+                    case AXE -> player.sheet.loadWeaponFrames(axe_frame, 16, 16, 1);
+                    case PICKAXE -> player.sheet.loadWeaponFrames(pickaxe_frame, 16, 16, 1);
                 }
             }
         }

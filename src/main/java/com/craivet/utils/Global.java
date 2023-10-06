@@ -40,8 +40,8 @@ public final class Global {
     public static final int MAX_WINDOW_ROW = 13;
     public static final int MAX_WINDOW_COL = 17; // TODO o MAX_TILES_COL?
     // Window size
-    public static final int WINDOW_WIDTH = 800; // tile * MAX_WINDOW_COL;
-    public static final int WINDOW_HEIGHT = 600; // tile * MAX_WINDOW_ROW;
+    public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL;
+    public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW;
 
     // Map settings
     public static final int MAPS = 10;
