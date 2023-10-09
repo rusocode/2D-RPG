@@ -7,16 +7,16 @@ import java.util.ArrayList;
 
 public class Data implements Serializable {
 
-    // TODO Falta el entorno
+    // TODO The environment is missing
     int zone, map, x, y, life, maxlife, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, gold;
     int weapon, shield, light;
     Direction direction;
 
-    // TODO Creo que se podria usar un HashMap
+    // TODO I think you could use a HashMap
     ArrayList<String> names = new ArrayList<>();
     ArrayList<Integer> amounts = new ArrayList<>();
 
-    // Item en el mapa
+    // Item on the map
     int[][] itemX, itemY;
     String[][] itemName, loot;
     boolean[][] opened, empty;

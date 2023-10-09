@@ -45,7 +45,6 @@ public class Slime extends Mob {
 
     @Override
     public void damageReaction() {
-        timer.directionCounter = 0; // TODO No creo que haga falta resetear el counter de la direccion ya que si me sigue no tendria sentido
         flags.following = true;
     }
 

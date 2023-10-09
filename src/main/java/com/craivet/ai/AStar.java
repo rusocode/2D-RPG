@@ -27,10 +27,10 @@ public class AStar {
     }
 
     /**
-     * Busca la mejor ruta para la entidad.
+     * Find the best path for the entity.
      *
-     * @param goalRow fila objetivo.
-     * @param goalCol columna objetivo.
+     * @param goalRow goal row.
+     * @param goalCol goal column.
      */
     public void searchPath(Entity entity, int goalRow, int goalCol) {
         int startRow = (entity.pos.y + entity.hitbox.y) / tile;
@@ -38,55 +38,55 @@ public class AStar {
 
         setNodes(startRow, startCol, goalRow, goalCol);
 
-        // Si devuelve verdadero, significa que ha encontrado un camino para guiar a la entidad hacia el objetivo
+        // If it returns true, it means that you have found a path to guide the entity to the goal
         if (search()) {
 
-            // Obtiene la siguiente posicion x/y de la ruta
+            // Gets the next x/y position of the path
             int nextX = pathList.get(0).col * tile;
             int nextY = pathList.get(0).row * tile;
-            // Obtiene la posicion de la entidad
+            // Gets the position of the entity
             int left = entity.pos.x + entity.hitbox.x;
             int right = entity.pos.x + entity.hitbox.x + entity.hitbox.width;
             int top = entity.pos.y + entity.hitbox.y;
             int bottom = entity.pos.y + entity.hitbox.y + entity.hitbox.height;
 
-            // Averigua la direccion relativa del siguiente nodo segun la posicion actual de la entidad
-            /* Si el lado izquierdo y derecho de la entidad estan entre la siguiente posicion x de la ruta, entonces
-             * se define su movimiento hacia arriba o abajo. */
+            // Find out the relative address of the next node based on the current position of the entity
+            /* If the left and right side of the entity are between the next x position of the path, then its movement
+             * up or down is defined. */
             if (left >= nextX && right < nextX + tile) entity.direction = top > nextY ? Direction.UP : Direction.DOWN;
-            /* Si el lado superior y inferior de la entidad estan entre la siguiente posicion y de la ruta, entonces
-             * se define su movimiento hacia la izquierda o derecha. */
+            /* If the top and bottom side of the entity are between the next position and the path, then its movement to
+             * the left or right is defined. */
             if (top >= nextY && bottom < nextY + tile)
                 entity.direction = left > nextX ? Direction.LEFT : Direction.RIGHT;
 
-                /* Hasta ahora funciona bien, pero en el caso de que una entidad este en el tile que esta debajo del
-                 * siguiente tile, PERO no puede cambiar a la direccion DIR_UP por que hay un arbol. */
+                /* So far it works fine, but in the case that an entity is in the tile that is below the next tile, BUT
+                * it cannot change to the UP because there is a tree. */
             else if (top > nextY && left > nextX) {
                 // up o left
                 entity.direction = Direction.UP;
-                entity.checkCollision();
+                entity.checkCollisions();
                 if (entity.flags.colliding) entity.direction = Direction.LEFT;
             } else if (top > nextY && left < nextX) {
                 // up o right
                 entity.direction = Direction.UP;
-                entity.checkCollision();
+                entity.checkCollisions();
                 if (entity.flags.colliding) entity.direction = Direction.RIGHT;
             } else if (top < nextY && left > nextX) {
                 // down o left
                 entity.direction = Direction.DOWN;
-                entity.checkCollision();
+                entity.checkCollisions();
                 if (entity.flags.colliding) entity.direction = Direction.LEFT;
             } else if (top < nextY && left < nextX) {
                 // down o right
                 entity.direction = Direction.DOWN;
-                entity.checkCollision();
+                entity.checkCollisions();
                 if (entity.flags.colliding) entity.direction = Direction.RIGHT;
             }
 
         }
     }
 
-    // TODO El problema de esto es que la busqueda se actualiza cada 60 segundos
+    // FIXME The problem with this is that the search updates every 60 seconds
     private boolean search() {
         while (!goalReached && step < 500) {
 
@@ -126,10 +126,10 @@ public class AStar {
     }
 
     /**
-     * Establece el nodo inicial, el nodo objetivo y los nodos solidos.
+     * Sets the start node, target node and solid nodes.
      */
     public void setNodes(int startRow, int startCol, int goalRow, int goalCol) {
-        resetNodes(); // TODO No haria falta resetear los nodos en caso de que el objetivo sea fijo
+        resetNodes(); // TODO It would not be necessary to reset the nodes in case the objective is fixed
 
         startNode = node[startRow][startCol];
         goalNode = node[goalRow][goalCol];
@@ -137,7 +137,7 @@ public class AStar {
 
         openList.add(currentNode);
 
-        // Establece los nodos solidos verificando los tiles solidos y los tiles interactivos destructibles
+        // Set solid nodes by checking solid tiles and destructible interactive tiles
         for (int row = 0; row < MAX_MAP_ROW; row++) {
             for (int col = 0; col < MAX_MAP_COL; col++) {
                 int tileIndex = world.tileIndex[world.map][row][col];
@@ -145,13 +145,13 @@ public class AStar {
 
                 for (int i = 0; i < world.interactives[1].length; i++) {
                     if (world.interactives[world.map][i] != null && world.interactives[world.map][i].destructible) {
-                        int itRow = world.interactives[world.map][i].pos.y / tile; // TODO Falta sumarle la hitbox
+                        int itRow = world.interactives[world.map][i].pos.y / tile; // TODO The hitbox needs to be added
                         int itCol = world.interactives[world.map][i].pos.x / tile;
                         node[itRow][itCol].solid = true;
                     }
                 }
 
-                // Funciona bien, pero cuando la entidad esta en una posicion cerrada (no literalmente) de tiles interactivos, se queda atascada
+                // It works fine, but when the entity is in a closed position (not literally) of interactive tiles, it gets stuck
                 for (int i = 0; i < world.items[1].length; i++) {
                     if (world.items[world.map][i] != null && world.items[world.map][i].solid) {
                         int itRow = (world.items[world.map][i].pos.y + world.items[world.map][i].hitbox.y) / tile;
@@ -227,8 +227,8 @@ public class AStar {
     private void trackThePath() {
         Node current = goalNode;
         while (current != startNode) {
-            // Con esta lista cualquier entidad puede rastrear la ruta
-            pathList.add(0, current); // Agrega el nodo al primer slot para que el ultimo nodo agregado este en [0]
+            // With this list any entity can trace the path
+            pathList.add(0, current); // Add the node to the first slot so that the last added node is in [0]
             current = current.parent;
         }
     }

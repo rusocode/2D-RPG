@@ -55,7 +55,7 @@ public class GameState implements State {
                 lastFrames = game.loop.framesInRender;
                 game.loop.showFPS = false;
             } else
-                g2.drawString("FPS: " + lastFrames, x, y); // Muestra los ultimos fps hasta que se complete el segundo
+                g2.drawString("FPS: " + lastFrames, x, y); // Shows the last fps until the second is completed
             y += gap;
             g2.drawString("Render time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
         }

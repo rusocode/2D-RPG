@@ -24,7 +24,7 @@ public class Chest extends Item {
         hitbox = new Rectangle(2, 16, tile - 5, tile - 16);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.loadItemFrames(chest, 16, 16, 1);
+        sheet.loadItemFrames(chest, 32, 32, 1);
     }
 
     @Override

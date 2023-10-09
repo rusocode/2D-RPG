@@ -1,9 +1,9 @@
 package com.craivet.world.entity;
 
 /**
- * Estadisticas de las entidades.
+ * Stats of the entities.
  * <p>
- * Los atributos dependen de la raza (que todavia no esta implementado),
+ * Attributes depend on race (which is not yet implemented).
  *
  * @author Juan Debenedetti
  */
@@ -12,7 +12,7 @@ public class Stats {
 
     public String name;
     public int lvl, exp, nextLvlExp;
-    public int speed, defaultSpeed; // TODO Deberia ser float
+    public int speed, defaultSpeed; // TODO It should be float
     public int hp, maxHp;
     public int mana, maxMana;
     public int ammo;
@@ -23,7 +23,7 @@ public class Stats {
     public int knockbackValue;
 
     /**
-     * Inicializa las estadisticas del player.
+     * Initializes the player stats.
      */
     public void init() {
         lvl = 1;
@@ -41,9 +41,9 @@ public class Stats {
     }
 
     /**
-     * Incrementa el hp.
+     * Increase hp.
      *
-     * @param amount cantidad de hp que se va a incrementar.
+     * @param amount amount of hp to increase.
      */
     public void increaseHp(int amount) {
         hp += amount;
@@ -51,9 +51,9 @@ public class Stats {
     }
 
     /**
-     * Decrementa el hp.
+     * Decreases hp.
      *
-     * @param amount cantidad de hp que se va a decrementar.
+     * @param amount amount of hp to be decreased.
      */
     public void decreaseHp(int amount) {
         hp -= amount;
@@ -69,23 +69,23 @@ public class Stats {
     }
 
     /**
-     * Llena el hp.
+     * Fills the hp.
      */
     public void fullHp() {
         hp = maxHp;
     }
 
     /**
-     * Llena la mana.
+     * Fills the mana.
      */
     public void fullMana() {
         mana = maxMana;
     }
 
     /**
-     * Reinicia las estadisticas.
+     * Reset the stats.
      *
-     * @param fullReset true para reiniciar el lvl, exp, nextLvlExp, strenght y dexterity; falso en caso contrario.
+     * @param fullReset true to reset the lvl, exp, nextLvlExp, strength and dexterity; false otherwise.
      */
     public void reset(boolean fullReset) {
         hp = maxHp = 6;

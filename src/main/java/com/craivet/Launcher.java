@@ -3,11 +3,11 @@ package com.craivet;
 import javax.swing.*;
 
 /**
- * <h3>Notas</h3>
- * # Este programa depende de la CPU para renderizar, por lo que el rendimiento grafico sera mas debil que el de los
- * juegos que utilizan GPU. Para utilizar la GPU, debemos dar un paso adelante y acceder a OpenGL.
+ * <h3>Notes</h3>
+ * # This program depends on the CPU for rendering, so the graphical performance will be weaker than that of the games
+ * that use GPU. To use the GPU, we need to take a step forward and access OpenGL.
  * <p>
- * # El renderizado con Canvas parece ser mas potente a diferencia de JPanel con respecto a la cantidad de FPS.
+ * # Rendering with Canvas seems to be more powerful unlike JPanel with respect to the amount of FPS.
  */
 
 public class Launcher {

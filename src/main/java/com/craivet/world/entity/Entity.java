@@ -45,8 +45,8 @@ public abstract class Entity {
     public Projectile projectile;
 
     public Entity linkedEntity;
-    // TODO Mover a Mob
-    public boolean boss;
+
+    public boolean boss; // TODO Move to Mob
 
     public Entity(Game game, World world) {
         this.game = game;
@@ -61,16 +61,16 @@ public abstract class Entity {
 
     public void update() {
         if (flags.knockback) {
-            checkCollision();
-            // Si no colisiona, entonces actualiza la posicion dependiendo de la direccion del atacante
+            checkCollisions();
+            // If it doesn't collide, then update the position depending on the attacker's direction
             if (!flags.colliding) pos.update(this, direction.knockbackDirection);
-            else mechanics.stopKnockback(this); // Si colisiona, detiene el knockback
+            else mechanics.stopKnockback(this); // If it collides, it stops the knockback
             timer.timerKnockback(this, INTERVAL_KNOCKBACK);
         } else if (flags.hitting) hit();
         else {
-            // Es importante que realize las acciones antes de comprobar las colisiones
+            // It is important that you perform the actions before checking for collisions
             doActions();
-            checkCollision();
+            checkCollisions();
             if (!flags.colliding) pos.update(this, direction);
         }
         timer.checkTimers(this);
@@ -81,19 +81,19 @@ public abstract class Entity {
             screen.tempScreenX = getScreenX();
             screen.tempScreenY = getScreenY();
 
-            // Si el mob hostil que no es un boss tiene activada la barra de vida
+            // If the hostile mob that is not a boss has the life bar activated
             if (type == Type.HOSTILE && flags.hpBar && !boss) game.ui.renderHpBar(this);
             if (flags.invincible) {
-                // Sin esto, la barra desaparece despues de 4 segundos, incluso si el player sigue atacando al mob
+                // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
                 timer.hpBarCounter = 0;
                 Utils.changeAlpha(g2, 0.4f);
             }
             if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
-            // Si es una animacion
+            // If it is an animation
             if (sheet.movement != null || sheet.attack != null)
                 g2.drawImage(sheet.getCurrentAnimationFrame(this), screen.tempScreenX, screen.tempScreenY, null);
-                // Si es una imagen estatica (item, interactive tile)
+                // If it is a static image (item, interactive tile)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY(), null);
 
             drawRects(g2);
@@ -103,13 +103,13 @@ public abstract class Entity {
     }
 
     /**
-     * Realiza una secuencia de acciones.
+     * Perform a sequence of actions.
      */
     protected void doActions() {
     }
 
     /**
-     * Comprueba si dropeo un item.
+     * Check if I drop an object.
      */
     public void checkDrop() {
     }
@@ -137,10 +137,10 @@ public abstract class Entity {
     }
 
     /**
-     * Genera 4 particulas en el objetivo.
+     * Generates 4 particles on the target.
      *
-     * @param generator entidad que va a generar las particulas.
-     * @param target    objetivo en donde se van a generar las particulas.
+     * @param generator entity that will generate the particles.
+     * @param target    target where the particles will be generated.
      */
     protected void generateParticle(Entity generator, Entity target) {
         world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
@@ -150,13 +150,13 @@ public abstract class Entity {
     }
 
     /**
-     * Golpea a la entidad si la attackbox en el frame de ataque colisiona con la hitbox del objetivo.
+     * Hits the entity if the attackbox in the attack frame collides with the target's hitbox.
      * <p>
-     * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
-     * ataque. Despues de motion2 vuelve al frame de movimiento. Para el caso del player solo hay un frame de ataque.
+     * From 0 to motion1 ms the first attack frame is shown. From motion1 to motion2 ms the second attack frame is shown.
+     * After motion2 it returns to the motion frame. In the case of the player there is only one attack frame.
      * <p>
-     * En el segundo frame de ataque, la posicion x-y se ajusta para la attackbox y verifica si colisiona con una
-     * entidad.
+     * In the second attack frame, the x-y position is adjusted for the attackbox and checks if it collides with an
+     * entity.
      */
     public void hit() {
         timer.attackAnimationCounter++;
@@ -192,17 +192,17 @@ public abstract class Entity {
     }
 
     /**
-     * Dropea un item.
+     * Drops an object.
      *
-     * @param entity entidad.
-     * @param item   objeto que dropea la entidad.
+     * @param entity entity.
+     * @param item   object that drops the entity.
      */
     protected void drop(Entity entity, Item item) {
         for (int i = 0; i < world.items[1].length; i++) {
             if (world.items[world.map][i] == null) {
                 world.items[world.map][i] = item;
                 world.items[world.map][i].pos.x = pos.x + (sheet.frame.getWidth() / 2 - item.sheet.frame.getWidth() / 2);
-                // Suma la mitad de la hitbox solo de los mobs a la posicion y del item
+                // Add half of the hitbox of just the mobs to the position and the item
                 world.items[world.map][i].pos.y = pos.y + (sheet.frame.getHeight() / 2 + (entity instanceof Mob ? hitbox.height / 2 : 0) - item.sheet.frame.getHeight() / 2);
                 break;
             }
@@ -210,16 +210,16 @@ public abstract class Entity {
     }
 
     /**
-     * Golpea al player.
+     * Hit the player.
      *
-     * @param contact si el mob hostil hace contacto con el player.
-     * @param attack  puntos de ataque.
+     * @param contact if the hostile mob makes contact with the player.
+     * @param attack  attack points.
      */
     public void hitPlayer(boolean contact, int attack) {
-        // Si la entidad es hostil y hace contacto con el player que no es invencible
+        // If the entity is hostile and makes contact with the player who is not invincible
         if (type == Type.HOSTILE && contact && !world.player.flags.invincible) {
             game.playSound(sound_player_damage);
-            // Resta la defensa del player al ataque del mob para calcular el daño justo
+            // Subtract the player's defense from the mob's attack to calculate fair damage
             int damage = Math.max(attack - world.player.stats.defense, 1);
             world.player.stats.decreaseHp(damage);
             world.player.flags.invincible = true;
@@ -227,9 +227,9 @@ public abstract class Entity {
     }
 
     /**
-     * Comprueba las colisiones.
+     * Check collisions.
      */
-    public void checkCollision() {
+    public void checkCollisions() {
         flags.colliding = false;
         game.collision.checkTile(this);
         game.collision.checkItem(this);
@@ -239,15 +239,15 @@ public abstract class Entity {
     }
 
     /**
-     * Verifica si la entidad esta dentro de la camara.
+     * Check if the entity is inside the camera.
      *
-     * @return true si la entidad esta dentro de la camara o false.
+     * @return true if the entity is inside the camera or false.
      */
     public boolean isOnCamera() {
-        /* Si el render se encuentra con una entidad mas grande (por ejemplo, Skeleton) de lo normal, no lo va a
-         * representar cuando el player visualice solo los pies de este, ya que la distancia del boss que comienza desde
-         * la esquina superior izquierda (o del centro?) es mucha con respecto a la vision del player en pantalla. Por
-         * lo tanto se aumenta esa vision multiplicando el bossArea. */
+        /* If the render is with a larger entity (for example, Skeleton) than normal, it will not be represented when
+         * the player displays only its feet, since the distance from the boss that starts from the upper left corner
+         * (or the center?) is a lot with respect to the view of the player on the screen. Therefore, this vision is
+         * increased by multiplying the bossArea. */
         int bossArea = 5;
         return pos.x + tile * bossArea > world.player.pos.x - world.player.screen.xOffset &&
                 pos.x - tile < world.player.pos.x + world.player.screen.xOffset &&
@@ -264,7 +264,7 @@ public abstract class Entity {
     }
 
     /**
-     * Dibuja los rectangulos que representan los frames, hitbox y attackbox.
+     * Draw the rectangles that represent the frames, hitbox and attackbox.
      */
     private void drawRects(Graphics2D g2) {
         g2.setStroke(new BasicStroke(0));

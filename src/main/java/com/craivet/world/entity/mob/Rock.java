@@ -43,7 +43,7 @@ public class Rock extends Mob {
     @Override
     public void move(Direction direction) {
         this.direction = direction;
-        checkCollision();
+        checkCollisions();
         if (!flags.colliding) {
             switch (direction) {
                 case DOWN -> pos.y += stats.speed;
@@ -68,44 +68,44 @@ public class Rock extends Mob {
     }
 
     /**
-     * Detecta las placas y si todas las rocas estan vinculadas a esta, se abre la puerta de hierro.
+     * Detect the plates and if all the rocks are linked to it, the iron door opens.
      */
     private void detectedPlate() {
         int c = 0;
         ArrayList<Interactive> plates = new ArrayList<>();
         ArrayList<Entity> rocks = new ArrayList<>();
 
-        // Agrega las placas a la lista
+        // Add the plates to the list
         for (int i = 0; i < world.interactives[1].length; i++) {
             if (world.interactives[world.map][i] != null && world.interactives[world.map][i].stats.name != null && world.interactives[world.map][i].stats.name.equals(MetalPlate.item_name))
                 plates.add(world.interactives[world.map][i]);
         }
 
-        // Agrega las rocas a la lista
+        // Add the rocks to the list
         for (int i = 0; i < world.mobs[1].length; i++) {
             if (world.mobs[world.map][i] != null && world.mobs[world.map][i].stats.name.equals(Rock.NAME))
                 rocks.add(world.mobs[world.map][i]);
         }
 
-        // Itera las placas y verifica la distancia con la roca
+        // Iterate the plates and check the distance with the rock
         for (Interactive plate : plates) {
             int xDistance = Math.abs(pos.x - plate.pos.x);
             int yDistance = Math.abs(pos.y - plate.pos.y);
             int distance = Math.max(xDistance, yDistance);
-            if (distance < 8) { // Vincula la roca a la placa si esta a menos de 8 pixeles de distancia
+            if (distance < 8) { // Link the rock to the plate if it is less than 8 pixels away
                 if (linkedEntity == null) {
                     linkedEntity = plate;
                     game.playSound(sound_chipwall);
                 }
-                // Desvincula la roca de la placa si se vuelve a mover de esta
+                // Detaches the rock from the plate if it moves from this plate again
             } else if (linkedEntity == plate) linkedEntity = null;
         }
 
-        // Cuenta la lista de rocas vinculadas con las placas
+        // Count the list of rocks linked to the plates
         for (Entity rock : rocks)
             if (rock.linkedEntity != null) c++;
 
-        // Si todas las rocas estan en las placas, la puerta de hierro se abre
+        // If all the rocks are on the plates, the iron door opens
         if (c == rocks.size()) {
             for (int i = 0; i < world.items[1].length; i++) {
                 if (world.items[world.map][i] != null && world.items[world.map][i].stats.name.equals(DoorIron.NAME)) {

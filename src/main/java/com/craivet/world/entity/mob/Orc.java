@@ -31,8 +31,8 @@ public class Orc extends Mob {
         hitboxDefaultY = hitbox.y;
         attackbox.width = 44;
         attackbox.height = 48;
-        sheet.loadMovementFrames(orc_movement, 16, 16, 1); // TODO No tendria que dividir el tile?
-        sheet.loadAttackFrames(orc_attack, 16, 16, 1);
+        sheet.loadMovementFrames(orc_movement, 16, 16, 1); // TODO Shouldn't I divide the tile?
+        //sheet.loadAttackFrames(orc_attack, 16, 16, 1);
     }
 
     @Override
@@ -49,7 +49,6 @@ public class Orc extends Mob {
 
     @Override
     public void damageReaction() {
-        timer.directionCounter = 0;
         flags.following = true;
     }
 

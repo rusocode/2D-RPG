@@ -87,12 +87,14 @@ public class Keyboard extends KeyAdapter {
                 if (game.ui.command == 0) {
                     game.state = PLAY_STATE;
                     game.stopMusic();
+                    game.playMusic(music_overworld);
                     game.playSound(sound_spawn);
                 }
                 if (game.ui.command == 1) {
                     game.file.loadData();
                     game.state = PLAY_STATE;
                     game.stopMusic();
+                    game.playMusic(music_overworld);
                     game.playSound(sound_spawn);
                 }
                 if (game.ui.command == 2) System.exit(0);
@@ -131,8 +133,8 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_I) game.state = INVENTORY_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;
         if (code == KeyEvent.VK_M) game.minimap.minimapOn = !game.minimap.minimapOn;
-        /* Necesita guardar el archivo de texto editado presionando Ctrl + F9 o seleccionando Build > Build Project. Lo
-         * que reconstruira el proyecto y puede aplicar el cambio presionando la tecla R. */
+        /* You need to save the edited text file by pressing Ctrl + F9 or by selecting Build > Build Project. Which will
+         * rebuild the project and you can apply the change by pressing the R key. */
         if (code == KeyEvent.VK_R) {
             switch (game.world.map) {
                 case 0 -> game.file.loadMap("maps/nashe.txt", NASHE, "Nashe");
@@ -170,8 +172,8 @@ public class Keyboard extends KeyAdapter {
             default -> 0;
         };
 
-        /* Si la seleccion de comandos esta en los subestados de fullScreen control, entonces no ejecuta las
-         * siguientes instrucciones ya que la seleccion solo se mantiene en el back. */
+        /* If the command selection is in the fullScreen control substates, then it does not execute the following
+         * instructions since the selection is only kept in the back. */
         if (game.ui.subState == 0 || game.ui.subState == 2) {
             if (code == KeyEvent.VK_W) {
                 game.playSound(sound_slot);
@@ -185,22 +187,22 @@ public class Keyboard extends KeyAdapter {
             }
         }
 
-        // Baja el volumen
+        // Down the volume
         if (code == KeyEvent.VK_A) {
             if (game.ui.subState == 0) {
-                if (game.ui.command == 0 && game.music.volumeScale > 0) { // Musica
+                if (game.ui.command == 0 && game.music.volumeScale > 0) { // Music
                     game.music.volumeScale--;
-                    // TODO Hace falta esto aca?
-                    game.music.checkVolume(); // Cambia el volumen de la musica cuando ya se esta reproduciendo
+                    // TODO Is this necessary here?
+                    game.music.checkVolume(); // Change the volume of the music when it is already playing
                     game.playSound(sound_slot);
                 }
-                if (game.ui.command == 1 && game.sound.volumeScale > 0) { // Sonido
+                if (game.ui.command == 1 && game.sound.volumeScale > 0) { // Sound
                     game.sound.volumeScale--;
                     game.playSound(sound_slot);
                 }
             }
         }
-        // Sube el volumen
+        // Turn up the volume
         if (code == KeyEvent.VK_D) {
             if (game.ui.subState == 0) {
                 if (game.ui.command == 0 && game.music.volumeScale < 5) {

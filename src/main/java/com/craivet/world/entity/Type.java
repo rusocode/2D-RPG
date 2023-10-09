@@ -1,10 +1,10 @@
 package com.craivet.world.entity;
 
 /**
- * Tipos de entidades.
+ * Types of entities.
  * <p>
- * TODO La constante CONSUMABLE se podria combinar, ya que una pocion es agarrable y consumible
- * TODO AXE, SWORD y PICKAXE se podrian unificar en WEAPON
+ * TODO The CONSUMABLE constant could be combined, since a potion is grabable and consumable.
+ * TODO AXE, SWORD and PICKAXE could be unified in WEAPON
  */
 
 public enum Type {

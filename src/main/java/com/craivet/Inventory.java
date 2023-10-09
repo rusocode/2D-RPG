@@ -7,10 +7,8 @@ import java.util.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * La clase Inventory tiene los metodos basicos de un inventario, como agregar un item (add), eliminar un item (remove),
- * obtener el slot del item especificado (getSlot), entre otros.
- * <p>
- * FIXME El inventario no tiene limites de items, usar 20 slots
+ * The Inventory class has the basic methods of an inventory, such as adding an item (add), removing an item (remove),
+ * obtaining the slot of the specified item (getSlot), among others.
  */
 
 public class Inventory {
@@ -22,7 +20,7 @@ public class Inventory {
     }
 
     /**
-     * Agrega el item.
+     * Add the item.
      *
      * @param item item.
      */
@@ -31,28 +29,28 @@ public class Inventory {
     }
 
     /**
-     * Devuelve la cantidad de items.
+     * Returns the number of items.
      */
     public int size() {
         return inventory.size();
     }
 
     /**
-     * Obtiene el item.
+     * Gets the item.
      *
-     * @param i indice del item.
-     * @return el item.
+     * @param i item index.
+     * @return the item.
      */
     public Item get(int i) {
         return inventory.get(i);
     }
 
     /**
-     * Obtiene el indice del slot.
+     * Gets the slot index.
      *
-     * @param col columna del slot.
-     * @param row fila del slot.
-     * @return el indice del slot.
+     * @param col slot column.
+     * @param row slot row.
+     * @return the slot index.
      */
     public int getSlot(int col, int row) {
         int lastColumn = 5;
@@ -60,10 +58,10 @@ public class Inventory {
     }
 
     /**
-     * Obtiene el indice del slot.
+     * Gets the slot index.
      *
      * @param item item.
-     * @return el indice del item.
+     * @return the index of the item.
      */
     public int getSlot(Item item) {
         for (int i = 0; i < inventory.size(); i++)
@@ -72,26 +70,26 @@ public class Inventory {
     }
 
     /**
-     * Elimina el item.
+     * Remove the item
      *
-     * @param i indice del item.
+     * @param i index of the item.
      */
     public void remove(int i) {
         inventory.remove(i);
     }
 
     /**
-     * Elimina todos los items.
+     * Remove all items.
      */
     public void clear() {
         inventory.clear();
     }
 
     /**
-     * Busca el item.
+     * Search for the item.
      *
-     * @param name nombre del item.
-     * @return el indice del item o -1 si no lo encuentra.
+     * @param name name of the item.
+     * @return the index of the item or -1 if it is not found.
      */
     public int search(String name) {
         for (int i = 0; i < inventory.size(); i++)

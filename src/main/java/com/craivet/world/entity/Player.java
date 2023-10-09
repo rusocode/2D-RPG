@@ -19,14 +19,14 @@ import com.craivet.world.entity.item.*;
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
-// TODO No tendria que convertirse en la fomasa clase Client?
+// TODO Shouldn't it become the Client class?
 public class Player extends Mob {
 
-    public Character character = Jester.getInstance();
     public Item weapon, shield, light;
     public PlayerInventory inventory;
-    private Entity auxEntity; // Variable auxiliar para obtener los atributos de la entidad actual
+    private Entity auxEntity; // Auxiliary variable to get the attributes of the current entity
     public boolean attackCanceled, lightUpdate;
+    public Character character = Jester.getInstance();
 
     public Player(Game game, World world) {
         super(game, world);
@@ -35,11 +35,11 @@ public class Player extends Mob {
 
     @Override
     public void update() {
-        // Es muy importante el orden de los metodos
+        // The order of the methods is very important
         if (flags.hitting) hit();
         if (game.keyboard.checkKeys()) {
             direction.get(this);
-            checkCollision();
+            checkCollisions();
             if (!flags.colliding && !game.keyboard.checkAccionKeys()) pos.update(this, direction);
             mechanics.checkDirectionSpeed(this, auxEntity);
             checkAttack();
@@ -50,7 +50,7 @@ public class Player extends Mob {
                 left.tick();
                 right.tick();
             }
-        } else // TODO Este else no funciona porque no se temporiza la detencion de los nuevos frames
+        } else // TODO This else does not work because the stopping of new frames is not timed
             timer.timeStopMovement(this, 20);
 
         checkShoot();
@@ -81,12 +81,13 @@ public class Player extends Mob {
         stats.attack = getAttack();
         stats.defense = getDefense();
 
+        sheet.loadPlayerMovementFrames(player_movement, 1);
+        sheet.loadWeaponFrames(sword_frame, 16, 16, 1);
+
         hitbox = new Rectangle(7, 32, 10, 24);
+        // hitbox = new Rectangle(sheet.frame.getWidth() / 2 - 6, sheet.frame.getHeight() / 2 - 6, sheet.frame.getWidth() / 2, sheet.frame.getHeight() / 2);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-
-        sheet.loadPlayerMovementFrames(player_movement, 1);
-        sheet.loadWeaponFrames(sword_frame, 16, 16);
 
         int animationSpeed = 90;
         down = new Animation(animationSpeed, sheet.down);
@@ -100,125 +101,19 @@ public class Player extends Mob {
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
     }
 
-    /**
-     * Comprueba si puede atacar.
-     */
-    private void checkAttack() {
-        if (game.keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
-            if (weapon.type == Type.SWORD) game.playSound(sound_swing_weapon);
-            if (weapon.type != Type.SWORD) game.playSound(sound_swing_axe);
-            flags.hitting = true;
-            timer.attackCounter = 0;
-        }
-        flags.shooting = false;
-        attackCanceled = false; // Para que pueda volver a atacar despues de interactuar con un npc o beber agua
-    }
-
-    /**
-     * Comprueba si puede lanzar un proyectil.
-     */
-    private void checkShoot() {
-        if (game.keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
-            flags.shooting = true;
-            game.playSound(sound_fireball);
-            projectile.set(pos.x, pos.y, direction, true, this);
-            // Comprueba vacante para agregar el proyectil
-            for (int i = 0; i < world.projectiles[1].length; i++) {
-                if (world.projectiles[world.map][i] == null) {
-                    world.projectiles[world.map][i] = projectile;
-                    break;
-                }
-            }
-            projectile.subtractResource(this);
-            timer.projectileCounter = 0;
-        }
-    }
-
-    private void checkStats() {
-        if (!game.keyboard.godMode) if (stats.hp <= 0) die();
-        if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
-        if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
-    }
-
-    /**
-     * Comprueba si subio de nivel.
-     */
-    private void checkLevel() {
-        if (stats.lvl == MAX_LVL) {
-            stats.exp = 0;
-            stats.nextLvlExp = 0;
-            return;
-        }
-        /* Comprueba la exp con un bucle while para verificar si supero la cantida de exp para el siguiente nivel varias
-         * veces (por ejemplo, matar a un mob que de mucha exp). Por lo tanto, sube de lvl mientras la exp sea mayor a
-         * la exp del siguiente lvl. */
-        while (stats.exp >= stats.nextLvlExp) {
-            game.playSound(sound_level_up);
-            character.upStats(this);
-            stats.attack = getAttack();
-            stats.defense = getDefense();
-            dialogue.dialogues[0][0] = "You are level " + stats.lvl + "!";
-            startDialogue(DIALOGUE_STATE, this, 0);
-        }
-    }
-
-    /**
-     * Interactua con el npc.
-     *
-     * @param i indice del npc.
-     */
-    private void interactNpc(int i) {
-        if (i != -1) {
-            auxEntity = world.mobs[world.map][i];
-            Mob mob = world.mobs[world.map][i];
-            if (game.keyboard.enter && mob.type == Type.NPC) {
-                attackCanceled = true;
-                mob.dialogue();
-            } else mob.move(direction); // En caso de que sea la roca
-        }
-    }
-
-    /**
-     * Daña al player si colisiona con un mob hostil.
-     *
-     * @param i indice del mob.
-     */
-    private void hurt(int i) {
-        if (i != -1) {
-            auxEntity = world.mobs[world.map][i];
-            Mob mob = world.mobs[world.map][i];
-            if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
-                game.playSound(sound_player_damage);
-                int damage = Math.max(mob.stats.attack - stats.defense, 1);
-                stats.decreaseHp(damage);
-                flags.invincible = true;
-            }
-        }
-    }
-
-    /**
-     * Golpea a la entidad si la attackbox en el frame de ataque colisiona con la hitbox del objetivo.
-     * <p>
-     * De 0 a motion1 ms se muestra el primer frame de ataque. De motion1 a motion2 ms se muestra el segundo frame de
-     * ataque. Despues de motion2 vuelve al frame de movimiento. Para el caso del player solo hay un frame de ataque.
-     * <p>
-     * En el segundo frame de ataque, la posicion x-y se ajusta para la attackbox y verifica si colisiona con una
-     * entidad.
-     */
     public void hit() {
-
         timer.attackAnimationCounter++;
-        if (timer.attackAnimationCounter <= stats.motion1) sheet.attackNum = 1; // (de 0-motion1ms frame de ataque 1)
-        if (timer.attackAnimationCounter > stats.motion1 && timer.attackAnimationCounter <= stats.motion2) { // (de motion1-motion2ms frame de ataque 2)
+        if (timer.attackAnimationCounter <= stats.motion1) sheet.attackNum = 1; // (0-motion1ms attack frame 1)
+        if (timer.attackAnimationCounter > stats.motion1 && timer.attackAnimationCounter <= stats.motion2) { // (from motion1-motion2ms attack frame 2)
             sheet.attackNum = 2;
 
-            // Guarda la posicion actual de x/y y el tamaño de la hitbox
+            // Saves the current x-y position and hitbox size
             int currentX = pos.x, currentY = pos.y;
             int hitboxWidth = hitbox.width, hitboxHeight = hitbox.height;
 
-            /* Ajusta la attackbox (en la hoja de la espada para ser mas especificos) del player dependiendo de la
-             * direccion de ataque. Es importante aclarar que las coordenadas x/y de la attackbox parten de la esquina
-             * superior izquierda de la hitbox del player (nose si es necesario partir desde esa esquina). */
+            /* Adjusts the attackbox (on the sword blade to be more specific) of the player depending on the attack
+             * direction. It is important to clarify that the x-y coordinates of the attackbox start from the upper left
+             * corner of the player's hitbox (i don't know if it is necessary to start from that corner). */
             switch (direction) {
                 case DOWN -> {
                     attackbox.x = -1;
@@ -245,16 +140,16 @@ public class Player extends Mob {
                     attackbox.height = 4;
                 }
             }
-            /* Acumula la posicion de la attackbox a la posicion del player para verificar la colision con las
-             * coordenas ajustadas de la attackbox. */
+            /* Accumulate the position of the attackbox to the position of the player to check the collision with the
+             * adjusted coordinates of the attackbox. */
             pos.x += attackbox.x;
             pos.y += attackbox.y;
 
-            // Convierte la hitbox (el ancho y alto) en la attackbox para verificar la colision solo con la attackbox
+            // Convert the hitbox (width and height) into the attackbox to check the collision only with the attackbox
             hitbox.width = attackbox.width;
             hitbox.height = attackbox.height;
 
-            // Verifica la colision con el mob usando la posicion y tamaño de la hitbox actualizada, osea con la attackbox
+            // Check the collision with the mob using the position and size of the updated hitbox, that is, with the attackbox
             int mobIndex = game.collision.checkEntity(this, world.mobs);
             world.player.hitMob(mobIndex, this, weapon.stats.knockbackValue, stats.attack);
 
@@ -264,7 +159,7 @@ public class Player extends Mob {
             int projectileIndex = game.collision.checkEntity(this, world.projectiles);
             world.player.hitProjectile(projectileIndex);
 
-            // Despues de verificar la colision, resetea los datos originales
+            // After verifying the collision, reset the original data
             pos.x = currentX;
             pos.y = currentY;
             hitbox.width = hitboxWidth;
@@ -278,15 +173,89 @@ public class Player extends Mob {
     }
 
     /**
-     * Golpea al mob.
+     * Check if it can attack.
+     */
+    private void checkAttack() {
+        if (game.keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
+            if (weapon.type == Type.SWORD) game.playSound(sound_swing_weapon);
+            if (weapon.type != Type.SWORD) game.playSound(sound_swing_axe);
+            flags.hitting = true;
+            timer.attackCounter = 0;
+        }
+        flags.shooting = false;
+        attackCanceled = false; // So you can attack again after interacting with an npc or drinking water
+    }
+
+    /**
+     * Check if it can shooting a projectile.
+     */
+    private void checkShoot() {
+        if (game.keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+            flags.shooting = true;
+            game.playSound(sound_fireball);
+            projectile.set(pos.x, pos.y, direction, true, this);
+            // Check vacancy to add the projectile
+            for (int i = 0; i < world.projectiles[1].length; i++) {
+                if (world.projectiles[world.map][i] == null) {
+                    world.projectiles[world.map][i] = projectile;
+                    break;
+                }
+            }
+            projectile.subtractResource(this);
+            timer.projectileCounter = 0;
+        }
+    }
+
+    private void checkStats() {
+        if (!game.keyboard.godMode) if (stats.hp <= 0) die();
+        if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
+        if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
+    }
+
+    /**
+     * Interact with the npc.
      *
-     * @param i              indice del mob.
-     * @param attacker       atacante del mob.
-     * @param knockbackValue valor de knockback.
-     * @param attack         tipo de ataque (sword o fireball).
+     * @param i index of the npc.
+     */
+    private void interactNpc(int i) {
+        if (i != -1) {
+            auxEntity = world.mobs[world.map][i];
+            Mob mob = world.mobs[world.map][i];
+            if (game.keyboard.enter && mob.type == Type.NPC) {
+                attackCanceled = true;
+                mob.dialogue();
+            } else mob.move(direction); // In case it's the rock
+        }
+    }
+
+    /**
+     * Hurt the player if he collides with a hostile mob.
+     *
+     * @param i index of the mob.
+     */
+    private void hurt(int i) {
+        if (i != -1) {
+            auxEntity = world.mobs[world.map][i];
+            Mob mob = world.mobs[world.map][i];
+            if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
+                game.playSound(sound_player_damage);
+                int damage = Math.max(mob.stats.attack - stats.defense, 1);
+                stats.decreaseHp(damage);
+                flags.invincible = true;
+            }
+        }
+    }
+
+    /**
+     * Hit the mob.
+     *
+     * @param i              index of the mob.
+     * @param attacker       attacker of the mob.
+     * @param knockbackValue knockback value.
+     * @param attack         attack type (sword or fireball).
      */
     public void hitMob(int i, Entity attacker, int knockbackValue, int attack) {
-        if (i != -1) { // TODO Lo cambio por >= 0 para evitar la doble negacion y comparacion -1?
+        if (i != -1) { // TODO I change it to >= 0 to avoid double negation and comparison -1?
             auxEntity = world.mobs[world.map][i];
             Mob mob = world.mobs[world.map][i];
             if (!mob.flags.invincible && mob.type != Type.NPC) {
@@ -296,13 +265,16 @@ public class Player extends Mob {
                 int damage = Math.max(attack - mob.stats.defense, 1);
                 mob.stats.decreaseHp(damage);
                 game.ui.addMessageToConsole(damage + " damage!");
-                if (mob.stats.hp > 0) game.playSound(mob.soundHit);
+                if (mob.stats.hp > 0) {
+                    game.playSound(mob.soundHit);
+                    if (!(mob instanceof Slime)) game.playSound(sound_hit_mob);
+                }
 
                 mob.flags.invincible = true;
                 mob.flags.hpBar = true;
                 mob.damageReaction();
 
-                // TODO Tendria que ir un metodo?
+                // TODO Should there be a method?
                 if (mob.stats.hp <= 0) {
                     game.playSound(sound_mob_death);
                     if (!(mob instanceof Slime)) game.playSound(mob.soundDeath);
@@ -310,16 +282,16 @@ public class Player extends Mob {
                     game.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
                     game.ui.addMessageToConsole("Exp + " + mob.stats.exp);
                     stats.exp += mob.stats.exp;
-                    checkLevel();
+                    checkLevelUp();
                 }
             }
         }
     }
 
     /**
-     * Daña al tile interactivo.
+     * Hit the interactive tile.
      *
-     * @param i indice del tile interactivo.
+     * @param i index of the interactive tile.
      */
     public void hitInteractive(int i) {
         if (i != -1) {
@@ -344,7 +316,7 @@ public class Player extends Mob {
         if (i != -1) {
             auxEntity = world.projectiles[world.map][i];
             Projectile projectile = world.projectiles[world.map][i];
-            // Evita dañar el propio proyectil
+            // Avoid damaging the projectile itself
             if (projectile != this.projectile) {
                 game.playSound(sound_player_damage);
                 projectile.flags.alive = false;
@@ -354,11 +326,33 @@ public class Player extends Mob {
     }
 
     /**
-     * Recoge un item.
-     *
-     * @param i indice del item.
+     * Check if the player has leveled up.
      */
-    public void pickup(int i) { // TODO Seria el metodo getObj() de la clase Client en AO-Java
+    private void checkLevelUp() {
+        if (stats.lvl == MAX_LVL) {
+            stats.exp = 0;
+            stats.nextLvlExp = 0;
+            return;
+        }
+        /* Checks the exp with a while loop to verify if the player exceeded the amount of exp for the next level
+         * several times (for example, killing a mob that gives a lot of exp). Therefore, raise the lvl as long as the
+         * exp is greater than the exp of the next lvl. */
+        while (stats.exp >= stats.nextLvlExp) {
+            game.playSound(sound_level_up);
+            character.upStats(this);
+            stats.attack = getAttack();
+            stats.defense = getDefense();
+            dialogue.dialogues[0][0] = "You are level " + stats.lvl + "!";
+            startDialogue(DIALOGUE_STATE, this, 0);
+        }
+    }
+
+    /**
+     * Pick up an item.
+     *
+     * @param i index of the item.
+     */
+    public void pickup(int i) {
         if (i != -1) {
             Item item = world.items[world.map][i];
             if (game.keyboard.p && item.type != Type.OBSTACLE) {
@@ -378,7 +372,7 @@ public class Player extends Mob {
     }
 
     @Override
-    public void checkCollision() {
+    public void checkCollisions() {
         flags.colliding = false;
         if (!game.keyboard.godMode) game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
@@ -397,7 +391,7 @@ public class Player extends Mob {
         game.playSound(sound_player_death);
         game.state = GAME_OVER_STATE;
         game.ui.command = -1;
-        game.music.stop();
+        // game.music.stop();
     }
 
     private void getCurrentItemFrame(Graphics2D g2) {
@@ -426,13 +420,12 @@ public class Player extends Mob {
     }
 
     /**
-     * Obtiene el frame de animacion actual.
+     * Gets the current animation frame.
      *
-     * @return el frame de animacion actual.
+     * @return the current animation frame.
      */
     private BufferedImage getCurrentAnimationFrame() {
-        /* Cuando se deja de mover, devuelve el primer frame guardado de la ultima direccion para representar la
-         * detencion del player. */
+        // When it stops moving, returns the first saved frame of the last direction to represent the stop of the player
         if (game.keyboard.checkMovementKeys()) {
             switch (direction) {
                 case DOWN -> {
@@ -474,9 +467,9 @@ public class Player extends Mob {
     }
 
     /**
-     * Reinicia el Player.
+     * Reset the Player.
      *
-     * @param fullReset true para reiniciar por completo; falso en caso contrario.
+     * @param fullReset true to fully reset; false otherwise.
      */
     public void reset(boolean fullReset) {
         pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
@@ -485,21 +478,21 @@ public class Player extends Mob {
         if (fullReset) inventory.init();
     }
 
-    // TODO Activar con tecla
+    // TODO Activate with key
     private void drawRects(Graphics2D g2) {
         g2.setStroke(new BasicStroke(0));
         // Frame
         g2.setColor(Color.magenta);
-        g2.drawRect(screen.xOffset, screen.yOffset, currentFrame.getWidth(), currentFrame.getHeight()); // TODO Creo que se podria reemplazar por image.getWidth()
+        g2.drawRect(screen.xOffset, screen.yOffset, currentFrame.getWidth(), currentFrame.getHeight());
         // Hitbox
         g2.setColor(Color.green);
         g2.drawRect(screen.xOffset + hitbox.x, screen.yOffset + hitbox.y, hitbox.width, hitbox.height);
         // Attackbox
         if (flags.hitting) {
             g2.setColor(Color.red);
-            /* Se suma la posicion de la attackbox a la posicion del player porque despues de verificar la deteccion del
-             * golpe en el metodo hit, se resetea la posicio del player, por lo tanto se suma desde aca para que el
-             * rectangulo dibujado coincida con la posicion especificada en el metodo hit. */
+            /* The position of the attackbox is added to the position of the player because after verifying the
+             * detection of the hit in the hit method, the position of the player is reset, therefore it is added from
+             * here so that the drawn rectangle coincides with the position specified in the hit method. */
             g2.drawRect(screen.xOffset + attackbox.x + hitbox.x, screen.yOffset + attackbox.y + hitbox.y, attackbox.width, attackbox.height);
         }
     }

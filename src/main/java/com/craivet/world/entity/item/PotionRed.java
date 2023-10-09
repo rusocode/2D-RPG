@@ -16,7 +16,7 @@ public class PotionRed extends Item {
     public static final String NAME = "Red Potion";
 
     /**
-     * Crea el objeto en el inventario o en el World (utiliza varargs para especificar la posicion).
+     * Create the item in the inventory or in the World (use varargs to specify the position).
      */
     public PotionRed(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);

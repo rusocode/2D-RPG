@@ -19,29 +19,28 @@ public class Projectile extends Entity {
     }
 
     /**
-     * Actualiza la posicion del proyectil si no colisiona con un mob o si no se termina la vida de este. En caso
-     * contrario, deja de vivir.
+     * Updates the position of the projectile if it does not collide with a mob or if its life does not end. Otherwise,
+     * stop living.
      */
     @Override
     public void update() {
 
-        // Si el player lanza un proyectil
+        // If the player shooting a projectile
         if (entity instanceof Player) {
             int mobIndex = game.collision.checkEntity(this, world.mobs);
-            /* Cuando el proyectil colisiona con un mob, establece el estado colliding en true. Por lo tanto, cuando
-             * se vuelva a dibujar el proyectil, este se va a mantener en el frame de movimiento 1 ya que en el operador
-             * ternario, la condicion se mantiene en true y nunca cambia a false para poder mostrar el frame de
-             * movimiento 2. La siguiente linea soluciona este problema. */
+            /* When the projectile collides with a mob, set the colliding state to true. Therefore, when the projectile
+             * is redrawn, it will remain in motion frame 1 since in the ternary operator, the condition remains true
+             * and never changes to false in order to display motion frame 2. The following line solves this problem. */
             flags.colliding = false;
             if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible && world.mobs[world.map][mobIndex].type != Type.NPC) {
                 world.player.hitMob(mobIndex, this, stats.knockbackValue, stats.attack * (entity.stats.lvl / 2));
-                // En este caso, el generador de particulas es la bola de fuego cuando el player la lanza contra un mob
+                // In this case, the particle generator is the fireball when the player throws it against a mob
                 generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
                 flags.alive = false;
             }
         }
 
-        // Si el mob lanza un proyectil
+        // If the mob shooting a projectile
         if (!(entity instanceof Player)) {
             boolean contact = game.collision.checkPlayer(this);
             if (contact && !world.player.flags.invincible) {
@@ -70,8 +69,8 @@ public class Projectile extends Entity {
         this.direction = direction;
         flags.alive = alive;
         this.entity = entity;
-        /* Una vez que el projectil muere (alive=false) el hp queda en 0, por lo tanto para lanzar el proximo se
-         * necesita establecer la vida al maximo de nuevo. */
+        /* Once the projectile dies (alive=false) the hp remains at 0, therefore to launch the next one you need to set
+         * the life to maximum again. */
         stats.hp = stats.maxHp;
     }
 
@@ -79,6 +78,7 @@ public class Projectile extends Entity {
         return false;
     }
 
-    public void subtractResource(Entity entity) {}
+    public void subtractResource(Entity entity) {
+    }
 
 }

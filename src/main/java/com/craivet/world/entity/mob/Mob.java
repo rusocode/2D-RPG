@@ -11,20 +11,21 @@ import java.net.URL;
 import static com.craivet.utils.Global.*;
 
 /**
- * Mob (Enemigo o NPC - Personaje No Jugable): Un "mob" (termino abreviado de "mobile" o "mobility") es un termino
- * generalmente utilizado para referirse a personajes o criaturas en el juego que no son controlados por el jugador. Los
- * mobs pueden incluir enemigos, monstruos, personajes no jugables (NPC), aliados controlados por la inteligencia
- * artificial (IA), y otros personajes dentro del juego. Los mobs pueden tener roles variados, como ser enemigos que el
- * jugador debe derrotar, vendedores en una ciudad, aliados en una mision, etc.
+ * Mob (Enemy/Monster or NPC - Non-Playable Character): A "mob" (short for "mobile" or "mobility") is a term generally
+ * used to refer to characters or creatures in the game that are not controlled by the player. Mobs can include enemies,
+ * monsters, non-playable characters (NPCs), allies controlled by artificial intelligence (AI), and other in-game
+ * characters. Mobs can have varied roles, such as being enemies that the player must defeat, vendors in a city, allies
+ * on a mission, etc.
  * <p>
- * Para este juego los mobs se dividen en
+ * For this game the mobs are divided into
  * <ul>
- * <li>NPC: entidades con las que se interactura, comercia, etc. TODO o NO_HOSTILE
- * <li>HOSTILE: son entidades agresivas que pueden atacar y ser atacadas.
+ * <li>NPC: entities with which you interact, trade, etc. TODO or NO_HOSTILE?
+ * <li>HOSTILE: are aggressive entities that can attack and be attacked.
  * </ul>
  * <p>
- * TODO Es posible crear el enum aca?
- * TODO Podria crear una clase MobStats y crearla desde aca, en donde esa clase solo va a tener los atributos de mobs
+ * TODO Is it possible to create the enum here?
+ * <p>
+ * TODO I could create a MobStats class and create it from here, where that class will only have the attributes of mobs
  */
 
 public class Mob extends Entity {
@@ -131,21 +132,21 @@ public class Mob extends Entity {
     }
 
     /**
-     * Mueve el mob hacia el player.
+     * Move the mob towards the player.
      * <p>
-     * Si se completo el intervalo, verifica si la distancia en x del player con respecto al mob es mayor a la
-     * distancia en y del player con respecto al mob. Si se cumple la anterior condicion, verifica si la posicion
-     * central x del player es menor a la posicion central x del mob. Si se cumple la anterior condicion, cambia la
-     * direccion del mob hacia la izquierda, y en caso contrario cambia la direccion del mob hacia la derecha. Pero si
-     * la distancia en x del player con respecto al mob es menor a la distancia en y del player con respecto al mob,
-     * entonces verifica si la posicion central y del player es menor a la posicion central y del mob. Si se cumple la
-     * anterior condicion, cambia la direccion del mob hacia arriba, y en caso contrario cambia la direccion del mob
-     * hacia abajo.
+     * If the interval is complete, check if the distance in x of the player with respect to the mob is greater than the
+     * distance in y of the player with respect to the mob. If the previous condition is met, check if the central
+     * position x of the player is less than the central position x of the mob. If the previous condition is met, change
+     * the direction of the mob to the left, and otherwise change the direction of the mob to the right. But if the
+     * distance in x of the player with respect to the mob is less than the distance in y of the player with respect to
+     * the mob, then check if the central position y of the player is less than the central position y of the mob. If
+     * the previous condition is met, change the direction of the mob upwards, and otherwise change the direction of the
+     * mob downwards.
      * <p>
-     * El intervalo evita que el mob cambie de direccion de manera brusca.
+     * The interval prevents the mob from changing direction abruptly.
      *
      * @param target   target.
-     * @param interval intervalo de tiempo en ms.
+     * @param interval time interval in ms.
      */
     protected void moveTowardPlayer(Mob target, int interval) {
         if (++timer.directionCounter > interval) { // TODO o =?
@@ -189,18 +190,18 @@ public class Mob extends Entity {
 
 
     /**
-     * Obtiene la posicion central de x de la entidad.
+     * Gets the central position of x of the entity.
      *
-     * @return la posicion central de x de la entidad.
+     * @return the center x position of the entity.
      */
     private int getCenterX() {
         return pos.x + sheet.frame.getWidth() / 2;
     }
 
     /**
-     * Obtiene la posicion central de y de la entidad.
+     * Gets the central position of y of the entity.
      *
-     * @return la posicion central de y de la entidad.
+     * @return the central position of y of the entity.
      */
     private int getCenterY() {
         return pos.y + sheet.frame.getHeight() / 2;

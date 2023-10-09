@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.world.World;
 
 /**
- * Crea nuevos items al comprar o recoger. Esto evita utilizar la misma referencia cuando se compra un item.
+ * Create new items when purchasing or collecting. This avoids using the same reference when purchasing an item.
  */
 
 public class ItemGenerator {
@@ -18,10 +18,10 @@ public class ItemGenerator {
     }
 
     /**
-     * Genera un nuevo item.
+     * Generates a new item.
      *
-     * @param name nombre del item.
-     * @return un nuevo item.
+     * @param name name of the item.
+     * @return a new item.
      */
     public Item generate(String name) {
         Item item = null;
@@ -35,9 +35,9 @@ public class ItemGenerator {
             case Key.NAME -> item = new Key(game, world, 0);
             case Lantern.NAME -> item = new Lantern(game, world);
             case Pickaxe.NAME -> item = new Pickaxe(game, world);
-            /* En el caso de comerciar con el Trader y comprar de a 1 seria ineficiente ya que se crea 1 objeto por
-             * pocion, por lo tanto seria bueno que el player pueda determinar la cantidad a comprar. Es importante
-             * pasarle 0 cuando se genera para solo crear el objeto y no esepecificar una cantidad. */
+            /* In the case of trading with the Trader and buying 1 at a time, it would be inefficient since 1 object is
+             * created per potion, therefore it would be good for the player to be able to determine the quantity to buy.
+             * It is important to pass 0 when it is generated to only create the object and not specify a quantity. */
             case PotionRed.NAME -> item = new PotionRed(game, world, 0);
             case ShieldBlue.NAME -> item = new ShieldBlue(game, world);
             case ShieldWood.NAME -> item = new ShieldWood(game, world);

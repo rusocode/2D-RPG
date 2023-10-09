@@ -11,9 +11,9 @@ import java.awt.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * Representa un evento en el World. Los eventos pueden ser teletransportacion, hablar con un npc, etc.
+ * Represents an event in the World. The events can be teleportation, talking to an npc, etc.
  * <p>
- * TODO O podria llamarse solo Event?
+ * TODO Or could it just be called Event?
  */
 
 public class CollisionEvent {
@@ -23,8 +23,8 @@ public class CollisionEvent {
 
     private final Rectangle[][][] event;
     private boolean canTouchEvent;
-    /* El evento no sucede de nuevo si el player no se encuentra a 1 tile de distancia. Esta mecanica evita que el
-     * evento se repita en el mismo lugar repetidamente. */
+    /* The event does not happen again if the player is not 1 tile away. This mechanic prevents the event from repeating
+     * itself in the same place repeatedly. */
     public int previousEventX, previousEventY;
     public int map, col, row;
 
@@ -35,8 +35,7 @@ public class CollisionEvent {
     }
 
     /**
-     * Crea un evento para cada tile. Tecnicamente hablando, crea un rectangulo (Rectangle) pequeño en el centro de
-     * cada tile.
+     * Create an event for each tile. Technically speaking, it creates a small Rectangle in the center of each tile.
      */
     public void createEvents() {
         for (int map = 0; map < MAPS; map++) {
@@ -48,11 +47,11 @@ public class CollisionEvent {
     }
 
     /**
-     * Verifica el evento.
+     * Check the event.
      */
     public void checkEvent(Entity entity) {
 
-        // Verifica si el player esta a mas de 1 tile de distancia del ultimo evento utilizando el evento previo como informacion
+        // Check if the player is more than 1 tile away from the last event using the previous event as information
         int xDis = Math.abs(world.player.pos.x - previousEventX);
         int yDis = Math.abs(world.player.pos.y - previousEventY);
         int dis = Math.max(xDis, yDis);
@@ -79,34 +78,34 @@ public class CollisionEvent {
     }
 
     /**
-     * Verifica la colision con el evento.
+     * Check the collision with the event.
      *
-     * @param map       mapa del evento.
-     * @param col       columna del evento.
-     * @param row       fila del evento.
-     * @param direction direccion del evento.
-     * @return devuelve true si colisiono con el evento o false.
+     * @param map       map of the event.
+     * @param col       event column.
+     * @param row       event row.
+     * @param direction direction of the event.
+     * @return returns true if I collide with the event or false.
      */
     private boolean checkCollision(int map, int col, int row, Direction direction) {
         boolean isColliding = false;
 
-        // Si el player esta en el mismo mapa que el evento
+        // If the player is on the same map as the event
         if (map == world.map) {
             world.player.hitbox.x += world.player.pos.x;
             world.player.hitbox.y += world.player.pos.y;
             event[map][row][col].x += col * tile;
             event[map][row][col].y += row * tile;
 
-            // Si el player colisiona con el evento y si la direccion coincide con la del evento
+            // If the player collides with the event and if the direction matches that of the event
             if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.direction == direction || direction == Direction.ANY)) {
                 isColliding = true;
-                world.player.attackCanceled = true; // Cancela el ataque en caso de interactuar con un evento usando enter (tecla que se utiliza para atacar)
-                // En base a esta informacion verifica la distancia entre el player y el ultimo evento
+                world.player.attackCanceled = true; // Cancels the attack if you interact with an event using enter (key used to attack)
+                // Based on this information, verify the distance between the player and the last event
                 previousEventX = world.player.pos.x;
                 previousEventY = world.player.pos.y;
             }
 
-            // Resetea la posicion del hitbox del player y la posicion del evento
+            // Resets the player hitbox position and event position
             world.player.hitbox.x = world.player.hitboxDefaultX;
             world.player.hitbox.y = world.player.hitboxDefaultY;
             event[map][row][col].x = 5;
@@ -118,7 +117,7 @@ public class CollisionEvent {
     }
 
     /**
-     * Daña al player.
+     * Hurt the player.
      */
     private void hurt(Entity entity) {
         entity.dialogue.dialogues[0][0] = "You fall into a pit!";
@@ -128,7 +127,7 @@ public class CollisionEvent {
     }
 
     /**
-     * Sana al player.
+     * Heals the player.
      */
     private void heal(Entity entity) {
         if (game.keyboard.enter) {
@@ -140,12 +139,12 @@ public class CollisionEvent {
     }
 
     /**
-     * Teletransporta al player.
+     * Teleports the player.
      *
-     * @param zone zona a la que se teletransporta el player.
-     * @param map  mapa al que se teletransporta el player.
-     * @param col  columna al que se teletransporta el player.
-     * @param row  fila al que se teletransporta el player.
+     * @param zone zone to which the player teleports.
+     * @param map  map to which the player teleports.
+     * @param col  column to which the player teleports.
+     * @param row  row to which the player teleports.
      */
     private void teleport(int zone, int map, int col, int row) {
         game.state = TRANSITION_STATE;
@@ -157,9 +156,9 @@ public class CollisionEvent {
     }
 
     /**
-     * Dialoga con el Mob.
+     * Dialogue with the Mob.
      *
-     * @param mob mob con la que habla el player.
+     * @param mob mob the player talks to.
      */
     private void dialogue(Mob mob) {
         if (game.keyboard.enter) mob.dialogue();

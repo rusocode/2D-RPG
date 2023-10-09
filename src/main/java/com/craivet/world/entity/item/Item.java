@@ -7,7 +7,7 @@ import com.craivet.world.World;
 import static com.craivet.utils.Global.*;
 
 /**
- * Los items se renderizan en el suelo y en el inventario.
+ * Items are rendered on the ground and in the inventory.
  */
 
 public class Item extends Entity {
@@ -52,15 +52,15 @@ public class Item extends Entity {
     }
 
     /**
-     * Detecta si el item especificado se encuentra en la posicion adyacente a la entidad.
+     * Detects if the specified item is in the position adjacent to the entity.
      *
-     * @param entity entidad.
-     * @param items  lista de items.
-     * @param name   nombre del item.
-     * @return el indice del item especificado a la posicion adyacente de la entidad o -1 si no existe.
+     * @param entity entity.
+     * @param items  list of items.
+     * @param name   name of the item.
+     * @return the index of the specified item to the adjacent position of the entity or -1 if it does not exist.
      */
     protected int detect(Entity entity, Item[][] items, String name) {
-        // Verifica el item adyacente a la entidad
+        // Check the item adjacent to the entity
         int nextX = getLeftHitbox(entity);
         int nextY = getTopHitbox(entity);
 
@@ -74,7 +74,7 @@ public class Item extends Entity {
         int row = nextY / tile;
         int col = nextX / tile;
 
-        // Si el item iterado es igual a la posicion adyacente de la entidad
+        // If the iterated item is equal to the adjacent position of the entity
         for (int i = 0; i < items[1].length; i++) {
             if (items[world.map][i] != null)
                 if (items[world.map][i].getRow() == row && items[world.map][i].getCol() == col && items[world.map][i].stats.name.equals(name))
@@ -85,58 +85,58 @@ public class Item extends Entity {
     }
 
     /**
-     * Obtiene la posicion superior de la hitbox.
+     * Gets the top position of the hitbox.
      *
-     * @param entity entidad.
-     * @return la posicion superior de la hitbox.
+     * @param entity entity.
+     * @return the top position of the hitbox.
      */
     private int getTopHitbox(Entity entity) {
         return entity.pos.y + entity.hitbox.y;
     }
 
     /**
-     * Obtiene la posicion inferior de la hitbox.
+     * Gets the bottom position of the hitbox.
      *
-     * @param entity entidad.
-     * @return la posicion inferior de la hitbox.
+     * @param entity entity.
+     * @return the bottom position of the hitbox.
      */
     private int getBottomHitbox(Entity entity) {
         return entity.pos.y + entity.hitbox.y + entity.hitbox.height;
     }
 
     /**
-     * Obtiene la posicion izquierda de la hitbox.
+     * Gets the left position of the hitbox.
      *
-     * @param entity entidad.
-     * @return la posicion izquierda de la hitbox.
+     * @param entity entity.
+     * @return the left position of the hitbox.
      */
     private int getLeftHitbox(Entity entity) {
         return entity.pos.x + entity.hitbox.x;
     }
 
     /**
-     * Obtiene la posicion derecha de la hitbox.
+     * Gets the right position of the hitbox.
      *
-     * @param entity entidad.
-     * @return la posicion derecha de la hitbox.
+     * @param entity entity.
+     * @return the right position of the hitbox.
      */
     private int getRightHitbox(Entity entity) {
         return entity.pos.x + entity.hitbox.x + entity.hitbox.width;
     }
 
     /**
-     * Obtiene la fila de la entidad.
+     * Gets the row of the entity.
      *
-     * @return la fila de la entiad.
+     * @return the entity row.
      */
     private int getRow() {
         return (pos.y + hitbox.y) / tile;
     }
 
     /**
-     * Obtiene la columna de la entidad.
+     * Gets the entity column.
      *
-     * @return la columna de la entiad.
+     * @return the entity column.
      */
     private int getCol() {
         return (pos.x + hitbox.x) / tile;

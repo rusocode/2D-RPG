@@ -6,41 +6,39 @@ import java.io.IOException;
 import java.net.URL;
 
 /**
- * Esta clase solo lee audios en formato wav.
- * <p>
- * TODO Se podrian guardar los recursos de sonido en esta clase para mas organizacion
+ * This class only reads audio in wav format.
  */
 
 public class Audio {
 
     private Clip clip;
-    private FloatControl fc; // Esta clase acepta valores entre -80f y 6f, por lo que 6 es el maximo y -80 no tiene sonido
-    public int volumeScale = 2; // Solo hay 5 escalas de volumen
+    private FloatControl fc; // This class accepts values between -80f and 6f, so 6 is the maximum and -80 has no sound
+    public int volumeScale = 2; // There are only 5 volume scales
     private float volume;
 
     public void play(URL url) {
         try {
-            // Obtiene el clip
+            // Get the clip
             clip = AudioSystem.getClip();
-            // Abre el clip con el formato y los datos de audio presentes en el flujo de entrada de audio proporcionado
+            // Opens the clip with the format and audio data present in the provided audio input stream
             clip.open(AudioSystem.getAudioInputStream(url));
-            // Obtiene el control para poder pasar un valor al clip y cambiar su volumen
+            // Gets control to be able to pass a value to the clip and change its volume
             fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            // Esta comprobacion es necesaria solo si la musica ya se esta reproduciendo
+            // This check is only necessary if the music is already playing.
             checkVolume();
-            // Inicia el clip
+            // Start the clip
             clip.start();
         } catch (UnsupportedAudioFileException e) {
-            JOptionPane.showMessageDialog(null, "El formato de audio no es compatible.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "The audio format is not supported.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error al leer el archivo de audio.", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error reading audio file.", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (LineUnavailableException e) {
-            JOptionPane.showMessageDialog(null, "No se pudo obtener el clip de audio. \n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Could not get audio clip. \n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
     /**
-     * Detiene el clip.
+     * Stops the clip.
      */
     public void stop() {
         if (clip != null) clip.stop();
@@ -51,7 +49,7 @@ public class Audio {
     }
 
     /**
-     * Comprueba el volumen.
+     * Check the volume.
      */
     public void checkVolume() {
         switch (volumeScale) {

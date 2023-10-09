@@ -7,7 +7,7 @@ import com.craivet.world.entity.item.Item;
 
 import static com.craivet.utils.Global.*;
 
-// TODO Esta clase tiene que ir en el paquete de entidades
+// TODO This class has to go in the entity package
 public class Interactive extends Entity {
 
     public boolean destructible;
@@ -21,19 +21,19 @@ public class Interactive extends Entity {
     }
 
     /**
-     * Comprueba si el arma seleccionada es la correcta para usar con el tile interactivo.
+     * Check if the selected weapon is the correct one to use with the interactive tile.
      *
-     * @param weapon arma seleccionada.
-     * @return true si el arma seleccionada es la correcta.
+     * @param weapon selected weapon.
+     * @return true if the selected weapon is correct.
      */
     public boolean isCorrectWeapon(Item weapon) {
         return false;
     }
 
     /**
-     * Reemplaza el tile interactivo (cuando es destruido) por el nuevo tile interactivo.
+     * Replaces the interactive tile (when destroyed) with the new interactive tile.
      *
-     * @return el nuevo tile interactivo.
+     * @return the new interactive tile.
      */
     public Interactive replaceBy() {
         return null;

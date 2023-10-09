@@ -16,10 +16,10 @@ import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
 /**
- * Interfaz de usuario.
+ * User interface.
  *
- * <p>TODO Reemplazar estas UI por GUIS echas como MC y VOLARLAS A LA MIERDA!!
- * <p>TODO Implementar musica para pantalla de titulo (<a href="https://www.youtube.com/watch?v=blyK-QkZkQ8">...</a>)
+ * <p>TODO Replace these UIs with textures made like MC and THROW THEM TO SHIT!
+ * <p>TODO Implement music for title screen (<a href="https://www.youtube.com/watch?v=blyK-QkZkQ8">...</a>)
  */
 
 public class UI {
@@ -32,11 +32,11 @@ public class UI {
     private String currentDialogue, combinedText = "";
     private int charIndex, counter;
 
-    // TODO La consola tendria que ser una clase aparte
+    // TODO The console would have to be a separate class
     public final ArrayList<String> console = new ArrayList<>();
     private final ArrayList<Integer> consoleCounter = new ArrayList<>();
 
-    public int mainWindowState, subState, command; // TODO Se podrian combinar estas dos variables (mainWindowState y subState) haciendo referencia a un solo subState
+    public int mainWindowState, subState, command; // TODO You could combine these two variables (mainWindowState and subState) referring to a single subState
 
     // Icons
     private BufferedImage heartFull, heartHalf, heartBlank, manaFull, manaBlank;
@@ -51,12 +51,12 @@ public class UI {
 
         this.g2 = g2;
 
-        // Fuente y color por defecto
+        // Default font and color
         g2.setFont(font_minecraft);
         g2.setColor(Color.white);
-        // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Suaviza los bordes de la fuente, pero en este caso no es necesario aplicarlo ya que se usa una fuente de tipo pixelart
+        // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Softens the edges of the font, but in this case it is not necessary to apply it since a pixelart type font is used
 
-        // Renderiza las ventanas dependiendo del estado del juego
+        // Render windows depending on game state
         switch (game.state) {
             case MAIN_STATE -> renderMainWindow();
             case PLAY_STATE -> {
@@ -138,18 +138,18 @@ public class UI {
 
         for (int i = 0; i < console.size(); i++) {
             if (console.get(i) != null) {
-                // Sombra
+                // Shade
                 g2.setColor(Color.black);
                 g2.drawString(console.get(i), x + 2, y + 2);
-                // Color principal
+                // Main color
                 g2.setColor(Color.white);
                 g2.drawString(console.get(i), x, y);
-                // Actua como consoleCounter++
+                // Acts as consoleCounter++
                 consoleCounter.set(i, consoleCounter.get(i) + 1);
 
                 y += gap;
 
-                // Despues de 3 segundos, elimina los mensajes en consola
+                // After 3 seconds, delete the messages in the console
                 if (consoleCounter.get(i) > 180) {
                     console.remove(i);
                     consoleCounter.remove(i);
@@ -161,33 +161,32 @@ public class UI {
     private void renderHUD() {
         int iconSize = 16;
 
-        // 2 de vida representa 1 corazon (heartFull) y 1 de vida representa medio corazon (heartHalf)
+        // 2 life represents 1 heart (heartFull) and 1 life represents half a heart (heartHalf)
         int x = iconSize / 2, y = iconSize / 2, i = 0;
 
-        // Dibuja los corazones vacios
+        // Draw the empty hearts
         while (i < world.player.stats.maxHp / 2) {
             g2.drawImage(heartBlank, x, y, iconSize, iconSize, null);
             i++;
             x += iconSize;
         }
 
-        // Resetea la posicion de x para dibujar los otros corazones (medio y lleno)
+        // Reset the position of x to draw the other hearts (half and full)
         x = iconSize / 2;
         i = 0;
 
-        /* Dibuja los corazones medios y llenos (vida actual) sobre los corazones vacios de izquierda a derecha mientras
-         * el player tenga vida. */
+        // Draw the half and full hearts (current life) over the empty hearts from left to right while the player is alive
         while (i < world.player.stats.hp) {
-            g2.drawImage(heartHalf, x, y, iconSize, iconSize, null); // Dibuja medio corazon
-            i++; // Incrementa la posicion del siguiente valor de vida
-            if (i < world.player.stats.hp) { // Si todavia tiene vida, dibuja la otra parte del corazon (osea, un corazon lleno)
+            g2.drawImage(heartHalf, x, y, iconSize, iconSize, null); // Draw half a heart
+            i++; // Increase the position of the next life value
+            if (i < world.player.stats.hp) { // If it still has life, draw the other part of the heart (that is, a full heart)
                 g2.drawImage(heartFull, x, y, iconSize, iconSize, null);
                 i++;
             }
             x += iconSize;
         }
 
-        // Dibuja la mana vacia
+        // Draw the empty mana
         x = (iconSize / 2) - 4;
         y = (int) (iconSize * 1.5);
         i = 0;
@@ -197,7 +196,7 @@ public class UI {
             x += (iconSize / 2) + 1;
         }
 
-        // Dibuja la mana actual
+        // Draw the current mana
         x = (iconSize / 2) - 4;
         i = 0;
         while (i < world.player.stats.mana) {
@@ -212,8 +211,7 @@ public class UI {
         double oneScale = (double) tile / mob.stats.maxHp;
         double hpBarValue = oneScale * mob.stats.hp;
 
-        /* En caso de que el valor de la barra de vida calculado sea menor a 0, le asigna 0 para que no se dibuje como
-         * valor negativo hacia la izquierda. */
+        // If the calculated life bar value is less than 0, assign it 0 so that it is not drawn as negative value to the left
         if (hpBarValue < 0) hpBarValue = 0;
 
         g2.setColor(new Color(35, 35, 35));
@@ -241,7 +239,7 @@ public class UI {
                 g2.fillRect(x - 1, y - 1, tile * 8 + 2, 22);
 
                 g2.setColor(new Color(255, 0, 30));
-                g2.fillRect(x, y, (int) hpBarValue, 20); // TODO O 21?
+                g2.fillRect(x, y, (int) hpBarValue, 20); // TODO Or 21?
 
                 changeFontSize(24);
                 g2.setColor(Color.white);
@@ -258,7 +256,7 @@ public class UI {
         changeFontSize(14);
 
         // Text
-        int textX = x + tile;
+        int textX = x + tile - 10;
         int textY = y + tile;
 
         if (entity.dialogue.dialogues[entity.dialogue.set][entity.dialogue.index] != null) {
@@ -270,7 +268,7 @@ public class UI {
                 charIndex++;
             }
 
-            // En el caso de tener varios cuadros de dialogos (ejemplo, Oldman)
+            // In the case of having several dialog boxes (example, Oldman)
             if (game.keyboard.enter) {
                 charIndex = 0;
                 combinedText = "";
@@ -279,7 +277,7 @@ public class UI {
                     game.keyboard.enter = false;
                 }
             }
-            if (game.keyboard.esc) { // TODO o else if?
+            if (game.keyboard.esc) { // TODO Or else if?
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == TRADE_STATE) {
@@ -288,7 +286,7 @@ public class UI {
                 }
             }
 
-        } else { // Si la conversacion termino
+        } else { // If the dialogue ended
             entity.dialogue.index = 0;
             game.state = PLAY_STATE;
         }
@@ -306,7 +304,7 @@ public class UI {
         int gap = 24;
         changeFontSize(16);
 
-        // Nombres
+        // Names
         int textX = x + 20;
         int textY = y + tile;
         g2.drawString("Level", textX, textY);
@@ -333,8 +331,8 @@ public class UI {
         textY += gap + 15;
         g2.drawString("Shield", textX, textY);
 
-        // Valores
-        int tailX = (x + width) - 30; // Cola de la posicion x
+        // Values
+        int tailX = (x + width) - 30; // Tail of position x
         // Resetea textY
         textY = y + tile;
         String value;
@@ -416,16 +414,16 @@ public class UI {
 
         for (int i = 0; i < player.inventory.size(); i++) {
 
-            // Marca de color amarillo el item seleccionado
+            // Mark the selected item in yellow
             if (player.inventory.get(i) == player.weapon || player.inventory.get(i) == player.shield || player.inventory.get(i) == player.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRect(slotX, slotY, tile, tile);
             }
 
-            // Dibuja el item
+            // Draw the item
             g2.drawImage(player.inventory.get(i).sheet.frame, slotX, slotY, null);
 
-            // Dibuja la cantidad del item si este tiene mas de 1
+            // Draw the quantity of the item if it has more than 1
             if (player.inventory.get(i).amount > 1) {
                 int amountX, amountY;
                 String amount = String.valueOf(player.inventory.get(i).amount);
@@ -437,7 +435,7 @@ public class UI {
 
             slotX += gap;
 
-            // Salta a la siguiente fila
+            // Skip to the next row
             if (i == 4 || i == 9 || i == 14) {
                 slotX = slotXStart;
                 slotY += gap;
@@ -450,16 +448,16 @@ public class UI {
             int cursorX = slotXStart + (gap * slotCol);
             int cursorY = slotYStart + (gap * slotRow);
 
-            // Dibuja el cursor
+            // Draw the cursor
             g2.setColor(Color.white);
             g2.setStroke(new BasicStroke(2));
             g2.drawRect(cursorX, cursorY, tile, tile);
 
-            // Ventana de descripcion
+            // Description window
             int dFrameY = y + height;
             int dFrameHeight = tile * 4;
 
-            // Dibuja la descripcion
+            // Draw the description
             int textX = x + 20;
             int textY = dFrameY + tile + 5;
             int itemIndex = world.player.inventory.getSlot(slotCol, slotRow);
@@ -495,16 +493,13 @@ public class UI {
 
         for (int i = 0; i < entity.inventory.size(); i++) {
 
-            // Marca de color amarillo el item seleccionado
             if (entity.inventory.get(i) == world.player.weapon || entity.inventory.get(i) == world.player.shield || entity.inventory.get(i) == world.player.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRect(slotX, slotY, tile, tile);
             }
 
-            // Dibuja el item
             g2.drawImage(entity.inventory.get(i).sheet.frame, slotX, slotY, null);
 
-            // Dibuja la cantidad del item si este tiene mas de 1
             if (entity.inventory.get(i).amount > 1) {
                 int amountX, amountY;
                 String amount = String.valueOf(entity.inventory.get(i).amount);
@@ -516,7 +511,6 @@ public class UI {
 
             slotX += gap;
 
-            // Salta a la siguiente fila
             if (i == 4 || i == 9 || i == 14) {
                 slotX = slotXStart;
                 slotY += gap;
@@ -524,20 +518,16 @@ public class UI {
 
         }
 
-        // Cursor
         int cursorX = slotXStart + (gap * slotCol);
         int cursorY = slotYStart + (gap * slotRow);
 
-        // Dibuja el cursor
         g2.setColor(Color.white);
         g2.setStroke(new BasicStroke(2));
         g2.drawRect(cursorX, cursorY, tile, tile);
 
-        // Ventana de descripcion
         int dFrameY = y + height;
         int dFrameHeight = tile * 4;
 
-        // Dibuja la descripcion
         int textX = x + 20;
         int textY = dFrameY + tile + 5;
         int itemIndex = world.player.inventory.getSlot(slotCol, slotRow);
@@ -757,12 +747,12 @@ public class UI {
         changeFontSize(82);
 
         text = "Game Over";
-        // Sombra
+        // Shade
         g2.setColor(Color.black);
         x = getXForCenteredText(text);
         y = tile * 4;
         g2.drawString(text, x, y);
-        // Principal
+        // Main
         g2.setColor(Color.white);
         g2.drawString(text, x - 4, y - 4);
         // Retry
@@ -782,7 +772,7 @@ public class UI {
     }
 
     /**
-     * Renderiza un efecto de transicion y cuando este termina, teletransporta al player.
+     * Renders a transition effect and when it finishes, teleports the player.
      */
     private void renderTransitionEffect() {
         g2.setColor(new Color(0, 0, 0, counter * 5));
@@ -806,7 +796,7 @@ public class UI {
             case 1 -> renderTradeBuyWindow();
             case 2 -> renderTradeSellWindow();
         }
-        game.keyboard.enter = false; // Reinicia la entrada de teclado
+        game.keyboard.enter = false; // Reset keyboard input
     }
 
     private void renderTradeMainWindow() {
@@ -832,11 +822,11 @@ public class UI {
     private void renderTradeBuyWindow() {
         int x, y, width, height;
 
-        // Dependiendo del tipo de entidad, renderiza el inventario del lado derecho (player) o izquierdo (npc)
+        // Depending on the type of entity, it renders the inventory on the right side (player) or left side (npc)
         renderPlayerInventoryWindow(world.player, false);
         renderTraderInventoryWindow(entity);
 
-        // Ventana del precio
+        // Price window
         int itemIndex = world.player.inventory.getSlot(world.player.inventory.npcSlotCol, world.player.inventory.npcSlotRow);
         if (itemIndex < entity.inventory.size()) {
             x = tile * 5;
@@ -844,20 +834,20 @@ public class UI {
             width = (int) (tile * 2.5);
             height = tile;
             renderSubwindow(x, y, width, height, 255);
-            // Imagen del oro
+            // Gold image
             g2.drawImage(gold, x + 6, y + 10, null);
-            // Precio de compra del item
+            // Item price
             int price = entity.inventory.get(itemIndex).price;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
             g2.drawString(text, x, y + 24);
 
-            // Compra un item
+            // Buy an item
             if (game.keyboard.enter) {
                 if (entity.inventory.get(itemIndex).price > world.player.stats.gold)
                     addMessageToConsole("You need more gold to buy that!");
                 else {
-                    // TODO Especificar la cantidad de items a comprar
+                    // TODO
                     if (world.player.inventory.canPickup(entity.inventory.get(itemIndex))) {
                         game.playSound(sound_trade_buy);
                         world.player.stats.gold -= entity.inventory.get(itemIndex).price;
@@ -867,7 +857,7 @@ public class UI {
 
         }
 
-        // Ventana del oro disponible
+        // Gold window available
         x = (int) (tile * 9.75);
         y = (int) (tile * 5.68);
         width = (int) (tile * 6.5);
@@ -881,8 +871,6 @@ public class UI {
         int x, y, width, height;
 
         renderPlayerInventoryWindow(world.player, true);
-
-        // Ventana del precio
         int itemIndex = world.player.inventory.getSlot(world.player.inventory.playerSlotCol, world.player.inventory.playerSlotRow);
         if (itemIndex < world.player.inventory.size()) {
             x = tile * 14;
@@ -890,15 +878,13 @@ public class UI {
             width = (int) (tile * 2.5);
             height = tile;
             renderSubwindow(x, y, width, height, 255);
-            // Imagen del oro
             g2.drawImage(gold, x + 6, y + 10, null);
-            // Precio de venta del item
             int price = world.player.inventory.get(itemIndex).price / 2;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
             g2.drawString(text, x, y + 24);
 
-            // Vende un item
+            // Sell an item
             if (game.keyboard.enter) {
                 if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
                     addMessageToConsole("You cannot sell an equipped item!");
@@ -913,7 +899,7 @@ public class UI {
 
         }
 
-        // Ventana del oro disponible
+        // Gold window available
         x = (int) (tile * 9.75);
         y = (int) (tile * 9.68);
         width = (int) (tile * 6.5);
@@ -924,46 +910,46 @@ public class UI {
     }
 
     /**
-     * Renderiza un efecto de sueño que va desde lo mas oscuro a lo mas luminoso.
+     * Renders a dream effect that goes from darkest to brightest.
      */
     private void renderSleepEffect() {
-        // Si el contador es menor a 120, oscurece el render en 0.01 hasta que quede completamente oscuro
+        // If the counter is less than 120, darken the render by 0.01 until it is completely dark
         if (counter < 120) {
             counter++;
-            world.environment.lighting.filterAlpha += 0.01F;
-            // En caso de que el valor supere el maximo de oscuridad, lo establece en 1
-            if (world.environment.lighting.filterAlpha > 1F) world.environment.lighting.filterAlpha = 1F;
+            world.environment.lighting.filterAlpha += 0.01f;
+            // If the value exceeds the maximum darkness, set it to 1
+            if (world.environment.lighting.filterAlpha > 1f) world.environment.lighting.filterAlpha = 1f;
         }
-        // Al llegar a 120, ilumina el render en 0.01 hasta que quede completamente luminoso
+        // When you reach 120, brighten the render by 0.01 until it is completely bright
         if (counter >= 120) {
-            world.environment.lighting.filterAlpha -= 0.01F;
-            if (world.environment.lighting.filterAlpha <= 0F) {
-                world.environment.lighting.filterAlpha = 0F;
+            world.environment.lighting.filterAlpha -= 0.01f;
+            if (world.environment.lighting.filterAlpha <= 0f) {
+                world.environment.lighting.filterAlpha = 0f;
                 world.environment.lighting.dayState = world.environment.lighting.day;
                 world.environment.lighting.dayCounter = 0;
                 world.player.currentFrame = world.player.sheet.down[0];
                 game.state = PLAY_STATE;
-                counter = 0; // Resetea el contador para volver a generar el efecto desde 0
+                counter = 0; // Reset the counter to regenerate the effect from 0
             }
         }
     }
 
     /**
-     * Dibuja una sub ventana.
+     * Draw a sub window.
      *
-     * @param x      posicion x de la ventana.
-     * @param y      posicion y de la ventana.
-     * @param width  ancho de la ventana.
-     * @param height alto de la ventana.
-     * @param alpha  transparencia de la ventana.
+     * @param x      position x of the window.
+     * @param y      position y of the window.
+     * @param width  width of the window.
+     * @param height height of the window.
+     * @param alpha  window transparency.
      */
     private void renderSubwindow(int x, int y, int width, int height, int alpha) {
-        // Fondo negro
+        // Black background
         g2.setColor(new Color(0, 0, 0, alpha));
         g2.fillRoundRect(x, y, width, height, 10, 10);
-        // Borde blanco
+        // White background
         g2.setColor(new Color(255, 255, 255));
-        g2.setStroke(new BasicStroke(3)); // Grosor del borde
+        g2.setStroke(new BasicStroke(3)); // Edge thickness
         g2.drawRoundRect(x, y, width, height, 10, 10);
     }
 
@@ -982,26 +968,26 @@ public class UI {
 
     public void addMessageToConsole(String msg) {
         console.add(msg);
-        consoleCounter.add(0); // Creo que evita un IndexOutOfBoundsException
+        consoleCounter.add(0); // I think it prevents an IndexOutOfBoundsException
     }
 
     /**
-     * Obtiene x alineada hacia la derecha.
+     * Gets x aligned to the right.
      *
-     * @param text  el texto.
-     * @param tailX la cola de x.
+     * @param text  the text.
+     * @param tailX the tail of x.
      */
     private int getXforAlignToRightText(String text, int tailX) {
         int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
-        // Valor adicional para que el texto (por ejemplo, cantidad de oro) no quede tan pegado al borde derecho de la ventana
+        // Additional value so that the text (for example, amount of gold) is not so close to the right edge of the window
         int distanceToTheRightBorder = 2;
         return tailX - textLength - distanceToTheRightBorder;
     }
 
     /**
-     * Obtiene x para texo centrado.
+     * Get x for centered text.
      *
-     * @param text el texto.
+     * @param text the text.
      */
     private int getXForCenteredText(String text) {
         int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();

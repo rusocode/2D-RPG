@@ -6,22 +6,22 @@ import com.craivet.world.entity.Type;
 import com.craivet.world.entity.mob.Rock;
 
 /**
- * Mecanicas del juego.
+ * Game mechanics.
  *
  * @author Juan Debenedetti
  */
 
 public class Mechanics {
 
-    // Indica cuando el Player esta "unido" al Mob
+    // Indicates when the Player is "united" to the Mob
     private boolean united;
 
     /**
-     * Establece el knockback al objetivo del atacante.
+     * Sets the knockback to the attacker's target.
      *
-     * @param target         objetivo del atacante.
-     * @param attacker       atacante de la entidad.
-     * @param knockbackValue valor de knockback.
+     * @param target         target of the attacker.
+     * @param attacker       attacker of the entity.
+     * @param knockbackValue knockback value.
      */
     public void setKnockback(Entity target, Entity attacker, int knockbackValue) {
         target.direction.knockbackDirection = attacker.direction;
@@ -36,11 +36,11 @@ public class Mechanics {
     }
 
     /**
-     * Comprueba la velocidad de la direccion del Player cuando colisiona con un Mob en movimiento en la misma
-     * direccion. Esto se hace para evitar un "tartamudeo" en la animacion de movimiento del Player. En ese caso, "une"
-     * el Player al Mob. En caso contrario, "desune" el Player del Mob.
+     * Check the speed of the Player's direction when it collides with a Mob moving in the same direction. This is done
+     * to avoid "stuttering" in the Player's movement animation. In that case, "united" the Player to the Mob. Otherwise,
+     * "disunite" the Player from the Mob.
      *
-     * @param mob mob actual.
+     * @param mob current mob.
      */
     public void checkDirectionSpeed(Entity player, Entity mob) {
         if (checkConditionsForUnion(player, mob)) unite(player, mob);
@@ -48,12 +48,12 @@ public class Mechanics {
     }
 
     /**
-     * Comprueba si el Mob es distinto a null, y si el Mob es un Npc, y si el Player esta colisionando con el Mob, y si
-     * el Player esta en la misma direccion que el Mob, y si el Player no tiene distancia con el Mob y si el Mob no
-     * colisiono.
+     * Checks if the Mob is other than null, and if the Mob is an Npc, and if the Player is colliding with the Mob, and
+     * if the Player is in the same direction as the Mob, and if the Player has no distance from it Mob and if the Mob
+     * did not collide.
      *
-     * @param mob mob actual.
-     * @return true si se cumplen todas las condiciones especificadas o false.
+     * @param mob current mob.
+     * @return true if all specified conditions are met or false.
      */
     private boolean checkConditionsForUnion(Entity player, Entity mob) {
         return mob != null && mob.type == Type.NPC && player.flags.collidingOnMob
@@ -61,15 +61,15 @@ public class Mechanics {
     }
 
     /**
-     * Comprueba si hay distancia con el Mob.
+     * Check if there is distance with the Mob.
      * <p>
-     * <h3>¿Para que hace esto?</h3>
-     * Cuando sigue (siempre colisionando) al Mob pero en algun momento lo deja de seguir y este se mantiene en la misma
-     * direccion, la velocidad va a seguir siendo la misma a la del Mob. Entonces para solucionar ese problema se
-     * comprueba la distancia, y si hay distancia entre el Player y el Mob, vuelve a la velocidad por defecto.
+     * <h3>What is he doing this for?</h3>
+     * When it follows (always colliding) the Mob but at some point stops following it and it stays in the same
+     * direction, the speed will remain the same as that of the Mob. So to solve this problem, the distance is checked,
+     * and if there is distance between the Player and the Mob, it returns to the default speed.
      *
-     * @param mob mob actual.
-     * @return true si hay distancia o false.
+     * @param mob current mob.
+     * @return true if there is distance or false.
      */
     private boolean isDistanceWithMob(Entity player, Entity mob) {
         switch (mob.direction) {
@@ -94,12 +94,12 @@ public class Mechanics {
     }
 
     /**
-     * Une el Player al Mob.
+     * Join the Player to the Mob.
      * <p>
-     * Iguala la velocidad del Mob a la del Player y dependiendo de la direccion, suma o resta un pixel. Esto ultimo se
-     * hace para que el Player pueda dialogar si el Mob es un Npc y este esta en movimiento.
+     * Matches the speed of the Mob to that of the Player and depending on the direction, adds or subtracts a pixel. The
+     * latter is done so that the Player can dialogue if the Mob is an Npc and it is moving.
      *
-     * @param mob mob actual.
+     * @param mob current mob.
      */
     private void unite(Entity player, Entity mob) {
         player.stats.speed = mob.stats.speed;
@@ -115,10 +115,10 @@ public class Mechanics {
     }
 
     /**
-     * Desune el Player del Mob.
+     * Disunite the Player from the Mob.
      * <p>
-     * Vuelve a la velocidad por defecto y verifica si estan unidos para "destrabar" ambas entidades restando o sumando
-     * un pixel.
+     * Return to the default speed and check if they are joined to "unlock" both entities by subtracting or adding a
+     * pixel.
      */
     private void disunite(Entity player) {
         player.stats.speed = player.stats.defaultSpeed;

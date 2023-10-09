@@ -1,8 +1,8 @@
 package com.craivet.world.entity;
 
 /**
- * Las "flags" son variables o bits individuales utilizados como indicadores booleanos para representar y controlar el
- * estado o las condiciones especificas dentro del juego.
+ * "Flags" are variables or individual bits used as boolean indicators to represent and control specific state or
+ * conditions within the game.
  *
  * @author Juan Debenedetti
  */
@@ -21,7 +21,7 @@ public final class Flags {
     public boolean hpBar;
 
     /**
-     * Reinicia las flags.
+     * Reset the flags.
      */
     public void reset() {
         hitting = false;

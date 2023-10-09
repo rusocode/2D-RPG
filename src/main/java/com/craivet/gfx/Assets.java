@@ -7,7 +7,7 @@ import java.net.URL;
 import com.craivet.utils.Utils;
 
 /**
- * Esta clase carga los recursos solo una vez al iniciar el juego.
+ * This class loads resources only once when starting the game.
  */
 
 public final class Assets {
@@ -24,9 +24,10 @@ public final class Assets {
     // AUDIO (ambient, music and sounds)
     // Music
     public static final URL music_main = Utils.loadAudio("audio/music/main.wav");
+    public static final URL music_overworld = Utils.loadAudio("audio/music/overworld.wav");
     public static final URL music_dungeon = Utils.loadAudio("audio/music/dungeon.wav");
     // Sounds
-    public static final URL sound_fireball = Utils.loadAudio(sounds_path + "fireball5.wav");
+    public static final URL sound_fireball = Utils.loadAudio(sounds_path + "fireball.wav");
     public static final URL sound_chest_opening = Utils.loadAudio(sounds_path + "chest_opening.wav");
     public static final URL sound_chipwall = Utils.loadAudio(sounds_path + "chipwall.wav");
     public static final URL sound_gold_pickup = Utils.loadAudio(sounds_path + "gold_pickup.wav");
@@ -35,6 +36,7 @@ public final class Assets {
     public static final URL sound_door_opening = Utils.loadAudio(sounds_path + "door_opening.wav");
     public static final URL sound_door_iron_opening = Utils.loadAudio(sounds_path + "door_iron_opening.wav");
     public static final URL sound_draw_sword = Utils.loadAudio(sounds_path + "draw_sword.wav");
+    public static final URL sound_drink_potion = Utils.loadAudio(sounds_path + "drink_potion.wav");
     public static final URL sound_hit_bat = Utils.loadAudio(sounds_path + "hit_bat.wav");
     public static final URL sound_hit_mob = Utils.loadAudio(sounds_path + "hit_mob.wav");
     public static final URL sound_hit_orc = Utils.loadAudio(sounds_path + "hit_orc.wav");
@@ -46,18 +48,17 @@ public final class Assets {
     public static final URL sound_bat_death = Utils.loadAudio(sounds_path + "bat_death.wav");
     public static final URL sound_player_damage = Utils.loadAudio(sounds_path + "player_damage.wav");
     public static final URL sound_player_death = Utils.loadAudio(sounds_path + "player_death.wav");
-    public static final URL sound_drink_potion = Utils.loadAudio(sounds_path + "drink_potion.wav");
-    public static final URL sound_item_pickup = Utils.loadAudio(sounds_path + "item_pickup2.wav");
+    public static final URL sound_item_pickup = Utils.loadAudio(sounds_path + "item_pickup.wav");
     public static final URL sound_sleep = Utils.loadAudio(sounds_path + "sleep.wav");
     public static final URL sound_spawn = Utils.loadAudio(sounds_path + "spawn.wav");
     public static final URL sound_swing_weapon = Utils.loadAudio(sounds_path + "swing_weapon.wav");
     public static final URL sound_swing_axe = Utils.loadAudio(sounds_path + "swing_axe.wav");
     public static final URL sound_trade_buy = Utils.loadAudio(sounds_path + "trade_buy.wav");
-    public static final URL sound_trade_opening = Utils.loadAudio(sounds_path + "trade_opening2.wav");
+    public static final URL sound_trade_opening = Utils.loadAudio(sounds_path + "trade_opening.wav");
     public static final URL sound_trade_sell = Utils.loadAudio(sounds_path + "trade_sell.wav");
 
     // FONT
-    // TODO El tamaño de fuente tendria que cambiar con respecto a la visualizacion de pantalla
+    // TODO The font size would have to change with respect to the screen display
     public static final Font font_minecraft = Utils.loadFont("font/minecraft.ttf", 24);
     public static final Font font_marumonica = Utils.loadFont("font/MaruMonica.ttf", 24);
     public static final Font font_medieval1 = Utils.loadFont("font/medieval1.ttf", 22);
@@ -82,7 +83,7 @@ public final class Assets {
     public static final BufferedImage sword_iron = Utils.loadImage(textures_items_path + "sword_iron.png");
     public static final BufferedImage tent = Utils.loadImage(textures_items_path + "tent.png");
     // Items frames
-    public static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "sword_frame.png")); // TODO Se podria usar una sola imagen y en base a la direccion se voltea y se cambia el color dependiendo del tipo de espada (piedra, hierro, diamante oro, minecraft)
+    public static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "sword_frame.png")); // TODO You could use a single image and based on the direction it is flipped and the color is changed depending on the type of sword (stone, iron, gold diamond, minecraft)
     public static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "axe_frame.png"));
     public static final SpriteSheet pickaxe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "pickaxe_frame.png"));
     // Mobs
@@ -90,11 +91,9 @@ public final class Assets {
     public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc/movement.png"));
     public static final SpriteSheet skeleton_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/attack.png"));
     public static final SpriteSheet skeleton_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/movement.png"));
-    public static final SpriteSheet player_axe = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/axe.png"));
     public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player.png"));
     public static final SpriteSheet player_movement2 = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player 300x360.png"));
     public static final SpriteSheet player_movement3 = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player 150x180.png"));
-    public static final SpriteSheet player_pickaxe = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/pickaxe.png"));
     public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_mob_path + "bat.png"));
     public static final BufferedImage rock = Utils.loadImage(textures_mob_path + "rock.png");
     public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage(textures_mob_path + "oldman.png"));
