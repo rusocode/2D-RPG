@@ -81,11 +81,17 @@ public class Player extends Mob {
         stats.attack = getAttack();
         stats.defense = getDefense();
 
-        sheet.loadPlayerMovementFrames(player_movement, 1);
+        int scale = 1;
+        sheet.loadPlayerMovementFrames(player_movement, scale);
         sheet.loadWeaponFrames(sword_frame, 16, 16, 1);
 
-        hitbox = new Rectangle(7, 32, 10, 24);
-        // hitbox = new Rectangle(sheet.frame.getWidth() / 2 - 6, sheet.frame.getHeight() / 2 - 6, sheet.frame.getWidth() / 2, sheet.frame.getHeight() / 2);
+        // hitbox = new Rectangle(7, 32, 10, 24);
+        int additionalPixelsForY = 10;
+        hitbox.width = sheet.frame.getWidth() / 2;
+        hitbox.height = sheet.frame.getHeight() / 2;
+        hitbox.x = hitbox.width - hitbox.width / 2;
+        hitbox.y = hitbox.height - hitbox.height / 2 + additionalPixelsForY;
+        hitbox = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
 
@@ -98,7 +104,8 @@ public class Player extends Mob {
 
         inventory.init();
 
-        pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
+        int col = 23, row = 21;
+        pos.set(world, this, NASHE, OUTSIDE, col, row, Direction.DOWN);
     }
 
     public void hit() {
