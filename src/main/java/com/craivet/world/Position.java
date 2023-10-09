@@ -18,7 +18,7 @@ public class Position {
     public int x, y;
 
     /**
-     * Establece la posicion de la entidad.
+     * Set up the position of the entity.
      */
     public void set(int col, int row) {
         x = col * tile;
