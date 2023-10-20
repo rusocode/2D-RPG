@@ -25,7 +25,7 @@ public class Launcher {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         // Ruta al archivo del mapa TMX
-        String mapPath = "tiled/map.tmx";
+        String mapPath = "src/main/resources/maps/map.tmx"; // TODO Seria bueno reemplazar la ruta absoluta por el cargador de clases String.valueOf(Launcher.class.getClassLoader().getResourceAsStream(mapPath)
         TMXMapReader tmxMapReader = new TMXMapReader();
 
         // Carga el archivo TMX
