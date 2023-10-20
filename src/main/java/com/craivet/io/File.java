@@ -232,7 +232,8 @@ public class File {
      */
     private void loadTile(int i, String name, boolean solid) {
         world.tileData[i] = new Tile();
-        world.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile, tile);
+        // if (name.equals("001")) world.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), 128, 128);
+         world.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile, tile);
         world.tileData[i].solid = solid;
     }
 

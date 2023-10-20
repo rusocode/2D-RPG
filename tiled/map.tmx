@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="10" height="10" tilewidth="64" tileheight="64" infinite="0" nextlayerid="6" nextobjectid="102">
+ <tileset firstgid="1" source="tiled/agua.tsx"/>
+ <tileset firstgid="10" source="tiled/tileset.tsx"/>
+ <tileset firstgid="110" source="tiled/obj.tsx"/>
+ <layer id="1" name="Tile Layer 1" width="10" height="10">
+  <data encoding="csv">
+59,59,59,59,59,59,59,59,81,81,
+59,59,59,59,59,59,59,59,81,81,
+59,59,59,59,59,59,59,59,81,81,
+59,59,59,59,59,59,59,59,59,59,
+59,59,59,59,59,59,59,59,59,59,
+59,59,59,59,59,59,59,59,59,59,
+59,59,59,59,59,59,59,59,59,59,
+59,59,59,59,59,59,59,59,59,59,
+59,59,59,59,59,59,59,59,59,59,
+1,0,59,59,59,59,59,59,59,59
+</data>
+ </layer>
+ <objectgroup id="3" name="Object Layer 1">
+  <object id="2" name="Start" x="64" y="64" width="64" height="64"/>
+  <object id="14" name="End" x="512" y="512" width="64" height="64"/>
+  <object id="68" gid="113" x="374.667" y="246.667" width="256" height="256"/>
+  <object id="70" gid="151" x="190" y="438" width="256" height="256"/>
+  <object id="73" gid="138" x="260" y="585" width="32" height="32"/>
+  <object id="74" gid="138" x="82" y="433" width="32" height="32"/>
+  <object id="75" gid="138" x="254" y="151" width="32" height="32"/>
+  <object id="76" gid="138" x="74" y="225" width="32" height="32"/>
+  <object id="80" gid="145" x="160" y="627" width="53" height="49"/>
+  <object id="81" gid="128" x="2" y="499" width="88" height="100"/>
+  <object id="83" gid="145" x="151" y="552" width="53" height="49"/>
+  <object id="91" gid="138" x="398" y="494" width="32" height="32"/>
+  <object id="93" gid="132" x="494.333" y="493.667" width="96" height="164.667"/>
+  <object id="99" template="../../../../Desktop/test tiled/graphics/obj/templates/mushroom.tx" x="173.333" y="153.333"/>
+  <object id="100" template="../../../../Desktop/test tiled/graphics/obj/templates/mushroom.tx" x="172" y="200"/>
+  <object id="101" template="../../../../Desktop/test tiled/graphics/obj/templates/mushroom.tx" x="126.667" y="184"/>
+ </objectgroup>
+</map>
