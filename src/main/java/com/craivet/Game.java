@@ -9,10 +9,17 @@ import com.craivet.input.Keyboard;
 import com.craivet.physics.*;
 import com.craivet.states.*;
 import com.craivet.world.World;
+import org.mapeditor.core.Map;
+import org.mapeditor.core.TileLayer;
+import org.mapeditor.io.TMXMapReader;
+import org.mapeditor.view.OrthogonalRenderer;
 
+import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.net.URL;
 
 import static com.craivet.utils.Global.*;
@@ -86,6 +93,7 @@ public class Game extends Canvas implements Runnable {
     // Others
     private boolean running;
 
+
     public Game() {
         setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         setBackground(Color.black);
@@ -106,6 +114,7 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void init() {
+
         file.loadConfig();
         file.loadTiles();
         file.loadMaps();

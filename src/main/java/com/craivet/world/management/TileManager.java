@@ -28,6 +28,7 @@ public class TileManager implements State {
      */
     @Override
     public void render(Graphics2D g2) {
+
         // TODO It could be calculated from a Camera class
         // Calculate the offsets
         int xOffset = world.player.pos.x - world.player.screen.xOffset;
@@ -48,6 +49,7 @@ public class TileManager implements State {
                 // g2.drawRect(x * tile - xOffset, y * tile - yOffset, tile, tile); // Dibuja una grilla
             }
         }
+
     }
 
 }
