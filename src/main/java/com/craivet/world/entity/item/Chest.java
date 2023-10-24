@@ -21,7 +21,7 @@ public class Chest extends Item {
         type = Type.OBSTACLE;
         stats.name = NAME;
         solid = true;
-        hitbox = new Rectangle(2, 16, tile - 5, tile - 16);
+        hitbox = new Rectangle(3, 16, tile - 7, tile - 20);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.loadItemFrames(chest, 32, 32, 1);
