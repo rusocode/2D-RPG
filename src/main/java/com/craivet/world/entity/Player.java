@@ -81,7 +81,7 @@ public class Player extends Mob {
         stats.attack = getAttack();
         stats.defense = getDefense();
 
-        int scale = 2;
+        int scale = 1;
         sheet.loadPlayerMovementFrames(player_movement, scale);
         sheet.loadWeaponFrames(sword_frame, 16, 16, 1);
 

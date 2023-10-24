@@ -9,17 +9,10 @@ import com.craivet.input.Keyboard;
 import com.craivet.physics.*;
 import com.craivet.states.*;
 import com.craivet.world.World;
-import org.mapeditor.core.Map;
-import org.mapeditor.core.TileLayer;
-import org.mapeditor.io.TMXMapReader;
-import org.mapeditor.view.OrthogonalRenderer;
 
-import javax.xml.bind.JAXBException;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.net.URL;
 
 import static com.craivet.utils.Global.*;

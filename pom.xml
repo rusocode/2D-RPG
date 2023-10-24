@@ -14,14 +14,6 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.mapeditor</groupId>
-            <artifactId>libtiled</artifactId>
-            <version>1.4.2</version>
-        </dependency>
-    </dependencies>
-
     <build>
         <plugins>
             <plugin>

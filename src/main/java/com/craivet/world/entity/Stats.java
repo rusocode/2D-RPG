@@ -29,7 +29,7 @@ public class Stats {
         lvl = 1;
         exp = 0;
         nextLvlExp = 10;
-        speed = defaultSpeed = 3;
+        speed = defaultSpeed = 2;
         hp = maxHp = 6;
         mana = maxMana = 4;
         ammo = 5;

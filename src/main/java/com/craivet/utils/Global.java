@@ -34,7 +34,7 @@ public final class Global {
      * https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html */
     // Window settings
     private static final int original_tile = 16;
-    private static final int scale = 3;
+    private static final int scale = 2;
     public static final int tile = original_tile * scale;
     // Number of visible tiles
     public static final int MAX_WINDOW_ROW = 13;
