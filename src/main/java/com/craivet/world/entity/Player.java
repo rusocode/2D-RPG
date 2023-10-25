@@ -86,9 +86,9 @@ public class Player extends Mob {
         sheet.loadWeaponFrames(sword_frame, 16, 16, 1);
 
         // hitbox = new Rectangle(7, 32, 10, 24);
-        int additionalPixelsForY = 10;
+        int additionalPixelsForY = 15;
         hitbox.width = sheet.frame.getWidth() / 2;
-        hitbox.height = sheet.frame.getHeight() / 2;
+        hitbox.height = sheet.frame.getHeight() / 2 - 3;
         hitbox.x = hitbox.width - hitbox.width / 2;
         hitbox.y = hitbox.height - hitbox.height / 2 + additionalPixelsForY;
         hitbox = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
@@ -123,26 +123,26 @@ public class Player extends Mob {
              * corner of the player's hitbox (i don't know if it is necessary to start from that corner). */
             switch (direction) {
                 case DOWN -> {
-                    attackbox.x = -1;
+                    attackbox.x = 0;
                     attackbox.y = 4;
                     attackbox.width = 4;
                     attackbox.height = 36;
                 }
                 case UP -> {
-                    attackbox.x = 12;
+                    attackbox.x = 13;
                     attackbox.y = -43;
                     attackbox.width = 4;
                     attackbox.height = 42;
                 }
                 case LEFT -> {
                     attackbox.x = -20;
-                    attackbox.y = 0;
+                    attackbox.y = 3;
                     attackbox.width = 19;
                     attackbox.height = 4;
                 }
                 case RIGHT -> {
                     attackbox.x = 10;
-                    attackbox.y = 2;
+                    attackbox.y = 5;
                     attackbox.width = 19;
                     attackbox.height = 4;
                 }

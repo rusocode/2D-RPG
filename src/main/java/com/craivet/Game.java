@@ -86,7 +86,6 @@ public class Game extends Canvas implements Runnable {
     // Others
     private boolean running;
 
-
     public Game() {
         setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         setBackground(Color.black);
