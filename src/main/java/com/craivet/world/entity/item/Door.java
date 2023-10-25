@@ -21,7 +21,7 @@ public class Door extends Item {
         type = Type.OBSTACLE;
         stats.name = NAME;
         solid = true;
-        hitbox = new Rectangle(0, 16, tile, tile - 16);
+        hitbox = new Rectangle(0, 16, 31, tile - 18);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.frame = Utils.scaleImage(door, tile, tile);

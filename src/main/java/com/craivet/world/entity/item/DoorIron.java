@@ -21,7 +21,7 @@ public class DoorIron extends Item {
         type = Type.OBSTACLE;
         stats.name = NAME;
         solid = true;
-        hitbox = new Rectangle(0, 16, tile - 1, tile - 16);
+        hitbox = new Rectangle(1, 16, tile - 2, tile - 16);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.frame = Utils.scaleImage(door_iron, tile, tile);

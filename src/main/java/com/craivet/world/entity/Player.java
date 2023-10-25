@@ -122,11 +122,12 @@ public class Player extends Mob {
              * direction. It is important to clarify that the x-y coordinates of the attackbox start from the upper left
              * corner of the player's hitbox (i don't know if it is necessary to start from that corner). */
             switch (direction) {
+                // TODO Las coordenadas de cada hitbox deberian comenzar a partir de la imagen
                 case DOWN -> {
                     attackbox.x = 0;
                     attackbox.y = 4;
                     attackbox.width = 4;
-                    attackbox.height = 36;
+                    attackbox.height = 44;
                 }
                 case UP -> {
                     attackbox.x = 13;
@@ -141,9 +142,9 @@ public class Player extends Mob {
                     attackbox.height = 4;
                 }
                 case RIGHT -> {
-                    attackbox.x = 10;
+                    attackbox.x = 13;
                     attackbox.y = 5;
-                    attackbox.width = 19;
+                    attackbox.width = 18;
                     attackbox.height = 4;
                 }
             }
