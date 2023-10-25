@@ -63,7 +63,7 @@ public class Player extends Mob {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
         else getCurrentItemFrame(g2);
-        drawRects(g2);
+        // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
 
