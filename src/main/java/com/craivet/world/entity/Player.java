@@ -10,6 +10,7 @@ import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.mob.Slime;
+import com.craivet.world.entity.projectile.BurstOfFire;
 import com.craivet.world.entity.projectile.Fireball;
 import com.craivet.world.entity.projectile.Projectile;
 import com.craivet.world.tile.Interactive;
@@ -45,6 +46,7 @@ public class Player extends Mob {
             checkAttack();
             game.keyboard.resetAccionKeys();
             if (game.keyboard.checkMovementKeys()) {
+                // TODO Mover a metodo
                 down.tick();
                 up.tick();
                 left.tick();
@@ -74,7 +76,7 @@ public class Player extends Mob {
         type = Type.PLAYER;
         stats.init();
 
-        projectile = new Fireball(game, world);
+        projectile = new BurstOfFire(game, world);
         weapon = new SwordIron(game, world);
         shield = new ShieldWood(game, world);
         light = null;

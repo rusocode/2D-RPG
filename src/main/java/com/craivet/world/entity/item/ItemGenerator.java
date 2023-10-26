@@ -39,11 +39,12 @@ public class ItemGenerator {
              * created per potion, therefore it would be good for the player to be able to determine the quantity to buy.
              * It is important to pass 0 when it is generated to only create the object and not specify a quantity. */
             case PotionRed.NAME -> item = new PotionRed(game, world, 0);
-            case ShieldBlue.NAME -> item = new ShieldBlue(game, world);
+            case ShieldIron.NAME -> item = new ShieldIron(game, world);
             case ShieldWood.NAME -> item = new ShieldWood(game, world);
             case Stone.NAME -> item = new Stone(game, world, 0);
             case SwordIron.NAME -> item = new SwordIron(game, world);
             case Tent.NAME -> item = new Tent(game, world);
+            case Wood.NAME -> item = new Wood(game, world, 0);
         }
         return item;
     }

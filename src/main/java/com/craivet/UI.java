@@ -835,7 +835,7 @@ public class UI {
             height = tile;
             renderSubwindow(x, y, width, height, 255);
             // Gold image
-            g2.drawImage(gold, x + 6, y + 10, null);
+            g2.drawImage(gold, x + 6, y + 1, null);
             // Item price
             int price = entity.inventory.get(itemIndex).price;
             String text = String.valueOf(price);
@@ -878,7 +878,7 @@ public class UI {
             width = (int) (tile * 2.5);
             height = tile;
             renderSubwindow(x, y, width, height, 255);
-            g2.drawImage(gold, x + 6, y + 10, null);
+            g2.drawImage(gold, x + 6, y + 1, null);
             int price = world.player.inventory.get(itemIndex).price / 2;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);

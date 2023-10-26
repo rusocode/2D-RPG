@@ -77,11 +77,12 @@ public final class Assets {
     public static final BufferedImage lantern = Utils.loadImage(textures_items_path + "lantern.png");
     public static final BufferedImage pickaxe = Utils.loadImage(textures_items_path + "pickaxe.png");
     public static final BufferedImage potion_red = Utils.loadImage(textures_items_path + "potion_red.png");
-    public static final BufferedImage shield_blue = Utils.loadImage(textures_items_path + "shield_blue.png");
+    public static final BufferedImage shield_iron = Utils.loadImage(textures_items_path + "shield_iron.png");
     public static final BufferedImage shield_wood = Utils.loadImage(textures_items_path + "shield_wood.png");
     public static final BufferedImage stone = Utils.loadImage(textures_items_path + "stone.png");
     public static final BufferedImage sword_iron = Utils.loadImage(textures_items_path + "sword_iron.png");
     public static final BufferedImage tent = Utils.loadImage(textures_items_path + "tent.png");
+    public static final BufferedImage wood = Utils.loadImage(textures_items_path + "wood.png");
     // Items frames
     public static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "sword_frame.png")); // TODO You could use a single image and based on the direction it is flipped and the color is changed depending on the type of sword (stone, iron, gold diamond, minecraft)
     public static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "axe_frame.png"));
@@ -101,6 +102,7 @@ public final class Assets {
     public static final SpriteSheet slime = new SpriteSheet(Utils.loadImage(textures_mob_path + "slime.png"));
     public static final BufferedImage trader = Utils.loadImage(textures_mob_path + "trader.png");
     // Projectile
+    public static final SpriteSheet burst_of_fire = new SpriteSheet(Utils.loadImage(textures_projectile_path + "burst_of_fire.png"));
     public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage(textures_projectile_path + "fireball.png"));
     public static final BufferedImage stickyball = Utils.loadImage(textures_projectile_path + "stickyball.png");
     // Gui

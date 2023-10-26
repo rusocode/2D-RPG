@@ -7,6 +7,8 @@ import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 import com.craivet.world.entity.item.Item;
+import com.craivet.world.entity.item.Stone;
+import com.craivet.world.entity.item.Wood;
 
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
@@ -39,6 +41,10 @@ public class DryTree extends Interactive {
 
     public int getParticleMaxLife() {
         return 20;
+    }
+
+    public void checkDrop() {
+        if (Utils.random(100) <= PROBABILITY_WOOD_DROP) drop(this, new Wood(game, world, 1));
     }
 
     @Override

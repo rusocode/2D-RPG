@@ -14,6 +14,7 @@ import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.World;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
+import com.craivet.world.entity.projectile.BurstOfFire;
 import com.craivet.world.entity.projectile.Projectile;
 
 import static com.craivet.gfx.Assets.*;
@@ -96,7 +97,7 @@ public abstract class Entity {
                 // If it is a static image (item, interactive tile)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY(), null);
 
-            // drawRects(g2);
+            drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }

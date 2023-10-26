@@ -33,7 +33,9 @@ public final class Global {
     /* An application can run much faster if the images it chooses to display share the same bit depth as the screen.
      * https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html */
     // Window settings
-    private static final int original_tile = 16; // TODO Los tiles tienen que quedar en 32x32 para que el jugador tenga una mayor vision del mapa, y los items para una mejor calidad tendrian que ser de x64 al igual que los pjs y mobs?
+    /* TODO Cuando se agrande la ventana, los items tendria que cambiar a x64 para evitar deformaciones, por lo tanto
+     * el tamanio original de cada item tiene que ser de 64px para poder escalar hacia abajo sin perder calidad. */
+    private static final int original_tile = 16;
     private static final int scale = 2;
     public static final int tile = original_tile * scale;
     // Number of visible tiles
@@ -64,6 +66,7 @@ public final class Global {
     // Probabilitys %
     public static final int PROBABILITY_GOLD_DROP = 47;
     public static final int PROBABILITY_STONE_DROP = 90;
+    public static final int PROBABILITY_WOOD_DROP = 80;
     public static final int PROBABILITY_KEY_DROP = 30;
 
     // Animations interval

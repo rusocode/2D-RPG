@@ -28,7 +28,7 @@ public class Projectile extends Entity {
         // If the player shooting a projectile
         if (entity instanceof Player) {
             int mobIndex = game.collision.checkEntity(this, world.mobs);
-            /* When the projectile collides with a mob, set the colliding state to true. Therefore, when the projectile
+            /* When the projectile collides with a mob, set the colliding state to true. Therefore, when the projectilew
              * is redrawn, it will remain in motion frame 1 since in the ternary operator, the condition remains true
              * and never changes to false in order to display motion frame 2. The following line solves this problem. */
             flags.colliding = false;
@@ -50,15 +50,12 @@ public class Projectile extends Entity {
             }
         }
 
-        if (stats.hp-- <= 0) flags.alive = false;
+        if (stats.hp-- <= 0) {
+            flags.alive = false;
+        }
 
         if (flags.alive) {
-            switch (direction) {
-                case DOWN -> pos.y += stats.speed;
-                case UP -> pos.y -= stats.speed;
-                case LEFT -> pos.x -= stats.speed;
-                case RIGHT -> pos.x += stats.speed;
-            }
+            pos.update(this, direction);
             timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);
         }
     }

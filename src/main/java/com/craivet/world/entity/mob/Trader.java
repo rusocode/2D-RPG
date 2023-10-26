@@ -45,7 +45,7 @@ public class Trader extends Mob {
         inventory.add(new SwordIron(game, world));
         inventory.add(new Axe(game, world));
         inventory.add(new ShieldWood(game, world));
-        inventory.add(new ShieldBlue(game, world));
+        inventory.add(new ShieldIron(game, world));
     }
 
 }

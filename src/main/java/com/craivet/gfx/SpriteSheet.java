@@ -132,6 +132,32 @@ public class SpriteSheet {
 
     }
 
+    public void loadBurstOfFireFrames(SpriteSheet ss, int scale) {
+        int col = 5, row = 1;
+        int w = ss.getWidth() / col, h = ss.getHeight() / row;
+        int numberFrames = 5;
+
+        down = new BufferedImage[numberFrames];
+        up = new BufferedImage[numberFrames];
+        left = new BufferedImage[numberFrames];
+        right = new BufferedImage[numberFrames];
+
+        for (int y = 0; y < row; y++) {
+            for (int x = 0; x < col; x++) {
+                switch (y) {
+                    case 0 -> right[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                    // case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                   // case 2 -> left[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                   // case 3 -> right[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+
+                }
+            }
+        }
+
+        frame = right[0];
+
+    }
+
     public void loadWeaponFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
         int row = ss.getHeight() / h;
