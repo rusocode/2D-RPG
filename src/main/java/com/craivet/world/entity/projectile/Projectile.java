@@ -50,9 +50,7 @@ public class Projectile extends Entity {
             }
         }
 
-        if (stats.hp-- <= 0) {
-            flags.alive = false;
-        }
+        if (stats.hp-- <= 0) flags.alive = false;
 
         if (flags.alive) {
             pos.update(this, direction);
