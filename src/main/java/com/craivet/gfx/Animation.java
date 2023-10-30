@@ -15,7 +15,7 @@ import java.awt.image.BufferedImage;
 public class Animation {
 
     private final int speed;
-    private int index;
+    private int index, last;
     private long lastTime, timer;
     private final BufferedImage[] frames;
 
@@ -37,7 +37,10 @@ public class Animation {
         if (timer > speed) {
             index++;
             timer = 0;
-            if (index >= frames.length) index = 0;
+            if (index >= frames.length) {
+                last = frames.length - 1;
+                index = 0;
+            }
         }
     }
 
@@ -57,6 +60,10 @@ public class Animation {
      */
     public BufferedImage getFirstFrame() {
         return frames[0];
+    }
+
+    public BufferedImage getLastFrame() {
+        return frames[last];
     }
 
 }

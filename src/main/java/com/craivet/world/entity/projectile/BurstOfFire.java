@@ -23,7 +23,7 @@ public class BurstOfFire extends Projectile {
     public BurstOfFire(Game game, World world) {
         super(game, world);
         stats.name = "Burst of Fire";
-        stats.speed = 3;
+        stats.speed = 4;
         stats.hp = stats.maxHp = 80;
         stats.attack = 4;
         stats.knockbackValue = 7;
@@ -33,12 +33,11 @@ public class BurstOfFire extends Projectile {
         hitbox = new Rectangle(0, 0, tile * scale, tile * scale);
         sheet.loadBurstOfFireFrames(burst_of_fire, scale);
 
-        int animationSpeed = 280;
+        int animationSpeed = 80;
         down = new Animation(animationSpeed, sheet.down);
         up = new Animation(animationSpeed, sheet.up);
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
-        // currentFrame = right.getFirstFrame();
     }
 
     /* Es importante saber que si se sobreescribe un metodo como por ejemplo update(), entonces se ANULA la funcion del
@@ -62,7 +61,8 @@ public class BurstOfFire extends Projectile {
             }
         }
 
-        if (stats.hp-- <= 0) flags.alive = false;
+        // if (stats.hp-- <= 0) flags.alive = false;
+
 
         // Si esta vivo
         // if (flags.alive) { // TODO Creo que no hace falta comprobar si esta vivo
@@ -75,12 +75,17 @@ public class BurstOfFire extends Projectile {
         // left.tick();
         right.tick();
         // }
+
+        // Cuando llega al ultimo frame, deja de vivir
+        if (right.getCurrentFrame().equals(right.getLastFrame())) {
+            System.out.println("asd");
+            flags.alive = false;
+        }
     }
 
     @Override
     public void render(Graphics2D g2) {
-        if (flags.alive)
-            g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
+        g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
         // drawRects(g2);
     }
 
@@ -129,12 +134,7 @@ public class BurstOfFire extends Projectile {
             case DOWN -> currentFrame = down.getCurrentFrame();
             case UP -> currentFrame = up.getCurrentFrame();
             case LEFT -> currentFrame = left.getCurrentFrame();
-            case RIGHT -> {
-                return right.getCurrentFrame();
-                // currentFrame = right.getFirstFrame();
-                //if (flags.collidingOnMob) return right.getCurrentFrame();
-                //else return flags.colliding ? right.getFirstFrame() : right.getCurrentFrame();
-            }
+            case RIGHT -> currentFrame = right.getCurrentFrame();
         }
         return currentFrame;
     }
