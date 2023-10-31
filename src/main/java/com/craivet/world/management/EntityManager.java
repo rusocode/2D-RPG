@@ -39,7 +39,7 @@ public class EntityManager implements State {
         for (int i = 0; i < world.projectiles[1].length; i++) {
             if (world.projectiles[world.map][i] != null) {
                 if (world.projectiles[world.map][i].flags.alive) world.projectiles[world.map][i].update();
-                if (!world.projectiles[world.map][i].flags.alive) world.projectiles[world.map][i] = null;
+                else world.projectiles[world.map][i] = null;
             }
         }
         for (int i = 0; i < world.particles.size(); i++) {

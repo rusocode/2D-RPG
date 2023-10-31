@@ -15,6 +15,12 @@ import java.awt.image.BufferedImage;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
+/**
+ * Este hechizo es diferente a Fireball ya que cuenta con 5 frames a diferencia de 2. Por lo tanto, lo logico seria
+ * que se renderizen solo los 5 frames para cumplir con la animacion del hechizo correctamente y no hasta que se acabe
+ * la vida de este (por lo tanto la vida estaria de mas).
+ */
+
 // TODO Los hechizos podrian extender de una clase llamada Spell
 public class BurstOfFire extends Projectile {
 
@@ -33,7 +39,7 @@ public class BurstOfFire extends Projectile {
         hitbox = new Rectangle(0, 0, tile * scale, tile * scale);
         sheet.loadBurstOfFireFrames(burst_of_fire, scale);
 
-        int animationSpeed = 80;
+        int animationSpeed = 160;
         down = new Animation(animationSpeed, sheet.down);
         up = new Animation(animationSpeed, sheet.up);
         left = new Animation(animationSpeed, sheet.left);
@@ -56,31 +62,26 @@ public class BurstOfFire extends Projectile {
                     world.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
                     generateParticle(entity.projectile, mob);
                     flags.alive = false;
-                    currentFrame = right.getFirstFrame();
+                    // right.setFrame(0);
                 }
             }
         }
 
-        // if (stats.hp-- <= 0) flags.alive = false;
-
-
         // Si esta vivo
-        // if (flags.alive) { // TODO Creo que no hace falta comprobar si esta vivo
-        // Actualiza la posicion!
-        pos.update(this, direction);
+        if (flags.alive) { // TODO Creo que no hace falta comprobar si esta vivo
+            // Actualiza la posicion!
+            pos.update(this, direction);
 
-        // Actualiza la animacion!
-        // down.tick();
-        // up.tick();
-        // left.tick();
-        right.tick();
-        // }
+            // Actualiza la animacion!
+            // down.tick();
+            // up.tick();
+            // left.tick();
+            right.tick();
+        }
 
         // Cuando llega al ultimo frame, deja de vivir
-        if (right.getCurrentFrame().equals(right.getLastFrame())) {
-            System.out.println("asd");
-            flags.alive = false;
-        }
+        if (right.getCurrentFrame().equals(right.getLastFrame())) flags.alive = false;
+
     }
 
     @Override
@@ -134,7 +135,12 @@ public class BurstOfFire extends Projectile {
             case DOWN -> currentFrame = down.getCurrentFrame();
             case UP -> currentFrame = up.getCurrentFrame();
             case LEFT -> currentFrame = left.getCurrentFrame();
-            case RIGHT -> currentFrame = right.getCurrentFrame();
+            case RIGHT -> {
+                /* Cuando el hechizo golpea a un mob y cuando se vuelve a lanzar, el frame del hechizo comienza a partir
+                 * desde el ultimo frame que golpeo al mob. Por lo tanto, lo ideal seria que el hechizo vuelva al frame
+                 * inicial cuando golpea a un mob. */
+                currentFrame = right.getCurrentFrame();
+            }
         }
         return currentFrame;
     }
