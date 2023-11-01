@@ -62,7 +62,7 @@ public class BurstOfFire extends Projectile {
                     world.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
                     generateParticle(entity.projectile, mob);
                     flags.alive = false;
-                    // right.setFrame(0);
+                    right.setFrame(0);
                 }
             }
         }
@@ -136,10 +136,10 @@ public class BurstOfFire extends Projectile {
             case UP -> currentFrame = up.getCurrentFrame();
             case LEFT -> currentFrame = left.getCurrentFrame();
             case RIGHT -> {
+                currentFrame = right.getCurrentFrame();
                 /* Cuando el hechizo golpea a un mob y cuando se vuelve a lanzar, el frame del hechizo comienza a partir
                  * desde el ultimo frame que golpeo al mob. Por lo tanto, lo ideal seria que el hechizo vuelva al frame
                  * inicial cuando golpea a un mob. */
-                currentFrame = right.getCurrentFrame();
             }
         }
         return currentFrame;

@@ -59,12 +59,17 @@ public class Animation {
         return frames[0];
     }
 
+    /**
+     * Gets the last frame.
+     *
+     * @return the last frame.
+     */
     public BufferedImage getLastFrame() {
         return frames[frames.length - 1];
     }
 
     public void setFrame(int i) {
-        frames[index] = frames[i];
+        index = i;
     }
 
 }
