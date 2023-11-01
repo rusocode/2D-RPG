@@ -16,30 +16,33 @@ import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * Este hechizo es diferente a Fireball ya que cuenta con 5 frames a diferencia de 2. Por lo tanto, lo logico seria
- * que se renderizen solo los 5 frames para cumplir con la animacion del hechizo correctamente y no hasta que se acabe
- * la vida de este (por lo tanto la vida estaria de mas).
+ * Este hechizo es distinto a Fireball ya que cuenta con 5 frames a diferencia de 2. Por lo tanto, lo logico seria que
+ * se renderizen solo los 5 frames para cumplir con la animacion del hechizo correctamente y no hasta que se acabe la
+ * vida de este (por lo tanto la vida estaria de mas).
+ * <p>
+ * TODO Aumentar la duracion del ultimo frame
+ * TODO Reducir el ancho de la hitbox en up y down
  */
 
 // TODO Los hechizos podrian extender de una clase llamada Spell
 public class BurstOfFire extends Projectile {
 
     private Entity entity;
+    int lastFrame;
 
     public BurstOfFire(Game game, World world) {
         super(game, world);
         stats.name = "Burst of Fire";
-        stats.speed = 4;
-        stats.hp = stats.maxHp = 80;
+        stats.speed = 5;
         stats.attack = 4;
         stats.knockbackValue = 7;
         flags.alive = false;
         cost = 0;
         int scale = 2;
-        hitbox = new Rectangle(0, 0, tile * scale, tile * scale);
+        hitbox = new Rectangle(0, 0, tile * scale - 35, tile * scale);
         sheet.loadBurstOfFireFrames(burst_of_fire, scale);
 
-        int animationSpeed = 160;
+        int animationSpeed = 120; // 80
         down = new Animation(animationSpeed, sheet.down);
         up = new Animation(animationSpeed, sheet.up);
         left = new Animation(animationSpeed, sheet.left);
@@ -52,7 +55,7 @@ public class BurstOfFire extends Projectile {
     @Override
     public void update() {
 
-        // El proyectil deja de vivir (alive = false) cuando colisiona con un mob o cuando se le acaba el hp
+        // El hechizo deja de vivir (alive = false) cuando colisiona con un mob o cuando llega al ultimo frame
 
         if (entity instanceof Player) { // TODO No creo que haga falta comprobar si el que lanza el hechizo es el player ya que es el unico que lo puede lanzar (por ahora)
             int mobIndex = game.collision.checkEntity(this, world.mobs);
@@ -62,21 +65,22 @@ public class BurstOfFire extends Projectile {
                     world.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
                     generateParticle(entity.projectile, mob);
                     flags.alive = false;
-                    right.setFrame(0);
+                    resetFrames(0);
                 }
             }
         }
 
         // Si esta vivo
         if (flags.alive) { // TODO Creo que no hace falta comprobar si esta vivo
-            // Actualiza la posicion!
-            pos.update(this, direction);
+
+            pos.update(this, direction); // Actualiza la posicion!
 
             // Actualiza la animacion!
-            // down.tick();
-            // up.tick();
-            // left.tick();
+            down.tick();
+            up.tick();
+            left.tick();
             right.tick();
+
         }
 
         // Cuando llega al ultimo frame, deja de vivir
@@ -86,7 +90,7 @@ public class BurstOfFire extends Projectile {
 
     @Override
     public void render(Graphics2D g2) {
-        g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
+        g2.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY(), null);
         // drawRects(g2);
     }
 
@@ -117,7 +121,7 @@ public class BurstOfFire extends Projectile {
 
     @Override
     public int getParticleMaxLife() {
-        return 20;
+        return 30;
     }
 
     @Override
@@ -135,12 +139,7 @@ public class BurstOfFire extends Projectile {
             case DOWN -> currentFrame = down.getCurrentFrame();
             case UP -> currentFrame = up.getCurrentFrame();
             case LEFT -> currentFrame = left.getCurrentFrame();
-            case RIGHT -> {
-                currentFrame = right.getCurrentFrame();
-                /* Cuando el hechizo golpea a un mob y cuando se vuelve a lanzar, el frame del hechizo comienza a partir
-                 * desde el ultimo frame que golpeo al mob. Por lo tanto, lo ideal seria que el hechizo vuelva al frame
-                 * inicial cuando golpea a un mob. */
-            }
+            case RIGHT -> currentFrame = right.getCurrentFrame();
         }
         return currentFrame;
     }
@@ -154,6 +153,18 @@ public class BurstOfFire extends Projectile {
      */
     private int getAttack() {
         return stats.attack * (entity.stats.lvl / 2);
+    }
+
+    /**
+     * Resets frames to the specified index.
+     *
+     * @param i frame index.
+     */
+    private void resetFrames(int i) {
+        down.setFrame(i);
+        up.setFrame(i);
+        left.setFrame(i);
+        right.setFrame(i);
     }
 
     private void drawRects(Graphics2D g2) {

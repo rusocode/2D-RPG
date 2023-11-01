@@ -133,7 +133,7 @@ public class SpriteSheet {
     }
 
     public void loadBurstOfFireFrames(SpriteSheet ss, int scale) {
-        int col = 5, row = 1;
+        int col = 5, row = 7;
         int w = ss.getWidth() / col, h = ss.getHeight() / row;
         int numberFrames = 5;
 
@@ -142,14 +142,17 @@ public class SpriteSheet {
         left = new BufferedImage[numberFrames];
         right = new BufferedImage[numberFrames];
 
+        /* Indices para controlar los frames up y left, en donde estos empiezan desde el "ultimo" (en realidad es el
+         * primer frame) frame en el SpriteSheet. */
+        int iUp = 4, iLeft = 4;
+
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
                 switch (y) {
-                    case 0 -> right[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
-                    // case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
-                   // case 2 -> left[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
-                   // case 3 -> right[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
-
+                    case 0 -> down[x] = Utils.scaleImage(ss.crop(0, x * w, w, h), w * scale, h * scale);
+                    case 1 -> up[x] = Utils.scaleImage(ss.crop(w, iUp-- * w, w, h), w * scale, h * scale);
+                    case 2 -> left[x] = Utils.scaleImage(ss.crop(iLeft-- * w, 160, w, h), w * scale, h * scale);
+                    case 3 -> right[x] = Utils.scaleImage(ss.crop(x * w, 192, w, h), w * scale, h * scale);
                 }
             }
         }

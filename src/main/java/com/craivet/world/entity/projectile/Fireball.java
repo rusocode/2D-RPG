@@ -19,7 +19,7 @@ public class Fireball extends Projectile {
         stats.attack = 1;
         stats.knockbackValue = 5;
         flags.alive = false;
-        cost = 1;
+        cost = 0;
         hitbox = new Rectangle(0, 0, tile, tile);
         sheet.loadMovementFrames(fireball, 16, 16, 1);
     }

@@ -68,6 +68,11 @@ public class Animation {
         return frames[frames.length - 1];
     }
 
+    /**
+     * Set the frame.
+     *
+     * @param i frame index.
+     */
     public void setFrame(int i) {
         index = i;
     }

@@ -27,6 +27,7 @@ public final class Assets {
     public static final URL music_overworld = Utils.loadAudio("audio/music/overworld.wav");
     public static final URL music_dungeon = Utils.loadAudio("audio/music/dungeon.wav");
     // Sounds
+    public static final URL sound_burst_of_fire = Utils.loadAudio(sounds_path + "burst_of_fire.wav");
     public static final URL sound_fireball = Utils.loadAudio(sounds_path + "fireball.wav");
     public static final URL sound_chest_opening = Utils.loadAudio(sounds_path + "chest_opening.wav");
     public static final URL sound_chipwall = Utils.loadAudio(sounds_path + "chipwall.wav");

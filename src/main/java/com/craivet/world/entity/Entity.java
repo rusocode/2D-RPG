@@ -48,6 +48,7 @@ public abstract class Entity {
     public Entity linkedEntity;
 
     public boolean boss; // TODO Move to Mob
+    public boolean nextFrame;
 
     public Entity(Game game, World world) {
         this.game = game;
