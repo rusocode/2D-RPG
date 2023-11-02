@@ -48,7 +48,6 @@ public abstract class Entity {
     public Entity linkedEntity;
 
     public boolean boss; // TODO Move to Mob
-    public boolean nextFrame;
 
     public Entity(Game game, World world) {
         this.game = game;
@@ -98,7 +97,7 @@ public abstract class Entity {
                 // If it is a static image (item, interactive tile)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY(), null);
 
-            // drawRects(g2);
+            drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }

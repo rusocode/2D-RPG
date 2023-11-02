@@ -171,7 +171,7 @@ public class World {
         int i = 0, j = 0, k = 0, z = 0;
 
         // mobs[NASHE][i++] = new Oldman(game, this, 23, 19); // TODO set pos?
-        mobs[NASHE][i++] = new Rock(game, this, 26, 21);
+        mobs[NASHE][i++] = new Box(game, this, 26, 21);
         mobs[NASHE][i++] = new Slime(game, this, 24, 37);
         mobs[NASHE][i++] = new Slime(game, this, 34, 42);
         mobs[NASHE][i++] = new Slime(game, this, 38, 42);
@@ -179,9 +179,9 @@ public class World {
 
         mobs[NASHE_INDOOR_01][j++] = new Trader(game, this, 12, 7);
 
-        mobs[DUNGEON_01][k++] = new Rock(game, this, 20, 25);
-        mobs[DUNGEON_01][k++] = new Rock(game, this, 11, 18);
-        mobs[DUNGEON_01][k++] = new Rock(game, this, 23, 14);
+        mobs[DUNGEON_01][k++] = new Box(game, this, 20, 25);
+        mobs[DUNGEON_01][k++] = new Box(game, this, 11, 18);
+        mobs[DUNGEON_01][k++] = new Box(game, this, 23, 14);
         mobs[DUNGEON_01][k++] = new Bat(game, this, 34, 39);
         mobs[DUNGEON_01][k++] = new Bat(game, this, 36, 25);
         mobs[DUNGEON_01][k++] = new Bat(game, this, 39, 26);
