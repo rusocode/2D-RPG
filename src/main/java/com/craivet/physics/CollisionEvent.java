@@ -38,12 +38,10 @@ public class CollisionEvent {
      * Create an event for each tile. Technically speaking, it creates a small Rectangle in the center of each tile.
      */
     public void createEvents() {
-        for (int map = 0; map < MAPS; map++) {
-            for (int row = 0; row < MAX_MAP_ROW; row++) {
+        for (int map = 0; map < MAPS; map++)
+            for (int row = 0; row < MAX_MAP_ROW; row++)
                 for (int col = 0; col < MAX_MAP_COL; col++)
                     event[map][row][col] = new Rectangle(5, 7, 22, 18);
-            }
-        }
     }
 
     /**
@@ -60,11 +58,10 @@ public class CollisionEvent {
         if (canTouchEvent) {
             if (checkCollision(NASHE, 27, 16, Direction.RIGHT)) hurt(entity);
             if (checkCollision(NASHE, 23, 12, Direction.UP)) heal(entity);
-            if (checkCollision(NASHE_INDOOR_01, 12, 9, Direction.UP)) dialogue(world.mobs[1][0]);
             if (checkCollision(NASHE, 10, 39, Direction.UP))
                 teleport(INDOOR, NASHE_INDOOR_01, 12, 13); // De Nashe a Nashe Indoor 1
             if (checkCollision(NASHE_INDOOR_01, 12, 13, Direction.DOWN))
-                teleport(OUTSIDE, NASHE, 10, 39); // De Nix Indoor 1 a Nix
+                teleport(OUTSIDE, NASHE, 10, 39); // De Nashe Indoor 1 a Nashe
             if (checkCollision(NASHE, 12, 9, Direction.ANY))
                 teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nashe a Dungeon 1
             if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY))
@@ -153,15 +150,6 @@ public class CollisionEvent {
         this.col = col;
         this.row = row;
         canTouchEvent = false;
-    }
-
-    /**
-     * Dialogue with the Mob.
-     *
-     * @param mob mob the player talks to.
-     */
-    private void dialogue(Mob mob) {
-        if (game.keyboard.enter) mob.dialogue();
     }
 
 }

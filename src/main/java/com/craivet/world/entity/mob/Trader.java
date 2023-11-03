@@ -21,10 +21,10 @@ public class Trader extends Mob {
         dialogue = new Dialogue();
         type = Type.NPC;
         stats.name = "Trader";
-        hitbox = new Rectangle(8, 16, tile - 17, tile - 16);
+        hitbox = new Rectangle(7, 16, tile - 17, 48);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.frame = Utils.scaleImage(trader, tile, tile);
+        sheet.frame = Utils.scaleImage(trader, tile, 64);
         initDialogue();
         addItemsToInventory();
     }

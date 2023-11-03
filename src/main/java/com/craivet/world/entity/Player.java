@@ -106,7 +106,7 @@ public class Player extends Mob {
 
         inventory.init();
 
-        int col = 23, row = 21;
+        int col = 10, row = 40;
         pos.set(world, this, NASHE, OUTSIDE, col, row, Direction.DOWN);
     }
 
