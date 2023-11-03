@@ -21,14 +21,9 @@ import static com.craivet.utils.Global.*;
  * vida de este (por lo tanto la vida estaria de mas).
  * <p>
  * TODO Aumentar la duracion del ultimo frame
- * TODO Reducir el ancho de la hitbox en up y down
  */
 
-// TODO Los hechizos podrian extender de una clase llamada Spell
 public class BurstOfFire extends Projectile {
-
-    private Entity entity;
-    int lastFrame;
 
     public BurstOfFire(Game game, World world) {
         super(game, world);
@@ -39,8 +34,10 @@ public class BurstOfFire extends Projectile {
         flags.alive = false;
         cost = 0;
         int scale = 2;
+        sound = sound_burst_of_fire;
         hitbox = new Rectangle(0, 0, tile * scale - 35, tile * scale);
         sheet.loadBurstOfFireFrames(burst_of_fire, scale);
+        interval = 180;
 
         int animationSpeed = 120; // 80
         down = new Animation(animationSpeed, sheet.down);
@@ -142,17 +139,6 @@ public class BurstOfFire extends Projectile {
             case RIGHT -> currentFrame = right.getCurrentFrame();
         }
         return currentFrame;
-    }
-
-    /**
-     * Calcula el ataque dependiendo del lvl del player. Para el lvl 1, el ataque disminuye el doble. Osea, si el ataque
-     * del hechizo es 4 y el lvl del player es 1, entonces el ataque es de 2. Para el lvl 2, el ataque es el mismo, y
-     * para los siguientes niveles el ataque aumenta en 2.
-     *
-     * @return el valor de ataque.
-     */
-    private int getAttack() {
-        return stats.attack * (entity.stats.lvl / 2);
     }
 
     /**

@@ -28,7 +28,6 @@ public final class Assets {
     public static final URL music_dungeon = Utils.loadAudio("audio/music/dungeon.wav");
     // Sounds
     public static final URL sound_burst_of_fire = Utils.loadAudio(sounds_path + "burst_of_fire.wav");
-    public static final URL sound_fireball = Utils.loadAudio(sounds_path + "fireball.wav");
     public static final URL sound_chest_opening = Utils.loadAudio(sounds_path + "chest_opening.wav");
     public static final URL sound_chipwall = Utils.loadAudio(sounds_path + "chipwall.wav");
     public static final URL sound_gold_pickup = Utils.loadAudio(sounds_path + "gold_pickup.wav");
@@ -38,6 +37,7 @@ public final class Assets {
     public static final URL sound_door_iron_opening = Utils.loadAudio(sounds_path + "door_iron_opening.wav");
     public static final URL sound_draw_sword = Utils.loadAudio(sounds_path + "draw_sword.wav");
     public static final URL sound_drink_potion = Utils.loadAudio(sounds_path + "drink_potion.wav");
+    public static final URL sound_fireball = Utils.loadAudio(sounds_path + "fireball.wav");
     public static final URL sound_hit_bat = Utils.loadAudio(sounds_path + "hit_bat.wav");
     public static final URL sound_hit_mob = Utils.loadAudio(sounds_path + "hit_mob.wav");
     public static final URL sound_hit_orc = Utils.loadAudio(sounds_path + "hit_orc.wav");

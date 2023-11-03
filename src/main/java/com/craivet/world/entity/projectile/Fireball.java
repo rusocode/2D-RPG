@@ -20,8 +20,11 @@ public class Fireball extends Projectile {
         stats.knockbackValue = 5;
         flags.alive = false;
         cost = 0;
+        sound = sound_fireball;
         hitbox = new Rectangle(0, 0, tile, tile);
-        sheet.loadMovementFrames(fireball, 16, 16, 1);
+        int scale = 1;
+        sheet.loadMovementFrames(fireball, 16, 16, scale);
+        interval = 80;
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.craivet.world.entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 import com.craivet.*;
 import com.craivet.gfx.Animation;
@@ -14,7 +15,6 @@ import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.World;
 import com.craivet.utils.Timer;
 import com.craivet.utils.Utils;
-import com.craivet.world.entity.projectile.BurstOfFire;
 import com.craivet.world.entity.projectile.Projectile;
 
 import static com.craivet.gfx.Assets.*;
@@ -48,6 +48,8 @@ public abstract class Entity {
     public Entity linkedEntity;
 
     public boolean boss; // TODO Move to Mob
+
+    public int interval;
 
     public Entity(Game game, World world) {
         this.game = game;

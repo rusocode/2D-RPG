@@ -6,8 +6,6 @@ import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
-import java.awt.*;
-
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
@@ -27,9 +25,6 @@ public class PotionRed extends Item {
         price = 25;
         this.amount = amount;
         stackable = true;
-        hitbox = new Rectangle(3, 0, 25, 32);
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
         sheet.frame = Utils.scaleImage(potion_red, tile, tile);
     }
 

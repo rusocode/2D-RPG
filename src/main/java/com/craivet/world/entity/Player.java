@@ -202,7 +202,7 @@ public class Player extends Mob {
     private void checkShoot() {
         if (game.keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
-            game.playSound(sound_burst_of_fire);
+            game.playSound(projectile.sound);
             projectile.set(pos.x, pos.y, direction, true, this);
             // Check vacancy to add the projectile
             for (int i = 0; i < world.projectiles[1].length; i++) {

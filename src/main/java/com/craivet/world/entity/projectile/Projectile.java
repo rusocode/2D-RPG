@@ -6,12 +6,20 @@ import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Player;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
+import com.craivet.world.entity.mob.Mob;
+
+import java.net.URL;
 
 import static com.craivet.utils.Global.*;
 
+/**
+ * TODO Cambiar nombre a Spell
+ */
+
 public class Projectile extends Entity {
 
-    private Entity entity;
+    public URL sound;
+    protected Entity entity;
     protected int cost;
 
     public Projectile(Game game, World world) {
@@ -28,15 +36,18 @@ public class Projectile extends Entity {
         // If the player shooting a projectile
         if (entity instanceof Player) {
             int mobIndex = game.collision.checkEntity(this, world.mobs);
-            /* When the projectile collides with a mob, set the colliding state to true. Therefore, when the projectilew
-             * is redrawn, it will remain in motion frame 1 since in the ternary operator, the condition remains true
-             * and never changes to false in order to display motion frame 2. The following line solves this problem. */
-            flags.colliding = false;
-            if (mobIndex != -1 && !world.mobs[world.map][mobIndex].flags.invincible && world.mobs[world.map][mobIndex].type != Type.NPC) {
-                world.player.hitMob(mobIndex, this, stats.knockbackValue, stats.attack * (entity.stats.lvl / 2));
-                // In this case, the particle generator is the fireball when the player throws it against a mob
-                generateParticle(entity.projectile, world.mobs[world.map][mobIndex]);
-                flags.alive = false;
+            if (mobIndex != -1) {
+                Mob mob = world.mobs[world.map][mobIndex];
+                /* When the projectile collides with a mob, set the colliding state to true. Therefore, when the projectilew
+                 * is redrawn, it will remain in motion frame 1 since in the ternary operator, the condition remains true
+                 * and never changes to false in order to display motion frame 2. The following line solves this problem. */
+                flags.colliding = false;
+                if (!mob.flags.invincible && mob.type != Type.NPC) {
+                    world.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
+                    // In this case, the particle generator is the fireball when the player throws it against a mob
+                    generateParticle(entity.projectile, mob);
+                    flags.alive = false;
+                }
             }
         }
 
@@ -74,6 +85,17 @@ public class Projectile extends Entity {
     }
 
     public void subtractResource(Entity entity) {
+    }
+
+    /**
+     * Calcula el ataque dependiendo del lvl del player. Para el lvl 1, el ataque disminuye el doble. Osea, si el ataque
+     * del hechizo es 4 y el lvl del player es 1, entonces el ataque es de 2. Para el lvl 2, el ataque es el mismo, y
+     * para los siguientes niveles el ataque aumenta en 2.
+     *
+     * @return el valor de ataque.
+     */
+    protected int getAttack() {
+        return stats.attack * (entity.stats.lvl / 2);
     }
 
 }

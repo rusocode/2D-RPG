@@ -126,6 +126,7 @@ public class Timer {
         // Controls the attack interval if the entity is a player
         if (entity.type == Type.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
         if (entity.flags.invincible) timeInvincible(entity, INTERVAL_INVINCIBLE);
+        // TODO No tiene que cambiarse a entity.interval?
         if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
     }
 

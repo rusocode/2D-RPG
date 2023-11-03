@@ -17,6 +17,7 @@ public class Wood extends Item {
         type = Type.CONSUMABLE;
         stats.name = NAME;
         description = "[" + stats.name + "]\nForest wood.";
+        price = 5;
         this.amount = amount;
         stackable = true;
         sheet.frame = Utils.scaleImage(wood, tile, tile);

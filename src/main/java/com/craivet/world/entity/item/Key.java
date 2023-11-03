@@ -6,8 +6,6 @@ import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
-import java.awt.*;
-
 import static com.craivet.utils.Global.*;
 import static com.craivet.gfx.Assets.*;
 
@@ -30,9 +28,6 @@ public class Key extends Item {
         price = 100;
         this.amount = amount;
         stackable = true;
-        hitbox = new Rectangle(2, 0, 27, 32);
-        hitboxDefaultX = hitbox.x;
-        hitboxDefaultY = hitbox.y;
         sheet.frame = Utils.scaleImage(key, tile, tile);
     }
 
