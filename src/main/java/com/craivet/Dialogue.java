@@ -3,8 +3,8 @@ package com.craivet;
 import com.craivet.world.entity.Entity;
 
 /**
- * Dialogues are the texts that are generated when you dialogue with an NPC, interact with a specific item or when an
- * event occurs. These texts are displayed within the dialog window.
+ * Dialogues are the texts that are generated when you interact with an NPC, with a specific item or when an event
+ * occurs. These texts are displayed within the dialog window.
  */
 
 public class Dialogue {

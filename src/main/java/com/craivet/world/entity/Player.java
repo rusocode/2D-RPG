@@ -106,7 +106,7 @@ public class Player extends Mob {
 
         inventory.init();
 
-        int col = 10, row = 40;
+        int col = 21, row = 23;
         pos.set(world, this, NASHE, OUTSIDE, col, row, Direction.DOWN);
     }
 
@@ -234,7 +234,7 @@ public class Player extends Mob {
             if (game.keyboard.enter && mob.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
-            } else mob.move(direction); // In case it's the rock
+            } else mob.move(direction); // In case it's the box
         }
     }
 

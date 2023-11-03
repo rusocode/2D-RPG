@@ -17,8 +17,8 @@ public class Bat extends Mob {
         super(game, world, col, row);
         type = Type.HOSTILE;
         stats.name = "Bat";
-        stats.speed = stats.defaultSpeed = 3;
-        stats.hp = stats.maxHp = 7;
+        stats.speed = stats.defaultSpeed = 2;
+        stats.hp = stats.maxHp = 2;
         stats.exp = 7;
         stats.attack = 1;
         stats.defense = 1;
@@ -27,7 +27,7 @@ public class Bat extends Mob {
         hitbox = new Rectangle(0, 0, tile, tile);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.loadMovementFrames(bat, 16, 16, 1);
+        sheet.loadMovementFrames(bat, 32, 32, 1);
     }
 
     @Override

@@ -28,6 +28,7 @@ public class Oldman extends Mob {
 
     @Override
     public void doActions() {
+        // TODO Por ahora no se usa
         if (flags.following) game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
         else timer.timeDirection(this, INTERVAL_DIRECTION);
     }
