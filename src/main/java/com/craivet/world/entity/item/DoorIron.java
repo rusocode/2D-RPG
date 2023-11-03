@@ -17,7 +17,7 @@ public class DoorIron extends Item {
 
     public DoorIron(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        dialogue = new Dialogue();
+        dialogue = new Dialogue(game);
         type = Type.OBSTACLE;
         stats.name = NAME;
         solid = true;
@@ -30,7 +30,7 @@ public class DoorIron extends Item {
 
     @Override
     public void interact() {
-        startDialogue(DIALOGUE_STATE, this, 0);
+        dialogue.startDialogue(DIALOGUE_STATE, this, 0);
     }
 
     private void initDialogue() {

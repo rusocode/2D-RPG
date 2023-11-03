@@ -17,7 +17,7 @@ public class Chest extends Item {
 
     public Chest(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        dialogue = new Dialogue();
+        dialogue = new Dialogue(game);
         type = Type.OBSTACLE;
         stats.name = NAME;
         solid = true;
@@ -35,24 +35,24 @@ public class Chest extends Item {
             opened = true;
             if (world.player.inventory.canPickup(loot)) {
                 dialogue.dialogues[0][0] = "You open the chest and find a \n" + loot.stats.name + "!";
-                startDialogue(DIALOGUE_STATE, this, 0);
+                dialogue.startDialogue(DIALOGUE_STATE, this, 0);
                 empty = true;
             } else {
                 dialogue.dialogues[1][0] = "You open the chest and find a \n" + loot.stats.name + "! But you cannot carry \nany more!";
-                startDialogue(DIALOGUE_STATE, this, 1);
+                dialogue.startDialogue(DIALOGUE_STATE, this, 1);
             }
         } else if (!empty) {
             if (world.player.inventory.canPickup(loot)) {
                 dialogue.dialogues[2][0] = "You obtain the " + loot.stats.name + "!";
-                startDialogue(DIALOGUE_STATE, this, 2);
+                dialogue.startDialogue(DIALOGUE_STATE, this, 2);
                 empty = true;
             } else {
                 dialogue.dialogues[3][0] = "You cannot carry any more!";
-                startDialogue(DIALOGUE_STATE, this, 3);
+                dialogue.startDialogue(DIALOGUE_STATE, this, 3);
             }
         } else {
             dialogue.dialogues[4][0] = "It's empty.";
-            startDialogue(DIALOGUE_STATE, this, 4);
+            dialogue.startDialogue(DIALOGUE_STATE, this, 4);
         }
     }
 

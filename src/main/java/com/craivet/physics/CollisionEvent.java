@@ -118,7 +118,7 @@ public class CollisionEvent {
      */
     private void hurt(Entity entity) {
         entity.dialogue.dialogues[0][0] = "You fall into a pit!";
-        entity.startDialogue(DIALOGUE_STATE, entity, 0);
+        entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 0);
         world.player.stats.hp--;
         canTouchEvent = false;
     }
@@ -129,7 +129,7 @@ public class CollisionEvent {
     private void heal(Entity entity) {
         if (game.keyboard.enter) {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
-            entity.startDialogue(DIALOGUE_STATE, entity, 1);
+            entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 1);
             world.player.stats.hp = world.player.stats.maxHp;
             game.world.createMobs();
         }

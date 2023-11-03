@@ -18,10 +18,10 @@ public class Trader extends Mob {
     public Trader(Game game, World world, int col, int row) {
         super(game, world, col, row);
         inventory = new Inventory();
-        dialogue = new Dialogue();
+        dialogue = new Dialogue(game);
         type = Type.NPC;
         stats.name = "Trader";
-        hitbox = new Rectangle(7, 16, tile - 17, 48);
+        hitbox = new Rectangle(7, 16, 15, 48);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.frame = Utils.scaleImage(trader, tile, 64);
@@ -32,7 +32,7 @@ public class Trader extends Mob {
     @Override
     public void dialogue() {
         game.playSound(sound_trade_opening);
-        startDialogue(TRADE_STATE, this, 0);
+        dialogue.startDialogue(TRADE_STATE, this, 0);
     }
 
     private void initDialogue() {

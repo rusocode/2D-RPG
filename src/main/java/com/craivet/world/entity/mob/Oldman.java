@@ -14,7 +14,7 @@ public class Oldman extends Mob {
 
     public Oldman(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        dialogue = new Dialogue();
+        dialogue = new Dialogue(game);
         type = Type.NPC;
         stats.name = "Oldman";
         stats.speed = 1;
@@ -35,7 +35,7 @@ public class Oldman extends Mob {
     @Override
     public void dialogue() {
         lookPlayer();
-        startDialogue(DIALOGUE_STATE, this, dialogue.set);
+        dialogue.startDialogue(DIALOGUE_STATE, this, dialogue.set);
         dialogue.set++;
         if (dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
     }

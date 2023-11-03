@@ -71,7 +71,7 @@ public class Player extends Mob {
 
     private void init() {
         inventory = new PlayerInventory(game, world, this);
-        dialogue = new Dialogue();
+        dialogue = new Dialogue(game);
 
         type = Type.PLAYER;
         stats.init();
@@ -353,7 +353,7 @@ public class Player extends Mob {
             stats.attack = getAttack();
             stats.defense = getDefense();
             dialogue.dialogues[0][0] = "You are level " + stats.lvl + "!";
-            startDialogue(DIALOGUE_STATE, this, 0);
+            dialogue.startDialogue(DIALOGUE_STATE, this, 0);
         }
     }
 

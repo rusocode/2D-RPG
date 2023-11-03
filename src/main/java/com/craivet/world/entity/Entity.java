@@ -99,7 +99,7 @@ public abstract class Entity {
                 // If it is a static image (item, interactive tile)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY(), null);
 
-            drawRects(g2);
+            // drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }
@@ -115,12 +115,6 @@ public abstract class Entity {
      * Check if I drop an object.
      */
     public void checkDrop() {
-    }
-
-    public void startDialogue(int state, Entity entity, int set) {
-        game.state = state;
-        game.ui.entity = entity;
-        dialogue.set = set;
     }
 
     public Color getParticleColor() {
