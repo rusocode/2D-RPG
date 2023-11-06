@@ -132,21 +132,12 @@ public class World {
     public void createItems() {
         int i = 0;
         items[NASHE][i++] = new Axe(game, this, 33, 7);
-        items[NASHE][i++] = new Axe(game, this, 23, 21);
-        items[NASHE][i++] = new PotionRed(game, this, 5, 23, 22);
-        items[NASHE][i++] = new Key(game, this, 1, 21, 21);
         items[NASHE][i++] = new Door(game, this, 14, 28);
         items[NASHE][i++] = new Door(game, this, 12, 12);
 
         items[NASHE][i] = new Chest(game, this, 30, 29);
-        items[NASHE][i++].setLoot(new Key(game, this, 1));
-
-        /* items[NIX][i] = new Chest(game, this, 17, 21);
-        items[NIX][i++].setLoot(new Tent(game, this)); */
-
-        items[NASHE][i] = new Chest(game, this, 16, 21);
         // TODO What if there are many items?
-        items[NASHE][i++].setLoot(new PotionRed(game, this, 5));
+        items[NASHE][i++].setLoot(new Key(game, this, 1));
 
         items[NASHE][i] = new Chest(game, this, 23, 40);
         items[NASHE][i++].setLoot(new PotionRed(game, this, 30));
@@ -172,7 +163,6 @@ public class World {
 
         mobs[NASHE][i++] = new Oldman(game, this, 23, 19); // TODO set pos?
         mobs[NASHE][i++] = new Bat(game, this, 26, 19);
-        mobs[NASHE][i++] = new Box(game, this, 26, 21);
         mobs[NASHE][i++] = new Slime(game, this, 24, 37);
         mobs[NASHE][i++] = new Slime(game, this, 34, 42);
         mobs[NASHE][i++] = new Slime(game, this, 38, 42);

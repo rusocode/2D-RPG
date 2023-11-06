@@ -38,9 +38,6 @@ public class PlayerInventory extends Inventory {
         add(player.shield);
         add(new Lantern(game, world));
         add(new PotionRed(game, world, 2));
-        add(new Key(game, world, 2));
-        add(new Pickaxe(game, world));
-        add(new Axe(game, world));
         add(new Tent(game, world));
     }
 

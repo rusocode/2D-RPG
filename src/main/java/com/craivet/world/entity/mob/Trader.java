@@ -41,9 +41,7 @@ public class Trader extends Mob {
 
     private void addItemsToInventory() {
         inventory.add(new PotionRed(game, world, 1));
-        inventory.add(new Key(game, world, 1));
         inventory.add(new SwordIron(game, world));
-        inventory.add(new Axe(game, world));
         inventory.add(new ShieldWood(game, world));
         inventory.add(new ShieldIron(game, world));
     }

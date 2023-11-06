@@ -2,7 +2,6 @@ package com.craivet.world.entity;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.net.URL;
 
 import com.craivet.*;
 import com.craivet.gfx.Animation;
@@ -237,6 +236,8 @@ public abstract class Entity {
 
     /**
      * Check if the entity is inside the camera.
+     * <p>
+     * TODO Tendria que ir a una clase llamada Camera
      *
      * @return true if the entity is inside the camera or false.
      */

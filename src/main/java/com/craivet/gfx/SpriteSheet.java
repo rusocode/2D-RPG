@@ -103,12 +103,12 @@ public class SpriteSheet {
     public void loadPlayerMovementFrames(SpriteSheet ss, int scale) {
         int col = 6, row = 4;
         int w = ss.getWidth() / col, h = ss.getHeight() / row;
-        int numberFramesDown = 6, numberFramesUp = 6, numberFramesLeft = 5, numberFramesRight = 5;
+        int framesDown = 6, framesUp = 6, framesLeft = 5, framesRight = 5;
 
-        down = new BufferedImage[numberFramesDown];
-        up = new BufferedImage[numberFramesUp];
-        left = new BufferedImage[numberFramesLeft];
-        right = new BufferedImage[numberFramesRight];
+        down = new BufferedImage[framesDown];
+        up = new BufferedImage[framesUp];
+        left = new BufferedImage[framesLeft];
+        right = new BufferedImage[framesRight];
 
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
@@ -117,13 +117,39 @@ public class SpriteSheet {
                     case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     // The left and right frames only have 5 frames, so check up to the limit 5 to avoid an ArrayIndexOutOfBoundsException
                     case 2 -> {
-                        if (x < numberFramesLeft)
+                        if (x < framesLeft)
                             left[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                     case 3 -> {
-                        if (x < numberFramesRight)
+                        if (x < framesRight)
                             right[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
+                }
+            }
+        }
+
+        frame = down[0];
+
+    }
+
+    public void loadOldmanFrames(SpriteSheet ss, int scale) {
+        int col = 3, row = 4;
+        int w = ss.getWidth() / col, h = ss.getHeight() / row;
+        int frames = 3;
+
+        down = new BufferedImage[frames];
+        up = new BufferedImage[frames];
+        left = new BufferedImage[frames];
+        right = new BufferedImage[frames];
+
+        for (int y = 0; y < row; y++) {
+            for (int x = 0; x < col; x++) {
+                switch (y) {
+                    // TODO Volar numeros magicos
+                    case 0 -> down[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                    case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, 48, w, h), w * scale, h * scale);
+                    case 2 -> left[x] = Utils.scaleImage(ss.crop(x * w, 96, w, h), w * scale, h * scale);
+                    case 3 -> right[x] = Utils.scaleImage(ss.crop(x * w, 144, w, h), w * scale, h * scale);
                 }
             }
         }
@@ -135,12 +161,12 @@ public class SpriteSheet {
     public void loadBurstOfFireFrames(SpriteSheet ss, int scale) {
         int col = 5, row = 7;
         int w = ss.getWidth() / col, h = ss.getHeight() / row;
-        int numberFrames = 5;
+        int frames = 5;
 
-        down = new BufferedImage[numberFrames];
-        up = new BufferedImage[numberFrames];
-        left = new BufferedImage[numberFrames];
-        right = new BufferedImage[numberFrames];
+        down = new BufferedImage[frames];
+        up = new BufferedImage[frames];
+        left = new BufferedImage[frames];
+        right = new BufferedImage[frames];
 
         /* Indices para controlar los frames up y left, en donde estos empiezan desde el "ultimo" (en realidad es el
          * primer frame) frame en el SpriteSheet. */

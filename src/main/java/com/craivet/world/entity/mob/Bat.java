@@ -4,6 +4,7 @@ import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.*;
+import com.craivet.world.entity.item.Gold;
 import com.craivet.world.entity.item.Key;
 
 import java.awt.*;
@@ -37,7 +38,7 @@ public class Bat extends Mob {
 
     @Override
     public void checkDrop() {
-        if (Utils.random(100) <= PROBABILITY_KEY_DROP) drop(this, new Key(game, world, 1));
+        if (Utils.random(100) <= PROBABILITY_KEY_DROP) drop(this, new Gold(game, world));
     }
 
 }

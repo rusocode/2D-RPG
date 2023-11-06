@@ -121,16 +121,6 @@ public class BurstOfFire extends Projectile {
         return 30;
     }
 
-    @Override
-    public void set(int x, int y, Direction direction, boolean alive, Entity entity) {
-        pos.x = x;
-        pos.y = y;
-        this.direction = direction;
-        flags.alive = alive;
-        this.entity = entity;
-        stats.hp = stats.maxHp;
-    }
-
     private BufferedImage getCurrentAnimationFrame() {
         switch (direction) {
             case DOWN -> currentFrame = down.getCurrentFrame();

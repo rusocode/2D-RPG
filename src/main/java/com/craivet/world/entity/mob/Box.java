@@ -27,7 +27,7 @@ public class Box extends Mob {
         type = Type.NPC;
         stats.name = NAME;
         stats.speed = 1;
-        hitbox = new Rectangle(0, 0, tile, tile);
+        hitbox = new Rectangle(0, 1, tile, tile - 2);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogue.set = -1;
@@ -60,7 +60,7 @@ public class Box extends Mob {
     public void dialogue() {
         dialogue.startDialogue(DIALOGUE_STATE, this, dialogue.set);
         dialogue.set++;
-        if ( dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
+        if (dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
     }
 
     private void initDialogue() {
