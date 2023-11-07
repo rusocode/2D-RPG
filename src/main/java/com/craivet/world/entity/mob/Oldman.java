@@ -32,30 +32,28 @@ public class Oldman extends Mob {
         dialogue.set = -1;
         initDialogue();
 
-        int animationSpeed = 90;
+        int animationSpeed = 120;
         down = new Animation(animationSpeed, sheet.down);
         up = new Animation(animationSpeed, sheet.up);
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
-        currentFrame = down.getFirstFrame();
+        currentFrame = down.getFirstFrame(); // TODO Haca falta?
 
     }
 
     @Override
-    public void update() {
-        // TODO Por ahora no se usa
+    public void doActions() {
         if (flags.following) game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
         else {
+            // checkFollow(world.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
-            checkCollisions();
-            if (!flags.colliding) {
-                pos.update(this, direction);
-                // TODO No tendrian que ir dentro del if?
-                down.tick();
-                up.tick();
-                left.tick();
-                right.tick();
-            }
+        }
+        // Si no esta colisionando, entonces actualiza los frames
+        if (!flags.colliding) {
+            down.tick();
+            up.tick();
+            left.tick();
+            right.tick();
         }
     }
 

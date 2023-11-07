@@ -161,7 +161,7 @@ public class World {
     public void createMobs() {
         int i = 0, j = 0, k = 0, z = 0;
 
-        mobs[NASHE][i++] = new Oldman(game, this, 23, 19); // TODO set pos?
+        mobs[NASHE][i++] = new Orc(game, this, 23, 16); // TODO set pos?
         mobs[NASHE][i++] = new Bat(game, this, 26, 19);
         mobs[NASHE][i++] = new Slime(game, this, 24, 37);
         mobs[NASHE][i++] = new Slime(game, this, 34, 42);

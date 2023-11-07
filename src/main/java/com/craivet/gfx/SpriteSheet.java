@@ -132,6 +132,37 @@ public class SpriteSheet {
 
     }
 
+    public void loadOrcMovementFrames(SpriteSheet ss, int scale) {
+        int col = 6, row = 4;
+        int w = ss.getWidth() / col, h = ss.getHeight() / row;
+        int framesDown = 6, framesUp = 6, framesLeft = 5, framesRight = 5;
+
+        down = new BufferedImage[framesDown];
+        up = new BufferedImage[framesUp];
+        left = new BufferedImage[framesLeft];
+        right = new BufferedImage[framesRight];
+
+        for (int y = 0; y < row; y++) {
+            for (int x = 0; x < col; x++) {
+                switch (y) {
+                    case 0 -> down[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                    case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                    case 2 -> {
+                        if (x < framesLeft)
+                            left[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                    }
+                    case 3 -> {
+                        if (x < framesRight)
+                            right[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                    }
+                }
+            }
+        }
+
+        frame = down[0];
+
+    }
+
     public void loadOldmanFrames(SpriteSheet ss, int scale) {
         int col = 3, row = 4;
         int w = ss.getWidth() / col, h = ss.getHeight() / row;
