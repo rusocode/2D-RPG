@@ -33,6 +33,9 @@ public class AStar {
      * @param goalCol goal column.
      */
     public void searchPath(Entity entity, int goalRow, int goalCol) {
+        /* TODO Hay un bug con respecto a el rectangulo colisionador de la entidad cuando este es mas grande o igual al
+         * tile (32 en este caso). Es decir que cuando es mas grande, la ruta que encuentra la entidad hacia el objetivo
+         * (player, por ejemplo) se bugea. No entiendo la razon de esto. */
         int startRow = (entity.pos.y + entity.hitbox.y) / tile;
         int startCol = (entity.pos.x + entity.hitbox.x) / tile;
 
@@ -60,7 +63,7 @@ public class AStar {
                 entity.direction = left > nextX ? Direction.LEFT : Direction.RIGHT;
 
                 /* So far it works fine, but in the case that an entity is in the tile that is below the next tile, BUT
-                * it cannot change to the UP because there is a tree. */
+                 * it cannot change to the UP because there is a tree. */
             else if (top > nextY && left > nextX) {
                 // up o left
                 entity.direction = Direction.UP;
@@ -128,7 +131,7 @@ public class AStar {
     /**
      * Sets the start node, target node and solid nodes.
      */
-    public void setNodes(int startRow, int startCol, int goalRow, int goalCol) {
+    private void setNodes(int startRow, int startCol, int goalRow, int goalCol) {
         resetNodes(); // TODO It would not be necessary to reset the nodes in case the objective is fixed
 
         startNode = node[startRow][startCol];
@@ -168,13 +171,14 @@ public class AStar {
                     }
                 }
 
-                for (int i = 0; i < world.mobs[1].length; i++) {
+                // FIXME Por que se repite el mismo for?
+                /* for (int i = 0; i < world.mobs[1].length; i++) {
                     if (world.mobs[world.map][i] != null) {
                         int itRow = (world.mobs[world.map][i].pos.y + world.mobs[world.map][i].hitbox.y) / tile;
                         int itCol = (world.mobs[world.map][i].pos.x + world.mobs[world.map][i].hitbox.x) / tile;
                         node[itRow][itCol].solid = true;
                     }
-                }
+                } */
 
                 getCost(node[row][col]);
             }

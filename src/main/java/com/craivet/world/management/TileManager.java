@@ -45,8 +45,8 @@ public class TileManager implements State {
                 final int tileIndex = world.tileIndex[world.map][y][x];
                 final BufferedImage tileImage = world.tileData[tileIndex].texture;
                 g2.drawImage(tileImage, x * tile - xOffset, y * tile - yOffset, null);
-                g2.setStroke(new BasicStroke(0)); // Anula el grosor del borde para mantenerlo
-                g2.drawRect(x * tile - xOffset, y * tile - yOffset, tile, tile); // Dibuja una grilla
+                // g2.setStroke(new BasicStroke(0)); // Anula el grosor del borde para mantenerlo
+                // g2.drawRect(x * tile - xOffset, y * tile - yOffset, tile, tile); // Dibuja una grilla
             }
         }
 

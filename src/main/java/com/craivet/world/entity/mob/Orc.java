@@ -31,10 +31,14 @@ public class Orc extends Mob {
         int scale = 1;
         sheet.loadOrcMovementFrames(orc_movement, scale);
         sheet.loadAttackFrames(orc_attack, 16, 16, scale);
-        hitbox.width = sheet.frame.getWidth() / 2;
+        hitbox.x = 5;
+        hitbox.y = 32;
+        hitbox.width = 20;
+        hitbox.height = 25;
+        /* hitbox.width = sheet.frame.getWidth() / 2;
         hitbox.height = sheet.frame.getHeight() / 2;
         hitbox.x = hitbox.width - hitbox.width / 2;
-        hitbox.y = hitbox.height - 6;
+        hitbox.y = hitbox.height - 6; */
         hitbox = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
@@ -52,11 +56,10 @@ public class Orc extends Mob {
     @Override
     public void doActions() {
         if (flags.following) {
-            // checkUnfollow(world.player, 10);
+            checkUnfollow(world.player, 10);
             game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
         } else {
             checkFollow(world.player, 5, 100);
-            // TODO Bug de ss muy grande al seguir al player, si lo redusco no pasa
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
         if (!flags.colliding) {
@@ -70,8 +73,39 @@ public class Orc extends Mob {
 
     @Override
     public void render(Graphics2D g2) {
-        g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
-        drawRects(g2);
+        if (isOnCamera()) {
+            screen.tempScreenX = getScreenX();
+            screen.tempScreenY = getScreenY();
+
+            // If the hostile mob that is not a boss has the life bar activated
+            if (type == Type.HOSTILE && flags.hpBar && !boss) {
+                double oneScale = (double) tile / stats.maxHp;
+                double hpBarValue = oneScale * stats.hp;
+
+                // If the calculated life bar value is less than 0, assign it 0 so that it is not drawn as negative value to the left
+                if (hpBarValue < 0) hpBarValue = 0;
+
+                g2.setColor(new Color(35, 35, 35));
+                g2.fillRect(getScreenX() - 1, getScreenY() + tile + 4 + hitbox.height, tile + 2, 7);
+
+                g2.setColor(new Color(255, 0, 30));
+                g2.fillRect(getScreenX(), getScreenY() + tile + 5 + hitbox.height, (int) hpBarValue, 5);
+
+                timer.timeHpBar(this, INTERVAL_HP_BAR);
+            }
+            if (flags.invincible) {
+                // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
+                timer.hpBarCounter = 0;
+                Utils.changeAlpha(g2, 0.4f);
+            }
+            if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
+
+            g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
+
+            // drawRects(g2);
+
+            Utils.changeAlpha(g2, 1f);
+        }
     }
 
     @Override
