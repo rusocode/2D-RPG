@@ -22,7 +22,7 @@ import static com.craivet.gfx.Assets.*;
  * The Game class uses a Canvas and implements the Runnable interface to manage the game logic, update and render.
  * <p>
  * A Canvas component represents a blank rectangular area of the screen on which the application can draw or from which
- * the application can catch user input events. To organize the Canvas memory,uses a double buffer (for this case).
+ * the application can catch user input events. To organize the Canvas memory, uses a double buffer (for this case).
  * <p>
  * Sequential ring buffering (i.e., double or triple buffering) is the most common; An application draws in a single
  * <i>back buffer</i> and then moves the content to the front (screen) in a single step by either copying the data or

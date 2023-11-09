@@ -234,6 +234,7 @@ public class Keyboard extends KeyAdapter {
             if (game.ui.command == 0) {
                 game.state = PLAY_STATE;
                 game.reset(false);
+                game.playMusic(music_overworld);
             } else if (game.ui.command == 1) {
                 game.state = MAIN_STATE;
                 game.reset(true);

@@ -58,6 +58,7 @@ public final class Global {
     public static final int OUTSIDE = 0; // TODO Change to TERRAIN or FIELD
     public static final int INDOOR = 1;
     public static final int DUNGEON = 2;
+    public static final int BOSS = 3;
 
     // Main window
     public static final int MAIN_WINDOW = 0;

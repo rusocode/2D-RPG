@@ -107,7 +107,7 @@ public class Lighting {
      */
     public void render(Graphics2D g2) {
         if (world.zone == OUTSIDE) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
-        if (world.zone == OUTSIDE || world.zone == DUNGEON) g2.drawImage(darknessFilter, 0, 0, null);
+        if (world.zone == OUTSIDE || world.zone == DUNGEON || world.zone == BOSS) g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         debug(g2);
     }

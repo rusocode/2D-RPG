@@ -401,7 +401,7 @@ public class Player extends Mob {
         game.playSound(sound_player_death);
         game.state = GAME_OVER_STATE;
         game.ui.command = -1;
-        // game.music.stop();
+        game.music.stop();
     }
 
     private void getCurrentItemFrame(Graphics2D g2) {

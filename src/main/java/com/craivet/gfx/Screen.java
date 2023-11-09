@@ -2,14 +2,10 @@ package com.craivet.gfx;
 
 import com.craivet.Game;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.util.Objects;
 
 import static com.craivet.utils.Global.*;
 

@@ -22,10 +22,12 @@ public final class Assets {
     private static final String textures_tiles_interactive_path = "textures/tiles/interactive/";
 
     // AUDIO (ambient, music and sounds)
+    // Ambient
+    public static final URL ambient_dungeon = Utils.loadAudio("audio/ambient/dungeon.wav");
     // Music
     public static final URL music_main = Utils.loadAudio("audio/music/main.wav");
     public static final URL music_overworld = Utils.loadAudio("audio/music/overworld.wav");
-    public static final URL music_dungeon = Utils.loadAudio("audio/music/dungeon.wav");
+    public static final URL music_boss = Utils.loadAudio("audio/music/boss.wav");
     // Sounds
     public static final URL sound_burst_of_fire = Utils.loadAudio(sounds_path + "burst_of_fire.wav");
     public static final URL sound_chest_opening = Utils.loadAudio(sounds_path + "chest_opening.wav");
@@ -89,7 +91,7 @@ public final class Assets {
     public static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "axe_frame.png"));
     public static final SpriteSheet pickaxe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "pickaxe_frame.png"));
     // Mobs
-    public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc/attack.png"));
+    // public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc/attack.png"));
     public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc/movement.png"));
     public static final SpriteSheet skeleton_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/attack.png"));
     public static final SpriteSheet skeleton_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/movement.png"));

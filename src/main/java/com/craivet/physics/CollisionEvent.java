@@ -67,7 +67,7 @@ public class CollisionEvent {
             if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY))
                 teleport(OUTSIDE, NASHE, 12, 9); // De Dungeon 1 a Nashe
             if (checkCollision(DUNGEON_01, 8, 7, Direction.ANY))
-                teleport(DUNGEON, DUNGEON_02, 26, 41); // De Dungeon 1 a Dungeon 2
+                teleport(BOSS, DUNGEON_02, 26, 41); // De Dungeon 1 a Dungeon 2
             if (checkCollision(DUNGEON_02, 26, 41, Direction.ANY))
                 teleport(DUNGEON, DUNGEON_01, 8, 7); // De Dungeon 2 a Dungeon 1
         }
