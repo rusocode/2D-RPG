@@ -10,8 +10,6 @@ import static com.craivet.utils.Global.*;
 /**
  * The collision between two entities is generated when one of the limits of the hitbox passes 1 pixel of the hitbox of
  * the other entity. But in the case of the attackbox, a collision is only generated when the limits of both touch.
- * <p>
- * TODO You could change the names of the methods
  */
 
 public class Collision {

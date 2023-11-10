@@ -5,7 +5,6 @@ import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.*;
 import com.craivet.world.entity.item.Gold;
-import com.craivet.world.entity.item.Key;
 
 import java.awt.*;
 

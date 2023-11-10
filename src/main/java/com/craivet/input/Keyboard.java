@@ -137,8 +137,8 @@ public class Keyboard extends KeyAdapter {
          * rebuild the project and you can apply the change by pressing the R key. */
         if (code == KeyEvent.VK_R) {
             switch (game.world.map) {
-                case 0 -> game.file.loadMap("maps/nashe.txt", NASHE, "Nashe");
-                case 1 -> game.file.loadMap("maps/nashe_indoor01.txt", NASHE_INDOOR_01, "Nashe Indoor 01");
+                case 0 -> game.file.loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
+                case 1 -> game.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
             }
         }
     }

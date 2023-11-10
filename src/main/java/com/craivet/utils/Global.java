@@ -47,16 +47,16 @@ public final class Global {
 
     // Map settings
     public static final int MAPS = 10;
-    public static final int MAX_MAP_ROW = 50; // Number of tiles
+    public static final int MAX_MAP_ROW = 50;
     public static final int MAX_MAP_COL = 50;
-    // Map list
-    public static final int NASHE = 0;
-    public static final int NASHE_INDOOR_01 = 1;
-    public static final int DUNGEON_01 = 2;
-    public static final int DUNGEON_02 = 3;
+    // Maps
+    public static final int ABANDONED_ISLAND = 0;
+    public static final int ABANDONED_ISLAND_MARKET = 1;
+    public static final int DUNGEON_BREG = 2;
+    public static final int DUNGEON_BREG_SUB = 3;
     // Zones
-    public static final int OUTSIDE = 0; // TODO Change to TERRAIN or FIELD
-    public static final int INDOOR = 1;
+    public static final int OVERWORLD = 0;
+    public static final int MARKET = 1;
     public static final int DUNGEON = 2;
     public static final int BOSS = 3;
 
@@ -64,7 +64,7 @@ public final class Global {
     public static final int MAIN_WINDOW = 0;
     public static final int SELECTION_WINDOW = 1;
 
-    // Probabilitys %
+    // Probabilitys
     public static final int PROBABILITY_GOLD_DROP = 47;
     public static final int PROBABILITY_STONE_DROP = 90;
     public static final int PROBABILITY_WOOD_DROP = 80;

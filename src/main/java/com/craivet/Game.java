@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
+import com.craivet.physics.Event;
 import com.craivet.utils.Loop;
 import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
@@ -69,7 +70,7 @@ public class Game extends Canvas implements Runnable {
     public Audio music = new Audio();
     public File file = new File(this, world);
     public Collision collision = new Collision(world);
-    public CollisionEvent event = new CollisionEvent(this, world);
+    public Event event = new Event(this, world);
     public AStar aStar = new AStar(world);
     public Loop loop = new Loop();
 

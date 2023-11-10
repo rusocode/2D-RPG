@@ -2,8 +2,6 @@ package com.craivet.world.entity;
 
 /**
  * Stats of the entities.
- * <p>
- * Attributes depend on race (which is not yet implemented).
  *
  * @author Juan Debenedetti
  */

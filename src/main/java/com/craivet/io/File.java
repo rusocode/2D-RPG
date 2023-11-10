@@ -127,7 +127,7 @@ public class File {
             output.writeObject(data);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error saving file " + data, e);
         }
     }
 
@@ -190,7 +190,7 @@ public class File {
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error load file " + data, e);
         }
     }
 
@@ -217,10 +217,10 @@ public class File {
      * Load all the maps that make up the world.
      */
     public void loadMaps() {
-        loadMap("maps/nashe.txt", NASHE, "Nashe");
-        loadMap("maps/nashe_indoor01.txt", NASHE_INDOOR_01, "Nashe Indoor 01");
-        loadMap("maps/dungeon01.txt", DUNGEON_01, "Dungeon 01");
-        loadMap("maps/dungeon02.txt", DUNGEON_02, "Dungeon 02");
+        loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
+        loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
+        loadMap("maps/dungeon_breg.txt", DUNGEON_BREG, "Dungeon Breg");
+        loadMap("maps/dungeon_breg_sub.txt", DUNGEON_BREG_SUB, "Dungeon Breg Sub");
     }
 
     /**

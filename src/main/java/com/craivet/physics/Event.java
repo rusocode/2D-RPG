@@ -4,7 +4,6 @@ import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
 
@@ -12,11 +11,9 @@ import static com.craivet.utils.Global.*;
 
 /**
  * Represents an event in the World. The events can be teleportation, talking to an npc, etc.
- * <p>
- * TODO Or could it just be called Event?
  */
 
-public class CollisionEvent {
+public class Event {
 
     private final Game game;
     private final World world;
@@ -28,7 +25,7 @@ public class CollisionEvent {
     public int previousEventX, previousEventY;
     public int map, col, row;
 
-    public CollisionEvent(Game game, World world) {
+    public Event(Game game, World world) {
         this.game = game;
         this.world = world;
         event = new Rectangle[MAPS][MAX_MAP_ROW][MAX_MAP_COL];
@@ -56,20 +53,20 @@ public class CollisionEvent {
         if (dis > tile) canTouchEvent = true;
 
         if (canTouchEvent) {
-            if (checkCollision(NASHE, 27, 16, Direction.RIGHT)) hurt(entity);
-            if (checkCollision(NASHE, 23, 12, Direction.UP)) heal(entity);
-            if (checkCollision(NASHE, 10, 39, Direction.UP))
-                teleport(INDOOR, NASHE_INDOOR_01, 12, 13); // De Nashe a Nashe Indoor 1
-            if (checkCollision(NASHE_INDOOR_01, 12, 13, Direction.DOWN))
-                teleport(OUTSIDE, NASHE, 10, 39); // De Nashe Indoor 1 a Nashe
-            if (checkCollision(NASHE, 12, 9, Direction.ANY))
-                teleport(DUNGEON, DUNGEON_01, 9, 41); // De Nashe a Dungeon 1
-            if (checkCollision(DUNGEON_01, 9, 41, Direction.ANY))
-                teleport(OUTSIDE, NASHE, 12, 9); // De Dungeon 1 a Nashe
-            if (checkCollision(DUNGEON_01, 8, 7, Direction.ANY))
-                teleport(BOSS, DUNGEON_02, 26, 41); // De Dungeon 1 a Dungeon 2
-            if (checkCollision(DUNGEON_02, 26, 41, Direction.ANY))
-                teleport(DUNGEON, DUNGEON_01, 8, 7); // De Dungeon 2 a Dungeon 1
+            if (checkCollision(ABANDONED_ISLAND, 27, 16, Direction.RIGHT)) hurt(entity);
+            if (checkCollision(ABANDONED_ISLAND, 23, 12, Direction.UP)) heal(entity);
+            if (checkCollision(ABANDONED_ISLAND, 10, 39, Direction.UP))
+                teleport(MARKET, ABANDONED_ISLAND_MARKET, 12, 13); // From Abandoned Island to Abandoned Island Market
+            if (checkCollision(ABANDONED_ISLAND_MARKET, 12, 13, Direction.DOWN))
+                teleport(OVERWORLD, ABANDONED_ISLAND, 10, 39); // From Abandoned Island Market to Abandoned Island
+            if (checkCollision(ABANDONED_ISLAND, 12, 9, Direction.ANY))
+                teleport(DUNGEON, DUNGEON_BREG, 9, 41); // From Abandoned Island to Dungeon Breg
+            if (checkCollision(DUNGEON_BREG, 9, 41, Direction.ANY))
+                teleport(OVERWORLD, ABANDONED_ISLAND, 12, 9); // From Dungeon Breg to Abandoned Island
+            if (checkCollision(DUNGEON_BREG, 8, 7, Direction.ANY))
+                teleport(BOSS, DUNGEON_BREG_SUB, 26, 41); // From Dungeon Breg to Dungeon Breg Sub
+            if (checkCollision(DUNGEON_BREG_SUB, 26, 41, Direction.ANY))
+                teleport(DUNGEON, DUNGEON_BREG, 8, 7); // From Dungeon Breg Sub to Dungeon Breg
         }
 
     }

@@ -3,7 +3,7 @@ package com.craivet.utils;
 import static com.craivet.utils.Global.*;
 
 /**
- * GameLoop timer.
+ * GameLoop.
  * <p>
  * <a href="https://gameprogrammingpatterns.com/update-method.html">Update Method</a>
  */

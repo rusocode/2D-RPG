@@ -11,7 +11,6 @@ import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.entity.projectile.BurstOfFire;
-import com.craivet.world.entity.projectile.Fireball;
 import com.craivet.world.entity.projectile.Projectile;
 import com.craivet.world.tile.Interactive;
 import com.craivet.utils.*;
@@ -107,7 +106,7 @@ public class Player extends Mob {
         inventory.init();
 
         int col = 23, row = 21;
-        pos.set(world, this, NASHE, OUTSIDE, col, row, Direction.DOWN);
+        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, col, row, Direction.DOWN);
     }
 
     public void hit() {
@@ -482,7 +481,7 @@ public class Player extends Mob {
      * @param fullReset true to fully reset; false otherwise.
      */
     public void reset(boolean fullReset) {
-        pos.set(world, this, NASHE, OUTSIDE, 23, 21, Direction.DOWN);
+        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 21, Direction.DOWN);
         stats.reset(fullReset);
         flags.reset();
         if (fullReset) inventory.init();

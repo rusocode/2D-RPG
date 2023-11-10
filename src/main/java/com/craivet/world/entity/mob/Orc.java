@@ -30,15 +30,10 @@ public class Orc extends Mob {
         soundDeath = sound_orc_death;
         int scale = 1;
         sheet.loadOrcMovementFrames(orc_movement, scale);
-        // sheet.loadAttackFrames(orc_attack, 16, 16, scale);
         hitbox.x = 5;
         hitbox.y = 32;
         hitbox.width = 20;
         hitbox.height = 25;
-        /* hitbox.width = sheet.frame.getWidth() / 2;
-        hitbox.height = sheet.frame.getHeight() / 2;
-        hitbox.x = hitbox.width - hitbox.width / 2;
-        hitbox.y = hitbox.height - 6; */
         hitbox = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
@@ -50,7 +45,6 @@ public class Orc extends Mob {
         up = new Animation(animationSpeed, sheet.up);
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
-        currentFrame = down.getFirstFrame();
     }
 
     @Override

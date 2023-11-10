@@ -112,7 +112,7 @@ public class World {
                 game.stopMusic();
                 game.playMusic(ambient_dungeon);
             }
-            if (zone == DUNGEON && nextZone == OUTSIDE) {
+            if (zone == DUNGEON && nextZone == OVERWORLD) {
                 game.stopMusic();
                 game.playMusic(music_overworld);
             }
@@ -135,27 +135,27 @@ public class World {
      */
     public void createItems() {
         int i = 0;
-        items[NASHE][i++] = new Axe(game, this, 33, 7);
-        items[NASHE][i++] = new Door(game, this, 14, 28);
-        items[NASHE][i++] = new Door(game, this, 12, 12);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, this, 33, 7);
+        items[ABANDONED_ISLAND][i++] = new Door(game, this, 14, 28);
+        items[ABANDONED_ISLAND][i++] = new Door(game, this, 12, 12);
 
-        items[NASHE][i] = new Chest(game, this, 30, 29);
+        items[ABANDONED_ISLAND][i] = new Chest(game, this, 30, 29);
         // TODO What if there are many items?
-        items[NASHE][i++].setLoot(new Key(game, this, 1));
+        items[ABANDONED_ISLAND][i++].setLoot(new Key(game, this, 1));
 
-        items[NASHE][i] = new Chest(game, this, 23, 40);
-        items[NASHE][i++].setLoot(new PotionRed(game, this, 30));
+        items[ABANDONED_ISLAND][i] = new Chest(game, this, 23, 40);
+        items[ABANDONED_ISLAND][i++].setLoot(new PotionRed(game, this, 30));
 
-        items[DUNGEON_01][i] = new Chest(game, this, 13, 16);
-        items[DUNGEON_01][i++].setLoot(new PotionRed(game, this, 20));
+        items[DUNGEON_BREG][i] = new Chest(game, this, 13, 16);
+        items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, this, 20));
 
-        items[DUNGEON_01][i] = new Chest(game, this, 26, 34);
-        items[DUNGEON_01][i++].setLoot(new PotionRed(game, this, 5));
+        items[DUNGEON_BREG][i] = new Chest(game, this, 26, 34);
+        items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, this, 5));
 
-        items[DUNGEON_01][i] = new Chest(game, this, 40, 41);
-        items[DUNGEON_01][i++].setLoot(new Pickaxe(game, this));
+        items[DUNGEON_BREG][i] = new Chest(game, this, 40, 41);
+        items[DUNGEON_BREG][i++].setLoot(new Pickaxe(game, this));
 
-        items[DUNGEON_01][i] = new DoorIron(game, this, 18, 23);
+        items[DUNGEON_BREG][i] = new DoorIron(game, this, 18, 23);
 
     }
 
@@ -165,25 +165,25 @@ public class World {
     public void createMobs() {
         int i = 0, j = 0, k = 0, z = 0;
 
-        mobs[NASHE][i++] = new Oldman(game, this, 23, 16); // TODO set pos?
-        mobs[NASHE][i++] = new Bat(game, this, 26, 19);
-        mobs[NASHE][i++] = new Slime(game, this, 24, 37);
-        mobs[NASHE][i++] = new Slime(game, this, 34, 42);
-        mobs[NASHE][i++] = new Slime(game, this, 38, 42);
-        mobs[NASHE][i++] = new Orc(game, this, 12, 33);
+        mobs[ABANDONED_ISLAND][i++] = new Oldman(game, this, 23, 16); // TODO set pos?
+        mobs[ABANDONED_ISLAND][i++] = new Bat(game, this, 26, 19);
+        mobs[ABANDONED_ISLAND][i++] = new Slime(game, this, 24, 37);
+        mobs[ABANDONED_ISLAND][i++] = new Slime(game, this, 34, 42);
+        mobs[ABANDONED_ISLAND][i++] = new Slime(game, this, 38, 42);
+        mobs[ABANDONED_ISLAND][i++] = new Orc(game, this, 12, 33);
 
-        mobs[NASHE_INDOOR_01][j++] = new Trader(game, this, 12, 7);
+        mobs[ABANDONED_ISLAND_MARKET][j++] = new Trader(game, this, 12, 7);
 
-        mobs[DUNGEON_01][k++] = new Box(game, this, 20, 25);
-        mobs[DUNGEON_01][k++] = new Box(game, this, 11, 18);
-        mobs[DUNGEON_01][k++] = new Box(game, this, 23, 14);
-        mobs[DUNGEON_01][k++] = new Bat(game, this, 34, 39);
-        mobs[DUNGEON_01][k++] = new Bat(game, this, 36, 25);
-        mobs[DUNGEON_01][k++] = new Bat(game, this, 39, 26);
-        mobs[DUNGEON_01][k++] = new Bat(game, this, 28, 11);
-        mobs[DUNGEON_01][k++] = new Bat(game, this, 10, 19);
+        mobs[DUNGEON_BREG][k++] = new Box(game, this, 20, 25);
+        mobs[DUNGEON_BREG][k++] = new Box(game, this, 11, 18);
+        mobs[DUNGEON_BREG][k++] = new Box(game, this, 23, 14);
+        mobs[DUNGEON_BREG][k++] = new Bat(game, this, 34, 39);
+        mobs[DUNGEON_BREG][k++] = new Bat(game, this, 36, 25);
+        mobs[DUNGEON_BREG][k++] = new Bat(game, this, 39, 26);
+        mobs[DUNGEON_BREG][k++] = new Bat(game, this, 28, 11);
+        mobs[DUNGEON_BREG][k++] = new Bat(game, this, 10, 19);
 
-        mobs[DUNGEON_02][z++] = new Skeleton(game, this, 23, 16);
+        mobs[DUNGEON_BREG_SUB][z++] = new Skeleton(game, this, 23, 16);
 
     }
 
@@ -193,38 +193,38 @@ public class World {
     public void createInteractiveTile() {
         int i = 0;
 
-        interactives[NASHE][i++] = new DryTree(game, this, 25, 27);
-        interactives[NASHE][i++] = new DryTree(game, this, 26, 27);
-        interactives[NASHE][i++] = new DryTree(game, this, 27, 27);
-        interactives[NASHE][i++] = new DryTree(game, this, 27, 28);
-        interactives[NASHE][i++] = new DryTree(game, this, 27, 29);
-        interactives[NASHE][i++] = new DryTree(game, this, 27, 30);
-        interactives[NASHE][i++] = new DryTree(game, this, 27, 31);
-        interactives[NASHE][i++] = new DryTree(game, this, 28, 31);
-        interactives[NASHE][i++] = new DryTree(game, this, 29, 31);
-        interactives[NASHE][i++] = new DryTree(game, this, 30, 31);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 25, 27);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 26, 27);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 27, 27);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 27, 28);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 27, 29);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 27, 30);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 27, 31);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 28, 31);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 29, 31);
+        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, this, 30, 31);
 
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 30);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 17, 31);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 17, 32);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 17, 34);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 34);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 33);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 10, 22);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 10, 24);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 38, 18);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 38, 19);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 38, 20);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 38, 21);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 13);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 18, 14);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 22, 28);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 30, 28);
-        interactives[DUNGEON_01][i++] = new DestructibleWall(game, this, 32, 28);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 18, 30);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 17, 31);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 17, 32);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 17, 34);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 18, 34);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 18, 33);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 10, 22);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 10, 24);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 38, 18);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 38, 19);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 38, 20);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 38, 21);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 18, 13);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 18, 14);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 22, 28);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 30, 28);
+        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, this, 32, 28);
 
-        interactives[DUNGEON_01][i++] = new MetalPlate(game, this, 20, 22);
-        interactives[DUNGEON_01][i++] = new MetalPlate(game, this, 8, 17);
-        interactives[DUNGEON_01][i++] = new MetalPlate(game, this, 39, 31);
+        interactives[DUNGEON_BREG][i++] = new MetalPlate(game, this, 20, 22);
+        interactives[DUNGEON_BREG][i++] = new MetalPlate(game, this, 8, 17);
+        interactives[DUNGEON_BREG][i++] = new MetalPlate(game, this, 39, 31);
 
     }
 
