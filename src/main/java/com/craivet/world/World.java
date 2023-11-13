@@ -76,6 +76,8 @@ public class World {
             environment.render(g2);
         }
         if (game.state == MAIN_STATE) {
+
+
             // TODO Replace with a background with an image
             g2.setColor(Color.black);
             g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);

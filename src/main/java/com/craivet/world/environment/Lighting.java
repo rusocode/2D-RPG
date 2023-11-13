@@ -109,7 +109,7 @@ public class Lighting {
         if (world.zone == OVERWORLD) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         if (world.zone == OVERWORLD || world.zone == DUNGEON || world.zone == BOSS) g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
-        debug(g2);
+        // debug(g2);
     }
 
     /**
