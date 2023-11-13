@@ -2,6 +2,7 @@ package com.craivet.input;
 
 import com.craivet.Game;
 
+import javax.swing.*;
 import java.awt.event.*;
 
 import static com.craivet.gfx.Assets.*;
@@ -23,7 +24,7 @@ public class Keyboard extends KeyAdapter {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() < 0 || e.getKeyCode() > maxKeycode) {
-            System.out.println("keycode cannot be greater than 255 or negative, keycode: " + e.getKeyCode());
+            JOptionPane.showMessageDialog(null, "Keycode cannot be greater than 255 or negative, keycode: " + e.getKeyCode(), "Input error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         if (lastKey != e.getKeyCode()) {
@@ -42,7 +43,7 @@ public class Keyboard extends KeyAdapter {
     @Override
     public void keyReleased(KeyEvent e) {
         if (e.getKeyCode() < 0 || e.getKeyCode() > maxKeycode) {
-            System.out.println("keycode cannot be greater than 255 or negative, keycode: " + e.getKeyCode());
+            JOptionPane.showMessageDialog(null, "Keycode cannot be greater than 255 or negative, keycode: " + e.getKeyCode(), "Input error", JOptionPane.ERROR_MESSAGE);
             return;
         }
         lastKey = -1;
@@ -138,7 +139,8 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_R) {
             switch (game.world.map) {
                 case 0 -> game.file.loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
-                case 1 -> game.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
+                case 1 ->
+                        game.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
             }
         }
     }
