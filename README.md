@@ -11,6 +11,13 @@ The objective of the game is basic and brief. Get the keys to the doors until yo
 
 The map is small, so you can find hostile creatures and interactive objects such as chests, doors, and some events. There are two npcs, one is an old wanderer and another is the merchant who waits for you inside a house. Always have your flashlight on hand so you don't get lost in the shadows and try to bring the necessary tools to advance in the dungeons.
 
+## Screenshots
+![](screenshots/img1.PNG)
+![](screenshots/img2.PNG)
+![](screenshots/img3.PNG)
+![](screenshots/img4.PNG)
+![](screenshots/img5.PNG)
+
 ### Controls
 Move> WASD
 <br>
