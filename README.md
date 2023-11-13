@@ -3,7 +3,7 @@
 
 ## Introduction
 This game is made for educational purposes to better understand how games work under the hood. It does not use third-party libraries or frameworks, it is made from scratch
-using the java API (jdk 15 or greater). It covers much of the basic operation of GameLoop, on-screen rendering, collision systems, tile map system, some
+using the java API (jdk 8 or greater). It covers much of the basic operation of GameLoop, on-screen rendering, collision systems, tile map system, some
 mechanics in the handling of physics, among others. I'm not trying to reinvent the wheel either, just that, learn.
 
 ## Objective of the game
@@ -18,7 +18,7 @@ The map is small, so you can find hostile creatures and interactive objects such
 ![](screenshots/img4.PNG)
 ![](screenshots/img5.PNG)
 
-### Controls
+## Controls
 Move> WASD
 <br>
 Confirm/Attack> Enter
@@ -39,8 +39,8 @@ Debug> T
 <br>
 God Mode> G
 
-### Technical details
-Although the resolution of the tiles is fixed at 32x32 pixels, it is possible to adjust it in powers of 2 to guarantee the integrity of the graphics and avoid distortion problems. The default frame rate per second (FPS) and updates per second (ticks) are set to 60. If the screen is maximized, possible degradation of graphical quality due to the use of pixel art textures should be considered. In relation to the top-down camera, only the tiles that are within the field of view are rendered, avoiding the rendering of the entire extensive map made up of 100x100 tiles. For the collision system, the collision is checked with the hitbox of each entity, while the intervals of the actions are managed through the Timer class.
+## Technical details
+Although the resolution of the tiles is fixed at 32x32 pixels, it is possible to adjust it in powers of 2 to guarantee the integrity of the graphics and avoid distortion problems. The default frame rate per second (FPS) and updates per second (ticks) are set to 60. If the screen is maximized, possible degradation of graphical quality due to the use of pixel art textures should be considered. In relation to the top-down camera, only the tiles that are within the field of view are rendered, avoiding the rendering of the entire extensive map made up of 100x100 tiles. For the collision system, the collision is checked with the hitbox of each entity, while the intervals of the actions are managed through the Timer class. It also has an environment system, where the day cycle is divided into 4 parts: day, dusk, night and dawn.
 
 ## Future of the project
 There is no clear objective of how the project will continue, i simply started it with the idea of being able to show graphics on the screen and it ended up getting out of hand. I'm going to continue polishing the code as much as i can without adding more features so as not to extend the code. The current idea would be to have it as clean as possible to have a "possible" reference of the structure of a game.
