@@ -35,7 +35,8 @@ public class Thief extends Character {
     }
 
     protected int getIncreaseMaxHp() {
-        return Utils.random(6);
+        return 4;
+        // return Utils.random(6);
     }
 
 }

@@ -11,11 +11,11 @@ import static com.craivet.gfx.Assets.*;
 
 public class MetalPlate extends Interactive {
 
-    public static final String item_name = "Metal Plate";
+    public static final String NAME = "Metal Plate";
 
     public MetalPlate(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        stats.name = item_name;
+        stats.name = NAME;
         sheet.frame = Utils.scaleImage(itile_metalplate, tile, tile);
         hitbox = new Rectangle(0, 0, 0, 0);
         hitboxDefaultX = hitbox.x;

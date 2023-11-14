@@ -4,6 +4,7 @@ import com.craivet.Game;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
+import com.craivet.world.entity.item.DoorIron;
 import com.craivet.world.entity.item.Gold;
 
 import java.awt.*;
@@ -18,7 +19,7 @@ public class Skeleton extends Mob {
         type = Type.HOSTILE;
         stats.name = "Skeleton";
         stats.speed = stats.defaultSpeed = 1;
-        stats.hp = stats.maxHp = 50;
+        stats.hp = stats.maxHp = 20;
         stats.exp = 50;
         stats.attack = 10;
         stats.defense = 2;

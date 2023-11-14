@@ -39,6 +39,7 @@ public final class Assets {
     public static final URL sound_door_iron_opening = Utils.loadAudio(sounds_path + "door_iron_opening.wav");
     public static final URL sound_draw_sword = Utils.loadAudio(sounds_path + "draw_sword.wav");
     public static final URL sound_drink_potion = Utils.loadAudio(sounds_path + "drink_potion.wav");
+    public static final URL sound_eat = Utils.loadAudio(sounds_path + "eat.wav");
     public static final URL sound_fireball = Utils.loadAudio(sounds_path + "fireball.wav");
     public static final URL sound_hit_bat = Utils.loadAudio(sounds_path + "hit_bat.wav");
     public static final URL sound_hit_mob = Utils.loadAudio(sounds_path + "hit_mob.wav");
@@ -73,6 +74,7 @@ public final class Assets {
     public static final BufferedImage axe = Utils.loadImage(textures_items_path + "axe.png");
     public static final BufferedImage boots = Utils.loadImage(textures_items_path + "boots.png");
     public static final SpriteSheet chest = new SpriteSheet(Utils.loadImage(textures_items_path + "chest.png"));
+    public static final BufferedImage chicken = Utils.loadImage(textures_items_path + "chicken.png");
     public static final BufferedImage door = Utils.loadImage(textures_items_path + "door.png");
     public static final BufferedImage door_iron = Utils.loadImage(textures_items_path + "door_iron.png");
     public static final BufferedImage gold = Utils.loadImage(textures_items_path + "gold.png");

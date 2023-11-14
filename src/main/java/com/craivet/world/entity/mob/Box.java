@@ -76,16 +76,15 @@ public class Box extends Mob {
         ArrayList<Entity> boxes = new ArrayList<>();
 
         // Add the plates to the list
-        for (int i = 0; i < world.interactives[1].length; i++) {
-            if (world.interactives[world.map][i] != null && world.interactives[world.map][i].stats.name != null && world.interactives[world.map][i].stats.name.equals(MetalPlate.item_name))
+        for (int i = 0; i < world.interactives[1].length; i++)
+            // TODO Hace falta comprobar si el nombre de la placa es distinto a null?
+            if (world.interactives[world.map][i] != null && world.interactives[world.map][i].stats.name != null && world.interactives[world.map][i].stats.name.equals(MetalPlate.NAME))
                 plates.add(world.interactives[world.map][i]);
-        }
 
         // Add the boxes to the list
-        for (int i = 0; i < world.mobs[1].length; i++) {
+        for (int i = 0; i < world.mobs[1].length; i++)
             if (world.mobs[world.map][i] != null && world.mobs[world.map][i].stats.name.equals(Box.NAME))
                 boxes.add(world.mobs[world.map][i]);
-        }
 
         // Iterate the plates and check the distance with the box
         for (Interactive plate : plates) {

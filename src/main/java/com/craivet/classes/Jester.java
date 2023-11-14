@@ -38,7 +38,8 @@ public class Jester extends Character {
     }
 
     protected int getIncreaseMaxHp() {
-        return Utils.random(4);
+        return 2;
+        // return Utils.random(4);
     }
 
     protected int getIncreaseMaxMana() {

@@ -29,6 +29,7 @@ public class ItemGenerator {
             case Axe.NAME -> item = new Axe(game, world);
             case Boots.NAME -> item = new Boots(game, world);
             case Chest.NAME -> item = new Chest(game, world);
+            case Chicken.NAME -> item = new Chicken(game, world);
             case Gold.NAME -> item = new Gold(game, world);
             case Door.NAME -> item = new Door(game, world);
             case DoorIron.NAME -> item = new DoorIron(game, world);

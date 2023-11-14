@@ -42,8 +42,8 @@ public abstract class Character {
         stats.nextLvlExp *= 2;
         stats.strength++;
         stats.dexterity++;
-        int increasedMaxHp = getIncreaseMaxHp();
-        int increasedMaxMana = getIncreaseMaxMana();
+        int increasedMaxHp = stats.lvl % 2 == 0 ? getIncreaseMaxHp() : 0;
+        int increasedMaxMana = stats.lvl % 2 == 0 ? getIncreaseMaxMana() : 0;
         if (increasedMaxHp > 0) {
             stats.increaseMaxHp(increasedMaxHp);
             stats.fullHp();

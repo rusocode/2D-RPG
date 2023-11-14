@@ -157,7 +157,12 @@ public class World {
         items[DUNGEON_BREG][i] = new Chest(game, this, 40, 41);
         items[DUNGEON_BREG][i++].setLoot(new Pickaxe(game, this));
 
-        items[DUNGEON_BREG][i] = new DoorIron(game, this, 18, 23);
+        items[DUNGEON_BREG][i++] = new DoorIron(game, this, 18, 23);
+
+        items[DUNGEON_BREG_SUB][i++] = new DoorIron(game, this, 25, 15);
+
+        items[DUNGEON_BREG_SUB][i] = new Chest(game, this, 25, 8);
+        items[DUNGEON_BREG_SUB][i].setLoot(new Chicken(game, this));
 
     }
 

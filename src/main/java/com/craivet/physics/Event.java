@@ -128,7 +128,7 @@ public class Event {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
             entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 1);
             world.player.stats.hp = world.player.stats.maxHp;
-            game.world.createMobs();
+            // game.world.createMobs();
         }
     }
 

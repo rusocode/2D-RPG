@@ -9,6 +9,7 @@ import com.craivet.classes.Jester;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
+import com.craivet.world.entity.mob.Skeleton;
 import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.entity.projectile.BurstOfFire;
 import com.craivet.world.entity.projectile.Projectile;
@@ -283,6 +284,7 @@ public class Player extends Mob {
                 mob.flags.hpBar = true;
                 mob.damageReaction();
 
+                // TODO No deberia ganar exp en cada golpe al mob o solo cuando lo mata?
                 // TODO Should there be a method?
                 if (mob.stats.hp <= 0) {
                     game.playSound(sound_mob_death);
@@ -292,6 +294,17 @@ public class Player extends Mob {
                     game.ui.addMessageToConsole("Exp + " + mob.stats.exp);
                     stats.exp += mob.stats.exp;
                     checkLevelUp();
+
+                    // TODO Verificar de otra forma y en otro lugar
+                    if (mob instanceof Skeleton) {
+                        for (int j = 0; j < world.items[1].length; j++) {
+                            if (world.items[world.map][j] != null && world.items[world.map][j].stats.name.equals(DoorIron.NAME)) {
+                                world.items[world.map][j] = null;
+                                game.playSound(sound_door_iron_opening);
+                            }
+                        }
+                    }
+
                 }
             }
         }

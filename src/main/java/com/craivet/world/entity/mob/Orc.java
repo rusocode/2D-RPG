@@ -21,7 +21,7 @@ public class Orc extends Mob {
         stats.name = "Orc";
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 10;
-        stats.exp = 2;
+        stats.exp = 30;
         stats.attack = 8;
         stats.defense = 2;
         stats.motion1 = 25;
