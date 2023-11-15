@@ -190,6 +190,8 @@ public class Game extends Canvas implements Runnable {
         ui.console.clear();
         world.player.reset(fullReset);
         world.createMobs();
+        world.removeTempEntities();
+        world.bossBattleOn = false;
         if (fullReset) {
             stopMusic();
             playMusic(music_main);
@@ -200,6 +202,7 @@ public class Game extends Canvas implements Runnable {
         }
     }
 
+    // TODO Por que el audio se llama desde este clase?
     public void playMusic(URL url) {
         // TODO Se podria detener la musica desde aca para evitar hacer dos llamadas
         music.play(url);

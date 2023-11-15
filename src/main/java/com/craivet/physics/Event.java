@@ -2,6 +2,7 @@ package com.craivet.physics;
 
 import com.craivet.Direction;
 import com.craivet.Game;
+import com.craivet.io.Progress;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 
@@ -55,6 +56,7 @@ public class Event {
         if (canTouchEvent) {
             if (checkCollision(ABANDONED_ISLAND, 27, 16, Direction.RIGHT)) hurt(entity);
             if (checkCollision(ABANDONED_ISLAND, 23, 12, Direction.UP)) heal(entity);
+            if (checkCollision(DUNGEON_BREG_SUB, 25, 27, Direction.ANY)) skeleton();
             if (checkCollision(ABANDONED_ISLAND, 10, 39, Direction.UP))
                 teleport(MARKET, ABANDONED_ISLAND_MARKET, 12, 13); // From Abandoned Island to Abandoned Island Market
             if (checkCollision(ABANDONED_ISLAND_MARKET, 12, 13, Direction.DOWN))
@@ -128,7 +130,14 @@ public class Event {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
             entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 1);
             world.player.stats.hp = world.player.stats.maxHp;
-            // game.world.createMobs();
+        }
+    }
+
+    private void skeleton() {
+        if (!world.bossBattleOn && !Progress.skeletonDefeated) {
+            game.state = CUTSCENE_STATE;
+            world.cutscene.sceneNum = world.cutscene.skeleton;
+            canTouchEvent = false;
         }
     }
 
@@ -141,7 +150,7 @@ public class Event {
      * @param row  row to which the player teleports.
      */
     private void teleport(int zone, int map, int col, int row) {
-        game.state = TRANSITION_STATE;
+        game.state = TELEPORT_STATE;
         world.nextZone = zone;
         this.map = map;
         this.col = col;

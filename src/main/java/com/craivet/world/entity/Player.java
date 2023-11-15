@@ -63,8 +63,10 @@ public class Player extends Mob {
     @Override
     public void render(Graphics2D g2) {
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
-        if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
-        else getCurrentItemFrame(g2);
+        if (drawing) {
+            if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
+            else getCurrentItemFrame(g2);
+        }
         // drawRects(g2);
         Utils.changeAlpha(g2, 1);
     }
@@ -106,8 +108,8 @@ public class Player extends Mob {
 
         inventory.init();
 
-        int col = 23, row = 21;
-        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, col, row, Direction.DOWN);
+        int col = 25, row = 32;
+        pos.set(world, this, DUNGEON_BREG_SUB, DUNGEON, col, row, Direction.DOWN);
     }
 
     public void hit() {

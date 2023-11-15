@@ -6,6 +6,7 @@ import com.craivet.world.entity.Player;
 import com.craivet.world.entity.item.*;
 import com.craivet.world.entity.mob.*;
 import com.craivet.world.entity.projectile.Projectile;
+import com.craivet.world.management.CutsceneManager;
 import com.craivet.world.management.EntityManager;
 import com.craivet.world.management.EnvironmentManager;
 import com.craivet.world.management.TileManager;
@@ -22,15 +23,19 @@ import static com.craivet.utils.Global.*;
 /**
  * The World class represents the scenery of the game. Each part of the world is divided into 50x50 tile maps that are
  * composed of tiles, entities and an environment (weather).
+ * <p>
+ * TODO Los mobs, items y tiles interactivos se podrian agregar desde otra clase para dejarla mas limpia a la clase World
  */
 
 public class World {
 
     private final Game game;
 
+    // Managers
     private TileManager tiles;
     private EntityManager entities;
     public EnvironmentManager environment;
+    public CutsceneManager cutscene;
 
     // Map
     public int map, zone, nextZone;
@@ -46,6 +51,8 @@ public class World {
     public Mob[][] mobs = new Mob[MAPS][40];
     public Interactive[][] interactives = new Interactive[MAPS][50];
     public Projectile[][] projectiles = new Projectile[MAPS][20];
+
+    public boolean bossBattleOn;
 
     public World(Game game) {
         this.game = game;
@@ -74,10 +81,9 @@ public class World {
             tiles.render(g2);
             entities.render(g2);
             environment.render(g2);
+            cutscene.render();
         }
         if (game.state == MAIN_STATE) {
-
-
             // TODO Replace with a background with an image
             g2.setColor(Color.black);
             g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -101,6 +107,7 @@ public class World {
         tiles = new TileManager(this);
         entities = new EntityManager(this);
         environment = new EnvironmentManager(this);
+        cutscene = new CutsceneManager(game, this);
     }
 
     public void changeArea() {
@@ -132,35 +139,36 @@ public class World {
         createInteractiveTile();
     }
 
+    public void removeTempEntities() {
+        for (int map = 0; map < MAPS; map++)
+            for (int i = 0; i < items[1].length; i++)
+                if (items[map][i] != null && items[map][i].temp) items[map][i] = null;
+    }
+
     /**
      * Create the items.
      */
     public void createItems() {
-        int i = 0;
+        int i = 0; // TODO No se tiene que reiniciar la i despues de cada mapa?
         items[ABANDONED_ISLAND][i++] = new Axe(game, this, 33, 7);
         items[ABANDONED_ISLAND][i++] = new Door(game, this, 14, 28);
         items[ABANDONED_ISLAND][i++] = new Door(game, this, 12, 12);
-
+        // TODO No es mejor pasarle directamente al cofre el item que va a tener desde el constructor?
         items[ABANDONED_ISLAND][i] = new Chest(game, this, 30, 29);
         // TODO What if there are many items?
         items[ABANDONED_ISLAND][i++].setLoot(new Key(game, this, 1));
-
         items[ABANDONED_ISLAND][i] = new Chest(game, this, 23, 40);
         items[ABANDONED_ISLAND][i++].setLoot(new PotionRed(game, this, 30));
 
         items[DUNGEON_BREG][i] = new Chest(game, this, 13, 16);
         items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, this, 20));
-
         items[DUNGEON_BREG][i] = new Chest(game, this, 26, 34);
         items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, this, 5));
-
         items[DUNGEON_BREG][i] = new Chest(game, this, 40, 41);
         items[DUNGEON_BREG][i++].setLoot(new Pickaxe(game, this));
-
         items[DUNGEON_BREG][i++] = new DoorIron(game, this, 18, 23);
 
         items[DUNGEON_BREG_SUB][i++] = new DoorIron(game, this, 25, 15);
-
         items[DUNGEON_BREG_SUB][i] = new Chest(game, this, 25, 8);
         items[DUNGEON_BREG_SUB][i].setLoot(new Chicken(game, this));
 

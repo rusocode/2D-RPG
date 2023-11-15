@@ -5,7 +5,6 @@ import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Player;
-import com.craivet.world.entity.Type;
 import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
@@ -68,7 +67,7 @@ public class UI {
             case INVENTORY_STATE -> renderPlayerInventoryWindow(world.player, true);
             case OPTION_STATE -> renderOptionWindow();
             case GAME_OVER_STATE -> renderGameOverWindow();
-            case TRANSITION_STATE -> renderTransitionEffect();
+            case TELEPORT_STATE -> renderTeleportEffect();
             case TRADE_STATE -> renderTradeWindow();
             case SLEEP_STATE -> renderSleepEffect();
         }
@@ -248,7 +247,7 @@ public class UI {
         }
     }
 
-    private void renderDialogueWindow() {
+    public void renderDialogueWindow() {
         int x = tile * 3, y = tile / 2;
         int width = WINDOW_WIDTH - (tile * 6), height = tile * 4;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
@@ -272,7 +271,7 @@ public class UI {
             if (game.keyboard.enter) {
                 charIndex = 0;
                 combinedText = "";
-                if (game.state == DIALOGUE_STATE) {
+                if (game.state == DIALOGUE_STATE || game.state == CUTSCENE_STATE) {
                     entity.dialogue.index++;
                     game.keyboard.enter = false;
                 }
@@ -288,7 +287,9 @@ public class UI {
 
         } else { // If the dialogue ended
             entity.dialogue.index = 0;
-            game.state = PLAY_STATE;
+            // game.state = PLAY_STATE; // ANTES
+            if (game.state == DIALOGUE_STATE) game.state = PLAY_STATE;
+            if (game.state == CUTSCENE_STATE) world.cutscene.scenePhase++;
         }
 
         for (String line : currentDialogue.split("\n")) {
@@ -772,13 +773,13 @@ public class UI {
     }
 
     /**
-     * Renders a transition effect and when it finishes, teleports the player.
+     * Renders a teleport effect and when it finishes, teleports the player.
      */
-    private void renderTransitionEffect() {
+    private void renderTeleportEffect() {
         g2.setColor(new Color(0, 0, 0, counter * 5));
         g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         counter++;
-        if (counter >= INTERVAL_TRANSITION) {
+        if (counter >= INTERVAL_TELEPORT) {
             counter = 0;
             game.state = PLAY_STATE;
             world.map = game.event.map;

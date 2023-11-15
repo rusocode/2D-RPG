@@ -26,7 +26,7 @@ public abstract class Entity {
 
     public Type type = Type.HOSTILE;
     public Direction direction = Direction.DOWN;
-    public Position pos = new Position();
+    public Position pos = new Position(); // TODO Podria ir en World
     public Stats stats = new Stats();
     public Flags flags = new Flags();
     public Screen screen = new Screen();
@@ -47,6 +47,14 @@ public abstract class Entity {
     public Entity linkedEntity;
 
     public boolean boss; // TODO Move to Mob
+    // Si el boss esta o no dormido para la cutscene
+    public boolean sleep;
+    /* Para indicar si el player entro en el area del boss, entonces evita dibujarlo para simular el movimiento de la
+     * camara con PlayerDummy (personaje ficticio). */
+    public boolean drawing = true;
+    /* Esta variable sirve para controlar la puerta de entrada al boss, es decir si morimos mientras peleamos con el
+     * boss la puerta temporal desaparece para que podemos entrar de nuevo al boss. */
+    public boolean temp;
 
     public int interval;
 
@@ -62,20 +70,22 @@ public abstract class Entity {
     }
 
     public void update() {
-        if (flags.knockback) {
-            checkCollisions();
-            // If it doesn't collide, then update the position depending on the attacker's direction
-            if (!flags.colliding) pos.update(this, direction.knockbackDirection);
-            else mechanics.stopKnockback(this); // If it collides, it stops the knockback
-            timer.timerKnockback(this, INTERVAL_KNOCKBACK);
-        } else if (flags.hitting) hit();
-        else {
-            // It is important that you perform the actions before checking for collisions
-            doActions();
-            checkCollisions();
-            if (!flags.colliding) pos.update(this, direction);
+        if (!sleep) {
+            if (flags.knockback) {
+                checkCollisions();
+                // If it doesn't collide, then update the position depending on the attacker's direction
+                if (!flags.colliding) pos.update(this, direction.knockbackDirection);
+                else mechanics.stopKnockback(this); // If it collides, it stops the knockback
+                timer.timerKnockback(this, INTERVAL_KNOCKBACK);
+            } else if (flags.hitting) hit();
+            else {
+                // It is important that you perform the actions before checking for collisions
+                doActions();
+                checkCollisions();
+                if (!flags.colliding) pos.update(this, direction);
+            }
+            timer.checkTimers(this);
         }
-        timer.checkTimers(this);
     }
 
     public void render(Graphics2D g2) {

@@ -31,7 +31,7 @@ public class Keyboard extends KeyAdapter {
             lastKey = e.getKeyCode();
             if (game.state == MAIN_STATE) mainState(lastKey);
             else if (game.state == PLAY_STATE) playState(lastKey);
-            else if (game.state == DIALOGUE_STATE) dialogueState(lastKey);
+            else if (game.state == DIALOGUE_STATE || game.state == CUTSCENE_STATE) dialogueState(lastKey);
             else if (game.state == STATS_STATE) statsState(lastKey);
             else if (game.state == INVENTORY_STATE) inventoryState(lastKey);
             else if (game.state == OPTION_STATE) optionState(lastKey);
