@@ -7,7 +7,7 @@ using the java API (jdk 8 or greater). It covers much of the basic operation of 
 mechanics in the handling of physics, among others. I'm not trying to reinvent the wheel either, just that, learn.
 
 ## Objective of the game
-The objective of the game is basic and brief. Get the keys to the doors until you reach the dungeon and thus be able to complete the labyrinth inside to face the boss who protects the treasure of the lands of Argentum.
+The objective of the game is basic and brief. Get the keys to the doors until you reach the dungeon and thus be able to complete the labyrinth inside to face the boss who protects the treasure.
 
 The map is small, so you can find hostile creatures and interactive objects such as chests, doors, and some events. There are two npcs, one is an old wanderer and another is the merchant who waits for you inside a house. Always have your flashlight on hand so you don't get lost in the shadows and try to bring the necessary tools to advance in the dungeons.
 
