@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.Objects;
 
 import static com.craivet.utils.Global.*;
 
@@ -46,6 +47,8 @@ public class Screen extends JFrame {
 
     public Screen(Game game, boolean fullScreenMode) {
         // setIgnoreRepaint(true);
+        setTitle("2D RPG");
+        setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("textures/logo.png"))).getImage());
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         add(game);
