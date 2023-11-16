@@ -31,21 +31,19 @@ public class GameState implements State {
     }
 
     public void render(Graphics2D g2) {
-        if (game.keyboard.t) renderStart = System.nanoTime();
+        if (game.keyboard.debug) renderStart = System.nanoTime();
 
         world.render(g2);
         minimap.render(g2);
         ui.render(g2);
 
         // Debug mode
-        if (game.keyboard.t) {
+        if (game.keyboard.debug) {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 8));
-            int x = 8, y = (int) (WINDOW_HEIGHT - tile * 3.2), gap = 15;
+            int x = 8, y = (int) (WINDOW_HEIGHT - tile * 2.8), gap = 15;
             String map = game.world.maps.get(game.world.map);
             int posX = (game.world.player.pos.x + game.world.player.hitbox.x) / tile;
             int posY = (game.world.player.pos.y + game.world.player.hitbox.y) / tile;
-            g2.drawString("God Mode: " + game.keyboard.godMode, x, y);
-            y += gap;
             g2.drawString(map + " (" + posX + ", " + posY + ")", x, y);
             y += gap;
             g2.drawString("x: " + (game.world.player.pos.x + game.world.player.hitbox.x) + " y: " + (game.world.player.pos.y + game.world.player.hitbox.y), x, y);

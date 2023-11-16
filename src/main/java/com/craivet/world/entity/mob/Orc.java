@@ -96,7 +96,7 @@ public class Orc extends Mob {
 
             g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
 
-            // drawRects(g2);
+            if (game.keyboard.hitbox) drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }

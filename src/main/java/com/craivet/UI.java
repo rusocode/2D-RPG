@@ -720,7 +720,7 @@ public class UI {
             if (game.keyboard.enter) {
                 subState = 0;
                 game.state = MAIN_STATE;
-                game.keyboard.t = false;
+                game.keyboard.debug = false;
                 game.reset(true);
             }
         }

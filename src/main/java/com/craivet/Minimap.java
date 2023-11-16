@@ -9,11 +9,12 @@ import static com.craivet.utils.Global.*;
 
 public class Minimap {
 
+    private final Game game;
     private final World world;
     private BufferedImage[] minimap;
-    public boolean minimapOn;
 
-    public Minimap(World world) {
+    public Minimap(Game game, World world) {
+        this.game = game;
         this.world = world;
     }
 
@@ -37,7 +38,7 @@ public class Minimap {
     }
 
     public void render(final Graphics2D g2) {
-        if (minimapOn) {
+        if (game.keyboard.minimap) {
             int width = 100;
             int height = 100;
             int x = WINDOW_WIDTH - width - 20;

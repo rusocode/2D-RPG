@@ -1,6 +1,5 @@
 package com.craivet.world.entity.projectile;
 
-import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
@@ -88,7 +87,7 @@ public class BurstOfFire extends Projectile {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY(), null);
-        // drawRects(g2);
+        if (game.keyboard.god) drawRects(g2);
     }
 
     @Override

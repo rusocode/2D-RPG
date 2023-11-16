@@ -12,8 +12,8 @@ public class CutsceneManager {
 
     private final Game game;
     private final World world;
-    public int n; // Numero de la escena
-    public int phase; // Fase de la escena
+    public int n; // Scene number
+    public int phase; // Scene phase
 
     // Scenes types
     public final int na = 0;
@@ -25,7 +25,7 @@ public class CutsceneManager {
     }
 
     public void render() {
-        // TODO Usar switch para multiples escenas
+        // TODO switch for multiple scenes
         if (n == boss) sceneSkeleton();
     }
 

@@ -67,7 +67,8 @@ public class Player extends Mob {
             if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
             else getCurrentItemFrame(g2);
         }
-        // drawRects(g2);
+        if (game.keyboard.hitbox) drawRects(g2);
+
         Utils.changeAlpha(g2, 1);
     }
 
@@ -202,7 +203,7 @@ public class Player extends Mob {
      * Check if it can shooting a projectile.
      */
     private void checkShoot() {
-        if (game.keyboard.f && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+        if (game.keyboard.shoot && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
             game.playSound(projectile.sound);
             projectile.set(pos.x, pos.y, direction, true, this);
@@ -219,7 +220,7 @@ public class Player extends Mob {
     }
 
     private void checkStats() {
-        if (!game.keyboard.godMode) if (stats.hp <= 0) die();
+        if (!game.keyboard.god) if (stats.hp <= 0) die();
         if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
         if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
     }
@@ -379,7 +380,7 @@ public class Player extends Mob {
     public void pickup(int i) {
         if (i != -1) {
             Item item = world.items[world.map][i];
-            if (game.keyboard.p && item.type != Type.OBSTACLE) {
+            if (game.keyboard.pickup && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(world.player);
                 else if (inventory.canPickup(item)) game.playSound(sound_item_pickup);
                 else {
@@ -398,7 +399,7 @@ public class Player extends Mob {
     @Override
     public void checkCollisions() {
         flags.colliding = false;
-        if (!game.keyboard.godMode) game.collision.checkTile(this);
+        if (!game.keyboard.god) game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.mobs));
         hurt(game.collision.checkEntity(this, world.mobs));

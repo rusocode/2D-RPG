@@ -8,12 +8,28 @@ import java.awt.event.*;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
+/**
+ * <ul>
+ * <li>Confirm/Attack: Enter</li>
+ * <li>Options/Back: ESC</li>
+ * <li>Move: WASD</li>
+ * <li>Shoot: F</li>
+ * <li>Pickup Item: P</li>
+ * <li>Minimap: M</li>
+ * <li>Inventory: I</li>
+ * <li>Stats Window: C</li>
+ * <li>Debug: Q</li>
+ * <li>God: G</li>
+ * Ignores collisions with solid tiles and does not lose life.
+ * <li>Hitbox: H</li>
+ * </ul>
+ */
+
 public class Keyboard extends KeyAdapter {
 
     private final Game game;
 
-    public boolean w, a, s, d, enter, esc, f, p, t;
-    public boolean godMode;
+    public boolean enter, esc, w, a, s, d, shoot, pickup, minimap, debug, god, hitbox;
     private int lastKey = -1;
     private final int maxKeycode = 255;
 
@@ -52,7 +68,7 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_A) a = false;
         if (code == KeyEvent.VK_S) s = false;
         if (code == KeyEvent.VK_D) d = false;
-        if (code == KeyEvent.VK_F) f = false;
+        if (code == KeyEvent.VK_F) shoot = false;
     }
 
     public boolean checkKeys() {
@@ -64,12 +80,12 @@ public class Keyboard extends KeyAdapter {
     }
 
     public boolean checkAccionKeys() {
-        return enter || p;
+        return enter || pickup;
     }
 
     public void resetAccionKeys() {
         enter = false;
-        p = false;
+        pickup = false;
     }
 
     private void mainState(int code) {
@@ -130,14 +146,15 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_S) s = true;
         if (code == KeyEvent.VK_D) d = true;
         if (code == KeyEvent.VK_ENTER) enter = true;
-        if (code == KeyEvent.VK_F) f = true;
-        if (code == KeyEvent.VK_P) p = true;
-        if (code == KeyEvent.VK_T) t = !t;
-        if (code == KeyEvent.VK_G) godMode = !godMode;
+        if (code == KeyEvent.VK_F) shoot = true;
+        if (code == KeyEvent.VK_P) pickup = true;
+        if (code == KeyEvent.VK_Q) debug = !debug;
+        if (code == KeyEvent.VK_H) hitbox = !hitbox;
+        if (code == KeyEvent.VK_G) god = !god;
         if (code == KeyEvent.VK_C) game.state = STATS_STATE;
         if (code == KeyEvent.VK_I) game.state = INVENTORY_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;
-        if (code == KeyEvent.VK_M) game.minimap.minimapOn = !game.minimap.minimapOn;
+        if (code == KeyEvent.VK_M) minimap = !minimap;
         /* You need to save the edited text file by pressing Ctrl + F9 or by selecting Build > Build Project. Which will
          * rebuild the project and you can apply the change by pressing the R key. */
         if (code == KeyEvent.VK_R) {

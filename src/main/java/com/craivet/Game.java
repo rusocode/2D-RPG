@@ -65,7 +65,7 @@ public class Game extends Canvas implements Runnable {
     public World world = new World(this);
     public UI ui = new UI(this, world);
     public ItemGenerator itemGenerator = new ItemGenerator(this, world);
-    public Minimap minimap = new Minimap(world);
+    public Minimap minimap = new Minimap(this, world);
     public Audio sound = new Audio();
     public Audio music = new Audio();
     public File file = new File(this, world);
@@ -198,7 +198,7 @@ public class Game extends Canvas implements Runnable {
             world.createItems();
             world.createInteractiveTile();
             world.environment.lighting.resetDay();
-            minimap.minimapOn = false;
+            keyboard.minimap = false;
         }
     }
 

@@ -108,7 +108,7 @@ public class World {
     }
 
     private void initializeManagers() {
-        tiles = new TileManager(this);
+        tiles = new TileManager(game, this);
         entities = new EntityManager(this);
         environment = new EnvironmentManager(this);
         cutscene = new CutsceneManager(game, this);

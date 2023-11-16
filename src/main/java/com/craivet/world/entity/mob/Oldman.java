@@ -60,7 +60,7 @@ public class Oldman extends Mob {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
-        // drawRects(g2);
+        if (game.keyboard.hitbox) drawRects(g2);
     }
 
     @Override

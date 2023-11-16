@@ -107,7 +107,7 @@ public abstract class Entity {
                 // If it is a static image (item, interactive tile)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY(), null);
 
-            // drawRects(g2);
+            if (game.keyboard.hitbox) drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }
