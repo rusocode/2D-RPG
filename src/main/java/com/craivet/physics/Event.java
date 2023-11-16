@@ -21,6 +21,9 @@ public class Event {
 
     private final Rectangle[][][] event;
     private boolean canTouchEvent;
+    /* Variable para saber cuando el player esta dentro de la boss area para evitar que se produsca el mismo evento cada
+     * ves que pasa por ese evento. Solo se vuelve a desactivar cuando muere en la boss area. */
+    public boolean inBoss;
     /* The event does not happen again if the player is not 1 tile away. This mechanic prevents the event from repeating
      * itself in the same place repeatedly. */
     public int previousEventX, previousEventY;
@@ -134,10 +137,10 @@ public class Event {
     }
 
     private void skeleton() {
-        if (!world.bossBattleOn && !Progress.skeletonDefeated) {
+        if (!world.bossBattleOn && !Progress.skeletonDefeated && !inBoss) {
             game.state = CUTSCENE_STATE;
             world.cutscene.sceneNum = world.cutscene.skeleton;
-            canTouchEvent = false;
+            inBoss = true;
         }
     }
 
