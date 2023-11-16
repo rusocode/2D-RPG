@@ -6,20 +6,18 @@ import com.craivet.world.entity.PlayerDummy;
 import com.craivet.world.entity.item.DoorIron;
 import com.craivet.world.entity.mob.Skeleton;
 
-import java.awt.*;
-
 import static com.craivet.utils.Global.*;
 
 public class CutsceneManager {
 
     private final Game game;
     private final World world;
-    public int sceneNum; // Numero de la escena
-    public int scenePhase; // Fases de la escena
+    public int n; // Numero de la escena
+    public int phase; // Fase de la escena
 
-    // Scene number
-    public final int NA = 0;
-    public final int skeleton = 1;
+    // Scenes types
+    public final int na = 0;
+    public final int boss = 1;
 
     public CutsceneManager(Game game, World world) {
         this.game = game;
@@ -28,13 +26,13 @@ public class CutsceneManager {
 
     public void render() {
         // TODO Usar switch para multiples escenas
-        if (sceneNum == skeleton) sceneSkeleton();
+        if (n == boss) sceneSkeleton();
     }
 
     private void sceneSkeleton() {
 
         // Coloca la puerta de hierro
-        if (scenePhase == 0) {
+        if (phase == 0) {
             // Busca un espacio sobrante en el array de items para agregar la puerta de hierro
             for (int i = 0; i < world.items[1].length; i++) {
                 if (world.items[world.map][i] == null) {
@@ -56,32 +54,32 @@ public class CutsceneManager {
             }
 
             world.player.drawing = false;
-            scenePhase++;
+            phase++;
         }
 
         // Mueve la camara hacia el boss
-        if (scenePhase == 1) {
+        if (phase == 1) {
             world.player.pos.y -= 2;
-            if (world.player.pos.y < tile * 16) scenePhase++;
+            if (world.player.pos.y < tile * 16) phase++;
         }
 
         // Despierta al boss
-        if (scenePhase == 2) {
+        if (phase == 2) {
             for (int i = 0; i < world.mobs[1].length; i++) {
                 if (world.mobs[world.map][i] != null && world.mobs[world.map][i].stats.name.equals(Skeleton.NAME)) {
                     world.mobs[world.map][i].sleep = false; // Ahora el boss se despierta
                     game.ui.entity = world.mobs[world.map][i]; // Le pasa el boss a la ui para que pueda renderizar la ventana de dialogo
-                    scenePhase++;
+                    phase++;
                     break;
                 }
             }
         }
 
         // Habla el boss
-        if (scenePhase == 3) game.ui.renderDialogueWindow();
+        if (phase == 3) game.ui.renderDialogueWindow();
 
         // Devuelve la camara al player
-        if (scenePhase == 4) {
+        if (phase == 4) {
             // Busca al personaje ficticio (PlayerDummy)
             for (int i = 0; i < world.mobs[1].length; i++) {
                 if (world.mobs[world.map][i] != null && world.mobs[world.map][i].stats.name.equals(PlayerDummy.NAME)) {
@@ -94,12 +92,12 @@ public class CutsceneManager {
                 }
             }
 
-            // Comienza a dibujar al player
+            // Ahora se puede dibujar al player
             world.player.drawing = true;
 
             // Reinicia la escena
-            sceneNum = NA;
-            scenePhase = 0;
+            n = na;
+            phase = 0;
             game.state = PLAY_STATE;
         }
 

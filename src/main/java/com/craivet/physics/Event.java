@@ -20,10 +20,8 @@ public class Event {
     private final World world;
 
     private final Rectangle[][][] event;
+    // Avoid generate the event in the same place multiple times
     private boolean canTouchEvent;
-    /* Variable para saber cuando el player esta dentro de la boss area para evitar que se produsca el mismo evento cada
-     * ves que pasa por ese evento. Solo se vuelve a desactivar cuando muere en la boss area. */
-    public boolean inBoss;
     /* The event does not happen again if the player is not 1 tile away. This mechanic prevents the event from repeating
      * itself in the same place repeatedly. */
     public int previousEventX, previousEventY;
@@ -59,7 +57,7 @@ public class Event {
         if (canTouchEvent) {
             if (checkCollision(ABANDONED_ISLAND, 27, 16, Direction.RIGHT)) hurt(entity);
             if (checkCollision(ABANDONED_ISLAND, 23, 12, Direction.UP)) heal(entity);
-            if (checkCollision(DUNGEON_BREG_SUB, 25, 27, Direction.ANY)) skeleton();
+            if (checkCollision(DUNGEON_BREG_SUB, 25, 27, Direction.ANY)) bossScene();
             if (checkCollision(ABANDONED_ISLAND, 10, 39, Direction.UP))
                 teleport(MARKET, ABANDONED_ISLAND_MARKET, 12, 13); // From Abandoned Island to Abandoned Island Market
             if (checkCollision(ABANDONED_ISLAND_MARKET, 12, 13, Direction.DOWN))
@@ -77,13 +75,15 @@ public class Event {
     }
 
     /**
-     * Check the collision with the event.
+     * Check the collision of the player with the event.
+     * <p>
+     * TODO Just check the collision with the player
      *
      * @param map       map of the event.
      * @param col       event column.
      * @param row       event row.
      * @param direction direction of the event.
-     * @return returns true if I collide with the event or false.
+     * @return returns true if the player collides with the event or false.
      */
     private boolean checkCollision(int map, int col, int row, Direction direction) {
         boolean isColliding = false;
@@ -116,31 +116,38 @@ public class Event {
     }
 
     /**
-     * Hurt the player.
+     * Hurt the entity.
+     *
+     * @param entity entity to hurt.
      */
     private void hurt(Entity entity) {
         entity.dialogue.dialogues[0][0] = "You fall into a pit!";
         entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 0);
-        world.player.stats.hp--;
+        entity.stats.hp--;
         canTouchEvent = false;
     }
 
     /**
-     * Heals the player.
+     * Heals the entity.
+     *
+     * @param entity entity to heal.
      */
     private void heal(Entity entity) {
         if (game.keyboard.enter) {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
             entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 1);
-            world.player.stats.hp = world.player.stats.maxHp;
+            entity.stats.hp = entity.stats.maxHp;
         }
     }
 
-    private void skeleton() {
-        if (!world.bossBattleOn && !Progress.skeletonDefeated && !inBoss) {
+    /**
+     * Generate the boss scene.
+     */
+    private void bossScene() {
+        if (!world.bossBattleOn && !Progress.bossDefeated) {
             game.state = CUTSCENE_STATE;
-            world.cutscene.sceneNum = world.cutscene.skeleton;
-            inBoss = true;
+            world.cutscene.n = world.cutscene.boss;
+            world.bossBattleOn = true;
         }
     }
 

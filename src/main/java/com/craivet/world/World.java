@@ -1,6 +1,7 @@
 package com.craivet.world;
 
 import com.craivet.Game;
+import com.craivet.io.Progress;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Player;
 import com.craivet.world.entity.item.*;
@@ -15,6 +16,7 @@ import com.craivet.world.tile.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import static com.craivet.gfx.Assets.*;
@@ -52,6 +54,8 @@ public class World {
     public Interactive[][] interactives = new Interactive[MAPS][50];
     public Projectile[][] projectiles = new Projectile[MAPS][20];
 
+    /* Variable para saber cuando el player esta dentro de la boss area para evitar que se produsca el mismo evento cada
+     * ves que pasa por ese evento. Solo se vuelve a desactivar cuando muere en la boss area. */
     public boolean bossBattleOn;
 
     public World(Game game) {
@@ -198,7 +202,7 @@ public class World {
         mobs[DUNGEON_BREG][k++] = new Bat(game, this, 28, 11);
         mobs[DUNGEON_BREG][k++] = new Bat(game, this, 10, 19);
 
-        mobs[DUNGEON_BREG_SUB][z++] = new Skeleton(game, this, 23, 16);
+        if (!Progress.bossDefeated) mobs[DUNGEON_BREG_SUB][z++] = new Skeleton(game, this, 23, 16);
 
     }
 

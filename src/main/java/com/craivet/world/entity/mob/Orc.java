@@ -26,7 +26,7 @@ public class Orc extends Mob {
         stats.defense = 2;
         stats.motion1 = 25;
         stats.motion2 = 30;
-        soundHit = sound_hit_orc;
+        soundHit = sound_orc_hit;
         soundDeath = sound_orc_death;
         int scale = 1;
         sheet.loadOrcMovementFrames(orc_movement, scale);
@@ -72,7 +72,7 @@ public class Orc extends Mob {
             screen.tempScreenY = getScreenY();
 
             // If the hostile mob that is not a boss has the life bar activated
-            if (type == Type.HOSTILE && flags.hpBar && !boss) {
+            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) {
                 double oneScale = (double) tile / stats.maxHp;
                 double hpBarValue = oneScale * stats.hp;
 

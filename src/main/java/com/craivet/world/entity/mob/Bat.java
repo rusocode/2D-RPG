@@ -22,7 +22,7 @@ public class Bat extends Mob {
         stats.exp = 7;
         stats.attack = 1;
         stats.defense = 1;
-        soundHit = sound_hit_bat;
+        soundHit = sound_bat_hit;
         soundDeath = sound_bat_death;
         hitbox = new Rectangle(0, 0, tile, tile);
         hitboxDefaultX = hitbox.x;

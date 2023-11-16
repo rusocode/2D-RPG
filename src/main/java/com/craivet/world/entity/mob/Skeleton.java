@@ -3,11 +3,9 @@ package com.craivet.world.entity.mob;
 import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.io.Progress;
-import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.DoorIron;
-import com.craivet.world.entity.item.Gold;
 
 import java.awt.*;
 
@@ -30,9 +28,9 @@ public class Skeleton extends Mob {
         stats.defense = 2;
         stats.motion1 = 25;
         stats.motion2 = 50;
-        soundHit = sound_hit_mob;
+        soundHit = sound_mob_hit;
         soundDeath = sound_mob_death;
-        boss = true;
+        flags.boss = true;
         sleep = true;
         int scale = 5;
         int size = tile * scale;
@@ -70,8 +68,8 @@ public class Skeleton extends Mob {
     @Override
     public void checkDrop() {
 
-        world.bossBattleOn = false;
-        Progress.skeletonDefeated = true;
+        // world.bossBattleOn = false;
+        Progress.bossDefeated = true;
 
         // Remove the iron doors
         for (int i = 0; i < world.items[1].length; i++)

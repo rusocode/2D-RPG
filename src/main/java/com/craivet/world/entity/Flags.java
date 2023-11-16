@@ -19,6 +19,7 @@ public final class Flags {
     public boolean following;
     public boolean shooting;
     public boolean hpBar;
+    public boolean boss;
 
     /**
      * Reset the flags.

@@ -1,12 +1,11 @@
 package com.craivet.io;
 
 /**
- * Para poder guardar el progreso del boss.
+ * Mantiene un registro de los progresos del juego.
  */
 
 public class Progress {
 
-    public static boolean skeletonDefeated;
-
+    public static boolean bossDefeated;
 
 }

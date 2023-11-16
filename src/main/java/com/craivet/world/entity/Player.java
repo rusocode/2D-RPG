@@ -109,7 +109,7 @@ public class Player extends Mob {
         inventory.init();
 
         int col = 25, row = 32;
-        pos.set(world, this, DUNGEON_BREG_SUB, DUNGEON, col, row, Direction.DOWN);
+        pos.set(world, this, DUNGEON_BREG_SUB, BOSS, col, row, Direction.DOWN);
     }
 
     public void hit() {
@@ -279,7 +279,7 @@ public class Player extends Mob {
                 game.ui.addMessageToConsole(damage + " damage!");
                 if (mob.stats.hp > 0) {
                     game.playSound(mob.soundHit);
-                    if (!(mob instanceof Slime)) game.playSound(sound_hit_mob);
+                    if (!(mob instanceof Slime)) game.playSound(sound_mob_hit);
                 }
 
                 mob.flags.invincible = true;
@@ -497,6 +497,7 @@ public class Player extends Mob {
      */
     public void reset(boolean fullReset) {
         pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 21, Direction.DOWN);
+        currentFrame = down.getFirstFrame();
         stats.reset(fullReset);
         flags.reset();
         if (fullReset) inventory.init();

@@ -87,16 +87,20 @@ public class Keyboard extends KeyAdapter {
             if (code == KeyEvent.VK_ENTER) {
                 if (game.ui.command == 0) {
                     game.state = PLAY_STATE;
-                    game.stopMusic();
-                    game.playMusic(music_overworld);
                     game.playSound(sound_spawn);
+                    game.stopMusic();
+                    switch (game.world.zone) {
+                        case OVERWORLD -> game.playMusic(music_overworld);
+                        case DUNGEON -> game.playMusic(ambient_dungeon);
+                        case BOSS -> game.playMusic(music_boss);
+                    }
                 }
                 if (game.ui.command == 1) {
                     game.file.loadData();
                     game.state = PLAY_STATE;
+                    game.playSound(sound_spawn);
                     game.stopMusic();
                     game.playMusic(music_overworld);
-                    game.playSound(sound_spawn);
                 }
                 if (game.ui.command == 2) System.exit(0);
             }

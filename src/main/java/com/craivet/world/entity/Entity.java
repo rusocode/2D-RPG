@@ -46,14 +46,13 @@ public abstract class Entity {
 
     public Entity linkedEntity;
 
-    public boolean boss; // TODO Move to Mob
     // Si el boss esta o no dormido para la cutscene
     public boolean sleep;
     /* Para indicar si el player entro en el area del boss, entonces evita dibujarlo para simular el movimiento de la
      * camara con PlayerDummy (personaje ficticio). */
     public boolean drawing = true;
     /* Esta variable sirve para controlar la puerta de entrada al boss, es decir si morimos mientras peleamos con el
-     * boss la puerta temporal desaparece para que podemos entrar de nuevo al boss. */
+     * boss, la puerta temporal desaparece para que podemos entrar de nuevo al boss. */
     public boolean temp;
 
     public int interval;
@@ -94,7 +93,7 @@ public abstract class Entity {
             screen.tempScreenY = getScreenY();
 
             // If the hostile mob that is not a boss has the life bar activated
-            if (type == Type.HOSTILE && flags.hpBar && !boss) game.ui.renderHpBar(this);
+            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) game.ui.renderHpBar(this);
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
                 timer.hpBarCounter = 0;

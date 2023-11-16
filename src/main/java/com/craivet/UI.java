@@ -225,7 +225,7 @@ public class UI {
     private void renderBossHpBar() {
         for (int i = 0; i < world.mobs[1].length; i++) {
             Mob mob = world.mobs[world.map][i];
-            if (mob != null && mob.isOnCamera() && mob.boss) {
+            if (mob != null && mob.isOnCamera() && mob.flags.boss) {
                 double oneScale = (double) tile * 8 / mob.stats.maxHp;
                 double hpBarValue = oneScale * mob.stats.hp;
 
@@ -287,9 +287,8 @@ public class UI {
 
         } else { // If the dialogue ended
             entity.dialogue.index = 0;
-            // game.state = PLAY_STATE; // ANTES
             if (game.state == DIALOGUE_STATE) game.state = PLAY_STATE;
-            if (game.state == CUTSCENE_STATE) world.cutscene.scenePhase++;
+            if (game.state == CUTSCENE_STATE) world.cutscene.phase++;
         }
 
         for (String line : currentDialogue.split("\n")) {

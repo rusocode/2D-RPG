@@ -192,7 +192,6 @@ public class Game extends Canvas implements Runnable {
         world.createMobs();
         world.removeTempEntities();
         world.bossBattleOn = false;
-        event.inBoss = false;
         if (fullReset) {
             stopMusic();
             playMusic(music_main);
