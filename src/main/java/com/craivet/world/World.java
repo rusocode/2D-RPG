@@ -117,18 +117,9 @@ public class World {
     public void changeArea() {
         // If there is a change of area
         if (nextZone != zone) {
-            if (nextZone == BOSS) {
-                game.stopMusic();
-                game.playMusic(music_boss);
-            }
-            if (nextZone == DUNGEON) {
-                game.stopMusic();
-                game.playMusic(ambient_dungeon);
-            }
-            if (zone == DUNGEON && nextZone == OVERWORLD) {
-                game.stopMusic();
-                game.playMusic(music_overworld);
-            }
+            if (nextZone == BOSS) game.playMusic(music_boss);
+            if (nextZone == DUNGEON) game.playMusic(ambient_dungeon);
+            if (zone == DUNGEON && nextZone == OVERWORLD) game.playMusic(music_overworld);
         }
         zone = nextZone;
         createMobs();
