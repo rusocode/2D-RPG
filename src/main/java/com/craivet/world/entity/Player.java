@@ -405,7 +405,7 @@ public class Player extends Mob {
         hurt(game.collision.checkEntity(this, world.mobs));
         setCurrentInteractive(game.collision.checkEntity(this, world.interactives));
         // game.collision.checkEntity(this, world.interactives);
-        game.event.checkEvent(this);
+        game.event.check(this);
     }
 
     private void setCurrentInteractive(int i) {

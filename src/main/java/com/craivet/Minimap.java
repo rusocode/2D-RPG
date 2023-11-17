@@ -18,7 +18,7 @@ public class Minimap {
         this.world = world;
     }
 
-    public void createMinimap() {
+    public void create() {
         minimap = new BufferedImage[MAPS];
         int width = tile * MAX_MAP_COL;
         int height = tile * MAX_MAP_ROW;

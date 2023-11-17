@@ -107,33 +107,19 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void init() {
-        file.loadConfig();
-        file.loadTiles();
-        file.loadMaps();
-        minimap.createMinimap();
-        event.createEvents();
+        file.load();
+        minimap.create();
+        event.create();
         playMusic(music_main);
         stateManager.set(new GameState(this, world, ui, minimap));
-
         // Create a temporary screen for the fullscreen
         tempScreen = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         // Use the "brush" (g2) on the temporary screen
         g2 = (Graphics2D) tempScreen.getGraphics();
-
     }
 
     private void update() {
         if (stateManager.get() != null) stateManager.get().update();
-    }
-
-    private void render2() {
-        Graphics2D g2 = (Graphics2D) buffer.getDrawGraphics();
-        g2.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        // Render graphics on screen
-        if (stateManager.get() != null) stateManager.get().render(g2);
-        // When you're done drawing and want to present your information on the screen, call show()
-        buffer.show();
-        g2.dispose();
     }
 
     private void render() {
@@ -149,7 +135,7 @@ public class Game extends Canvas implements Runnable {
         g2.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         // Render graphics in the temporary screen buffer
         if (stateManager.get() != null) stateManager.get().render(g2);
-        // Show the buffer
+        // When you're done drawing and want to present your information on the temporary screen, call show() show the buffer
         buffer.show();
     }
 
@@ -169,6 +155,9 @@ public class Game extends Canvas implements Runnable {
         return running;
     }
 
+    /**
+     * Start the game.
+     */
     public synchronized void start() {
         if (running) return;
         /* Create a double buffer strategy for this component (Canvas). Keep in mind that the higher it is, the more

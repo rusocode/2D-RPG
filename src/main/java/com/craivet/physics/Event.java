@@ -11,7 +11,7 @@ import java.awt.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * Represents an event in the World. The events can be teleportation, talking to an npc, etc.
+ * Represents an event in the World. The events can be teleportation, heal, etc.
  */
 
 public class Event {
@@ -21,11 +21,15 @@ public class Event {
 
     private final Rectangle[][][] event;
     // Avoid generate the event in the same place multiple times
-    private boolean canTouchEvent;
+    private boolean canCollideEvent;
     /* The event does not happen again if the player is not 1 tile away. This mechanic prevents the event from repeating
      * itself in the same place repeatedly. */
     public int previousEventX, previousEventY;
     public int map, col, row;
+
+    // x and y position of the event
+    private final int x = 5;
+    private final int y = 7;
 
     public Event(Game game, World world) {
         this.game = game;
@@ -36,40 +40,38 @@ public class Event {
     /**
      * Create an event for each tile. Technically speaking, it creates a small Rectangle in the center of each tile.
      */
-    public void createEvents() {
+    public void create() {
+        int eventWidth = 22;
+        int eventHeight = 18;
         for (int map = 0; map < MAPS; map++)
             for (int row = 0; row < MAX_MAP_ROW; row++)
                 for (int col = 0; col < MAX_MAP_COL; col++)
-                    event[map][row][col] = new Rectangle(5, 7, 22, 18);
+                    event[map][row][col] = new Rectangle(x, y, eventWidth, eventHeight);
     }
 
     /**
      * Check the event.
+     *
+     * @param entity entity that generates the event.
      */
-    public void checkEvent(Entity entity) {
+    public void check(Entity entity) {
 
         // Check if the player is more than 1 tile away from the last event using the previous event as information
         int xDis = Math.abs(world.player.pos.x - previousEventX);
         int yDis = Math.abs(world.player.pos.y - previousEventY);
         int dis = Math.max(xDis, yDis);
-        if (dis > tile) canTouchEvent = true;
+        if (dis > tile) canCollideEvent = true;
 
-        if (canTouchEvent) {
-            if (checkCollision(ABANDONED_ISLAND, 27, 16, Direction.RIGHT)) hurt(entity);
-            if (checkCollision(ABANDONED_ISLAND, 23, 12, Direction.UP)) heal(entity);
-            if (checkCollision(DUNGEON_BREG_SUB, 25, 27, Direction.ANY)) bossScene();
-            if (checkCollision(ABANDONED_ISLAND, 10, 39, Direction.UP))
-                teleport(MARKET, ABANDONED_ISLAND_MARKET, 12, 13); // From Abandoned Island to Abandoned Island Market
-            if (checkCollision(ABANDONED_ISLAND_MARKET, 12, 13, Direction.DOWN))
-                teleport(OVERWORLD, ABANDONED_ISLAND, 10, 39); // From Abandoned Island Market to Abandoned Island
-            if (checkCollision(ABANDONED_ISLAND, 12, 9, Direction.ANY))
-                teleport(DUNGEON, DUNGEON_BREG, 9, 41); // From Abandoned Island to Dungeon Breg
-            if (checkCollision(DUNGEON_BREG, 9, 41, Direction.ANY))
-                teleport(OVERWORLD, ABANDONED_ISLAND, 12, 9); // From Dungeon Breg to Abandoned Island
-            if (checkCollision(DUNGEON_BREG, 8, 7, Direction.ANY))
-                teleport(BOSS, DUNGEON_BREG_SUB, 26, 41); // From Dungeon Breg to Dungeon Breg Sub
-            if (checkCollision(DUNGEON_BREG_SUB, 26, 41, Direction.ANY))
-                teleport(DUNGEON, DUNGEON_BREG, 8, 7); // From Dungeon Breg Sub to Dungeon Breg
+        if (canCollideEvent) {
+            if (isColliding(ABANDONED_ISLAND, 27, 16, Direction.RIGHT)) hurt(entity);
+            if (isColliding(ABANDONED_ISLAND, 23, 12, Direction.UP)) heal(entity);
+            if (isColliding(DUNGEON_BREG_SUB, 25, 27, Direction.ANY)) bossScene();
+            if (isColliding(ABANDONED_ISLAND, 10, 39, Direction.UP)) teleport(MARKET, ABANDONED_ISLAND_MARKET, 12, 13);
+            if (isColliding(ABANDONED_ISLAND_MARKET, 12, 13, Direction.DOWN)) teleport(OVERWORLD, ABANDONED_ISLAND, 10, 39);
+            if (isColliding(ABANDONED_ISLAND, 12, 9, Direction.ANY)) teleport(DUNGEON, DUNGEON_BREG, 9, 41);
+            if (isColliding(DUNGEON_BREG, 9, 41, Direction.ANY)) teleport(OVERWORLD, ABANDONED_ISLAND, 12, 9);
+            if (isColliding(DUNGEON_BREG, 8, 7, Direction.ANY)) teleport(BOSS, DUNGEON_BREG_SUB, 26, 41);
+            if (isColliding(DUNGEON_BREG_SUB, 26, 41, Direction.ANY)) teleport(DUNGEON, DUNGEON_BREG, 8, 7);
         }
 
     }
@@ -77,7 +79,7 @@ public class Event {
     /**
      * Check the collision of the player with the event.
      * <p>
-     * TODO Just check the collision with the player
+     * TODO Only check the collision with the player and not with other entities
      *
      * @param map       map of the event.
      * @param col       event column.
@@ -85,8 +87,8 @@ public class Event {
      * @param direction direction of the event.
      * @return returns true if the player collides with the event or false.
      */
-    private boolean checkCollision(int map, int col, int row, Direction direction) {
-        boolean isColliding = false;
+    private boolean isColliding(int map, int col, int row, Direction direction) {
+        boolean colliding = false;
 
         // If the player is on the same map as the event
         if (map == world.map) {
@@ -97,7 +99,7 @@ public class Event {
 
             // If the player collides with the event and if the direction matches that of the event
             if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.direction == direction || direction == Direction.ANY)) {
-                isColliding = true;
+                colliding = true;
                 world.player.attackCanceled = true; // Cancels the attack if you interact with an event using enter (key used to attack)
                 // Based on this information, verify the distance between the player and the last event
                 previousEventX = world.player.pos.x;
@@ -107,11 +109,11 @@ public class Event {
             // Resets the player hitbox position and event position
             world.player.hitbox.x = world.player.hitboxDefaultX;
             world.player.hitbox.y = world.player.hitboxDefaultY;
-            event[map][row][col].x = 5;
-            event[map][row][col].y = 7;
+            event[map][row][col].x = x;
+            event[map][row][col].y = y;
         }
 
-        return isColliding;
+        return colliding;
 
     }
 
@@ -124,7 +126,7 @@ public class Event {
         entity.dialogue.dialogues[0][0] = "You fall into a pit!";
         entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 0);
         entity.stats.hp--;
-        canTouchEvent = false;
+        canCollideEvent = false;
     }
 
     /**
@@ -165,7 +167,7 @@ public class Event {
         this.map = map;
         this.col = col;
         this.row = row;
-        canTouchEvent = false;
+        canCollideEvent = false;
     }
 
 }

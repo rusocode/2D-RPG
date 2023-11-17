@@ -38,6 +38,12 @@ public class File {
         this.world = world;
     }
 
+    public void load() {
+        loadConfig();
+        loadTiles();
+        loadMaps();
+    }
+
     /**
      * Save the game settings.
      */
@@ -56,7 +62,7 @@ public class File {
     /**
      * Load the game configuration.
      */
-    public void loadConfig() {
+    private void loadConfig() {
         try (BufferedReader br = new BufferedReader(new FileReader(config))) {
             // game.fullScreen = ON.equals(br.readLine());
             // TODO Verificar null
@@ -198,7 +204,7 @@ public class File {
      * Reads the data of each tile (name and solid state) from the "tile_data.txt" file and adds them to their
      * respective lists. It then uses that data to load all the tiles into an array.
      */
-    public void loadTiles() {
+    private void loadTiles() {
         String line;
         try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(tileData))))) {
             while ((line = br.readLine()) != null) {
@@ -216,7 +222,7 @@ public class File {
     /**
      * Load all the maps that make up the world.
      */
-    public void loadMaps() {
+    private void loadMaps() {
         loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
         loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
         loadMap("maps/dungeon_breg.txt", DUNGEON_BREG, "Dungeon Breg");

@@ -87,7 +87,7 @@ public class BurstOfFire extends Projectile {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY(), null);
-        if (game.keyboard.god) drawRects(g2);
+        if (game.keyboard.hitbox) drawRects(g2);
     }
 
     @Override
