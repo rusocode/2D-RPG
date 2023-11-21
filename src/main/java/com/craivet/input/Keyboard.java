@@ -1,5 +1,6 @@
 package com.craivet.input;
 
+import com.craivet.Direction;
 import com.craivet.Game;
 
 import javax.swing.*;
@@ -253,6 +254,7 @@ public class Keyboard extends KeyAdapter {
         }
         if (code == KeyEvent.VK_ENTER) {
             if (game.ui.command == 0) {
+                game.world.player.direction = Direction.DOWN;
                 game.state = PLAY_STATE;
                 game.reset(false);
                 game.playMusic(music_overworld);
