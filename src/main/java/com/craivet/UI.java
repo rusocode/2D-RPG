@@ -28,7 +28,7 @@ public class UI {
     private Graphics2D g2;
     public Entity entity;
 
-    private String currentDialogue, combinedText = "";
+    public String currentDialogue, combinedText = "";
     private int charIndex, counter;
 
     // TODO The console would have to be a separate class
@@ -280,6 +280,8 @@ public class UI {
                 charIndex = 0;
                 combinedText = "";
                 if (game.state == TRADE_STATE) {
+                    game.state = PLAY_STATE;
+                    currentDialogue = "";
                     entity.dialogue.index++;
                     game.keyboard.esc = false;
                 }
@@ -295,6 +297,7 @@ public class UI {
             g2.drawString(line, textX, textY);
             textY += 40;
         }
+
     }
 
     private void renderStatsWindow() {
