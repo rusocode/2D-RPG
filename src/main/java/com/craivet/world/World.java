@@ -16,7 +16,6 @@ import com.craivet.world.tile.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 
 import static com.craivet.gfx.Assets.*;
@@ -108,7 +107,7 @@ public class World {
     }
 
     private void initializeManagers() {
-        tiles = new TileManager(game, this);
+        tiles = new TileManager(this);
         entities = new EntityManager(this);
         environment = new EnvironmentManager(this);
         cutscene = new CutsceneManager(game, this);

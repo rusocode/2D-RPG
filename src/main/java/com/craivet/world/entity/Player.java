@@ -109,8 +109,7 @@ public class Player extends Mob {
 
         inventory.init();
 
-        int col = 10, row = 40;
-        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, col, row, Direction.DOWN);
+        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 10, 40, Direction.DOWN);
     }
 
     public void hit() {

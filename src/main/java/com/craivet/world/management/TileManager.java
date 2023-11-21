@@ -1,6 +1,5 @@
 package com.craivet.world.management;
 
-import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.states.State;
 
@@ -11,11 +10,9 @@ import static com.craivet.utils.Global.*;
 
 public class TileManager implements State {
 
-    private final Game game;
     private final World world;
 
-    public TileManager(Game game, World world) {
-        this.game = game;
+    public TileManager(World world) {
         this.world = world;
     }
 

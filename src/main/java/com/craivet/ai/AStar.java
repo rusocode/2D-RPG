@@ -132,7 +132,8 @@ public class AStar {
      * Sets the start node, target node and solid nodes.
      */
     private void setNodes(int startRow, int startCol, int goalRow, int goalCol) {
-        resetNodes(); // TODO It would not be necessary to reset the nodes in case the objective is fixed
+        // TODO It would not be necessary to reset the nodes in case the objective is fixed
+        resetNodes();
 
         startNode = node[startRow][startCol];
         goalNode = node[goalRow][goalCol];
@@ -170,15 +171,6 @@ public class AStar {
                         node[itRow][itCol].solid = true;
                     }
                 }
-
-                // FIXME Por que se repite el mismo for?
-                /* for (int i = 0; i < world.mobs[1].length; i++) {
-                    if (world.mobs[world.map][i] != null) {
-                        int itRow = (world.mobs[world.map][i].pos.y + world.mobs[world.map][i].hitbox.y) / tile;
-                        int itCol = (world.mobs[world.map][i].pos.x + world.mobs[world.map][i].hitbox.x) / tile;
-                        node[itRow][itCol].solid = true;
-                    }
-                } */
 
                 getCost(node[row][col]);
             }

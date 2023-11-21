@@ -7,6 +7,7 @@ import static com.craivet.utils.Global.*;
  * <p>
  * <a href="https://gameprogrammingpatterns.com/update-method.html">Update Method</a>
  */
+
 public class Loop {
 
     public int framesInRender;

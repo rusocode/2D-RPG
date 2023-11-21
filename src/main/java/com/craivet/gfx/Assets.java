@@ -98,8 +98,6 @@ public final class Assets {
     public static final SpriteSheet skeleton_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/attack.png"));
     public static final SpriteSheet skeleton_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/movement.png"));
     public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player.png"));
-    public static final SpriteSheet player_movement2 = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player 300x360.png"));
-    public static final SpriteSheet player_movement3 = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player 150x180.png"));
     public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_mob_path + "bat.png"));
     public static final BufferedImage box = Utils.loadImage(textures_mob_path + "box.png");
     public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage(textures_mob_path + "oldman.png"));

@@ -28,7 +28,7 @@ public class UI {
     private Graphics2D g2;
     public Entity entity;
 
-    public String currentDialogue, combinedText = "";
+    private String currentDialogue, combinedText = "";
     private int charIndex, counter;
 
     // TODO The console would have to be a separate class
