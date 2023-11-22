@@ -1,6 +1,5 @@
 package com.craivet.input;
 
-import com.craivet.Direction;
 import com.craivet.Game;
 
 import javax.swing.*;
@@ -20,8 +19,8 @@ import static com.craivet.utils.Global.*;
  * <li>Inventory: I</li>
  * <li>Stats Window: C</li>
  * <li>Debug: Q</li>
- * <li>God: G</li>
- * Ignores collisions with solid tiles and does not lose life.
+ * <li>Test Mode: T</li>
+ * Ignores collisions with solid tiles, does not lose life and can see in the dark.
  * <li>Hitbox: H</li>
  * </ul>
  */
@@ -30,7 +29,7 @@ public class Keyboard extends KeyAdapter {
 
     private final Game game;
 
-    public boolean enter, esc, w, a, s, d, shoot, pickup, minimap, debug, god, hitbox;
+    public boolean enter, esc, w, a, s, d, shoot, pickup, minimap, debug, test, hitbox;
     private int lastKey = -1;
     private final int maxKeycode = 255;
 
@@ -149,7 +148,7 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_P) pickup = true;
         if (code == KeyEvent.VK_Q) debug = !debug;
         if (code == KeyEvent.VK_H) hitbox = !hitbox;
-        if (code == KeyEvent.VK_G) god = !god;
+        if (code == KeyEvent.VK_T) test = !test;
         if (code == KeyEvent.VK_C) game.state = STATS_STATE;
         if (code == KeyEvent.VK_I) game.state = INVENTORY_STATE;
         if (code == KeyEvent.VK_ESCAPE) game.state = OPTION_STATE;

@@ -37,7 +37,15 @@ public class GameState implements State {
         minimap.render(g2);
         ui.render(g2);
 
-        // Debug mode
+        if (game.keyboard.test) {
+            g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 17));
+            String text = "Test Mode";
+            int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
+            int x = WINDOW_WIDTH / 2 - textLength / 2;
+            int y = 25;
+            g2.drawString(text, x, y);
+        }
+
         if (game.keyboard.debug) {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 8));
             int x = 8, y = (int) (WINDOW_HEIGHT - tile * 2.8), gap = 15;

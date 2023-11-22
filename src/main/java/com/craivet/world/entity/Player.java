@@ -218,7 +218,7 @@ public class Player extends Mob {
     }
 
     private void checkStats() {
-        if (!game.keyboard.god) if (stats.hp <= 0) die();
+        if (!game.keyboard.test) if (stats.hp <= 0) die();
         if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
         if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
     }
@@ -397,7 +397,7 @@ public class Player extends Mob {
     @Override
     public void checkCollisions() {
         flags.colliding = false;
-        if (!game.keyboard.god) game.collision.checkTile(this);
+        if (!game.keyboard.test) game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.mobs));
         hurt(game.collision.checkEntity(this, world.mobs));

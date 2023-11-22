@@ -18,7 +18,7 @@ public class Chicken extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         type = Type.CONSUMABLE;
         stats.name = NAME;
-        description = "[" + stats.name + "]\nSkeleton's favorite \nfood.";
+        description = "[" + stats.name + "]\nYes...\nSkeleton's treasure.";
         price = 1;
         sheet.frame = Utils.scaleImage(chicken, tile, tile);
     }
