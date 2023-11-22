@@ -39,6 +39,7 @@ public class Position {
          * occupies two vertical tiles. Finally, a pixel is subtracted in case the position is above a solid tile to
          * prevent it from "locking". */
         y = (row * tile) - entity.hitbox.height - 1;
+        entity.direction = dir;
         switch (dir) {
             case DOWN -> entity.currentFrame = entity.down.getFirstFrame();
             case UP -> entity.currentFrame = entity.up.getFirstFrame();

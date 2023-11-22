@@ -497,8 +497,8 @@ public class Player extends Mob {
      */
     public void reset(boolean fullReset) {
         pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 21, Direction.DOWN);
-        currentFrame = down.getFirstFrame();
         stats.reset(fullReset);
+        timer.reset();
         flags.reset();
         if (fullReset) inventory.init();
     }
