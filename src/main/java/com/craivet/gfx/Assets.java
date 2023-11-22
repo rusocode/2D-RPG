@@ -24,9 +24,9 @@ public final class Assets {
     // AUDIO (ambient, music and sounds)
     // Ambient
     public static final URL ambient_dungeon = Utils.loadAudio("audio/ambient/dungeon.wav");
+    public static final URL ambient_overworld = Utils.loadAudio("audio/ambient/overworld.wav");
     // Music
     public static final URL music_main = Utils.loadAudio("audio/music/main.wav");
-    public static final URL music_overworld = Utils.loadAudio("audio/music/overworld.wav");
     public static final URL music_boss = Utils.loadAudio("audio/music/boss.wav");
     // Sounds
     public static final URL sound_burst_of_fire = Utils.loadAudio(sounds_path + "burst_of_fire.wav");

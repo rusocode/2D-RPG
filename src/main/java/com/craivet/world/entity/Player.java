@@ -105,11 +105,10 @@ public class Player extends Mob {
         up = new Animation(animationSpeed, sheet.up);
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
-        currentFrame = down.getFirstFrame();
 
         inventory.init();
 
-        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 21, Direction.DOWN);
+        pos.set(world, this, DUNGEON_BREG_SUB, BOSS, 25, 35, Direction.DOWN);
     }
 
     public void hit() {

@@ -128,7 +128,7 @@ public class SpriteSheet {
             }
         }
 
-        frame = down[0];
+        frame = up[0];
 
     }
 

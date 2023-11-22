@@ -46,9 +46,9 @@ public class CutsceneManager {
             for (int i = 0; i < world.mobs[1].length; i++) {
                 if (world.mobs[world.map][i] == null) {
                     world.mobs[world.map][i] = new PlayerDummy(game, world);
+                    world.mobs[world.map][i].direction = world.player.direction;
                     world.mobs[world.map][i].pos.x = world.player.pos.x;
                     world.mobs[world.map][i].pos.y = world.player.pos.y;
-                    world.mobs[world.map][i].direction = world.player.direction; // TODO No funciona!
                     break;
                 }
             }

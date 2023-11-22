@@ -1,6 +1,7 @@
 package com.craivet.world.entity;
 
 import com.craivet.Game;
+import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
 

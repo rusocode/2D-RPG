@@ -118,7 +118,7 @@ public class World {
         if (nextZone != zone) {
             if (nextZone == BOSS) game.playMusic(music_boss);
             if (nextZone == DUNGEON) game.playMusic(ambient_dungeon);
-            if (zone == DUNGEON && nextZone == OVERWORLD) game.playMusic(music_overworld);
+            if (zone == DUNGEON && nextZone == OVERWORLD) game.playMusic(ambient_overworld);
         }
         zone = nextZone;
         createMobs();

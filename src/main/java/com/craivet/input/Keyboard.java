@@ -106,7 +106,7 @@ public class Keyboard extends KeyAdapter {
                     game.state = PLAY_STATE;
                     game.playSound(sound_spawn);
                     switch (game.world.zone) {
-                        case OVERWORLD -> game.playMusic(music_overworld);
+                        case OVERWORLD -> game.playMusic(ambient_overworld);
                         case DUNGEON -> game.playMusic(ambient_dungeon);
                         case BOSS -> game.playMusic(music_boss);
                     }
@@ -115,7 +115,7 @@ public class Keyboard extends KeyAdapter {
                     game.file.loadData();
                     game.state = PLAY_STATE;
                     game.playSound(sound_spawn);
-                    game.playMusic(music_overworld);
+                    game.playMusic(ambient_overworld);
                 }
                 if (game.ui.command == 2) System.exit(0);
             }

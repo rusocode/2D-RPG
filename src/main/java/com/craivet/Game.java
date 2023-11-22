@@ -180,7 +180,7 @@ public class Game extends Canvas implements Runnable {
         world.createMobs();
         world.removeTempEntities();
         world.bossBattleOn = false;
-        playMusic(music_overworld);
+        playMusic(ambient_overworld);
         if (fullReset) {
             playMusic(music_main);
             world.createItems();
