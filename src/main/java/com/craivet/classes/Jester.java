@@ -3,24 +3,24 @@ package com.craivet.classes;
 import com.craivet.utils.Utils;
 
 /**
- * En los confines de la majestuosa corte medieval, donde la realeza y los nobles se codean con intrigas y secretos, el
- * bufon es una figura singular. Vestido con harapos multicolores, su apariencia extravagante y su rostro pintado con
- * una sonrisa perpetua ocultan su verdadera naturaleza. Es un personaje que persigue la ilusion de ser gracioso
- * mientras carga con el peso de la repulsion.
+ * In the confines of the majestic medieval court, where royalty and nobles rub shoulders with intrigue and secrets, the jester is
+ * a unique figure. Dressed in multicolored rags, his extravagant appearance and his face painted with
+ * A perpetual smile hides his true nature. He is a character who pursues the illusion of being funny
+ * while he carries the weight of repulsion.
  * <p>
- * Este personaje bufonesco es conocido por su capacidad para encajar bien en cualquier situacion, aunque su humor a
- * menudo cae en el lado torpe y grotesco. La risa que provoca es mas bien una risa incomoda, donde los nobles rien no
- * por su ingenio, sino por la extraña y a menudo incomprensible serie de acrobacias y chistes que realiza.
+ * This buffoonish character is known for his ability to fit well into any situation, although his humor sometimes
+ * often falls on the clumsy and grotesque side. The laughter he provokes is rather an uncomfortable laugh, where the nobles laugh not
+ * not because of his wit, but because of the strange and often incomprehensible series of stunts and jokes that he performs.
  * <p>
- * El bufon se encuentra siempre cerca de los nobles y reyes, su presencia es obligada en los banquetes y festividades.
- * Pero detras de sus payasadas y suspirantes intentos de complacer a la corte, yace un astuto observador de la politica
- * palaciega. No desperdicia las oportunidades que la vida en la corte medieval le ofrece, y su lengua afilada puede ser
- * una fuente inesperada de informacion para aquellos que esten dispuestos a escuchar mas alla de sus chistes.
+ * The jester is always close to the nobles and kings, his presence is obligatory at banquets and festivities.
+ * But behind his antics and whining attempts to please the court, he lies an astute observer of politics.
+ * palatial. He does not waste the opportunities that life at the medieval court offers him, and his sharp tongue can be
+ * An unexpected source of information for those willing to listen beyond his jokes.
  * <p>
- * Sin embargo, su falta de filtro y su desprecio por las consecuencias pueden llevar a situaciones complicadas. Sus
- * bromas a menudo rozan la irreverencia y el sarcasmo, poniendo en peligro su posicion y, a veces, su vida. Pero el
- * bufon sigue adelante, con su sonrisa pintada y su bufonesca sabiduria, un enigma en la corte medieval que nunca se
- * resuelve por completo.
+ * However, his lack of filter and disregard for consequences can lead to sticky situations. Their
+ * His jokes often border on irreverence and sarcasm, endangering his position and, sometimes, his life. But
+ * jester continues forward, with his painted smile and his clownish wisdom, an enigma in the medieval court that never was
+ * resolves completely.
  */
 
 public class Jester extends Character {

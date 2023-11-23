@@ -27,7 +27,7 @@ public class Box extends Mob {
         type = Type.NPC;
         stats.name = NAME;
         stats.speed = 1;
-        hitbox = new Rectangle(0, 1, tile, tile - 2);
+        hitbox = new Rectangle(1, 1, tile - 2, tile - 2);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogue.set = -1;
