@@ -35,15 +35,15 @@ public class Projectile extends Entity {
 
         // If the player shooting a projectile
         if (entity instanceof Player) {
-            int mobIndex = game.collision.checkEntity(this, world.mobs);
+            int mobIndex = game.collision.checkEntity(this, world.entities.mobs);
             if (mobIndex != -1) {
-                Mob mob = world.mobs[world.map][mobIndex];
+                Mob mob = world.entities.mobs[world.map.num][mobIndex];
                 /* When the projectile collides with a mob, set the colliding state to true. Therefore, when the projectilew
                  * is redrawn, it will remain in motion frame 1 since in the ternary operator, the condition remains true
                  * and never changes to false in order to display motion frame 2. The following line solves this problem. */
                 flags.colliding = false;
                 if (!mob.flags.invincible && mob.type != Type.NPC) {
-                    world.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
+                    world.entities.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
                     // In this case, the particle generator is the fireball when the player throws it against a mob
                     generateParticle(entity.projectile, mob);
                     flags.alive = false;
@@ -54,9 +54,9 @@ public class Projectile extends Entity {
         // If the mob shooting a projectile
         if (!(entity instanceof Player)) {
             boolean contact = game.collision.checkPlayer(this);
-            if (contact && !world.player.flags.invincible) {
+            if (contact && !world.entities.player.flags.invincible) {
                 hitPlayer(true, stats.attack);
-                generateParticle(entity.projectile, world.player);
+                generateParticle(entity.projectile, world.entities.player);
                 flags.alive = false;
             }
         }

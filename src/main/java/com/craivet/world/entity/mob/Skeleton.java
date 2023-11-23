@@ -49,7 +49,7 @@ public class Skeleton extends Mob {
     public void doActions() {
         // TODO Make it follow the player when the Skeleton is stuck on a tile
         // If the distance of the player with respect to the mob is less than 10 tiles
-        if (getTileDistance(game.world.player) < 10) moveTowardPlayer(game.world.player, 30);
+        if (getTileDistance(game.world.entities.player) < 10) moveTowardPlayer(game.world.entities.player, 30);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
         if (!flags.hitting) isPlayerWithinAttackRange(60, tile * 6, tile * 4, 60);
     }
@@ -72,9 +72,9 @@ public class Skeleton extends Mob {
         Progress.bossDefeated = true;
 
         // Remove the iron doors
-        for (int i = 0; i < world.items[1].length; i++)
-            if (world.items[world.map][i] != null && world.items[world.map][i].stats.name.equals(DoorIron.NAME))
-                world.items[world.map][i] = null;
+        for (int i = 0; i < world.entities.items[1].length; i++)
+            if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(DoorIron.NAME))
+                world.entities.items[world.map.num][i] = null;
 
     }
 

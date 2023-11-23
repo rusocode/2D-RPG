@@ -148,10 +148,10 @@ public abstract class Entity {
      * @param target    target where the particles will be generated.
      */
     protected void generateParticle(Entity generator, Entity target) {
-        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
-        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
-        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
-        world.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
+        world.entities.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+        world.entities.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+        world.entities.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+        world.entities.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
     }
 
     /**
@@ -203,12 +203,12 @@ public abstract class Entity {
      * @param item   object that drops the entity.
      */
     protected void drop(Entity entity, Item item) {
-        for (int i = 0; i < world.items[1].length; i++) {
-            if (world.items[world.map][i] == null) {
-                world.items[world.map][i] = item;
-                world.items[world.map][i].pos.x = pos.x + (sheet.frame.getWidth() / 2 - item.sheet.frame.getWidth() / 2);
+        for (int i = 0; i < world.entities.items[1].length; i++) {
+            if (world.entities.items[world.map.num][i] == null) {
+                world.entities.items[world.map.num][i] = item;
+                world.entities.items[world.map.num][i].pos.x = pos.x + (sheet.frame.getWidth() / 2 - item.sheet.frame.getWidth() / 2);
                 // Add half of the hitbox of just the mobs to the position and the item
-                world.items[world.map][i].pos.y = pos.y + (sheet.frame.getHeight() / 2 + (entity instanceof Mob ? hitbox.height / 2 : 0) - item.sheet.frame.getHeight() / 2);
+                world.entities.items[world.map.num][i].pos.y = pos.y + (sheet.frame.getHeight() / 2 + (entity instanceof Mob ? hitbox.height / 2 : 0) - item.sheet.frame.getHeight() / 2);
                 break;
             }
         }
@@ -222,12 +222,12 @@ public abstract class Entity {
      */
     public void hitPlayer(boolean contact, int attack) {
         // If the entity is hostile and makes contact with the player who is not invincible
-        if (type == Type.HOSTILE && contact && !world.player.flags.invincible) {
+        if (type == Type.HOSTILE && contact && !world.entities.player.flags.invincible) {
             game.playSound(sound_player_damage);
             // Subtract the player's defense from the mob's attack to calculate fair damage
-            int damage = Math.max(attack - world.player.stats.defense, 1);
-            world.player.stats.decreaseHp(damage);
-            world.player.flags.invincible = true;
+            int damage = Math.max(attack - world.entities.player.stats.defense, 1);
+            world.entities.player.stats.decreaseHp(damage);
+            world.entities.player.flags.invincible = true;
         }
     }
 
@@ -238,8 +238,8 @@ public abstract class Entity {
         flags.colliding = false;
         game.collision.checkTile(this);
         game.collision.checkItem(this);
-        game.collision.checkEntity(this, world.mobs);
-        game.collision.checkEntity(this, world.interactives);
+        game.collision.checkEntity(this, world.entities.mobs);
+        game.collision.checkEntity(this, world.entities.interactives);
         hitPlayer(game.collision.checkPlayer(this), stats.attack);
     }
 
@@ -256,18 +256,18 @@ public abstract class Entity {
          * (or the center?) is a lot with respect to the view of the player on the screen. Therefore, this vision is
          * increased by multiplying the bossArea. */
         int bossArea = 5;
-        return pos.x + tile * bossArea > world.player.pos.x - world.player.screen.xOffset &&
-                pos.x - tile < world.player.pos.x + world.player.screen.xOffset &&
-                pos.y + tile * bossArea > world.player.pos.y - world.player.screen.yOffset &&
-                pos.y - tile < world.player.pos.y + world.player.screen.yOffset;
+        return pos.x + tile * bossArea > world.entities.player.pos.x - world.entities.player.screen.xOffset &&
+                pos.x - tile < world.entities.player.pos.x + world.entities.player.screen.xOffset &&
+                pos.y + tile * bossArea > world.entities.player.pos.y - world.entities.player.screen.yOffset &&
+                pos.y - tile < world.entities.player.pos.y + world.entities.player.screen.yOffset;
     }
 
     public int getScreenX() {
-        return pos.x - world.player.pos.x + world.player.screen.xOffset;
+        return pos.x - world.entities.player.pos.x + world.entities.player.screen.xOffset;
     }
 
     public int getScreenY() {
-        return pos.y - world.player.pos.y + world.player.screen.yOffset;
+        return pos.y - world.entities.player.pos.y + world.entities.player.screen.yOffset;
     }
 
     /**

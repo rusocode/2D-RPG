@@ -34,10 +34,10 @@ public class Key extends Item {
     @Override
     public boolean use(Entity entity) {
         // If the entity detects a door, then it can use the key
-        int i = detect(entity, world.items, Door.NAME);
+        int i = detect(entity, world.entities.items, Door.NAME);
         if (i != -1) {
             game.playSound(sound_door_opening);
-            world.items[world.map][i] = null;
+            world.entities.items[world.map.num][i] = null;
             return true;
         }
         return false;

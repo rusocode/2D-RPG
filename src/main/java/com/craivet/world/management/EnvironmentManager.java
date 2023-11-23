@@ -23,6 +23,6 @@ public class EnvironmentManager implements State {
 
     @Override
     public void render(Graphics2D g2) {
-        if (!world.player.game.keyboard.test) lighting.render(g2);
+        if (!world.entities.player.game.keyboard.test) lighting.render(g2);
     }
 }

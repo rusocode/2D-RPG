@@ -31,8 +31,8 @@ public class TileManager implements State {
 
         // TODO It could be calculated from a Camera class
         // Calculate the offsets
-        int xOffset = world.player.pos.x - world.player.screen.xOffset;
-        int yOffset = world.player.pos.y - world.player.screen.yOffset;
+        int xOffset = world.entities.player.pos.x - world.entities.player.screen.xOffset;
+        int yOffset = world.entities.player.pos.y - world.entities.player.screen.yOffset;
 
         // Calculates the tiles that are within the camera view
         int yStart = Math.max(0, yOffset / tile);
@@ -42,8 +42,8 @@ public class TileManager implements State {
 
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
-                final int tileIndex = world.tileIndex[world.map][y][x];
-                final BufferedImage tileImage = world.tileData[tileIndex].texture;
+                final int tileIndex = world.map.tileIndex[world.map.num][y][x];
+                final BufferedImage tileImage = world.map.tileData[tileIndex].texture;
                 g2.drawImage(tileImage, x * tile - xOffset, y * tile - yOffset, null);
                 // g2.setStroke(new BasicStroke(0)); // Anula el grosor del borde para mantenerlo
                 // g2.drawRect(x * tile - xOffset, y * tile - yOffset, tile, tile); // Dibuja una grilla

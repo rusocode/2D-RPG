@@ -144,30 +144,30 @@ public class AStar {
         // Set solid nodes by checking solid tiles and destructible interactive tiles
         for (int row = 0; row < MAX_MAP_ROW; row++) {
             for (int col = 0; col < MAX_MAP_COL; col++) {
-                int tileIndex = world.tileIndex[world.map][row][col];
-                if (world.tileData[tileIndex].solid) node[row][col].solid = true;
+                int tileIndex = world.map.tileIndex[world.map.num][row][col];
+                if (world.map.tileData[tileIndex].solid) node[row][col].solid = true;
 
-                for (int i = 0; i < world.interactives[1].length; i++) {
-                    if (world.interactives[world.map][i] != null && world.interactives[world.map][i].destructible) {
-                        int itRow = world.interactives[world.map][i].pos.y / tile; // TODO The hitbox needs to be added
-                        int itCol = world.interactives[world.map][i].pos.x / tile;
+                for (int i = 0; i < world.entities.interactives[1].length; i++) {
+                    if (world.entities.interactives[world.map.num][i] != null && world.entities.interactives[world.map.num][i].destructible) {
+                        int itRow = world.entities.interactives[world.map.num][i].pos.y / tile; // TODO The hitbox needs to be added
+                        int itCol = world.entities.interactives[world.map.num][i].pos.x / tile;
                         node[itRow][itCol].solid = true;
                     }
                 }
 
                 // It works fine, but when the entity is in a closed position (not literally) of interactive tiles, it gets stuck
-                for (int i = 0; i < world.items[1].length; i++) {
-                    if (world.items[world.map][i] != null && world.items[world.map][i].solid) {
-                        int itRow = (world.items[world.map][i].pos.y + world.items[world.map][i].hitbox.y) / tile;
-                        int itCol = (world.items[world.map][i].pos.x + world.items[world.map][i].hitbox.x) / tile;
+                for (int i = 0; i < world.entities.items[1].length; i++) {
+                    if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].solid) {
+                        int itRow = (world.entities.items[world.map.num][i].pos.y + world.entities.items[world.map.num][i].hitbox.y) / tile;
+                        int itCol = (world.entities.items[world.map.num][i].pos.x + world.entities.items[world.map.num][i].hitbox.x) / tile;
                         node[itRow][itCol].solid = true;
                     }
                 }
 
-                for (int i = 0; i < world.mobs[1].length; i++) {
-                    if (world.mobs[world.map][i] != null) {
-                        int itRow = (world.mobs[world.map][i].pos.y + world.mobs[world.map][i].hitbox.y) / tile;
-                        int itCol = (world.mobs[world.map][i].pos.x + world.mobs[world.map][i].hitbox.x) / tile;
+                for (int i = 0; i < world.entities.mobs[1].length; i++) {
+                    if (world.entities.mobs[world.map.num][i] != null) {
+                        int itRow = (world.entities.mobs[world.map.num][i].pos.y + world.entities.mobs[world.map.num][i].hitbox.y) / tile;
+                        int itCol = (world.entities.mobs[world.map.num][i].pos.x + world.entities.mobs[world.map.num][i].hitbox.x) / tile;
                         node[itRow][itCol].solid = true;
                     }
                 }

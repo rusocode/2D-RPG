@@ -37,12 +37,12 @@ public class Lighting {
         darknessFilter = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
-        if (world.player.light == null) g2.setColor(new Color(0, 0, 0, 0.90f));
+        if (world.entities.player.light == null) g2.setColor(new Color(0, 0, 0, 0.90f));
         else { // If the player selected the latern
 
             // Gets the center of the player
-            int centerX = world.player.screen.xOffset + (tile / 2);
-            int centerY = world.player.screen.yOffset + (tile / 2);
+            int centerX = world.entities.player.screen.xOffset + (tile / 2);
+            int centerY = world.entities.player.screen.yOffset + (tile / 2);
 
             // Create a gradation effect for the light circle
             Color[] color = new Color[12];
@@ -75,7 +75,7 @@ public class Lighting {
             color[11] = new Color(0, 0, 0, 0.90f);
 
             // Create the gradation effect using the player position, radius, fraction and color data
-            RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, ((float) world.player.light.lightRadius / 2), fraction, color);
+            RadialGradientPaint gPaint = new RadialGradientPaint(centerX, centerY, ((float) world.entities.player.light.lightRadius / 2), fraction, color);
 
             // Set the gradation data to g2
             g2.setPaint(gPaint);
@@ -88,9 +88,9 @@ public class Lighting {
     public void update() {
         /* Updates the item's lighting only when the player selects the specified item, preventing the illuminate()
          * method from being called 60 times per second, affecting game performance. */
-        if (world.player.lightUpdate) {
+        if (world.entities.player.lightUpdate) {
             illuminate();
-            world.player.lightUpdate = false;
+            world.entities.player.lightUpdate = false;
         }
 
         // cycleDay();
@@ -106,8 +106,8 @@ public class Lighting {
      * time.
      */
     public void render(Graphics2D g2) {
-        if (world.zone == OVERWORLD) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
-        if (world.zone == OVERWORLD || world.zone == DUNGEON || world.zone == BOSS) g2.drawImage(darknessFilter, 0, 0, null);
+        if (world.map.zone == OVERWORLD) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
+        if (world.map.zone == OVERWORLD || world.map.zone == DUNGEON || world.map.zone == BOSS) g2.drawImage(darknessFilter, 0, 0, null);
         g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         // debug(g2);
     }

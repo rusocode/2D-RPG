@@ -54,8 +54,8 @@ public class Particle extends Entity {
     }
 
     public void render(Graphics2D g2) {
-        int screenX = pos.x - world.player.pos.x + world.player.screen.xOffset;
-        int screenY = pos.y - world.player.pos.y + world.player.screen.yOffset;
+        int screenX = pos.x - world.entities.player.pos.x + world.entities.player.screen.xOffset;
+        int screenY = pos.y - world.entities.player.pos.y + world.entities.player.screen.yOffset;
         g2.setColor(color);
         g2.fillRect(screenX, screenY, size, size); // Draw a rectangle as a particle
     }

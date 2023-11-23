@@ -31,8 +31,8 @@ public class Position {
      * TODO Prevent the entity from appearing on a solid entity, solid tile or outside the map boundaries.
      */
     public void set(World world, Entity entity, int map, int zone, int col, int row, Direction dir) {
-        world.map = map;
-        world.zone = zone;
+        world.map.num = map;
+        world.map.zone = zone;
         // Add half the width of the hitbox and subtract one pixel to center the horizontal position within the tile
         x = (col * tile) + entity.hitbox.width / 2 - 1;
         /* Subtracts the height of the hitbox so that the position fits in the specified row, since the player image

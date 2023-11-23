@@ -54,11 +54,11 @@ public class BurstOfFire extends Projectile {
         // El hechizo deja de vivir (alive = false) cuando colisiona con un mob o cuando llega al ultimo frame
 
         if (entity instanceof Player) { // TODO No creo que haga falta comprobar si el que lanza el hechizo es el player ya que es el unico que lo puede lanzar (por ahora)
-            int mobIndex = game.collision.checkEntity(this, world.mobs);
+            int mobIndex = game.collision.checkEntity(this, world.entities.mobs);
             if (mobIndex != -1) {
-                Mob mob = world.mobs[world.map][mobIndex];
+                Mob mob = world.entities.mobs[world.map.num][mobIndex];
                 if (!mob.flags.invincible && mob.type != Type.NPC) {
-                    world.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
+                    world.entities.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
                     generateParticle(entity.projectile, mob);
                     flags.alive = false;
                     resetFrames(0);

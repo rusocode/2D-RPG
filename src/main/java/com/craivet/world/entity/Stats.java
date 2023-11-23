@@ -2,8 +2,6 @@ package com.craivet.world.entity;
 
 /**
  * Stats of the entities.
- *
- * @author Juan Debenedetti
  */
 
 public class Stats {

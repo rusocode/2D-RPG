@@ -1,80 +1,101 @@
 package com.craivet.world.management;
 
+import com.craivet.Game;
+import com.craivet.world.Setter;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.states.State;
+import com.craivet.world.entity.Player;
+import com.craivet.world.entity.item.Item;
+import com.craivet.world.entity.mob.Mob;
+import com.craivet.world.entity.projectile.Projectile;
+import com.craivet.world.tile.Interactive;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import static com.craivet.utils.Global.MAPS;
+
 public class EntityManager implements State {
 
     private final World world;
 
-    private final List<Entity> entities = new ArrayList<>();
-    private final List<Entity> items = new ArrayList<>();
-    private final List<Entity> projectiles = new ArrayList<>();
+    public Setter setter;
 
-    public EntityManager(World world) {
+    public Player player;
+    public List<Entity> particles = new ArrayList<>();
+    // TODO Shouldn't they be declared as HashMap or ArrayList?
+    public Item[][] items = new Item[MAPS][20];
+    public Mob[][] mobs = new Mob[MAPS][40];
+    public Interactive[][] interactives = new Interactive[MAPS][50];
+    public Projectile[][] projectiles = new Projectile[MAPS][20];
+
+    private final List<Entity> entities = new ArrayList<>();
+    private final List<Entity> itemsList = new ArrayList<>();
+    private final List<Entity> projectilesList = new ArrayList<>();
+
+    public EntityManager(Game game, World world) {
         this.world = world;
+        player = new Player(game, world);
+        setter = new Setter(game, world, items, mobs, interactives);
     }
 
     @Override
     public void update() {
-        world.player.update();
-        for (int i = 0; i < world.mobs[1].length; i++) {
-            if (world.mobs[world.map][i] != null) {
+        player.update();
+        for (int i = 0; i < mobs[1].length; i++) {
+            if (mobs[world.map.num][i] != null) {
                 /* When the mob dies, first set the dead state to true preventing it from moving further. Then generate
                  * the death animation and when finished, set alive to false so that it does not generate movement and
                  * eliminates the object. */
-                if (world.mobs[world.map][i].flags.alive && !world.mobs[world.map][i].flags.dead)
-                    world.mobs[world.map][i].update();
-                if (!world.mobs[world.map][i].flags.alive) {
-                    world.mobs[world.map][i].checkDrop();
-                    world.mobs[world.map][i] = null;
+                if (mobs[world.map.num][i].flags.alive && !mobs[world.map.num][i].flags.dead)
+                    mobs[world.map.num][i].update();
+                if (!mobs[world.map.num][i].flags.alive) {
+                    mobs[world.map.num][i].checkDrop();
+                    mobs[world.map.num][i] = null;
                 }
             }
         }
-        for (int i = 0; i < world.projectiles[1].length; i++) {
-            if (world.projectiles[world.map][i] != null) {
-                if (world.projectiles[world.map][i].flags.alive) world.projectiles[world.map][i].update();
-                else world.projectiles[world.map][i] = null;
+        for (int i = 0; i < projectiles[1].length; i++) {
+            if (projectiles[world.map.num][i] != null) {
+                if (projectiles[world.map.num][i].flags.alive) projectiles[world.map.num][i].update();
+                else projectiles[world.map.num][i] = null;
             }
         }
-        for (int i = 0; i < world.particles.size(); i++) {
-            if (world.particles.get(i) != null) {
-                if (world.particles.get(i).flags.alive) world.particles.get(i).update();
-                if (!world.particles.get(i).flags.alive) world.particles.remove(i);
+        for (int i = 0; i < particles.size(); i++) {
+            if (particles.get(i) != null) {
+                if (particles.get(i).flags.alive) particles.get(i).update();
+                if (!particles.get(i).flags.alive) particles.remove(i);
             }
         }
-        for (int i = 0; i < world.interactives[1].length; i++)
-            if (world.interactives[world.map][i] != null) world.interactives[world.map][i].update();
+        for (int i = 0; i < interactives[1].length; i++)
+            if (interactives[world.map.num][i] != null) interactives[world.map.num][i].update();
     }
 
     @Override
     public void render(Graphics2D g2) {
-        for (int i = 0; i < world.interactives[1].length; i++)
-            if (world.interactives[world.map][i] != null) world.interactives[world.map][i].render(g2);
+        for (int i = 0; i < interactives[1].length; i++)
+            if (interactives[world.map.num][i] != null) interactives[world.map.num][i].render(g2);
 
-        entities.add(world.player);
+        entities.add(player);
 
-        for (int i = 0; i < world.items[1].length; i++) {
-            if (world.items[world.map][i] != null) {
+        for (int i = 0; i < items[1].length; i++) {
+            if (items[world.map.num][i] != null) {
                 /* Adds the solid items (door, chest, etc.) to the list of entities to be able to sort them with respect
                  * to the position and the player. Items that are not solid are added to the item list. */
-                if (!world.items[world.map][i].solid) items.add(world.items[world.map][i]);
-                else entities.add(world.items[world.map][i]);
+                if (!items[world.map.num][i].solid) itemsList.add(items[world.map.num][i]);
+                else entities.add(items[world.map.num][i]);
             }
         }
 
-        for (int i = 0; i < world.mobs[1].length; i++)
-            if (world.mobs[world.map][i] != null) entities.add(world.mobs[world.map][i]);
+        for (int i = 0; i < mobs[1].length; i++)
+            if (mobs[world.map.num][i] != null) entities.add(mobs[world.map.num][i]);
 
-        for (int i = 0; i < world.projectiles[1].length; i++)
-            if (world.projectiles[world.map][i] != null) projectiles.add(world.projectiles[world.map][i]);
+        for (int i = 0; i < projectiles[1].length; i++)
+            if (projectiles[world.map.num][i] != null) projectilesList.add(projectiles[world.map.num][i]);
 
-        for (Entity particle : world.particles)
+        for (Entity particle : particles)
             if (particle != null) entities.add(particle);
 
         /* Sorts the list of entities depending on the position y. That is, if the player is above the mob, then it is
@@ -85,13 +106,19 @@ public class EntityManager implements State {
         entities.sort(Comparator.comparingInt(e -> e.pos.y + e.hitbox.y));
 
         // They are now drawn in ascending order
-        for (Entity item : items) item.render(g2);
+        for (Entity item : itemsList) item.render(g2);
         for (Entity entity : entities) entity.render(g2);
-        for (Entity projectile : projectiles) projectile.render(g2);
+        for (Entity projectile : projectilesList) projectile.render(g2);
 
-        items.clear();
-        projectiles.clear();
+        itemsList.clear();
+        projectilesList.clear();
         entities.clear();
+    }
+
+    public void removeTempEntities() {
+        for (int map = 0; map < MAPS; map++)
+            for (int i = 0; i < items[1].length; i++)
+                if (items[map][i] != null && items[map][i].temp) items[map][i] = null;
     }
 
 }

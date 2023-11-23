@@ -3,22 +3,21 @@ package com.craivet.classes;
 import com.craivet.utils.Utils;
 
 /**
- * En los oscuros callejones y rincones sombrios de la tierra medieval, el Ladron se desliza como una sombra misma. Este
- * habilidoso delincuente no es un mago, pero posee una habilidad que parece magica: puede desaparecer de tu vista antes
- * de que te des cuenta, dejandote con las manos vacias y sin haber notado su partida. La destreza y sigilo son sus
- * armas mas poderosas.
+ * In the dark alleys and shadowy corners of the medieval land, the Thief glides like a shadow itself. This skilled criminal is
+ * not a magician, but he possesses an ability that seems magical: he can disappear from your sight before you realize it, leaving
+ * you empty-handed and without having noticed his departure. Dexterity and stealth are his most powerful weapons.
  * <p>
- * Nunca confies en ellos, pues son maestros en el arte de la mentira y la engañosa cortesia. Pueden presentarse como
- * amigos y compañeros leales, ocultando sus verdaderas intenciones bajo una mascara de camaraderia. Sus palabras son
- * dulces como la miel, pero su corazon es tan oscuro como la noche en la que operan.
+ * Never trust them, because they are masters in the art of lies and deceptive courtesy. They may present themselves as loyal
+ * friends and companions, hiding their true intentions under a mask of camaraderie. Their words are sweet as honey, but their
+ * heart is as dark as the night in which they operate.
  * <p>
- * Cuerdas de seda para escalar muros, ganzuas para abrir cerraduras, y dagas afiladas como colmillos de serpiente,
- * suelen ser el equipo ideal del Ladron. Se deslizan silenciosamente por los techos y las sombras de los bosques,
- * acechando a sus presas con ojos avizores. Ninguna boveda es segura, ningún tesoro esta fuera de su alcance.
+ * Silk ropes for climbing walls, lockpicks for opening locks, and daggers sharp as snake fangs are usually the Thief's ideal
+ * equipment. They glide silently across the roofs and shadows of the forests, stalking their prey with keen eyes. No vault is
+ * safe, no treasure is out of reach.
  * <p>
- * Pero ten cuidado, pues si cruzas el camino de un Ladron, tu riqueza y posesiones pueden desvanecerse como el humo. En
- * un mundo medieval donde la traicion y el engaño estan a la orden del dia, el Ladron es un maestro en su oficio, un
- * enigma envuelto en sombras y misterio.
+ * But be careful, for if you cross the path of a Thief, your wealth and possessions may vanish like smoke. In a medieval world
+ * where betrayal and deception are the order of the day, the Thief is a master of his craft, an enigma shrouded in shadows and
+ * mystery.
  */
 
 public class Thief extends Character {

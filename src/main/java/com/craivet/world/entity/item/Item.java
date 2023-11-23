@@ -76,8 +76,8 @@ public class Item extends Entity {
 
         // If the iterated item is equal to the adjacent position of the entity
         for (int i = 0; i < items[1].length; i++) {
-            if (items[world.map][i] != null)
-                if (items[world.map][i].getRow() == row && items[world.map][i].getCol() == col && items[world.map][i].stats.name.equals(name))
+            if (items[world.map.num][i] != null)
+                if (items[world.map.num][i].getRow() == row && items[world.map.num][i].getCol() == col && items[world.map.num][i].stats.name.equals(name))
                     return i;
         }
 

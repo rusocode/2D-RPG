@@ -64,7 +64,7 @@ public class Mob extends Entity {
      * Look at the Player.
      */
     protected void lookPlayer() {
-        switch (world.player.direction) {
+        switch (world.entities.player.direction) {
             case DOWN -> direction = Direction.UP;
             case UP -> direction = Direction.DOWN;
             case LEFT -> direction = Direction.RIGHT;
@@ -82,7 +82,7 @@ public class Mob extends Entity {
      */
     protected void isPlayerWithinAttackRange(int interval, int vertical, int horizontal, int rate) {
         if (++timer.attackCounter > interval) {
-            if (getXDistance(world.player) < horizontal && getYDistance(world.player) < vertical && Utils.random(rate) == 1) {
+            if (getXDistance(world.entities.player) < horizontal && getYDistance(world.entities.player) < vertical && Utils.random(rate) == 1) {
                 flags.hitting = true;
                 timer.projectileCounter = 0;
                 timer.attackCounter = 0;
@@ -150,9 +150,9 @@ public class Mob extends Entity {
      */
     protected void moveTowardPlayer(Mob target, int interval) {
         if (++timer.directionCounter > interval) { // TODO o =?
-            if (getXDistance(game.world.player) > getYDistance(game.world.player))
+            if (getXDistance(game.world.entities.player) > getYDistance(game.world.entities.player))
                 direction = target.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
-            else if (getXDistance(game.world.player) < getYDistance(game.world.player))
+            else if (getXDistance(game.world.entities.player) < getYDistance(game.world.entities.player))
                 direction = target.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
             timer.directionCounter = 0;
         }

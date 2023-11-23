@@ -64,7 +64,7 @@ public class UI {
             }
             case DIALOGUE_STATE -> renderDialogueWindow();
             case STATS_STATE -> renderStatsWindow();
-            case INVENTORY_STATE -> renderPlayerInventoryWindow(world.player, true);
+            case INVENTORY_STATE -> renderPlayerInventoryWindow(world.entities.player, true);
             case OPTION_STATE -> renderOptionWindow();
             case GAME_OVER_STATE -> renderGameOverWindow();
             case TELEPORT_STATE -> renderTeleportEffect();
@@ -164,7 +164,7 @@ public class UI {
         int x = iconSize / 2, y = iconSize / 2, i = 0;
 
         // Draw the empty hearts
-        while (i < world.player.stats.maxHp / 2) {
+        while (i < world.entities.player.stats.maxHp / 2) {
             g2.drawImage(heartBlank, x, y, iconSize, iconSize, null);
             i++;
             x += iconSize;
@@ -175,10 +175,10 @@ public class UI {
         i = 0;
 
         // Draw the half and full hearts (current life) over the empty hearts from left to right while the player is alive
-        while (i < world.player.stats.hp) {
+        while (i < world.entities.player.stats.hp) {
             g2.drawImage(heartHalf, x, y, iconSize, iconSize, null); // Draw half a heart
             i++; // Increase the position of the next life value
-            if (i < world.player.stats.hp) { // If it still has life, draw the other part of the heart (that is, a full heart)
+            if (i < world.entities.player.stats.hp) { // If it still has life, draw the other part of the heart (that is, a full heart)
                 g2.drawImage(heartFull, x, y, iconSize, iconSize, null);
                 i++;
             }
@@ -189,7 +189,7 @@ public class UI {
         x = (iconSize / 2) - 4;
         y = (int) (iconSize * 1.5);
         i = 0;
-        while (i < world.player.stats.maxMana) {
+        while (i < world.entities.player.stats.maxMana) {
             g2.drawImage(manaBlank, x, y, iconSize, iconSize, null);
             i++;
             x += (iconSize / 2) + 1;
@@ -198,7 +198,7 @@ public class UI {
         // Draw the current mana
         x = (iconSize / 2) - 4;
         i = 0;
-        while (i < world.player.stats.mana) {
+        while (i < world.entities.player.stats.mana) {
             g2.drawImage(manaFull, x, y, iconSize, iconSize, null);
             i++;
             x += (iconSize / 2) + 1;
@@ -223,8 +223,8 @@ public class UI {
     }
 
     private void renderBossHpBar() {
-        for (int i = 0; i < world.mobs[1].length; i++) {
-            Mob mob = world.mobs[world.map][i];
+        for (int i = 0; i < world.entities.mobs[1].length; i++) {
+            Mob mob = world.entities.mobs[world.map.num][i];
             if (mob != null && mob.isOnCamera() && mob.flags.boss) {
                 double oneScale = (double) tile * 8 / mob.stats.maxHp;
                 double hpBarValue = oneScale * mob.stats.hp;
@@ -340,60 +340,60 @@ public class UI {
         textY = y + tile;
         String value;
 
-        value = String.valueOf(world.player.stats.lvl);
+        value = String.valueOf(world.entities.player.stats.lvl);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = world.player.stats.hp + "/" + world.player.stats.maxHp;
+        value = world.entities.player.stats.hp + "/" + world.entities.player.stats.maxHp;
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = world.player.stats.mana + "/" + world.player.stats.maxMana;
+        value = world.entities.player.stats.mana + "/" + world.entities.player.stats.maxMana;
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.stats.strength);
+        value = String.valueOf(world.entities.player.stats.strength);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.stats.dexterity);
+        value = String.valueOf(world.entities.player.stats.dexterity);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.stats.attack);
+        value = String.valueOf(world.entities.player.stats.attack);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.stats.defense);
+        value = String.valueOf(world.entities.player.stats.defense);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.stats.exp);
+        value = String.valueOf(world.entities.player.stats.exp);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.stats.nextLvlExp);
+        value = String.valueOf(world.entities.player.stats.nextLvlExp);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.player.stats.gold);
+        value = String.valueOf(world.entities.player.stats.gold);
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        g2.drawImage(world.player.weapon.sheet.frame, tailX - 35, textY - 5, null);
+        g2.drawImage(world.entities.player.weapon.sheet.frame, tailX - 35, textY - 5, null);
         textY += gap;
 
-        g2.drawImage(world.player.shield.sheet.frame, tailX - 35, textY + 5, null);
+        g2.drawImage(world.entities.player.shield.sheet.frame, tailX - 35, textY + 5, null);
 
     }
 
@@ -404,8 +404,8 @@ public class UI {
         width = (int) (tile * 6.5);
         height = tile * 5;
         x = (int) ((WINDOW_WIDTH / 2 - width / 2) + tile * 4.5);
-        slotCol = world.player.inventory.playerSlotCol;
-        slotRow = world.player.inventory.playerSlotRow;
+        slotCol = world.entities.player.inventory.playerSlotCol;
+        slotRow = world.entities.player.inventory.playerSlotRow;
         y = tile - 15;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
@@ -463,7 +463,7 @@ public class UI {
             // Draw the description
             int textX = x + 20;
             int textY = dFrameY + tile + 5;
-            int itemIndex = world.player.inventory.getSlot(slotCol, slotRow);
+            int itemIndex = world.entities.player.inventory.getSlot(slotCol, slotRow);
             if (itemIndex < player.inventory.size()) {
                 renderSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
                 changeFontSize(14);
@@ -483,8 +483,8 @@ public class UI {
         width = (int) (tile * 6.5);
         height = tile * 5;
         x = (int) ((WINDOW_WIDTH / 2 - width / 2) - tile * 4.5);
-        slotCol = world.player.inventory.npcSlotCol;
-        slotRow = world.player.inventory.npcSlotRow;
+        slotCol = world.entities.player.inventory.npcSlotCol;
+        slotRow = world.entities.player.inventory.npcSlotRow;
         y = tile - 15;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
 
@@ -496,7 +496,7 @@ public class UI {
 
         for (int i = 0; i < entity.inventory.size(); i++) {
 
-            if (entity.inventory.get(i) == world.player.weapon || entity.inventory.get(i) == world.player.shield || entity.inventory.get(i) == world.player.light) {
+            if (entity.inventory.get(i) == world.entities.player.weapon || entity.inventory.get(i) == world.entities.player.shield || entity.inventory.get(i) == world.entities.player.light) {
                 g2.setColor(new Color(240, 190, 90));
                 g2.fillRect(slotX, slotY, tile, tile);
             }
@@ -533,7 +533,7 @@ public class UI {
 
         int textX = x + 20;
         int textY = dFrameY + tile + 5;
-        int itemIndex = world.player.inventory.getSlot(slotCol, slotRow);
+        int itemIndex = world.entities.player.inventory.getSlot(slotCol, slotRow);
         if (itemIndex < entity.inventory.size()) {
             renderSubwindow(x, dFrameY, width, dFrameHeight, SUBWINDOW_ALPHA);
             changeFontSize(14);
@@ -784,12 +784,12 @@ public class UI {
         if (counter >= INTERVAL_TELEPORT) {
             counter = 0;
             game.state = PLAY_STATE;
-            world.map = game.event.map;
-            world.player.pos.x = (game.event.col * tile) + world.player.hitbox.width / 2;
-            world.player.pos.y = (game.event.row * tile) - world.player.hitbox.height;
-            game.event.previousEventX = world.player.pos.x;
-            game.event.previousEventY = world.player.pos.y;
-            world.changeArea();
+            world.map.num = game.event.mapNum;
+            world.entities.player.pos.x = (game.event.col * tile) + world.entities.player.hitbox.width / 2;
+            world.entities.player.pos.y = (game.event.row * tile) - world.entities.player.hitbox.height;
+            game.event.previousEventX = world.entities.player.pos.x;
+            game.event.previousEventY = world.entities.player.pos.y;
+            world.map.changeArea();
         }
     }
 
@@ -826,11 +826,11 @@ public class UI {
         int x, y, width, height;
 
         // Depending on the type of entity, it renders the inventory on the right side (player) or left side (npc)
-        renderPlayerInventoryWindow(world.player, false);
+        renderPlayerInventoryWindow(world.entities.player, false);
         renderTraderInventoryWindow(entity);
 
         // Price window
-        int itemIndex = world.player.inventory.getSlot(world.player.inventory.npcSlotCol, world.player.inventory.npcSlotRow);
+        int itemIndex = world.entities.player.inventory.getSlot(world.entities.player.inventory.npcSlotCol, world.entities.player.inventory.npcSlotRow);
         if (itemIndex < entity.inventory.size()) {
             x = tile * 5;
             y = tile * 5;
@@ -847,13 +847,13 @@ public class UI {
 
             // Buy an item
             if (game.keyboard.enter) {
-                if (entity.inventory.get(itemIndex).price > world.player.stats.gold)
+                if (entity.inventory.get(itemIndex).price > world.entities.player.stats.gold)
                     addMessageToConsole("You need more gold to buy that!");
                 else {
                     // TODO
-                    if (world.player.inventory.canPickup(entity.inventory.get(itemIndex))) {
+                    if (world.entities.player.inventory.canPickup(entity.inventory.get(itemIndex))) {
                         game.playSound(sound_trade_buy);
-                        world.player.stats.gold -= entity.inventory.get(itemIndex).price;
+                        world.entities.player.stats.gold -= entity.inventory.get(itemIndex).price;
                     } else addMessageToConsole("You cannot carry any more!");
                 }
             }
@@ -866,37 +866,37 @@ public class UI {
         width = (int) (tile * 6.5);
         height = tile * 2;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Gold: " + world.player.stats.gold, x + 24, y + 40);
+        g2.drawString("Gold: " + world.entities.player.stats.gold, x + 24, y + 40);
 
     }
 
     private void renderTradeSellWindow() {
         int x, y, width, height;
 
-        renderPlayerInventoryWindow(world.player, true);
-        int itemIndex = world.player.inventory.getSlot(world.player.inventory.playerSlotCol, world.player.inventory.playerSlotRow);
-        if (itemIndex < world.player.inventory.size()) {
+        renderPlayerInventoryWindow(world.entities.player, true);
+        int itemIndex = world.entities.player.inventory.getSlot(world.entities.player.inventory.playerSlotCol, world.entities.player.inventory.playerSlotRow);
+        if (itemIndex < world.entities.player.inventory.size()) {
             x = tile * 14;
             y = tile * 5;
             width = (int) (tile * 2.5);
             height = tile;
             renderSubwindow(x, y, width, height, 255);
             g2.drawImage(gold, x + 6, y + 1, null);
-            int price = world.player.inventory.get(itemIndex).price / 2;
+            int price = world.entities.player.inventory.get(itemIndex).price / 2;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
             g2.drawString(text, x, y + 24);
 
             // Sell an item
             if (game.keyboard.enter) {
-                if (world.player.inventory.get(itemIndex) == world.player.weapon || world.player.inventory.get(itemIndex) == world.player.shield)
+                if (world.entities.player.inventory.get(itemIndex) == world.entities.player.weapon || world.entities.player.inventory.get(itemIndex) == world.entities.player.shield)
                     addMessageToConsole("You cannot sell an equipped item!");
                 else {
                     game.playSound(sound_trade_sell);
-                    if (world.player.inventory.get(itemIndex).amount > 1)
-                        world.player.inventory.get(itemIndex).amount--;
-                    else world.player.inventory.remove(itemIndex);
-                    world.player.stats.gold += price;
+                    if (world.entities.player.inventory.get(itemIndex).amount > 1)
+                        world.entities.player.inventory.get(itemIndex).amount--;
+                    else world.entities.player.inventory.remove(itemIndex);
+                    world.entities.player.stats.gold += price;
                 }
             }
 
@@ -908,7 +908,7 @@ public class UI {
         width = (int) (tile * 6.5);
         height = tile * 2;
         renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-        g2.drawString("Gold: " + world.player.stats.gold, x + 24, y + 40);
+        g2.drawString("Gold: " + world.entities.player.stats.gold, x + 24, y + 40);
 
     }
 
@@ -930,7 +930,7 @@ public class UI {
                 world.environment.lighting.filterAlpha = 0f;
                 world.environment.lighting.dayState = world.environment.lighting.day;
                 world.environment.lighting.dayCounter = 0;
-                world.player.currentFrame = world.player.sheet.down[0];
+                world.entities.player.currentFrame = world.entities.player.sheet.down[0];
                 game.state = PLAY_STATE;
                 counter = 0; // Reset the counter to regenerate the effect from 0
             }

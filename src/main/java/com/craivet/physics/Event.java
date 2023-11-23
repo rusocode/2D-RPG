@@ -25,7 +25,7 @@ public class Event {
     /* The event does not happen again if the player is not 1 tile away. This mechanic prevents the event from repeating
      * itself in the same place repeatedly. */
     public int previousEventX, previousEventY;
-    public int map, col, row;
+    public int mapNum, col, row;
 
     // x and y position of the event
     private final int x = 5;
@@ -57,8 +57,8 @@ public class Event {
     public void check(Entity entity) {
 
         // Check if the player is more than 1 tile away from the last event using the previous event as information
-        int xDis = Math.abs(world.player.pos.x - previousEventX);
-        int yDis = Math.abs(world.player.pos.y - previousEventY);
+        int xDis = Math.abs(world.entities.player.pos.x - previousEventX);
+        int yDis = Math.abs(world.entities.player.pos.y - previousEventY);
         int dis = Math.max(xDis, yDis);
         if (dis > tile) canCollideEvent = true;
 
@@ -91,24 +91,24 @@ public class Event {
         boolean colliding = false;
 
         // If the player is on the same map as the event
-        if (map == world.map) {
-            world.player.hitbox.x += world.player.pos.x;
-            world.player.hitbox.y += world.player.pos.y;
+        if (map == world.map.num) {
+            world.entities.player.hitbox.x += world.entities.player.pos.x;
+            world.entities.player.hitbox.y += world.entities.player.pos.y;
             event[map][row][col].x += col * tile;
             event[map][row][col].y += row * tile;
 
             // If the player collides with the event and if the direction matches that of the event
-            if (world.player.hitbox.intersects(event[map][row][col]) && (world.player.direction == direction || direction == Direction.ANY)) {
+            if (world.entities.player.hitbox.intersects(event[map][row][col]) && (world.entities.player.direction == direction || direction == Direction.ANY)) {
                 colliding = true;
-                world.player.attackCanceled = true; // Cancels the attack if you interact with an event using enter (key used to attack)
+                world.entities.player.attackCanceled = true; // Cancels the attack if you interact with an event using enter (key used to attack)
                 // Based on this information, verify the distance between the player and the last event
-                previousEventX = world.player.pos.x;
-                previousEventY = world.player.pos.y;
+                previousEventX = world.entities.player.pos.x;
+                previousEventY = world.entities.player.pos.y;
             }
 
             // Resets the player hitbox position and event position
-            world.player.hitbox.x = world.player.hitboxDefaultX;
-            world.player.hitbox.y = world.player.hitboxDefaultY;
+            world.entities.player.hitbox.x = world.entities.player.hitboxDefaultX;
+            world.entities.player.hitbox.y = world.entities.player.hitboxDefaultY;
             event[map][row][col].x = x;
             event[map][row][col].y = y;
         }
@@ -146,25 +146,25 @@ public class Event {
      * Generate the boss scene.
      */
     private void bossScene() {
-        if (!world.bossBattleOn && !Progress.bossDefeated) {
+        if (!world.entities.player.bossBattleOn && !Progress.bossDefeated) {
             game.state = CUTSCENE_STATE;
             world.cutscene.n = world.cutscene.boss;
-            world.bossBattleOn = true;
+            world.entities.player.bossBattleOn = true;
         }
     }
 
     /**
      * Teleports the player.
      *
-     * @param zone zone to which the player teleports.
-     * @param map  map to which the player teleports.
-     * @param col  column to which the player teleports.
-     * @param row  row to which the player teleports.
+     * @param zone   zone to which the player teleports.
+     * @param mapNum map to which the player teleports.
+     * @param col    column to which the player teleports.
+     * @param row    row to which the player teleports.
      */
-    private void teleport(int zone, int map, int col, int row) {
+    private void teleport(int zone, int mapNum, int col, int row) {
         game.state = TELEPORT_STATE;
-        world.nextZone = zone;
-        this.map = map;
+        world.map.nextZone = zone;
+        this.mapNum = mapNum;
         this.col = col;
         this.row = row;
         canCollideEvent = false;

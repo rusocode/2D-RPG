@@ -29,6 +29,10 @@ public class Player extends Mob {
     public boolean attackCanceled, lightUpdate;
     public Character character = Jester.getInstance();
 
+    /* Variable para saber cuando el player esta dentro de la boss area para evitar que se produsca el mismo evento cada
+     * ves que pasa por ese evento. Solo se vuelve a desactivar cuando muere en la boss area. */
+    public boolean bossBattleOn;
+
     public Player(Game game, World world) {
         super(game, world);
         init();
@@ -108,7 +112,7 @@ public class Player extends Mob {
 
         inventory.init();
 
-        pos.set(world, this, DUNGEON_BREG_SUB, BOSS, 25, 35, Direction.DOWN);
+        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 21, Direction.DOWN);
     }
 
     public void hit() {
@@ -161,14 +165,14 @@ public class Player extends Mob {
             hitbox.height = attackbox.height;
 
             // Check the collision with the mob using the position and size of the updated hitbox, that is, with the attackbox
-            int mobIndex = game.collision.checkEntity(this, world.mobs);
-            world.player.hitMob(mobIndex, this, weapon.stats.knockbackValue, stats.attack);
+            int mobIndex = game.collision.checkEntity(this, world.entities.mobs);
+            world.entities.player.hitMob(mobIndex, this, weapon.stats.knockbackValue, stats.attack);
 
-            int interactiveIndex = game.collision.checkEntity(this, world.interactives);
-            world.player.hitInteractive(interactiveIndex);
+            int interactiveIndex = game.collision.checkEntity(this, world.entities.interactives);
+            world.entities.player.hitInteractive(interactiveIndex);
 
-            int projectileIndex = game.collision.checkEntity(this, world.projectiles);
-            world.player.hitProjectile(projectileIndex);
+            int projectileIndex = game.collision.checkEntity(this, world.entities.projectiles);
+            world.entities.player.hitProjectile(projectileIndex);
 
             // After verifying the collision, reset the original data
             pos.x = currentX;
@@ -206,9 +210,9 @@ public class Player extends Mob {
             game.playSound(projectile.sound);
             projectile.set(pos.x, pos.y, direction, true, this);
             // Check vacancy to add the projectile
-            for (int i = 0; i < world.projectiles[1].length; i++) {
-                if (world.projectiles[world.map][i] == null) {
-                    world.projectiles[world.map][i] = projectile;
+            for (int i = 0; i < world.entities.projectiles[1].length; i++) {
+                if (world.entities.projectiles[world.map.num][i] == null) {
+                    world.entities.projectiles[world.map.num][i] = projectile;
                     break;
                 }
             }
@@ -230,8 +234,8 @@ public class Player extends Mob {
      */
     private void interactNpc(int i) {
         if (i != -1) {
-            auxEntity = world.mobs[world.map][i];
-            Mob mob = world.mobs[world.map][i];
+            auxEntity = world.entities.mobs[world.map.num][i];
+            Mob mob = world.entities.mobs[world.map.num][i];
             if (game.keyboard.enter && mob.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
@@ -246,8 +250,8 @@ public class Player extends Mob {
      */
     private void hurt(int i) {
         if (i != -1) {
-            auxEntity = world.mobs[world.map][i];
-            Mob mob = world.mobs[world.map][i];
+            auxEntity = world.entities.mobs[world.map.num][i];
+            Mob mob = world.entities.mobs[world.map.num][i];
             if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
                 game.playSound(sound_player_damage);
                 int damage = Math.max(mob.stats.attack - stats.defense, 1);
@@ -267,8 +271,8 @@ public class Player extends Mob {
      */
     public void hitMob(int i, Entity attacker, int knockbackValue, int attack) {
         if (i != -1) { // TODO I change it to >= 0 to avoid double negation and comparison -1?
-            auxEntity = world.mobs[world.map][i];
-            Mob mob = world.mobs[world.map][i];
+            auxEntity = world.entities.mobs[world.map.num][i];
+            Mob mob = world.entities.mobs[world.map.num][i];
             if (!mob.flags.invincible && mob.type != Type.NPC) {
 
                 if (knockbackValue > 0) mechanics.setKnockback(mob, attacker, knockbackValue);
@@ -298,9 +302,9 @@ public class Player extends Mob {
 
                     // TODO Verificar de otra forma y en otro lugar
                     if (mob instanceof Skeleton) {
-                        for (int j = 0; j < world.items[1].length; j++) {
-                            if (world.items[world.map][j] != null && world.items[world.map][j].stats.name.equals(DoorIron.NAME)) {
-                                world.items[world.map][j] = null;
+                        for (int j = 0; j < world.entities.items[1].length; j++) {
+                            if (world.entities.items[world.map.num][j] != null && world.entities.items[world.map.num][j].stats.name.equals(DoorIron.NAME)) {
+                                world.entities.items[world.map.num][j] = null;
                                 game.playSound(sound_door_iron_opening);
                             }
                         }
@@ -318,8 +322,8 @@ public class Player extends Mob {
      */
     public void hitInteractive(int i) {
         if (i != -1) {
-            auxEntity = world.interactives[world.map][i];
-            Interactive interactive = world.interactives[world.map][i];
+            auxEntity = world.entities.interactives[world.map.num][i];
+            Interactive interactive = world.entities.interactives[world.map.num][i];
             if (interactive.destructible && interactive.isCorrectWeapon(weapon) && !interactive.flags.invincible) {
                 interactive.playSound();
                 interactive.stats.hp--;
@@ -329,7 +333,7 @@ public class Player extends Mob {
 
                 if (interactive.stats.hp == 0) {
                     interactive.checkDrop();
-                    world.interactives[world.map][i] = interactive.replaceBy();
+                    world.entities.interactives[world.map.num][i] = interactive.replaceBy();
                 }
             }
         }
@@ -337,8 +341,8 @@ public class Player extends Mob {
 
     public void hitProjectile(int i) {
         if (i != -1) {
-            auxEntity = world.projectiles[world.map][i];
-            Projectile projectile = world.projectiles[world.map][i];
+            auxEntity = world.entities.projectiles[world.map.num][i];
+            Projectile projectile = world.entities.projectiles[world.map.num][i];
             // Avoid damaging the projectile itself
             if (projectile != this.projectile) {
                 game.playSound(sound_player_damage);
@@ -377,18 +381,18 @@ public class Player extends Mob {
      */
     public void pickup(int i) {
         if (i != -1) {
-            Item item = world.items[world.map][i];
+            Item item = world.entities.items[world.map.num][i];
             if (game.keyboard.pickup && item.type != Type.OBSTACLE) {
-                if (item.type == Type.PICKUP) item.use(world.player);
+                if (item.type == Type.PICKUP) item.use(world.entities.player);
                 else if (inventory.canPickup(item)) game.playSound(sound_item_pickup);
                 else {
                     game.ui.addMessageToConsole("You cannot carry any more!");
                     return;
                 }
-                world.items[world.map][i] = null;
+                world.entities.items[world.map.num][i] = null;
             }
             if (game.keyboard.enter && item.type == Type.OBSTACLE) {
-                world.player.attackCanceled = true;
+                world.entities.player.attackCanceled = true;
                 item.interact();
             }
         }
@@ -399,15 +403,15 @@ public class Player extends Mob {
         flags.colliding = false;
         if (!game.keyboard.test) game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
-        interactNpc(game.collision.checkEntity(this, world.mobs));
-        hurt(game.collision.checkEntity(this, world.mobs));
-        setCurrentInteractive(game.collision.checkEntity(this, world.interactives));
-        // game.collision.checkEntity(this, world.interactives);
+        interactNpc(game.collision.checkEntity(this, world.entities.mobs));
+        hurt(game.collision.checkEntity(this, world.entities.mobs));
+        setCurrentInteractive(game.collision.checkEntity(this, world.entities.interactives));
+        // game.collision.checkEntity(this, world.entities.interactives);
         game.event.check(this);
     }
 
     private void setCurrentInteractive(int i) {
-        if (i != -1) auxEntity = world.interactives[world.map][i];
+        if (i != -1) auxEntity = world.entities.interactives[world.map.num][i];
     }
 
     private void die() {

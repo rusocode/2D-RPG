@@ -104,7 +104,7 @@ public class Keyboard extends KeyAdapter {
                 if (game.ui.command == 0) {
                     game.state = PLAY_STATE;
                     game.playSound(sound_spawn);
-                    switch (game.world.zone) {
+                    switch (game.world.map.zone) {
                         case OVERWORLD -> game.playMusic(ambient_overworld);
                         case DUNGEON -> game.playMusic(ambient_dungeon);
                         case BOSS -> game.playMusic(music_boss);
@@ -156,7 +156,7 @@ public class Keyboard extends KeyAdapter {
         /* You need to save the edited text file by pressing Ctrl + F9 or by selecting Build > Build Project. Which will
          * rebuild the project and you can apply the change by pressing the R key. */
         if (code == KeyEvent.VK_R) {
-            switch (game.world.map) {
+            switch (game.world.map.num) {
                 case 0 -> game.file.loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
                 case 1 ->
                         game.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
@@ -175,7 +175,7 @@ public class Keyboard extends KeyAdapter {
     private void inventoryState(int code) {
         if (code == KeyEvent.VK_I || code == KeyEvent.VK_ESCAPE) game.state = PLAY_STATE;
         playerInventoryState(code);
-        if (code == KeyEvent.VK_ENTER) game.world.player.inventory.select();
+        if (code == KeyEvent.VK_ENTER) game.world.entities.player.inventory.select();
     }
 
     private void optionState(int code) {
@@ -296,54 +296,54 @@ public class Keyboard extends KeyAdapter {
 
     private void playerInventoryState(int code) {
         if (code == KeyEvent.VK_W) {
-            if (game.world.player.inventory.playerSlotRow > 0) {
+            if (game.world.entities.player.inventory.playerSlotRow > 0) {
                 game.playSound(sound_slot);
-                game.world.player.inventory.playerSlotRow--;
+                game.world.entities.player.inventory.playerSlotRow--;
             }
         }
         if (code == KeyEvent.VK_A) {
-            if (game.world.player.inventory.playerSlotCol > 0) {
+            if (game.world.entities.player.inventory.playerSlotCol > 0) {
                 game.playSound(sound_slot);
-                game.world.player.inventory.playerSlotCol--;
+                game.world.entities.player.inventory.playerSlotCol--;
             }
         }
         if (code == KeyEvent.VK_S) {
-            if (game.world.player.inventory.playerSlotRow < 3) {
+            if (game.world.entities.player.inventory.playerSlotRow < 3) {
                 game.playSound(sound_slot);
-                game.world.player.inventory.playerSlotRow++;
+                game.world.entities.player.inventory.playerSlotRow++;
             }
         }
         if (code == KeyEvent.VK_D) {
-            if (game.world.player.inventory.playerSlotCol < 4) {
+            if (game.world.entities.player.inventory.playerSlotCol < 4) {
                 game.playSound(sound_slot);
-                game.world.player.inventory.playerSlotCol++;
+                game.world.entities.player.inventory.playerSlotCol++;
             }
         }
     }
 
     private void npcInventoryState(int code) {
         if (code == KeyEvent.VK_W) {
-            if (game.world.player.inventory.npcSlotRow > 0) {
+            if (game.world.entities.player.inventory.npcSlotRow > 0) {
                 game.playSound(sound_slot);
-                game.world.player.inventory.npcSlotRow--;
+                game.world.entities.player.inventory.npcSlotRow--;
             }
         }
         if (code == KeyEvent.VK_A) {
-            if (game.world.player.inventory.npcSlotCol > 0) {
+            if (game.world.entities.player.inventory.npcSlotCol > 0) {
                 game.playSound(sound_slot);
-                game.world.player.inventory.npcSlotCol--;
+                game.world.entities.player.inventory.npcSlotCol--;
             }
         }
         if (code == KeyEvent.VK_S) {
-            if (game.world.player.inventory.npcSlotRow < 3) {
+            if (game.world.entities.player.inventory.npcSlotRow < 3) {
                 game.playSound(sound_slot);
-                game.world.player.inventory.npcSlotRow++;
+                game.world.entities.player.inventory.npcSlotRow++;
             }
         }
         if (code == KeyEvent.VK_D) {
-            if (game.world.player.inventory.npcSlotCol < 4) {
+            if (game.world.entities.player.inventory.npcSlotCol < 4) {
                 game.playSound(sound_slot);
-                game.world.player.inventory.npcSlotCol++;
+                game.world.entities.player.inventory.npcSlotCol++;
             }
         }
     }

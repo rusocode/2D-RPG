@@ -9,6 +9,7 @@ import com.craivet.world.tile.Tile;
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 import static com.craivet.utils.Global.*;
@@ -26,6 +27,8 @@ public class File {
     private final String config = "config.txt";
     private final String data = "data.dat";
     private final String tileData = "maps/tile_data.txt";
+
+    public HashMap<Integer, String> maps = new HashMap<>();
 
     private static final String ON = "On";
     private static final String OFF = "Off";
@@ -81,43 +84,43 @@ public class File {
             Data data = new Data();
 
             // Player stats
-            data.map = world.map;
-            data.zone = world.zone;
-            data.x = world.player.pos.x;
-            data.y = world.player.pos.y;
-            data.direction = world.player.direction;
-            data.life = world.player.stats.hp;
-            data.maxlife = world.player.stats.maxHp;
-            data.mana = world.player.stats.mana;
-            data.maxMana = world.player.stats.maxMana;
-            data.strength = world.player.stats.strength;
-            data.dexterity = world.player.stats.dexterity;
-            data.lvl = world.player.stats.lvl;
-            data.exp = world.player.stats.exp;
-            data.nextLvlExp = world.player.stats.nextLvlExp;
-            data.gold = world.player.stats.gold;
+            data.map = world.map.num;
+            data.zone = world.map.zone;
+            data.x = world.entities.player.pos.x;
+            data.y = world.entities.player.pos.y;
+            data.direction = world.entities.player.direction;
+            data.life = world.entities.player.stats.hp;
+            data.maxlife = world.entities.player.stats.maxHp;
+            data.mana = world.entities.player.stats.mana;
+            data.maxMana = world.entities.player.stats.maxMana;
+            data.strength = world.entities.player.stats.strength;
+            data.dexterity = world.entities.player.stats.dexterity;
+            data.lvl = world.entities.player.stats.lvl;
+            data.exp = world.entities.player.stats.exp;
+            data.nextLvlExp = world.entities.player.stats.nextLvlExp;
+            data.gold = world.entities.player.stats.gold;
 
             // Player inventory
-            for (int i = 0; i < world.player.inventory.size(); i++) {
-                data.names.add(world.player.inventory.get(i).stats.name);
-                data.amounts.add(world.player.inventory.get(i).amount);
+            for (int i = 0; i < world.entities.player.inventory.size(); i++) {
+                data.names.add(world.entities.player.inventory.get(i).stats.name);
+                data.amounts.add(world.entities.player.inventory.get(i).amount);
             }
 
             // Player equipment
-            data.weapon = world.player.inventory.getSlot(world.player.weapon);
-            data.shield = world.player.inventory.getSlot(world.player.shield);
-            data.light = world.player.inventory.getSlot(world.player.light);
+            data.weapon = world.entities.player.inventory.getSlot(world.entities.player.weapon);
+            data.shield = world.entities.player.inventory.getSlot(world.entities.player.shield);
+            data.light = world.entities.player.inventory.getSlot(world.entities.player.light);
 
             // Items on map
-            data.itemName = new String[MAPS][world.items[1].length];
-            data.itemX = new int[MAPS][world.items[1].length];
-            data.itemY = new int[MAPS][world.items[1].length];
-            data.loot = new String[MAPS][world.items[1].length];
-            data.opened = new boolean[MAPS][world.items[1].length];
-            data.empty = new boolean[MAPS][world.items[1].length];
+            data.itemName = new String[MAPS][world.entities.items[1].length];
+            data.itemX = new int[MAPS][world.entities.items[1].length];
+            data.itemY = new int[MAPS][world.entities.items[1].length];
+            data.loot = new String[MAPS][world.entities.items[1].length];
+            data.opened = new boolean[MAPS][world.entities.items[1].length];
+            data.empty = new boolean[MAPS][world.entities.items[1].length];
             for (int map = 0; map < MAPS; map++) {
-                for (int i = 0; i < world.items[1].length; i++) {
-                    Item item = world.items[map][i];
+                for (int i = 0; i < world.entities.items[1].length; i++) {
+                    Item item = world.entities.items[map][i];
                     if (item == null) data.itemName[map][i] = "NA";
                     else {
                         data.itemName[map][i] = item.stats.name;
@@ -144,53 +147,53 @@ public class File {
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(data))) {
             // Reads the bytes from the input stream and deserializes them into a Data object
             Data data = (Data) input.readObject();
-            world.map = data.map;
-            world.zone = data.zone;
-            world.player.pos.x = data.x;
-            world.player.pos.y = data.y;
+            world.map.num = data.map;
+            world.map.zone = data.zone;
+            world.entities.player.pos.x = data.x;
+            world.entities.player.pos.y = data.y;
             switch (data.direction) {
-                case DOWN -> world.player.currentFrame = world.player.down.getFirstFrame();
-                case UP -> world.player.currentFrame = world.player.up.getFirstFrame();
-                case LEFT -> world.player.currentFrame = world.player.left.getFirstFrame();
-                case RIGHT -> world.player.currentFrame = world.player.right.getFirstFrame();
+                case DOWN -> world.entities.player.currentFrame = world.entities.player.down.getFirstFrame();
+                case UP -> world.entities.player.currentFrame = world.entities.player.up.getFirstFrame();
+                case LEFT -> world.entities.player.currentFrame = world.entities.player.left.getFirstFrame();
+                case RIGHT -> world.entities.player.currentFrame = world.entities.player.right.getFirstFrame();
             }
-            world.player.direction = data.direction;
-            world.player.stats.hp = data.life;
-            world.player.stats.maxHp = data.maxlife;
-            world.player.stats.mana = data.mana;
-            world.player.stats.maxMana = data.maxMana;
-            world.player.stats.strength = data.strength;
-            world.player.stats.dexterity = data.dexterity;
-            world.player.stats.lvl = data.lvl;
-            world.player.stats.exp = data.exp;
-            world.player.stats.nextLvlExp = data.nextLvlExp;
-            world.player.stats.gold = data.gold;
+            world.entities.player.direction = data.direction;
+            world.entities.player.stats.hp = data.life;
+            world.entities.player.stats.maxHp = data.maxlife;
+            world.entities.player.stats.mana = data.mana;
+            world.entities.player.stats.maxMana = data.maxMana;
+            world.entities.player.stats.strength = data.strength;
+            world.entities.player.stats.dexterity = data.dexterity;
+            world.entities.player.stats.lvl = data.lvl;
+            world.entities.player.stats.exp = data.exp;
+            world.entities.player.stats.nextLvlExp = data.nextLvlExp;
+            world.entities.player.stats.gold = data.gold;
 
-            world.player.inventory.clear();
+            world.entities.player.inventory.clear();
             for (int i = 0; i < data.names.size(); i++) {
-                world.player.inventory.add(game.itemGenerator.generate(data.names.get(i)));
-                world.player.inventory.get(i).amount = data.amounts.get(i);
+                world.entities.player.inventory.add(game.itemGenerator.generate(data.names.get(i)));
+                world.entities.player.inventory.get(i).amount = data.amounts.get(i);
             }
-            world.player.weapon = world.player.inventory.get(data.weapon);
-            world.player.shield = world.player.inventory.get(data.shield);
-            world.player.light = world.player.inventory.get(data.light);
-            world.player.getAttack();
-            world.player.getDefense();
-            // world.player.frame.loadWeaponFrames(world.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
+            world.entities.player.weapon = world.entities.player.inventory.get(data.weapon);
+            world.entities.player.shield = world.entities.player.inventory.get(data.shield);
+            world.entities.player.light = world.entities.player.inventory.get(data.light);
+            world.entities.player.getAttack();
+            world.entities.player.getDefense();
+            // world.entities.player.frame.loadWeaponFrames(world.entities.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
             for (int map = 0; map < MAPS; map++) {
-                for (int i = 0; i < world.items[1].length; i++) {
-                    if (data.itemName[map][i].equals("NA")) world.items[map][i] = null;
+                for (int i = 0; i < world.entities.items[1].length; i++) {
+                    if (data.itemName[map][i].equals("NA")) world.entities.items[map][i] = null;
                     else {
-                        world.items[map][i] = game.itemGenerator.generate(data.itemName[map][i]);
-                        world.items[map][i].pos.x = data.itemX[map][i];
-                        world.items[map][i].pos.y = data.itemY[map][i];
+                        world.entities.items[map][i] = game.itemGenerator.generate(data.itemName[map][i]);
+                        world.entities.items[map][i].pos.x = data.itemX[map][i];
+                        world.entities.items[map][i].pos.y = data.itemY[map][i];
                         if (data.loot[map][i] != null && !data.empty[map][i])
-                            world.items[map][i].loot = game.itemGenerator.generate(data.loot[map][i]);
-                        world.items[map][i].opened = data.opened[map][i];
-                        world.items[map][i].empty = data.empty[map][i];
-                        if (world.items[map][i].opened)
-                            world.items[map][i].sheet.frame = world.items[map][i].sheet.item[1];
+                            world.entities.items[map][i].loot = game.itemGenerator.generate(data.loot[map][i]);
+                        world.entities.items[map][i].opened = data.opened[map][i];
+                        world.entities.items[map][i].empty = data.empty[map][i];
+                        if (world.entities.items[map][i].opened)
+                            world.entities.items[map][i].sheet.frame = world.entities.items[map][i].sheet.item[1];
                     }
                 }
             }
@@ -211,7 +214,7 @@ public class File {
                 names.add(line);
                 solids.add(br.readLine());
             }
-            world.tileData = new Tile[names.size()];
+            world.map.tileData = new Tile[names.size()];
             for (int i = 0; i < names.size(); i++)
                 loadTile(i, names.get(i), Boolean.parseBoolean(solids.get(i)));
         } catch (IOException e) {
@@ -237,10 +240,10 @@ public class File {
      * @param solid whether it is solid or not.
      */
     private void loadTile(int i, String name, boolean solid) {
-        world.tileData[i] = new Tile();
+        world.map.tileData[i] = new Tile();
         // if (name.equals("001")) world.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), 128, 128);
-        world.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile, tile);
-        world.tileData[i].solid = solid;
+        world.map.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile, tile);
+        world.map.tileData[i].solid = solid;
     }
 
     /**
@@ -251,14 +254,14 @@ public class File {
      * @param name map name as value.
      */
     public void loadMap(String path, int map, String name) {
-        world.maps.put(map, name);
+        maps.put(map, name);
         int row = 0;
         try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(path)))))) {
             for (row = 0; row < MAX_MAP_ROW; row++) {
                 String line = br.readLine();
                 String[] numbers = line.split(" ");
                 for (int col = 0; col < MAX_MAP_COL; col++)
-                    world.tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
+                    world.map.tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
             }
         } catch (IOException e) {
             throw new RuntimeException("Error reading file " + path + " on the line " + (row + 1), e);

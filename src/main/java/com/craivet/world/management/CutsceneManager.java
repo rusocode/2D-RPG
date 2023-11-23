@@ -34,41 +34,41 @@ public class CutsceneManager {
         // Coloca la puerta de hierro
         if (phase == 0) {
             // Busca un espacio sobrante en el array de items para agregar la puerta de hierro
-            for (int i = 0; i < world.items[1].length; i++) {
-                if (world.items[world.map][i] == null) {
-                    world.items[world.map][i] = new DoorIron(game, world, 25, 28);
-                    world.items[world.map][i].temp = true;
+            for (int i = 0; i < world.entities.items[1].length; i++) {
+                if (world.entities.items[world.map.num][i] == null) {
+                    world.entities.items[world.map.num][i] = new DoorIron(game, world, 25, 28);
+                    world.entities.items[world.map.num][i].temp = true;
                     break;
                 }
             }
 
             // Search a vacant slot for the dummy
-            for (int i = 0; i < world.mobs[1].length; i++) {
-                if (world.mobs[world.map][i] == null) {
-                    world.mobs[world.map][i] = new PlayerDummy(game, world);
-                    world.mobs[world.map][i].direction = world.player.direction;
-                    world.mobs[world.map][i].pos.x = world.player.pos.x;
-                    world.mobs[world.map][i].pos.y = world.player.pos.y;
+            for (int i = 0; i < world.entities.mobs[1].length; i++) {
+                if (world.entities.mobs[world.map.num][i] == null) {
+                    world.entities.mobs[world.map.num][i] = new PlayerDummy(game, world);
+                    world.entities.mobs[world.map.num][i].direction = world.entities.player.direction;
+                    world.entities.mobs[world.map.num][i].pos.x = world.entities.player.pos.x;
+                    world.entities.mobs[world.map.num][i].pos.y = world.entities.player.pos.y;
                     break;
                 }
             }
 
-            world.player.drawing = false;
+            world.entities.player.drawing = false;
             phase++;
         }
 
         // Mueve la camara hacia el boss
         if (phase == 1) {
-            world.player.pos.y -= 2;
-            if (world.player.pos.y < tile * 16) phase++;
+            world.entities.player.pos.y -= 2;
+            if (world.entities.player.pos.y < tile * 16) phase++;
         }
 
         // Despierta al boss
         if (phase == 2) {
-            for (int i = 0; i < world.mobs[1].length; i++) {
-                if (world.mobs[world.map][i] != null && world.mobs[world.map][i].stats.name.equals(Skeleton.NAME)) {
-                    world.mobs[world.map][i].sleep = false; // Ahora el boss se despierta
-                    game.ui.entity = world.mobs[world.map][i]; // Le pasa el boss a la ui para que pueda renderizar la ventana de dialogo
+            for (int i = 0; i < world.entities.mobs[1].length; i++) {
+                if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(Skeleton.NAME)) {
+                    world.entities.mobs[world.map.num][i].sleep = false; // Ahora el boss se despierta
+                    game.ui.entity = world.entities.mobs[world.map.num][i]; // Le pasa el boss a la ui para que pueda renderizar la ventana de dialogo
                     phase++;
                     break;
                 }
@@ -81,19 +81,19 @@ public class CutsceneManager {
         // Devuelve la camara al player
         if (phase == 4) {
             // Busca al personaje ficticio (PlayerDummy)
-            for (int i = 0; i < world.mobs[1].length; i++) {
-                if (world.mobs[world.map][i] != null && world.mobs[world.map][i].stats.name.equals(PlayerDummy.NAME)) {
+            for (int i = 0; i < world.entities.mobs[1].length; i++) {
+                if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(PlayerDummy.NAME)) {
                     // Restaura la posicion del player
-                    world.player.pos.x = world.mobs[world.map][i].pos.x;
-                    world.player.pos.y = world.mobs[world.map][i].pos.y;
+                    world.entities.player.pos.x = world.entities.mobs[world.map.num][i].pos.x;
+                    world.entities.player.pos.y = world.entities.mobs[world.map.num][i].pos.y;
                     // Borra al personaje ficticio
-                    world.mobs[world.map][i] = null;
+                    world.entities.mobs[world.map.num][i] = null;
                     break;
                 }
             }
 
             // Ahora se puede dibujar al player
-            world.player.drawing = true;
+            world.entities.player.drawing = true;
 
             // Reinicia la escena
             n = na;

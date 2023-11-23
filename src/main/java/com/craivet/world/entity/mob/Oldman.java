@@ -43,9 +43,9 @@ public class Oldman extends Mob {
 
     @Override
     public void doActions() {
-        if (flags.following) game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
+        if (flags.following) game.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
         else {
-            // checkFollow(world.player, 5, 100);
+            // checkFollow(world.entities.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
         // Si no esta colisionando, entonces actualiza los frames

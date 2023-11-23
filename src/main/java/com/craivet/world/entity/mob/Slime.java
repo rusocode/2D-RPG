@@ -34,11 +34,11 @@ public class Slime extends Mob {
     @Override
     public void doActions() {
         if (flags.following) {
-            checkUnfollow(world.player, 15);
-            game.aStar.searchPath(this, getGoalRow(world.player), getGoalCol(world.player));
+            checkUnfollow(world.entities.player, 15);
+            game.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
             // checkShoot();
         } else {
-            checkFollow(world.player, 5, 100);
+            checkFollow(world.entities.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
     }
@@ -56,9 +56,9 @@ public class Slime extends Mob {
     private void checkShoot() {
         if (Utils.random(100) == 1 && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
             projectile.set(pos.x + 8, pos.y + 17, direction, true, this);
-            for (int i = 0; i < world.projectiles[1].length; i++) {
-                if (world.projectiles[world.map][i] == null) {
-                    world.projectiles[world.map][i] = projectile;
+            for (int i = 0; i < world.entities.projectiles[1].length; i++) {
+                if (world.entities.projectiles[world.map.num][i] == null) {
+                    world.entities.projectiles[world.map.num][i] = projectile;
                     break;
                 }
             }

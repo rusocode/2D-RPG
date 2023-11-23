@@ -26,9 +26,9 @@ public class Tent extends Item {
     public boolean use(Entity entity) {
         game.state = SLEEP_STATE;
         game.playSound(sound_sleep);
-        world.player.stats.hp = world.player.stats.maxHp;
-        world.player.stats.mana = world.player.stats.maxMana;
-        world.player.initSleepImage(sheet.frame);
+        world.entities.player.stats.hp = world.entities.player.stats.maxHp;
+        world.entities.player.stats.mana = world.entities.player.stats.maxMana;
+        world.entities.player.initSleepImage(sheet.frame);
         return true;
     }
 
