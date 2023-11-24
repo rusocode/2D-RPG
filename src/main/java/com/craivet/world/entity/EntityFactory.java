@@ -1,17 +1,18 @@
-package com.craivet.world;
+package com.craivet.world.entity;
 
 import com.craivet.Game;
 import com.craivet.io.Progress;
+import com.craivet.world.World;
 import com.craivet.world.entity.item.*;
 import com.craivet.world.entity.mob.*;
-import com.craivet.world.tile.DestructibleWall;
-import com.craivet.world.tile.DryTree;
-import com.craivet.world.tile.Interactive;
-import com.craivet.world.tile.MetalPlate;
+import com.craivet.world.entity.interactive.DestructibleWall;
+import com.craivet.world.entity.interactive.DryTree;
+import com.craivet.world.entity.interactive.Interactive;
+import com.craivet.world.entity.interactive.MetalPlate;
 
 import static com.craivet.utils.Global.*;
 
-public class Setter {
+public class EntityFactory {
     
     private final Game game;
     private final World world;
@@ -19,7 +20,7 @@ public class Setter {
     private final Mob[][] mobs;
     private final Interactive[][] interactives;
 
-    public Setter(Game game, World world, Item[][] items, Mob[][] mobs, Interactive[][] interactives) {
+    public EntityFactory(Game game, World world, Item[][] items, Mob[][] mobs, Interactive[][] interactives) {
         this.game = game;
         this.world = world;
         this.items = items;
@@ -31,7 +32,7 @@ public class Setter {
     /**
      * Create the entities.
      */
-    private void createEntities() {
+    public void createEntities() {
         createItems();
         createMobs();
         createInteractiveTile();

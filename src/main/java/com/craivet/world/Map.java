@@ -1,7 +1,6 @@
 package com.craivet.world;
 
 import com.craivet.Game;
-import com.craivet.world.tile.Tile;
 
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
@@ -13,13 +12,13 @@ public class Map {
 
     public int num, zone, nextZone;
 
-    // TODO No tendria que ir en Tile?
     public Tile[] tileData;
-    public int[][][] tileIndex = new int[MAPS][MAX_MAP_ROW][MAX_MAP_COL];
+    public int[][][] tileIndex;
 
     public Map(Game game, World world) {
         this.game = game;
         this.world = world;
+        tileIndex = new int[MAPS][MAX_MAP_ROW][MAX_MAP_COL];
     }
 
     public void changeArea() {
@@ -30,7 +29,7 @@ public class Map {
             if (zone == DUNGEON && nextZone == OVERWORLD) game.playMusic(ambient_overworld);
         }
         zone = nextZone;
-        world.entities.setter.createMobs();
+        world.entities.factory.createMobs();
     }
 
 

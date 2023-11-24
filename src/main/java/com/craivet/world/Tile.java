@@ -1,4 +1,4 @@
-package com.craivet.world.tile;
+package com.craivet.world;
 
 import java.awt.image.BufferedImage;
 

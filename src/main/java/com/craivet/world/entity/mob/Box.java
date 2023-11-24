@@ -8,8 +8,8 @@ import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.DoorIron;
 import com.craivet.utils.*;
-import com.craivet.world.tile.Interactive;
-import com.craivet.world.tile.MetalPlate;
+import com.craivet.world.entity.interactive.Interactive;
+import com.craivet.world.entity.interactive.MetalPlate;
 
 import java.awt.*;
 import java.util.ArrayList;

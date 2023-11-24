@@ -1,17 +1,9 @@
 package com.craivet.world;
 
 import com.craivet.Game;
-import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.Player;
-import com.craivet.world.entity.item.*;
-import com.craivet.world.entity.mob.*;
-import com.craivet.world.entity.projectile.Projectile;
 import com.craivet.world.management.*;
-import com.craivet.world.tile.*;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.craivet.utils.Global.*;
 

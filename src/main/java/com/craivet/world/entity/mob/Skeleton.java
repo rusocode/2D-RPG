@@ -68,7 +68,6 @@ public class Skeleton extends Mob {
     @Override
     public void checkDrop() {
 
-        // world.bossBattleOn = false;
         Progress.bossDefeated = true;
 
         // Remove the iron doors

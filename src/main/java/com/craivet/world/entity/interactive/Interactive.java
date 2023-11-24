@@ -1,4 +1,4 @@
-package com.craivet.world.tile;
+package com.craivet.world.entity.interactive;
 
 import com.craivet.Game;
 import com.craivet.world.World;
@@ -7,7 +7,6 @@ import com.craivet.world.entity.item.Item;
 
 import static com.craivet.utils.Global.*;
 
-// TODO This class has to go in the entity package
 public class Interactive extends Entity {
 
     public boolean destructible;

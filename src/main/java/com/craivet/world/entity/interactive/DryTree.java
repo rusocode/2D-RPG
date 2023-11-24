@@ -1,4 +1,4 @@
-package com.craivet.world.tile;
+package com.craivet.world.entity.interactive;
 
 import java.awt.*;
 

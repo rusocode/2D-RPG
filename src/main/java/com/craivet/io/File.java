@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.item.Item;
-import com.craivet.world.tile.Tile;
+import com.craivet.world.Tile;
 
 import javax.swing.*;
 import java.io.*;

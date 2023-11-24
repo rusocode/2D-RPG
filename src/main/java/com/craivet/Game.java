@@ -177,14 +177,13 @@ public class Game extends Canvas implements Runnable {
     public void reset(boolean fullReset) {
         ui.console.clear();
         world.entities.player.reset(fullReset);
-        world.entities.setter.createMobs();
+        world.entities.factory.createMobs();
         world.entities.removeTempEntities();
         world.entities.player.bossBattleOn = false;
         playMusic(ambient_overworld);
         if (fullReset) {
             playMusic(music_main);
-            world.entities.setter.createItems();
-            world.entities.setter.createInteractiveTile();
+            world.entities.factory.createEntities();
             world.environment.lighting.resetDay();
             keyboard.minimap = false;
         }

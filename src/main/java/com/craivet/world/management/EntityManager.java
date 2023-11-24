@@ -1,7 +1,7 @@
 package com.craivet.world.management;
 
 import com.craivet.Game;
-import com.craivet.world.Setter;
+import com.craivet.world.entity.EntityFactory;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.states.State;
@@ -9,7 +9,7 @@ import com.craivet.world.entity.Player;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.projectile.Projectile;
-import com.craivet.world.tile.Interactive;
+import com.craivet.world.entity.interactive.Interactive;
 
 import java.awt.*;
 import java.util.*;
@@ -17,16 +17,19 @@ import java.util.List;
 
 import static com.craivet.utils.Global.MAPS;
 
+/**
+ * Logic related to updating and rendering entities.
+ */
+
 public class EntityManager implements State {
 
     private final World world;
 
-    public Setter setter;
+    public EntityFactory factory;
 
     public Player player;
     public List<Entity> particles = new ArrayList<>();
-    // TODO Shouldn't they be declared as HashMap or ArrayList?
-    public Item[][] items = new Item[MAPS][20];
+    public Item[][] items = new Item[MAPS][20]; // TODO Shouldn't they be declared as HashMap or ArrayList?
     public Mob[][] mobs = new Mob[MAPS][40];
     public Interactive[][] interactives = new Interactive[MAPS][50];
     public Projectile[][] projectiles = new Projectile[MAPS][20];
@@ -38,7 +41,7 @@ public class EntityManager implements State {
     public EntityManager(Game game, World world) {
         this.world = world;
         player = new Player(game, world);
-        setter = new Setter(game, world, items, mobs, interactives);
+        factory = new EntityFactory(game, world, items, mobs, interactives);
     }
 
     @Override

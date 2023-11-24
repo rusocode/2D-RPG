@@ -1,4 +1,4 @@
-package com.craivet.world.tile;
+package com.craivet.world.entity.interactive;
 
 import com.craivet.Game;
 import com.craivet.world.World;

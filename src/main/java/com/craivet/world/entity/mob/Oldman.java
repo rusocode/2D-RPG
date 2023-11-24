@@ -37,7 +37,6 @@ public class Oldman extends Mob {
         up = new Animation(animationSpeed, sheet.up);
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
-        currentFrame = down.getFirstFrame(); // TODO Haca falta?
 
     }
 

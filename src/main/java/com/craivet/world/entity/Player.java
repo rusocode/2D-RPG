@@ -13,7 +13,7 @@ import com.craivet.world.entity.mob.Skeleton;
 import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.entity.projectile.BurstOfFire;
 import com.craivet.world.entity.projectile.Projectile;
-import com.craivet.world.tile.Interactive;
+import com.craivet.world.entity.interactive.Interactive;
 import com.craivet.utils.*;
 import com.craivet.world.entity.item.*;
 
@@ -506,7 +506,6 @@ public class Player extends Mob {
         if (fullReset) inventory.init();
     }
 
-    // TODO Activate with key
     private void drawRects(Graphics2D g2) {
         g2.setStroke(new BasicStroke(0));
         // Frame
