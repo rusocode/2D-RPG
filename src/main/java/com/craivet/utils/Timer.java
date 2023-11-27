@@ -10,8 +10,6 @@ import static com.craivet.utils.Global.*;
 
 /**
  * Time game actions.
- *
- * @author Juan Debenedetti
  */
 
 public class Timer {

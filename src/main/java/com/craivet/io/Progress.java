@@ -1,7 +1,7 @@
 package com.craivet.io;
 
 /**
- * Mantiene un registro de los progresos del juego.
+ * Keeps track of game progress.
  */
 
 public class Progress {

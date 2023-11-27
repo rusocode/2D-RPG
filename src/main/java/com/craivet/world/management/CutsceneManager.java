@@ -31,9 +31,9 @@ public class CutsceneManager {
 
     private void sceneSkeleton() {
 
-        // Coloca la puerta de hierro
+        // Place the iron door
         if (phase == 0) {
-            // Busca un espacio sobrante en el array de items para agregar la puerta de hierro
+            // Look for a free space in the item array to add the iron door
             for (int i = 0; i < world.entities.items[1].length; i++) {
                 if (world.entities.items[world.map.num][i] == null) {
                     world.entities.items[world.map.num][i] = new DoorIron(game, world, 25, 28);
@@ -57,45 +57,45 @@ public class CutsceneManager {
             phase++;
         }
 
-        // Mueve la camara hacia el boss
+        // Move the camera towards the boss
         if (phase == 1) {
             world.entities.player.pos.y -= 2;
             if (world.entities.player.pos.y < tile * 16) phase++;
         }
 
-        // Despierta al boss
+        // Wake up the boss
         if (phase == 2) {
             for (int i = 0; i < world.entities.mobs[1].length; i++) {
                 if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(Skeleton.NAME)) {
-                    world.entities.mobs[world.map.num][i].sleep = false; // Ahora el boss se despierta
-                    game.ui.entity = world.entities.mobs[world.map.num][i]; // Le pasa el boss a la ui para que pueda renderizar la ventana de dialogo
+                    world.entities.mobs[world.map.num][i].sleep = false; // Now the boss wakes up
+                    game.ui.entity = world.entities.mobs[world.map.num][i]; // Passes the boss to the UI so it can render the dialog window
                     phase++;
                     break;
                 }
             }
         }
 
-        // Habla el boss
+        // The boss speaks
         if (phase == 3) game.ui.renderDialogueWindow();
 
-        // Devuelve la camara al player
+        // Return the camera to the player
         if (phase == 4) {
-            // Busca al personaje ficticio (PlayerDummy)
+            // Find the fictional character (PlayerDummy)
             for (int i = 0; i < world.entities.mobs[1].length; i++) {
                 if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(PlayerDummy.NAME)) {
-                    // Restaura la posicion del player
+                    // Restores the position of the player
                     world.entities.player.pos.x = world.entities.mobs[world.map.num][i].pos.x;
                     world.entities.player.pos.y = world.entities.mobs[world.map.num][i].pos.y;
-                    // Borra al personaje ficticio
+                    // Delete the fictional character
                     world.entities.mobs[world.map.num][i] = null;
                     break;
                 }
             }
 
-            // Ahora se puede dibujar al player
+            // Now you can draw the player
             world.entities.player.drawing = true;
 
-            // Reinicia la escena
+            // Restart the scene
             n = na;
             phase = 0;
             game.state = PLAY_STATE;

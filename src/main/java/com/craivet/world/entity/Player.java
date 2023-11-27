@@ -29,8 +29,8 @@ public class Player extends Mob {
     public boolean attackCanceled, lightUpdate;
     public Character character = Jester.getInstance();
 
-    /* Variable para saber cuando el player esta dentro de la boss area para evitar que se produsca el mismo evento cada
-     * ves que pasa por ese evento. Solo se vuelve a desactivar cuando muere en la boss area. */
+    /* Variable to know when the player is inside the boss area to prevent the same event from occurring every time he goes
+     * through that event. It is only deactivated again when you die in the boss area. */
     public boolean bossBattleOn;
 
     public Player(Game game, World world) {
@@ -50,7 +50,7 @@ public class Player extends Mob {
             checkAttack();
             game.keyboard.resetAccionKeys();
             if (game.keyboard.checkMovementKeys()) {
-                // TODO Mover a metodo
+                // TODO Move to method
                 down.tick();
                 up.tick();
                 left.tick();

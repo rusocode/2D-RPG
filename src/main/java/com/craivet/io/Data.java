@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Data implements Serializable {
 
     // TODO The environment is missing
-    int zone, map, x, y, life, maxlife, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, gold;
+    int zone, map, x, y, hp, maxHp, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, gold;
     int weapon, shield, light;
     Direction direction;
 

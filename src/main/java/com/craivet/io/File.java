@@ -14,12 +14,6 @@ import java.util.Objects;
 
 import static com.craivet.utils.Global.*;
 
-/**
- * Game files.
- *
- * @author Juan Debenedetti
- */
-
 public class File {
 
     private final Game game;
@@ -89,8 +83,8 @@ public class File {
             data.x = world.entities.player.pos.x;
             data.y = world.entities.player.pos.y;
             data.direction = world.entities.player.direction;
-            data.life = world.entities.player.stats.hp;
-            data.maxlife = world.entities.player.stats.maxHp;
+            data.hp = world.entities.player.stats.hp;
+            data.maxHp = world.entities.player.stats.maxHp;
             data.mana = world.entities.player.stats.mana;
             data.maxMana = world.entities.player.stats.maxMana;
             data.strength = world.entities.player.stats.strength;
@@ -158,8 +152,8 @@ public class File {
                 case RIGHT -> world.entities.player.currentFrame = world.entities.player.right.getFirstFrame();
             }
             world.entities.player.direction = data.direction;
-            world.entities.player.stats.hp = data.life;
-            world.entities.player.stats.maxHp = data.maxlife;
+            world.entities.player.stats.hp = data.hp;
+            world.entities.player.stats.maxHp = data.maxHp;
             world.entities.player.stats.mana = data.mana;
             world.entities.player.stats.maxMana = data.maxMana;
             world.entities.player.stats.strength = data.strength;
@@ -241,7 +235,6 @@ public class File {
      */
     private void loadTile(int i, String name, boolean solid) {
         world.map.tileData[i] = new Tile();
-        // if (name.equals("001")) world.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), 128, 128);
         world.map.tileData[i].texture = Utils.scaleImage(Utils.loadImage("textures/tiles/" + name), tile, tile);
         world.map.tileData[i].solid = solid;
     }

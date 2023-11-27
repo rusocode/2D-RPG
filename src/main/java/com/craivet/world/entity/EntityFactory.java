@@ -42,7 +42,7 @@ public class EntityFactory {
      * Create the items.
      */
     public void createItems() {
-        int i = 0; // TODO No se tiene que reiniciar la i despues de cada mapa?
+        int i = 0;
         items[ABANDONED_ISLAND][i++] = new Axe(game, world, 33, 7);
         items[ABANDONED_ISLAND][i++] = new Door(game, world, 14, 28);
         items[ABANDONED_ISLAND][i++] = new Door(game, world, 12, 12);
@@ -51,7 +51,9 @@ public class EntityFactory {
         // TODO What if there are many items?
         items[ABANDONED_ISLAND][i++].setLoot(new Key(game, world, 1));
         items[ABANDONED_ISLAND][i] = new Chest(game, world, 23, 40);
-        items[ABANDONED_ISLAND][i++].setLoot(new PotionRed(game, world, 30));
+        items[ABANDONED_ISLAND][i].setLoot(new PotionRed(game, world, 30));
+
+        i = 0;
 
         items[DUNGEON_BREG][i] = new Chest(game, world, 13, 16);
         items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, world, 20));
@@ -59,7 +61,9 @@ public class EntityFactory {
         items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, world, 5));
         items[DUNGEON_BREG][i] = new Chest(game, world, 40, 41);
         items[DUNGEON_BREG][i++].setLoot(new Pickaxe(game, world));
-        items[DUNGEON_BREG][i++] = new DoorIron(game, world, 18, 23);
+        items[DUNGEON_BREG][i] = new DoorIron(game, world, 18, 23);
+
+        i = 0;
 
         items[DUNGEON_BREG_SUB][i++] = new DoorIron(game, world, 25, 15);
         items[DUNGEON_BREG_SUB][i] = new Chest(game, world, 25, 8);

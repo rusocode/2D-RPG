@@ -3,8 +3,6 @@ package com.craivet.world.entity;
 /**
  * "Flags" are variables or individual bits used as boolean indicators to represent and control specific state or
  * conditions within the game.
- *
- * @author Juan Debenedetti
  */
 
 public final class Flags {

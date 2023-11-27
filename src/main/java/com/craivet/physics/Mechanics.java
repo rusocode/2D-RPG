@@ -6,8 +6,6 @@ import com.craivet.world.entity.mob.Box;
 
 /**
  * Game mechanics.
- *
- * @author Juan Debenedetti
  */
 
 public class Mechanics {

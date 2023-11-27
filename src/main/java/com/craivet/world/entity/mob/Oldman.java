@@ -47,7 +47,7 @@ public class Oldman extends Mob {
             // checkFollow(world.entities.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
-        // Si no esta colisionando, entonces actualiza los frames
+        // If it is not colliding, then update the frames
         if (!flags.colliding) {
             down.tick();
             up.tick();

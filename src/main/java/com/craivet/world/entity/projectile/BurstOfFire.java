@@ -15,11 +15,11 @@ import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * Este hechizo es distinto a Fireball ya que cuenta con 5 frames a diferencia de 2. Por lo tanto, lo logico seria que
- * se renderizen solo los 5 frames para cumplir con la animacion del hechizo correctamente y no hasta que se acabe la
- * vida de este (por lo tanto la vida estaria de mas).
+ * This spell is different from Fireball since it has 5 frames as opposed to 2. Therefore, the logic would be that only the 5
+ * frames are rendered to fulfill the animation of the spell correctly and not until its life runs out (therefore life would be
+ * unnecessary).
  * <p>
- * TODO Aumentar la duracion del ultimo frame
+ * TODO Increase the duration of the last frame
  */
 
 public class BurstOfFire extends Projectile {
@@ -45,42 +45,36 @@ public class BurstOfFire extends Projectile {
         right = new Animation(animationSpeed, sheet.right);
     }
 
-    /* Es importante saber que si se sobreescribe un metodo como por ejemplo update(), entonces se ANULA la funcion del
-     * metodo original (metodo heredado) por la nueva implementacion. */
+    /* It is important to know that if a method such as update() is overridden, then the function of the original method
+     * (inherited method) is OVERRIDED by the new implementation. */
 
     @Override
     public void update() {
 
-        // El hechizo deja de vivir (alive = false) cuando colisiona con un mob o cuando llega al ultimo frame
+        // The spell stops living (alive = false) when it collides with a mob or when it reaches the last frame
 
-        if (entity instanceof Player) { // TODO No creo que haga falta comprobar si el que lanza el hechizo es el player ya que es el unico que lo puede lanzar (por ahora)
-            int mobIndex = game.collision.checkEntity(this, world.entities.mobs);
-            if (mobIndex != -1) {
-                Mob mob = world.entities.mobs[world.map.num][mobIndex];
-                if (!mob.flags.invincible && mob.type != Type.NPC) {
-                    world.entities.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
-                    generateParticle(entity.projectile, mob);
-                    flags.alive = false;
-                    resetFrames(0);
-                }
+        int mobIndex = game.collision.checkEntity(this, world.entities.mobs);
+        if (mobIndex != -1) {
+            Mob mob = world.entities.mobs[world.map.num][mobIndex];
+            if (!mob.flags.invincible && mob.type != Type.NPC) {
+                world.entities.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
+                generateParticle(entity.projectile, mob);
+                flags.alive = false;
+                resetFrames(0);
             }
         }
 
-        // Si esta vivo
-        if (flags.alive) { // TODO Creo que no hace falta comprobar si esta vivo
+        pos.update(this, direction); // Update the position!
 
-            pos.update(this, direction); // Actualiza la posicion!
+        // Update the animation!
+        down.tick();
+        up.tick();
+        left.tick();
+        right.tick();
 
-            // Actualiza la animacion!
-            down.tick();
-            up.tick();
-            left.tick();
-            right.tick();
-
-        }
-
-        // Cuando llega al ultimo frame, deja de vivir
-        if (right.getCurrentFrame().equals(right.getLastFrame())) flags.alive = false;
+        // When it reaches the last frame, it stops living
+        if (down.getCurrentFrame().equals(down.getLastFrame()) || up.getCurrentFrame().equals(up.getLastFrame()) || left.getCurrentFrame().equals(left.getLastFrame()) || right.getCurrentFrame().equals(right.getLastFrame()))
+            flags.alive = false;
 
     }
 
