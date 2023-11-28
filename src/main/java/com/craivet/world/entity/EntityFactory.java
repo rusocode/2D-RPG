@@ -43,6 +43,7 @@ public class EntityFactory {
      */
     public void createItems() {
         int i = 0;
+
         items[ABANDONED_ISLAND][i++] = new Axe(game, world, 33, 7);
         items[ABANDONED_ISLAND][i++] = new Door(game, world, 14, 28);
         items[ABANDONED_ISLAND][i++] = new Door(game, world, 12, 12);
@@ -53,7 +54,7 @@ public class EntityFactory {
         items[ABANDONED_ISLAND][i] = new Chest(game, world, 23, 40);
         items[ABANDONED_ISLAND][i].setLoot(new PotionRed(game, world, 30));
 
-        i = 0;
+        i = 0; // Reset the subscript of the array
 
         items[DUNGEON_BREG][i] = new Chest(game, world, 13, 16);
         items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, world, 20));
@@ -75,27 +76,31 @@ public class EntityFactory {
      * Create the mobs.
      */
     public void createMobs() {
-        int i = 0, j = 0, k = 0, z = 0;
+        int i = 0;
 
         mobs[ABANDONED_ISLAND][i++] = new Oldman(game, world, 23, 16); // TODO set pos?
         mobs[ABANDONED_ISLAND][i++] = new Bat(game, world, 26, 19);
-        mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 24, 37);
+        mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 24, 38);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 34, 42);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 38, 42);
-        mobs[ABANDONED_ISLAND][i++] = new Orc(game, world, 12, 33);
+        mobs[ABANDONED_ISLAND][i] = new Orc(game, world, 12, 33);
+        
+        i = 0;
 
-        mobs[ABANDONED_ISLAND_MARKET][j++] = new Trader(game, world, 12, 7);
+        mobs[ABANDONED_ISLAND_MARKET][i] = new Trader(game, world, 12, 7);
 
-        mobs[DUNGEON_BREG][k++] = new Box(game, world, 20, 25);
-        mobs[DUNGEON_BREG][k++] = new Box(game, world, 11, 18);
-        mobs[DUNGEON_BREG][k++] = new Box(game, world, 23, 14);
-        mobs[DUNGEON_BREG][k++] = new Bat(game, world, 34, 39);
-        mobs[DUNGEON_BREG][k++] = new Bat(game, world, 36, 25);
-        mobs[DUNGEON_BREG][k++] = new Bat(game, world, 39, 26);
-        mobs[DUNGEON_BREG][k++] = new Bat(game, world, 28, 11);
-        mobs[DUNGEON_BREG][k++] = new Bat(game, world, 10, 19);
+        mobs[DUNGEON_BREG][i++] = new Box(game, world, 20, 25);
+        mobs[DUNGEON_BREG][i++] = new Box(game, world, 11, 18);
+        mobs[DUNGEON_BREG][i++] = new Box(game, world, 23, 14);
+        mobs[DUNGEON_BREG][i++] = new Bat(game, world, 34, 39);
+        mobs[DUNGEON_BREG][i++] = new Bat(game, world, 36, 25);
+        mobs[DUNGEON_BREG][i++] = new Bat(game, world, 39, 26);
+        mobs[DUNGEON_BREG][i++] = new Bat(game, world, 28, 11);
+        mobs[DUNGEON_BREG][i] = new Bat(game, world, 10, 19);
 
-        if (!Progress.bossDefeated) mobs[DUNGEON_BREG_SUB][z++] = new Skeleton(game, world, 23, 16);
+        i = 0;
+
+        if (!Progress.bossDefeated) mobs[DUNGEON_BREG_SUB][i] = new Skeleton(game, world, 23, 16);
 
     }
 
@@ -114,7 +119,9 @@ public class EntityFactory {
         interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 27, 31);
         interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 28, 31);
         interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 29, 31);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 30, 31);
+        interactives[ABANDONED_ISLAND][i] = new DryTree(game, world, 30, 31);
+
+        i = 0;
 
         interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 18, 30);
         interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 17, 31);
@@ -132,11 +139,13 @@ public class EntityFactory {
         interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 18, 14);
         interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 22, 28);
         interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 30, 28);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 32, 28);
+        interactives[DUNGEON_BREG][i] = new DestructibleWall(game, world, 32, 28);
+
+        i = 0;
 
         interactives[DUNGEON_BREG][i++] = new MetalPlate(game, world, 20, 22);
         interactives[DUNGEON_BREG][i++] = new MetalPlate(game, world, 8, 17);
-        interactives[DUNGEON_BREG][i++] = new MetalPlate(game, world, 39, 31);
+        interactives[DUNGEON_BREG][i] = new MetalPlate(game, world, 39, 31);
 
     }
     

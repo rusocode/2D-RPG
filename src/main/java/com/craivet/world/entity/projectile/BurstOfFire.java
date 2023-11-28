@@ -51,6 +51,8 @@ public class BurstOfFire extends Projectile {
     @Override
     public void update() {
 
+        // FIXME Hay un bug cuando colisiona con un mob, el siguiente hechizo hace una distancia mas corta
+
         // The spell stops living (alive = false) when it collides with a mob or when it reaches the last frame
 
         int mobIndex = game.collision.checkEntity(this, world.entities.mobs);
@@ -64,13 +66,16 @@ public class BurstOfFire extends Projectile {
             }
         }
 
-        pos.update(this, direction); // Update the position!
 
-        // Update the animation!
-        down.tick();
-        up.tick();
-        left.tick();
-        right.tick();
+        if (flags.alive) {
+            // Update the position!
+            pos.update(this, direction);
+            // Update the animation!
+            down.tick();
+            up.tick();
+            left.tick();
+            right.tick();
+        }
 
         // When it reaches the last frame, it stops living
         if (down.getCurrentFrame().equals(down.getLastFrame()) || up.getCurrentFrame().equals(up.getLastFrame()) || left.getCurrentFrame().equals(left.getLastFrame()) || right.getCurrentFrame().equals(right.getLastFrame()))

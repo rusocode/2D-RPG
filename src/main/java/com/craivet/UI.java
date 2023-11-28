@@ -583,7 +583,7 @@ public class UI {
         if (command == 1) g2.drawString(">", textX - 25, textY);
         // Control
         textY += tile;
-        g2.drawString("Control", textX, textY);
+        g2.drawString("Controls", textX, textY);
         if (command == 2) {
             g2.drawString(">", textX - 25, textY);
             if (game.keyboard.enter) {
@@ -643,57 +643,69 @@ public class UI {
     }
 
     private void renderOptionControlWindow(int frameX, int frameY, int frameWidth, int frameHeight) {
-        int textX, textY;
+        int textX, textY, gap = 22;
 
         // Title
-        changeFontSize(33);
-        String text = "Control";
+        changeFontSize(28);
+        String text = "Controls";
         textX = getXForCenteredText(text);
         textY = frameY + tile;
         g2.drawString(text, textX, textY);
         // Title
 
-        changeFontSize(22f);
+        changeFontSize(18);
 
         textX = frameX + tile;
-        textY += tile - 10;
-        g2.drawString("Move", textX, textY);
-        textY += tile;
+        textY += gap + 10;
         g2.drawString("Confirm/Attack", textX, textY);
-        textY += tile;
-        g2.drawString("Shoot", textX, textY);
-        textY += tile;
-        g2.drawString("Minimap", textX, textY);
-        textY += tile;
-        g2.drawString("Debug", textX, textY);
-        textY += tile;
-        g2.drawString("Character Screen", textX, textY);
-        textY += tile;
-        g2.drawString("Pickup item", textX, textY);
-        textY += tile;
+        textY += gap;
         g2.drawString("Options/Back", textX, textY);
+        textY += gap;
+        g2.drawString("Move", textX, textY);
+        textY += gap;
+        g2.drawString("Shoot", textX, textY);
+        textY += gap;
+        g2.drawString("Pickup Item", textX, textY);
+        textY += gap;
+        g2.drawString("Minimap", textX, textY);
+        textY += gap;
+        g2.drawString("Inventory", textX, textY);
+        textY += gap;
+        g2.drawString("Stats Window", textX, textY);
+        textY += gap;
+        g2.drawString("Debug", textX, textY);
+        textY += gap;
+        g2.drawString("Test Mode", textX, textY);
+        textY += gap;
+        g2.drawString("Hitbox", textX, textY);
 
         textX = frameX + frameWidth - tile * 3;
-        textY = (frameY + tile * 2) - 10;
-        g2.drawString("WASD", textX, textY);
-        textY += tile;
-        g2.drawString("ENTER", textX, textY);
-        textY += tile;
-        g2.drawString("F", textX, textY);
-        textY += tile;
-        g2.drawString("M", textX, textY);
-        textY += tile;
-        g2.drawString("T", textX, textY);
-        textY += tile;
-        g2.drawString("C", textX, textY);
-        textY += tile;
-        g2.drawString("P", textX, textY);
-        textY += tile;
+        textY = frameY + tile + gap + 10;
+        g2.drawString("Enter", textX, textY);
+        textY += gap;
         g2.drawString("ESC", textX, textY);
+        textY += gap;
+        g2.drawString("WASD", textX, textY);
+        textY += gap;
+        g2.drawString("F", textX, textY);
+        textY += gap;
+        g2.drawString("P", textX, textY);
+        textY += gap;
+        g2.drawString("M", textX, textY);
+        textY += gap;
+        g2.drawString("I", textX, textY);
+        textY += gap;
+        g2.drawString("C", textX, textY);
+        textY += gap;
+        g2.drawString("Q", textX, textY);
+        textY += gap;
+        g2.drawString("T", textX, textY);
+        textY += gap;
+        g2.drawString("H", textX, textY);
 
         // Back
         textX = frameX + tile;
-        textY = frameHeight + 30;
+        textY = frameHeight + 25;
         g2.drawString("Back", textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);

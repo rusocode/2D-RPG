@@ -24,7 +24,7 @@ public class Slime extends Mob {
         stats.attack = 2;
         stats.defense = 2;
         soundHit = sound_slime_hit;
-        hitbox = new Rectangle(3, 18, tile - 7, tile - 18);
+        hitbox = new Rectangle(3, 12, tile - 7, tile - 17);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
