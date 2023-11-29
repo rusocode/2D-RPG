@@ -9,7 +9,7 @@ import com.craivet.classes.Jester;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
-import com.craivet.world.entity.mob.Skeleton;
+import com.craivet.world.entity.mob.Lizard;
 import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.entity.projectile.BurstOfFire;
 import com.craivet.world.entity.projectile.Projectile;
@@ -91,7 +91,7 @@ public class Player extends Mob {
         stats.defense = getDefense();
 
         int scale = 1;
-        sheet.loadPlayerMovementFrames(player_movement, scale);
+        sheet.loadPlayerMovementFrames(player, scale);
         sheet.loadWeaponFrames(sword_frame, 16, 16, scale);
 
         // hitbox = new Rectangle(7, 32, 10, 24);
@@ -112,7 +112,7 @@ public class Player extends Mob {
 
         inventory.init();
 
-        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 21, Direction.DOWN);
+        pos.set(world, this, DUNGEON_BREG_SUB, BOSS, 25, 35, Direction.DOWN);
     }
 
     public void hit() {
@@ -301,7 +301,7 @@ public class Player extends Mob {
                     checkLevelUp();
 
                     // TODO Verificar de otra forma y en otro lugar
-                    if (mob instanceof Skeleton) {
+                    if (mob instanceof Lizard) {
                         for (int j = 0; j < world.entities.items[1].length; j++) {
                             if (world.entities.items[world.map.num][j] != null && world.entities.items[world.map.num][j].stats.name.equals(DoorIron.NAME)) {
                                 world.entities.items[world.map.num][j] = null;

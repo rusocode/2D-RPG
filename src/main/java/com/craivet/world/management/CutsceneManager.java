@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.world.World;
 import com.craivet.world.entity.PlayerDummy;
 import com.craivet.world.entity.item.DoorIron;
-import com.craivet.world.entity.mob.Skeleton;
+import com.craivet.world.entity.mob.Lizard;
 
 import static com.craivet.utils.Global.*;
 
@@ -66,7 +66,7 @@ public class CutsceneManager {
         // Wake up the boss
         if (phase == 2) {
             for (int i = 0; i < world.entities.mobs[1].length; i++) {
-                if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(Skeleton.NAME)) {
+                if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(Lizard.NAME)) {
                     world.entities.mobs[world.map.num][i].sleep = false; // Now the boss wakes up
                     game.ui.entity = world.entities.mobs[world.map.num][i]; // Passes the boss to the UI so it can render the dialog window
                     phase++;

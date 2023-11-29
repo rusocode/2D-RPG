@@ -12,11 +12,11 @@ import java.awt.*;
 import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
-public class Skeleton extends Mob {
+public class Lizard extends Mob {
 
-    public static final String NAME = "Skeleton";
+    public static final String NAME = "Lizard";
 
-    public Skeleton(Game game, World world, int col, int row) {
+    public Lizard(Game game, World world, int col, int row) {
         super(game, world, col, row);
         dialogue = new Dialogue(game);
         type = Type.HOSTILE;
@@ -32,15 +32,14 @@ public class Skeleton extends Mob {
         soundDeath = sound_mob_death;
         flags.boss = true;
         sleep = true;
-        int scale = 5;
+        int scale = 1;
         int size = tile * scale;
-        hitbox = new Rectangle(tile, tile, size - tile * 2, size - tile);
+        hitbox = new Rectangle(tile, tile * 2, 170 - tile * 2, 180 - tile * 3);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         attackbox.width = 90;
         attackbox.height = 90;
-        sheet.loadMovementFrames(skeleton_movement, tile, tile, scale);
-        sheet.loadAttackFrames(skeleton_attack, tile, tile, scale);
+        sheet.loadMovementFrames(lizard, 170, 180, scale);
 
         initDialogue();
     }
@@ -51,7 +50,7 @@ public class Skeleton extends Mob {
         // If the distance of the player with respect to the mob is less than 10 tiles
         if (getTileDistance(game.world.entities.player) < 10) moveTowardPlayer(game.world.entities.player, 30);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
-        if (!flags.hitting) isPlayerWithinAttackRange(60, tile * 6, tile * 4, 60);
+        // if (!flags.hitting) isPlayerWithinAttackRange(60, tile * 6, tile * 4, 60); // TODO No se utiliza ya que por ahora el boss no tiene un sprite de ataque
     }
 
     private void initDialogue() {

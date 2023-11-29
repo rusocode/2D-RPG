@@ -1,7 +1,6 @@
 package com.craivet.world.entity;
 
 import com.craivet.Game;
-import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
 
@@ -19,7 +18,7 @@ public class PlayerDummy extends Mob {
     public PlayerDummy(Game game, World world) {
         super(game, world);
         stats.name = NAME;
-        sheet.loadPlayerMovementFrames(player_movement, 1);
+        sheet.loadPlayerMovementFrames(player, 1);
     }
 
 }

@@ -93,11 +93,9 @@ public final class Assets {
     public static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "axe_frame.png"));
     public static final SpriteSheet pickaxe_frame = new SpriteSheet(Utils.loadImage(textures_items_path + "pickaxe_frame.png"));
     // Mobs
-    // public static final SpriteSheet orc_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc/attack.png"));
-    public static final SpriteSheet orc_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc/movement.png"));
-    public static final SpriteSheet skeleton_attack = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/attack.png"));
-    public static final SpriteSheet skeleton_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "skeleton/movement.png"));
-    public static final SpriteSheet player_movement = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player.png"));
+    public static final SpriteSheet orc = new SpriteSheet(Utils.loadImage(textures_mob_path + "orc.png"));
+    public static final SpriteSheet lizard = new SpriteSheet(Utils.loadImage(textures_mob_path + "lizard.png"));
+    public static final SpriteSheet player = new SpriteSheet(Utils.loadImage(textures_mob_path + "player/player.png"));
     public static final SpriteSheet bat = new SpriteSheet(Utils.loadImage(textures_mob_path + "bat.png"));
     public static final BufferedImage box = Utils.loadImage(textures_mob_path + "box.png");
     public static final SpriteSheet oldman = new SpriteSheet(Utils.loadImage(textures_mob_path + "oldman.png"));

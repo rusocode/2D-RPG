@@ -100,7 +100,7 @@ public class EntityFactory {
 
         i = 0;
 
-        if (!Progress.bossDefeated) mobs[DUNGEON_BREG_SUB][i] = new Skeleton(game, world, 23, 16);
+        if (!Progress.bossDefeated) mobs[DUNGEON_BREG_SUB][i] = new Lizard(game, world, 23, 16);
 
     }
 

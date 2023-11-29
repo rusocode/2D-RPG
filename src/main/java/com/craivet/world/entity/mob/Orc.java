@@ -29,7 +29,7 @@ public class Orc extends Mob {
         soundHit = sound_orc_hit;
         soundDeath = sound_orc_death;
         int scale = 1;
-        sheet.loadOrcMovementFrames(orc_movement, scale);
+        sheet.loadOrcMovementFrames(orc, scale);
         hitbox.x = 5;
         hitbox.y = 32;
         hitbox.width = 20;
