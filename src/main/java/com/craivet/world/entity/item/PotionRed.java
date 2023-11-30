@@ -1,5 +1,6 @@
 package com.craivet.world.entity.item;
 
+import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
@@ -30,10 +31,15 @@ public class PotionRed extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        game.playSound(sound_drink_potion);
-        entity.stats.hp += value;
-        if (entity.stats.hp > entity.stats.maxHp) entity.stats.hp = entity.stats.maxHp;
-        return true;
+        if (entity.stats.hp != entity.stats.maxHp) {
+            game.playSound(sound_drink_potion);
+            entity.stats.hp += value;
+            if (entity.stats.hp > entity.stats.maxHp) entity.stats.hp = entity.stats.maxHp;
+            return true;
+        } else {
+            game.ui.addMessageToConsole("You have a full life");
+            return false;
+        }
     }
 
 }

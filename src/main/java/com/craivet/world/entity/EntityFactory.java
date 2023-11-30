@@ -52,7 +52,7 @@ public class EntityFactory {
         // TODO What if there are many items?
         items[ABANDONED_ISLAND][i++].setLoot(new Key(game, world, 1));
         items[ABANDONED_ISLAND][i] = new Chest(game, world, 23, 40);
-        items[ABANDONED_ISLAND][i].setLoot(new PotionRed(game, world, 30));
+        items[ABANDONED_ISLAND][i].setLoot(new PotionBlue(game, world, 30));
 
         i = 0; // Reset the subscript of the array
 

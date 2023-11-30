@@ -123,7 +123,7 @@ public class UI {
 
     private void renderConsole() {
         int x = tile, y = tile * 4, gap = 50;
-        changeFontSize(24);
+        changeFontSize(18);
 
         for (int i = 0; i < console.size(); i++) {
             if (console.get(i) != null) {
@@ -388,12 +388,13 @@ public class UI {
 
             // Draw the quantity of the item if it has more than 1
             if (player.inventory.get(i).amount > 1) {
+                changeFontSize(8);
                 int amountX, amountY;
                 String amount = String.valueOf(player.inventory.get(i).amount);
                 amountX = getXforAlignToRightText(amount, slotX + gap);
                 amountY = slotY + tile - 2;
                 g2.setColor(Color.white);
-                g2.drawString(amount, amountX, amountY);
+                g2.drawString(amount, amountX - 2, amountY);
             }
 
             slotX += gap;
@@ -408,6 +409,9 @@ public class UI {
 
         // Cursor
         if (cursor) {
+
+            changeFontSize(14);
+
             int cursorX = slotXStart + (gap * slotCol);
             int cursorY = slotYStart + (gap * slotRow);
 

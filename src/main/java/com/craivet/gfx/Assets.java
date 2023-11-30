@@ -81,6 +81,7 @@ public final class Assets {
     public static final BufferedImage key = Utils.loadImage(textures_items_path + "key.png");
     public static final BufferedImage lantern = Utils.loadImage(textures_items_path + "lantern.png");
     public static final BufferedImage pickaxe = Utils.loadImage(textures_items_path + "pickaxe.png");
+    public static final BufferedImage potion_blue = Utils.loadImage(textures_items_path + "potion_blue.png");
     public static final BufferedImage potion_red = Utils.loadImage(textures_items_path + "potion_red.png");
     public static final BufferedImage shield_iron = Utils.loadImage(textures_items_path + "shield_iron.png");
     public static final BufferedImage shield_wood = Utils.loadImage(textures_items_path + "shield_wood.png");

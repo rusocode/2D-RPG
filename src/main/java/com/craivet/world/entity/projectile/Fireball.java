@@ -19,7 +19,7 @@ public class Fireball extends Projectile {
         stats.attack = 1;
         stats.knockbackValue = 5;
         flags.alive = false;
-        cost = 0;
+        cost = 2;
         sound = sound_fireball;
         hitbox = new Rectangle(0, 0, tile, tile);
         int scale = 1;

@@ -31,7 +31,7 @@ public class BurstOfFire extends Projectile {
         stats.attack = 4;
         stats.knockbackValue = 7;
         flags.alive = false;
-        cost = 0;
+        cost = 2;
         int scale = 2;
         sound = sound_burst_of_fire;
         hitbox = new Rectangle(0, 0, tile * scale - 35, tile * scale);

@@ -27,7 +27,7 @@ public class Stats {
         nextLvlExp = 10;
         speed = defaultSpeed = 2;
         hp = maxHp = 6;
-        mana = maxMana = 4;
+        mana = maxMana = 50;
         ammo = 5;
         gold = 0;
         strength = 1;

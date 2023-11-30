@@ -77,7 +77,7 @@ public final class Global {
     // Weapons interval
     public static final int INTERVAL_WEAPON = 30; // TODO o INTERVAL_ATTACK?
     // Projectiles interval
-    public static final int INTERVAL_PROJECTILE = 120;
+    public static final int INTERVAL_PROJECTILE = 60;
     // Others interval
     public static final int INTERVAL_INVINCIBLE = 60;
     public static final int INTERVAL_INVINCIBLE_INTERACTIVE = 20;

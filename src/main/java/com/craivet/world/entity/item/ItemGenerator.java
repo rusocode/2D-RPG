@@ -36,6 +36,7 @@ public class ItemGenerator {
             case Key.NAME -> item = new Key(game, world, 0);
             case Lantern.NAME -> item = new Lantern(game, world);
             case Pickaxe.NAME -> item = new Pickaxe(game, world);
+            case PotionBlue.NAME -> item = new PotionBlue(game, world, 0);
             /* In the case of trading with the Trader and buying 1 at a time, it would be inefficient since 1 object is
              * created per potion, therefore it would be good for the player to be able to determine the quantity to buy.
              * It is important to pass 0 when it is generated to only create the object and not specify a quantity. */
