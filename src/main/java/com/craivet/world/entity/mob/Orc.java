@@ -71,22 +71,8 @@ public class Orc extends Mob {
             screen.tempScreenX = getScreenX();
             screen.tempScreenY = getScreenY();
 
-            // If the hostile mob that is not a boss has the life bar activated
-            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) {
-                double oneScale = (double) tile / stats.maxHp;
-                double hpBarValue = oneScale * stats.hp;
+            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) game.ui.renderHpBar(this);
 
-                // If the calculated life bar value is less than 0, assign it 0 so that it is not drawn as negative value to the left
-                if (hpBarValue < 0) hpBarValue = 0;
-
-                g2.setColor(new Color(35, 35, 35));
-                g2.fillRect(getScreenX() - 1, getScreenY() + tile + 4 + hitbox.height, tile + 2, 7);
-
-                g2.setColor(new Color(255, 0, 30));
-                g2.fillRect(getScreenX(), getScreenY() + tile + 5 + hitbox.height, (int) hpBarValue, 5);
-
-                timer.timeHpBar(this, INTERVAL_HP_BAR);
-            }
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
                 timer.hpBarCounter = 0;

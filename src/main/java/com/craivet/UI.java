@@ -1,14 +1,11 @@
 package com.craivet;
 
 import com.craivet.world.entity.Entity;
-import com.craivet.gfx.SpriteSheet;
-import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Player;
 import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import static com.craivet.utils.Global.*;
@@ -37,13 +34,9 @@ public class UI {
 
     public int mainWindowState, subState, command; // TODO You could combine these two variables (mainWindowState and subState) referring to a single subState
 
-    // Icons
-    private BufferedImage heartFull, heartHalf, heartBlank, manaFull, manaBlank;
-
     public UI(Game game, World world) {
         this.game = game;
         this.world = world;
-        initHUD();
     }
 
     public void render(Graphics2D g2) {
@@ -58,10 +51,7 @@ public class UI {
         // Render windows depending on game state
         switch (game.state) {
             case MAIN_STATE -> renderMainWindow();
-            case PLAY_STATE -> {
-                renderHUD();
-                renderBossHpBar();
-            }
+            case PLAY_STATE -> renderBossHpBar();
             case DIALOGUE_STATE -> renderDialogueWindow();
             case STATS_STATE -> renderStatsWindow();
             case INVENTORY_STATE -> renderPlayerInventoryWindow(world.entities.player, true);
@@ -157,69 +147,39 @@ public class UI {
         }
     }
 
-    private void renderHUD() {
-        int iconSize = 16;
+    public void renderHpBar(Entity entity) {
+        int x = entity.getScreenX();
+        int y = entity.getScreenY() + entity.sheet.frame.getHeight();
+        int width = entity.sheet.frame.getWidth();
+        int height = 4;
 
-        // 2 life represents 1 heart (heartFull) and 1 life represents half a heart (heartHalf)
-        int x = iconSize / 2, y = iconSize / 2, i = 0;
+        double oneScale = (double) width / entity.stats.maxHp;
+        double hpBarValue = oneScale * entity.stats.hp;
 
-        // Draw the empty hearts
-        while (i < world.entities.player.stats.maxHp / 2) {
-            g2.drawImage(heartBlank, x, y, iconSize, iconSize, null);
-            i++;
-            x += iconSize;
-        }
+        g2.setColor(Color.black);
+        g2.fillRect(x - 1, y - 1, width + 2, (entity instanceof Player) ? height + 1 : height + 2); // En caso de que la barra de vida sea del player, entonces se agrega 1 px al alto de esta, y sino, se agrega 2 px al alto de la barra del mob hostil (esto lo hago para que se vea bien el borde inferior)
+        g2.setColor(Color.red);
+        g2.fillRect(x, y, (int) hpBarValue, height);
 
-        // Reset the position of x to draw the other hearts (half and full)
-        x = iconSize / 2;
-        i = 0;
-
-        // Draw the half and full hearts (current life) over the empty hearts from left to right while the player is alive
-        while (i < world.entities.player.stats.hp) {
-            g2.drawImage(heartHalf, x, y, iconSize, iconSize, null); // Draw half a heart
-            i++; // Increase the position of the next life value
-            if (i < world.entities.player.stats.hp) { // If it still has life, draw the other part of the heart (that is, a full heart)
-                g2.drawImage(heartFull, x, y, iconSize, iconSize, null);
-                i++;
-            }
-            x += iconSize;
-        }
-
-        // Draw the empty mana
-        x = (iconSize / 2) - 4;
-        y = (int) (iconSize * 1.5);
-        i = 0;
-        while (i < world.entities.player.stats.maxMana) {
-            g2.drawImage(manaBlank, x, y, iconSize, iconSize, null);
-            i++;
-            x += (iconSize / 2) + 1;
-        }
-
-        // Draw the current mana
-        x = (iconSize / 2) - 4;
-        i = 0;
-        while (i < world.entities.player.stats.mana) {
-            g2.drawImage(manaFull, x, y, iconSize, iconSize, null);
-            i++;
-            x += (iconSize / 2) + 1;
-        }
-
+        entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
     }
 
-    public void renderHpBar(Entity mob) {
-        double oneScale = (double) tile / mob.stats.maxHp;
-        double hpBarValue = oneScale * mob.stats.hp;
+    public void renderManaBar(Entity entity) {
+        int x = entity.getScreenX();
+        int y = entity.getScreenY() + entity.sheet.frame.getHeight();
+        int width = entity.sheet.frame.getWidth();
+        int height = 4;
 
-        // If the calculated life bar value is less than 0, assign it 0 so that it is not drawn as negative value to the left
-        if (hpBarValue < 0) hpBarValue = 0;
+        double oneScale = (double) width / entity.stats.maxMana;
+        double manaBarValue = oneScale * entity.stats.mana;
 
-        g2.setColor(new Color(35, 35, 35));
-        g2.fillRect(mob.getScreenX() - 1, mob.getScreenY() + tile + 4, tile + 2, 7);
+        y += height;
 
-        g2.setColor(new Color(255, 0, 30));
-        g2.fillRect(mob.getScreenX(), mob.getScreenY() + tile + 5, (int) hpBarValue, 5);
+        g2.setColor(Color.black);
+        g2.fillRect(x - 1, y, width + 2, height + 2);
+        g2.setColor(Color.blue);
+        g2.fillRect(x, y + 1, (int) manaBarValue, height);
 
-        mob.timer.timeHpBar(mob, INTERVAL_HP_BAR);
     }
 
     private void renderBossHpBar() {
@@ -966,15 +926,6 @@ public class UI {
         g2.setColor(new Color(255, 255, 255));
         g2.setStroke(new BasicStroke(3)); // Edge thickness
         g2.drawRoundRect(x, y, width, height, 10, 10);
-    }
-
-    private void initHUD() {
-        BufferedImage[] subimages = SpriteSheet.getIconsSubimages(icons, 16, 16);
-        heartFull = Utils.scaleImage(subimages[0], tile, tile);
-        heartHalf = Utils.scaleImage(subimages[1], tile, tile);
-        heartBlank = Utils.scaleImage(subimages[2], tile, tile);
-        manaFull = Utils.scaleImage(subimages[3], tile, tile);
-        manaBlank = Utils.scaleImage(subimages[4], tile, tile);
     }
 
     private void changeFontSize(float size) {

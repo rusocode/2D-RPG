@@ -17,7 +17,7 @@ public class SpriteSheet {
     public int movementNum = 1, attackNum = 1;
 
     public BufferedImage[] down, up, left, right; // Player with more than one frame for each direction
-    public BufferedImage[] weapon; // Item with a frame for each address
+    public BufferedImage[] weapon; // Item with a frame for each direction
 
     // Represents the first frame of each entity
     public BufferedImage frame;

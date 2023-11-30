@@ -106,8 +106,6 @@ public final class Assets {
     public static final SpriteSheet burst_of_fire = new SpriteSheet(Utils.loadImage(textures_projectile_path + "burst_of_fire.png"));
     public static final SpriteSheet fireball = new SpriteSheet(Utils.loadImage(textures_projectile_path + "fireball.png"));
     public static final BufferedImage stickyball = Utils.loadImage(textures_projectile_path + "stickyball.png");
-    // Gui
-    public static final SpriteSheet icons = new SpriteSheet(Utils.loadImage("textures/gui/icons.png"));
     // Interactive tiles
     public static final BufferedImage itile_destructiblewall = Utils.loadImage(textures_tiles_interactive_path + "destructiblewall.png");
     public static final BufferedImage itile_drytree = Utils.loadImage(textures_tiles_interactive_path + "drytree.png");

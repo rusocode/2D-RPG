@@ -28,7 +28,7 @@ public class Slime extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
-        sheet.loadMovementFrames(slime, 16, 16, 1);
+        sheet.loadMovementFrames(slime, 16, 16, 2);
     }
 
     @Override

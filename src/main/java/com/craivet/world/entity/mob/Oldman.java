@@ -79,6 +79,7 @@ public class Oldman extends Mob {
         dialogue.dialogues[1][2] = "I will continue exploring, until \nthen traveler!";
     }
 
+    // TODO Mover a SpriteSheet y no sobreescribir el metodo render
     private BufferedImage getCurrentAnimationFrame() {
         switch (direction) {
             case DOWN -> currentFrame = flags.colliding ? down.getFirstFrame() : down.getCurrentFrame();

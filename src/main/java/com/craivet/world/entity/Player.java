@@ -66,6 +66,8 @@ public class Player extends Mob {
 
     @Override
     public void render(Graphics2D g2) {
+        game.ui.renderHpBar(this);
+        game.ui.renderManaBar(this);
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (drawing) {
             if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
@@ -112,7 +114,7 @@ public class Player extends Mob {
 
         inventory.init();
 
-        pos.set(world, this, DUNGEON_BREG_SUB, BOSS, 25, 35, Direction.DOWN);
+        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 20, Direction.DOWN);
     }
 
     public void hit() {
