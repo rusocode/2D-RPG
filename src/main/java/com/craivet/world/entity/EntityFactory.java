@@ -13,7 +13,7 @@ import com.craivet.world.entity.interactive.MetalPlate;
 import static com.craivet.utils.Global.*;
 
 public class EntityFactory {
-    
+
     private final Game game;
     private final World world;
     private final Item[][] items;
@@ -28,7 +28,7 @@ public class EntityFactory {
         this.interactives = interactives;
         createEntities();
     }
-    
+
     /**
      * Create the entities.
      */
@@ -80,11 +80,11 @@ public class EntityFactory {
 
         mobs[ABANDONED_ISLAND][i++] = new Oldman(game, world, 23, 16); // TODO set pos?
         mobs[ABANDONED_ISLAND][i++] = new Bat(game, world, 26, 19);
-        mobs[ABANDONED_ISLAND][i++] = new RedSlime(game, world, 24, 38);
+        mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 24, 38);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 34, 42);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 38, 42);
         mobs[ABANDONED_ISLAND][i] = new Orc(game, world, 12, 33);
-        
+
         i = 0;
 
         mobs[ABANDONED_ISLAND_MARKET][i] = new Trader(game, world, 12, 7);
@@ -148,5 +148,5 @@ public class EntityFactory {
         interactives[DUNGEON_BREG][i] = new MetalPlate(game, world, 39, 31);
 
     }
-    
+
 }
