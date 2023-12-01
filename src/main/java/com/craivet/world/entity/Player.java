@@ -97,10 +97,9 @@ public class Player extends Mob {
         sheet.loadPlayerMovementFrames(player, scale);
         sheet.loadWeaponFrames(sword_frame, 16, 16, scale);
 
-        // hitbox = new Rectangle(7, 32, 10, 24);
-        int additionalPixelsForY = 15;
+        int additionalPixelsForY = 19;
         hitbox.width = sheet.frame.getWidth() / 2;
-        hitbox.height = sheet.frame.getHeight() / 2 - 3;
+        hitbox.height = sheet.frame.getHeight() / 2 - 6;
         hitbox.x = hitbox.width - hitbox.width / 2;
         hitbox.y = hitbox.height - hitbox.height / 2 + additionalPixelsForY;
         hitbox = new Rectangle(hitbox.x, hitbox.y, hitbox.width, hitbox.height);

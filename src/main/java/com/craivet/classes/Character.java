@@ -40,8 +40,9 @@ public abstract class Character {
         stats.lvl++;
         stats.exp -= stats.nextLvlExp;
         stats.nextLvlExp *= 2;
-        stats.strength++;
-        stats.dexterity++;
+        // Hace los incrementos cada dos lvl
+        stats.strength += stats.lvl % 2 == 0 ? 1 : 0;
+        stats.dexterity += stats.lvl % 2 == 0 ? 1 : 0;
         int increasedMaxHp = stats.lvl % 2 == 0 ? getIncreaseMaxHp() : 0;
         int increasedMaxMana = stats.lvl % 2 == 0 ? getIncreaseMaxMana() : 0;
         if (increasedMaxHp > 0) stats.increaseMaxHp(increasedMaxHp);

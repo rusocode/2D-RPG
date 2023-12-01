@@ -23,7 +23,7 @@ public class Lizard extends Mob {
         type = Type.HOSTILE;
         stats.name = NAME;
         stats.speed = stats.defaultSpeed = 1;
-        stats.hp = stats.maxHp = 5;
+        stats.hp = stats.maxHp = 50;
         stats.exp = 50;
         stats.attack = 10;
         stats.defense = 2;
