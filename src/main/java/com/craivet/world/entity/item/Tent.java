@@ -18,7 +18,7 @@ public class Tent extends Item {
         type = Type.CONSUMABLE;
         stats.name = NAME;
         description = "[" +stats. name + "]\nYou can sleep until\nnext morning.";
-        price = 1200;
+        price = 380;
         sheet.frame = Utils.scaleImage(tent, tile, tile);
     }
 

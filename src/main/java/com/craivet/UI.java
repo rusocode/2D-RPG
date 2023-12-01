@@ -51,7 +51,10 @@ public class UI {
         // Render windows depending on game state
         switch (game.state) {
             case MAIN_STATE -> renderMainWindow();
-            case PLAY_STATE -> renderBossHpBar();
+            case PLAY_STATE -> {
+                renderBossHpBar();
+                renderLvl();
+            }
             case DIALOGUE_STATE -> renderDialogueWindow();
             case STATS_STATE -> renderStatsWindow();
             case INVENTORY_STATE -> renderPlayerInventoryWindow(world.entities.player, true);
@@ -63,6 +66,41 @@ public class UI {
         }
 
         renderConsole();
+
+    }
+
+    public void renderHpBar(Entity entity) {
+        int x = entity.getScreenX();
+        int y = entity.getScreenY() + entity.sheet.frame.getHeight();
+        int width = entity.sheet.frame.getWidth();
+        int height = 4;
+
+        double oneScale = (double) width / entity.stats.maxHp;
+        double hpBarValue = oneScale * entity.stats.hp;
+
+        g2.setColor(Color.black);
+        g2.fillRect(x - 1, y - 1, width + 2, (entity instanceof Player) ? height + 1 : height + 2); // En caso de que la barra de vida sea del player, entonces se agrega 1 px al alto de esta, y sino, se agrega 2 px al alto de la barra del mob hostil (esto lo hago para que se vea bien el borde inferior)
+        g2.setColor(Color.red);
+        g2.fillRect(x, y, (int) hpBarValue, height);
+
+        entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
+    }
+
+    public void renderManaBar(Entity entity) {
+        int x = entity.getScreenX();
+        int y = entity.getScreenY() + entity.sheet.frame.getHeight();
+        int width = entity.sheet.frame.getWidth();
+        int height = 4;
+
+        double oneScale = (double) width / entity.stats.maxMana;
+        double manaBarValue = oneScale * entity.stats.mana;
+
+        y += height;
+
+        g2.setColor(Color.black);
+        g2.fillRect(x - 1, y, width + 2, height + 2);
+        g2.setColor(Color.blue);
+        g2.fillRect(x, y + 1, (int) manaBarValue, height);
 
     }
 
@@ -121,67 +159,6 @@ public class UI {
         }
     }
 
-    private void renderConsole() {
-        int x = tile, y = tile * 4, gap = 50;
-        changeFontSize(18);
-
-        for (int i = 0; i < console.size(); i++) {
-            if (console.get(i) != null) {
-                // Shade
-                g2.setColor(Color.black);
-                g2.drawString(console.get(i), x + 2, y + 2);
-                // Main color
-                g2.setColor(Color.white);
-                g2.drawString(console.get(i), x, y);
-                // Acts as consoleCounter++
-                consoleCounter.set(i, consoleCounter.get(i) + 1);
-
-                y += gap;
-
-                // After 3 seconds, delete the messages in the console
-                if (consoleCounter.get(i) > 180) {
-                    console.remove(i);
-                    consoleCounter.remove(i);
-                }
-            }
-        }
-    }
-
-    public void renderHpBar(Entity entity) {
-        int x = entity.getScreenX();
-        int y = entity.getScreenY() + entity.sheet.frame.getHeight();
-        int width = entity.sheet.frame.getWidth();
-        int height = 4;
-
-        double oneScale = (double) width / entity.stats.maxHp;
-        double hpBarValue = oneScale * entity.stats.hp;
-
-        g2.setColor(Color.black);
-        g2.fillRect(x - 1, y - 1, width + 2, (entity instanceof Player) ? height + 1 : height + 2); // En caso de que la barra de vida sea del player, entonces se agrega 1 px al alto de esta, y sino, se agrega 2 px al alto de la barra del mob hostil (esto lo hago para que se vea bien el borde inferior)
-        g2.setColor(Color.red);
-        g2.fillRect(x, y, (int) hpBarValue, height);
-
-        entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
-    }
-
-    public void renderManaBar(Entity entity) {
-        int x = entity.getScreenX();
-        int y = entity.getScreenY() + entity.sheet.frame.getHeight();
-        int width = entity.sheet.frame.getWidth();
-        int height = 4;
-
-        double oneScale = (double) width / entity.stats.maxMana;
-        double manaBarValue = oneScale * entity.stats.mana;
-
-        y += height;
-
-        g2.setColor(Color.black);
-        g2.fillRect(x - 1, y, width + 2, height + 2);
-        g2.setColor(Color.blue);
-        g2.fillRect(x, y + 1, (int) manaBarValue, height);
-
-    }
-
     private void renderBossHpBar() {
         for (int i = 0; i < world.entities.mobs[1].length; i++) {
             Mob mob = world.entities.mobs[world.map.num][i];
@@ -205,6 +182,30 @@ public class UI {
                 g2.drawString(mob.stats.name, x + 4, y - 10);
             }
         }
+    }
+
+    private void renderLvl() {
+        int x = tile - 15, y = tile, gap = 20;
+        g2.setFont(g2.getFont().deriveFont(16f));
+        g2.setColor(Color.black);
+        g2.drawString("Level: " + world.entities.player.stats.lvl, x + 2, y + 2);
+        g2.setColor(Color.white);
+        g2.drawString("Level: " + world.entities.player.stats.lvl, x, y);
+        y += gap;
+        g2.setColor(Color.black);
+        g2.drawString("Exp: " + world.entities.player.stats.exp, x + 2, y + 2);
+        g2.setColor(Color.white);
+        g2.drawString("Exp: " + world.entities.player.stats.exp, x, y);
+        y += gap;
+        g2.setColor(Color.black);
+        g2.drawString("Next Exp: " + world.entities.player.stats.nextLvlExp, x + 2, y + 2);
+        g2.setColor(Color.white);
+        g2.drawString("Next Exp: " + world.entities.player.stats.nextLvlExp, x, y);
+        y += gap;
+        g2.setColor(Color.black);
+        g2.drawString("Gold: " + world.entities.player.stats.gold, x + 2, y + 2);
+        g2.setColor(Color.white);
+        g2.drawString("Gold: " + world.entities.player.stats.gold, x, y);
     }
 
     public void renderDialogueWindow() {
@@ -930,6 +931,32 @@ public class UI {
         g2.setColor(new Color(255, 255, 255));
         g2.setStroke(new BasicStroke(3)); // Edge thickness
         g2.drawRoundRect(x, y, width, height, 10, 10);
+    }
+
+    private void renderConsole() {
+        int x = tile, y = tile * 5 - 10, gap = 50;
+        changeFontSize(18);
+
+        for (int i = 0; i < console.size(); i++) {
+            if (console.get(i) != null) {
+                // Shade
+                g2.setColor(Color.black);
+                g2.drawString(console.get(i), x + 2, y + 2);
+                // Main color
+                g2.setColor(Color.white);
+                g2.drawString(console.get(i), x, y);
+                // Acts as consoleCounter++
+                consoleCounter.set(i, consoleCounter.get(i) + 1);
+
+                y += gap;
+
+                // After 3 seconds, delete the messages in the console
+                if (consoleCounter.get(i) > 180) {
+                    console.remove(i);
+                    consoleCounter.remove(i);
+                }
+            }
+        }
     }
 
     private void changeFontSize(float size) {

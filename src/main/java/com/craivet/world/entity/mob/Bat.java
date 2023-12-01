@@ -37,7 +37,7 @@ public class Bat extends Mob {
 
     @Override
     public void checkDrop() {
-        if (Utils.random(100) <= PROBABILITY_KEY_DROP) drop(this, new Gold(game, world));
+        if (Utils.random(100) <= PROBABILITY_GOLD_DROP) drop(this, new Gold(game, world, 10));
     }
 
 }

@@ -22,7 +22,7 @@ public class Fireball extends Projectile {
         cost = 2;
         sound = sound_fireball;
         hitbox = new Rectangle(0, 0, tile, tile);
-        int scale = 1;
+        int scale = 2;
         sheet.loadMovementFrames(fireball, 16, 16, scale);
         interval = 80;
     }

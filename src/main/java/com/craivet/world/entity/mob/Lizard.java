@@ -6,6 +6,7 @@ import com.craivet.io.Progress;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.DoorIron;
+import com.craivet.world.entity.item.Gold;
 
 import java.awt.*;
 
@@ -66,6 +67,8 @@ public class Lizard extends Mob {
 
     @Override
     public void checkDrop() {
+
+        drop(this, new Gold(game, world, 1000));
 
         Progress.bossDefeated = true;
 

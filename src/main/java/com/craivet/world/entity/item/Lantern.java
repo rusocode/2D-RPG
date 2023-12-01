@@ -17,7 +17,7 @@ public class Lantern extends Item {
         type = Type.LIGHT;
         stats.name = NAME;
         description = "[" + stats.name + "]\nIlluminaties your \nsurroundings.";
-        price = 200;
+        price = 45;
         lightRadius = 350;
         sheet.frame = Utils.scaleImage(lantern, tile, tile);
     }

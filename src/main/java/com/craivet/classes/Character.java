@@ -44,14 +44,8 @@ public abstract class Character {
         stats.dexterity++;
         int increasedMaxHp = stats.lvl % 2 == 0 ? getIncreaseMaxHp() : 0;
         int increasedMaxMana = stats.lvl % 2 == 0 ? getIncreaseMaxMana() : 0;
-        if (increasedMaxHp > 0) {
-            stats.increaseMaxHp(increasedMaxHp);
-            stats.fullHp();
-        }
-        if (increasedMaxMana > 0) {
-            stats.increaseMaxMana(increasedMaxMana);
-            stats.fullMana();
-        }
+        if (increasedMaxHp > 0) stats.increaseMaxHp(increasedMaxHp);
+        if (increasedMaxMana > 0) stats.increaseMaxMana(increasedMaxMana);
     }
 
     public String getName() {

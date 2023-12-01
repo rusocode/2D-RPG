@@ -22,9 +22,9 @@ public class Slime extends Mob {
         stats.hp = stats.maxHp = 4;
         stats.exp = 10;
         stats.attack = 2;
-        stats.defense = 2;
+        stats.defense = 1;
         soundHit = sound_slime_hit;
-        hitbox = new Rectangle(3, 12, tile - 7, tile - 17);
+        hitbox = new Rectangle(3, 6, tile - 7, tile - 11);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
@@ -50,7 +50,7 @@ public class Slime extends Mob {
 
     @Override
     public void checkDrop() {
-        if (Utils.random(100) <= PROBABILITY_GOLD_DROP) drop(this, new Gold(game, world));
+        if (Utils.random(100) <= PROBABILITY_GOLD_DROP) drop(this, new Gold(game, world, 25));
     }
 
     private void checkShoot() {

@@ -17,9 +17,9 @@ public class PotionBlue extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         type = Type.CONSUMABLE;
         stats.name = NAME;
-        value = 2;
-        description = "[" + stats.name + "]\nIncrease your mana \nby " + value + ".";
-        price = 30;
+        points = 2;
+        description = "[" + stats.name + "]\nIncrease your mana \nby " + points + ".";
+        price = 4;
         this.amount = amount;
         stackable = true;
         sheet.frame = Utils.scaleImage(potion_blue, tile, tile);
@@ -29,7 +29,7 @@ public class PotionBlue extends Item {
     public boolean use(Entity entity) {
         if (entity.stats.mana != entity.stats.maxMana) {
             game.playSound(sound_drink_potion);
-            entity.stats.mana += value;
+            entity.stats.mana += points;
             if (entity.stats.mana > entity.stats.maxMana) entity.stats.mana = entity.stats.maxMana;
             return true;
         } else {

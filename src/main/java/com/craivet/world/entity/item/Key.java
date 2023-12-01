@@ -25,7 +25,6 @@ public class Key extends Item {
         type = Type.CONSUMABLE;
         stats.name = NAME;
         description = "[" + stats.name + "]\nIt opens a door.";
-        price = 100;
         this.amount = amount;
         stackable = true;
         sheet.frame = Utils.scaleImage(key, tile, tile);

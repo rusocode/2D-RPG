@@ -1,6 +1,5 @@
 package com.craivet.world.entity.item;
 
-import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
@@ -21,9 +20,9 @@ public class PotionRed extends Item {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         type = Type.CONSUMABLE;
         stats.name = NAME;
-        value = 2;
-        description = "[" + stats.name + "]\nHeals your life by " + value + ".";
-        price = 25;
+        points = 2;
+        description = "[" + stats.name + "]\nHeals your life by " + points + ".";
+        price = 2;
         this.amount = amount;
         stackable = true;
         sheet.frame = Utils.scaleImage(potion_red, tile, tile);
@@ -33,7 +32,7 @@ public class PotionRed extends Item {
     public boolean use(Entity entity) {
         if (entity.stats.hp != entity.stats.maxHp) {
             game.playSound(sound_drink_potion);
-            entity.stats.hp += value;
+            entity.stats.hp += points;
             if (entity.stats.hp > entity.stats.maxHp) entity.stats.hp = entity.stats.maxHp;
             return true;
         } else {

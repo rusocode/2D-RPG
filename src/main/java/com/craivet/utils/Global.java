@@ -68,7 +68,6 @@ public final class Global {
     public static final int PROBABILITY_GOLD_DROP = 47;
     public static final int PROBABILITY_STONE_DROP = 90;
     public static final int PROBABILITY_WOOD_DROP = 80;
-    public static final int PROBABILITY_KEY_DROP = 30;
 
     // Animations interval
     public static final int INTERVAL_DEAD_ANIMATION = 10;

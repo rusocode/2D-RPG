@@ -21,7 +21,7 @@ public class Item extends Entity {
     public boolean solid, stackable;
     public boolean opened, empty;
 
-    protected int value;
+    protected int points;
 
     public Item(Game game, World world, int col, int row) {
         super(game, world, col, row);

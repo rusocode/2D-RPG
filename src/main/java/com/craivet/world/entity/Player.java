@@ -10,6 +10,7 @@ import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.mob.Lizard;
+import com.craivet.world.entity.mob.RedSlime;
 import com.craivet.world.entity.mob.Slime;
 import com.craivet.world.entity.projectile.BurstOfFire;
 import com.craivet.world.entity.projectile.Projectile;
@@ -66,10 +67,10 @@ public class Player extends Mob {
 
     @Override
     public void render(Graphics2D g2) {
-        game.ui.renderHpBar(this);
-        game.ui.renderManaBar(this);
         if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
         if (drawing) {
+            game.ui.renderHpBar(this);
+            game.ui.renderManaBar(this);
             if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
             else getCurrentItemFrame(g2);
         }
@@ -295,7 +296,7 @@ public class Player extends Mob {
                 // TODO Should there be a method?
                 if (mob.stats.hp <= 0) {
                     game.playSound(sound_mob_death);
-                    if (!(mob instanceof Slime)) game.playSound(mob.soundDeath);
+                    if (!(mob instanceof Slime || mob instanceof RedSlime)) game.playSound(mob.soundDeath);
                     mob.flags.dead = true;
                     game.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
                     game.ui.addMessageToConsole("Exp + " + mob.stats.exp);
@@ -371,8 +372,6 @@ public class Player extends Mob {
             character.upStats(this);
             stats.attack = getAttack();
             stats.defense = getDefense();
-            dialogue.dialogues[0][0] = "You are level " + stats.lvl + "!";
-            dialogue.startDialogue(DIALOGUE_STATE, this, 0);
         }
     }
 

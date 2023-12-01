@@ -52,14 +52,14 @@ public class EntityFactory {
         // TODO What if there are many items?
         items[ABANDONED_ISLAND][i++].setLoot(new Key(game, world, 1));
         items[ABANDONED_ISLAND][i] = new Chest(game, world, 23, 40);
-        items[ABANDONED_ISLAND][i].setLoot(new PotionBlue(game, world, 30));
+        items[ABANDONED_ISLAND][i].setLoot(new PotionBlue(game, world, 2));
 
         i = 0; // Reset the subscript of the array
 
         items[DUNGEON_BREG][i] = new Chest(game, world, 13, 16);
-        items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, world, 20));
+        items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, world, 10));
         items[DUNGEON_BREG][i] = new Chest(game, world, 26, 34);
-        items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, world, 5));
+        items[DUNGEON_BREG][i++].setLoot(new PotionBlue(game, world, 5));
         items[DUNGEON_BREG][i] = new Chest(game, world, 40, 41);
         items[DUNGEON_BREG][i++].setLoot(new Pickaxe(game, world));
         items[DUNGEON_BREG][i] = new DoorIron(game, world, 18, 23);
@@ -80,7 +80,7 @@ public class EntityFactory {
 
         mobs[ABANDONED_ISLAND][i++] = new Oldman(game, world, 23, 16); // TODO set pos?
         mobs[ABANDONED_ISLAND][i++] = new Bat(game, world, 26, 19);
-        mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 24, 38);
+        mobs[ABANDONED_ISLAND][i++] = new RedSlime(game, world, 24, 38);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 34, 42);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 38, 42);
         mobs[ABANDONED_ISLAND][i] = new Orc(game, world, 12, 33);
@@ -92,9 +92,9 @@ public class EntityFactory {
         mobs[DUNGEON_BREG][i++] = new Box(game, world, 20, 25);
         mobs[DUNGEON_BREG][i++] = new Box(game, world, 11, 18);
         mobs[DUNGEON_BREG][i++] = new Box(game, world, 23, 14);
-        mobs[DUNGEON_BREG][i++] = new Bat(game, world, 34, 39);
-        mobs[DUNGEON_BREG][i++] = new Bat(game, world, 36, 25);
-        mobs[DUNGEON_BREG][i++] = new Bat(game, world, 39, 26);
+        mobs[DUNGEON_BREG][i++] = new RedSlime(game, world, 34, 39);
+        mobs[DUNGEON_BREG][i++] = new RedSlime(game, world, 36, 25);
+        mobs[DUNGEON_BREG][i++] = new RedSlime(game, world, 39, 26);
         mobs[DUNGEON_BREG][i++] = new Bat(game, world, 28, 11);
         mobs[DUNGEON_BREG][i] = new Bat(game, world, 10, 19);
 
