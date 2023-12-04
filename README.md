@@ -50,7 +50,7 @@ Although the resolution of the tiles is fixed at 32x32 pixels, it is possible to
 There is no clear objective of how the project will continue, i simply started it with the idea of being able to show graphics on the screen and it ended up getting out of hand. I'm going to continue polishing the code as much as i can without adding more features so as not to extend the code. The current idea would be to have it as clean as possible to have a "possible" reference of the structure of a game.
 
 ## Thanks and credits
-First of all I want to thank **[@RyiSnow](https://www.youtube.com/@RyiSnow)** for sharing his knowledge to the public with his playlist [How to Make a 2D Game in Java](https://www.youtube.com/watch?v=om59cwR7psI&list=PL_QPQmz5C6WUF-pOQDsbsKbaBZqXj4qSq). Much of the structure of the game is based on its tutorial. Also to the Argentum Online (AO) community for inspiring me to create my own game engine thanks to their open source mentality. Some graphics and sounds were taken from the AO community, so if you are the author of one of them do not hesitate to write to me to give you the credits.
+I want to thank the Argentum Online (AO) community for inspiring me to create my own game engine thanks to their open source mentality. Some graphics and sounds were taken from there, so if you are the author of any of them, do not hesitate to write to me to give you the credits.
 
 ### Bugs and Tasks
 If you want to collaborate you can see the following list of bugs and tasks: https://trello.com/b/Z3rOH49q/2d-rpg
