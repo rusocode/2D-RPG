@@ -2,6 +2,7 @@ package com.craivet.world.entity.mob;
 
 import com.craivet.Dialogue;
 import com.craivet.Game;
+import com.craivet.assets.*;
 import com.craivet.io.Progress;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
@@ -10,7 +11,6 @@ import com.craivet.world.entity.item.Gold;
 
 import java.awt.*;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class Lizard extends Mob {
@@ -29,8 +29,8 @@ public class Lizard extends Mob {
         stats.defense = 2;
         stats.motion1 = 25;
         stats.motion2 = 50;
-        soundHit = sound_mob_hit;
-        soundDeath = sound_mob_death;
+        soundHit = Assets.getAudio(AudioAssets.Type.MOB_HIT);
+        soundDeath = Assets.getAudio(AudioAssets.Type.MOB_DEATH);
         flags.boss = true;
         sleep = true;
         int scale = 1;
@@ -40,7 +40,7 @@ public class Lizard extends Mob {
         hitboxDefaultY = hitbox.y;
         attackbox.width = 90;
         attackbox.height = 90;
-        sheet.loadMovementFrames(lizard, 170, 180, scale);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.LIZARD), 170, 180, scale);
 
         initDialogue();
     }

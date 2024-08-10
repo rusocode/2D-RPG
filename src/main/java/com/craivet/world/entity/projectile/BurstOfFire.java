@@ -1,17 +1,18 @@
 package com.craivet.world.entity.projectile;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
+import com.craivet.assets.SpriteSheetAssets;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
-import com.craivet.world.entity.Player;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
@@ -33,9 +34,9 @@ public class BurstOfFire extends Projectile {
         flags.alive = false;
         cost = 2;
         int scale = 2;
-        sound = sound_burst_of_fire;
+        sound = Assets.getAudio(AudioAssets.Type.BURST_OF_FIRE);
         hitbox = new Rectangle(0, 0, tile * scale - 35, tile * scale);
-        sheet.loadBurstOfFireFrames(burst_of_fire, scale);
+        sheet.loadBurstOfFireFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.BURST_OF_FIRE), scale);
         interval = 180;
 
         int animationSpeed = 120; // 80

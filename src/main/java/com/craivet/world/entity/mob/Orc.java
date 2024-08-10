@@ -1,6 +1,7 @@
 package com.craivet.world.entity.mob;
 
 import com.craivet.Game;
+import com.craivet.assets.*;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
@@ -10,7 +11,6 @@ import com.craivet.world.entity.item.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class Orc extends Mob {
@@ -26,10 +26,10 @@ public class Orc extends Mob {
         stats.defense = 2;
         stats.motion1 = 25;
         stats.motion2 = 30;
-        soundHit = sound_orc_hit;
-        soundDeath = sound_orc_death;
+        soundHit = Assets.getAudio(AudioAssets.Type.ORC_HIT);
+        soundDeath = Assets.getAudio(AudioAssets.Type.ORC_DEATH);
         int scale = 1;
-        sheet.loadOrcMovementFrames(orc, scale);
+        sheet.loadOrcMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.ORC), scale);
         hitbox.x = 5;
         hitbox.y = 32;
         hitbox.width = 20;

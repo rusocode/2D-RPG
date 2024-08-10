@@ -1,6 +1,7 @@
 package com.craivet.world.entity.mob;
 
 import com.craivet.Game;
+import com.craivet.assets.*;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.Gold;
@@ -10,7 +11,6 @@ import com.craivet.utils.*;
 import java.awt.*;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class Slime extends Mob {
 
@@ -23,12 +23,12 @@ public class Slime extends Mob {
         stats.exp = 10;
         stats.attack = 2;
         stats.defense = 1;
-        soundHit = sound_slime_hit;
+        soundHit = Assets.getAudio(AudioAssets.Type.SLIME_HIT);
         hitbox = new Rectangle(3, 6, tile - 7, tile - 11);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
-        sheet.loadMovementFrames(slime, 16, 16, 2);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.SLIME), 16, 16, 2);
     }
 
     @Override

@@ -1,11 +1,12 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class Lantern extends Item {
@@ -19,7 +20,7 @@ public class Lantern extends Item {
         description = "[" + stats.name + "]\nIlluminaties your \nsurroundings.";
         price = 45;
         lightRadius = 350;
-        sheet.frame = Utils.scaleImage(lantern, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.LANTERN), tile, tile);
     }
 
 }

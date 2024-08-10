@@ -1,16 +1,15 @@
 package com.craivet.world.entity.mob;
 
 import com.craivet.Game;
+import com.craivet.assets.*;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.Gold;
 import com.craivet.world.entity.projectile.Fireball;
-import com.craivet.world.entity.projectile.StickyBall;
 import com.craivet.utils.*;
 
 import java.awt.*;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class RedSlime extends Mob {
@@ -24,12 +23,12 @@ public class RedSlime extends Mob {
         stats.exp = 15;
         stats.attack = 3;
         stats.defense = 2;
-        soundHit = sound_slime_hit;
+        soundHit = Assets.getAudio(AudioAssets.Type.SLIME_HIT);
         hitbox = new Rectangle(3, 6, tile - 7, tile - 11);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new Fireball(game, world);
-        sheet.loadMovementFrames(redslime, 16, 16, 2);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.RED_SLIME), 16, 16, 2);
     }
 
     @Override

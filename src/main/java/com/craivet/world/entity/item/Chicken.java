@@ -1,13 +1,12 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.*;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
 
-import static com.craivet.gfx.Assets.chicken;
-import static com.craivet.gfx.Assets.sound_eat;
 import static com.craivet.utils.Global.tile;
 
 public class Chicken extends Item {
@@ -20,12 +19,12 @@ public class Chicken extends Item {
         stats.name = NAME;
         description = "[" + stats.name + "]\nYes...\nLizard's treasure.";
         price = 1;
-        sheet.frame = Utils.scaleImage(chicken, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.CHICKEN), tile, tile);
     }
 
     @Override
     public boolean use(Entity entity) {
-        game.playSound(sound_eat);
+        game.playSound(Assets.getAudio(AudioAssets.Type.EAT));
         world.entities.player.stats.hp = world.entities.player.stats.maxHp;
         world.entities.player.stats.mana = world.entities.player.stats.maxMana;
         return true;

@@ -7,8 +7,8 @@ import java.util.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * The Inventory class has the basic methods of an inventory, such as adding an item (add), removing an item (remove),
- * obtaining the slot of the specified item (getSlot), among others.
+ * The Inventory class has the basic methods of an inventory, such as adding an item (add), removing an item (remove), obtaining
+ * the slot of the specified item (getSlot), among others.
  */
 
 public class Inventory {
@@ -42,7 +42,7 @@ public class Inventory {
      * @return the item.
      */
     public Item get(int i) {
-        return inventory.get(i);
+        return inventory.get(i); // TODO Hay un bug medio raro con un IOOBE = Index 5 out of bounds for length 5. Cuando se mueve el cursor por el inventario
     }
 
     /**

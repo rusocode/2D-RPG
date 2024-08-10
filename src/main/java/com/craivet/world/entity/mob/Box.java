@@ -3,6 +3,7 @@ package com.craivet.world.entity.mob;
 import com.craivet.Dialogue;
 import com.craivet.Direction;
 import com.craivet.Game;
+import com.craivet.assets.*;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
@@ -14,7 +15,6 @@ import com.craivet.world.entity.interactive.MetalPlate;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class Box extends Mob {
@@ -31,7 +31,7 @@ public class Box extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogue.set = -1;
-        sheet.frame = Utils.scaleImage(box, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.BOX), tile, tile);
         initDialogue();
     }
 
@@ -94,7 +94,7 @@ public class Box extends Mob {
             if (distance < 8) { // Link the box to the plate if it is less than 8 pixels away
                 if (linkedEntity == null) {
                     linkedEntity = plate;
-                    game.playSound(sound_chipwall);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.CHIPWALL));
                 }
                 // Detaches the box from the plate if it moves from this plate again
             } else if (linkedEntity == plate) linkedEntity = null;
@@ -109,7 +109,7 @@ public class Box extends Mob {
             for (int i = 0; i < world.entities.items[1].length; i++) {
                 if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(DoorIron.NAME)) {
                     world.entities.items[world.map.num][i] = null;
-                    game.playSound(sound_door_iron_opening);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.DOOR_IRON_OPENING));
                 }
             }
         }

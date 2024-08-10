@@ -1,6 +1,7 @@
 package com.craivet.world.entity.mob;
 
 import com.craivet.Game;
+import com.craivet.assets.*;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.*;
@@ -8,7 +9,6 @@ import com.craivet.world.entity.item.Gold;
 
 import java.awt.*;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class Bat extends Mob {
@@ -22,12 +22,12 @@ public class Bat extends Mob {
         stats.exp = 7;
         stats.attack = 1;
         stats.defense = 1;
-        soundHit = sound_bat_hit;
-        soundDeath = sound_bat_death;
+        soundHit = Assets.getAudio(AudioAssets.Type.BAT_HIT);
+        soundDeath = Assets.getAudio(AudioAssets.Type.BAT_DEATH);
         hitbox = new Rectangle(0, 0, tile, tile);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.loadMovementFrames(bat, 32, 32, 1);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.BAT), 32, 32, 1);
     }
 
     @Override

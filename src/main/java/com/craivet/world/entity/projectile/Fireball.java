@@ -1,12 +1,14 @@
 package com.craivet.world.entity.projectile;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
+import com.craivet.assets.SpriteSheetAssets;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
 
 import java.awt.*;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class Fireball extends Projectile {
@@ -20,10 +22,10 @@ public class Fireball extends Projectile {
         stats.knockbackValue = 5;
         flags.alive = false;
         cost = 2;
-        sound = sound_fireball;
+        sound = Assets.getAudio(AudioAssets.Type.FIREBALL);
         hitbox = new Rectangle(0, 0, tile, tile);
         int scale = 2;
-        sheet.loadMovementFrames(fireball, 16, 16, scale);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.FIREBALL), 16, 16, scale);
         interval = 80;
     }
 

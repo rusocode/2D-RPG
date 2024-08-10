@@ -1,11 +1,12 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class Wood extends Item {
@@ -20,7 +21,7 @@ public class Wood extends Item {
         price = 5;
         this.amount = amount;
         stackable = true;
-        sheet.frame = Utils.scaleImage(wood, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.WOOD), tile, tile);
     }
 
 }

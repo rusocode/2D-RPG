@@ -1,6 +1,7 @@
 package com.craivet;
 
 import com.craivet.ai.AStar;
+import com.craivet.assets.*;
 import com.craivet.physics.Event;
 import com.craivet.utils.Loop;
 import com.craivet.world.entity.item.ItemGenerator;
@@ -17,7 +18,6 @@ import java.awt.image.BufferedImage;
 import java.net.URL;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 /**
  * The Game class uses a Canvas and implements the Runnable interface to manage the game logic, update and render.
@@ -110,7 +110,7 @@ public class Game extends Canvas implements Runnable {
         file.load();
         minimap.create();
         event.create();
-        playMusic(music_main);
+        playMusic(Assets.getAudio(AudioAssets.Type.MUSIC_MAIN));
         stateManager.set(new GameState(this, world, ui, minimap));
         // Create a temporary screen for the fullscreen
         tempScreen = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
@@ -180,9 +180,9 @@ public class Game extends Canvas implements Runnable {
         world.entities.factory.createMobs();
         world.entities.removeTempEntities();
         world.entities.player.bossBattleOn = false;
-        playMusic(ambient_overworld);
+        playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_OVERWORLD));
         if (fullReset) {
-            playMusic(music_main);
+            playMusic(Assets.getAudio(AudioAssets.Type.MUSIC_MAIN));
             world.entities.factory.createEntities();
             world.environment.lighting.resetDay();
             keyboard.minimap = false;

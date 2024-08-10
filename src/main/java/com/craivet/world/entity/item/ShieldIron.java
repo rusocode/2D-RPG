@@ -1,12 +1,13 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class ShieldIron extends Item {
 
@@ -19,7 +20,7 @@ public class ShieldIron extends Item {
 		description = "[" + stats.name + "]\nA shiny iron shield.";
 		price = 250;
 		defenseValue = 2;
-		sheet.frame = Utils.scaleImage(shield_iron, tile, tile);
+		sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.SHIELD_IRON), tile, tile);
 	}
 
 }

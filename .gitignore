@@ -1,3 +1,6 @@
+# Ignorar la carpeta de salida de IntelliJ IDEA
+out/
+
 *.iml
 /.idea/
 /target/

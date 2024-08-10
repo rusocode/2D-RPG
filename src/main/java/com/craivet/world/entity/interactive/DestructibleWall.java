@@ -1,6 +1,9 @@
 package com.craivet.world.entity.interactive;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.item.Stone;
@@ -10,13 +13,12 @@ import com.craivet.utils.Utils;
 import java.awt.*;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class DestructibleWall extends Interactive {
 
     public DestructibleWall(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        sheet.frame = Utils.scaleImage(itile_destructiblewall, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.ITILE_DESTRUCTIBLE_WALL), tile, tile);
         destructible = true;
         stats.hp = 3;
         hitbox = new Rectangle(0, 0, tile, tile);
@@ -48,6 +50,6 @@ public class DestructibleWall extends Interactive {
 
     @Override
     public void playSound() {
-        game.playSound(sound_mine);
+        game.playSound(Assets.getAudio(AudioAssets.Type.MINE));
     }
 }

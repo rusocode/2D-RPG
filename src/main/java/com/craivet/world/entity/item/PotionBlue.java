@@ -1,12 +1,14 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.utils.Utils;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.tile;
 
 public class PotionBlue extends Item {
@@ -22,13 +24,13 @@ public class PotionBlue extends Item {
         price = 4;
         this.amount = amount;
         stackable = true;
-        sheet.frame = Utils.scaleImage(potion_blue, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.POTION_BLUE), tile, tile);
     }
 
     @Override
     public boolean use(Entity entity) {
         if (entity.stats.mana != entity.stats.maxMana) {
-            game.playSound(sound_drink_potion);
+            game.playSound(Assets.getAudio(AudioAssets.Type.DRINK_POTION));
             entity.stats.mana += points;
             if (entity.stats.mana > entity.stats.maxMana) entity.stats.mana = entity.stats.maxMana;
             return true;

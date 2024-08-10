@@ -2,6 +2,8 @@ package com.craivet.world.entity.item;
 
 import com.craivet.Dialogue;
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
@@ -9,7 +11,6 @@ import com.craivet.utils.Utils;
 import java.awt.*;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class Door extends Item {
 
@@ -24,7 +25,7 @@ public class Door extends Item {
         hitbox = new Rectangle(0, 16, 31, tile - 18);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.frame = Utils.scaleImage(door, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.DOOR), tile, tile);
         initDialogue();
     }
 

@@ -1,11 +1,12 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
-import static com.craivet.gfx.Assets.pickaxe;
 import static com.craivet.utils.Global.*;
 
 public class Pickaxe extends Item {
@@ -20,7 +21,7 @@ public class Pickaxe extends Item {
         description = "[" + stats.name + "]\nYou will big it!";
         price = 60;
         attackValue = 1;
-        sheet.frame = Utils.scaleImage(pickaxe, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.PICKAXE), tile, tile);
     }
 
 }

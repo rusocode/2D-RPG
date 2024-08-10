@@ -47,7 +47,7 @@ public class Screen extends JFrame {
 
     public Screen(Game game, boolean fullScreenMode) {
         // setIgnoreRepaint(true);
-        setTitle("2D RPG");
+        setTitle("2D-RPG " + VERSION);
         setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getClassLoader().getResource("textures/logo.png"))).getImage());
         setResizable(true);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

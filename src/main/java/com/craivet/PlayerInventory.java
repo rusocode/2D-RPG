@@ -1,16 +1,18 @@
 package com.craivet;
 
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
+import com.craivet.assets.SpriteSheetAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Player;
 import com.craivet.world.entity.Type;
 import com.craivet.world.entity.item.*;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * This class represents the additional functions of the player's inventory, such as equipping or unequipping an item,
- * grabbing an item, select an item, among others.
+ * This class represents the additional functions of the player's inventory, such as equipping or unequipping an item, grabbing an
+ * item, select an item, among others.
  */
 
 public class PlayerInventory extends Inventory {
@@ -93,11 +95,12 @@ public class PlayerInventory extends Inventory {
                 player.stats.attack = player.getAttack();
                 switch (player.weapon.type) {
                     case SWORD -> {
-                        player.sheet.loadWeaponFrames(sword_frame, 16, 16, 1);
-                        player.game.playSound(sound_draw_sword);
+                        player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.SWORD_FRAME), 16, 16, 1);
+                        player.game.playSound(Assets.getAudio(AudioAssets.Type.DRAW_SWORD));
                     }
-                    case AXE -> player.sheet.loadWeaponFrames(axe_frame, 16, 16, 1);
-                    case PICKAXE -> player.sheet.loadWeaponFrames(pickaxe_frame, 16, 16, 1);
+                    case AXE -> player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.AXE_FRAME), 16, 16, 1);
+                    case PICKAXE ->
+                            player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.PICKAXE_FRAME), 16, 16, 1);
                 }
             }
         }

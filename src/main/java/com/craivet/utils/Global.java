@@ -26,6 +26,7 @@ public final class Global {
     public static final boolean FPS_UNLIMITED = false;
 
     // Others
+    public static final String VERSION = "0.0.11a";
     public static final int MAX_INVENTORY_SLOTS = 20;
     public static final int MAX_LVL = 50;
     public static final int SUBWINDOW_ALPHA = 210;

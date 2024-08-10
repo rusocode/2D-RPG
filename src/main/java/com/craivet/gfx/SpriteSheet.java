@@ -47,7 +47,7 @@ public class SpriteSheet {
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                item[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale * tile, scale * tile);
+                item[i++] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), scale * tile, scale * tile);
         frame = item[0];
     }
 
@@ -69,7 +69,7 @@ public class SpriteSheet {
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                movement[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), scale * w, scale * h);
+                movement[i++] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), scale * w, scale * h);
         // Stores the first frame of motion
         frame = movement[0];
     }
@@ -93,9 +93,9 @@ public class SpriteSheet {
             for (int x = 0; x < col; x++) {
                 // if (y == 4) break;
                 if (y < 2)
-                    attack[i++] = Utils.scaleImage(ss.crop(x * w, y == 0 ? 0 : h * 2, w, h * 2), tile * scale, tile * scale * 2);
+                    attack[i++] = Utils.scaleTexture(ss.crop(x * w, y == 0 ? 0 : h * 2, w, h * 2), tile * scale, tile * scale * 2);
                 if (y >= 2)
-                    attack[i++] = Utils.scaleImage(ss.crop(0, y == 2 ? h * (4 + x) : h * (6 + x), w * 2, h), tile * scale * 2, tile * scale);
+                    attack[i++] = Utils.scaleTexture(ss.crop(0, y == 2 ? h * (4 + x) : h * (6 + x), w * 2, h), tile * scale * 2, tile * scale);
             }
         }
     }
@@ -113,16 +113,16 @@ public class SpriteSheet {
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
                 switch (y) { // Control the lines
-                    case 0 -> down[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
-                    case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                    case 0 -> down[x] = Utils.scaleTexture(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                    case 1 -> up[x] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     // The left and right frames only have 5 frames, so check up to the limit 5 to avoid an ArrayIndexOutOfBoundsException
                     case 2 -> {
                         if (x < framesLeft)
-                            left[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                            left[x] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                     case 3 -> {
                         if (x < framesRight)
-                            right[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                            right[x] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                 }
             }
@@ -145,15 +145,15 @@ public class SpriteSheet {
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
                 switch (y) {
-                    case 0 -> down[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
-                    case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                    case 0 -> down[x] = Utils.scaleTexture(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                    case 1 -> up[x] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     case 2 -> {
                         if (x < framesLeft)
-                            left[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                            left[x] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                     case 3 -> {
                         if (x < framesRight)
-                            right[x] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                            right[x] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
                     }
                 }
             }
@@ -177,10 +177,10 @@ public class SpriteSheet {
             for (int x = 0; x < col; x++) {
                 switch (y) {
                     // TODO Volar numeros magicos
-                    case 0 -> down[x] = Utils.scaleImage(ss.crop(x * w, 0, w, h), w * scale, h * scale);
-                    case 1 -> up[x] = Utils.scaleImage(ss.crop(x * w, 48, w, h), w * scale, h * scale);
-                    case 2 -> left[x] = Utils.scaleImage(ss.crop(x * w, 96, w, h), w * scale, h * scale);
-                    case 3 -> right[x] = Utils.scaleImage(ss.crop(x * w, 144, w, h), w * scale, h * scale);
+                    case 0 -> down[x] = Utils.scaleTexture(ss.crop(x * w, 0, w, h), w * scale, h * scale);
+                    case 1 -> up[x] = Utils.scaleTexture(ss.crop(x * w, 48, w, h), w * scale, h * scale);
+                    case 2 -> left[x] = Utils.scaleTexture(ss.crop(x * w, 96, w, h), w * scale, h * scale);
+                    case 3 -> right[x] = Utils.scaleTexture(ss.crop(x * w, 144, w, h), w * scale, h * scale);
                 }
             }
         }
@@ -206,10 +206,10 @@ public class SpriteSheet {
         for (int y = 0; y < row; y++) {
             for (int x = 0; x < col; x++) {
                 switch (y) {
-                    case 0 -> down[x] = Utils.scaleImage(ss.crop(0, x * w, w, h), w * scale, h * scale);
-                    case 1 -> up[x] = Utils.scaleImage(ss.crop(w, iUp-- * w, w, h), w * scale, h * scale);
-                    case 2 -> left[x] = Utils.scaleImage(ss.crop(iLeft-- * w, 160, w, h), w * scale, h * scale);
-                    case 3 -> right[x] = Utils.scaleImage(ss.crop(x * w, 192, w, h), w * scale, h * scale);
+                    case 0 -> down[x] = Utils.scaleTexture(ss.crop(0, x * w, w, h), w * scale, h * scale);
+                    case 1 -> up[x] = Utils.scaleTexture(ss.crop(w, iUp-- * w, w, h), w * scale, h * scale);
+                    case 2 -> left[x] = Utils.scaleTexture(ss.crop(iLeft-- * w, 160, w, h), w * scale, h * scale);
+                    case 3 -> right[x] = Utils.scaleTexture(ss.crop(x * w, 192, w, h), w * scale, h * scale);
                 }
             }
         }
@@ -225,7 +225,7 @@ public class SpriteSheet {
         int i = 0;
         for (int y = 0; y < row; y++)
             for (int x = 0; x < col; x++)
-                weapon[i++] = Utils.scaleImage(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
+                weapon[i++] = Utils.scaleTexture(ss.crop(x * w, y * h, w, h), w * scale, h * scale);
     }
 
     /**

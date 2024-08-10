@@ -2,13 +2,15 @@ package com.craivet.world.entity.item;
 
 import com.craivet.Dialogue;
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
+import com.craivet.assets.SpriteSheetAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 
 import java.awt.*;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class Chest extends Item {
 
@@ -23,13 +25,13 @@ public class Chest extends Item {
         hitbox = new Rectangle(3, 16, tile - 7, tile - 20);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.loadItemFrames(chest, 32, 32, 1);
+        sheet.loadItemFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.CHEST), 32, 32, 1);
     }
 
     @Override
     public void interact() {
         if (!opened) {
-            game.playSound(sound_chest_opening);
+            game.playSound(Assets.getAudio(AudioAssets.Type.CHEST_OPENING));
             sheet.frame = sheet.item[1];
             opened = true;
             if (world.entities.player.inventory.canPickup(loot)) {

@@ -1,13 +1,15 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 /**
  * To specify the texture of the item on the ground with a smaller size:
@@ -27,7 +29,7 @@ public class Key extends Item {
         description = "[" + stats.name + "]\nIt opens a door.";
         this.amount = amount;
         stackable = true;
-        sheet.frame = Utils.scaleImage(key, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.KEY), tile, tile);
     }
 
     @Override
@@ -35,7 +37,7 @@ public class Key extends Item {
         // If the entity detects a door, then it can use the key
         int i = detect(entity, world.entities.items, Door.NAME);
         if (i != -1) {
-            game.playSound(sound_door_opening);
+            game.playSound(Assets.getAudio(AudioAssets.Type.DOOR_OPENING));
             world.entities.items[world.map.num][i] = null;
             return true;
         }

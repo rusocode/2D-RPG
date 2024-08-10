@@ -1,12 +1,13 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class SwordIron extends Item {
 
@@ -20,7 +21,7 @@ public class SwordIron extends Item {
         description = "[" + stats.name + "]\nAn old sword.";
         price = 20;
         attackValue = 1;
-        sheet.frame = Utils.scaleImage(sword_iron, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.SWORD_IRON), tile, tile);
     }
 
 }

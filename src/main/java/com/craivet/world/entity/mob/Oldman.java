@@ -2,6 +2,7 @@ package com.craivet.world.entity.mob;
 
 import com.craivet.Dialogue;
 import com.craivet.Game;
+import com.craivet.assets.*;
 import com.craivet.gfx.Animation;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
@@ -10,7 +11,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class Oldman extends Mob {
 
@@ -21,7 +21,7 @@ public class Oldman extends Mob {
         stats.name = "Oldman";
         stats.speed = 1;
         int scale = 1;
-        sheet.loadOldmanFrames(oldman, scale);
+        sheet.loadOldmanFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.OLDMAN), scale);
         hitbox.width = sheet.frame.getWidth() / 2;
         hitbox.height = sheet.frame.getHeight() / 2;
         hitbox.x = hitbox.width - hitbox.width / 2 + 1;

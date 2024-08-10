@@ -14,10 +14,14 @@ public final class Utils {
     private Utils() {
     }
 
+    public static URL loadAudio(String path) {
+        return Objects.requireNonNull(Utils.class.getClassLoader().getResource(path));
+    }
+
     /**
      * Load the font.
      *
-     * @param path path of the resource.
+     * @param path path of the asset.
      * @param size font size.
      * @return a new font created with the specified font type.
      */
@@ -31,45 +35,41 @@ public final class Utils {
         return null;
     }
 
-    public static URL loadAudio(String path) {
-        return Objects.requireNonNull(Utils.class.getClassLoader().getResource(path));
-    }
-
     /**
-     * Load the image.
+     * Load the texture.
      *
-     * @param path path of the resource.
+     * @param path path of the asset.
      * @return a BufferedImage containing the decoded content of the input.
      */
-    public static BufferedImage loadImage(String path) {
+    public static BufferedImage loadTexture(String path) {
         try {
             return ImageIO.read(Objects.requireNonNull(Utils.class.getClassLoader().getResourceAsStream(path)));
         } catch (IOException | NullPointerException e) {
-            JOptionPane.showMessageDialog(null, "Error during image loading " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Error during texture loading " + path + "\n" + Arrays.toString(e.getStackTrace()).replace(" ", "\n"), "Error", JOptionPane.ERROR_MESSAGE);
             System.exit(1);
         }
         return null;
     }
 
     /**
-     * Scale the image before rendering for better performance.
+     * Scale the texture before rendering for better performance.
      * <p>
-     * It is important that the scale value for the width and height be a multiple of the original size to avoid
-     * stretching or deformations in the scaled image.
+     * It is important that the scale value for the width and height be a multiple of the original size to avoid stretching or
+     * deformations in the scaled texture.
      * <p>
-     * To maintain the original size of the image, 1 is specified as the scale value.
+     * To maintain the original size of the texture, 1 is specified as the scale value.
      *
-     * @param image  image.
-     * @param width  width of the image.
-     * @param height height of the image.
-     * @return the scaled image.
+     * @param texture texture.
+     * @param width   width of the texture.
+     * @param height  height of the texture.
+     * @return the scaled texture.
      */
-    public static BufferedImage scaleImage(BufferedImage image, int width, int height) {
-        BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2 = scaledImage.createGraphics(); // Creates a Graphics2D, which can be used to draw on this BufferedImage
-        g2.drawImage(image, 0, 0, width, height, null);
+    public static BufferedImage scaleTexture(BufferedImage texture, int width, int height) {
+        BufferedImage scaledTexture = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = scaledTexture.createGraphics(); // Creates a Graphics2D, which can be used to draw on this BufferedImage
+        g2.drawImage(texture, 0, 0, width, height, null);
         g2.dispose();
-        return scaledImage;
+        return scaledTexture;
     }
 
     /**

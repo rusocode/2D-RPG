@@ -2,13 +2,14 @@ package com.craivet.world.entity.item;
 
 import com.craivet.Dialogue;
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class DoorIron extends Item {
@@ -24,7 +25,7 @@ public class DoorIron extends Item {
         hitbox = new Rectangle(1, 16, tile - 2, tile - 16);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.frame = Utils.scaleImage(door_iron, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.DOOR_IRON), tile, tile);
         initDialogue();
     }
 

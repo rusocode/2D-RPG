@@ -1,8 +1,9 @@
 package com.craivet.world;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 public class Map {
@@ -24,9 +25,9 @@ public class Map {
     public void changeArea() {
         // If there is a change of area
         if (nextZone != zone) {
-            if (nextZone == BOSS) game.playMusic(music_boss);
-            if (nextZone == DUNGEON) game.playMusic(ambient_dungeon);
-            if (zone == DUNGEON && nextZone == OVERWORLD) game.playMusic(ambient_overworld);
+            if (nextZone == BOSS) game.playMusic(Assets.getAudio(AudioAssets.Type.MUSIC_BOSS));
+            if (nextZone == DUNGEON) game.playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_DUNGEON));
+            if (zone == DUNGEON && nextZone == OVERWORLD) game.playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_OVERWORLD));
         }
         zone = nextZone;
         world.entities.factory.createMobs();

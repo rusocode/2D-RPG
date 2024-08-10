@@ -1,5 +1,9 @@
 package com.craivet;
 
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
+import com.craivet.assets.FontAssets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
 import com.craivet.world.entity.Player;
@@ -9,7 +13,6 @@ import java.awt.*;
 import java.util.ArrayList;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 /**
  * User interface.
@@ -44,7 +47,7 @@ public class UI {
         this.g2 = g2;
 
         // Default font and color
-        g2.setFont(font_minecraft);
+        g2.setFont(Assets.getFont(FontAssets.Type.MINECRAFT));
         g2.setColor(Color.white);
         // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Softens the edges of the font, but in this case it is not necessary to apply it since a pixelart type font is used
 
@@ -815,7 +818,7 @@ public class UI {
             height = tile;
             renderSubwindow(x, y, width, height, 255);
             // Gold image
-            g2.drawImage(gold, x + 6, y + 1, null);
+            g2.drawImage(Assets.getTexture(TextureAssets.Type.GOLD), x + 6, y + 1, null);
             // Item price
             int price = entity.inventory.get(itemIndex).price;
             String text = String.valueOf(price);
@@ -829,7 +832,7 @@ public class UI {
                 else {
                     // TODO
                     if (world.entities.player.inventory.canPickup(entity.inventory.get(itemIndex))) {
-                        game.playSound(sound_trade_buy);
+                        game.playSound(Assets.getAudio(AudioAssets.Type.TRADE_BUY));
                         world.entities.player.stats.gold -= entity.inventory.get(itemIndex).price;
                     } else addMessageToConsole("You cannot carry any more!");
                 }
@@ -858,7 +861,7 @@ public class UI {
             width = (int) (tile * 2.5);
             height = tile;
             renderSubwindow(x, y, width, height, 255);
-            g2.drawImage(gold, x + 6, y + 1, null);
+            g2.drawImage(Assets.getTexture(TextureAssets.Type.GOLD), x + 6, y + 1, null);
             int price = world.entities.player.inventory.get(itemIndex).price / 2;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
@@ -869,7 +872,7 @@ public class UI {
                 if (world.entities.player.inventory.get(itemIndex) == world.entities.player.weapon || world.entities.player.inventory.get(itemIndex) == world.entities.player.shield)
                     addMessageToConsole("You cannot sell an equipped item!");
                 else {
-                    game.playSound(sound_trade_sell);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.TRADE_SELL));
                     if (world.entities.player.inventory.get(itemIndex).amount > 1)
                         world.entities.player.inventory.get(itemIndex).amount--;
                     else world.entities.player.inventory.remove(itemIndex);

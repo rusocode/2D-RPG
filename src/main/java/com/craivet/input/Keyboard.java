@@ -1,11 +1,12 @@
 package com.craivet.input;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.AudioAssets;
 
 import javax.swing.*;
 import java.awt.event.*;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
@@ -91,30 +92,30 @@ public class Keyboard extends KeyAdapter {
     private void mainState(int code) {
         if (game.ui.mainWindowState == MAIN_WINDOW) {
             if (code == KeyEvent.VK_W) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = 2;
             }
             if (code == KeyEvent.VK_S) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.ui.command++;
                 if (game.ui.command > 2) game.ui.command = 0;
             }
             if (code == KeyEvent.VK_ENTER) {
                 if (game.ui.command == 0) {
                     game.state = PLAY_STATE;
-                    game.playSound(sound_spawn);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.SPAWN));
                     switch (game.world.map.zone) {
-                        case OVERWORLD -> game.playMusic(ambient_overworld);
-                        case DUNGEON -> game.playMusic(ambient_dungeon);
-                        case BOSS -> game.playMusic(music_boss);
+                        case OVERWORLD -> game.playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_OVERWORLD));
+                        case DUNGEON -> game.playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_DUNGEON));
+                        case BOSS -> game.playMusic(Assets.getAudio(AudioAssets.Type.MUSIC_BOSS));
                     }
                 }
                 if (game.ui.command == 1) {
                     game.file.loadData();
                     game.state = PLAY_STATE;
-                    game.playSound(sound_spawn);
-                    game.playMusic(ambient_overworld);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.SPAWN));
+                    game.playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_OVERWORLD));
                 }
                 if (game.ui.command == 2) System.exit(0);
             }
@@ -197,12 +198,12 @@ public class Keyboard extends KeyAdapter {
          * instructions since the selection is only kept in the back. */
         if (game.ui.subState == 0 || game.ui.subState == 2) {
             if (code == KeyEvent.VK_W) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = maxCommand;
             }
             if (code == KeyEvent.VK_S) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.ui.command++;
                 if (game.ui.command > maxCommand) game.ui.command = 0;
             }
@@ -215,11 +216,11 @@ public class Keyboard extends KeyAdapter {
                     game.music.volumeScale--;
                     // TODO Is this necessary here?
                     game.music.checkVolume(); // Change the volume of the music when it is already playing
-                    game.playSound(sound_slot);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 }
                 if (game.ui.command == 1 && game.sound.volumeScale > 0) { // Sound
                     game.sound.volumeScale--;
-                    game.playSound(sound_slot);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 }
             }
         }
@@ -229,11 +230,11 @@ public class Keyboard extends KeyAdapter {
                 if (game.ui.command == 0 && game.music.volumeScale < 5) {
                     game.music.volumeScale++;
                     game.music.checkVolume();
-                    game.playSound(sound_slot);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 }
                 if (game.ui.command == 1 && game.sound.volumeScale < 5) { // Sonido
                     game.sound.volumeScale++;
-                    game.playSound(sound_slot);
+                    game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 }
             }
         }
@@ -242,12 +243,12 @@ public class Keyboard extends KeyAdapter {
 
     private void gameOverState(int code) {
         if (code == KeyEvent.VK_W) {
-            game.playSound(sound_slot);
+            game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
             game.ui.command--;
             if (game.ui.command < 0) game.ui.command = 1;
         }
         if (code == KeyEvent.VK_S) {
-            game.playSound(sound_slot);
+            game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
             game.ui.command++;
             if (game.ui.command > 1) game.ui.command = 0;
         }
@@ -267,12 +268,12 @@ public class Keyboard extends KeyAdapter {
         if (code == KeyEvent.VK_ENTER) enter = true;
         if (game.ui.subState == 0) {
             if (code == KeyEvent.VK_A) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.ui.command--;
                 if (game.ui.command < 0) game.ui.command = 1;
             }
             if (code == KeyEvent.VK_D) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.ui.command++;
                 if (game.ui.command > 1) game.ui.command = 0;
             }
@@ -297,25 +298,25 @@ public class Keyboard extends KeyAdapter {
     private void playerInventoryState(int code) {
         if (code == KeyEvent.VK_W) {
             if (game.world.entities.player.inventory.playerSlotRow > 0) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.world.entities.player.inventory.playerSlotRow--;
             }
         }
         if (code == KeyEvent.VK_A) {
             if (game.world.entities.player.inventory.playerSlotCol > 0) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.world.entities.player.inventory.playerSlotCol--;
             }
         }
         if (code == KeyEvent.VK_S) {
             if (game.world.entities.player.inventory.playerSlotRow < 3) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.world.entities.player.inventory.playerSlotRow++;
             }
         }
         if (code == KeyEvent.VK_D) {
             if (game.world.entities.player.inventory.playerSlotCol < 4) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.world.entities.player.inventory.playerSlotCol++;
             }
         }
@@ -324,25 +325,25 @@ public class Keyboard extends KeyAdapter {
     private void npcInventoryState(int code) {
         if (code == KeyEvent.VK_W) {
             if (game.world.entities.player.inventory.npcSlotRow > 0) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.world.entities.player.inventory.npcSlotRow--;
             }
         }
         if (code == KeyEvent.VK_A) {
             if (game.world.entities.player.inventory.npcSlotCol > 0) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.world.entities.player.inventory.npcSlotCol--;
             }
         }
         if (code == KeyEvent.VK_S) {
             if (game.world.entities.player.inventory.npcSlotRow < 3) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.world.entities.player.inventory.npcSlotRow++;
             }
         }
         if (code == KeyEvent.VK_D) {
             if (game.world.entities.player.inventory.npcSlotCol < 4) {
-                game.playSound(sound_slot);
+                game.playSound(Assets.getAudio(AudioAssets.Type.SLOT));
                 game.world.entities.player.inventory.npcSlotCol++;
             }
         }

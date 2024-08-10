@@ -1,12 +1,13 @@
 package com.craivet.world.entity.item;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class Axe extends Item {
 
@@ -20,7 +21,8 @@ public class Axe extends Item {
         description = "[" + stats.name + "]\nA bit rusty but still \ncan cut some trees.";
         price = 75;
         attackValue = 1;
-        sheet.frame = Utils.scaleImage(axe, tile, tile);
+        // Aplicando el uso de la fachada
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.AXE), tile, tile);
     }
 
 }

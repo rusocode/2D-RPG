@@ -1,10 +1,10 @@
 package com.craivet.world.entity;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.SpriteSheetAssets;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
-
-import static com.craivet.gfx.Assets.*;
 
 /**
  * Fictional character that serves to represent the boss scene. That is to say, it would be the player who remains still at the
@@ -18,7 +18,7 @@ public class PlayerDummy extends Mob {
     public PlayerDummy(Game game, World world) {
         super(game, world);
         stats.name = NAME;
-        sheet.loadPlayerMovementFrames(player, 1);
+        sheet.loadPlayerMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.PLAYER), 1);
     }
 
 }

@@ -1,13 +1,14 @@
 package com.craivet.world.entity.projectile;
 
 import com.craivet.Game;
+import com.craivet.assets.Assets;
+import com.craivet.assets.TextureAssets;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
 import com.craivet.utils.Utils;
 
 import java.awt.*;
 
-import static com.craivet.gfx.Assets.*;
 import static com.craivet.utils.Global.*;
 
 /**
@@ -27,7 +28,7 @@ public class StickyBall extends Projectile {
         hitbox = new Rectangle(8, 8, 15, 15);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.frame = Utils.scaleImage(stickyball, tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.STICKY_BALL), tile, tile);
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.craivet.world.entity.mob;
 import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.Inventory;
+import com.craivet.assets.*;
 import com.craivet.world.World;
 import com.craivet.utils.*;
 import com.craivet.world.entity.Type;
@@ -11,7 +12,6 @@ import com.craivet.world.entity.item.*;
 import java.awt.*;
 
 import static com.craivet.utils.Global.*;
-import static com.craivet.gfx.Assets.*;
 
 public class Trader extends Mob {
 
@@ -24,14 +24,14 @@ public class Trader extends Mob {
         hitbox = new Rectangle(7, 16, 15, 48);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.frame = Utils.scaleImage(trader, tile, 64);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.TRADER), tile, 64);
         initDialogue();
         addItemsToInventory();
     }
 
     @Override
     public void dialogue() {
-        game.playSound(sound_trade_opening);
+        game.playSound(Assets.getAudio(AudioAssets.Type.TRADE_OPENING));
         dialogue.startDialogue(TRADE_STATE, this, 0);
     }
 
