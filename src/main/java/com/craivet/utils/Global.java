@@ -87,19 +87,4 @@ public final class Global {
     public static final int INTERVAL_KNOCKBACK = 10;
     public static final int INTERVAL_TELEPORT = 50;
 
-    // Game states
-    /* TODO Could these constants be separated into an enum perhaps? GameState with enums TITLE, PLAY, etc. or in a
-     * package with the different types of constants in final classes. */
-    public static final int MAIN_STATE = 0;
-    public static final int PLAY_STATE = 1;
-    public static final int DIALOGUE_STATE = 2;
-    public static final int STATS_STATE = 3;
-    public static final int OPTION_STATE = 4;
-    public static final int GAME_OVER_STATE = 5;
-    public static final int TELEPORT_STATE = 6;
-    public static final int TRADE_STATE = 7;
-    public static final int SLEEP_STATE = 8;
-    public static final int INVENTORY_STATE = 9;
-    public static final int CUTSCENE_STATE = 10;
-
 }

@@ -82,7 +82,7 @@ public class SpriteSheet {
      * @param w     frame width.
      * @param h     frame height.
      * @param scale scale value or 1 to maintain size.
-     * @@param ss    SpriteSheet with the movement frames.
+     * @param ss    SpriteSheet with the movement frames.
      */
     public void loadAttackFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = ss.getWidth() / w;
@@ -229,8 +229,8 @@ public class SpriteSheet {
     }
 
     /**
-     * Returns a subimage defined by a specified rectangular region. The returned BufferedImage shares the same data
-     * array as the original image. In other words, it cuts the subimage from the SpriteSheet.
+     * Returns a subimage defined by a specified rectangular region. The returned BufferedImage shares the same data array as the
+     * original image. In other words, it cuts the subimage from the SpriteSheet.
      *
      * @param x x coordinate of the upper left corner of the specified rectangular region.
      * @param y y coordinate of the upper left corner of the specified rectangular region.

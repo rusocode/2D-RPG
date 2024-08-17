@@ -22,7 +22,7 @@ public class Axe extends Item {
         price = 75;
         attackValue = 1;
         // Aplicando el uso de la fachada
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.AXE), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.AXE), tile, tile);
     }
 
 }

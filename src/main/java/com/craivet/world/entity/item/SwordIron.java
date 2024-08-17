@@ -21,7 +21,7 @@ public class SwordIron extends Item {
         description = "[" + stats.name + "]\nAn old sword.";
         price = 20;
         attackValue = 1;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.SWORD_IRON), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.SWORD_IRON), tile, tile);
     }
 
 }

@@ -4,6 +4,7 @@ import com.craivet.Dialogue;
 import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.assets.*;
+import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
@@ -31,7 +32,7 @@ public class Box extends Mob {
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         dialogue.set = -1;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.BOX), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.BOX), tile, tile);
         initDialogue();
     }
 
@@ -58,7 +59,7 @@ public class Box extends Mob {
 
     @Override
     public void dialogue() {
-        dialogue.startDialogue(DIALOGUE_STATE, this, dialogue.set);
+        dialogue.startDialogue(State.DIALOGUE, this, dialogue.set);
         dialogue.set++;
         if (dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
     }
@@ -94,7 +95,7 @@ public class Box extends Mob {
             if (distance < 8) { // Link the box to the plate if it is less than 8 pixels away
                 if (linkedEntity == null) {
                     linkedEntity = plate;
-                    game.playSound(Assets.getAudio(AudioAssets.Type.CHIPWALL));
+                    game.playSound(Assets.getAudio(AudioAssets.CHIPWALL));
                 }
                 // Detaches the box from the plate if it moves from this plate again
             } else if (linkedEntity == plate) linkedEntity = null;
@@ -109,7 +110,7 @@ public class Box extends Mob {
             for (int i = 0; i < world.entities.items[1].length; i++) {
                 if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(DoorIron.NAME)) {
                     world.entities.items[world.map.num][i] = null;
-                    game.playSound(Assets.getAudio(AudioAssets.Type.DOOR_IRON_OPENING));
+                    game.playSound(Assets.getAudio(AudioAssets.DOOR_IRON_OPENING));
                 }
             }
         }

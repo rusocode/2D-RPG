@@ -1,14 +1,14 @@
 package com.craivet.world.management;
 
 import com.craivet.world.World;
-import com.craivet.states.State;
+import com.craivet.states.Renderable;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
 
-public class TileManager implements State {
+public class TileManager implements Renderable {
 
     private final World world;
 

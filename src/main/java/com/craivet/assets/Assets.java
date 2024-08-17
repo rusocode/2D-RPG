@@ -66,20 +66,20 @@ import com.craivet.gfx.SpriteSheet;
 
 public final class Assets {
 
-    public static URL getAudio(AudioAssets.Type type) {
-        return AudioAssets.getAudio(type);
+    public static URL getAudio(AudioAssets audio) {
+        return AudioAssets.getAudio(audio);
     }
 
-    public static Font getFont(FontAssets.Type type) {
-        return FontAssets.getFont(type); // Delega la carga y la gestion real de los assets a la clase especializada FontAssets
+    public static Font getFont(FontAssets font) {
+        return FontAssets.getFont(font); // Delega la carga y la gestion real de los assets a la clase especializada FontAssets
     }
 
-    public static SpriteSheet getSpriteSheet(SpriteSheetAssets.Type type) {
-        return SpriteSheetAssets.getSpriteSheet(type);
+    public static SpriteSheet getSpriteSheet(SpriteSheetAssets spriteSheet) {
+        return SpriteSheetAssets.getSpriteSheet(spriteSheet);
     }
 
-    public static BufferedImage getTexture(TextureAssets.Type type) {
-        return TextureAssets.getTexture(type);
+    public static BufferedImage getTexture(TextureAssets textureAssets) {
+        return TextureAssets.getTexture(textureAssets);
     }
 
     private Assets() {

@@ -224,7 +224,7 @@ public abstract class Entity {
     public void hitPlayer(boolean contact, int attack) {
         // If the entity is hostile and makes contact with the player who is not invincible
         if (type == Type.HOSTILE && contact && !world.entities.player.flags.invincible) {
-            game.playSound(Assets.getAudio(AudioAssets.Type.PLAYER_DAMAGE));
+            game.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
             // Subtract the player's defense from the mob's attack to calculate fair damage
             int damage = Math.max(attack - world.entities.player.stats.defense, 1);
             world.entities.player.stats.decreaseHp(damage);

@@ -34,9 +34,9 @@ public class BurstOfFire extends Projectile {
         flags.alive = false;
         cost = 2;
         int scale = 2;
-        sound = Assets.getAudio(AudioAssets.Type.BURST_OF_FIRE);
+        sound = Assets.getAudio(AudioAssets.BURST_OF_FIRE);
         hitbox = new Rectangle(0, 0, tile * scale - 35, tile * scale);
-        sheet.loadBurstOfFireFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.BURST_OF_FIRE), scale);
+        sheet.loadBurstOfFireFrames(Assets.getSpriteSheet(SpriteSheetAssets.BURST_OF_FIRE), scale);
         interval = 180;
 
         int animationSpeed = 120; // 80

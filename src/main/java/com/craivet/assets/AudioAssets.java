@@ -15,48 +15,46 @@ import java.net.URL;
  * estrategia de carga perezosa (lazy loading) donde los archivos se cargan solo cuando se necesitan por primera vez.
  */
 
-public final class AudioAssets {
+public enum AudioAssets {
 
-    public enum Type {
-        // Ambient
-        AMBIENT_DUNGEON,
-        AMBIENT_OVERWORLD,
-        // Music
-        MUSIC_BOSS,
-        MUSIC_MAIN,
-        // Sound
-        BAT_DEATH,
-        BAT_HIT,
-        BURST_OF_FIRE,
-        CHEST_OPENING,
-        CHIPWALL,
-        CUT_TREE,
-        DOOR_IRON_OPENING,
-        DOOR_OPENING,
-        DRAW_SWORD,
-        DRINK_POTION,
-        EAT,
-        FIREBALL,
-        GOLD_PICKUP,
-        ITEM_PICKUP,
-        LEVEL_UP,
-        MINE,
-        MOB_DEATH,
-        MOB_HIT,
-        ORC_DEATH,
-        ORC_HIT,
-        PLAYER_DAMAGE,
-        PLAYER_DEATH,
-        SLEEP,
-        SLIME_HIT,
-        SLOT,
-        SPAWN,
-        SWING_AXE,
-        SWING_WEAPON,
-        TRADE_BUY,
-        TRADE_OPENING,
-        TRADE_SELL
-    }
+    // Ambient
+    AMBIENT_DUNGEON,
+    AMBIENT_OVERWORLD,
+    // Music
+    MUSIC_BOSS,
+    MUSIC_MAIN,
+    // Sound
+    BAT_DEATH,
+    BAT_HIT,
+    BURST_OF_FIRE,
+    CHEST_OPENING,
+    CHIPWALL,
+    CUT_TREE,
+    DOOR_IRON_OPENING,
+    DOOR_OPENING,
+    DRAW_SWORD,
+    DRINK_POTION,
+    EAT,
+    FIREBALL,
+    GOLD_PICKUP,
+    ITEM_PICKUP,
+    LEVEL_UP,
+    MINE,
+    MOB_DEATH,
+    MOB_HIT,
+    ORC_DEATH,
+    ORC_HIT,
+    PLAYER_DAMAGE,
+    PLAYER_DEATH,
+    SLEEP,
+    SLIME_HIT,
+    SLOT,
+    SPAWN,
+    SWING_AXE,
+    SWING_WEAPON,
+    TRADE_BUY,
+    TRADE_OPENING,
+    TRADE_SELL;
 
     private static final String ambient_path = "audio/ambient/";
     private static final String music_path = "audio/music/";
@@ -103,8 +101,8 @@ public final class AudioAssets {
     private static final URL trade_opening = Utils.loadAudio(sound_path + "trade_opening.wav");
     private static final URL trade_sell = Utils.loadAudio(sound_path + "trade_sell.wav");
 
-    static URL getAudio(Type type) {
-        return switch (type) {
+    static URL getAudio(AudioAssets audio) {
+        return switch (audio) {
             // Ambient
             case AMBIENT_DUNGEON -> ambient_dungeon;
             case AMBIENT_OVERWORLD -> ambient_overworld;
@@ -146,6 +144,4 @@ public final class AudioAssets {
         };
     }
 
-    private AudioAssets() {
-    }
 }

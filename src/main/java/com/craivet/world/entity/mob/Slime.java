@@ -23,12 +23,12 @@ public class Slime extends Mob {
         stats.exp = 10;
         stats.attack = 2;
         stats.defense = 1;
-        soundHit = Assets.getAudio(AudioAssets.Type.SLIME_HIT);
+        soundHit = Assets.getAudio(AudioAssets.SLIME_HIT);
         hitbox = new Rectangle(3, 6, tile - 7, tile - 11);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new StickyBall(game, world);
-        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.SLIME), 16, 16, 2);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.SLIME), 16, 16, 2);
     }
 
     @Override

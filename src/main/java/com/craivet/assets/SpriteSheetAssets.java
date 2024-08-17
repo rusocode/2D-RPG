@@ -3,26 +3,24 @@ package com.craivet.assets;
 import com.craivet.gfx.SpriteSheet;
 import com.craivet.utils.Utils;
 
-public class SpriteSheetAssets {
+public enum SpriteSheetAssets {
 
-    public enum Type {
-        // Items
-        AXE_FRAME,
-        CHEST,
-        PICKAXE_FRAME,
-        SWORD_FRAME,
-        // Mobs
-        BAT,
-        LIZARD,
-        OLDMAN,
-        ORC,
-        PLAYER,
-        RED_SLIME,
-        SLIME,
-        // Projectiles
-        BURST_OF_FIRE,
-        FIREBALL
-    }
+    // Items
+    AXE_FRAME,
+    CHEST,
+    PICKAXE_FRAME,
+    SWORD_FRAME,
+    // Mobs
+    BAT,
+    LIZARD,
+    OLDMAN,
+    ORC,
+    PLAYER,
+    RED_SLIME,
+    SLIME,
+    // Projectiles
+    BURST_OF_FIRE,
+    FIREBALL;
 
     private static final String textures_items_path = "textures/entity/items/";
     private static final String textures_mob_path = "textures/entity/mob/";
@@ -47,8 +45,8 @@ public class SpriteSheetAssets {
     private static final SpriteSheet burst_of_fire = new SpriteSheet(Utils.loadTexture(textures_projectile_path + "burst_of_fire.png"));
     private static final SpriteSheet fireball = new SpriteSheet(Utils.loadTexture(textures_projectile_path + "fireball.png"));
 
-    static SpriteSheet getSpriteSheet(Type type) {
-        return switch (type) {
+    static SpriteSheet getSpriteSheet(SpriteSheetAssets spriteSheet) {
+        return switch (spriteSheet) {
             // Items
             case AXE_FRAME -> axe_frame;
             case CHEST -> chest;
@@ -68,6 +66,4 @@ public class SpriteSheetAssets {
         };
     }
 
-    private SpriteSheetAssets() {
-    }
 }

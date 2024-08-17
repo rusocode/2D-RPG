@@ -29,8 +29,8 @@ public class Lizard extends Mob {
         stats.defense = 2;
         stats.motion1 = 25;
         stats.motion2 = 50;
-        soundHit = Assets.getAudio(AudioAssets.Type.MOB_HIT);
-        soundDeath = Assets.getAudio(AudioAssets.Type.MOB_DEATH);
+        soundHit = Assets.getAudio(AudioAssets.MOB_HIT);
+        soundDeath = Assets.getAudio(AudioAssets.MOB_DEATH);
         flags.boss = true;
         sleep = true;
         int scale = 1;
@@ -40,7 +40,7 @@ public class Lizard extends Mob {
         hitboxDefaultY = hitbox.y;
         attackbox.width = 90;
         attackbox.height = 90;
-        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.LIZARD), 170, 180, scale);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.LIZARD), 170, 180, scale);
 
         initDialogue();
     }

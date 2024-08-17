@@ -4,6 +4,7 @@ import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.assets.Assets;
 import com.craivet.assets.TextureAssets;
+import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.Utils;
@@ -25,13 +26,13 @@ public class Door extends Item {
         hitbox = new Rectangle(0, 16, 31, tile - 18);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.DOOR), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.DOOR), tile, tile);
         initDialogue();
     }
 
     @Override
     public void interact() {
-        dialogue.startDialogue(DIALOGUE_STATE, this, 0);
+        dialogue.startDialogue(State.DIALOGUE, this, 0);
     }
 
     private void initDialogue() {

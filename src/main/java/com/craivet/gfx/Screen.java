@@ -11,8 +11,8 @@ import java.util.Objects;
 import static com.craivet.utils.Global.*;
 
 /**
- * Screen resolution refers to both the number of pixels on the physical screen and the size of the window in which the
- * game is displayed.
+ * Screen resolution refers to both the number of pixels on the physical screen and the size of the window in which the game is
+ * displayed.
  * <p>
  * Most used resolutions:
  * <ul>
@@ -21,17 +21,17 @@ import static com.craivet.utils.Global.*;
  * <li>1600x900
  * <li>1920x1080
  * </ul>
- * The AO presents various graphical resolutions that are based on the number of tools visible within the camera and the
- * graphical interfaces (console, inventory, etc.). At a resolution like 800x600, the portion of rendered tiles is
- * 544x416, called "Map View", while the remaining 256x184 correspond to the user interface (UI). Opting for a lower
- * resolution would affect the visual quality (in the case of Minecraft, the quality of the font and graphics remain
- * constant). It should be noted that the number of visible tiles does not vary, remaining constant regardless of the
- * resolution and being stretched in cases of higher resolutions.
+ * The AO presents various graphical resolutions that are based on the number of tools visible within the camera and the graphical
+ * interfaces (console, inventory, etc.). At a resolution like 800x600, the portion of rendered tiles is 544x416, called "Map
+ * View", while the remaining 256x184 correspond to the user interface (UI). Opting for a lower resolution would affect the visual
+ * quality (in the case of Minecraft, the quality of the font and graphics remain constant). It should be noted that the number of
+ * visible tiles does not vary, remaining constant regardless of the resolution and being stretched in cases of higher
+ * resolutions.
  * <p>
- * Unlike World coordinates, these coordinates represent offset screen. The variables tempScreenX-tempScreenY are
- * used as temporary coordinates to represent the left and up attack frames of the entity, avoiding modifying the
- * original coordinates on the screen. Maybe I think they are not really necessary, it only differs in the rendering of
- * the rectangles but does not affect the collision.
+ * Unlike World coordinates, these coordinates represent offset screen. The variables tempScreenX-tempScreenY are used as
+ * temporary coordinates to represent the left and up attack frames of the entity, avoiding modifying the original coordinates on
+ * the screen. Maybe I think they are not really necessary, it only differs in the rendering of the rectangles but does not affect
+ * the collision.
  * <p>
  * <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/exclusivemode.html">Full-Screen Exclusive Mode</a>
  */

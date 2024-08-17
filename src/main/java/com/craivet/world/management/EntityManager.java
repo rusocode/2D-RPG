@@ -4,7 +4,7 @@ import com.craivet.Game;
 import com.craivet.world.entity.EntityFactory;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
-import com.craivet.states.State;
+import com.craivet.states.Renderable;
 import com.craivet.world.entity.Player;
 import com.craivet.world.entity.item.Item;
 import com.craivet.world.entity.mob.Mob;
@@ -21,7 +21,7 @@ import static com.craivet.utils.Global.MAPS;
  * Logic related to updating and rendering entities.
  */
 
-public class EntityManager implements State {
+public class EntityManager implements Renderable { // TODO Ya que implementa la interfaz Renderable no es mejor llamarla EntityRenderer?
 
     private final World world;
 

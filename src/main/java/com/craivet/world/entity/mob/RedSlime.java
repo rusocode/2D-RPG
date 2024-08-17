@@ -23,12 +23,12 @@ public class RedSlime extends Mob {
         stats.exp = 15;
         stats.attack = 3;
         stats.defense = 2;
-        soundHit = Assets.getAudio(AudioAssets.Type.SLIME_HIT);
+        soundHit = Assets.getAudio(AudioAssets.SLIME_HIT);
         hitbox = new Rectangle(3, 6, tile - 7, tile - 11);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         projectile = new Fireball(game, world);
-        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.RED_SLIME), 16, 16, 2);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.RED_SLIME), 16, 16, 2);
     }
 
     @Override

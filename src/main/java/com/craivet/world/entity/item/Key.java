@@ -29,7 +29,7 @@ public class Key extends Item {
         description = "[" + stats.name + "]\nIt opens a door.";
         this.amount = amount;
         stackable = true;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.KEY), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.KEY), tile, tile);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class Key extends Item {
         // If the entity detects a door, then it can use the key
         int i = detect(entity, world.entities.items, Door.NAME);
         if (i != -1) {
-            game.playSound(Assets.getAudio(AudioAssets.Type.DOOR_OPENING));
+            game.playSound(Assets.getAudio(AudioAssets.DOOR_OPENING));
             world.entities.items[world.map.num][i] = null;
             return true;
         }

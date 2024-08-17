@@ -18,7 +18,7 @@ public class PlayerDummy extends Mob {
     public PlayerDummy(Game game, World world) {
         super(game, world);
         stats.name = NAME;
-        sheet.loadPlayerMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.PLAYER), 1);
+        sheet.loadPlayerMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.PLAYER), 1);
     }
 
 }

@@ -95,12 +95,12 @@ public class PlayerInventory extends Inventory {
                 player.stats.attack = player.getAttack();
                 switch (player.weapon.type) {
                     case SWORD -> {
-                        player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.SWORD_FRAME), 16, 16, 1);
-                        player.game.playSound(Assets.getAudio(AudioAssets.Type.DRAW_SWORD));
+                        player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.SWORD_FRAME), 16, 16, 1);
+                        player.game.playSound(Assets.getAudio(AudioAssets.DRAW_SWORD));
                     }
-                    case AXE -> player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.AXE_FRAME), 16, 16, 1);
+                    case AXE -> player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.AXE_FRAME), 16, 16, 1);
                     case PICKAXE ->
-                            player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.PICKAXE_FRAME), 16, 16, 1);
+                            player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.PICKAXE_FRAME), 16, 16, 1);
                 }
             }
         }

@@ -20,12 +20,12 @@ public class Gold extends Item {
         type = Type.PICKUP;
         stats.name = NAME;
         this.amount = amount;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.GOLD), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.GOLD), tile, tile);
     }
 
     @Override
     public boolean use(Entity entity) {
-        game.playSound(Assets.getAudio(AudioAssets.Type.GOLD_PICKUP));
+        game.playSound(Assets.getAudio(AudioAssets.GOLD_PICKUP));
         game.ui.addMessageToConsole("Gold +" + amount);
         entity.stats.gold += amount;
         return true;

@@ -3,13 +3,13 @@ package com.craivet.gfx;
 import java.awt.image.BufferedImage;
 
 /**
- * In video games, a "frame" refers to an individual frame of animation or image that is displayed on the screen for a
- * specific period of time. Video games, like movies, work by displaying a rapid sequence of static images to create the
- * illusion of movement. Each of these static images is a frame.
+ * In video games, a "frame" refers to an individual frame of animation or image that is displayed on the screen for a specific
+ * period of time. Video games, like movies, work by displaying a rapid sequence of static images to create the illusion of
+ * movement. Each of these static images is a frame.
  * <p>
- * In this case we have the movement frames (in four directions) and the attack frames (in four directions) for each
- * entity. Having few frames it would be unnecessary to increase the fps since they do not influence the sensation of
- * animation. Only the magnification would be used for camera movement.
+ * In this case we have the movement frames (in four directions) and the attack frames (in four directions) for each entity.
+ * Having few frames it would be unnecessary to increase the fps since they do not influence the sensation of animation. Only the
+ * magnification would be used for camera movement.
  */
 
 public class Animation {

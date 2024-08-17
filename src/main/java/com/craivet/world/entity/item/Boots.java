@@ -15,7 +15,7 @@ public class Boots extends Item {
 	public Boots(Game game, World world, int... pos) {
 		super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 		stats.name = NAME;
-		sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.BOOTS), tile, tile);
+		sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.BOOTS), tile, tile);
 	}
 
 }

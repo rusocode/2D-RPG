@@ -18,7 +18,7 @@ public class DestructibleWall extends Interactive {
 
     public DestructibleWall(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.ITILE_DESTRUCTIBLE_WALL), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.ITILE_DESTRUCTIBLE_WALL), tile, tile);
         destructible = true;
         stats.hp = 3;
         hitbox = new Rectangle(0, 0, tile, tile);
@@ -50,6 +50,6 @@ public class DestructibleWall extends Interactive {
 
     @Override
     public void playSound() {
-        game.playSound(Assets.getAudio(AudioAssets.Type.MINE));
+        game.playSound(Assets.getAudio(AudioAssets.MINE));
     }
 }

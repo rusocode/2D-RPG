@@ -28,7 +28,7 @@ public class StickyBall extends Projectile {
         hitbox = new Rectangle(8, 8, 15, 15);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.STICKY_BALL), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.STICKY_BALL), tile, tile);
     }
 
     @Override

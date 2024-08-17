@@ -22,13 +22,13 @@ import static com.craivet.utils.Global.*;
 /**
  * The Game class uses a Canvas and implements the Runnable interface to manage the game logic, update and render.
  * <p>
- * A Canvas component represents a blank rectangular area of the screen on which the application can draw or from which
- * the application can catch user input events. To organize the Canvas memory, uses a double buffer (for this case).
+ * A Canvas component represents a blank rectangular area of the screen on which the application can draw or from which the
+ * application can catch user input events. To organize the Canvas memory, uses a double buffer (for this case).
  * <p>
  * Sequential ring buffering (i.e., double or triple buffering) is the most common; An application draws in a single
  * <i>back buffer</i> and then moves the content to the front (screen) in a single step by either copying the data or
- * moving the video pointer. When you move the video pointer, the buffers are swap, so the first buffer drawn becomes
- * the <i>front buffer</i>, or what is shown currently on the device; This is called <i>page flipping</i>.
+ * moving the video pointer. When you move the video pointer, the buffers are swap, so the first buffer drawn becomes the <i>front
+ * buffer</i>, or what is shown currently on the device; This is called <i>page flipping</i>.
  * <br><br>
  * <h3>BufferedStrategy</h3>
  * Uses "active paint". Gives you direct control over when something is painted
@@ -74,9 +74,7 @@ public class Game extends Canvas implements Runnable {
     public AStar aStar = new AStar(world);
     public Loop loop = new Loop();
 
-    // States
-    public StateManager stateManager = new StateManager();
-    public int state = MAIN_STATE;
+    public GameRenderer gameRenderer = new GameRenderer(this, world, ui, minimap);
 
     // Screen
     private final Screen screen;
@@ -110,8 +108,8 @@ public class Game extends Canvas implements Runnable {
         file.load();
         minimap.create();
         event.create();
-        playMusic(Assets.getAudio(AudioAssets.Type.MUSIC_MAIN));
-        stateManager.set(new GameState(this, world, ui, minimap));
+        playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
+        // stateManager.set(new GameRenderer(this, world, ui, minimap));
         // Create a temporary screen for the fullscreen
         tempScreen = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         // Use the "brush" (g2) on the temporary screen
@@ -119,7 +117,8 @@ public class Game extends Canvas implements Runnable {
     }
 
     private void update() {
-        if (stateManager.get() != null) stateManager.get().update();
+        gameRenderer.update();
+        // if (stateManager.get() != null) stateManager.get().update();
     }
 
     private void render() {
@@ -134,7 +133,8 @@ public class Game extends Canvas implements Runnable {
         // Clear the window using the current background color
         g2.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         // Render graphics in the temporary screen buffer
-        if (stateManager.get() != null) stateManager.get().render(g2);
+        // if (stateManager.get() != null) stateManager.get().render(g2);
+        gameRenderer.render(g2);
         // When you're done drawing and want to present your information on the temporary screen, call show() show the buffer
         buffer.show();
     }
@@ -180,9 +180,9 @@ public class Game extends Canvas implements Runnable {
         world.entities.factory.createMobs();
         world.entities.removeTempEntities();
         world.entities.player.bossBattleOn = false;
-        playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_OVERWORLD));
+        playMusic(Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
         if (fullReset) {
-            playMusic(Assets.getAudio(AudioAssets.Type.MUSIC_MAIN));
+            playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
             world.entities.factory.createEntities();
             world.environment.lighting.resetDay();
             keyboard.minimap = false;

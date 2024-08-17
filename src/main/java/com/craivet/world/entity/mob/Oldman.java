@@ -4,6 +4,7 @@ import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.assets.*;
 import com.craivet.gfx.Animation;
+import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 
@@ -21,7 +22,7 @@ public class Oldman extends Mob {
         stats.name = "Oldman";
         stats.speed = 1;
         int scale = 1;
-        sheet.loadOldmanFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.OLDMAN), scale);
+        sheet.loadOldmanFrames(Assets.getSpriteSheet(SpriteSheetAssets.OLDMAN), scale);
         hitbox.width = sheet.frame.getWidth() / 2;
         hitbox.height = sheet.frame.getHeight() / 2;
         hitbox.x = hitbox.width - hitbox.width / 2 + 1;
@@ -65,7 +66,7 @@ public class Oldman extends Mob {
     @Override
     public void dialogue() {
         lookPlayer();
-        dialogue.startDialogue(DIALOGUE_STATE, this, dialogue.set);
+        dialogue.startDialogue(State.DIALOGUE, this, dialogue.set);
         dialogue.set++;
         if (dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
     }

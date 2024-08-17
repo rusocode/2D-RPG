@@ -1,11 +1,35 @@
 package com.craivet.states;
 
-import java.awt.*;
+/**
+ * Estados del juego.
+ */
 
-public interface State {
+public enum State {
 
-    void update();
+    MAIN,
+    PLAY,
+    DIALOGUE,
+    CUTSCENE,
+    STATS,
+    INVENTORY,
+    OPTION,
+    GAME_OVER,
+    TELEPORT,
+    TRADE,
+    SLEEP;
 
-    void render(Graphics2D g2);
+    private static State currentState = MAIN;  // Estado inicial por defecto
+
+    public static void setState(State state) {
+        currentState = state;
+    }
+
+    public static State getState() {
+        return currentState;
+    }
+
+    public static boolean isState(State state) {
+        return currentState == state;
+    }
 
 }

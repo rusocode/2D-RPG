@@ -19,12 +19,12 @@ public class Chicken extends Item {
         stats.name = NAME;
         description = "[" + stats.name + "]\nYes...\nLizard's treasure.";
         price = 1;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.CHICKEN), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.CHICKEN), tile, tile);
     }
 
     @Override
     public boolean use(Entity entity) {
-        game.playSound(Assets.getAudio(AudioAssets.Type.EAT));
+        game.playSound(Assets.getAudio(AudioAssets.EAT));
         world.entities.player.stats.hp = world.entities.player.stats.maxHp;
         world.entities.player.stats.mana = world.entities.player.stats.maxMana;
         return true;

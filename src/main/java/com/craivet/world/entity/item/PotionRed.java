@@ -27,13 +27,13 @@ public class PotionRed extends Item {
         price = 2;
         this.amount = amount;
         stackable = true;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.POTION_RED), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.POTION_RED), tile, tile);
     }
 
     @Override
     public boolean use(Entity entity) {
         if (entity.stats.hp != entity.stats.maxHp) {
-            game.playSound(Assets.getAudio(AudioAssets.Type.DRINK_POTION));
+            game.playSound(Assets.getAudio(AudioAssets.DRINK_POTION));
             entity.stats.hp += points;
             if (entity.stats.hp > entity.stats.maxHp) entity.stats.hp = entity.stats.maxHp;
             return true;

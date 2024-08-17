@@ -4,6 +4,7 @@ import com.craivet.assets.Assets;
 import com.craivet.assets.AudioAssets;
 import com.craivet.assets.FontAssets;
 import com.craivet.assets.TextureAssets;
+import com.craivet.states.State;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
 import com.craivet.world.entity.Player;
@@ -46,26 +47,25 @@ public class UI {
 
         this.g2 = g2;
 
-        // Default font and color
-        g2.setFont(Assets.getFont(FontAssets.Type.MINECRAFT));
+        // Default font and color   
+        g2.setFont(Assets.getFont(FontAssets.MINECRAFT));
         g2.setColor(Color.white);
         // g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); // Softens the edges of the font, but in this case it is not necessary to apply it since a pixelart type font is used
 
-        // Render windows depending on game state
-        switch (game.state) {
-            case MAIN_STATE -> renderMainWindow();
-            case PLAY_STATE -> {
+        switch (State.getState()) {
+            case MAIN -> renderMainWindow();
+            case PLAY -> {
                 renderBossHpBar();
                 renderLvl();
             }
-            case DIALOGUE_STATE -> renderDialogueWindow();
-            case STATS_STATE -> renderStatsWindow();
-            case INVENTORY_STATE -> renderPlayerInventoryWindow(world.entities.player, true);
-            case OPTION_STATE -> renderOptionWindow();
-            case GAME_OVER_STATE -> renderGameOverWindow();
-            case TELEPORT_STATE -> renderTeleportEffect();
-            case TRADE_STATE -> renderTradeWindow();
-            case SLEEP_STATE -> renderSleepEffect();
+            case DIALOGUE -> renderDialogueWindow();
+            case STATS -> renderStatsWindow();
+            case INVENTORY -> renderPlayerInventoryWindow(world.entities.player, true);
+            case OPTION -> renderOptionWindow();
+            case GAME_OVER -> renderGameOverWindow();
+            case TELEPORT -> renderTeleportEffect();
+            case TRADE -> renderTradeWindow();
+            case SLEEP -> renderSleepEffect();
         }
 
         renderConsole();
@@ -235,7 +235,7 @@ public class UI {
             if (game.keyboard.enter) {
                 charIndex = 0;
                 combinedText = "";
-                if (game.state == DIALOGUE_STATE || game.state == CUTSCENE_STATE) {
+                if (State.isState(State.DIALOGUE) || State.isState(State.CUTSCENE)) {
                     entity.dialogue.index++;
                     game.keyboard.enter = false;
                 }
@@ -243,8 +243,8 @@ public class UI {
             if (game.keyboard.esc) { // TODO Or else if?
                 charIndex = 0;
                 combinedText = "";
-                if (game.state == TRADE_STATE) {
-                    game.state = PLAY_STATE;
+                if (State.isState(State.TRADE)) {
+                    State.setState(State.PLAY);
                     currentDialogue = "";
                     entity.dialogue.index++;
                     game.keyboard.esc = false;
@@ -253,8 +253,9 @@ public class UI {
 
         } else { // If the dialogue ended
             entity.dialogue.index = 0;
-            if (game.state == DIALOGUE_STATE) game.state = PLAY_STATE;
-            if (game.state == CUTSCENE_STATE) world.cutscene.phase++;
+            if (State.isState(State.DIALOGUE))
+                State.setState(State.PLAY);
+            if (State.isState(State.CUTSCENE)) world.cutscene.phase++;
         }
 
         for (String line : currentDialogue.split("\n")) {
@@ -566,7 +567,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if (game.keyboard.enter) {
                 game.file.saveData();
-                game.state = PLAY_STATE;
+                State.setState(State.PLAY);
                 game.ui.addMessageToConsole("Game saved!");
                 command = 0;
             }
@@ -601,7 +602,7 @@ public class UI {
         if (command == 5) {
             g2.drawString(">", textX - 25, textY);
             if (game.keyboard.enter) {
-                game.state = PLAY_STATE;
+                State.setState(State.PLAY);
                 command = 0;
             }
         }
@@ -702,7 +703,7 @@ public class UI {
             g2.drawString(">", textX - 25, textY);
             if (game.keyboard.enter) {
                 subState = 0;
-                game.state = MAIN_STATE;
+                State.setState(State.MAIN);
                 game.keyboard.debug = false;
                 game.reset(true);
             }
@@ -763,7 +764,7 @@ public class UI {
         counter++;
         if (counter >= INTERVAL_TELEPORT) {
             counter = 0;
-            game.state = PLAY_STATE;
+            State.setState(State.PLAY);
             world.map.num = game.event.mapNum;
             world.entities.player.pos.x = (game.event.col * tile) + world.entities.player.hitbox.width / 2;
             world.entities.player.pos.y = (game.event.row * tile) - world.entities.player.hitbox.height;
@@ -818,7 +819,7 @@ public class UI {
             height = tile;
             renderSubwindow(x, y, width, height, 255);
             // Gold image
-            g2.drawImage(Assets.getTexture(TextureAssets.Type.GOLD), x + 6, y + 1, null);
+            g2.drawImage(Assets.getTexture(TextureAssets.GOLD), x + 6, y + 1, null);
             // Item price
             int price = entity.inventory.get(itemIndex).price;
             String text = String.valueOf(price);
@@ -832,7 +833,7 @@ public class UI {
                 else {
                     // TODO
                     if (world.entities.player.inventory.canPickup(entity.inventory.get(itemIndex))) {
-                        game.playSound(Assets.getAudio(AudioAssets.Type.TRADE_BUY));
+                        game.playSound(Assets.getAudio(AudioAssets.TRADE_BUY));
                         world.entities.player.stats.gold -= entity.inventory.get(itemIndex).price;
                     } else addMessageToConsole("You cannot carry any more!");
                 }
@@ -861,7 +862,7 @@ public class UI {
             width = (int) (tile * 2.5);
             height = tile;
             renderSubwindow(x, y, width, height, 255);
-            g2.drawImage(Assets.getTexture(TextureAssets.Type.GOLD), x + 6, y + 1, null);
+            g2.drawImage(Assets.getTexture(TextureAssets.GOLD), x + 6, y + 1, null);
             int price = world.entities.player.inventory.get(itemIndex).price / 2;
             String text = String.valueOf(price);
             x = getXforAlignToRightText(text, x + width);
@@ -872,7 +873,7 @@ public class UI {
                 if (world.entities.player.inventory.get(itemIndex) == world.entities.player.weapon || world.entities.player.inventory.get(itemIndex) == world.entities.player.shield)
                     addMessageToConsole("You cannot sell an equipped item!");
                 else {
-                    game.playSound(Assets.getAudio(AudioAssets.Type.TRADE_SELL));
+                    game.playSound(Assets.getAudio(AudioAssets.TRADE_SELL));
                     if (world.entities.player.inventory.get(itemIndex).amount > 1)
                         world.entities.player.inventory.get(itemIndex).amount--;
                     else world.entities.player.inventory.remove(itemIndex);
@@ -911,7 +912,7 @@ public class UI {
                 world.environment.lighting.dayState = world.environment.lighting.day;
                 world.environment.lighting.dayCounter = 0;
                 world.entities.player.currentFrame = world.entities.player.sheet.down[0];
-                game.state = PLAY_STATE;
+                State.setState(State.PLAY);
                 counter = 0; // Reset the counter to regenerate the effect from 0
             }
         }

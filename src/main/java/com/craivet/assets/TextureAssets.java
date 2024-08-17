@@ -4,37 +4,36 @@ import com.craivet.utils.Utils;
 
 import java.awt.image.BufferedImage;
 
-public final class TextureAssets {
+public enum TextureAssets {
 
-    public enum Type {
-        // Items
-        AXE,
-        BOOTS,
-        CHICKEN,
-        DOOR,
-        DOOR_IRON,
-        GOLD,
-        KEY,
-        LANTERN,
-        PICKAXE,
-        POTION_BLUE,
-        POTION_RED,
-        SHIELD_IRON,
-        SHIELD_WOOD,
-        STONE,
-        SWORD_IRON,
-        TENT,
-        WOOD,
-        // Mobs
-        BOX,
-        TRADER,
-        // Projectile
-        STICKY_BALL,
-        // Interactive tiles
-        ITILE_DESTRUCTIBLE_WALL,
-        ITILE_DRY_TREE,
-        ITILE_METAL_PLATE,
-    }
+    // Items
+    AXE,
+    BOOTS,
+    CHICKEN,
+    DOOR,
+    DOOR_IRON,
+    GOLD,
+    KEY,
+    LANTERN,
+    PICKAXE,
+    POTION_BLUE,
+    POTION_RED,
+    SHIELD_IRON,
+    SHIELD_WOOD,
+    STONE,
+    SWORD_IRON,
+    TENT,
+    WOOD,
+    // Mobs
+    BOX,
+    TRADER,
+    // Projectile
+    STICKY_BALL,
+    // Interactive tiles
+    ITILE_DESTRUCTIBLE_WALL,
+    ITILE_DRY_TREE,
+    ITILE_METAL_PLATE;
+
 
     private static final String textures_items_path = "textures/entity/items/";
     private static final String textures_mob_path = "textures/entity/mob/";
@@ -72,8 +71,8 @@ public final class TextureAssets {
     private static final BufferedImage itile_dry_tree = Utils.loadTexture(textures_tiles_interactive_path + "drytree.png");
     private static final BufferedImage itile_metal_plate = Utils.loadTexture(textures_tiles_interactive_path + "metalplate.png");
 
-    static BufferedImage getTexture(Type type) {
-        return switch (type) {
+    static BufferedImage getTexture(TextureAssets textureAssets) {
+        return switch (textureAssets) {
             // Items
             case AXE -> axe;
             case BOOTS -> boots;
@@ -102,9 +101,6 @@ public final class TextureAssets {
             case ITILE_DRY_TREE -> itile_dry_tree;
             case ITILE_METAL_PLATE -> itile_metal_plate;
         };
-    }
-
-    private TextureAssets() {
     }
 
 }

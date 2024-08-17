@@ -1,6 +1,7 @@
 package com.craivet.world.management;
 
 import com.craivet.Game;
+import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.PlayerDummy;
 import com.craivet.world.entity.item.DoorIron;
@@ -98,7 +99,8 @@ public class CutsceneManager {
             // Restart the scene
             n = na;
             phase = 0;
-            game.state = PLAY_STATE;
+            State.setState(State.PLAY);
+            // game.state = PLAY_STATE;
         }
 
     }

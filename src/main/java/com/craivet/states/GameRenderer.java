@@ -9,7 +9,7 @@ import java.awt.*;
 
 import static com.craivet.utils.Global.*;
 
-public class GameState implements State {
+public class GameRenderer implements Renderable {
 
     private final Game game;
     private final World world;
@@ -19,7 +19,7 @@ public class GameState implements State {
     private long renderStart;
     private int lastFrames;
 
-    public GameState(Game game, World world, UI ui, Minimap minimap) {
+    public GameRenderer(Game game, World world, UI ui, Minimap minimap) {
         this.game = game;
         this.world = world;
         this.ui = ui;

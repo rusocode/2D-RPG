@@ -25,9 +25,9 @@ public class Map {
     public void changeArea() {
         // If there is a change of area
         if (nextZone != zone) {
-            if (nextZone == BOSS) game.playMusic(Assets.getAudio(AudioAssets.Type.MUSIC_BOSS));
-            if (nextZone == DUNGEON) game.playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_DUNGEON));
-            if (zone == DUNGEON && nextZone == OVERWORLD) game.playMusic(Assets.getAudio(AudioAssets.Type.AMBIENT_OVERWORLD));
+            if (nextZone == BOSS) game.playMusic(Assets.getAudio(AudioAssets.MUSIC_BOSS));
+            if (nextZone == DUNGEON) game.playMusic(Assets.getAudio(AudioAssets.AMBIENT_DUNGEON));
+            if (zone == DUNGEON && nextZone == OVERWORLD) game.playMusic(Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
         }
         zone = nextZone;
         world.entities.factory.createMobs();

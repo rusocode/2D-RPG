@@ -20,7 +20,7 @@ public class Lantern extends Item {
         description = "[" + stats.name + "]\nIlluminaties your \nsurroundings.";
         price = 45;
         lightRadius = 350;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.LANTERN), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.LANTERN), tile, tile);
     }
 
 }

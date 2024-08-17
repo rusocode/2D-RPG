@@ -26,10 +26,10 @@ public class Orc extends Mob {
         stats.defense = 2;
         stats.motion1 = 25;
         stats.motion2 = 30;
-        soundHit = Assets.getAudio(AudioAssets.Type.ORC_HIT);
-        soundDeath = Assets.getAudio(AudioAssets.Type.ORC_DEATH);
+        soundHit = Assets.getAudio(AudioAssets.ORC_HIT);
+        soundDeath = Assets.getAudio(AudioAssets.ORC_DEATH);
         int scale = 1;
-        sheet.loadOrcMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.ORC), scale);
+        sheet.loadOrcMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.ORC), scale);
         hitbox.x = 5;
         hitbox.y = 32;
         hitbox.width = 20;

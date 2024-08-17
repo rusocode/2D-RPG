@@ -18,7 +18,7 @@ public class DryTree extends Interactive {
 
     public DryTree(Game game, World world, int x, int y) {
         super(game, world, x, y);
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.ITILE_DRY_TREE), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.ITILE_DRY_TREE), tile, tile);
         destructible = true;
         stats.hp = 1;
         hitbox = new Rectangle(0, 0, tile, tile);
@@ -50,6 +50,6 @@ public class DryTree extends Interactive {
 
     @Override
     public void playSound() {
-        game.playSound(Assets.getAudio(AudioAssets.Type.CUT_TREE));
+        game.playSound(Assets.getAudio(AudioAssets.CUT_TREE));
     }
 }

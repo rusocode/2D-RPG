@@ -20,7 +20,7 @@ public class ShieldIron extends Item {
 		description = "[" + stats.name + "]\nA shiny iron shield.";
 		price = 250;
 		defenseValue = 2;
-		sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.SHIELD_IRON), tile, tile);
+		sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.SHIELD_IRON), tile, tile);
 	}
 
 }

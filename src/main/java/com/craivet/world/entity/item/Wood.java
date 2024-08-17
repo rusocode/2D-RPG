@@ -21,7 +21,7 @@ public class Wood extends Item {
         price = 5;
         this.amount = amount;
         stackable = true;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.WOOD), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.WOOD), tile, tile);
     }
 
 }

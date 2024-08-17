@@ -2,11 +2,11 @@ package com.craivet.world.management;
 
 import com.craivet.world.World;
 import com.craivet.world.environment.Lighting;
-import com.craivet.states.State;
+import com.craivet.states.Renderable;
 
 import java.awt.*;
 
-public class EnvironmentManager implements State {
+public class EnvironmentManager implements Renderable {
 
     private final World world;
     public final Lighting lighting;

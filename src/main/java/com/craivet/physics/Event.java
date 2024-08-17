@@ -3,6 +3,7 @@ package com.craivet.physics;
 import com.craivet.Direction;
 import com.craivet.Game;
 import com.craivet.io.Progress;
+import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 
@@ -124,7 +125,7 @@ public class Event {
      */
     private void hurt(Entity entity) {
         entity.dialogue.dialogues[0][0] = "You fall into a pit!";
-        entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 0);
+        entity.dialogue.startDialogue(State.DIALOGUE, entity, 0);
         entity.stats.hp--;
         canCollideEvent = false;
     }
@@ -137,7 +138,7 @@ public class Event {
     private void heal(Entity entity) {
         if (game.keyboard.enter) {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
-            entity.dialogue.startDialogue(DIALOGUE_STATE, entity, 1);
+            entity.dialogue.startDialogue(State.DIALOGUE, entity, 1);
             entity.stats.hp = entity.stats.maxHp;
         }
     }
@@ -147,7 +148,7 @@ public class Event {
      */
     private void bossScene() {
         if (!world.entities.player.bossBattleOn && !Progress.bossDefeated) {
-            game.state = CUTSCENE_STATE;
+            State.setState(State.CUTSCENE);
             world.cutscene.n = world.cutscene.boss;
             world.entities.player.bossBattleOn = true;
         }
@@ -162,7 +163,7 @@ public class Event {
      * @param row    row to which the player teleports.
      */
     private void teleport(int zone, int mapNum, int col, int row) {
-        game.state = TELEPORT_STATE;
+        State.setState(State.TELEPORT);
         world.map.nextZone = zone;
         this.mapNum = mapNum;
         this.col = col;

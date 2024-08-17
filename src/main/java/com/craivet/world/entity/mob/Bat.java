@@ -22,12 +22,12 @@ public class Bat extends Mob {
         stats.exp = 7;
         stats.attack = 1;
         stats.defense = 1;
-        soundHit = Assets.getAudio(AudioAssets.Type.BAT_HIT);
-        soundDeath = Assets.getAudio(AudioAssets.Type.BAT_DEATH);
+        soundHit = Assets.getAudio(AudioAssets.BAT_HIT);
+        soundDeath = Assets.getAudio(AudioAssets.BAT_DEATH);
         hitbox = new Rectangle(0, 0, tile, tile);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
-        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.BAT), 32, 32, 1);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.BAT), 32, 32, 1);
     }
 
     @Override

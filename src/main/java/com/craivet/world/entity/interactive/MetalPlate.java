@@ -17,7 +17,7 @@ public class MetalPlate extends Interactive {
     public MetalPlate(Game game, World world, int x, int y) {
         super(game, world, x, y);
         stats.name = NAME;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.ITILE_METAL_PLATE), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.ITILE_METAL_PLATE), tile, tile);
         hitbox = new Rectangle(0, 0, 0, 0);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;

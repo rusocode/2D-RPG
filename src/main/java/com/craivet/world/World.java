@@ -1,6 +1,7 @@
 package com.craivet.world;
 
 import com.craivet.Game;
+import com.craivet.states.State;
 import com.craivet.world.management.*;
 
 import java.awt.*;
@@ -36,8 +37,8 @@ public class World {
      * Updates the entities and environment.
      */
     public void update() {
-        if (game.state == PLAY_STATE) entities.update();
-        if (game.state != MAIN_STATE) environment.update();
+        if (State.isState(State.PLAY)) entities.update();
+        if (State.isState(State.MAIN)) environment.update();
     }
 
     /**
@@ -47,13 +48,13 @@ public class World {
      */
     public void render(Graphics2D g2) {
         // Render tiles, entities, and weather only if the game is other than MAIN_STATE
-        if (game.state != MAIN_STATE) {
+        if (!State.isState(State.MAIN)) {
             tiles.render(g2);
             entities.render(g2);
             environment.render(g2);
             cutscene.render();
         }
-        if (game.state == MAIN_STATE) {
+        if (State.isState(State.MAIN)) {
             // TODO Replace with a background with an image
             g2.setColor(Color.black);
             g2.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);

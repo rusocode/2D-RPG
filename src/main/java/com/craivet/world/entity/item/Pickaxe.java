@@ -21,7 +21,7 @@ public class Pickaxe extends Item {
         description = "[" + stats.name + "]\nYou will big it!";
         price = 60;
         attackValue = 1;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.PICKAXE), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.PICKAXE), tile, tile);
     }
 
 }

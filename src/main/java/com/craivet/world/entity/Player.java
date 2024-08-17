@@ -10,6 +10,7 @@ import com.craivet.assets.SpriteSheetAssets;
 import com.craivet.classes.Character;
 import com.craivet.classes.Jester;
 import com.craivet.gfx.Animation;
+import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.mob.Mob;
 import com.craivet.world.entity.mob.Lizard;
@@ -96,8 +97,8 @@ public class Player extends Mob {
         stats.defense = getDefense();
 
         int scale = 1;
-        sheet.loadPlayerMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.PLAYER), scale);
-        sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.SWORD_FRAME), 16, 16, scale);
+        sheet.loadPlayerMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.PLAYER), scale);
+        sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.SWORD_FRAME), 16, 16, scale);
 
         int additionalPixelsForY = 19;
         hitbox.width = sheet.frame.getWidth() / 2;
@@ -196,8 +197,8 @@ public class Player extends Mob {
      */
     private void checkAttack() {
         if (game.keyboard.enter && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
-            if (weapon.type == Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.Type.SWING_WEAPON));
-            if (weapon.type != Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.Type.SWING_AXE));
+            if (weapon.type == Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.SWING_WEAPON));
+            if (weapon.type != Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.SWING_AXE));
             flags.hitting = true;
             timer.attackCounter = 0;
         }
@@ -257,7 +258,7 @@ public class Player extends Mob {
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
             if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
-                game.playSound(Assets.getAudio(AudioAssets.Type.PLAYER_DAMAGE));
+                game.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
                 int damage = Math.max(mob.stats.attack - stats.defense, 1);
                 stats.decreaseHp(damage);
                 flags.invincible = true;
@@ -286,7 +287,7 @@ public class Player extends Mob {
                 game.ui.addMessageToConsole(damage + " damage!");
                 if (mob.stats.hp > 0) {
                     game.playSound(mob.soundHit);
-                    if (!(mob instanceof Slime)) game.playSound(Assets.getAudio(AudioAssets.Type.MOB_HIT));
+                    if (!(mob instanceof Slime)) game.playSound(Assets.getAudio(AudioAssets.MOB_HIT));
                 }
 
                 mob.flags.invincible = true;
@@ -296,7 +297,7 @@ public class Player extends Mob {
                 // TODO No deberia ganar exp en cada golpe al mob o solo cuando lo mata?
                 // TODO Should there be a method?
                 if (mob.stats.hp <= 0) {
-                    game.playSound(Assets.getAudio(AudioAssets.Type.MOB_DEATH));
+                    game.playSound(Assets.getAudio(AudioAssets.MOB_DEATH));
                     if (!(mob instanceof Slime || mob instanceof RedSlime)) game.playSound(mob.soundDeath);
                     mob.flags.dead = true;
                     game.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
@@ -309,7 +310,7 @@ public class Player extends Mob {
                         for (int j = 0; j < world.entities.items[1].length; j++) {
                             if (world.entities.items[world.map.num][j] != null && world.entities.items[world.map.num][j].stats.name.equals(DoorIron.NAME)) {
                                 world.entities.items[world.map.num][j] = null;
-                                game.playSound(Assets.getAudio(AudioAssets.Type.DOOR_IRON_OPENING));
+                                game.playSound(Assets.getAudio(AudioAssets.DOOR_IRON_OPENING));
                             }
                         }
                     }
@@ -349,7 +350,7 @@ public class Player extends Mob {
             Projectile projectile = world.entities.projectiles[world.map.num][i];
             // Avoid damaging the projectile itself
             if (projectile != this.projectile) {
-                game.playSound(Assets.getAudio(AudioAssets.Type.PLAYER_DAMAGE));
+                game.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
                 projectile.flags.alive = false;
                 generateParticle(projectile, projectile);
             }
@@ -369,7 +370,7 @@ public class Player extends Mob {
          * several times (for example, killing a mob that gives a lot of exp). Therefore, raise the lvl as long as the
          * exp is greater than the exp of the next lvl. */
         while (stats.exp >= stats.nextLvlExp) {
-            game.playSound(Assets.getAudio(AudioAssets.Type.LEVEL_UP));
+            game.playSound(Assets.getAudio(AudioAssets.LEVEL_UP));
             character.upStats(this);
             stats.attack = getAttack();
             stats.defense = getDefense();
@@ -386,7 +387,7 @@ public class Player extends Mob {
             Item item = world.entities.items[world.map.num][i];
             if (game.keyboard.pickup && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(world.entities.player);
-                else if (inventory.canPickup(item)) game.playSound(Assets.getAudio(AudioAssets.Type.ITEM_PICKUP));
+                else if (inventory.canPickup(item)) game.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
                 else {
                     game.ui.addMessageToConsole("You cannot carry any more!");
                     return;
@@ -417,8 +418,8 @@ public class Player extends Mob {
     }
 
     private void die() {
-        game.playSound(Assets.getAudio(AudioAssets.Type.PLAYER_DEATH));
-        game.state = GAME_OVER_STATE;
+        game.playSound(Assets.getAudio(AudioAssets.PLAYER_DEATH));
+        State.setState(State.GAME_OVER);
         game.ui.command = -1;
         game.music.stop();
     }

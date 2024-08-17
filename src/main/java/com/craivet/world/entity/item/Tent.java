@@ -4,6 +4,7 @@ import com.craivet.Game;
 import com.craivet.assets.Assets;
 import com.craivet.assets.AudioAssets;
 import com.craivet.assets.TextureAssets;
+import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.entity.Type;
@@ -21,13 +22,13 @@ public class Tent extends Item {
         stats.name = NAME;
         description = "[" +stats. name + "]\nYou can sleep until\nnext morning.";
         price = 380;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.TENT), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.TENT), tile, tile);
     }
 
     @Override
     public boolean use(Entity entity) {
-        game.state = SLEEP_STATE;
-        game.playSound(Assets.getAudio(AudioAssets.Type.SLEEP));
+        State.setState(State.SLEEP);
+        game.playSound(Assets.getAudio(AudioAssets.SLEEP));
         world.entities.player.stats.hp = world.entities.player.stats.maxHp;
         world.entities.player.stats.mana = world.entities.player.stats.maxMana;
         world.entities.player.initSleepImage(sheet.frame);

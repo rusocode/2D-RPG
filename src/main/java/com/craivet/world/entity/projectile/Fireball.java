@@ -22,10 +22,10 @@ public class Fireball extends Projectile {
         stats.knockbackValue = 5;
         flags.alive = false;
         cost = 2;
-        sound = Assets.getAudio(AudioAssets.Type.FIREBALL);
+        sound = Assets.getAudio(AudioAssets.FIREBALL);
         hitbox = new Rectangle(0, 0, tile, tile);
         int scale = 2;
-        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.Type.FIREBALL), 16, 16, scale);
+        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.FIREBALL), 16, 16, scale);
         interval = 80;
     }
 

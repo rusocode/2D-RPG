@@ -1,10 +1,11 @@
 package com.craivet;
 
+import com.craivet.states.State;
 import com.craivet.world.entity.Entity;
 
 /**
- * Dialogues are the texts that are generated when you interact with an NPC, with a specific item or when an event
- * occurs. These texts are displayed within the dialog window.
+ * Dialogues are the texts that are generated when you interact with an NPC, with a specific item or when an event occurs. These
+ * texts are displayed within the dialog window.
  */
 
 public class Dialogue {
@@ -19,8 +20,9 @@ public class Dialogue {
         this.game = game;
     }
 
-    public void startDialogue(int state, Entity entity, int set) {
-        game.state = state;
+    public void startDialogue(State state, Entity entity, int set) {
+        State.setState(state);
+        // game.state = state;
         game.ui.entity = entity;
         this.set = set;
     }

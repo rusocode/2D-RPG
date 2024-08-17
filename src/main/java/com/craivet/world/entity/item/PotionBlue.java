@@ -24,13 +24,13 @@ public class PotionBlue extends Item {
         price = 4;
         this.amount = amount;
         stackable = true;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.POTION_BLUE), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.POTION_BLUE), tile, tile);
     }
 
     @Override
     public boolean use(Entity entity) {
         if (entity.stats.mana != entity.stats.maxMana) {
-            game.playSound(Assets.getAudio(AudioAssets.Type.DRINK_POTION));
+            game.playSound(Assets.getAudio(AudioAssets.DRINK_POTION));
             entity.stats.mana += points;
             if (entity.stats.mana > entity.stats.maxMana) entity.stats.mana = entity.stats.maxMana;
             return true;

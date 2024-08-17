@@ -21,7 +21,7 @@ public class Stone extends Item {
         price = 7;
         this.amount = amount;
         stackable = true;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.Type.STONE), tile, tile);
+        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.STONE), tile, tile);
     }
 
 }
