@@ -6,6 +6,7 @@ import com.craivet.world.World;
 import com.craivet.Minimap;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 import static com.craivet.utils.Global.*;
 
@@ -31,13 +32,13 @@ public class GameRenderer implements Renderable {
     }
 
     public void render(Graphics2D g2) {
-        if (game.keyboard.debug) renderStart = System.nanoTime();
+        if (game.keyboard.isKeyToggled(KeyEvent.VK_Q)) renderStart = System.nanoTime();
 
         world.render(g2);
         minimap.render(g2);
         ui.render(g2);
 
-        if (game.keyboard.test) {
+        if (game.keyboard.isKeyToggled(KeyEvent.VK_T)) {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 17));
             String text = "Test Mode";
             int textLength = (int) g2.getFontMetrics().getStringBounds(text, g2).getWidth();
@@ -46,7 +47,7 @@ public class GameRenderer implements Renderable {
             g2.drawString(text, x, y);
         }
 
-        if (game.keyboard.debug) {
+        if (game.keyboard.isKeyToggled(KeyEvent.VK_Q)) {
             g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 8));
             int x = 8, y = (int) (WINDOW_HEIGHT - tile * 2.8), gap = 15;
             String map = game.file.maps.get(game.world.map.num);
@@ -65,6 +66,7 @@ public class GameRenderer implements Renderable {
             y += gap;
             g2.drawString("Render time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);
         }
+
     }
 
 }

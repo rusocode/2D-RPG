@@ -22,7 +22,7 @@ public class Trader extends Mob {
         dialogue = new Dialogue(game);
         type = Type.NPC;
         stats.name = "Trader";
-        hitbox = new Rectangle(7, 16, 15, 48);
+        hitbox = new Rectangle(7, 40, 15, 24);
         hitboxDefaultX = hitbox.x;
         hitboxDefaultY = hitbox.y;
         sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.TRADER), tile, 64);

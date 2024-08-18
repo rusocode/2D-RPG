@@ -9,6 +9,7 @@ import com.craivet.utils.*;
 import com.craivet.world.entity.item.*;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
@@ -82,7 +83,7 @@ public class Orc extends Mob {
 
             g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
 
-            if (game.keyboard.hitbox) drawRects(g2);
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_H)) drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }

@@ -22,7 +22,6 @@ public class Dialogue {
 
     public void startDialogue(State state, Entity entity, int set) {
         State.setState(state);
-        // game.state = state;
         game.ui.entity = entity;
         this.set = set;
     }

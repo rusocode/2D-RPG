@@ -11,6 +11,7 @@ import com.craivet.world.entity.Type;
 import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
@@ -87,7 +88,7 @@ public class BurstOfFire extends Projectile {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY(), null);
-        if (game.keyboard.hitbox) drawRects(g2);
+        if (game.keyboard.isKeyPressed(KeyEvent.VK_H)) drawRects(g2);
     }
 
     @Override

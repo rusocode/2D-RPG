@@ -11,6 +11,7 @@ import com.craivet.world.entity.Player;
 import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import static com.craivet.utils.Global.*;
@@ -232,22 +233,22 @@ public class UI {
             }
 
             // In the case of having several dialog boxes (example, Oldman)
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.DIALOGUE) || State.isState(State.CUTSCENE)) {
                     entity.dialogue.index++;
-                    game.keyboard.enter = false;
+                    game.keyboard.releaseKey(KeyEvent.VK_ENTER);
                 }
             }
-            if (game.keyboard.esc) { // TODO Or else if?
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) { // TODO Or else if?
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.TRADE)) {
                     State.setState(State.PLAY);
                     currentDialogue = "";
                     entity.dialogue.index++;
-                    game.keyboard.esc = false;
+                    game.keyboard.releaseKey(KeyEvent.VK_ESCAPE);
                 }
             }
 
@@ -524,7 +525,7 @@ public class UI {
             case 2 -> renderOptionEndGameConfirmationWindow(x, y);
         }
 
-        game.keyboard.enter = false;
+       game.keyboard.releaseKey(KeyEvent.VK_ENTER);
 
     }
 
@@ -555,7 +556,7 @@ public class UI {
         g2.drawString("Controls", textX, textY);
         if (command == 2) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 subState = 1;
                 command = 0;
             }
@@ -565,7 +566,7 @@ public class UI {
         g2.drawString("Save Game", textX, textY);
         if (command == 3) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 game.file.saveData();
                 State.setState(State.PLAY);
                 game.ui.addMessageToConsole("Game saved!");
@@ -577,7 +578,7 @@ public class UI {
         g2.drawString("End Game", textX, textY);
         if (command == 4) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 subState = 2;
                 command = 0;
             }
@@ -601,7 +602,7 @@ public class UI {
         g2.drawString("Back", textX, textY);
         if (command == 5) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 State.setState(State.PLAY);
                 command = 0;
             }
@@ -678,7 +679,7 @@ public class UI {
         g2.drawString("Back", textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 subState = 0;
                 command = 2;
             }
@@ -701,10 +702,10 @@ public class UI {
         g2.drawString(text, textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 subState = 0;
                 State.setState(State.MAIN);
-                game.keyboard.debug = false;
+                if (game.keyboard.isKeyToggled(KeyEvent.VK_Q)) game.keyboard.toggleKey(KeyEvent.VK_Q);
                 game.reset(true);
             }
         }
@@ -715,7 +716,7 @@ public class UI {
         g2.drawString(text, textX, textY);
         if (command == 1) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 subState = 0;
                 command = 4;
             }
@@ -780,7 +781,7 @@ public class UI {
             case 1 -> renderTradeBuyWindow();
             case 2 -> renderTradeSellWindow();
         }
-        game.keyboard.enter = false; // Reset keyboard input
+        game.keyboard.releaseKey(KeyEvent.VK_ENTER); // Reset keyboard input
     }
 
     private void renderTradeMainWindow() {
@@ -791,7 +792,7 @@ public class UI {
         g2.drawString("Buy", x, y);
         if (command == 0) {
             g2.drawString(">", x - 14, y);
-            if (game.keyboard.enter) subState = 1;
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) subState = 1;
         }
 
         x += 4 * tile;
@@ -799,7 +800,7 @@ public class UI {
         g2.drawString("Sell", x, y);
         if (command == 1) {
             g2.drawString(">", x - 14, y);
-            if (game.keyboard.enter) subState = 2;
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) subState = 2;
         }
     }
 
@@ -827,7 +828,7 @@ public class UI {
             g2.drawString(text, x, y + 24);
 
             // Buy an item
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 if (entity.inventory.get(itemIndex).price > world.entities.player.stats.gold)
                     addMessageToConsole("You need more gold to buy that!");
                 else {
@@ -869,7 +870,7 @@ public class UI {
             g2.drawString(text, x, y + 24);
 
             // Sell an item
-            if (game.keyboard.enter) {
+            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 if (world.entities.player.inventory.get(itemIndex) == world.entities.player.weapon || world.entities.player.inventory.get(itemIndex) == world.entities.player.shield)
                     addMessageToConsole("You cannot sell an equipped item!");
                 else {

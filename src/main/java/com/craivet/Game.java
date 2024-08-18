@@ -2,17 +2,18 @@ package com.craivet;
 
 import com.craivet.ai.AStar;
 import com.craivet.assets.*;
+import com.craivet.input.Keyboard;
 import com.craivet.physics.Event;
 import com.craivet.utils.Loop;
 import com.craivet.world.entity.item.ItemGenerator;
 import com.craivet.gfx.Screen;
 import com.craivet.io.File;
-import com.craivet.input.Keyboard;
 import com.craivet.physics.*;
 import com.craivet.states.*;
 import com.craivet.world.World;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -73,7 +74,6 @@ public class Game extends Canvas implements Runnable {
     public Event event = new Event(this, world);
     public AStar aStar = new AStar(world);
     public Loop loop = new Loop();
-
     public GameRenderer gameRenderer = new GameRenderer(this, world, ui, minimap);
 
     // Screen
@@ -109,7 +109,6 @@ public class Game extends Canvas implements Runnable {
         minimap.create();
         event.create();
         playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
-        // stateManager.set(new GameRenderer(this, world, ui, minimap));
         // Create a temporary screen for the fullscreen
         tempScreen = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         // Use the "brush" (g2) on the temporary screen
@@ -118,7 +117,6 @@ public class Game extends Canvas implements Runnable {
 
     private void update() {
         gameRenderer.update();
-        // if (stateManager.get() != null) stateManager.get().update();
     }
 
     private void render() {
@@ -133,7 +131,6 @@ public class Game extends Canvas implements Runnable {
         // Clear the window using the current background color
         g2.clearRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         // Render graphics in the temporary screen buffer
-        // if (stateManager.get() != null) stateManager.get().render(g2);
         gameRenderer.render(g2);
         // When you're done drawing and want to present your information on the temporary screen, call show() show the buffer
         buffer.show();
@@ -185,7 +182,9 @@ public class Game extends Canvas implements Runnable {
             playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
             world.entities.factory.createEntities();
             world.environment.lighting.resetDay();
-            keyboard.minimap = false;
+            if (keyboard.isKeyToggled(KeyEvent.VK_M)) keyboard.toggleKey(KeyEvent.VK_M);
+            if (keyboard.isKeyToggled(KeyEvent.VK_T)) keyboard.toggleKey(KeyEvent.VK_T);
+            if (keyboard.isKeyToggled(KeyEvent.VK_H)) keyboard.toggleKey(KeyEvent.VK_H);
         }
     }
 

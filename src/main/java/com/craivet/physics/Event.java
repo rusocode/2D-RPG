@@ -8,6 +8,7 @@ import com.craivet.world.World;
 import com.craivet.world.entity.Entity;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 import static com.craivet.utils.Global.*;
 
@@ -136,7 +137,7 @@ public class Event {
      * @param entity entity to heal.
      */
     private void heal(Entity entity) {
-        if (game.keyboard.enter) {
+        if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
             entity.dialogue.startDialogue(State.DIALOGUE, entity, 1);
             entity.stats.hp = entity.stats.maxHp;
