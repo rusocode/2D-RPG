@@ -9,8 +9,8 @@ import java.awt.*;
 import static com.craivet.utils.Global.*;
 
 /**
- * The World class represents the scenery of the game. Each part of the world is divided into 50x50 tile maps that are
- * composed of tiles, entities and an environment (weather).
+ * The World class represents the scenery of the game. Each part of the world is divided into 50x50 tile maps that are composed of
+ * tiles, entities and an environment (weather).
  */
 
 public class World {
@@ -38,7 +38,7 @@ public class World {
      */
     public void update() {
         if (State.isState(State.PLAY)) entities.update();
-        if (State.isState(State.MAIN)) environment.update();
+        if (State.isState(State.INVENTORY) || State.isState(State.PLAY)) environment.update();
     }
 
     /**

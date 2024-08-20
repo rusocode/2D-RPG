@@ -20,7 +20,7 @@ public class ShieldWood extends Item {
 		description = "[" + stats.name + "]\nMade by wood.";
 		price = 150;
 		defenseValue = 1;
-		sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.WOOD), tile, tile);
+		sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.SHIELD_WOOD), tile, tile);
 	}
 
 }

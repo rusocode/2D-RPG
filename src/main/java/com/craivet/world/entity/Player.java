@@ -53,6 +53,7 @@ public class Player extends Mob {
             if (!flags.colliding && !game.keyboard.checkActionKeys()) pos.update(this, direction);
             mechanics.checkDirectionSpeed(this, auxEntity);
             checkAttack();
+            // Resetea las teclas de accion (atacar, por ejemplo) para darle prioridad a las teclas de movimiento y asi evitar que se "choquen"
             game.keyboard.resetActionKeys();
             if (game.keyboard.checkMovementKeys()) {
                 // TODO Move to method
@@ -486,11 +487,11 @@ public class Player extends Mob {
     }
 
     public int getAttack() {
-        return stats.strength * weapon.attackValue;
+        return stats.strength + (weapon != null ? weapon.attackValue : 0);
     }
 
     public int getDefense() {
-        return stats.dexterity * shield.defenseValue;
+        return stats.dexterity + (shield != null ? shield.defenseValue : 0);
     }
 
     public void initSleepImage(BufferedImage image) {

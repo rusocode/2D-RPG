@@ -37,9 +37,9 @@ public class Lighting {
         darknessFilter = new BufferedImage(WINDOW_WIDTH, WINDOW_HEIGHT, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = (Graphics2D) darknessFilter.getGraphics();
 
-        if (world.entities.player.light == null) g2.setColor(new Color(0, 0, 0, 0.90f));
-        else { // If the player selected the latern
-
+        if (world.entities.player.light == null) {
+            g2.setColor(new Color(0, 0, 0, 0.90f));
+        } else { // If the player selected the latern
             // Gets the center of the player
             int centerX = world.entities.player.screen.xOffset + (tile / 2);
             int centerY = world.entities.player.screen.yOffset + (tile / 2);

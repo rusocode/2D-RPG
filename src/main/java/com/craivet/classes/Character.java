@@ -40,7 +40,7 @@ public abstract class Character {
         stats.lvl++;
         stats.exp -= stats.nextLvlExp;
         stats.nextLvlExp *= 2;
-        // Hace los incrementos cada dos lvl
+        // Incrementa strenght y dexterity en 1 cada dos niveles
         stats.strength += stats.lvl % 2 == 0 ? 1 : 0;
         stats.dexterity += stats.lvl % 2 == 0 ? 1 : 0;
         int increasedMaxHp = stats.lvl % 2 == 0 ? getIncreaseMaxHp() : 0;

@@ -77,7 +77,7 @@ public class UI {
         int x = entity.getScreenX();
         int y = entity.getScreenY() + entity.sheet.frame.getHeight();
         int width = entity.sheet.frame.getWidth();
-        int height = 4;
+        int height = 1;
 
         double oneScale = (double) width / entity.stats.maxHp;
         double hpBarValue = oneScale * entity.stats.hp;
@@ -94,7 +94,7 @@ public class UI {
         int x = entity.getScreenX();
         int y = entity.getScreenY() + entity.sheet.frame.getHeight();
         int width = entity.sheet.frame.getWidth();
-        int height = 4;
+        int height = 1;
 
         double oneScale = (double) width / entity.stats.maxMana;
         double manaBarValue = oneScale * entity.stats.mana;
@@ -331,12 +331,12 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.entities.player.stats.attack);
+        value = String.valueOf(world.entities.player.getAttack());
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        value = String.valueOf(world.entities.player.stats.defense);
+        value = String.valueOf(world.entities.player.getDefense());
         textX = getXforAlignToRightText(value, tailX);
         g2.drawString(value, textX, textY);
         textY += gap;
@@ -356,10 +356,10 @@ public class UI {
         g2.drawString(value, textX, textY);
         textY += gap;
 
-        g2.drawImage(world.entities.player.weapon.sheet.frame, tailX - 35, textY - 5, null);
+        g2.drawImage(world.entities.player.weapon != null ? world.entities.player.weapon.sheet.frame : null, tailX - 35, textY - 5, null);
         textY += gap;
 
-        g2.drawImage(world.entities.player.shield.sheet.frame, tailX - 35, textY + 5, null);
+        g2.drawImage(world.entities.player.shield != null ? world.entities.player.shield.sheet.frame : null, tailX - 35, textY + 5, null);
 
     }
 
@@ -525,7 +525,7 @@ public class UI {
             case 2 -> renderOptionEndGameConfirmationWindow(x, y);
         }
 
-       game.keyboard.releaseKey(KeyEvent.VK_ENTER);
+        game.keyboard.releaseKey(KeyEvent.VK_ENTER);
 
     }
 
@@ -705,7 +705,6 @@ public class UI {
             if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
                 subState = 0;
                 State.setState(State.MAIN);
-                if (game.keyboard.isKeyToggled(KeyEvent.VK_Q)) game.keyboard.toggleKey(KeyEvent.VK_Q);
                 game.reset(true);
             }
         }
@@ -871,7 +870,9 @@ public class UI {
 
             // Sell an item
             if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
-                if (world.entities.player.inventory.get(itemIndex) == world.entities.player.weapon || world.entities.player.inventory.get(itemIndex) == world.entities.player.shield)
+                if (world.entities.player.inventory.get(itemIndex) == world.entities.player.weapon ||
+                        world.entities.player.inventory.get(itemIndex) == world.entities.player.shield ||
+                        world.entities.player.inventory.get(itemIndex) == world.entities.player.light)
                     addMessageToConsole("You cannot sell an equipped item!");
                 else {
                     game.playSound(Assets.getAudio(AudioAssets.TRADE_SELL));

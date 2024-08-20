@@ -3,6 +3,7 @@ package com.craivet;
 import com.craivet.assets.Assets;
 import com.craivet.assets.AudioAssets;
 import com.craivet.assets.SpriteSheetAssets;
+import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.Player;
 import com.craivet.world.entity.Type;
@@ -78,8 +79,11 @@ public class PlayerInventory extends Inventory {
         int i = getSlot(playerSlotCol, playerSlotRow);
         if (i < inventory.size()) {
             Item item = inventory.get(i);
-            if (item.type != Type.CONSUMABLE) equip(item);
-            if (item.type == Type.CONSUMABLE) consume(item, i);
+            // Verifica si esta en estado de inventario para evitar equipar/consumir items mientrtas esta vendiendo
+            if (State.isState(State.INVENTORY)) {
+                if (item.type != Type.CONSUMABLE) equip(item);
+                if (item.type == Type.CONSUMABLE) consume(item, i);
+            }
         }
     }
 
@@ -105,8 +109,8 @@ public class PlayerInventory extends Inventory {
             }
         }
         if (item.type == Type.SHIELD) {
-            player.shield = item;
-            player.stats.defense = player.getDefense();
+            player.shield = player.shield == item ? null : item;
+            if (player.shield != null) player.stats.defense = player.getDefense();
         }
         if (item.type == Type.LIGHT) {
             player.light = player.light == item ? null : item;

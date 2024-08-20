@@ -58,7 +58,7 @@ public class Inventory {
     }
 
     /**
-     * Gets the slot index.
+     * Gets the index of the item.
      *
      * @param item item.
      * @return the index of the item.

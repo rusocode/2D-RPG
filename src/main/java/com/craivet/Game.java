@@ -90,7 +90,6 @@ public class Game extends Canvas implements Runnable {
         setBackground(Color.black);
         setFocusable(true);
         addKeyListener(keyboard);
-        // setIgnoreRepaint(true);
         screen = new Screen(this, false);
     }
 
@@ -182,9 +181,10 @@ public class Game extends Canvas implements Runnable {
             playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
             world.entities.factory.createEntities();
             world.environment.lighting.resetDay();
-            if (keyboard.isKeyToggled(KeyEvent.VK_M)) keyboard.toggleKey(KeyEvent.VK_M);
-            if (keyboard.isKeyToggled(KeyEvent.VK_T)) keyboard.toggleKey(KeyEvent.VK_T);
+            if (keyboard.isKeyToggled(KeyEvent.VK_Q)) keyboard.toggleKey(KeyEvent.VK_Q);
             if (keyboard.isKeyToggled(KeyEvent.VK_H)) keyboard.toggleKey(KeyEvent.VK_H);
+            if (keyboard.isKeyToggled(KeyEvent.VK_T)) keyboard.toggleKey(KeyEvent.VK_T);
+            if (keyboard.isKeyToggled(KeyEvent.VK_M)) keyboard.toggleKey(KeyEvent.VK_M);
         }
     }
 

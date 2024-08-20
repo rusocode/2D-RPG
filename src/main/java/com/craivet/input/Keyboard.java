@@ -32,9 +32,10 @@ public class Keyboard extends KeyAdapter {
 
     private final Game game;
     private final BitSet keys;
-    private final BitSet toggledKeys; // Para teclas que alternan su estado
+    private final BitSet toggleKeys; // Para teclas que alternan su estado
     private int lastKey = -1;
 
+    // Esto se podria mover a una clase con constantes de las teclas que se van a usar (por ejemplo, Keys o Key)
     private static final Set<Integer> MOVEMENT_KEYS = Set.of(KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D);
     private static final Set<Integer> TOGGLE_KEYS = Set.of(KeyEvent.VK_Q, KeyEvent.VK_H, KeyEvent.VK_T, KeyEvent.VK_M);
     private static final Set<Integer> ACTION_KEYS = Set.of(KeyEvent.VK_ENTER, KeyEvent.VK_P);
@@ -42,7 +43,7 @@ public class Keyboard extends KeyAdapter {
     public Keyboard(Game game) {
         this.game = game;
         this.keys = new BitSet(256);
-        this.toggledKeys = new BitSet(256);
+        this.toggleKeys = new BitSet(256);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class Keyboard extends KeyAdapter {
         if (isValidKey(key) && lastKey != key) {
             lastKey = key;
             keys.set(key);
-            StateHandler.handleKeyPress(this, State.getState(), key, game);
+            StateHandler.handleKeyPress(this, key, game);
         }
     }
 
@@ -98,7 +99,7 @@ public class Keyboard extends KeyAdapter {
      * @param key tecla.
      */
     public void toggleKey(int key) {
-        toggledKeys.flip(key);
+        toggleKeys.flip(key);
     }
 
     /**
@@ -108,7 +109,7 @@ public class Keyboard extends KeyAdapter {
      * @return true si la tecla aternada esta activada o false.
      */
     public boolean isKeyToggled(int key) {
-        return toggledKeys.get(key);
+        return toggleKeys.get(key);
     }
 
     public boolean checkKeys() {
@@ -129,8 +130,8 @@ public class Keyboard extends KeyAdapter {
 
     private static class StateHandler {
 
-        public static void handleKeyPress(Keyboard keyboard, State state, int key, Game game) {
-            switch (state) {
+        public static void handleKeyPress(Keyboard keyboard, int key, Game game) {
+            switch (State.getState()) {
                 case MAIN -> handleMainState(key, game);
                 case PLAY -> handlePlayState(keyboard, key, game);
                 case STATS -> handleStatsState(key);
@@ -220,6 +221,7 @@ public class Keyboard extends KeyAdapter {
 
         private static void handleInventoryState(int key, Game game) {
             if (key == KeyEvent.VK_I || key == KeyEvent.VK_ESCAPE) State.setState(State.PLAY);
+            // if (State.isState(State.INVENTORY))
             playerInventoryState(key, game);
         }
 
