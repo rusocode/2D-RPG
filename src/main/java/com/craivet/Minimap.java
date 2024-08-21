@@ -1,9 +1,9 @@
 package com.craivet;
 
+import com.craivet.input.keyboard.Key;
 import com.craivet.world.World;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
@@ -39,7 +39,7 @@ public class Minimap {
     }
 
     public void render(final Graphics2D g2) {
-        if (game.keyboard.isKeyToggled(KeyEvent.VK_M)) {
+        if (game.keyboard.isKeyToggled(Key.MINIMAP)) {
             int width = 100;
             int height = 100;
             int x = WINDOW_WIDTH - width - 22;

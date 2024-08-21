@@ -1,11 +1,11 @@
 package com.craivet.world.management;
 
+import com.craivet.input.keyboard.Key;
 import com.craivet.world.World;
 import com.craivet.world.environment.Lighting;
 import com.craivet.states.Renderable;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 public class EnvironmentManager implements Renderable {
 
@@ -24,6 +24,6 @@ public class EnvironmentManager implements Renderable {
 
     @Override
     public void render(Graphics2D g2) {
-        if (!world.entities.player.game.keyboard.isKeyToggled(KeyEvent.VK_T)) lighting.render(g2);
+        if (!world.entities.player.game.keyboard.isKeyToggled(Key.TEST)) lighting.render(g2);
     }
 }

@@ -1,27 +1,22 @@
 package com.craivet.world.entity;
 
-import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.image.BufferedImage;
-
 import com.craivet.*;
-import com.craivet.assets.Assets;
-import com.craivet.assets.AudioAssets;
-import com.craivet.assets.SpriteSheetAssets;
+import com.craivet.assets.*;
 import com.craivet.classes.Character;
 import com.craivet.classes.Jester;
 import com.craivet.gfx.Animation;
+import com.craivet.input.keyboard.Key;
 import com.craivet.states.State;
 import com.craivet.world.World;
-import com.craivet.world.entity.mob.Mob;
-import com.craivet.world.entity.mob.Lizard;
-import com.craivet.world.entity.mob.RedSlime;
-import com.craivet.world.entity.mob.Slime;
+import com.craivet.world.entity.mob.*;
 import com.craivet.world.entity.projectile.BurstOfFire;
 import com.craivet.world.entity.projectile.Projectile;
 import com.craivet.world.entity.interactive.Interactive;
 import com.craivet.utils.*;
 import com.craivet.world.entity.item.*;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
 
@@ -53,6 +48,7 @@ public class Player extends Mob {
             if (!flags.colliding && !game.keyboard.checkActionKeys()) pos.update(this, direction);
             mechanics.checkDirectionSpeed(this, auxEntity);
             checkAttack();
+            checkShoot();
             // Resetea las teclas de accion (atacar, por ejemplo) para darle prioridad a las teclas de movimiento y asi evitar que se "choquen"
             game.keyboard.resetActionKeys();
             if (game.keyboard.checkMovementKeys()) {
@@ -62,10 +58,8 @@ public class Player extends Mob {
                 left.tick();
                 right.tick();
             }
-        } else // TODO This else does not work because the stopping of new frames is not timed
-            timer.timeStopMovement(this, 20);
+        } else timer.timeStopMovement(this, 20); // TODO This else does not work because the stopping of new frames is not timed
 
-        checkShoot();
         timer.checkTimers(this);
         checkStats();
     }
@@ -79,7 +73,7 @@ public class Player extends Mob {
             if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), screen.xOffset, screen.yOffset, null);
             else getCurrentItemFrame(g2);
         }
-        if (game.keyboard.isKeyToggled(KeyEvent.VK_H)) drawRects(g2);
+        if (game.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
 
         Utils.changeAlpha(g2, 1);
     }
@@ -198,7 +192,7 @@ public class Player extends Mob {
      * Check if it can attack.
      */
     private void checkAttack() {
-        if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER) && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
+        if (game.keyboard.isKeyPressed(Key.ENTER) && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
             if (weapon.type == Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.SWING_WEAPON));
             if (weapon.type != Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.SWING_AXE));
             flags.hitting = true;
@@ -212,7 +206,7 @@ public class Player extends Mob {
      * Check if it can shooting a projectile.
      */
     private void checkShoot() {
-        if (game.keyboard.isKeyPressed(KeyEvent.VK_F) && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+        if (game.keyboard.isKeyPressed(Key.SHOOT) && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
             game.playSound(projectile.sound);
             projectile.set(pos.x, pos.y, direction, true, this);
@@ -229,7 +223,7 @@ public class Player extends Mob {
     }
 
     private void checkStats() {
-        if (!game.keyboard.isKeyToggled(KeyEvent.VK_T)) if (stats.hp <= 0) die();
+        if (!game.keyboard.isKeyToggled(Key.TEST)) if (stats.hp <= 0) die();
         if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
         if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
     }
@@ -243,7 +237,7 @@ public class Player extends Mob {
         if (i != -1) {
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER) && mob.type == Type.NPC) {
+            if (game.keyboard.isKeyPressed(Key.ENTER) && mob.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
             } else mob.move(direction); // In case it's the box
@@ -387,7 +381,7 @@ public class Player extends Mob {
     public void pickup(int i) {
         if (i != -1) {
             Item item = world.entities.items[world.map.num][i];
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_P) && item.type != Type.OBSTACLE) {
+            if (game.keyboard.isKeyPressed(Key.PICKUP) && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(world.entities.player);
                 else if (inventory.canPickup(item)) game.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
                 else {
@@ -396,7 +390,7 @@ public class Player extends Mob {
                 }
                 world.entities.items[world.map.num][i] = null;
             }
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER) && item.type == Type.OBSTACLE) {
+            if (game.keyboard.isKeyPressed(Key.ENTER) && item.type == Type.OBSTACLE) {
                 world.entities.player.attackCanceled = true;
                 item.interact();
             }
@@ -406,7 +400,7 @@ public class Player extends Mob {
     @Override
     public void checkCollisions() {
         flags.colliding = false;
-        if (!game.keyboard.isKeyToggled(KeyEvent.VK_T)) game.collision.checkTile(this);
+        if (!game.keyboard.isKeyToggled(Key.TEST)) game.collision.checkTile(this);
         pickup(game.collision.checkItem(this));
         interactNpc(game.collision.checkEntity(this, world.entities.mobs));
         hurt(game.collision.checkEntity(this, world.entities.mobs));

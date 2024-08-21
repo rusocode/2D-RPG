@@ -4,6 +4,7 @@ import com.craivet.assets.Assets;
 import com.craivet.assets.AudioAssets;
 import com.craivet.assets.FontAssets;
 import com.craivet.assets.TextureAssets;
+import com.craivet.input.keyboard.Key;
 import com.craivet.states.State;
 import com.craivet.world.entity.Entity;
 import com.craivet.world.World;
@@ -11,7 +12,6 @@ import com.craivet.world.entity.Player;
 import com.craivet.world.entity.mob.Mob;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 import static com.craivet.utils.Global.*;
@@ -233,22 +233,23 @@ public class UI {
             }
 
             // In the case of having several dialog boxes (example, Oldman)
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.DIALOGUE) || State.isState(State.CUTSCENE)) {
                     entity.dialogue.index++;
-                    game.keyboard.releaseKey(KeyEvent.VK_ENTER);
+                    game.keyboard.releaseKey(Key.ENTER);
                 }
             }
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ESCAPE)) { // TODO Or else if?
+
+            if (game.keyboard.isKeyPressed(Key.ESCAPE)) { // TODO Or else if?
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.TRADE)) {
                     State.setState(State.PLAY);
                     currentDialogue = "";
                     entity.dialogue.index++;
-                    game.keyboard.releaseKey(KeyEvent.VK_ESCAPE);
+                    game.keyboard.releaseKey(Key.ESCAPE);
                 }
             }
 
@@ -525,7 +526,7 @@ public class UI {
             case 2 -> renderOptionEndGameConfirmationWindow(x, y);
         }
 
-        game.keyboard.releaseKey(KeyEvent.VK_ENTER);
+        game.keyboard.releaseKey(Key.ENTER);
 
     }
 
@@ -556,7 +557,7 @@ public class UI {
         g2.drawString("Controls", textX, textY);
         if (command == 2) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 1;
                 command = 0;
             }
@@ -566,7 +567,7 @@ public class UI {
         g2.drawString("Save Game", textX, textY);
         if (command == 3) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 game.file.saveData();
                 State.setState(State.PLAY);
                 game.ui.addMessageToConsole("Game saved!");
@@ -578,7 +579,7 @@ public class UI {
         g2.drawString("End Game", textX, textY);
         if (command == 4) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 2;
                 command = 0;
             }
@@ -602,7 +603,7 @@ public class UI {
         g2.drawString("Back", textX, textY);
         if (command == 5) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 State.setState(State.PLAY);
                 command = 0;
             }
@@ -679,7 +680,7 @@ public class UI {
         g2.drawString("Back", textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 command = 2;
             }
@@ -702,7 +703,7 @@ public class UI {
         g2.drawString(text, textX, textY);
         if (command == 0) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 State.setState(State.MAIN);
                 game.reset(true);
@@ -715,7 +716,7 @@ public class UI {
         g2.drawString(text, textX, textY);
         if (command == 1) {
             g2.drawString(">", textX - 25, textY);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 command = 4;
             }
@@ -780,7 +781,7 @@ public class UI {
             case 1 -> renderTradeBuyWindow();
             case 2 -> renderTradeSellWindow();
         }
-        game.keyboard.releaseKey(KeyEvent.VK_ENTER); // Reset keyboard input
+        game.keyboard.releaseKey(Key.ENTER); // Reset keyboard input
     }
 
     private void renderTradeMainWindow() {
@@ -791,7 +792,7 @@ public class UI {
         g2.drawString("Buy", x, y);
         if (command == 0) {
             g2.drawString(">", x - 14, y);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) subState = 1;
+            if (game.keyboard.isKeyPressed(Key.ENTER)) subState = 1;
         }
 
         x += 4 * tile;
@@ -799,7 +800,7 @@ public class UI {
         g2.drawString("Sell", x, y);
         if (command == 1) {
             g2.drawString(">", x - 14, y);
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) subState = 2;
+            if (game.keyboard.isKeyPressed(Key.ENTER)) subState = 2;
         }
     }
 
@@ -827,7 +828,7 @@ public class UI {
             g2.drawString(text, x, y + 24);
 
             // Buy an item
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 if (entity.inventory.get(itemIndex).price > world.entities.player.stats.gold)
                     addMessageToConsole("You need more gold to buy that!");
                 else {
@@ -869,7 +870,7 @@ public class UI {
             g2.drawString(text, x, y + 24);
 
             // Sell an item
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_ENTER)) {
+            if (game.keyboard.isKeyPressed(Key.ENTER)) {
                 if (world.entities.player.inventory.get(itemIndex) == world.entities.player.weapon ||
                         world.entities.player.inventory.get(itemIndex) == world.entities.player.shield ||
                         world.entities.player.inventory.get(itemIndex) == world.entities.player.light)

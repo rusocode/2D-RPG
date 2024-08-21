@@ -1,7 +1,6 @@
 package com.craivet.world.entity;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import com.craivet.*;
@@ -10,6 +9,7 @@ import com.craivet.assets.AudioAssets;
 import com.craivet.gfx.Animation;
 import com.craivet.gfx.Screen;
 import com.craivet.gfx.SpriteSheet;
+import com.craivet.input.keyboard.Key;
 import com.craivet.physics.Mechanics;
 import com.craivet.world.Position;
 import com.craivet.world.entity.item.Item;
@@ -109,7 +109,7 @@ public abstract class Entity {
                 // If it is a static image (item, interactive tile)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY(), null);
 
-            if (game.keyboard.isKeyToggled(KeyEvent.VK_H)) drawRects(g2);
+            if (game.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }

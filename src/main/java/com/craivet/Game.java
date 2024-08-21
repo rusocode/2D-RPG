@@ -2,7 +2,8 @@ package com.craivet;
 
 import com.craivet.ai.AStar;
 import com.craivet.assets.*;
-import com.craivet.input.Keyboard;
+import com.craivet.input.keyboard.Key;
+import com.craivet.input.keyboard.KeyboardHandler;
 import com.craivet.physics.Event;
 import com.craivet.utils.Loop;
 import com.craivet.world.entity.item.ItemGenerator;
@@ -13,7 +14,6 @@ import com.craivet.states.*;
 import com.craivet.world.World;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.net.URL;
@@ -62,7 +62,7 @@ import static com.craivet.utils.Global.*;
 public class Game extends Canvas implements Runnable {
 
     // Systems
-    public Keyboard keyboard = new Keyboard(this);
+    public KeyboardHandler keyboard = new KeyboardHandler(this);
     public World world = new World(this);
     public UI ui = new UI(this, world);
     public ItemGenerator itemGenerator = new ItemGenerator(this, world); // TODO Here?
@@ -181,10 +181,10 @@ public class Game extends Canvas implements Runnable {
             playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
             world.entities.factory.createEntities();
             world.environment.lighting.resetDay();
-            if (keyboard.isKeyToggled(KeyEvent.VK_Q)) keyboard.toggleKey(KeyEvent.VK_Q);
-            if (keyboard.isKeyToggled(KeyEvent.VK_H)) keyboard.toggleKey(KeyEvent.VK_H);
-            if (keyboard.isKeyToggled(KeyEvent.VK_T)) keyboard.toggleKey(KeyEvent.VK_T);
-            if (keyboard.isKeyToggled(KeyEvent.VK_M)) keyboard.toggleKey(KeyEvent.VK_M);
+            if (keyboard.isKeyToggled(Key.DEBUG)) keyboard.toggleKey(Key.DEBUG);
+            if (keyboard.isKeyToggled(Key.RECTS)) keyboard.toggleKey(Key.RECTS);
+            if (keyboard.isKeyToggled(Key.TEST)) keyboard.toggleKey(Key.TEST);
+            if (keyboard.isKeyToggled(Key.MINIMAP)) keyboard.toggleKey(Key.MINIMAP);
         }
     }
 

@@ -4,12 +4,12 @@ import com.craivet.Dialogue;
 import com.craivet.Game;
 import com.craivet.assets.*;
 import com.craivet.gfx.Animation;
+import com.craivet.input.keyboard.Key;
 import com.craivet.states.State;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
@@ -61,7 +61,7 @@ public class Oldman extends Mob {
     @Override
     public void render(Graphics2D g2) {
         g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
-        if (game.keyboard.isKeyToggled(KeyEvent.VK_H)) drawRects(g2);
+        if (game.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
     }
 
     @Override

@@ -3,13 +3,12 @@ package com.craivet.world.entity.mob;
 import com.craivet.Game;
 import com.craivet.assets.*;
 import com.craivet.gfx.Animation;
+import com.craivet.input.keyboard.Key;
 import com.craivet.world.World;
 import com.craivet.world.entity.Type;
 import com.craivet.utils.*;
-import com.craivet.world.entity.item.*;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 
 import static com.craivet.utils.Global.*;
@@ -83,7 +82,7 @@ public class Orc extends Mob {
 
             g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY(), null);
 
-            if (game.keyboard.isKeyPressed(KeyEvent.VK_H)) drawRects(g2);
+            if (game.keyboard.isKeyPressed(Key.RECTS)) drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }
@@ -96,7 +95,7 @@ public class Orc extends Mob {
 
     @Override
     public void checkDrop() {
-        drop(this, new Key(game, world, 1));
+        drop(this, new com.craivet.world.entity.item.Key(game, world, 1));
     }
 
     private BufferedImage getCurrentAnimationFrame() {
