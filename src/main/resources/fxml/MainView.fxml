@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<VBox fx:id="panel" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.punkipunk.controllers.MainController"
+      stylesheets="@../css/main.css">
+
+    <Label onMouseClicked="#handleNewGameLabelClicked" text="NEW GAME"/>
+    <Label onMouseClicked="#handleLoadGameLabelClicked" text="LOAD GAME"/>
+    <Label onMouseClicked="#handleQuitLabelClicked" text="QUIT"/>
+
+</VBox>

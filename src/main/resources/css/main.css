@@ -1,0 +1,35 @@
+#panel {
+    -fx-alignment: center;
+    -fx-spacing: 10px;
+    -fx-background-image: url('../textures/background/background2.jfif');
+}
+
+.text {
+    -fx-font-smoothing-type: gray;
+    -fx-font-family: 'BlackPearl';
+    -fx-font-size: 32px;
+}
+
+.label {
+    -fx-alignment: center;
+    -fx-pref-width: 300px;
+    /* En caso de que se especifiquen dos valores, entonces el primer valor abarca top/bottom y el segundo right/left */
+    -fx-padding: 10px 0px;
+    -fx-text-fill: #e4ddbb; /* Texto crema */
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.6), 5, 0.5, 0, 2); /* Sombra negra de profundidad */
+    -fx-cursor: hand;
+}
+
+.label:hover {
+    -fx-text-fill: #fff5dd; /* Una version mas clara del crema */
+    /* Crea una sombra de color crema utilizando el desenfoque Gaussian que produce un desenfoque suave y natural. El
+     * tercer parametro es el radio de desenfoque en pixeles, en donde valores mas altos se traduce a una sombra mas
+     * difusa y extendida, y valores bajos, en sombra mas nitida y definida. El cuarto parametro es la extension
+     * (spread) de la sombra, en donde valores mas altos generan una sombra mas expandida, y valores mas bajos, una
+     * sombra mas concentrada. El quinto parametro indica el desplazamiento horizontal de la sombra en pixeles, un valor
+     * positivo desplaza la sombra a la derecha, un negativo a la izquierda y 0 centra la sombra horizontalmente. El
+     * ultimo parametro es el desplazamiento vertical de la sombra en pixeles, donde un valor positivo desplaza la
+     * sombra abajo, un negativo hacia arriba y 0 centra la sombra verticalmente. */
+    -fx-effect: dropshadow(gaussian, rgba(228, 221, 187, 0.8), 10, 0.5, 0, 1);
+
+}

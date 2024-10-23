@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- https://jenkov.com/tutorials/javafx/hbox.html -->
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.punkipunk.controllers.StatsController"
+      stylesheets="@../css/stats.css" styleClass="panel">
+
+    <HBox>
+        <Label text="Level: "/>
+        <Label fx:id="lvlLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Life: "/>
+        <Label fx:id="maxHpLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Mana: "/>
+        <Label fx:id="maxManaLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Strength: "/>
+        <Label fx:id="strengthLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Dexterity: "/>
+        <Label fx:id="dexterityLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Attack: "/>
+        <Label fx:id="attackLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Defense: "/>
+        <Label fx:id="defenseLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Exp: "/>
+        <Label fx:id="expLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Next Exp: "/>
+        <Label fx:id="nextExpLabel"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Gold: "/>
+        <Label fx:id="goldLabel"/>
+    </HBox>
+
+    <HBox>
+        <ImageView>
+            <Image url="@../textures/entity/items/sword_iron.png"/>
+        </ImageView>
+        <ImageView>
+            <Image url="@../textures/entity/items/shield_wood.png"/>
+        </ImageView>
+    </HBox>
+
+</VBox>
