@@ -1,0 +1,72 @@
+.panel {
+    -fx-background-color: rgba(30, 30, 30, 0.8);
+    -fx-padding: 10px;
+    -fx-max-width: 300px;
+    -fx-background-radius: 10px;
+}
+
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+#title {
+    -fx-font-size: 22px;
+    -fx-font-family: 'BlackPearl';
+    -fx-alignment: center;
+}
+
+#title .text {
+    -fx-font-smoothing-type: gray;
+}
+
+#closeButton {
+     -fx-font-size: 25px;
+}
+
+#closeButton:hover {
+    -fx-text-fill: #ff6b6b;
+}
+
+.slider-container {
+    -fx-spacing: 10px;
+}
+
+.slider-row {
+    -fx-alignment: center;
+    /* -fx-spacing: 10px; /* Espacio entre el label y el slider */
+}
+
+.slider-row .label {
+    -fx-min-width: 80px; /* Ancho fijo para todas las etiquetas */
+    -fx-alignment: center-left; /* Alinea el texto a la izquierda */
+}
+
+.slider-row .slider {
+    /* -fx-pref-width: 180px; /* Ancho fijo para todos los sliders */
+}
+
+.slider .track {
+    /* Color de la barra de seleccion */
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+}
+
+.slider .thumb {
+    /* Color de la bola de seleccion */
+    -fx-background-color: white;
+}
+
+.slider .axis {
+    /* Color de las marcas numericas */
+    -fx-tick-label-fill: white;
+}
+
+.option-row {
+    -fx-alignment: center;
+    -fx-padding: 5px 0;
+}
+
+.option-row .label:hover {
+    -fx-text-fill: #a0a0a0;
+}

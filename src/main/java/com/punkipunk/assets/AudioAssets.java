@@ -52,7 +52,7 @@ public enum AudioAssets {
     PLAYER_DEATH,
     SLEEP,
     SLIME_HIT,
-    SLOT,
+    HOVER,
     SPAWN,
     SPAWN2,
     SWING_AXE,
@@ -92,6 +92,7 @@ public enum AudioAssets {
     private static final URL eat = Utils.loadAudio(sound_path + "eat.wav");
     private static final URL fireball = Utils.loadAudio(sound_path + "fireball.wav");
     private static final URL gold_pickup = Utils.loadAudio(sound_path + "gold_pickup.wav");
+    private static final URL hover = Utils.loadAudio(sound_path + "hover.wav");
     private static final URL item_pickup = Utils.loadAudio(sound_path + "item_pickup.wav");
     private static final URL level_up = Utils.loadAudio(sound_path + "level_up2.wav");
     private static final URL mine = Utils.loadAudio(sound_path + "mine.wav");
@@ -103,7 +104,6 @@ public enum AudioAssets {
     private static final URL player_death = Utils.loadAudio(sound_path + "player_death.wav");
     private static final URL sleep = Utils.loadAudio(sound_path + "sleep.wav");
     private static final URL slime_hit = Utils.loadAudio(sound_path + "slime_hit.wav");
-    private static final URL slot = Utils.loadAudio(sound_path + "slot.wav");
     private static final URL spawn = Utils.loadAudio(sound_path + "spawn.wav");
     private static final URL spawn2 = Utils.loadAudio(sound_path + "spawn2.wav");
     private static final URL swing_axe = Utils.loadAudio(sound_path + "swing_axe.wav");
@@ -149,7 +149,7 @@ public enum AudioAssets {
             case PLAYER_DEATH -> player_death;
             case SLEEP -> sleep;
             case SLIME_HIT -> slime_hit;
-            case SLOT -> slot;
+            case HOVER -> hover;
             case SPAWN -> spawn;
             case SPAWN2 -> spawn2;
             case SWING_AXE -> swing_axe;

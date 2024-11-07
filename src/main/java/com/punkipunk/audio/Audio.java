@@ -60,7 +60,7 @@ public class Audio {
             case 4 -> volume = 1f;
             case 5 -> volume = 6f;
         }
-        fc.setValue(volume);
+        if (fc != null) fc.setValue(volume);
     }
 
 }

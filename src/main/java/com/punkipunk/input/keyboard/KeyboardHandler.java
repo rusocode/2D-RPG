@@ -19,13 +19,11 @@ public class KeyboardHandler {
     private final Game game;
     private final KeyboardStateHandler stateHandler;
     private final Set<Key> keys;
-    private final Scene scene;
     private int lastKey = -1;
 
-    public KeyboardHandler(Game game, Scene scene, GameController gameController) {
+    public KeyboardHandler(Game game) {
         this.game = game;
-        this.scene = scene;
-        stateHandler = new KeyboardStateHandler(gameController);
+        stateHandler = new KeyboardStateHandler();
         keys = EnumSet.noneOf(Key.class); // TODO Creo que se podria reemplazar por la clase de JavaFX que maneja todas las teclas KeyCode
         toggledKeys = new BitSet(256);
         setupKeyHandler();
@@ -112,8 +110,8 @@ public class KeyboardHandler {
      * Configura el administrador de teclas utilizando la escena del juego actual.
      */
     private void setupKeyHandler() {
-        scene.setOnKeyPressed(this::handleKeyPressed);
-        scene.setOnKeyReleased(this::handleKeyReleased);
+        game.getScene().setOnKeyPressed(this::handleKeyPressed);
+        game.getScene().setOnKeyReleased(this::handleKeyReleased);
     }
 
 }

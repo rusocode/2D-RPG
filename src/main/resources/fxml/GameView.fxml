@@ -15,12 +15,13 @@
          que sus hijos crezcan verticalmente tanto como sea necesario. En JavaFX, las restricciones de tamaño impuestas
          por los contenedores padres generalmente tienen prioridad sobre las propiedades CSS de los hijos. Esto explica
          por que al especificar -fx-max-height: 10px; no lo toma en cuenta. -->
-    <VBox fx:id="vboxContainer"> <!-- Contenedor para las vistas superpuestas que se cargan al inicio -->
+    <VBox styleClass="view-container"> <!-- Contenedor para las vistas superpuestas que se cargan al inicio -->
         <!-- Cuando usas <fx:include> en el FXML, JavaFX automaticamente carga los archivos FXML incluidos usando
              FXMLLoader internamente. No necesitas cargarlos manualmente con FXMLLoader ni añadirlos con root.getChildren().add(). -->
-        <fx:include fx:id="statsView" source="StatsView.fxml"
-                    visible="false"/> <!-- managed="false" Esto hara que el componente no solo sea invisible, sino que tambien no ocupe espacio en el layout. -->
-        <!-- <fx:include fx:id="optionsView" source="OptionsView.fxml" visible="false"/> -->
+        <!-- managed="false" esto hara que el componente no solo sea invisible, sino que tambien no ocupe espacio en el layout. -->
+        <fx:include fx:id="statsView" source="StatsView.fxml" visible="false" managed="false"/>
+        <fx:include fx:id="optionsView" source="OptionsView.fxml" visible="false" managed="false"/>
+        <fx:include fx:id="controlsView" source="ControlsView.fxml" visible="false" managed="false"/>
     </VBox>
 
 </StackPane>

@@ -7,7 +7,7 @@ import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.Type;
 
-import static com.punkipunk.utils.Global.*;
+import static com.punkipunk.utils.Global.tile;
 
 public class Wood extends Item {
 

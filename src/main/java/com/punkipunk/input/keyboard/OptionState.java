@@ -3,14 +3,15 @@ package com.punkipunk.input.keyboard;
 import com.punkipunk.Game;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
-import com.punkipunk.states.State;
+import com.punkipunk.controllers.GameController;
 
 public class OptionState implements GameState {
 
     @Override
     public void handleKeyPress(Key key, Game game) {
         if (key == Key.ESCAPE) {
-            State.setState(State.PLAY);
+            // State.setState(State.PLAY);
+            game.getController().toggleOptionsView();
             game.systems.ui.command = 0;
             game.systems.ui.subState = 0;
         }
@@ -25,12 +26,12 @@ public class OptionState implements GameState {
          * instructions since the selection is only kept in the back. */
         if (game.systems.ui.subState == 0 || game.systems.ui.subState == 2) {
             if (key == Key.UP) {
-                game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 game.systems.ui.command--;
                 if (game.systems.ui.command < 0) game.systems.ui.command = maxCommand;
             }
             if (key == Key.DOWN) {
-                game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 game.systems.ui.command++;
                 if (game.systems.ui.command > maxCommand) game.systems.ui.command = 0;
             }
@@ -43,11 +44,11 @@ public class OptionState implements GameState {
                     game.systems.music.volumeScale--;
                     // TODO Is this necessary here?
                     game.systems.music.checkVolume(); // Change the volume of the music when it is already playing
-                    game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                    game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 }
                 if (game.systems.ui.command == 1 && game.systems.sound.volumeScale > 0) { // Sound
                     game.systems.sound.volumeScale--;
-                    game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                    game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 }
             }
         }
@@ -57,11 +58,11 @@ public class OptionState implements GameState {
                 if (game.systems.ui.command == 0 && game.systems.music.volumeScale < 5) {
                     game.systems.music.volumeScale++;
                     game.systems.music.checkVolume();
-                    game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                    game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 }
                 if (game.systems.ui.command == 1 && game.systems.sound.volumeScale < 5) { // Sonido
                     game.systems.sound.volumeScale++;
-                    game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                    game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 }
             }
         }

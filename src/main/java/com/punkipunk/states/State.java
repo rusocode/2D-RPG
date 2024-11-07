@@ -18,7 +18,7 @@ public enum State {
     TRADE,
     SLEEP;
 
-    private static State currentState = PLAY;  // Default initial state
+    private static State currentState = MAIN;
 
     public static State getState() {
         return currentState;

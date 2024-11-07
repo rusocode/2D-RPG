@@ -1,4 +1,4 @@
-#panel {
+.panel {
     -fx-alignment: center;
     -fx-spacing: 10px;
     -fx-background-image: url('../textures/background/background2.jfif');
@@ -31,5 +31,4 @@
      * ultimo parametro es el desplazamiento vertical de la sombra en pixeles, donde un valor positivo desplaza la
      * sombra abajo, un negativo hacia arriba y 0 centra la sombra verticalmente. */
     -fx-effect: dropshadow(gaussian, rgba(228, 221, 187, 0.8), 10, 0.5, 0, 1);
-
 }

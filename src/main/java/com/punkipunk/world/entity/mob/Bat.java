@@ -18,7 +18,7 @@ public class Bat extends Mob {
         super(game, world, col, row);
         type = Type.HOSTILE;
         stats.name = "Bat";
-        stats.speed = stats.defaultSpeed = 2;
+        stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 2;
         stats.exp = 7;
         stats.attack = 1;

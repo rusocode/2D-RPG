@@ -62,7 +62,9 @@ import static com.punkipunk.utils.Global.*;
 // TODO Optimizar todas la importaciones Ctrl+Alt+O aunque parece que al utilizarr Ctrl+Shift+F lo hace tambien
 public class Game {
 
-    public final Systems systems;
+    private final Scene scene;
+    private final GameController controller;
+    public Systems systems;
     public int xOffset = WINDOW_WIDTH / 2 - (tile / 2);
     public int yOffset = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
     private Canvas canvas;
@@ -70,15 +72,8 @@ public class Game {
     private boolean running; // TODO Realmente es necesario?
 
     public Game(Scene scene, GameController controller) {
-        systems = new Systems(this, scene, controller);
-        init();
-    }
-
-    private void init() {
-        systems.file.load();
-        systems.minimap.create();
-        systems.event.create();
-        playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
+        this.scene = scene;
+        this.controller = controller;
     }
 
     public synchronized void start() {
@@ -115,7 +110,9 @@ public class Game {
      */
     public void reset(boolean fullReset) {
         systems.reset(fullReset);
-        playMusic(fullReset ? Assets.getAudio(AudioAssets.MUSIC_MAIN) : Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
+        if (fullReset) playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
+        else playAmbient(Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
+        // playMusic(fullReset ? Assets.getAudio(AudioAssets.MUSIC_MAIN) : Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
     }
 
     // TODO tendrian que moverse a su sistema
@@ -125,6 +122,12 @@ public class Game {
         systems.music.loop();
     }
 
+    public void playAmbient(URL url) {
+        systems.ambient.stop();
+        systems.ambient.play(url);
+        systems.ambient.loop();
+    }
+
     public void playSound(URL url) {
         systems.sound.play(url);
     }
@@ -132,6 +135,14 @@ public class Game {
     public void setRenderingComponents(Canvas canvas, GraphicsContext context) {
         this.canvas = canvas;
         this.context = context;
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public GameController getController() {
+        return controller;
     }
 
 }

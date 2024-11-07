@@ -2,12 +2,12 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
-<VBox fx:id="panel" xmlns:fx="http://javafx.com/fxml/1"
+<VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.punkipunk.controllers.MainController"
-      stylesheets="@../css/main.css">
+      stylesheets="@../css/main.css" styleClass="panel">
 
-    <Label onMouseClicked="#handleNewGameLabelClicked" text="NEW GAME"/>
-    <Label onMouseClicked="#handleLoadGameLabelClicked" text="LOAD GAME"/>
-    <Label onMouseClicked="#handleQuitLabelClicked" text="QUIT"/>
+    <Label text="NEW GAME" onMouseEntered="#handleMenuItemHovered" onMouseClicked="#handleNewGameClicked"/>
+    <Label text="LOAD GAME" onMouseEntered="#handleMenuItemHovered" onMouseClicked="#handleLoadGameClicked"/>
+    <Label text="QUIT" onMouseEntered="#handleMenuItemHovered" onMouseClicked="#handleQuitClicked"/>
 
 </VBox>

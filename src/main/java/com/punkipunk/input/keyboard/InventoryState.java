@@ -11,25 +11,25 @@ public class InventoryState implements GameState {
         if (key == Key.ENTER) game.systems.world.entities.player.inventory.select();
         if (key == Key.UP) {
             if (game.systems.world.entities.player.inventory.playerSlotRow > 0) {
-                game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 game.systems.world.entities.player.inventory.playerSlotRow--;
             }
         }
         if (key == Key.LEFT) {
             if (game.systems.world.entities.player.inventory.playerSlotCol > 0) {
-                game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 game.systems.world.entities.player.inventory.playerSlotCol--;
             }
         }
         if (key == Key.DOWN) {
             if (game.systems.world.entities.player.inventory.playerSlotRow < 3) {
-                game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 game.systems.world.entities.player.inventory.playerSlotRow++;
             }
         }
         if (key == Key.RIGHT) {
             if (game.systems.world.entities.player.inventory.playerSlotCol < 4) {
-                game.playSound(Assets.getAudio(AudioAssets.SLOT));
+                game.playSound(Assets.getAudio(AudioAssets.HOVER));
                 game.systems.world.entities.player.inventory.playerSlotCol++;
             }
         }

@@ -15,10 +15,10 @@ public class KeyboardStateHandler {
 
     private final Map<State, GameState> stateHandlers;
 
-    public KeyboardStateHandler(GameController gameController) {
+    public KeyboardStateHandler() {
         stateHandlers = new HashMap<>();
-        stateHandlers.put(State.PLAY, new PlayState(gameController));
-        stateHandlers.put(State.STATS, new StatsState(gameController));
+        stateHandlers.put(State.PLAY, new PlayState());
+        stateHandlers.put(State.STATS, new StatsState());
         stateHandlers.put(State.INVENTORY, new InventoryState());
         stateHandlers.put(State.OPTION, new OptionState());
         stateHandlers.put(State.GAME_OVER, new GameOverState());

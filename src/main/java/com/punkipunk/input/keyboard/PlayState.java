@@ -9,12 +9,6 @@ import static com.punkipunk.utils.Global.ABANDONED_ISLAND_MARKET;
 
 public class PlayState implements GameState {
 
-    private final GameController gameController;
-
-    public PlayState(GameController gameController) {
-        this.gameController = gameController;
-    }
-
     /**
      * <p>
      * Si usas if independientes, permite que multiples condiciones sean verdaderas simultaneamente. Por ejemplo, una tecla podria
@@ -28,13 +22,14 @@ public class PlayState implements GameState {
         switch (key) {
             case STATS:
                 // Apretar la tecla C es la causante del evento que produce la superposicion de la escena de estadisticas
-                gameController.toggleStatsView();
+                game.getController().toggleStatsView();
                 break;
             case INVENTORY:
                 State.setState(State.INVENTORY);
                 break;
             case ESCAPE:
-                State.setState(State.OPTION);
+                game.getController().toggleOptionsView();
+                // State.setState(State.OPTION);
                 break;
             case LOAD_MAP:
                 /* You need to save the edited text file by pressing Ctrl + F9 or by selecting Build > Build Project. Which will
@@ -45,21 +40,6 @@ public class PlayState implements GameState {
                             game.systems.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
                 }
         }
-        /*
-        if (Key.TOGGLE_KEYS.contains(key)) game.systems.keyboard.toggleKey(key);
-        else if (key == Key.STATS) {
-            controller.toggleStatsView();
-            // State.setState(State.STATS);
-        } else if (key == Key.INVENTORY) State.setState(State.INVENTORY);
-        else if (key == Key.ESCAPE) State.setState(State.OPTION);
-            /* You need to save the edited text file by pressing Ctrl + F9 or by selecting Build > Build Project. Which will
-             * rebuild the project and you can apply the change by pressing the R key. */
-        /* else if (key == Key.LOAD_MAP) {
-            switch (game.systems.world.map.num) {
-                case 0 -> game.systems.file.loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
-                case 1 ->
-                        game.systems.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
-            }
-        } */
+
     }
 }

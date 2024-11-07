@@ -6,61 +6,68 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
-<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.punkipunk.controllers.StatsController"
+<VBox xmlns="http://javafx.com/javafx/22"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punkipunk.controllers.StatsController"
       stylesheets="@../css/stats.css" styleClass="panel">
 
-    <HBox>
+    <StackPane>
+        <Label fx:id="title" text="STATS"/> <!-- ¿Lo declaro con styleClass? -->
+        <Label fx:id="closeButton" text="×" StackPane.alignment="CENTER_RIGHT"/>
+    </StackPane>
+
+    <Region prefHeight="20"/>
+
+    <HBox styleClass="stat-row, title-spacing">
         <Label text="Level: "/>
         <Label fx:id="lvlLabel"/>
     </HBox>
 
-    <HBox>
-        <Label text="Life: "/>
-        <Label fx:id="maxHpLabel"/>
-    </HBox>
-
-    <HBox>
-        <Label text="Mana: "/>
-        <Label fx:id="maxManaLabel"/>
-    </HBox>
-
-    <HBox>
-        <Label text="Strength: "/>
-        <Label fx:id="strengthLabel"/>
-    </HBox>
-
-    <HBox>
-        <Label text="Dexterity: "/>
-        <Label fx:id="dexterityLabel"/>
-    </HBox>
-
-    <HBox>
-        <Label text="Attack: "/>
-        <Label fx:id="attackLabel"/>
-    </HBox>
-
-    <HBox>
-        <Label text="Defense: "/>
-        <Label fx:id="defenseLabel"/>
-    </HBox>
-
-    <HBox>
+    <HBox styleClass="stat-row">
         <Label text="Exp: "/>
         <Label fx:id="expLabel"/>
     </HBox>
 
-    <HBox>
+    <HBox styleClass="stat-row">
         <Label text="Next Exp: "/>
         <Label fx:id="nextExpLabel"/>
     </HBox>
 
-    <HBox>
+    <HBox styleClass="stat-row">
+        <Label text="Life: "/>
+        <Label fx:id="maxHpLabel"/>
+    </HBox>
+
+    <HBox styleClass="stat-row">
+        <Label text="Mana: "/>
+        <Label fx:id="maxManaLabel"/>
+    </HBox>
+
+    <HBox styleClass="stat-row">
+        <Label text="Strength: "/>
+        <Label fx:id="strengthLabel"/>
+    </HBox>
+
+    <HBox styleClass="stat-row">
+        <Label text="Dexterity: "/>
+        <Label fx:id="dexterityLabel"/>
+    </HBox>
+
+    <HBox styleClass="stat-row">
+        <Label text="Attack: "/>
+        <Label fx:id="attackLabel"/>
+    </HBox>
+
+    <HBox styleClass="stat-row">
+        <Label text="Defense: "/>
+        <Label fx:id="defenseLabel"/>
+    </HBox>
+
+    <HBox styleClass="stat-row">
         <Label text="Gold: "/>
         <Label fx:id="goldLabel"/>
     </HBox>
 
-    <HBox>
+    <HBox styleClass="stat-row">
         <ImageView>
             <Image url="@../textures/entity/items/sword_iron.png"/>
         </ImageView>
@@ -68,5 +75,7 @@
             <Image url="@../textures/entity/items/shield_wood.png"/>
         </ImageView>
     </HBox>
+
+    <Region prefHeight="20"/>
 
 </VBox>

@@ -35,7 +35,7 @@ public class UI {
     private final World world;
     private final ArrayList<Integer> consoleCounter = new ArrayList<>();
     public Entity entity;
-    public int mainWindowState, subState, command; // TODO You could combine these two variables (mainWindowState and subState) referring to a single subState
+    public int subState, command; // TODO You could combine these two variables (mainWindowState and subState) referring to a single subState
     private GraphicsContext context;
     private String currentDialogue, combinedText = "";
     private int charIndex, counter;
