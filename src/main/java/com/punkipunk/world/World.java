@@ -1,7 +1,6 @@
 package com.punkipunk.world;
 
 import com.punkipunk.Game;
-import com.punkipunk.controllers.GameController;
 import com.punkipunk.states.State;
 import com.punkipunk.world.management.CutsceneManager;
 import com.punkipunk.world.management.EntityManager;
@@ -65,9 +64,9 @@ public class World {
         // Dibuja el recorrido del pathfinding
         if (false) {
             context.setFill(new Color(255, 0, 0, 70));
-            for (int i = 0; i < game.systems.aStar.pathList.size(); i++) {
-                int x = game.systems.aStar.pathList.get(i).col * tile;
-                int y = game.systems.aStar.pathList.get(i).row * tile;
+            for (int i = 0; i < game.system.aStar.pathList.size(); i++) {
+                int x = game.system.aStar.pathList.get(i).col * tile;
+                int y = game.system.aStar.pathList.get(i).row * tile;
                 int screenX = x - entities.player.pos.x + entities.player.game.xOffset;
                 int screenY = y - entities.player.pos.y + entities.player.game.yOffset;
                 context.fillRect(screenX, screenY, tile, tile);

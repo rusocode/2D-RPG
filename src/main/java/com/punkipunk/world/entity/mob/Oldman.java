@@ -47,7 +47,7 @@ public class Oldman extends Mob {
     @Override
     public void doActions() {
         if (flags.following)
-            game.systems.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
+            game.system.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
         else {
             // checkFollow(world.entities.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
@@ -64,7 +64,7 @@ public class Oldman extends Mob {
     @Override
     public void render(GraphicsContext gc) {
         gc.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY());
-        if (game.systems.keyboard.isKeyToggled(Key.RECTS)) drawRects(gc);
+        if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(gc);
     }
 
     @Override

@@ -51,7 +51,7 @@ public class Lizard extends Mob {
     public void doActions() {
         // TODO Make it follow the player when the Skeleton is stuck on a tile
         // If the distance of the player with respect to the mob is less than 10 tiles
-        if (getTileDistance(game.systems.world.entities.player) < 10) moveTowardPlayer(game.systems.world.entities.player, 30);
+        if (getTileDistance(game.system.world.entities.player) < 10) moveTowardPlayer(game.system.world.entities.player, 30);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
         // if (!flags.hitting) isPlayerWithinAttackRange(60, tile * 6, tile * 4, 60); // TODO No se utiliza ya que por ahora el boss no tiene un sprite de ataque
     }

@@ -20,7 +20,6 @@ public class Item extends Entity {
     public int attackValue, defenseValue;
     public boolean solid, stackable;
     public boolean opened, empty;
-
     protected int points;
 
     public Item(Game game, World world, int col, int row) {

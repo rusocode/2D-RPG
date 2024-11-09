@@ -1,7 +1,6 @@
 package com.punkipunk.input.keyboard;
 
 import com.punkipunk.Game;
-import com.punkipunk.controllers.GameController;
 import com.punkipunk.states.State;
 
 import java.util.HashMap;

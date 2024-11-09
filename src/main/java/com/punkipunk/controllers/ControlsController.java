@@ -1,25 +1,18 @@
 package com.punkipunk.controllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
-public class ControlsController implements Initializable {
-
-    @FXML
-    private Label closeButton;
-    @FXML
-    private Label backButton;
+public class ControlsController {
 
     private GameController gameController;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        closeButton.setOnMouseClicked(event -> gameController.toggleControlsView());
-        backButton.setOnMouseClicked(event -> gameController.toggleOptionsView());
+    @FXML
+    public void handleCloseButtonClicked() {
+        gameController.toggleControlsView();
+    }
+
+    public void handleBackButtonClicked() {
+        gameController.toggleOptionsView();
     }
 
     /**

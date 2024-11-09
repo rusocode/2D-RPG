@@ -12,7 +12,7 @@
 
     <StackPane>
         <Label fx:id="title" text="STATS"/> <!-- ¿Lo declaro con styleClass? -->
-        <Label fx:id="closeButton" text="×" StackPane.alignment="CENTER_RIGHT"/>
+        <Label fx:id="closeButton" text="×" StackPane.alignment="CENTER_RIGHT" onMouseClicked="#handleCloseButtonClicked"/>
     </StackPane>
 
     <Region prefHeight="20"/>

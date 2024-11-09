@@ -27,7 +27,8 @@ public class MainViewLoader {
      * @return el archivo FXML.
      */
     private FXMLLoader loadFXML() {
-        return new FXMLLoader(getClass().getResource("/fxml/MainView.fxml"));
+        String path = "/fxml/MainView.fxml";
+        return new FXMLLoader(getClass().getResource(path));
     }
 
 

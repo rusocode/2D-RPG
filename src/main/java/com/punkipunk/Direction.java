@@ -19,10 +19,10 @@ public enum Direction {
      * Gets the direction depending on the selected key.
      */
     public void get(Entity entity) {
-        if (entity.game.systems.keyboard.isKeyPressed(Key.DOWN)) entity.direction = DOWN;
-        else if (entity.game.systems.keyboard.isKeyPressed(Key.UP)) entity.direction = UP;
-        else if (entity.game.systems.keyboard.isKeyPressed(Key.LEFT)) entity.direction = LEFT;
-        else if (entity.game.systems.keyboard.isKeyPressed(Key.RIGHT)) entity.direction = RIGHT;
+        if (entity.game.system.keyboard.isKeyPressed(Key.DOWN)) entity.direction = DOWN;
+        else if (entity.game.system.keyboard.isKeyPressed(Key.UP)) entity.direction = UP;
+        else if (entity.game.system.keyboard.isKeyPressed(Key.LEFT)) entity.direction = LEFT;
+        else if (entity.game.system.keyboard.isKeyPressed(Key.RIGHT)) entity.direction = RIGHT;
     }
 
 }

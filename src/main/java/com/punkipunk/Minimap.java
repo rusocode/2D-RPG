@@ -53,7 +53,7 @@ public class Minimap {
     }
 
     public void render(final GraphicsContext gc) {
-        if (game.systems.keyboard.isKeyToggled(Key.MINIMAP)) {
+        if (game.system.keyboard.isKeyToggled(Key.MINIMAP)) {
             int width = 100;
             int height = 100;
             int x = WINDOW_WIDTH - width - 22;

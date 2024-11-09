@@ -45,9 +45,9 @@ public class File {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(config))) {
             // bw.write(game.fullScreen ? ON : OFF);
             // bw.newLine();
-            bw.write(String.valueOf(game.systems.music.volumeScale));
+            bw.write(String.valueOf(game.system.music.volumeScale));
             bw.newLine();
-            bw.write(String.valueOf(game.systems.sound.volumeScale));
+            bw.write(String.valueOf(game.system.sound.volumeScale));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -60,8 +60,8 @@ public class File {
         try (BufferedReader br = new BufferedReader(new FileReader(config))) {
             // game.fullScreen = ON.equals(br.readLine());
             // TODO Verificar null
-            game.systems.music.volumeScale = Integer.parseInt(br.readLine());
-            game.systems.sound.volumeScale = Integer.parseInt(br.readLine());
+            game.system.music.volumeScale = Integer.parseInt(br.readLine());
+            game.system.sound.volumeScale = Integer.parseInt(br.readLine());
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error loading configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -162,7 +162,7 @@ public class File {
 
             world.entities.player.inventory.clear();
             for (int i = 0; i < data.names.size(); i++) {
-                world.entities.player.inventory.add(game.systems.itemGenerator.generate(data.names.get(i)));
+                world.entities.player.inventory.add(game.system.itemGenerator.generate(data.names.get(i)));
                 world.entities.player.inventory.get(i).amount = data.amounts.get(i);
             }
             world.entities.player.weapon = world.entities.player.inventory.get(data.weapon);
@@ -176,11 +176,11 @@ public class File {
                 for (int i = 0; i < world.entities.items[1].length; i++) {
                     if (data.itemName[map][i].equals("NA")) world.entities.items[map][i] = null;
                     else {
-                        world.entities.items[map][i] = game.systems.itemGenerator.generate(data.itemName[map][i]);
+                        world.entities.items[map][i] = game.system.itemGenerator.generate(data.itemName[map][i]);
                         world.entities.items[map][i].pos.x = data.itemX[map][i];
                         world.entities.items[map][i].pos.y = data.itemY[map][i];
                         if (data.loot[map][i] != null && !data.empty[map][i])
-                            world.entities.items[map][i].loot = game.systems.itemGenerator.generate(data.loot[map][i]);
+                            world.entities.items[map][i].loot = game.system.itemGenerator.generate(data.loot[map][i]);
                         world.entities.items[map][i].opened = data.opened[map][i];
                         world.entities.items[map][i].empty = data.empty[map][i];
                         if (world.entities.items[map][i].opened)

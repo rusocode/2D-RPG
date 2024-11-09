@@ -4,7 +4,7 @@ import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.controllers.GameController;
 import com.punkipunk.engine.core.GameLoop;
-import com.punkipunk.engine.core.Systems;
+import com.punkipunk.engine.core.System;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -63,17 +63,19 @@ import static com.punkipunk.utils.Global.*;
 public class Game {
 
     private final Scene scene;
-    private final GameController controller;
-    public Systems systems;
+    private final GameController gameController;
+    private final Canvas canvas;
+    private final GraphicsContext context;
+    public System system;
     public int xOffset = WINDOW_WIDTH / 2 - (tile / 2);
     public int yOffset = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
-    private Canvas canvas;
-    private GraphicsContext context;
     private boolean running; // TODO Realmente es necesario?
 
-    public Game(Scene scene, GameController controller) {
+    public Game(Scene scene, GameController gameController, Canvas canvas, GraphicsContext context) {
         this.scene = scene;
-        this.controller = controller;
+        this.gameController = gameController;
+        this.canvas = canvas;
+        this.context = context;
     }
 
     public synchronized void start() {
@@ -96,11 +98,11 @@ public class Game {
     }
 
     private void update() {
-        systems.updater.update();
+        system.updater.update();
     }
 
     private void render() {
-        systems.renderer.render(context);
+        system.renderer.render(context);
     }
 
     /**
@@ -109,40 +111,47 @@ public class Game {
      * @param fullReset true to fully reset; false otherwise.
      */
     public void reset(boolean fullReset) {
-        systems.reset(fullReset);
+        system.reset(fullReset);
         if (fullReset) playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
         else playAmbient(Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
         // playMusic(fullReset ? Assets.getAudio(AudioAssets.MUSIC_MAIN) : Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
     }
 
+    public void setup() {
+        gameController.setGame(this);
+    }
+
     // TODO tendrian que moverse a su sistema
     public void playMusic(URL url) {
-        systems.music.stop(); // Stop the previous clip
-        systems.music.play(url);
-        systems.music.loop();
+        system.music.stop(); // Stop the previous clip
+        system.music.play(url);
+        system.music.loop();
     }
 
     public void playAmbient(URL url) {
-        systems.ambient.stop();
-        systems.ambient.play(url);
-        systems.ambient.loop();
+        system.ambient.stop();
+        system.ambient.play(url);
+        system.ambient.loop();
     }
 
     public void playSound(URL url) {
-        systems.sound.play(url);
+        system.sound.play(url);
     }
 
-    public void setRenderingComponents(Canvas canvas, GraphicsContext context) {
-        this.canvas = canvas;
-        this.context = context;
+    public void createSystem() {
+        system = System.createDefault(this);
+    }
+
+    public void initializeSystem() {
+        system.initialize();
     }
 
     public Scene getScene() {
         return scene;
     }
 
-    public GameController getController() {
-        return controller;
+    public GameController getGameController() {
+        return gameController;
     }
 
 }

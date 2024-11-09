@@ -51,11 +51,11 @@
     </HBox>
 
     <HBox styleClass="option-row">
-        <Label fx:id="saveGameButton" text="Save Game"/>
+        <Label fx:id="saveGameButton" text="Save Game" onMouseClicked="#handleSaveGameClicked"/>
     </HBox>
 
     <HBox styleClass="option-row">
-        <Label fx:id="quitToMainMenuButton" text="Quit to Main Menu" onMouseClicked="#handleQuitToMainMenuClicked"/>
+        <Label fx:id="quitToMainMenuButton" text="Quit to Main Menu"/>
     </HBox>
 
     <Region prefHeight="20"/>

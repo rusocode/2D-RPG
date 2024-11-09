@@ -36,7 +36,7 @@ public class Slime extends Mob {
     public void doActions() {
         if (flags.following) {
             checkUnfollow(world.entities.player, 15);
-            game.systems.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
+            game.system.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
             // checkShoot();
         } else {
             checkFollow(world.entities.player, 5, 100);

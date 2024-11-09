@@ -22,7 +22,7 @@ public class Dialogue {
 
     public void startDialogue(State state, Entity entity, int set) {
         State.setState(state);
-        game.systems.ui.entity = entity;
+        game.system.ui.entity = entity;
         this.set = set;
     }
 

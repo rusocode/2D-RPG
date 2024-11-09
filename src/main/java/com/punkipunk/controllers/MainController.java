@@ -2,6 +2,8 @@ package com.punkipunk.controllers;
 
 import com.punkipunk.Game;
 import com.punkipunk.GameBuilder;
+import com.punkipunk.assets.Assets;
+import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.loaders.GameViewLoader;
 import com.punkipunk.managers.SceneManager;
 import com.punkipunk.states.State;
@@ -34,9 +36,9 @@ public class MainController {
     @FXML
     private void handleLoadGameClicked() {
         sceneManager.switchScene(sceneManager.getGameScene());
-        game.systems.file.loadData();
-        game.systems.audioManager.playSpawnSound();
-        game.systems.audioManager.playZoneAmbient();
+        game.system.file.loadData();
+        game.system.audioManager.playSpawnSound();
+        game.system.audioManager.playZoneAmbient();
         game.start();
         State.setState(State.PLAY);
     }
@@ -46,7 +48,7 @@ public class MainController {
      */
     @FXML
     private void handleQuitClicked() {
-        game.systems.audioManager.playClickSound();
+        game.system.audioManager.playClickSound();
         System.exit(0);
     }
 
@@ -55,7 +57,7 @@ public class MainController {
      */
     @FXML
     private void handleMenuItemHovered() {
-        game.systems.audioManager.playHoverSound();
+        game.system.audioManager.playHoverSound();
     }
 
     /**
@@ -67,25 +69,34 @@ public class MainController {
     }
 
     /**
-     * Crea el juego por segunda vez (por ejemplo, cuando vuelve al menu principal desde opciones ya en el juego).
+     * Crea el juego por segunda vez, o tercera, etc. (por ejemplo, cuando vuelve al menu principal desde opciones ya en el
+     * juego).
      */
     private void createGame() {
         GameViewLoader gameViewLoader = new GameViewLoader();
         Scene gameScene = sceneManager.createGameScene(gameViewLoader);
+        GameController gameController = gameViewLoader.getController();
 
         Game game = new GameBuilder()
                 .withScene(gameScene)
-                .withController(gameViewLoader.getController())
+                .withController(gameController)
+                .withFont("/font/BlackPearl.ttf", 18)
+                .withRenderingComponents(gameController)
                 .build();
+
+        game.createSystem();
+        game.initializeSystem();
+        game.playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
+        game.setup();
 
         sceneManager.switchScene(gameScene);
         startGame(game);
     }
 
     private void startGame(Game game) {
-        game.systems.audioManager.playSpawnSound();
-        game.systems.audioManager.stopMusic();
-        game.systems.audioManager.playZoneAmbient();
+        game.system.audioManager.playSpawnSound();
+        game.system.audioManager.stopMusic();
+        game.system.audioManager.playZoneAmbient();
         game.start();
         State.setState(State.PLAY);
     }

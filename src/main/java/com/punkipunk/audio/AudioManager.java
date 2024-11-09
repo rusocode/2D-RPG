@@ -19,7 +19,7 @@ public class AudioManager {
     }
 
     public void playZoneAmbient() {
-        switch (game.systems.world.map.zone) {
+        switch (game.system.world.map.zone) {
             case OVERWORLD -> game.playAmbient(Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
             case DUNGEON -> game.playAmbient(Assets.getAudio(AudioAssets.AMBIENT_DUNGEON));
             case BOSS -> game.playMusic(Assets.getAudio(AudioAssets.MUSIC_BOSS));
@@ -35,7 +35,7 @@ public class AudioManager {
     }
 
     public void stopMusic() {
-        game.systems.music.stop();
+        game.system.music.stop();
     }
 
 }

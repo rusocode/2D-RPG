@@ -1,7 +1,6 @@
 package com.punkipunk.controllers;
 
 import com.punkipunk.Game;
-import com.punkipunk.audio.AudioManager;
 import com.punkipunk.managers.ViewManager;
 import com.punkipunk.utils.ViewState;
 import javafx.event.EventHandler;
@@ -50,23 +49,19 @@ public class GameController implements Initializable {
     @FXML
     private ControlsController controlsViewController;
 
+    private Game game;
     private ViewManager viewManager;
-    private AudioManager audioManager;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         viewManager = new ViewManager(statsView, optionsView, controlsView);
-        optionsViewController.setGameController(this);
         statsViewController.setGameController(this);
+        optionsViewController.setGameController(this);
         controlsViewController.setGameController(this);
         canvas.setWidth(WINDOW_WIDTH);
         canvas.setHeight(WINDOW_HEIGHT);
         configureButtons(root);
-    }
-
-    public void setup(Game game) {
-        audioManager = game.systems.audioManager;
-        optionsViewController.setAudioSystems(game.systems.music, game.systems.ambient, game.systems.sound);
     }
 
     /**
@@ -88,7 +83,7 @@ public class GameController implements Initializable {
                  * clic y luego ejecuta el manejador original si existia uno. Esto preserva cualquier funcionalidad que el Label
                  * ya tuviera. */
                 label.setOnMouseClicked(event -> {
-                    audioManager.playClickSound();
+                    game.system.audioManager.playClickSound();
                     if (originalHandler != null) originalHandler.handle(event); // Si habia un handler original, lo ejecuta
                 });
             }
@@ -112,11 +107,19 @@ public class GameController implements Initializable {
         viewManager.toggleView(ViewState.CONTROLS);
     }
 
+    public void saveGame() {
+        game.system.file.saveData();
+    }
+
     public Canvas getCanvas() {
         return canvas;
     }
 
-    public StatsController getStatsController() {
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    public StatsController getStatsViewController() {
         return statsViewController;
     }
 

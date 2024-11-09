@@ -36,14 +36,15 @@ public class OptionsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        closeButton.setOnMouseClicked(event -> gameController.toggleOptionsView());
-        controlsButton.setOnMouseClicked(event -> gameController.toggleControlsView());
+        closeButton.setOnMouseClicked(mouseEvent -> gameController.toggleOptionsView());
+        controlsButton.setOnMouseClicked(mouseEvent -> gameController.toggleControlsView());
+        quitToMainMenuButton.setOnMouseClicked(mouseEvent -> sceneManager.switchScene(sceneManager.getMainScene()));
         setupSliders();
     }
 
     @FXML
-    public void handleQuitToMainMenuClicked() {
-        sceneManager.switchScene(sceneManager.getMainScene());
+    public void handleSaveGameClicked() {
+        gameController.saveGame();
     }
 
     /**

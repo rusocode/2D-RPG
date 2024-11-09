@@ -5,6 +5,8 @@ import com.punkipunk.world.World;
 
 /**
  * Create new items when purchasing or collecting. This avoids using the same reference when purchasing an item.
+ * <p>
+ * TODO Se tendria que unir con Item (ojo! que al hacerlo cuando se carga el juego, los items se mueven rarisimo)
  */
 
 public class ItemGenerator {

@@ -2,20 +2,14 @@ package com.punkipunk.controllers;
 
 import com.punkipunk.world.entity.Stats;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-
-import java.net.URL;
-import java.util.ResourceBundle;
 
 /**
  * Controla la logica de la vista de estadisticas, actualizando la informacion del jugador.
  */
 
-public class StatsController implements Initializable {
+public class StatsController {
 
-    @FXML
-    private Label closeButton;
     @FXML
     private Label lvlLabel;
     @FXML
@@ -39,13 +33,21 @@ public class StatsController implements Initializable {
 
     private GameController gameController;
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        closeButton.setOnMouseClicked(event -> gameController.toggleStatsView());
+    /**
+     * <p>
+     * De esta manera, separa la logica de inicializacion y configuracion del controlador y la logica de manejo de eventos
+     * especificos, como el clic en el boton cerrar.
+     * <p>
+     * No es necesario configurar un listener de eventos adicional en el FXML, ya que eso se manejara directamente en el metodo
+     * del controlador
+     */
+    @FXML
+    public void handleCloseButtonClicked() {
+        gameController.toggleStatsView();
     }
 
     /**
-     * Actualiza las estadisticas del jugador en la interfaz.
+     * Actualiza las estadisticas del jugador.
      *
      * @param stats estadisticas del jugador.
      */

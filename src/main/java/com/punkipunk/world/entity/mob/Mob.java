@@ -149,9 +149,9 @@ public class Mob extends Entity {
      */
     protected void moveTowardPlayer(Mob target, int interval) {
         if (++timer.directionCounter > interval) { // TODO o =?
-            if (getXDistance(game.systems.world.entities.player) > getYDistance(game.systems.world.entities.player))
+            if (getXDistance(game.system.world.entities.player) > getYDistance(game.system.world.entities.player))
                 direction = target.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
-            else if (getXDistance(game.systems.world.entities.player) < getYDistance(game.systems.world.entities.player))
+            else if (getXDistance(game.system.world.entities.player) < getYDistance(game.system.world.entities.player))
                 direction = target.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
             timer.directionCounter = 0;
         }

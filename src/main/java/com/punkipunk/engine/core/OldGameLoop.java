@@ -1,5 +1,7 @@
 package com.punkipunk.engine.core;
 
+import java.lang.System;
+
 import static com.punkipunk.utils.Global.*;
 
 /**

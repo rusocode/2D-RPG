@@ -38,7 +38,7 @@ public class PotionRed extends Item {
             if (entity.stats.hp > entity.stats.maxHp) entity.stats.hp = entity.stats.maxHp;
             return true;
         } else {
-            game.systems.ui.addMessageToConsole("You have a full life");
+            game.system.ui.addMessageToConsole("You have a full life");
             return false;
         }
     }

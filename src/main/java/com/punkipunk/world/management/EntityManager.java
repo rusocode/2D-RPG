@@ -1,7 +1,6 @@
 package com.punkipunk.world.management;
 
 import com.punkipunk.Game;
-import com.punkipunk.controllers.GameController;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.Entity;
 import com.punkipunk.world.entity.EntityFactory;

@@ -68,7 +68,7 @@ public class CutsceneManager {
             for (int i = 0; i < world.entities.mobs[1].length; i++) {
                 if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(Lizard.NAME)) {
                     world.entities.mobs[world.map.num][i].sleep = false; // Now the boss wakes up
-                    game.systems.ui.entity = world.entities.mobs[world.map.num][i]; // Passes the boss to the UI so it can render the dialog window
+                    game.system.ui.entity = world.entities.mobs[world.map.num][i]; // Passes the boss to the UI so it can render the dialog window
                     phase++;
                     break;
                 }
@@ -76,7 +76,7 @@ public class CutsceneManager {
         }
 
         // The boss speaks
-        if (phase == 3) game.systems.ui.renderDialogueWindow();
+        if (phase == 3) game.system.ui.renderDialogueWindow();
 
         // Return the camera to the player
         if (phase == 4) {

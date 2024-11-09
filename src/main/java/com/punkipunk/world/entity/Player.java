@@ -53,16 +53,16 @@ public class Player extends Mob {
     public void update() {
         // The order of the methods is very important
         if (flags.hitting) hit();
-        if (game.systems.keyboard.checkKeys()) {
+        if (game.system.keyboard.checkKeys()) {
             direction.get(this);
             checkCollisions();
-            if (!flags.colliding && !game.systems.keyboard.checkActionKeys()) pos.update(this, direction);
+            if (!flags.colliding && !game.system.keyboard.checkActionKeys()) pos.update(this, direction);
             mechanics.checkDirectionSpeed(this, auxEntity);
             checkAttack();
             checkShoot();
             // Resetea las teclas de accion (atacar, por ejemplo) para darle prioridad a las teclas de movimiento y asi evitar que se "choquen"
-            game.systems.keyboard.resetActionKeys();
-            if (game.systems.keyboard.checkMovementKeys()) {
+            game.system.keyboard.resetActionKeys();
+            if (game.system.keyboard.checkMovementKeys()) {
                 // TODO Move to method
                 down.tick();
                 up.tick();
@@ -84,7 +84,7 @@ public class Player extends Mob {
             if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), game.xOffset, game.yOffset);
             else getCurrentItemFrame(g2);
         }
-        if (game.systems.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
+        if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
 
         Utils.changeAlpha(g2, 1);
     }
@@ -177,13 +177,13 @@ public class Player extends Mob {
             hitbox.setHeight(attackbox.getHeight());
 
             // Check the collision with the mob using the position and size of the updated hitbox, that is, with the attackbox
-            int mobIndex = game.systems.collision.checkEntity(this, world.entities.mobs);
+            int mobIndex = game.system.collision.checkEntity(this, world.entities.mobs);
             world.entities.player.hitMob(mobIndex, this, weapon.stats.knockbackValue, stats.attack);
 
-            int interactiveIndex = game.systems.collision.checkEntity(this, world.entities.interactives);
+            int interactiveIndex = game.system.collision.checkEntity(this, world.entities.interactives);
             world.entities.player.hitInteractive(interactiveIndex);
 
-            int projectileIndex = game.systems.collision.checkEntity(this, world.entities.projectiles);
+            int projectileIndex = game.system.collision.checkEntity(this, world.entities.projectiles);
             world.entities.player.hitProjectile(projectileIndex);
 
             // After verifying the collision, reset the original data
@@ -203,7 +203,7 @@ public class Player extends Mob {
      * Check if it can attack.
      */
     private void checkAttack() {
-        if (game.systems.keyboard.isKeyPressed(Key.ENTER) && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
+        if (game.system.keyboard.isKeyPressed(Key.ENTER) && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
             if (weapon.type == Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.SWING_WEAPON));
             if (weapon.type != Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.SWING_AXE));
             flags.hitting = true;
@@ -217,7 +217,7 @@ public class Player extends Mob {
      * Check if it can shooting a projectile.
      */
     private void checkShoot() {
-        if (game.systems.keyboard.isKeyPressed(Key.SHOOT) && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+        if (game.system.keyboard.isKeyPressed(Key.SHOOT) && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
             game.playSound(projectile.sound);
             projectile.set(pos.x, pos.y, direction, true, this);
@@ -234,7 +234,7 @@ public class Player extends Mob {
     }
 
     private void checkStats() {
-        if (!game.systems.keyboard.isKeyToggled(Key.TEST)) if (stats.hp <= 0) die();
+        if (!game.system.keyboard.isKeyToggled(Key.TEST)) if (stats.hp <= 0) die();
         if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
         if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
     }
@@ -248,7 +248,7 @@ public class Player extends Mob {
         if (i != -1) {
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER) && mob.type == Type.NPC) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER) && mob.type == Type.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
             } else mob.move(direction); // In case it's the box
@@ -291,7 +291,7 @@ public class Player extends Mob {
 
                 int damage = Math.max(attack - mob.stats.defense, 1);
                 mob.stats.decreaseHp(damage);
-                game.systems.ui.addMessageToConsole(damage + " damage!");
+                game.system.ui.addMessageToConsole(damage + " damage!");
                 if (mob.stats.hp > 0) {
                     game.playSound(mob.soundHit);
                     if (!(mob instanceof Slime)) game.playSound(Assets.getAudio(AudioAssets.MOB_HIT));
@@ -307,8 +307,8 @@ public class Player extends Mob {
                     game.playSound(Assets.getAudio(AudioAssets.MOB_DEATH));
                     if (!(mob instanceof Slime || mob instanceof RedSlime)) game.playSound(mob.soundDeath);
                     mob.flags.dead = true;
-                    game.systems.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
-                    game.systems.ui.addMessageToConsole("Exp + " + mob.stats.exp);
+                    game.system.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
+                    game.system.ui.addMessageToConsole("Exp + " + mob.stats.exp);
                     stats.exp += mob.stats.exp;
                     checkLevelUp();
 
@@ -392,16 +392,16 @@ public class Player extends Mob {
     public void pickup(int i) {
         if (i != -1) {
             Item item = world.entities.items[world.map.num][i];
-            if (game.systems.keyboard.isKeyPressed(Key.PICKUP) && item.type != Type.OBSTACLE) {
+            if (game.system.keyboard.isKeyPressed(Key.PICKUP) && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(world.entities.player);
                 else if (inventory.canPickup(item)) game.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
                 else {
-                    game.systems.ui.addMessageToConsole("You cannot carry any more!");
+                    game.system.ui.addMessageToConsole("You cannot carry any more!");
                     return;
                 }
                 world.entities.items[world.map.num][i] = null;
             }
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER) && item.type == Type.OBSTACLE) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER) && item.type == Type.OBSTACLE) {
                 world.entities.player.attackCanceled = true;
                 item.interact();
             }
@@ -411,13 +411,13 @@ public class Player extends Mob {
     @Override
     public void checkCollisions() {
         flags.colliding = false;
-        if (!game.systems.keyboard.isKeyToggled(Key.TEST)) game.systems.collision.checkTile(this);
-        pickup(game.systems.collision.checkItem(this));
-        interactNpc(game.systems.collision.checkEntity(this, world.entities.mobs));
-        hurt(game.systems.collision.checkEntity(this, world.entities.mobs));
-        setCurrentInteractive(game.systems.collision.checkEntity(this, world.entities.interactives));
+        if (!game.system.keyboard.isKeyToggled(Key.TEST)) game.system.collision.checkTile(this);
+        pickup(game.system.collision.checkItem(this));
+        interactNpc(game.system.collision.checkEntity(this, world.entities.mobs));
+        hurt(game.system.collision.checkEntity(this, world.entities.mobs));
+        setCurrentInteractive(game.system.collision.checkEntity(this, world.entities.interactives));
         // game.systems.collision.checkEntity(this, world.entities.interactives);
-        game.systems.event.check(this);
+        game.system.event.check(this);
     }
 
     private void setCurrentInteractive(int i) {
@@ -427,8 +427,8 @@ public class Player extends Mob {
     private void die() {
         game.playSound(Assets.getAudio(AudioAssets.PLAYER_DEATH));
         State.setState(State.GAME_OVER);
-        game.systems.ui.command = -1;
-        game.systems.music.stop();
+        game.system.ui.command = -1;
+        game.system.music.stop();
     }
 
     private void getCurrentItemFrame(GraphicsContext g2) {
@@ -463,7 +463,7 @@ public class Player extends Mob {
      */
     private Image getCurrentAnimationFrame() {
         // When it stops moving, returns the first saved frame of the last direction to represent the stop of the player
-        if (game.systems.keyboard.checkMovementKeys() && !State.isState(State.INVENTORY)) { // Evita que se cambie el frame de movimiento mientras esta en el inventario
+        if (game.system.keyboard.checkMovementKeys() && !State.isState(State.INVENTORY)) { // Evita que se cambie el frame de movimiento mientras esta en el inventario
             switch (direction) {
                 case DOWN -> {
                     // Guarda el primer frame hacia abajo

@@ -101,7 +101,7 @@ public abstract class Entity {
             tempScreenY = getScreenY();
 
             // If the hostile mob that is not a boss has the life bar activated
-            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) game.systems.ui.renderHpBar(this);
+            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
 
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
@@ -116,7 +116,7 @@ public abstract class Entity {
                 // If it is a static image (item, interactive tile)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY());
 
-            if (game.systems.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
+            if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }
@@ -190,7 +190,7 @@ public abstract class Entity {
             hitbox.setWidth(attackbox.getWidth());
             hitbox.setHeight(attackbox.getHeight());
 
-            hitPlayer(game.systems.collision.checkPlayer(this), stats.attack);
+            hitPlayer(game.system.collision.checkPlayer(this), stats.attack);
 
             pos.x = currentX;
             pos.y = currentY;
@@ -245,11 +245,11 @@ public abstract class Entity {
      */
     public void checkCollisions() {
         flags.colliding = false;
-        game.systems.collision.checkTile(this);
-        game.systems.collision.checkItem(this);
-        game.systems.collision.checkEntity(this, world.entities.mobs);
-        game.systems.collision.checkEntity(this, world.entities.interactives);
-        hitPlayer(game.systems.collision.checkPlayer(this), stats.attack);
+        game.system.collision.checkTile(this);
+        game.system.collision.checkItem(this);
+        game.system.collision.checkEntity(this, world.entities.mobs);
+        game.system.collision.checkEntity(this, world.entities.interactives);
+        hitPlayer(game.system.collision.checkPlayer(this), stats.attack);
     }
 
     /**

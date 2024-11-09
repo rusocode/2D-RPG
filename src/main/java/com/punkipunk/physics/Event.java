@@ -135,7 +135,7 @@ public class Event {
      * @param entity entity to heal.
      */
     private void heal(Entity entity) {
-        if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+        if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
             entity.dialogue.startDialogue(State.DIALOGUE, entity, 1);
             entity.stats.hp = entity.stats.maxHp;

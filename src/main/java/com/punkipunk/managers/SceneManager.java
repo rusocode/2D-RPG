@@ -2,6 +2,9 @@ package com.punkipunk.managers;
 
 import com.punkipunk.Game;
 import com.punkipunk.GameBuilder;
+import com.punkipunk.assets.Assets;
+import com.punkipunk.assets.AudioAssets;
+import com.punkipunk.controllers.GameController;
 import com.punkipunk.loaders.GameViewLoader;
 import com.punkipunk.loaders.MainViewLoader;
 import javafx.scene.Scene;
@@ -18,6 +21,8 @@ public class SceneManager {
     private Scene mainScene;
     private Scene gameScene;
 
+    private GameController gameController;
+
     private SceneManager() {
     }
 
@@ -33,20 +38,31 @@ public class SceneManager {
     public Scene createMainScene() {
         GameViewLoader gameViewLoader = new GameViewLoader();
         gameScene = createGameScene(gameViewLoader);
-
-        Game game = new GameBuilder()
-                .withScene(gameScene)
-                .withController(gameViewLoader.getController())
-                .build();
+        gameController = gameViewLoader.getController();
 
         MainViewLoader mainViewLoader = new MainViewLoader();
-        mainViewLoader.getController().initialize(game, gameScene);
+        mainViewLoader.getController().initialize(createGame(), gameScene);
         mainScene = new Scene(mainViewLoader.getParent(), WINDOW_WIDTH, WINDOW_HEIGHT);
         return mainScene;
     }
 
     public Scene createGameScene(GameViewLoader gameViewLoader) {
         return new Scene(gameViewLoader.getParent(), WINDOW_WIDTH, WINDOW_HEIGHT);
+    }
+
+    private Game createGame() {
+        Game game = new GameBuilder()
+                .withScene(gameScene)
+                .withController(gameController)
+                .withFont("/font/BlackPearl.ttf", 18)
+                .withRenderingComponents(gameController)
+                .build();
+        // Configura el juego una vez creado, obviamente!
+        game.createSystem();
+        game.initializeSystem();
+        game.playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
+        game.setup();
+        return game;
     }
 
     public void switchScene(Scene scene) {

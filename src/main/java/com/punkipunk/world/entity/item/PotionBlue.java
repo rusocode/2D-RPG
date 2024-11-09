@@ -35,7 +35,7 @@ public class PotionBlue extends Item {
             if (entity.stats.mana > entity.stats.maxMana) entity.stats.mana = entity.stats.maxMana;
             return true;
         } else {
-            game.systems.ui.addMessageToConsole("You have a full mana");
+            game.system.ui.addMessageToConsole("You have a full mana");
             return false;
         }
     }

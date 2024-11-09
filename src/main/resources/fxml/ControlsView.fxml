@@ -8,7 +8,7 @@
 
     <StackPane>
         <Label fx:id="title" text="CONTROLS"/>
-        <Label fx:id="closeButton" text="×" StackPane.alignment="CENTER_RIGHT"/>
+        <Label fx:id="closeButton" text="×" StackPane.alignment="CENTER_RIGHT" onMouseClicked="#handleCloseButtonClicked"/>
     </StackPane>
 
     <Region prefHeight="20"/>
@@ -52,7 +52,7 @@
     <Region prefHeight="20"/>
 
     <HBox>
-        <Label fx:id="backButton" text="Back" styleClass="back-label"/>
+        <Label fx:id="backButton" text="Back" styleClass="back-label" onMouseClicked="#handleBackButtonClicked"/>
     </HBox>
 
 </VBox>

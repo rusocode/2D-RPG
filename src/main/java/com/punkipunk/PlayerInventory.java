@@ -54,7 +54,7 @@ public class PlayerInventory extends Inventory {
      * @return true if the item can be picked up or false.
      */
     public boolean canPickup(Item item) {
-        Item newItem = game.systems.itemGenerator.generate(item.stats.name);
+        Item newItem = game.system.itemGenerator.generate(item.stats.name);
         if (item.stackable) {
             int i = search(item.stats.name);
             // If it exists in inventory, then just increase the quantity

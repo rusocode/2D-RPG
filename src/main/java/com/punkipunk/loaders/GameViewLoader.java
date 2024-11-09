@@ -24,7 +24,8 @@ public class GameViewLoader {
      * @return el archivo FXML.
      */
     private FXMLLoader loadFXML() {
-        return new FXMLLoader(getClass().getResource("/fxml/GameView.fxml"));
+        String path = "/fxml/GameView.fxml";
+        return new FXMLLoader(getClass().getResource(path));
     }
 
     /**

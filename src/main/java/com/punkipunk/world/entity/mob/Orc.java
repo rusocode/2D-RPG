@@ -55,7 +55,7 @@ public class Orc extends Mob {
     public void doActions() {
         if (flags.following) {
             checkUnfollow(world.entities.player, 10);
-            game.systems.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
+            game.system.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
         } else {
             checkFollow(world.entities.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
@@ -75,7 +75,7 @@ public class Orc extends Mob {
             tempScreenX = getScreenX();
             tempScreenY = getScreenY();
 
-            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) game.systems.ui.renderHpBar(this);
+            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
 
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
@@ -86,7 +86,7 @@ public class Orc extends Mob {
 
             g2.drawImage(getCurrentAnimationFrame(), getScreenX(), getScreenY());
 
-            if (game.systems.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
+            if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }

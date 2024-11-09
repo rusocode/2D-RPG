@@ -186,23 +186,23 @@ public class UI {
             }
 
             // In the case of having several dialog boxes (example, Oldman)
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.DIALOGUE) || State.isState(State.CUTSCENE)) {
                     entity.dialogue.index++;
-                    game.systems.keyboard.releaseKey(Key.ENTER);
+                    game.system.keyboard.releaseKey(Key.ENTER);
                 }
             }
 
-            if (game.systems.keyboard.isKeyPressed(Key.ESCAPE)) { // TODO Or else if?
+            if (game.system.keyboard.isKeyPressed(Key.ESCAPE)) { // TODO Or else if?
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.TRADE)) {
                     State.setState(State.PLAY);
                     currentDialogue = "";
                     entity.dialogue.index++;
-                    game.systems.keyboard.releaseKey(Key.ESCAPE);
+                    game.system.keyboard.releaseKey(Key.ESCAPE);
                 }
             }
 
@@ -382,7 +382,7 @@ public class UI {
             case 2 -> renderOptionEndGameConfirmationWindow(x, y);
         }
 
-        game.systems.keyboard.releaseKey(Key.ENTER);
+        game.system.keyboard.releaseKey(Key.ENTER);
 
     }
 
@@ -413,7 +413,7 @@ public class UI {
         context.fillText("Controls", textX, textY);
         if (command == 2) {
             context.fillText(">", textX - 25, textY);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 1;
                 command = 0;
             }
@@ -423,10 +423,10 @@ public class UI {
         context.fillText("Save Game", textX, textY);
         if (command == 3) {
             context.fillText(">", textX - 25, textY);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
-                game.systems.file.saveData();
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
+                game.system.file.saveData();
                 State.setState(State.PLAY);
-                game.systems.ui.addMessageToConsole("Game saved!");
+                game.system.ui.addMessageToConsole("Game saved!");
                 command = 0;
             }
         }
@@ -435,7 +435,7 @@ public class UI {
         context.fillText("End Game", textX, textY);
         if (command == 4) {
             context.fillText(">", textX - 25, textY);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 2;
                 command = 0;
             }
@@ -445,12 +445,12 @@ public class UI {
         textX = frameX + frameWidth - (tile * 4);
         textY = frameY + (tile * 2 + 7);
         context.strokeRect(textX, textY, 120, 24);
-        int volumeWidth = 24 * game.systems.music.volumeScale;
+        int volumeWidth = 24 * game.system.music.volumeScale;
         context.fillRect(textX, textY, volumeWidth, 24);
         // Sound volume
         textY += tile;
         context.strokeRect(textX, textY, 120, 24);
-        volumeWidth = 24 * game.systems.sound.volumeScale;
+        volumeWidth = 24 * game.system.sound.volumeScale;
         context.fillRect(textX, textY, volumeWidth, 24);
 
         // Back
@@ -459,13 +459,13 @@ public class UI {
         context.fillText("Back", textX, textY);
         if (command == 5) {
             context.fillText(">", textX - 25, textY);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 State.setState(State.PLAY);
                 command = 0;
             }
         }
 
-        game.systems.file.saveConfig();
+        game.system.file.saveConfig();
 
     }
 
@@ -536,7 +536,7 @@ public class UI {
         context.fillText("Back", textX, textY);
         if (command == 0) {
             context.fillText(">", textX - 25, textY);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 command = 2;
             }
@@ -559,7 +559,7 @@ public class UI {
         context.fillText(text, textX, textY);
         if (command == 0) {
             context.fillText(">", textX - 25, textY);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 State.setState(State.MAIN);
                 game.reset(true);
@@ -572,7 +572,7 @@ public class UI {
         context.fillText(text, textX, textY);
         if (command == 1) {
             context.fillText(">", textX - 25, textY);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 command = 4;
             }
@@ -616,17 +616,17 @@ public class UI {
      * Renders a teleport effect and when it finishes, teleports the player.
      */
     private void renderTeleportEffect() {
-        context.setFill(new Color(0, 0, 0, counter * 5));
+        context.setFill(new Color(0, 0, 0, /* counter * 5 */ 0.5));
         context.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         counter++;
         if (counter >= INTERVAL_TELEPORT) {
             counter = 0;
             State.setState(State.PLAY);
-            world.map.num = game.systems.event.mapNum;
-            world.entities.player.pos.x = (int) ((game.systems.event.col * tile) + world.entities.player.hitbox.getWidth() / 2);
-            world.entities.player.pos.y = (int) ((game.systems.event.row * tile) - world.entities.player.hitbox.getHeight());
-            game.systems.event.previousEventX = world.entities.player.pos.x;
-            game.systems.event.previousEventY = world.entities.player.pos.y;
+            world.map.num = game.system.event.mapNum;
+            world.entities.player.pos.x = (int) ((game.system.event.col * tile) + world.entities.player.hitbox.getWidth() / 2);
+            world.entities.player.pos.y = (int) ((game.system.event.row * tile) - world.entities.player.hitbox.getHeight());
+            game.system.event.previousEventX = world.entities.player.pos.x;
+            game.system.event.previousEventY = world.entities.player.pos.y;
             world.map.changeArea();
         }
     }
@@ -637,7 +637,7 @@ public class UI {
             case 1 -> renderTradeBuyWindow();
             case 2 -> renderTradeSellWindow();
         }
-        game.systems.keyboard.releaseKey(Key.ENTER); // Reset keyboard input
+        game.system.keyboard.releaseKey(Key.ENTER); // Reset keyboard input
     }
 
     private void renderTradeMainWindow() {
@@ -648,7 +648,7 @@ public class UI {
         context.fillText("Buy", x, y);
         if (command == 0) {
             context.fillText(">", x - 14, y);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) subState = 1;
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) subState = 1;
         }
 
         x += 4 * tile;
@@ -656,7 +656,7 @@ public class UI {
         context.fillText("Sell", x, y);
         if (command == 1) {
             context.fillText(">", x - 14, y);
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) subState = 2;
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) subState = 2;
         }
     }
 
@@ -684,7 +684,7 @@ public class UI {
             context.fillText(text, x, y + 24);
 
             // Buy an item
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 if (entity.inventory.get(itemIndex).price > world.entities.player.stats.gold)
                     addMessageToConsole("You need more gold to buy that!");
                 else {
@@ -726,7 +726,7 @@ public class UI {
             context.fillText(text, x, y + 24);
 
             // Sell an item
-            if (game.systems.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
                 if (world.entities.player.inventory.get(itemIndex) == world.entities.player.weapon ||
                         world.entities.player.inventory.get(itemIndex) == world.entities.player.shield ||
                         world.entities.player.inventory.get(itemIndex) == world.entities.player.light)
@@ -788,7 +788,7 @@ public class UI {
      */
     private void renderSubwindow(int x, int y, int width, int height, int alpha) {
         // Black background
-        context.setFill(new Color(0, 0, 0, alpha));
+        context.setFill(new Color(0, 0, 0, /* alpha */ 0.5));
         context.fillRoundRect(x, y, width, height, 10, 10);
         // White background
         context.setFill(Color.rgb(255, 255, 255));

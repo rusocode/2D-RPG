@@ -11,19 +11,19 @@ public class GameOverState implements GameState {
     public void handleKeyPress(Key key, Game game) {
         if (key == Key.UP) {
             game.playSound(Assets.getAudio(AudioAssets.HOVER));
-            game.systems.ui.command--;
-            if (game.systems.ui.command < 0) game.systems.ui.command = 1;
+            game.system.ui.command--;
+            if (game.system.ui.command < 0) game.system.ui.command = 1;
         }
         if (key == Key.DOWN) {
             game.playSound(Assets.getAudio(AudioAssets.HOVER));
-            game.systems.ui.command++;
-            if (game.systems.ui.command > 1) game.systems.ui.command = 0;
+            game.system.ui.command++;
+            if (game.system.ui.command > 1) game.system.ui.command = 0;
         }
         if (key == Key.ENTER) {
-            if (game.systems.ui.command == 0) {
+            if (game.system.ui.command == 0) {
                 State.setState(State.PLAY);
                 game.reset(false);
-            } else if (game.systems.ui.command == 1) {
+            } else if (game.system.ui.command == 1) {
                 State.setState(State.MAIN);
                 game.reset(true);
             }

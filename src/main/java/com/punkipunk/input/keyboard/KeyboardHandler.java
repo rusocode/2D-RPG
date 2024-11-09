@@ -1,8 +1,6 @@
 package com.punkipunk.input.keyboard;
 
 import com.punkipunk.Game;
-import com.punkipunk.controllers.GameController;
-import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 
 import java.util.BitSet;
