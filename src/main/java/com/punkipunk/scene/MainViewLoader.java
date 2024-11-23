@@ -1,4 +1,4 @@
-package com.punkipunk.loaders;
+package com.punkipunk.scene;
 
 import com.punkipunk.controllers.MainController;
 import javafx.fxml.FXMLLoader;

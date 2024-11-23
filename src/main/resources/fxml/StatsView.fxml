@@ -8,11 +8,12 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx/22"
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punkipunk.controllers.StatsController"
-      stylesheets="@../css/stats.css" styleClass="panel">
+      stylesheets="@../css/stats.css" styleClass="container">
 
     <StackPane>
-        <Label fx:id="title" text="STATS"/> <!-- ¿Lo declaro con styleClass? -->
-        <Label fx:id="closeButton" text="×" StackPane.alignment="CENTER_RIGHT" onMouseClicked="#handleCloseButtonClicked"/>
+        <Label styleClass="title" text="STATS"/> <!-- ¿Lo declaro con styleClass? -->
+        <Label fx:id="closeButton" styleClass="close-button" text="×" StackPane.alignment="CENTER_RIGHT"
+               onMouseClicked="#handleCloseButtonClicked"/>
     </StackPane>
 
     <Region prefHeight="20"/>

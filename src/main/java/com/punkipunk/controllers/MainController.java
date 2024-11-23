@@ -4,8 +4,8 @@ import com.punkipunk.Game;
 import com.punkipunk.GameBuilder;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
-import com.punkipunk.loaders.GameViewLoader;
-import com.punkipunk.managers.SceneManager;
+import com.punkipunk.scene.GameViewLoader;
+import com.punkipunk.scene.SceneDirector;
 import com.punkipunk.states.State;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -16,7 +16,7 @@ import javafx.scene.Scene;
 
 public class MainController {
 
-    private final SceneManager sceneManager = SceneManager.getInstance();
+    private final SceneDirector sceneDirector = SceneDirector.getInstance();
     private Game game;
     private Scene gameScene;
     private boolean isInitialGame = true;
@@ -35,10 +35,10 @@ public class MainController {
 
     @FXML
     private void handleLoadGameClicked() {
-        sceneManager.switchScene(sceneManager.getGameScene());
+        sceneDirector.switchScene(sceneDirector.getGameScene());
         game.system.file.loadData();
-        game.system.audioManager.playSpawnSound();
-        game.system.audioManager.playZoneAmbient();
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.SPAWN2));
+        game.system.audio.playZoneAmbient();
         game.start();
         State.setState(State.PLAY);
     }
@@ -48,7 +48,7 @@ public class MainController {
      */
     @FXML
     private void handleQuitClicked() {
-        game.system.audioManager.playClickSound();
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.CLICK2));
         System.exit(0);
     }
 
@@ -57,14 +57,14 @@ public class MainController {
      */
     @FXML
     private void handleMenuItemHovered() {
-        game.system.audioManager.playHoverSound();
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.HOVER));
     }
 
     /**
      * Inicia el juego utilizando las instancias creadas en SceneManager.
      */
     private void initGame() {
-        sceneManager.switchScene(gameScene);
+        sceneDirector.switchScene(gameScene);
         startGame(game);
     }
 
@@ -74,7 +74,7 @@ public class MainController {
      */
     private void createGame() {
         GameViewLoader gameViewLoader = new GameViewLoader();
-        Scene gameScene = sceneManager.createGameScene(gameViewLoader);
+        Scene gameScene = sceneDirector.createGameScene(gameViewLoader);
         GameController gameController = gameViewLoader.getController();
 
         Game game = new GameBuilder()
@@ -84,19 +84,16 @@ public class MainController {
                 .withRenderingComponents(gameController)
                 .build();
 
-        game.createSystem();
-        game.initializeSystem();
-        game.playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
         game.setup();
 
-        sceneManager.switchScene(gameScene);
+        sceneDirector.switchScene(gameScene);
         startGame(game);
     }
 
     private void startGame(Game game) {
-        game.system.audioManager.playSpawnSound();
-        game.system.audioManager.stopMusic();
-        game.system.audioManager.playZoneAmbient();
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.SPAWN2));
+        game.system.audio.stop();
+        game.system.audio.playZoneAmbient();
         game.start();
         State.setState(State.PLAY);
     }

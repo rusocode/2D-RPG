@@ -97,7 +97,7 @@ public class Box extends Mob {
             if (distance < 8) { // Link the box to the plate if it is less than 8 pixels away
                 if (linkedEntity == null) {
                     linkedEntity = plate;
-                    game.playSound(Assets.getAudio(AudioAssets.CHIPWALL));
+                    game.system.audio.playSound(Assets.getAudio(AudioAssets.CHIPWALL));
                 }
                 // Detaches the box from the plate if it moves from this plate again
             } else if (linkedEntity == plate) linkedEntity = null;
@@ -112,7 +112,7 @@ public class Box extends Mob {
             for (int i = 0; i < world.entities.items[1].length; i++) {
                 if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(DoorIron.NAME)) {
                     world.entities.items[world.map.num][i] = null;
-                    game.playSound(Assets.getAudio(AudioAssets.DOOR_IRON_OPENING));
+                    game.system.audio.playSound(Assets.getAudio(AudioAssets.DOOR_IRON_OPENING));
                 }
             }
         }

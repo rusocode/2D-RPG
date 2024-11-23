@@ -28,7 +28,7 @@ public class Tent extends Item {
     @Override
     public boolean use(Entity entity) {
         State.setState(State.SLEEP);
-        game.playSound(Assets.getAudio(AudioAssets.SLEEP));
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.SLEEP));
         world.entities.player.stats.hp = world.entities.player.stats.maxHp;
         world.entities.player.stats.mana = world.entities.player.stats.maxMana;
         world.entities.player.initSleepImage(sheet.frame);

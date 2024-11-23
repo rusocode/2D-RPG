@@ -5,7 +5,7 @@ import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
-import static com.punkipunk.utils.Global.tile;
+import static com.punkipunk.utils.Global.*;
 
 /**
  * Particles are small rectangles drawn with the fillRect() method. This is optional, but you can also add images for this case.
@@ -53,8 +53,8 @@ public class Particle extends Entity {
     }
 
     public void render(GraphicsContext g2) {
-        int screenX = pos.x - world.entities.player.pos.x + world.entities.player.game.xOffset;
-        int screenY = pos.y - world.entities.player.pos.y + world.entities.player.game.yOffset;
+        int screenX = pos.x - world.entities.player.pos.x + X_OFFSET;
+        int screenY = pos.y - world.entities.player.pos.y + Y_OFFSET;
         g2.setFill(color);
         // g2.setColor(color);
         g2.fillRect(screenX, screenY, size, size); // Draw a rectangle as a particle

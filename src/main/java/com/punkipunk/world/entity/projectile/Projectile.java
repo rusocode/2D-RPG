@@ -35,7 +35,7 @@ public class Projectile extends Entity {
 
         // If the player shooting a projectile
         if (entity instanceof Player) {
-            int mobIndex = game.system.collision.checkEntity(this, world.entities.mobs);
+            int mobIndex = game.system.collisionChecker.checkEntity(this, world.entities.mobs);
             if (mobIndex != -1) {
                 Mob mob = world.entities.mobs[world.map.num][mobIndex];
                 /* When the projectile collides with a mob, set the colliding state to true. Therefore, when the projectilew
@@ -53,7 +53,7 @@ public class Projectile extends Entity {
 
         // If the mob shooting a projectile
         if (!(entity instanceof Player)) {
-            boolean contact = game.system.collision.checkPlayer(this);
+            boolean contact = game.system.collisionChecker.checkPlayer(this);
             if (contact && !world.entities.player.flags.invincible) {
                 hitPlayer(true, stats.attack);
                 generateParticle(entity.projectile, world.entities.player);

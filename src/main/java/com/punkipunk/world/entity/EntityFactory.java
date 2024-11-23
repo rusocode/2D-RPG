@@ -45,6 +45,19 @@ public class EntityFactory {
         int i = 0;
 
         items[ABANDONED_ISLAND][i++] = new Axe(game, world, 33, 7);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 21);
+        items[ABANDONED_ISLAND][i++] = new PotionBlue(game, world, 3, 23, 22);
+        items[ABANDONED_ISLAND][i++] = new PotionBlue(game, world, 4, 24, 22);
+        items[ABANDONED_ISLAND][i++] = new PotionRed(game, world, 4, 25, 22);
+        items[ABANDONED_ISLAND][i++] = new SwordIron(game, world, 22, 22);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 23);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 24);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 25);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 26);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 27);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 28);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 29);
+        items[ABANDONED_ISLAND][i++] = new Axe(game, world, 23, 30);
         items[ABANDONED_ISLAND][i++] = new Door(game, world, 14, 28);
         items[ABANDONED_ISLAND][i++] = new Door(game, world, 12, 12);
         // TODO No es mejor pasarle directamente al cofre el item que va a tener desde el constructor?

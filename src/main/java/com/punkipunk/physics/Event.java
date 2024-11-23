@@ -17,6 +17,10 @@ import static com.punkipunk.utils.Global.*;
 
 public class Event {
 
+    private static final int EVENT_WIDTH = 22;
+    private static final int EVENT_HEIGHT = 18;
+    private static final int INTERACTION_DISTANCE = 1;
+
     private final Game game;
     private final World world;
 
@@ -35,18 +39,28 @@ public class Event {
         this.game = game;
         this.world = world;
         event = new Rectangle[MAPS][MAX_MAP_ROW][MAX_MAP_COL];
+        createEvents();
     }
 
     /**
      * Create an event for each tile. Technically speaking, it creates a small Rectangle in the center of each tile.
      */
-    public void create() {
-        int eventWidth = 22;
-        int eventHeight = 18;
+    private void createEvents() {
         for (int map = 0; map < MAPS; map++)
             for (int row = 0; row < MAX_MAP_ROW; row++)
-                for (int col = 0; col < MAX_MAP_COL; col++)
-                    event[map][row][col] = new Rectangle(x, y, eventWidth, eventHeight);
+                for (int col = 0; col < MAX_MAP_COL; col++) {
+                    event[map][row][col] = new Rectangle(x, y, EVENT_WIDTH, EVENT_HEIGHT);
+                    // centerEventInTile(event[map][row][col]);
+                }
+
+    }
+
+    private void centerEventInTile(Rectangle event) {
+        // Calculate center position within tile
+        int centerX = (tile - EVENT_WIDTH) / 2;
+        int centerY = (tile - EVENT_HEIGHT) / 2;
+        event.setX(centerX);
+        event.setY(centerY);
     }
 
     /**
@@ -62,8 +76,10 @@ public class Event {
         int dis = Math.max(xDis, yDis);
         if (dis > tile) canCollideEvent = true;
 
+        // if (!isPlayerFarEnoughFromPreviousEvent()) return;
+
         if (canCollideEvent) {
-            if (isColliding(ABANDONED_ISLAND, 27, 16, Direction.RIGHT)) hurt(entity);
+            if (isColliding(ABANDONED_ISLAND, 27, 16, Direction.ANY)) hurt(entity);
             if (isColliding(ABANDONED_ISLAND, 23, 12, Direction.UP)) heal(entity);
             if (isColliding(DUNGEON_BREG_SUB, 25, 27, Direction.ANY)) bossScene();
             if (isColliding(ABANDONED_ISLAND, 10, 39, Direction.UP)) teleport(MARKET, ABANDONED_ISLAND_MARKET, 12, 13);
@@ -74,6 +90,18 @@ public class Event {
             if (isColliding(DUNGEON_BREG_SUB, 26, 41, Direction.ANY)) teleport(DUNGEON, DUNGEON_BREG, 8, 7);
         }
 
+    }
+
+    /**
+     * Comprueba si el jugador esta a mas de 1 tile del ultimo evento usando el evento anterior como informacion.
+     *
+     * @return si el jugador esta a mas de 1 tile del ultimo evento.
+     */
+    private boolean isPlayerFarEnoughFromPreviousEvent() {
+        int xDis = Math.abs(world.entities.player.pos.x - previousEventX);
+        int yDis = Math.abs(world.entities.player.pos.y - previousEventY);
+        int dis = Math.max(xDis, yDis);
+        return dis > tile;
     }
 
     /**
@@ -123,9 +151,10 @@ public class Event {
      * @param entity entity to hurt.
      */
     private void hurt(Entity entity) {
+        // TODO Creo que no es necesario especificar un mensaje como dialogo, sino como consola
         entity.dialogue.dialogues[0][0] = "You fall into a pit!";
         entity.dialogue.startDialogue(State.DIALOGUE, entity, 0);
-        entity.stats.hp--;
+        entity.stats.decreaseHp(1);
         canCollideEvent = false;
     }
 
@@ -138,7 +167,7 @@ public class Event {
         if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
             entity.dialogue.startDialogue(State.DIALOGUE, entity, 1);
-            entity.stats.hp = entity.stats.maxHp;
+            entity.stats.fullHp();
         }
     }
 

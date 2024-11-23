@@ -8,6 +8,7 @@ import java.util.ArrayList;
 
 import static com.punkipunk.utils.Global.*;
 
+// TODO Rename Pathfinding
 public class AStar {
 
     private final World world;

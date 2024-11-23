@@ -52,8 +52,8 @@ public class Lighting {
         } else { // If the player selected the latern
 
             // Gets the center of the player
-            int centerX = world.entities.player.game.xOffset + (tile / 2);
-            int centerY = world.entities.player.game.yOffset + (tile / 2);
+            int centerX = X_OFFSET + (tile / 2);
+            int centerY = Y_OFFSET + (tile / 2);
 
             // Crear el efecto de gradación para el círculo de luz
             Stop[] stops = new Stop[]{

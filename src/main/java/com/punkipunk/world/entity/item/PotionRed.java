@@ -33,7 +33,7 @@ public class PotionRed extends Item {
     @Override
     public boolean use(Entity entity) {
         if (entity.stats.hp != entity.stats.maxHp) {
-            game.playSound(Assets.getAudio(AudioAssets.DRINK_POTION));
+            game.system.audio.playSound(Assets.getAudio(AudioAssets.DRINK_POTION));
             entity.stats.hp += points;
             if (entity.stats.hp > entity.stats.maxHp) entity.stats.hp = entity.stats.maxHp;
             return true;

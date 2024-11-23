@@ -51,6 +51,6 @@ public class DestructibleWall extends Interactive {
 
     @Override
     public void playSound() {
-        game.playSound(Assets.getAudio(AudioAssets.MINE));
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.MINE));
     }
 }

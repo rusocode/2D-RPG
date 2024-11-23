@@ -11,17 +11,17 @@ import java.util.Set;
  * Maneja los eventos del teclado.
  */
 
-public class KeyboardHandler {
+public class Keyboard {
 
     public final BitSet toggledKeys; // Para teclas que alternan su estado
     private final Game game;
-    private final KeyboardStateHandler stateHandler;
+    private final KeyboardState stateHandler;
     private final Set<Key> keys;
     private int lastKey = -1;
 
-    public KeyboardHandler(Game game) {
+    public Keyboard(Game game) {
         this.game = game;
-        stateHandler = new KeyboardStateHandler();
+        stateHandler = new KeyboardState();
         keys = EnumSet.noneOf(Key.class); // TODO Creo que se podria reemplazar por la clase de JavaFX que maneja todas las teclas KeyCode
         toggledKeys = new BitSet(256);
         setupKeyHandler();

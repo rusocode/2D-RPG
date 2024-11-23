@@ -23,7 +23,7 @@ public final class Global {
     public static final boolean FPS_UNLIMITED = false; // FIXME Al usar AnimationTimer queda obsoleto
     // Others
     public static final String VERSION = "0.0.11a";
-    public static final int MAX_INVENTORY_SLOTS = 20;
+    public static final int MAX_INVENTORY_SLOTS = 16; // Tiene que ser igual al total de ROWS * COLS de InventoryController
     public static final int MAX_LVL = 50;
     public static final int SUBWINDOW_ALPHA = 1;
     // Number of visible tiles
@@ -77,6 +77,8 @@ public final class Global {
     // Window size
     public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL;
     public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW;
+    public static final int X_OFFSET = WINDOW_WIDTH / 2 - (tile / 2);
+    public static final int Y_OFFSET = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
 
     private Global() {
     }

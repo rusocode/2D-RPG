@@ -20,30 +20,27 @@ public class Inventory {
         inventory = new ArrayList<>();
     }
 
-    /**
-     * Add the item.
-     *
-     * @param item item.
-     */
     public void add(Item item) {
         if (inventory.size() < MAX_INVENTORY_SLOTS) inventory.add(item);
     }
 
-    /**
-     * Returns the number of items.
-     */
     public int size() {
         return inventory.size();
     }
 
     /**
-     * Gets the item.
+     * Obtiene el item en el indice especificado.
      *
-     * @param i item index.
-     * @return the item.
+     * @param i indice del item.
+     * @return el item en el indice especificado.
+     * @throws IndexOutOfBoundsException si el indice esta fuera de los limites.
+     * @throws IllegalStateException     si el inventario esta vacio.
      */
     public Item get(int i) {
-        return inventory.get(i); // TODO Hay un bug medio raro con un IOOBE = Index 5 out of bounds for length 5. Cuando se mueve el cursor por el inventario
+        if (inventory.isEmpty()) throw new IllegalStateException("El inventario esta vacio");
+        if (i < 0 || i >= inventory.size())
+            throw new IndexOutOfBoundsException("Indice " + i + " fuera de los limites. Tamaño del inventario: " + inventory.size());
+        return inventory.get(i);
     }
 
     /**

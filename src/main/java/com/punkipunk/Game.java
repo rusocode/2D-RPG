@@ -9,10 +9,6 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-import java.net.URL;
-
-import static com.punkipunk.utils.Global.*;
-
 /**
  * <p>
  * The Game class uses a Canvas and implements the Runnable interface to manage the game logic, update and render.
@@ -54,12 +50,8 @@ import static com.punkipunk.utils.Global.*;
  * Links:
  * <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/rendering.html">Passive vs. Active Rendering</a>
  * <a href="https://www.oracle.com/java/technologies/painting.html">Painting in AWT and Swing</a>
- * <p>
- * TODO You could create a package that contains all the systems, audio, events, etc. for better organization
  */
 
-// TODO Reformatear archivo Ctrl+Alt+Shift+L
-// TODO Optimizar todas la importaciones Ctrl+Alt+O aunque parece que al utilizarr Ctrl+Shift+F lo hace tambien
 public class Game {
 
     private final Scene scene;
@@ -67,9 +59,7 @@ public class Game {
     private final Canvas canvas;
     private final GraphicsContext context;
     public System system;
-    public int xOffset = WINDOW_WIDTH / 2 - (tile / 2);
-    public int yOffset = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
-    private boolean running; // TODO Realmente es necesario?
+    private boolean running;
 
     public Game(Scene scene, GameController gameController, Canvas canvas, GraphicsContext context) {
         this.scene = scene;
@@ -82,6 +72,17 @@ public class Game {
         if (running) return;
         running = true;
         new GameLoop(this::tick).start();
+    }
+
+    public void reset(boolean fullReset) {
+        system.reset(fullReset);
+    }
+
+    public void setup() {
+        system = System.createDefault(this);
+        system.initialize();
+        system.audio.playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
+        gameController.initialize(this);
     }
 
     /**
@@ -105,45 +106,8 @@ public class Game {
         system.renderer.render(context);
     }
 
-    /**
-     * Reset the game.
-     *
-     * @param fullReset true to fully reset; false otherwise.
-     */
-    public void reset(boolean fullReset) {
-        system.reset(fullReset);
-        if (fullReset) playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
-        else playAmbient(Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
-        // playMusic(fullReset ? Assets.getAudio(AudioAssets.MUSIC_MAIN) : Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
-    }
-
-    public void setup() {
-        gameController.setGame(this);
-    }
-
-    // TODO tendrian que moverse a su sistema
-    public void playMusic(URL url) {
-        system.music.stop(); // Stop the previous clip
-        system.music.play(url);
-        system.music.loop();
-    }
-
-    public void playAmbient(URL url) {
-        system.ambient.stop();
-        system.ambient.play(url);
-        system.ambient.loop();
-    }
-
-    public void playSound(URL url) {
-        system.sound.play(url);
-    }
-
-    public void createSystem() {
-        system = System.createDefault(this);
-    }
-
-    public void initializeSystem() {
-        system.initialize();
+    public GraphicsContext getContext() {
+        return context;
     }
 
     public Scene getScene() {

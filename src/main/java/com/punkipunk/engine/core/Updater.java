@@ -21,11 +21,11 @@ public class Updater implements Updatable {
     }
 
     private void updateUI() {
-        updateStats();
+        updateStats(); // TODO Hace falta llamar a cada rato a esto?
     }
 
     private void updateStats() {
-        game.getGameController().getStatsViewController().update(game.system.renderer.world.entities.player.stats);
+        game.getGameController().getStatsViewController().update(game.system.world.entities.player.stats);
     }
 
 }

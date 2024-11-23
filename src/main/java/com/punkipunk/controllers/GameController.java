@@ -1,8 +1,11 @@
 package com.punkipunk.controllers;
 
 import com.punkipunk.Game;
-import com.punkipunk.managers.ViewManager;
-import com.punkipunk.utils.ViewState;
+import com.punkipunk.assets.Assets;
+import com.punkipunk.assets.AudioAssets;
+import com.punkipunk.scene.SceneDirector;
+import com.punkipunk.scene.ViewState;
+import com.punkipunk.scene.ViewToggle;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -26,6 +29,8 @@ import static com.punkipunk.utils.Global.WINDOW_WIDTH;
 
 public class GameController implements Initializable {
 
+    private final SceneDirector sceneManager = SceneDirector.getInstance();
+
     @FXML
     private StackPane root; // @FXML crea una conexion entre el elemento en el archivo FXML y la variable en el controlador
     @FXML
@@ -36,6 +41,8 @@ public class GameController implements Initializable {
     private VBox optionsView;
     @FXML
     private VBox controlsView;
+    @FXML
+    private VBox inventoryView;
     /**
      * <p>
      * Si el controlador de StatsView es null se debe a un problema comun cuando se usa fx:include. Para obtener el controlador
@@ -48,20 +55,34 @@ public class GameController implements Initializable {
     private OptionsController optionsViewController;
     @FXML
     private ControlsController controlsViewController;
+    @FXML
+    private InventoryController inventoryViewController;
 
     private Game game;
-    private ViewManager viewManager;
-
+    private ViewToggle viewToggle;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        viewManager = new ViewManager(statsView, optionsView, controlsView);
+        viewToggle = new ViewToggle(statsView, optionsView, controlsView, inventoryView);
         statsViewController.setGameController(this);
         optionsViewController.setGameController(this);
         controlsViewController.setGameController(this);
+        inventoryViewController.setGameController(this);
         canvas.setWidth(WINDOW_WIDTH);
         canvas.setHeight(WINDOW_HEIGHT);
         configureButtons(root);
+    }
+
+    /**
+     * Inicializa el controlador.
+     *
+     * @param game game.
+     */
+    public void initialize(Game game) {
+        this.game = game;
+        // TODO Es raro que se establescan los audios desde aca, aunque es necesario hacerlo antes de inicializar el controlodar del juego para evitar un NPE
+        optionsViewController.setAudioSystems(game.system.audio.getMusic(), game.system.audio.getAmbient(), game.system.audio.getSound());
+        inventoryViewController.initialize(game.system.world.entities.player);
     }
 
     /**
@@ -83,7 +104,7 @@ public class GameController implements Initializable {
                  * clic y luego ejecuta el manejador original si existia uno. Esto preserva cualquier funcionalidad que el Label
                  * ya tuviera. */
                 label.setOnMouseClicked(event -> {
-                    game.system.audioManager.playClickSound();
+                    game.system.audio.playSound(Assets.getAudio(AudioAssets.CLICK2));
                     if (originalHandler != null) originalHandler.handle(event); // Si habia un handler original, lo ejecuta
                 });
             }
@@ -96,31 +117,40 @@ public class GameController implements Initializable {
     }
 
     public void toggleStatsView() {
-        viewManager.toggleView(ViewState.STATS);
+        viewToggle.toggleView(ViewState.STATS);
     }
 
     public void toggleOptionsView() {
-        viewManager.toggleView(ViewState.OPTIONS);
+        viewToggle.toggleView(ViewState.OPTIONS);
     }
 
     public void toggleControlsView() {
-        viewManager.toggleView(ViewState.CONTROLS);
+        viewToggle.toggleView(ViewState.CONTROLS);
+    }
+
+    public void toggleInventoryView() {
+        viewToggle.toggleView(ViewState.INVENTORY);
     }
 
     public void saveGame() {
         game.system.file.saveData();
     }
 
+    public void quitToMainMenu() {
+        sceneManager.switchScene(sceneManager.getMainScene());
+        game.system.audio.stop();
+    }
+
     public Canvas getCanvas() {
         return canvas;
     }
 
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
     public StatsController getStatsViewController() {
         return statsViewController;
+    }
+
+    public InventoryController getInventoryViewController() {
+        return inventoryViewController;
     }
 
 }

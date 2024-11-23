@@ -81,7 +81,7 @@ public class Player extends Mob {
         if (drawing) {
             // game.systems.ui.renderHpBar(this);
             // game.systems.ui.renderManaBar(this);
-            if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), game.xOffset, game.yOffset);
+            if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), X_OFFSET, Y_OFFSET);
             else getCurrentItemFrame(g2);
         }
         if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
@@ -177,13 +177,13 @@ public class Player extends Mob {
             hitbox.setHeight(attackbox.getHeight());
 
             // Check the collision with the mob using the position and size of the updated hitbox, that is, with the attackbox
-            int mobIndex = game.system.collision.checkEntity(this, world.entities.mobs);
+            int mobIndex = game.system.collisionChecker.checkEntity(this, world.entities.mobs);
             world.entities.player.hitMob(mobIndex, this, weapon.stats.knockbackValue, stats.attack);
 
-            int interactiveIndex = game.system.collision.checkEntity(this, world.entities.interactives);
+            int interactiveIndex = game.system.collisionChecker.checkEntity(this, world.entities.interactives);
             world.entities.player.hitInteractive(interactiveIndex);
 
-            int projectileIndex = game.system.collision.checkEntity(this, world.entities.projectiles);
+            int projectileIndex = game.system.collisionChecker.checkEntity(this, world.entities.projectiles);
             world.entities.player.hitProjectile(projectileIndex);
 
             // After verifying the collision, reset the original data
@@ -204,8 +204,8 @@ public class Player extends Mob {
      */
     private void checkAttack() {
         if (game.system.keyboard.isKeyPressed(Key.ENTER) && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
-            if (weapon.type == Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.SWING_WEAPON));
-            if (weapon.type != Type.SWORD) game.playSound(Assets.getAudio(AudioAssets.SWING_AXE));
+            if (weapon.type == Type.SWORD) game.system.audio.playSound(Assets.getAudio(AudioAssets.SWING_WEAPON));
+            if (weapon.type != Type.SWORD) game.system.audio.playSound(Assets.getAudio(AudioAssets.SWING_AXE));
             flags.hitting = true;
             timer.attackCounter = 0;
         }
@@ -219,7 +219,7 @@ public class Player extends Mob {
     private void checkShoot() {
         if (game.system.keyboard.isKeyPressed(Key.SHOOT) && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
-            game.playSound(projectile.sound);
+            game.system.audio.playSound(projectile.sound);
             projectile.set(pos.x, pos.y, direction, true, this);
             // Check vacancy to add the projectile
             for (int i = 0; i < world.entities.projectiles[1].length; i++) {
@@ -265,7 +265,7 @@ public class Player extends Mob {
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
             if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
-                game.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
+                game.system.audio.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
                 int damage = Math.max(mob.stats.attack - stats.defense, 1);
                 stats.decreaseHp(damage);
                 flags.invincible = true;
@@ -293,8 +293,8 @@ public class Player extends Mob {
                 mob.stats.decreaseHp(damage);
                 game.system.ui.addMessageToConsole(damage + " damage!");
                 if (mob.stats.hp > 0) {
-                    game.playSound(mob.soundHit);
-                    if (!(mob instanceof Slime)) game.playSound(Assets.getAudio(AudioAssets.MOB_HIT));
+                    game.system.audio.playSound(mob.soundHit);
+                    if (!(mob instanceof Slime)) game.system.audio.playSound(Assets.getAudio(AudioAssets.MOB_HIT));
                 }
 
                 mob.flags.invincible = true;
@@ -304,8 +304,8 @@ public class Player extends Mob {
                 // TODO No deberia ganar exp en cada golpe al mob o solo cuando lo mata?
                 // TODO Should there be a method?
                 if (mob.stats.hp <= 0) {
-                    game.playSound(Assets.getAudio(AudioAssets.MOB_DEATH));
-                    if (!(mob instanceof Slime || mob instanceof RedSlime)) game.playSound(mob.soundDeath);
+                    game.system.audio.playSound(Assets.getAudio(AudioAssets.MOB_DEATH));
+                    if (!(mob instanceof Slime || mob instanceof RedSlime)) game.system.audio.playSound(mob.soundDeath);
                     mob.flags.dead = true;
                     game.system.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
                     game.system.ui.addMessageToConsole("Exp + " + mob.stats.exp);
@@ -317,7 +317,7 @@ public class Player extends Mob {
                         for (int j = 0; j < world.entities.items[1].length; j++) {
                             if (world.entities.items[world.map.num][j] != null && world.entities.items[world.map.num][j].stats.name.equals(DoorIron.NAME)) {
                                 world.entities.items[world.map.num][j] = null;
-                                game.playSound(Assets.getAudio(AudioAssets.DOOR_IRON_OPENING));
+                                game.system.audio.playSound(Assets.getAudio(AudioAssets.DOOR_IRON_OPENING));
                             }
                         }
                     }
@@ -357,7 +357,7 @@ public class Player extends Mob {
             Projectile projectile = world.entities.projectiles[world.map.num][i];
             // Avoid damaging the projectile itself
             if (projectile != this.projectile) {
-                game.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
+                game.system.audio.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
                 projectile.flags.alive = false;
                 generateParticle(projectile, projectile);
             }
@@ -377,7 +377,7 @@ public class Player extends Mob {
          * several times (for example, killing a mob that gives a lot of exp). Therefore, raise the lvl as long as the
          * exp is greater than the exp of the next lvl. */
         while (stats.exp >= stats.nextExp) {
-            game.playSound(Assets.getAudio(AudioAssets.LEVEL_UP));
+            game.system.audio.playSound(Assets.getAudio(AudioAssets.LEVEL_UP));
             character.upStats(this);
             stats.attack = getAttack();
             stats.defense = getDefense();
@@ -394,7 +394,7 @@ public class Player extends Mob {
             Item item = world.entities.items[world.map.num][i];
             if (game.system.keyboard.isKeyPressed(Key.PICKUP) && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(world.entities.player);
-                else if (inventory.canPickup(item)) game.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
+                else if (inventory.canPickup(item)) game.system.audio.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
                 else {
                     game.system.ui.addMessageToConsole("You cannot carry any more!");
                     return;
@@ -411,11 +411,11 @@ public class Player extends Mob {
     @Override
     public void checkCollisions() {
         flags.colliding = false;
-        if (!game.system.keyboard.isKeyToggled(Key.TEST)) game.system.collision.checkTile(this);
-        pickup(game.system.collision.checkItem(this));
-        interactNpc(game.system.collision.checkEntity(this, world.entities.mobs));
-        hurt(game.system.collision.checkEntity(this, world.entities.mobs));
-        setCurrentInteractive(game.system.collision.checkEntity(this, world.entities.interactives));
+        if (!game.system.keyboard.isKeyToggled(Key.TEST)) game.system.collisionChecker.checkTile(this);
+        pickup(game.system.collisionChecker.checkItem(this));
+        interactNpc(game.system.collisionChecker.checkEntity(this, world.entities.mobs));
+        hurt(game.system.collisionChecker.checkEntity(this, world.entities.mobs));
+        setCurrentInteractive(game.system.collisionChecker.checkEntity(this, world.entities.interactives));
         // game.systems.collision.checkEntity(this, world.entities.interactives);
         game.system.event.check(this);
     }
@@ -425,33 +425,33 @@ public class Player extends Mob {
     }
 
     private void die() {
-        game.playSound(Assets.getAudio(AudioAssets.PLAYER_DEATH));
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.PLAYER_DEATH));
         State.setState(State.GAME_OVER);
         game.system.ui.command = -1;
-        game.system.music.stop();
+        game.system.audio.stop();
     }
 
     private void getCurrentItemFrame(GraphicsContext g2) {
         switch (direction) {
             case DOWN -> {
                 currentFrame = down.getFirstFrame();
-                g2.drawImage(sheet.down[1], game.xOffset, game.yOffset);
-                g2.drawImage(sheet.weapon[0], game.xOffset, game.yOffset + 34);
+                g2.drawImage(sheet.down[1], X_OFFSET, Y_OFFSET);
+                g2.drawImage(sheet.weapon[0], X_OFFSET, Y_OFFSET + 34);
             }
             case UP -> {
                 currentFrame = up.getFirstFrame();
-                g2.drawImage(sheet.up[2], game.xOffset, game.yOffset);
-                g2.drawImage(sheet.weapon[1], game.xOffset + 13, game.yOffset + 17);
+                g2.drawImage(sheet.up[2], X_OFFSET, Y_OFFSET);
+                g2.drawImage(sheet.weapon[1], X_OFFSET + 13, Y_OFFSET + 17);
             }
             case LEFT -> {
                 currentFrame = left.getFirstFrame();
-                g2.drawImage(sheet.left[2], game.xOffset, game.yOffset);
-                g2.drawImage(sheet.weapon[2], game.xOffset - 7, game.yOffset + 26);
+                g2.drawImage(sheet.left[2], X_OFFSET, Y_OFFSET);
+                g2.drawImage(sheet.weapon[2], X_OFFSET - 7, Y_OFFSET + 26);
             }
             case RIGHT -> {
                 currentFrame = right.getFirstFrame();
-                g2.drawImage(sheet.right[4], game.xOffset, game.yOffset);
-                g2.drawImage(sheet.weapon[3], game.xOffset + 15, game.yOffset + 28);
+                g2.drawImage(sheet.right[4], X_OFFSET, Y_OFFSET);
+                g2.drawImage(sheet.weapon[3], X_OFFSET + 15, Y_OFFSET + 28);
             }
         }
     }
@@ -523,7 +523,7 @@ public class Player extends Mob {
         gc.strokeRect(getScreenX(), getScreenY(), sheet.frame.getWidth(), sheet.frame.getHeight());
 
         // Hitbox
-        gc.setStroke(Color.GREEN);
+        gc.setStroke(Color.YELLOW);
         gc.strokeRect(getScreenX() + hitbox.getX(), getScreenY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
 
         // Attackbox

@@ -33,7 +33,7 @@ public class Trader extends Mob {
 
     @Override
     public void dialogue() {
-        game.playSound(Assets.getAudio(AudioAssets.TRADE_OPENING));
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.TRADE_OPENING));
         dialogue.startDialogue(State.TRADE, this, 0);
     }
 

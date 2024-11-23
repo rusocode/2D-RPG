@@ -1,21 +1,17 @@
-package com.punkipunk.managers;
+package com.punkipunk.scene;
 
 import com.punkipunk.Game;
 import com.punkipunk.GameBuilder;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.controllers.GameController;
-import com.punkipunk.loaders.GameViewLoader;
-import com.punkipunk.loaders.MainViewLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import static com.punkipunk.utils.Global.WINDOW_HEIGHT;
 import static com.punkipunk.utils.Global.WINDOW_WIDTH;
 
-public class SceneManager {
+public class SceneDirector {
 
-    private static SceneManager instance;
+    private static SceneDirector instance;
 
     private Stage stage;
     private Scene mainScene;
@@ -23,11 +19,11 @@ public class SceneManager {
 
     private GameController gameController;
 
-    private SceneManager() {
+    private SceneDirector() {
     }
 
-    public static SceneManager getInstance() {
-        if (instance == null) instance = new SceneManager();
+    public static SceneDirector getInstance() {
+        if (instance == null) instance = new SceneDirector();
         return instance;
     }
 
@@ -57,11 +53,7 @@ public class SceneManager {
                 .withFont("/font/BlackPearl.ttf", 18)
                 .withRenderingComponents(gameController)
                 .build();
-        // Configura el juego una vez creado, obviamente!
-        game.createSystem();
-        game.initializeSystem();
-        game.playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
-        game.setup();
+        game.setup(); // Configura el juego una vez creado, obviamente!
         return game;
     }
 

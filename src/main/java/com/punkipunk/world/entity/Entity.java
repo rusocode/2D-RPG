@@ -7,7 +7,6 @@ import com.punkipunk.Inventory;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.gfx.Animation;
-import com.punkipunk.gfx.Screen;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.physics.Mechanics;
@@ -34,7 +33,6 @@ public abstract class Entity {
     public Position pos = new Position(); // TODO Podria ir en World
     public Stats stats = new Stats();
     public Flags flags = new Flags();
-    public Screen screen = new Screen();
     public SpriteSheet sheet = new SpriteSheet();
     public Timer timer = new Timer();
     public Mechanics mechanics = new Mechanics();
@@ -190,7 +188,7 @@ public abstract class Entity {
             hitbox.setWidth(attackbox.getWidth());
             hitbox.setHeight(attackbox.getHeight());
 
-            hitPlayer(game.system.collision.checkPlayer(this), stats.attack);
+            hitPlayer(game.system.collisionChecker.checkPlayer(this), stats.attack);
 
             pos.x = currentX;
             pos.y = currentY;
@@ -232,7 +230,7 @@ public abstract class Entity {
     public void hitPlayer(boolean contact, int attack) {
         // If the entity is hostile and makes contact with the player who is not invincible
         if (type == Type.HOSTILE && contact && !world.entities.player.flags.invincible) {
-            game.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
+            game.system.audio.playSound(Assets.getAudio(AudioAssets.PLAYER_DAMAGE));
             // Subtract the player's defense from the mob's attack to calculate fair damage
             int damage = Math.max(attack - world.entities.player.stats.defense, 1);
             world.entities.player.stats.decreaseHp(damage);
@@ -245,11 +243,11 @@ public abstract class Entity {
      */
     public void checkCollisions() {
         flags.colliding = false;
-        game.system.collision.checkTile(this);
-        game.system.collision.checkItem(this);
-        game.system.collision.checkEntity(this, world.entities.mobs);
-        game.system.collision.checkEntity(this, world.entities.interactives);
-        hitPlayer(game.system.collision.checkPlayer(this), stats.attack);
+        game.system.collisionChecker.checkTile(this);
+        game.system.collisionChecker.checkItem(this);
+        game.system.collisionChecker.checkEntity(this, world.entities.mobs);
+        game.system.collisionChecker.checkEntity(this, world.entities.interactives);
+        hitPlayer(game.system.collisionChecker.checkPlayer(this), stats.attack);
     }
 
     /**
@@ -265,18 +263,18 @@ public abstract class Entity {
          * (or the center?) is a lot with respect to the view of the player on the screen. Therefore, this vision is
          * increased by multiplying the bossArea. */
         int bossArea = 5;
-        return pos.x + tile * bossArea > world.entities.player.pos.x - world.entities.player.game.xOffset &&
-                pos.x - tile < world.entities.player.pos.x + world.entities.player.game.xOffset &&
-                pos.y + tile * bossArea > world.entities.player.pos.y - world.entities.player.game.yOffset &&
-                pos.y - tile < world.entities.player.pos.y + world.entities.player.game.yOffset;
+        return pos.x + tile * bossArea > world.entities.player.pos.x - X_OFFSET &&
+                pos.x - tile < world.entities.player.pos.x + X_OFFSET &&
+                pos.y + tile * bossArea > world.entities.player.pos.y - Y_OFFSET &&
+                pos.y - tile < world.entities.player.pos.y + Y_OFFSET;
     }
 
     public int getScreenX() {
-        return pos.x - world.entities.player.pos.x + world.entities.player.game.xOffset;
+        return pos.x - world.entities.player.pos.x + X_OFFSET;
     }
 
     public int getScreenY() {
-        return pos.y - world.entities.player.pos.y + world.entities.player.game.yOffset;
+        return pos.y - world.entities.player.pos.y + Y_OFFSET;
     }
 
     /**
@@ -288,7 +286,7 @@ public abstract class Entity {
         gc.setLineWidth(1);
         gc.strokeRect(getScreenX(), getScreenY(), sheet.frame.getWidth(), sheet.frame.getHeight());
         // Hitbox
-        gc.setStroke(Color.GREEN);
+        gc.setStroke(Color.YELLOW);
         gc.strokeRect(getScreenX() + hitbox.getX(), getScreenY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
         // Attackbox
         if (flags.hitting) {

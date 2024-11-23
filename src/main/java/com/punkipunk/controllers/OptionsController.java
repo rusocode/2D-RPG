@@ -1,7 +1,7 @@
 package com.punkipunk.controllers;
 
 import com.punkipunk.audio.Audio;
-import com.punkipunk.managers.SceneManager;
+import com.punkipunk.scene.SceneDirector;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -15,8 +15,6 @@ import java.util.ResourceBundle;
  */
 
 public class OptionsController implements Initializable {
-
-    private final SceneManager sceneManager = SceneManager.getInstance();
 
     @FXML
     private Slider musicSlider;
@@ -38,13 +36,20 @@ public class OptionsController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         closeButton.setOnMouseClicked(mouseEvent -> gameController.toggleOptionsView());
         controlsButton.setOnMouseClicked(mouseEvent -> gameController.toggleControlsView());
-        quitToMainMenuButton.setOnMouseClicked(mouseEvent -> sceneManager.switchScene(sceneManager.getMainScene()));
-        setupSliders();
+        quitToMainMenuButton.setOnMouseClicked(mouseEvent -> gameController.quitToMainMenu());
+        setupVolumeControls();
     }
 
     @FXML
     public void handleSaveGameClicked() {
         gameController.saveGame();
+    }
+
+    public void setAudioSystems(Audio music, Audio ambient, Audio sound) {
+        this.music = music;
+        this.ambient = ambient;
+        this.sound = sound;
+        updateSliderValues(); // Actualizar los sliders con los valores actuales
     }
 
     /**
@@ -57,7 +62,7 @@ public class OptionsController implements Initializable {
     }
 
     /**
-     * Configura un "listener" (escuchador) para los cambios de valor en un slider que controla el volumen del audio.
+     * Configura un listener (escuchador) para los cambios de valor en un slider que controla el volumen del audio.
      * <p>
      * La linea {@code musicSlider.valueProperty().addListener()} añade un listener a la propiedad de valor del slider.
      * <p>
@@ -68,12 +73,13 @@ public class OptionsController implements Initializable {
      * <li>{@code newValue}: El nuevo valor del slider despues del cambio.
      * </ul>
      */
-    private void setupSliders() {
+    private void setupVolumeControls() {
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             // Actualiza la propiedad volumeScale del objeto musica con el nuevo valor del slider
             music.volumeScale = newValue.intValue();
             // Llama al metodo checkVolume() para aplicar los cambios de volumen
             music.checkVolume();
+
         });
 
         ambientSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -85,13 +91,6 @@ public class OptionsController implements Initializable {
             sound.volumeScale = newValue.intValue();
             sound.checkVolume();
         });
-    }
-
-    public void setAudioSystems(Audio music, Audio ambient, Audio sound) {
-        this.music = music;
-        this.ambient = ambient;
-        this.sound = sound;
-        updateSliderValues(); // Actualizar los sliders con los valores actuales
     }
 
     /**

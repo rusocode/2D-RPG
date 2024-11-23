@@ -58,7 +58,7 @@ public class BurstOfFire extends Projectile {
 
         // The spell stops living (alive = false) when it collides with a mob or when it reaches the last frame
 
-        int mobIndex = game.system.collision.checkEntity(this, world.entities.mobs);
+        int mobIndex = game.system.collisionChecker.checkEntity(this, world.entities.mobs);
         if (mobIndex != -1) {
             Mob mob = world.entities.mobs[world.map.num][mobIndex];
             if (!mob.flags.invincible && mob.type != Type.NPC) {

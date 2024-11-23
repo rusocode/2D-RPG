@@ -26,7 +26,7 @@ public class Chicken extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        game.playSound(Assets.getAudio(AudioAssets.EAT));
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.EAT));
         world.entities.player.stats.hp = world.entities.player.stats.maxHp;
         world.entities.player.stats.mana = world.entities.player.stats.maxMana;
         return true;

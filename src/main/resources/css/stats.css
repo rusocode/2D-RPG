@@ -1,9 +1,8 @@
-.panel {
+.container {
     -fx-background-color: rgba(30, 30, 30, 0.8);
-    -fx-padding: 10px; /* Espacio interno */
+    -fx-padding: 10px;
     /* -fx-spacing: 10px; /* Espacio entre elementos */
-    /* El ancho maximo se respeta porque no interfiere con la disposicion vertical natural del VBox padre */
-    -fx-max-width: 200px;
+    -fx-max-width: 200px; /* El ancho maximo se respeta porque no interfiere con la disposicion vertical natural del VBox padre */
     /* No hace falta especificar la altura maxima ya que el panel crece verticalmente tanto como sea necesario (debido
      * al contenedor VBox padre), ya sea sumando la cantidad de componentes, el espaciado entre elementos, espacio
      * interno, etc. */
@@ -22,23 +21,23 @@
     /* -fx-alignment: center; /* Se usa para alinear el contenido dentro del Label mismo, no para posicionar el Label dentro de su contenedor padre (HBox en este caso) */
 }
 
-#title {
+.title {
     -fx-font-size: 22px;
     -fx-font-family: 'BlackPearl';
 }
 
 /* Selecciona especificamente el nodo de texto dentro del Label con id title */
-#title .text {
+.title .text {
     /* Solo activa el anti-aliasing para la fuente del titulo ya que esta presenta bordes pronunciados y los demas
     * labels usan la fuente del sistema, por lo tanto le daria un aspecto borroso. */
     -fx-font-smoothing-type: gray;
 }
 
-#closeButton {
+.close-button {
     -fx-font-size: 25px;
 }
 
-#closeButton:hover {
+.close-button:hover {
     -fx-text-fill: #ff6b6b;
 }
 

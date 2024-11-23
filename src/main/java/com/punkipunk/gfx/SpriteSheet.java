@@ -17,7 +17,7 @@ public class SpriteSheet {
     public Image[] down, up, left, right; // Player with more than one frame for each direction
     public Image[] weapon; // Item with a frame for each direction
     // Represents the first frame of each entity
-    public Image frame;
+    public Image frame; // TODO Cambiar nombre
     // SpriteSheet
     private Image image;
 

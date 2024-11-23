@@ -22,8 +22,8 @@ public class TileManager {
 
         // TODO It could be calculated from a Camera class
         // Calculate the offsets
-        int xOffset = world.entities.player.pos.x - world.entities.player.game.xOffset;
-        int yOffset = world.entities.player.pos.y - world.entities.player.game.yOffset;
+        int xOffset = world.entities.player.pos.x - X_OFFSET;
+        int yOffset = world.entities.player.pos.y - Y_OFFSET;
 
         // Calculates the tiles that are within the camera view
         int yStart = Math.max(0, yOffset / tile);

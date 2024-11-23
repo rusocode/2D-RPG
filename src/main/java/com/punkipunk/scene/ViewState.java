@@ -1,4 +1,4 @@
-package com.punkipunk.utils;
+package com.punkipunk.scene;
 
 /**
  * <p>
@@ -22,6 +22,11 @@ public enum ViewState {
      * Options view is displayed.
      */
     OPTIONS,
+
+    /**
+     * Inventory view is displayed.
+     */
+    INVENTORY,
 
     /**
      * Controls view is displayed.

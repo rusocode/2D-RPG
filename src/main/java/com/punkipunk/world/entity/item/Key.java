@@ -37,7 +37,7 @@ public class Key extends Item {
         // If the entity detects a door, then it can use the key
         int i = detect(entity, world.entities.items, Door.NAME);
         if (i != -1) {
-            game.playSound(Assets.getAudio(AudioAssets.DOOR_OPENING));
+            game.system.audio.playSound(Assets.getAudio(AudioAssets.DOOR_OPENING));
             world.entities.items[world.map.num][i] = null;
             return true;
         }

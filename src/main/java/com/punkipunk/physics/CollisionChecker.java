@@ -12,11 +12,11 @@ import static com.punkipunk.utils.Global.tile;
  * entity. But in the case of the attackbox, a collision is only generated when the limits of both touch.
  */
 
-public class Collision {
+public class CollisionChecker {
 
     private final World world;
 
-    public Collision(World world) {
+    public CollisionChecker(World world) {
         this.world = world;
     }
 

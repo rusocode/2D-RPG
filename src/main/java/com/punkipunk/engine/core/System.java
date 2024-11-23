@@ -4,11 +4,12 @@ import com.punkipunk.Game;
 import com.punkipunk.Minimap;
 import com.punkipunk.UI;
 import com.punkipunk.ai.AStar;
-import com.punkipunk.audio.Audio;
-import com.punkipunk.audio.AudioManager;
-import com.punkipunk.input.keyboard.KeyboardHandler;
+import com.punkipunk.assets.Assets;
+import com.punkipunk.assets.AudioAssets;
+import com.punkipunk.audio.AudioController;
+import com.punkipunk.input.keyboard.Keyboard;
 import com.punkipunk.io.File;
-import com.punkipunk.physics.Collision;
+import com.punkipunk.physics.CollisionChecker;
 import com.punkipunk.physics.Event;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.item.ItemGenerator;
@@ -35,49 +36,30 @@ import com.punkipunk.world.entity.item.ItemGenerator;
 
 public class System {
 
-    // Input Systems
-    public final KeyboardHandler keyboard;
-
-    // Core Systems
     public final World world;
-    public final Collision collision;
-    public final AStar aStar;
-
-    // UI Systems
     public final UI ui;
     public final Minimap minimap;
-
-    // Game Systems
+    public final Keyboard keyboard;
+    public final CollisionChecker collisionChecker;
+    public final AStar aStar;
     public final Event event;
     public final ItemGenerator itemGenerator;
-
-    // Audio Systems
-    public final Audio music;
-    public final Audio ambient;
-    public final Audio sound;
-    public final AudioManager audioManager;
-
-    // File System
+    public final AudioController audio;
     public final File file;
-
-    // Game Loop Systems
     public final Updater updater;
     public final Renderer renderer;
     public final OldGameLoop oldGameLoop;
 
     private System(Builder builder) {
-        this.keyboard = builder.keyboard;
         this.world = builder.world;
-        this.collision = builder.collision;
-        this.aStar = builder.aStar;
         this.ui = builder.ui;
         this.minimap = builder.minimap;
+        this.keyboard = builder.keyboard;
+        this.collisionChecker = builder.collisionChecker;
+        this.aStar = builder.aStar;
         this.event = builder.event;
         this.itemGenerator = builder.itemGenerator;
-        this.music = builder.music;
-        this.ambient = builder.ambient;
-        this.sound = builder.sound;
-        this.audioManager = builder.audioManager;
+        this.audio = builder.audio;
         this.file = builder.file;
         this.updater = builder.updater;
         this.renderer = builder.renderer;
@@ -94,11 +76,11 @@ public class System {
         return new Builder(game)
                 .withUI()
                 .withMinimap()
-                .withCollision()
+                .withKeyboard()
+                .withCollisionChecker()
                 .withAStar()
                 .withEvent()
                 .withItemGenerator()
-                .withInputHanlder()
                 .withAudio()
                 .withFile()
                 .withUpdater()
@@ -110,7 +92,6 @@ public class System {
     public void initialize() {
         if (file != null) file.load();
         if (minimap != null) minimap.create();
-        if (event != null) event.create();
     }
 
     public void reset(boolean fullReset) {
@@ -119,7 +100,9 @@ public class System {
         world.entities.factory.createMobs();
         world.entities.removeTempEntities();
         world.entities.player.bossBattleOn = false;
+        audio.playAmbient(Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
         if (fullReset) {
+            audio.playMusic(Assets.getAudio(AudioAssets.MUSIC_MAIN));
             world.entities.factory.createEntities();
             world.environment.lighting.resetDay();
             keyboard.resetToggledKeys();
@@ -129,18 +112,14 @@ public class System {
     public static class Builder {
         private final Game game;
         private final World world;
-        // All systems are private in the builder
-        private KeyboardHandler keyboard;
-        private Collision collision;
-        private AStar aStar;
         private UI ui;
         private Minimap minimap;
+        private Keyboard keyboard;
+        private CollisionChecker collisionChecker;
+        private AStar aStar;
         private Event event;
         private ItemGenerator itemGenerator;
-        private Audio music;
-        private Audio ambient;
-        private Audio sound;
-        private AudioManager audioManager;
+        private AudioController audio;
         private File file;
         private Updater updater;
         private Renderer renderer;
@@ -161,8 +140,13 @@ public class System {
             return this;
         }
 
-        public Builder withCollision() { // TODO Deberia llamarse Collider?
-            this.collision = new Collision(world);
+        public Builder withKeyboard() {
+            this.keyboard = new Keyboard(game);
+            return this;
+        }
+
+        public Builder withCollisionChecker() {
+            this.collisionChecker = new CollisionChecker(world);
             return this;
         }
 
@@ -171,31 +155,22 @@ public class System {
             return this;
         }
 
-        public Builder withEvent() { // TODO Deberia llamarse EventHandler?
+        public Builder withEvent() {
             this.event = new Event(game, world);
             return this;
         }
 
-        public Builder withItemGenerator() { // TODO Deberia llamarse EventHandler?
+        public Builder withItemGenerator() {
             this.itemGenerator = new ItemGenerator(game, world);
             return this;
         }
 
-        public Builder withInputHanlder() {
-            this.keyboard = new KeyboardHandler(game);
-            return this;
-        }
-
         public Builder withAudio() {
-            // TODO No es mejor mover music, ambient y sound a AudioManager?
-            this.music = new Audio();
-            this.ambient = new Audio();
-            this.sound = new Audio();
-            this.audioManager = new AudioManager(game);
+            this.audio = new AudioController(game);
             return this;
         }
 
-        public Builder withFile() { // TODO FileHandler?
+        public Builder withFile() {
             this.file = new File(game, world);
             return this;
         }

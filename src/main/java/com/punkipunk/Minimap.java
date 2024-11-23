@@ -73,8 +73,4 @@ public class Minimap {
         }
     }
 
-    public Image getMinimap(int index) {
-        return minimap[index];
-    }
-
 }

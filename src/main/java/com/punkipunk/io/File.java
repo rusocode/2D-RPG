@@ -45,9 +45,11 @@ public class File {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(config))) {
             // bw.write(game.fullScreen ? ON : OFF);
             // bw.newLine();
-            bw.write(String.valueOf(game.system.music.volumeScale));
+            bw.write(String.valueOf(game.system.audio.getMusic().volumeScale));
             bw.newLine();
-            bw.write(String.valueOf(game.system.sound.volumeScale));
+            bw.write(String.valueOf(game.system.audio.getAmbient().volumeScale));
+            bw.newLine();
+            bw.write(String.valueOf(game.system.audio.getSound().volumeScale));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -60,8 +62,9 @@ public class File {
         try (BufferedReader br = new BufferedReader(new FileReader(config))) {
             // game.fullScreen = ON.equals(br.readLine());
             // TODO Verificar null
-            game.system.music.volumeScale = Integer.parseInt(br.readLine());
-            game.system.sound.volumeScale = Integer.parseInt(br.readLine());
+            game.system.audio.getMusic().volumeScale = Integer.parseInt(br.readLine());
+            game.system.audio.getAmbient().volumeScale = Integer.parseInt(br.readLine());
+            game.system.audio.getSound().volumeScale = Integer.parseInt(br.readLine());
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error loading configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -69,6 +72,8 @@ public class File {
 
     /**
      * Save game data.
+     *
+     * TODO No guarda la posicino de los mobs
      */
     public void saveData() {
         try (ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream(data))) {
@@ -92,15 +97,15 @@ public class File {
             data.gold = world.entities.player.stats.gold;
 
             // Player inventory
-            for (int i = 0; i < world.entities.player.inventory.size(); i++) {
+            /* for (int i = 0; i < world.entities.player.inventory.size(); i++) {
                 data.names.add(world.entities.player.inventory.get(i).stats.name);
                 data.amounts.add(world.entities.player.inventory.get(i).amount);
-            }
+            } */
 
             // Player equipment
-            data.weapon = world.entities.player.inventory.getSlot(world.entities.player.weapon);
-            data.shield = world.entities.player.inventory.getSlot(world.entities.player.shield);
-            data.light = world.entities.player.inventory.getSlot(world.entities.player.light);
+            // data.weapon = world.entities.player.inventory.getSlot(world.entities.player.weapon);
+            // data.shield = world.entities.player.inventory.getSlot(world.entities.player.shield);
+            // data.light = world.entities.player.inventory.getSlot(world.entities.player.light);
 
             // Items on map
             data.itemName = new String[MAPS][world.entities.items[1].length];
@@ -135,6 +140,7 @@ public class File {
      * Load game data.
      */
     public void loadData() {
+        loadConfig();
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(data))) {
             // Reads the bytes from the input stream and deserializes them into a Data object
             Data data = (Data) input.readObject();
@@ -161,13 +167,13 @@ public class File {
             world.entities.player.stats.gold = data.gold;
 
             world.entities.player.inventory.clear();
-            for (int i = 0; i < data.names.size(); i++) {
+            /* for (int i = 0; i < data.names.size(); i++) {
                 world.entities.player.inventory.add(game.system.itemGenerator.generate(data.names.get(i)));
                 world.entities.player.inventory.get(i).amount = data.amounts.get(i);
             }
             world.entities.player.weapon = world.entities.player.inventory.get(data.weapon);
             world.entities.player.shield = world.entities.player.inventory.get(data.shield);
-            world.entities.player.light = world.entities.player.inventory.get(data.light);
+            world.entities.player.light = world.entities.player.inventory.get(data.light); */
             world.entities.player.getAttack();
             world.entities.player.getDefense();
             // world.entities.player.frame.loadWeaponFrames(world.entities.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);

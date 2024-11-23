@@ -1,7 +1,3 @@
 .view-container {
     -fx-alignment: center;
 }
-
-.label[id$="Button"] {
-    -fx-cursor: hand;
-}

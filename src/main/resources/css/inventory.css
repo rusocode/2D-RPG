@@ -1,0 +1,46 @@
+.container {
+    -fx-background-color: rgba(30, 30, 30, 0.8);
+    -fx-padding: 5px;
+    -fx-background-radius: 10px;
+}
+
+.label {
+    -fx-text-fill: white;
+}
+
+.title {
+    -fx-font-size: 22px;
+    -fx-font-family: 'BlackPearl';
+}
+
+.title .text {
+    -fx-font-smoothing-type: gray;
+}
+
+.close {
+    -fx-font-size: 18px;
+}
+
+.close:hover {
+    -fx-text-fill: #ff6b6b;
+}
+
+.inventory {
+    -fx-alignment: center;
+    -fx-pref-width: 200px;
+    -fx-padding: 10px 10px;
+    -fx-hgap: 5px; /* Espacio horizontal entre slots */
+    -fx-vgap: 5px;
+}
+
+.inventory-slot {
+    -fx-border-color: white;
+    -fx-border-width: 1px;
+}
+
+.amount {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-translate-x: 10;
+    -fx-translate-y: 10;
+}

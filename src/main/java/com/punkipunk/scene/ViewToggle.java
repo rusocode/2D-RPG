@@ -1,7 +1,7 @@
-package com.punkipunk.managers;
+package com.punkipunk.scene;
 
-import com.punkipunk.utils.ViewState;
 import javafx.scene.Node;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 
 import java.util.EnumMap;
@@ -11,15 +11,16 @@ import java.util.Map;
  * Maneja la visibilidad de las diferentes vistas.
  */
 
-public class ViewManager {
+public class ViewToggle {
 
     private final Map<ViewState, Node> views = new EnumMap<>(ViewState.class);
     private ViewState currentState = ViewState.NONE;
 
-    public ViewManager(VBox statsView, VBox optionsView, VBox controlsView) {
+    public ViewToggle(VBox statsView, VBox optionsView, VBox controlsView, VBox inventoryView) {
         views.put(ViewState.STATS, statsView);
         views.put(ViewState.OPTIONS, optionsView);
         views.put(ViewState.CONTROLS, controlsView);
+        views.put(ViewState.INVENTORY, inventoryView);
     }
 
     public void toggleView(ViewState newState) {

@@ -3,98 +3,129 @@ package com.punkipunk;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.assets.SpriteSheetAssets;
-import com.punkipunk.states.State;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.Player;
 import com.punkipunk.world.entity.Type;
+import com.punkipunk.world.entity.item.Axe;
 import com.punkipunk.world.entity.item.Item;
-import com.punkipunk.world.entity.item.Lantern;
-import com.punkipunk.world.entity.item.PotionRed;
-import com.punkipunk.world.entity.item.Tent;
+import com.punkipunk.world.entity.item.Key;
+import com.punkipunk.world.entity.item.PotionBlue;
 
 import static com.punkipunk.utils.Global.MAX_INVENTORY_SLOTS;
 
 /**
- * This class represents the additional functions of the player's inventory, such as equipping or unequipping an item, grabbing an
- * item, select an item, among others.
+ * Esta clase representa las funciones adicionales del inventario del jugador, como equipar o desequipar un objeto, agarrar un
+ * objeto, seleccionar un objeto, entre otras.
  */
 
-public class PlayerInventory extends Inventory {
+public class PlayerInventory extends GridInventory {
+
+    public static final int ROWS = 4;
+    public static final int COLS = 4;
 
     private final Game game;
     private final World world;
     private final Player player;
 
-    // Variables that the cursor uses to represent its position in the inventory
-    public int playerSlotCol, playerSlotRow, npcSlotCol, npcSlotRow;
-
     public PlayerInventory(Game game, World world, Player player) {
-        super();
+        super(ROWS, COLS);
         this.game = game;
         this.world = world;
         this.player = player;
     }
 
-    /**
-     * Initializes the player's inventory with the default items.
-     */
     public void init() {
-        clear(); // Clear the inventory in case a new game is created from the menu without closing the window
-        add(player.weapon);
-        add(player.shield);
-        add(new Lantern(game, world));
-        add(new PotionRed(game, world, 2));
-        add(new Tent(game, world));
+        clear();
+        addAt(player.weapon, 3, 3);
+        addAt(player.shield, 0, 1);
+        addAt(new PotionBlue(game, world, 1), 0, 2);
+        addAt(new Key(game, world, 1), 0, 3);
+        addAt(new Axe(game, world), 1, 0);
+        addAt(new Axe(game, world), 1, 1);
+        addAt(new Axe(game, world), 1, 2);
+        addAt(new Axe(game, world), 1, 3);
     }
 
     /**
-     * It checks if it can pick up the item and if so it adds it to the inventory.
+     * Comprueba si puede recoger el item y, si es asi, lo agrega al inventario.
      *
      * @param item item.
-     * @return true if the item can be picked up or false.
+     * @return true si el item se puede recoger o false.
      */
     public boolean canPickup(Item item) {
-        Item newItem = game.system.itemGenerator.generate(item.stats.name);
+
+        /* Comprueba si no hay espacio en el inventario y si no hay items apilables. La ultima condicion se debe a que si el
+         * inventario esta lleno, pero hay items apilables, entonces si se puede agarrar el item solo si el item que se agarra es
+         * apilable. */
+        if (size() >= MAX_INVENTORY_SLOTS && !checkIfStackableItems(item)) return false;
+
+        // Manejo de items apilables
         if (item.stackable) {
-            int i = search(item.stats.name);
-            // If it exists in inventory, then just increase the quantity
-            if (i != -1) {
-                get(i).amount += item.amount;
-                return true;
-                // If it does not exist in the inventory, add it as a new item with its respective quantity
-            } else if (size() != MAX_INVENTORY_SLOTS) {
-                add(newItem);
-                // When adding a new item, you cannot use the index of the previous item, you have to search the index from the new item
-                get(search(item.stats.name)).amount += item.amount;
-                return true;
+            // Itera los items existentes
+            for (Item existingItem : getAllItems()) {
+                // Si el item existente es igual al item actual, entonces incrementa la cantidad
+                if (existingItem.stats.name.equals(item.stats.name)) {
+                    existingItem.amount += item.amount;
+                    updateInventoryView();
+                    return true;
+                }
             }
-        } else if (size() != MAX_INVENTORY_SLOTS) {
-            add(newItem);
-            return true;
+        }
+
+        // Si no es apilable o no existe uno del mismo tipo, lo agrega al inventario
+        Item newItem = game.system.itemGenerator.generate(item.stats.name);
+        add(newItem);
+
+        /* En caso de agarrar, por ejemplo, unas pociones azules y que no esten (todavia) en el inventario, entonces ademas de
+         * crear el item, ajusta la cantidad. */
+        if (item.stackable) newItem.amount = item.amount;
+
+        updateInventoryView();
+
+        return true;
+    }
+
+    /**
+     * Comprueba si hay items apilables en el invenatario.
+     *
+     * @param currentItem item actual.
+     * @return true si hay un item apilable en el inventario.
+     */
+    private boolean checkIfStackableItems(Item currentItem) {
+        /* Comprueba si el item actual no es apilable ya que si por ejemplo agarra un Axe, entonces no tendria que agregarlo al
+         * inventario aunque haya items apilables en el inventario. */
+        if (!currentItem.stackable) return false;
+        for (Item item : getAllItems()) {
+            /* Comprueba si el item del inventario es apilable y si es igual al item actual (el que se agarra). La ultima
+             * condicion sirve evitar agarrar un item apilable que es distinto al item apilable del inventario, evitando asi un
+             * IndexOutOfBoundsException. Por ejemplo, si el item que se agarra es una pocion roja y el item del inventario es una
+             * pocion azul, entonces no lo agarra. */
+            if (item.stackable && item.stats.name.equals(currentItem.stats.name)) return true;
         }
         return false;
     }
 
-    /**
-     * Select the item.
-     */
-    public void select() {
-        int i = getSlot(playerSlotCol, playerSlotRow);
-        if (i < inventory.size()) {
-            Item item = inventory.get(i);
-            // Verifica si esta en estado de inventario para evitar equipar/consumir items mientrtas esta vendiendo
-            if (State.isState(State.INVENTORY)) {
-                if (item.type != Type.CONSUMABLE) equip(item);
-                if (item.type == Type.CONSUMABLE) consume(item, i);
-            }
+    public void select(int row, int col) {
+        Item item = get(row, col);
+        if (item != null) {
+            if (item.type == Type.CONSUMABLE) consume(item, row, col);
+            if (item.type != Type.CONSUMABLE) equip(item);
         }
     }
 
     /**
-     * Equip the item.
+     * Consume the item.
      *
      * @param item item.
      */
+    private void consume(Item item, int row, int col) {
+        if (item.use(player)) {
+            item.amount--;
+            if (item.amount <= 0) remove(row, col);
+            updateInventoryView();
+        }
+    }
+
     private void equip(Item item) {
         if (item.type == Type.AXE || item.type == Type.PICKAXE || item.type == Type.SWORD) {
             player.weapon = player.weapon == item ? null : item; // Check if the weapon is already equipped
@@ -103,9 +134,9 @@ public class PlayerInventory extends Inventory {
                 switch (player.weapon.type) {
                     case SWORD -> {
                         player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.SWORD_FRAME), 16, 16, 1);
-                        player.game.playSound(Assets.getAudio(AudioAssets.DRAW_SWORD));
+                        game.system.audio.playSound(Assets.getAudio(AudioAssets.DRAW_SWORD));
                     }
-                    // case AXE -> player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.AXE_FRAME), 16, 16, 1);
+                    case AXE -> player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.AXE_FRAME), 16, 16, 1);
                     case PICKAXE ->
                             player.sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.PICKAXE_FRAME), 16, 16, 1);
                 }
@@ -122,16 +153,11 @@ public class PlayerInventory extends Inventory {
     }
 
     /**
-     * Consume the item.
-     *
-     * @param item item.
-     * @param i    index of the item.
+     * Actualiza la vista del inventario.
      */
-    private void consume(Item item, int i) {
-        if (item.use(player)) {
-            if (item.amount > 1) item.amount--;
-            else inventory.remove(i);
-        }
+    private void updateInventoryView() {
+        if (game.getGameController().getInventoryViewController() != null)
+            game.getGameController().getInventoryViewController().updateInventory();
     }
 
 }

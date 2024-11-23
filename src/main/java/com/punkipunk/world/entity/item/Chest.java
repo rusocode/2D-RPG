@@ -31,7 +31,7 @@ public class Chest extends Item {
     @Override
     public void interact() {
         if (!opened) {
-            game.playSound(Assets.getAudio(AudioAssets.CHEST_OPENING));
+            game.system.audio.playSound(Assets.getAudio(AudioAssets.CHEST_OPENING));
             sheet.frame = sheet.item[1];
             opened = true;
             if (world.entities.player.inventory.canPickup(loot)) {

@@ -51,6 +51,6 @@ public class DryTree extends Interactive {
 
     @Override
     public void playSound() {
-        game.playSound(Assets.getAudio(AudioAssets.CUT_TREE));
+        game.system.audio.playSound(Assets.getAudio(AudioAssets.CUT_TREE));
     }
 }

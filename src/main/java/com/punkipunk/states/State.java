@@ -10,7 +10,6 @@ public enum State {
     PLAY,
     DIALOGUE,
     CUTSCENE,
-    STATS,
     INVENTORY,
     OPTION,
     GAME_OVER,
