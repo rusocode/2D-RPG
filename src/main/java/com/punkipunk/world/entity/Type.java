@@ -1,5 +1,7 @@
 package com.punkipunk.world.entity;
 
+import java.util.EnumSet;
+
 /**
  * Types of entities.
  * <p>
@@ -8,5 +10,10 @@ package com.punkipunk.world.entity;
  */
 
 public enum Type {
-    PLAYER, NPC, HOSTILE, SWORD, AXE, SHIELD, CONSUMABLE, PICKUP, OBSTACLE, LIGHT, PICKAXE
+
+    PLAYER, NPC, HOSTILE, SWORD, AXE, SHIELD, CONSUMABLE, PICKUP, OBSTACLE, LIGHT, PICKAXE;
+
+
+    public static final EnumSet<Type> WEAPON = EnumSet.of(SWORD, AXE, PICKAXE);
+
 }

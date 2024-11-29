@@ -23,7 +23,6 @@ public final class Global {
     public static final boolean FPS_UNLIMITED = false; // FIXME Al usar AnimationTimer queda obsoleto
     // Others
     public static final String VERSION = "0.0.11a";
-    public static final int MAX_INVENTORY_SLOTS = 16; // Tiene que ser igual al total de ROWS * COLS de InventoryController
     public static final int MAX_LVL = 50;
     public static final int SUBWINDOW_ALPHA = 1;
     // Number of visible tiles

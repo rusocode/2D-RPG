@@ -3,7 +3,7 @@ package com.punkipunk.world.entity;
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.Game;
-import com.punkipunk.Inventory;
+import com.punkipunk.inventory.Inventory;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.gfx.Animation;

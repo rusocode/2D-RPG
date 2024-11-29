@@ -3,7 +3,7 @@ package com.punkipunk.world.entity;
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.Game;
-import com.punkipunk.PlayerInventory;
+import com.punkipunk.inventory.PlayerInventory;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.assets.SpriteSheetAssets;
@@ -29,6 +29,8 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 import static com.punkipunk.utils.Global.*;
 
@@ -97,8 +99,8 @@ public class Player extends Mob {
         stats.init();
 
         projectile = new BurstOfFire(game, world);
-        weapon = new SwordIron(game, world);
-        shield = new ShieldWood(game, world);
+        weapon = null;
+        shield = null;
         light = null;
         stats.attack = getAttack();
         stats.defense = getDefense();
@@ -122,7 +124,7 @@ public class Player extends Mob {
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
 
-        inventory.init();
+        inventory.initializeDefaultItems();
 
         pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 20, Direction.DOWN);
     }
@@ -513,7 +515,7 @@ public class Player extends Mob {
         stats.reset(fullReset);
         timer.reset();
         flags.reset();
-        if (fullReset) inventory.init();
+        if (fullReset) inventory.initializeDefaultItems();
     }
 
     private void drawRects(GraphicsContext gc) {

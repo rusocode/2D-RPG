@@ -8,6 +8,8 @@ import java.net.URL;
 
 import static com.punkipunk.utils.Global.*;
 
+// TODO No deberia ir en el paquete controller?
+
 public class AudioController {
 
     private final Game game;

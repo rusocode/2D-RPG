@@ -14,6 +14,6 @@
         <Label fx:id="closeButton" styleClass="close" text="×" StackPane.alignment="CENTER_RIGHT" onMouseClicked="#handleCloseButtonClicked"/>
     </StackPane>
 
-    <GridPane fx:id="inventoryGrid" styleClass="inventory"/>
+    <GridPane fx:id="inventory" styleClass="inventory"/>
 
 </VBox>

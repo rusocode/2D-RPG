@@ -33,9 +33,25 @@
     -fx-vgap: 5px;
 }
 
-.inventory-slot {
-    -fx-border-color: white;
-    -fx-border-width: 1px;
+.inventory-slot.equipped {
+    /* La propiedad -fx-background-color con gradiente radial define un efecto de fondo circular. El centro del
+     * gradiente se posiciona exactamente en el punto medio del elemento, tanto horizontal como verticalmente,
+     * utilizando las coordenadas center 50% 50%. El radio se establece al 60% del tamaño total del elemento, lo que
+     * determina el alcance de la transicion de colores. La progresion cromatica comienza con un color dorado (gold) en
+     * el centro exacto, que luego transita a naranja en la mitad del radio y finalmente se desvanece a transparencia
+     * completa en el borde exterior. */
+    -fx-background-color: radial-gradient(center 50% 50%, radius 60%, gold 0%, orange 30%, transparent 100%);
+    -fx-background-radius: 13px;
+}
+
+.inventory-slot:hover {
+     /* Gradiente metalico */
+    -fx-background-color: linear-gradient(to right, rgba(192, 192, 192, 0.2), rgba(128, 128, 128, 0.2));
+    -fx-background-radius: 5px;
+}
+
+.tooltip {
+    -fx-padding: 2px;
 }
 
 .amount {
