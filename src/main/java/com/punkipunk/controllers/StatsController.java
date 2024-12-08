@@ -33,17 +33,9 @@ public class StatsController {
 
     private GameController gameController;
 
-    /**
-     * <p>
-     * De esta manera, separa la logica de inicializacion y configuracion del controlador y la logica de manejo de eventos
-     * especificos, como el clic en el boton cerrar.
-     * <p>
-     * No es necesario configurar un listener de eventos adicional en el FXML, ya que eso se manejara directamente en el metodo
-     * del controlador
-     */
     @FXML
-    public void handleCloseButtonClicked() {
-        gameController.toggleStatsView();
+    public void handleBackButtonClicked() {
+        gameController.toggleOptionsView();
     }
 
     /**

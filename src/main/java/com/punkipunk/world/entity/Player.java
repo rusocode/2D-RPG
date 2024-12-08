@@ -3,7 +3,6 @@ package com.punkipunk.world.entity;
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.Game;
-import com.punkipunk.inventory.PlayerInventory;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.assets.SpriteSheetAssets;
@@ -11,14 +10,14 @@ import com.punkipunk.classes.Character;
 import com.punkipunk.classes.Jester;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.input.keyboard.Key;
+import com.punkipunk.inventory.PlayerInventory;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.interactive.Interactive;
-import com.punkipunk.world.entity.item.DoorIron;
+import com.punkipunk.world.entity.item.IronDoor;
 import com.punkipunk.world.entity.item.Item;
-import com.punkipunk.world.entity.item.ShieldWood;
-import com.punkipunk.world.entity.item.SwordIron;
+import com.punkipunk.world.entity.item.ItemType;
 import com.punkipunk.world.entity.mob.Lizard;
 import com.punkipunk.world.entity.mob.Mob;
 import com.punkipunk.world.entity.mob.RedSlime;
@@ -29,8 +28,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-
-import javax.swing.plaf.synth.SynthOptionPaneUI;
 
 import static com.punkipunk.utils.Global.*;
 
@@ -92,13 +89,14 @@ public class Player extends Mob {
     }
 
     private void init() {
-        inventory = new PlayerInventory(game, world, this);
+        inventory = new PlayerInventory(game, world, this, 3, 9);
         dialogue = new Dialogue(game);
 
         type = Type.PLAYER;
         stats.init();
 
         projectile = new BurstOfFire(game, world);
+        // TODO No hace falta null creo
         weapon = null;
         shield = null;
         light = null;
@@ -206,8 +204,8 @@ public class Player extends Mob {
      */
     private void checkAttack() {
         if (game.system.keyboard.isKeyPressed(Key.ENTER) && !attackCanceled && timer.attackCounter == INTERVAL_WEAPON && !flags.shooting && weapon != null) {
-            if (weapon.type == Type.SWORD) game.system.audio.playSound(Assets.getAudio(AudioAssets.SWING_WEAPON));
-            if (weapon.type != Type.SWORD) game.system.audio.playSound(Assets.getAudio(AudioAssets.SWING_AXE));
+            if (weapon.itemType == ItemType.SWORD) game.system.audio.playSound(Assets.getAudio(AudioAssets.SWING_WEAPON));
+            if (weapon.itemType != ItemType.SWORD) game.system.audio.playSound(Assets.getAudio(AudioAssets.SWING_AXE));
             flags.hitting = true;
             timer.attackCounter = 0;
         }
@@ -317,7 +315,7 @@ public class Player extends Mob {
                     // TODO Verificar de otra forma y en otro lugar
                     if (mob instanceof Lizard) {
                         for (int j = 0; j < world.entities.items[1].length; j++) {
-                            if (world.entities.items[world.map.num][j] != null && world.entities.items[world.map.num][j].stats.name.equals(DoorIron.NAME)) {
+                            if (world.entities.items[world.map.num][j] != null && world.entities.items[world.map.num][j].stats.name.equals(IronDoor.NAME)) {
                                 world.entities.items[world.map.num][j] = null;
                                 game.system.audio.playSound(Assets.getAudio(AudioAssets.DOOR_IRON_OPENING));
                             }
@@ -396,7 +394,10 @@ public class Player extends Mob {
             Item item = world.entities.items[world.map.num][i];
             if (game.system.keyboard.isKeyPressed(Key.PICKUP) && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(world.entities.player);
-                else if (inventory.canPickup(item)) game.system.audio.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
+                else if (inventory.canAddItem(item)) {
+                    inventory.updateOrAddItem(item);
+                    game.system.audio.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
+                }
                 else {
                     game.system.ui.addMessageToConsole("You cannot carry any more!");
                     return;
@@ -414,7 +415,7 @@ public class Player extends Mob {
     public void checkCollisions() {
         flags.colliding = false;
         if (!game.system.keyboard.isKeyToggled(Key.TEST)) game.system.collisionChecker.checkTile(this);
-        pickup(game.system.collisionChecker.checkItem(this));
+        pickup(game.system.collisionChecker.checkItem(this)); // FIXME Se genera un pequeño lag al apretar muchas veces la P mientras camino y no hay items
         interactNpc(game.system.collisionChecker.checkEntity(this, world.entities.mobs));
         hurt(game.system.collisionChecker.checkEntity(this, world.entities.mobs));
         setCurrentInteractive(game.system.collisionChecker.checkEntity(this, world.entities.interactives));

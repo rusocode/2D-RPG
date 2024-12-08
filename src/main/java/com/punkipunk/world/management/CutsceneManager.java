@@ -4,7 +4,7 @@ import com.punkipunk.Game;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.PlayerDummy;
-import com.punkipunk.world.entity.item.DoorIron;
+import com.punkipunk.world.entity.item.IronDoor;
 import com.punkipunk.world.entity.mob.Lizard;
 
 import static com.punkipunk.utils.Global.tile;
@@ -36,7 +36,7 @@ public class CutsceneManager {
             // Look for a free space in the item array to add the iron door
             for (int i = 0; i < world.entities.items[1].length; i++) {
                 if (world.entities.items[world.map.num][i] == null) {
-                    world.entities.items[world.map.num][i] = new DoorIron(game, world, 25, 28);
+                    world.entities.items[world.map.num][i] = new IronDoor(game, world, 25, 28);
                     world.entities.items[world.map.num][i].temp = true;
                     break;
                 }

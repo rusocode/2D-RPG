@@ -1,4 +1,4 @@
-.panel {
+.container {
     -fx-alignment: center;
     -fx-spacing: 10px;
     -fx-background-image: url('../textures/background/background2.jfif');

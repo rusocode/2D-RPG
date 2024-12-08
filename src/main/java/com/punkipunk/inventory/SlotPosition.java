@@ -3,7 +3,7 @@ package com.punkipunk.inventory;
 /**
  * <p>
  * Los Record en Java (introducidos en Java 14) son un tipo especial de clase diseñada especificamente para almacenar datos
- * inmutables de manera concisa. La clase InventoryPosition es un candidato perfecto para ser un record porque:
+ * inmutables de manera concisa. La clase SlotPosition es un candidato perfecto para ser un record porque:
  * <ol>
  * <li>Solo tiene campos finales (inmutables)
  * <li>Su propocito principal es almacenar datos (row,col)
@@ -13,7 +13,7 @@ package com.punkipunk.inventory;
  * <p>
  * Por la tanto se podria simplificar a:
  * <pre>{@code
- * public record InventoryPosition(int row, int col) { }
+ * public record SlotPosition(int row, int col) { }
  * }</pre>
  * <p>
  * Este simple record automaticamente te proporciona:
@@ -36,9 +36,9 @@ package com.punkipunk.inventory;
  * El unico "inconveniente" es que si necesitas añadir logica adicional o validaciones, tendrias que hacerlo de forma explicita,
  * pero aun asi puedes hacerlo dentro del record:
  * <pre>{@code
- * public record InventoryPosition(int row, int col) {
+ * public record SlotPosition(int row, int col) {
  *     // Constructor compacto para validaciones
- *     public InventoryPosition {
+ *     public SlotPosition {
  *         if (row < 0 || col < 0) {
  *             throw new IllegalArgumentException("Row and col must be positive");
  *         }
@@ -52,6 +52,6 @@ package com.punkipunk.inventory;
  * }</pre>
  */
 
-public record InventoryPosition(int row, int col) {
+public record SlotPosition(int row, int col) {
 
 }

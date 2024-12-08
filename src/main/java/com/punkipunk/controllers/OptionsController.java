@@ -1,7 +1,6 @@
 package com.punkipunk.controllers;
 
 import com.punkipunk.audio.Audio;
-import com.punkipunk.scene.SceneDirector;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -23,7 +22,7 @@ public class OptionsController implements Initializable {
     @FXML
     private Slider soundSlider;
     @FXML
-    private Label closeButton;
+    private Label statsButton;
     @FXML
     private Label controlsButton;
     @FXML
@@ -34,7 +33,7 @@ public class OptionsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        closeButton.setOnMouseClicked(mouseEvent -> gameController.toggleOptionsView());
+        statsButton.setOnMouseClicked(mouseEvent -> gameController.toggleStatsView());
         controlsButton.setOnMouseClicked(mouseEvent -> gameController.toggleControlsView());
         quitToMainMenuButton.setOnMouseClicked(mouseEvent -> gameController.quitToMainMenu());
         setupVolumeControls();

@@ -13,6 +13,7 @@ import static com.punkipunk.utils.Global.tile;
 public class Item extends Entity {
 
     public Item loot;
+    public ItemType itemType;
     public String description;
     public int price;
     public int amount;

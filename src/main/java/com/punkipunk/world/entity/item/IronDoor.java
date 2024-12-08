@@ -12,11 +12,11 @@ import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.tile;
 
-public class DoorIron extends Item {
+public class IronDoor extends Item {
 
     public static final String NAME = "Iron Door";
 
-    public DoorIron(Game game, World world, int... pos) {
+    public IronDoor(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
         dialogue = new Dialogue(game);
         type = Type.OBSTACLE;

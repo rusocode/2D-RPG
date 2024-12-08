@@ -8,6 +8,7 @@ import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.Type;
 import com.punkipunk.world.entity.item.Item;
+import com.punkipunk.world.entity.item.ItemType;
 import com.punkipunk.world.entity.item.Stone;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,7 +27,7 @@ public class DestructibleWall extends Interactive {
     }
 
     public boolean isCorrectWeapon(Item weapon) {
-        return weapon.type == Type.PICKAXE;
+        return weapon.itemType == ItemType.PICKAXE;
     }
 
     public Color getParticleColor() {

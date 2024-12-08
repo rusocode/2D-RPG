@@ -4,55 +4,69 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.punkipunk.controllers.ControlsController"
-      stylesheets="@../css/controls.css" styleClass="panel">
+      stylesheets="@../css/controls.css" styleClass="container">
 
-    <StackPane>
-        <Label fx:id="title" text="CONTROLS"/>
-        <Label fx:id="closeButton" text="×" StackPane.alignment="CENTER_RIGHT" onMouseClicked="#handleCloseButtonClicked"/>
-    </StackPane>
-
-    <Region prefHeight="20"/>
-
-    <HBox alignment="CENTER" spacing="20">
-
-        <!-- Columna de Acciones -->
-        <VBox spacing="5">
-            <Label text="Confirm"/>
-            <Label text="Attack"/>
-            <Label text="Options"/>
-            <Label text="Move"/>
-            <Label text="Shoot"/>
-            <Label text="Pickup Item"/>
-            <Label text="Minimap"/>
-            <Label text="Inventory"/>
-            <Label text="Stats View"/>
-            <Label text="Debug"/>
-            <Label text="Test Mode"/>
-            <Label text="Hitbox"/>
-        </VBox>
-
-        <!-- Columna de Teclas -->
-        <VBox spacing="5">
-            <Label text="Enter"/>
-            <Label text="Enter"/>
-            <Label text="ESC"/>
-            <Label text="WASD"/>
-            <Label text="F"/>
-            <Label text="P"/>
-            <Label text="M"/>
-            <Label text="I"/>
-            <Label text="C"/>
-            <Label text="Q"/>
-            <Label text="T"/>
-            <Label text="H"/>
-        </VBox>
-
-    </HBox>
+    <Label styleClass="title" text="CONTROLS"/>
 
     <Region prefHeight="20"/>
 
     <HBox>
-        <Label fx:id="backButton" text="Back" styleClass="back-label" onMouseClicked="#handleBackButtonClicked"/>
+        <Label text="Confirm: "/>
+        <Label text="Enter"/>
     </HBox>
+
+    <HBox>
+        <Label text="Attack: "/>
+        <Label text="Enter"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Options: "/>
+        <Label text="ESC"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Move: "/>
+        <Label text="WASD"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Shoot: "/>
+        <Label text="F"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Pickup Item: "/>
+        <Label text="P"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Minimap: "/>
+        <Label text="M"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Inventory: "/>
+        <Label text="I"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Debug: "/>
+        <Label text="Q"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Test Mode: "/>
+        <Label text="T"/>
+    </HBox>
+
+    <HBox>
+        <Label text="Hitbox: "/>
+        <Label text="H"/>
+    </HBox>
+
+    <Region prefHeight="10"/>
+
+    <Label fx:id="backButton" text="Back" onMouseClicked="#handleBackButtonClicked"/>
 
 </VBox>

@@ -29,15 +29,12 @@ public class KeyboardState {
              * tecla podria ser tanto una tecla de alternancia como cambiar el estado del juego. Si usas else if, solo se
              * ejecutara una condicion, incluso si multiples condiciones son verdaderas. */
             switch (key) {
-                case STATS:
-                    game.getGameController().toggleStatsView();
-                    break;
-                case INVENTORY:
-                    game.getGameController().toggleInventoryView();
-                    break;
                 case ESCAPE:
                     game.getGameController().toggleOptionsView();
                     // State.setState(State.OPTION);
+                    break;
+                case INVENTORY:
+                    game.getGameController().toggleInventoryView();
                     break;
                 case LOAD_MAP:
                     /* You need to save the edited text file by pressing Ctrl + F9 or by selecting Build > Build Project. Which will

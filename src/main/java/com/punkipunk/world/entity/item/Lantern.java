@@ -15,7 +15,7 @@ public class Lantern extends Item {
 
     public Lantern(Game game, World world, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        type = Type.LIGHT;
+        itemType = ItemType.LIGHT;
         stats.name = NAME;
         description = "[" + stats.name + "]\nIlluminaties your \nsurroundings.";
         price = 45;

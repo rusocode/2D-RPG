@@ -2,23 +2,30 @@
 
 <?import javafx.scene.canvas.Canvas?>
 <?import javafx.scene.layout.*?>
-<StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.punkipunk.controllers.GameController"
-           stylesheets="@../css/game.css">
+<AnchorPane fx:id="root" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.punkipunk.controllers.GameController"
+            stylesheets="@../css/game.css">
 
+    <!-- El canvas debe ir primero porque sino estaria tapando todas las vistas -->
     <Canvas fx:id="canvas"/>
 
-    <VBox styleClass="view-container"> <!-- Contenedor para las vistas superpuestas que se cargan al inicio -->
-
+    <!-- Cuando los anclajes se establecen a 0 en todos los lados, AnchorPane intentara expandir el nodo hijo para
+         llenar todo el espacio disponible. Sin embargo, si el nodo tiene un tamaño maximo especificado (como en el caso
+         de StatsView, -fx-max-width: 250px; y -fx-max-height: 330px;), no puede expandirse mas alla de esos limites. En
+         esta situacion, AnchorPane responde centrando el nodo dentro del espacio disponible, manteniendo el tamaño
+         maximo definido. -->
+    <StackPane AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"
+               AnchorPane.bottomAnchor="0">
         <fx:include fx:id="statsView" source="StatsView.fxml" visible="false" managed="false"/>
         <fx:include fx:id="optionsView" source="OptionsView.fxml" visible="false" managed="false"/>
         <fx:include fx:id="controlsView" source="ControlsView.fxml" visible="false" managed="false"/>
+        <fx:include fx:id="inventoryView" source="InventoryView.fxml" visible="false" managed="false"/>
+    </StackPane>
 
-        <AnchorPane>
-            <Region HBox.hgrow="ALWAYS"/>
-            <fx:include fx:id="inventoryView" source="InventoryView.fxml" visible="false" managed="false"/>
-        </AnchorPane>
-
+    <!-- TODO Estaria bueno que el HUD se esconda y oscurezca (MC) cuando se muestre alguna de las vistas -->
+    <!-- Ancla el HUD en la parte inferior de la ventana -->
+    <VBox AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.bottomAnchor="20">
+        <fx:include fx:id="HUDView" source="HUDView.fxml"/>
     </VBox>
 
-</StackPane>
+</AnchorPane>

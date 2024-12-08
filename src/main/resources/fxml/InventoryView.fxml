@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!-- InventoryView.fmxl -->
+
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.VBox?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.punkipunk.controllers.InventoryController"
       stylesheets="@../css/inventory.css"
-      styleClass="container"
-      AnchorPane.rightAnchor="20">
+      styleClass="container">
 
-    <StackPane>
-        <Label styleClass="title" text="Inventory"/>
-        <Label fx:id="closeButton" styleClass="close" text="×" StackPane.alignment="CENTER_RIGHT" onMouseClicked="#handleCloseButtonClicked"/>
-    </StackPane>
+    <Label styleClass="title" text="Inventory"/>
 
     <GridPane fx:id="inventory" styleClass="inventory"/>
 

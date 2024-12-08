@@ -4,20 +4,17 @@
 <?import javafx.scene.layout.*?>
 <VBox xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.punkipunk.controllers.OptionsController"
-      stylesheets="@../css/options.css" styleClass="panel">
+      stylesheets="@../css/options.css" styleClass="container">
 
-    <!-- Header con titulo y boton cerrar -->
-    <StackPane>
-        <Label fx:id="title" text="OPTIONS"/>
-        <Label fx:id="closeButton" text="×" StackPane.alignment="CENTER_RIGHT"/>
-    </StackPane>
+
+    <Label styleClass="title" text="OPTIONS"/>
 
     <Region prefHeight="20"/>
 
     <!-- Sliders de volumen -->
     <VBox styleClass="slider-container">
         <HBox styleClass="slider-row">
-            <Label text="Music: "/>
+            <Label text="Music"/>
             <!-- majorTickUnit="1" establece que las marcas principales apareceran cada 1 unidad (es decir, en 0, 1, 2, 3, 4, 5) -->
             <!-- minorTickCount="0" indica que no habra marcas menores entre las marcas principales -->
             <!-- snapToTicks="true" hace que el slider "salte" a las marcas principales, haciendo mas facil seleccionar valores exactos -->
@@ -29,14 +26,14 @@
         </HBox>
 
         <HBox styleClass="slider-row">
-            <Label text="Ambient: "/>
+            <Label text="Ambient"/>
             <Slider fx:id="ambientSlider" max="5" value="3"
                     majorTickUnit="1" minorTickCount="0"
                     snapToTicks="true" showTickMarks="true" showTickLabels="true"/>
         </HBox>
 
         <HBox styleClass="slider-row">
-            <Label text="Sound: "/>
+            <Label text="Sound"/>
             <Slider fx:id="soundSlider" max="5" value="3"
                     majorTickUnit="1" minorTickCount="0"
                     snapToTicks="true" showTickMarks="true" showTickLabels="true"/>
@@ -46,18 +43,11 @@
     <Region prefHeight="20"/>
 
     <!-- Opciones adicionales -->
-    <HBox styleClass="option-row">
+    <VBox styleClass="option-row">
+        <Label fx:id="statsButton" text="Stats"/>
         <Label fx:id="controlsButton" text="Controls"/>
-    </HBox>
-
-    <HBox styleClass="option-row">
         <Label fx:id="saveGameButton" text="Save Game" onMouseClicked="#handleSaveGameClicked"/>
-    </HBox>
-
-    <HBox styleClass="option-row">
         <Label fx:id="quitToMainMenuButton" text="Quit to Main Menu"/>
-    </HBox>
-
-    <Region prefHeight="20"/>
+    </VBox>
 
 </VBox>

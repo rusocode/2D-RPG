@@ -2,6 +2,14 @@
     -fx-background-color: rgba(30, 30, 30, 0.8);
     -fx-padding: 5px;
     -fx-background-radius: 10px;
+    -fx-max-width: 200px;
+     /* Como yo quiero que el alto del contenedor del inventario crezca dependiendo de la cantidad de componentes, etc.,
+      * entonces no haria falta especificar un valor, pero al usar AnchorPane como contenedor principal y 0px como valor
+      * de anclaje superior e inferior (AnchorPane.topAnchor="0" y AnchorPane.bottomAnchor="0"), entonces tendria que
+      * especificar un height de 0px para que no se expanda verticalmente y asi compensar la distancia del anclaje con
+      * respecto a la ventana, que al ser AnchorPane.topAnchor="0" y AnchorPane.bottomAnchor="0", quedaria pegado a la
+      * ventana. */
+    -fx-max-height: 0px;
 }
 
 .label {
@@ -11,29 +19,39 @@
 .title {
     -fx-font-size: 22px;
     -fx-font-family: 'BlackPearl';
+    -fx-pref-width: infinity; /* Hace que el label ocupe todo el ancho del contenedor, lo que facilita el centrado */
+    -fx-alignment: center;
 }
 
 .title .text {
     -fx-font-smoothing-type: gray;
 }
 
-.close {
-    -fx-font-size: 18px;
-}
-
-.close:hover {
-    -fx-text-fill: #ff6b6b;
-}
-
 .inventory {
-    -fx-alignment: center;
-    -fx-pref-width: 200px;
+    -fx-alignment: center; /* Hace falta? */
     -fx-padding: 10px 10px;
-    -fx-hgap: 5px; /* Espacio horizontal entre slots */
-    -fx-vgap: 5px;
+    /* -fx-hgap: 5px; /* Espacio horizontal entre slots */
+    /* -fx-vgap: 5px; */
 }
 
-.inventory-slot.equipped {
+.slot {
+ /* -fx-border-color: white;
+    -fx-border-width: 1px; */
+}
+
+.slot:hover {
+      /* Gradiente metalico */
+     -fx-background-color: linear-gradient(to right, rgba(192, 192, 192, 0.2), rgba(128, 128, 128, 0.2));
+     -fx-background-radius: 5px;
+ }
+
+.slot.drag {
+    -fx-background-color: linear-gradient(to right, rgba(192, 192, 192, 0.2), rgba(128, 128, 128, 0.2));
+    -fx-background-radius: 5px;
+}
+
+/* Este estilo se aplica solo a elementos que tengan AMBAS clases "slot" y "equipped" simultaneamente */
+.slot.equipped {
     /* La propiedad -fx-background-color con gradiente radial define un efecto de fondo circular. El centro del
      * gradiente se posiciona exactamente en el punto medio del elemento, tanto horizontal como verticalmente,
      * utilizando las coordenadas center 50% 50%. El radio se establece al 60% del tamaño total del elemento, lo que
@@ -44,19 +62,28 @@
     -fx-background-radius: 13px;
 }
 
-.inventory-slot:hover {
-     /* Gradiente metalico */
-    -fx-background-color: linear-gradient(to right, rgba(192, 192, 192, 0.2), rgba(128, 128, 128, 0.2));
-    -fx-background-radius: 5px;
-}
-
 .tooltip {
     -fx-padding: 2px;
+}
+
+.image {
+    -fx-fit-width: 32px;
+    -fx-fit-height: 32px;
+    -fx-preserve-ratio: true;
 }
 
 .amount {
     -fx-font-size: 10px;
     -fx-font-weight: bold;
-    -fx-translate-x: 10;
-    -fx-translate-y: 10;
+    -fx-translate-x: 10px;
+    -fx-translate-y: 10px;
+}
+
+.hotbar {
+    -fx-alignment: center;
+    -fx-padding: 10px 10px;
+    -fx-hgap: 5px;
+    -fx-vgap: 5px;
+    -fx-border-color: rgba(192, 192, 192, 0.7);
+    -fx-border-width: 1px 0 0 0;
 }

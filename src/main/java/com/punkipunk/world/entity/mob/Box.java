@@ -13,7 +13,7 @@ import com.punkipunk.world.entity.Entity;
 import com.punkipunk.world.entity.Type;
 import com.punkipunk.world.entity.interactive.Interactive;
 import com.punkipunk.world.entity.interactive.MetalPlate;
-import com.punkipunk.world.entity.item.DoorIron;
+import com.punkipunk.world.entity.item.IronDoor;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
@@ -110,7 +110,7 @@ public class Box extends Mob {
         // If all the boxes are on the plates, the iron door opens
         if (c == boxes.size()) {
             for (int i = 0; i < world.entities.items[1].length; i++) {
-                if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(DoorIron.NAME)) {
+                if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(IronDoor.NAME)) {
                     world.entities.items[world.map.num][i] = null;
                     game.system.audio.playSound(Assets.getAudio(AudioAssets.DOOR_IRON_OPENING));
                 }

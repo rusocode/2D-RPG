@@ -8,6 +8,7 @@ import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.Type;
 import com.punkipunk.world.entity.item.Item;
+import com.punkipunk.world.entity.item.ItemType;
 import com.punkipunk.world.entity.item.Wood;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,7 +27,7 @@ public class DryTree extends Interactive {
     }
 
     public boolean isCorrectWeapon(Item weapon) {
-        return weapon.type == Type.AXE;
+        return weapon.itemType == ItemType.AXE;
     }
 
     public Color getParticleColor() {

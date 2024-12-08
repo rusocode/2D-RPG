@@ -10,65 +10,61 @@
       xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.punkipunk.controllers.StatsController"
       stylesheets="@../css/stats.css" styleClass="container">
 
-    <StackPane>
-        <Label styleClass="title" text="STATS"/> <!-- ¿Lo declaro con styleClass? -->
-        <Label fx:id="closeButton" styleClass="close-button" text="×" StackPane.alignment="CENTER_RIGHT"
-               onMouseClicked="#handleCloseButtonClicked"/>
-    </StackPane>
+    <Label styleClass="title" text="STATS"/>
 
     <Region prefHeight="20"/>
 
-    <HBox styleClass="stat-row, title-spacing">
+    <HBox>
         <Label text="Level: "/>
         <Label fx:id="lvlLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Exp: "/>
         <Label fx:id="expLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Next Exp: "/>
         <Label fx:id="nextExpLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Life: "/>
         <Label fx:id="maxHpLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Mana: "/>
         <Label fx:id="maxManaLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Strength: "/>
         <Label fx:id="strengthLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Dexterity: "/>
         <Label fx:id="dexterityLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Attack: "/>
         <Label fx:id="attackLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Defense: "/>
         <Label fx:id="defenseLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <Label text="Gold: "/>
         <Label fx:id="goldLabel"/>
     </HBox>
 
-    <HBox styleClass="stat-row">
+    <HBox>
         <ImageView>
             <Image url="@../textures/entity/items/sword_iron.png"/>
         </ImageView>
@@ -77,6 +73,8 @@
         </ImageView>
     </HBox>
 
-    <Region prefHeight="20"/>
+    <Region prefHeight="10"/>
+
+    <Label fx:id="backButton" text="Back" onMouseClicked="#handleBackButtonClicked"/>
 
 </VBox>

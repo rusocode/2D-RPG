@@ -34,7 +34,7 @@ public class Chest extends Item {
             game.system.audio.playSound(Assets.getAudio(AudioAssets.CHEST_OPENING));
             sheet.frame = sheet.item[1];
             opened = true;
-            if (world.entities.player.inventory.canPickup(loot)) {
+            if (world.entities.player.inventory.canAddItem(loot)) {
                 dialogue.dialogues[0][0] = "You open the chest and find a \n" + loot.stats.name + "!";
                 dialogue.startDialogue(State.DIALOGUE, this, 0);
                 empty = true;
@@ -43,7 +43,7 @@ public class Chest extends Item {
                 dialogue.startDialogue(State.DIALOGUE, this, 1);
             }
         } else if (!empty) {
-            if (world.entities.player.inventory.canPickup(loot)) {
+            if (world.entities.player.inventory.canAddItem(loot)) {
                 dialogue.dialogues[2][0] = "You obtain the " + loot.stats.name + "!";
                 dialogue.startDialogue(State.DIALOGUE, this, 2);
                 empty = true;

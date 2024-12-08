@@ -8,7 +8,7 @@ import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.io.Progress;
 import com.punkipunk.world.World;
 import com.punkipunk.world.entity.Type;
-import com.punkipunk.world.entity.item.DoorIron;
+import com.punkipunk.world.entity.item.IronDoor;
 import com.punkipunk.world.entity.item.Gold;
 import javafx.scene.shape.Rectangle;
 
@@ -76,7 +76,7 @@ public class Lizard extends Mob {
 
         // Remove the iron doors
         for (int i = 0; i < world.entities.items[1].length; i++)
-            if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(DoorIron.NAME))
+            if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(IronDoor.NAME))
                 world.entities.items[world.map.num][i] = null;
 
     }

@@ -14,6 +14,7 @@ import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
@@ -32,7 +33,7 @@ public class GameController implements Initializable {
     private final SceneDirector sceneManager = SceneDirector.getInstance();
 
     @FXML
-    private StackPane root; // @FXML crea una conexion entre el elemento en el archivo FXML y la variable en el controlador
+    private AnchorPane root; // @FXML crea una conexion entre el elemento en el archivo FXML y la variable en el controlador
     @FXML
     private Canvas canvas;
     @FXML
@@ -43,6 +44,8 @@ public class GameController implements Initializable {
     private VBox controlsView;
     @FXML
     private VBox inventoryView;
+    @FXML
+    private VBox HUDView;
     /**
      * <p>
      * Si el controlador de StatsView es null se debe a un problema comun cuando se usa fx:include. Para obtener el controlador
@@ -67,7 +70,6 @@ public class GameController implements Initializable {
         statsViewController.setGameController(this);
         optionsViewController.setGameController(this);
         controlsViewController.setGameController(this);
-        inventoryViewController.setGameController(this);
         canvas.setWidth(WINDOW_WIDTH);
         canvas.setHeight(WINDOW_HEIGHT);
         configureButtons(root);

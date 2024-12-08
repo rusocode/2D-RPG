@@ -1,7 +1,8 @@
-.panel {
+.container {
     -fx-background-color: rgba(30, 30, 30, 0.8);
     -fx-padding: 10px;
-    -fx-max-width: 300px;
+    -fx-max-width: 250px;
+    -fx-max-height: 330px;
     -fx-background-radius: 10px;
 }
 
@@ -10,26 +11,19 @@
     -fx-font-size: 14px;
 }
 
-#title {
+.title {
     -fx-font-size: 22px;
     -fx-font-family: 'BlackPearl';
+    -fx-pref-width: infinity;
     -fx-alignment: center;
 }
 
-#title .text {
+.title .text {
     -fx-font-smoothing-type: gray;
 }
 
-#closeButton {
-     -fx-font-size: 25px;
-}
-
-#closeButton:hover {
-    -fx-text-fill: #ff6b6b;
-}
-
 .slider-container {
-    -fx-spacing: 10px;
+    -fx-spacing: 5px;
 }
 
 .slider-row {

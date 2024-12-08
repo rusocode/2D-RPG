@@ -1,15 +1,16 @@
 .container {
     -fx-background-color: rgba(30, 30, 30, 0.8);
     -fx-padding: 10px;
-    /* -fx-spacing: 10px; /* Espacio entre elementos */
-    -fx-max-width: 200px; /* El ancho maximo se respeta porque no interfiere con la disposicion vertical natural del VBox padre */
-    /* No hace falta especificar la altura maxima ya que el panel crece verticalmente tanto como sea necesario (debido
-     * al contenedor VBox padre), ya sea sumando la cantidad de componentes, el espaciado entre elementos, espacio
-     * interno, etc. */
-     /* -fx-max-height: 10px; */
-    -fx-background-radius: 10px; /* Bordes redondeados */
-    /* -fx-border-color: #FFFFFF; /* Color del borde */
-    /* -fx-border-radius: 10px; /* Bordes redondeados del borde */
+    -fx-max-width: 250px;
+    /* El contenedor crece verticalmente tanto como sea necesario (debido al contenedor VBox padre), ya sea sumando la
+     * cantidad de componentes, el espaciado entre elementos, espacio interno, etc. Esto significa que al especificar
+     * un height muy bajo (como 100px), no lo va a respetar ya que tiene mas precedencia la cantidad de compontes, etc. */
+    -fx-max-height: 330px;
+    -fx-background-radius: 10px;
+}
+
+HBox {
+    -fx-alignment: center;
 }
 
 .label {
@@ -24,6 +25,8 @@
 .title {
     -fx-font-size: 22px;
     -fx-font-family: 'BlackPearl';
+    -fx-pref-width: infinity;
+    -fx-alignment: center;
 }
 
 /* Selecciona especificamente el nodo de texto dentro del Label con id title */
@@ -33,14 +36,6 @@
     -fx-font-smoothing-type: gray;
 }
 
-.close-button {
-    -fx-font-size: 25px;
-}
-
-.close-button:hover {
-    -fx-text-fill: #ff6b6b;
-}
-
-.stat-row {
-    -fx-alignment: center;
+#backButton:hover {
+    -fx-text-fill: #a0a0a0;
 }

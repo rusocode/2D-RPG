@@ -15,7 +15,7 @@ public class Stone extends Item {
 
     public Stone(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        type = Type.CONSUMABLE;
+        itemType = ItemType.CONSUMABLE;
         stats.name = NAME;
         description = "[" + stats.name + "]\nIt's just a stone.";
         price = 7;

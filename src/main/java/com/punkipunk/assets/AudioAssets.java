@@ -36,6 +36,7 @@ public enum AudioAssets {
     CUT_TREE,
     DOOR_IRON_OPENING,
     DOOR_OPENING,
+    DRAW_PICKAXE,
     DRAW_SWORD,
     DRINK_POTION,
     EAT,
@@ -87,6 +88,7 @@ public enum AudioAssets {
     private static final URL cut_tree = Utils.loadAudio(sound_path + "cut_tree.wav");
     private static final URL door_iron_opening = Utils.loadAudio(sound_path + "door_iron_opening.wav");
     private static final URL door_opening = Utils.loadAudio(sound_path + "door_opening.wav");
+    private static final URL draw_pickaxe = Utils.loadAudio(sound_path + "draw_pickaxe.wav");
     private static final URL draw_sword = Utils.loadAudio(sound_path + "draw_sword.wav");
     private static final URL drink_potion = Utils.loadAudio(sound_path + "drink_potion.wav");
     private static final URL eat = Utils.loadAudio(sound_path + "eat.wav");
@@ -133,6 +135,7 @@ public enum AudioAssets {
             case CUT_TREE -> cut_tree;
             case DOOR_IRON_OPENING -> door_iron_opening;
             case DOOR_OPENING -> door_opening;
+            case DRAW_PICKAXE -> draw_pickaxe;
             case DRAW_SWORD -> draw_sword;
             case DRINK_POTION -> drink_potion;
             case EAT -> eat;

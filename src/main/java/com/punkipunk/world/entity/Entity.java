@@ -3,12 +3,12 @@ package com.punkipunk.world.entity;
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.Game;
-import com.punkipunk.inventory.Inventory;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.input.keyboard.Key;
+import com.punkipunk.inventory.Inventory;
 import com.punkipunk.physics.Mechanics;
 import com.punkipunk.utils.Timer;
 import com.punkipunk.utils.Utils;
@@ -28,6 +28,7 @@ public abstract class Entity {
     public final Game game;
     public final World world;
 
+    // TODO Faltaria el sonido
     public Type type = Type.HOSTILE;
     public Direction direction = Direction.DOWN;
     public Position pos = new Position(); // TODO Podria ir en World

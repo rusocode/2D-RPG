@@ -17,7 +17,7 @@ public class PotionBlue extends Item {
 
     public PotionBlue(Game game, World world, int amount, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        type = Type.CONSUMABLE;
+        itemType = ItemType.CONSUMABLE;
         stats.name = NAME;
         points = 2;
         description = "[" + stats.name + "]\nIncrease your mana \nby " + points + ".";
