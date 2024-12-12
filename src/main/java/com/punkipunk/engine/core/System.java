@@ -12,10 +12,8 @@ import com.punkipunk.io.File;
 import com.punkipunk.physics.CollisionChecker;
 import com.punkipunk.physics.Event;
 import com.punkipunk.world.World;
-import com.punkipunk.world.entity.item.ItemGenerator;
 
 /**
- * <p>
  * Sistemas del juego.
  * <p>
  * Con el <b>Builder Pattern</b> se puede elegir que sistemas crear y en que orden, teniendo la posibilidad de una construccion
@@ -43,7 +41,6 @@ public class System {
     public final CollisionChecker collisionChecker;
     public final AStar aStar;
     public final Event event;
-    public final ItemGenerator itemGenerator;
     public final AudioController audio;
     public final File file;
     public final Updater updater;
@@ -58,7 +55,6 @@ public class System {
         this.collisionChecker = builder.collisionChecker;
         this.aStar = builder.aStar;
         this.event = builder.event;
-        this.itemGenerator = builder.itemGenerator;
         this.audio = builder.audio;
         this.file = builder.file;
         this.updater = builder.updater;
@@ -80,7 +76,6 @@ public class System {
                 .withCollisionChecker()
                 .withAStar()
                 .withEvent()
-                .withItemGenerator()
                 .withAudio()
                 .withFile()
                 .withUpdater()
@@ -118,7 +113,6 @@ public class System {
         private CollisionChecker collisionChecker;
         private AStar aStar;
         private Event event;
-        private ItemGenerator itemGenerator;
         private AudioController audio;
         private File file;
         private Updater updater;
@@ -160,11 +154,6 @@ public class System {
             return this;
         }
 
-        public Builder withItemGenerator() {
-            this.itemGenerator = new ItemGenerator(game, world);
-            return this;
-        }
-
         public Builder withAudio() {
             this.audio = new AudioController(game);
             return this;
@@ -182,7 +171,7 @@ public class System {
 
         public Builder withRenderer() {
             if (ui == null || minimap == null)
-                throw new IllegalStateException("UI systems must be initialized first using withUISystem()");
+                throw new IllegalStateException("UI systems must be initialized first using withUI()");
             this.renderer = new Renderer(game, world, ui, minimap);
             return this;
         }

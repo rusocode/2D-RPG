@@ -6,7 +6,6 @@
       fx:controller="com.punkipunk.controllers.OptionsController"
       stylesheets="@../css/options.css" styleClass="container">
 
-
     <Label styleClass="title" text="OPTIONS"/>
 
     <Region prefHeight="20"/>

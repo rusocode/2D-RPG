@@ -15,7 +15,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 import java.net.URL;
@@ -26,6 +25,16 @@ import static com.punkipunk.utils.Global.WINDOW_WIDTH;
 
 /**
  * Controla la logica de la escena con respecto a todo lo que tiene que ver con los componentes graficos.
+ * <p>
+ * JavaFX con FXML necesita poder crear una instancia del controlador usando un constructor sin parametros (constructor por
+ * defecto) cuando usas fx:controller en un archivo FXML. Este es un requerimiento del FXMLLoader. El ciclo tipico es que al
+ * cargar el FXML, JavaFX crea una instancia del controlador usando el constructor sin parametros, inyecta las variables marcadas
+ * con @FXML y llama al metodo initialize() si el controlador implementa Initializable. Despues de cargar el FXML, puedes llamar a
+ * metodos adicionales de inicializacion para pasar datos o configurar el controlador con la informacion que necesita. Por eso en
+ * nuestro caso necesitamos tener un constructor vacio requerido por FXML y un metodo initialize() para la inicializacion real. Si
+ * intentaramos usar un constructor con parametros, JavaFX fallaria al cargar el FXML porque no puede encontrar un constructor sin
+ * parametros. Esta es la razon por la que dividimos la inicializacion en dos partes: primero un constructor vacio para que JavaFX
+ * pueda crear la instancia y luego un metodo initialize() para la inicializacion real con los datos necesarios.
  */
 
 public class GameController implements Initializable {
@@ -82,7 +91,6 @@ public class GameController implements Initializable {
      */
     public void initialize(Game game) {
         this.game = game;
-        // TODO Es raro que se establescan los audios desde aca, aunque es necesario hacerlo antes de inicializar el controlodar del juego para evitar un NPE
         optionsViewController.setAudioSystems(game.system.audio.getMusic(), game.system.audio.getAmbient(), game.system.audio.getSound());
         inventoryViewController.initialize(game.system.world.entities.player);
     }
@@ -149,10 +157,6 @@ public class GameController implements Initializable {
 
     public StatsController getStatsViewController() {
         return statsViewController;
-    }
-
-    public InventoryController getInventoryViewController() {
-        return inventoryViewController;
     }
 
 }

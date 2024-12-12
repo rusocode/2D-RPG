@@ -182,11 +182,12 @@ public class File {
                 for (int i = 0; i < world.entities.items[1].length; i++) {
                     if (data.itemName[map][i].equals("NA")) world.entities.items[map][i] = null;
                     else {
-                        world.entities.items[map][i] = game.system.itemGenerator.generate(data.itemName[map][i]);
+                        // TODO Tendrias que crear un metodo generador en esta clase
+                        //world.entities.items[map][i] = game.system.itemGenerator.generate(data.itemName[map][i]);
                         world.entities.items[map][i].pos.x = data.itemX[map][i];
                         world.entities.items[map][i].pos.y = data.itemY[map][i];
                         if (data.loot[map][i] != null && !data.empty[map][i])
-                            world.entities.items[map][i].loot = game.system.itemGenerator.generate(data.loot[map][i]);
+                            //world.entities.items[map][i].loot = game.system.itemGenerator.generate(data.loot[map][i]);
                         world.entities.items[map][i].opened = data.opened[map][i];
                         world.entities.items[map][i].empty = data.empty[map][i];
                         if (world.entities.items[map][i].opened)

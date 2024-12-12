@@ -1,4 +1,4 @@
-package com.punkipunk.inventory.equipment;
+package com.punkipunk.gui.container.equipment;
 
 import com.punkipunk.world.entity.Player;
 import com.punkipunk.world.entity.item.Item;
@@ -7,6 +7,7 @@ import com.punkipunk.world.entity.item.ItemType;
 import java.util.EnumMap;
 import java.util.Map;
 
+// TODO El paquete quipment no debria ir en inventory?
 public class Equipment {
 
     private final Map<ItemType, EquipmentStrategy> strategies = new EnumMap<>(ItemType.class);

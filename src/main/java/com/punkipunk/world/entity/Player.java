@@ -10,7 +10,7 @@ import com.punkipunk.classes.Character;
 import com.punkipunk.classes.Jester;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.input.keyboard.Key;
-import com.punkipunk.inventory.PlayerInventory;
+import com.punkipunk.gui.container.inventory.Inventory;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -35,7 +35,7 @@ import static com.punkipunk.utils.Global.*;
 public class Player extends Mob {
 
     public Item weapon, shield, light;
-    public PlayerInventory inventory;
+    public Inventory inventory;
     public boolean attackCanceled, lightUpdate;
     public Character character = Jester.getInstance();
     /* Variable to know when the player is inside the boss area to prevent the same event from occurring every time he goes
@@ -89,7 +89,7 @@ public class Player extends Mob {
     }
 
     private void init() {
-        inventory = new PlayerInventory(game, world, this, 3, 9);
+        inventory = new Inventory(game, world, this, 3, 9);
         dialogue = new Dialogue(game);
 
         type = Type.PLAYER;
@@ -121,8 +121,6 @@ public class Player extends Mob {
         up = new Animation(animationSpeed, sheet.up);
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
-
-        inventory.initializeDefaultItems();
 
         pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 20, Direction.DOWN);
     }
@@ -395,10 +393,9 @@ public class Player extends Mob {
             if (game.system.keyboard.isKeyPressed(Key.PICKUP) && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(world.entities.player);
                 else if (inventory.canAddItem(item)) {
-                    inventory.updateOrAddItem(item);
+                    inventory.add(item);
                     game.system.audio.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
-                }
-                else {
+                } else {
                     game.system.ui.addMessageToConsole("You cannot carry any more!");
                     return;
                 }

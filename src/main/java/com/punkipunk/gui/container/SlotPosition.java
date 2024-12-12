@@ -1,4 +1,4 @@
-package com.punkipunk.inventory;
+package com.punkipunk.gui.container;
 
 /**
  * <p>

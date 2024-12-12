@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.Rectangle?>
 <VBox xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.punkipunk.controllers.HUDController">
-
-    <HBox alignment="CENTER">
-        <Rectangle fill="#ff0000" height="10" width="144.0"/>
-        <!-- <Label fx:id="levelLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="16.0" prefWidth="288.0" text="LVL"/> -->
-        <Rectangle fill="#0000ff" height="10" width="144.0"/>
-    </HBox>
-
-    <HBox alignment="CENTER">
-        <Rectangle fill="#00ff00" width="288" height="10"/>
-    </HBox>
 
     <GridPane fx:id="itemGrid" alignment="CENTER" gridLinesVisible="true">
 

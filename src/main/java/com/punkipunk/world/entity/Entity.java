@@ -8,7 +8,7 @@ import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.input.keyboard.Key;
-import com.punkipunk.inventory.Inventory;
+import com.punkipunk.gui.container.Container;
 import com.punkipunk.physics.Mechanics;
 import com.punkipunk.utils.Timer;
 import com.punkipunk.utils.Utils;
@@ -39,7 +39,7 @@ public abstract class Entity {
     public Mechanics mechanics = new Mechanics();
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile);
     public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
-    public Inventory inventory;
+    public Container inventory;
     public Dialogue dialogue;
     public double hitboxDefaultX, hitboxDefaultY;
 

@@ -1,4 +1,4 @@
-package com.punkipunk.inventory.equipment;
+package com.punkipunk.gui.container.equipment;
 
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;

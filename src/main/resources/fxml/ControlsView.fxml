@@ -65,7 +65,7 @@
         <Label text="H"/>
     </HBox>
 
-    <Region prefHeight="10"/>
+    <Region prefHeight="20"/>
 
     <Label fx:id="backButton" text="Back" onMouseClicked="#handleBackButtonClicked"/>
 

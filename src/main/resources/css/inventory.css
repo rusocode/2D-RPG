@@ -2,13 +2,13 @@
     -fx-background-color: rgba(30, 30, 30, 0.8);
     -fx-padding: 5px;
     -fx-background-radius: 10px;
-    -fx-max-width: 200px;
+    -fx-max-width: 0px;
      /* Como yo quiero que el alto del contenedor del inventario crezca dependiendo de la cantidad de componentes, etc.,
       * entonces no haria falta especificar un valor, pero al usar AnchorPane como contenedor principal y 0px como valor
       * de anclaje superior e inferior (AnchorPane.topAnchor="0" y AnchorPane.bottomAnchor="0"), entonces tendria que
       * especificar un height de 0px para que no se expanda verticalmente y asi compensar la distancia del anclaje con
       * respecto a la ventana, que al ser AnchorPane.topAnchor="0" y AnchorPane.bottomAnchor="0", quedaria pegado a la
-      * ventana. */
+      * ventana. Lo mismo se aplica para el ancho del contenedor en este caso. */
     -fx-max-height: 0px;
 }
 
@@ -35,7 +35,7 @@
 }
 
 .slot {
- /* -fx-border-color: white;
+    /* -fx-border-color: white;
     -fx-border-width: 1px; */
 }
 
@@ -77,6 +77,13 @@
     -fx-font-weight: bold;
     -fx-translate-x: 10px;
     -fx-translate-y: 10px;
+}
+
+.hotbar-slot {
+    -fx-pref-width: 32px;
+    -fx-pref-height: 32px;
+    -fx-background-color: #333;
+    -fx-border-color: #555;
 }
 
 .hotbar {
