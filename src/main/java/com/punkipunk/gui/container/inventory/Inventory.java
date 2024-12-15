@@ -8,7 +8,11 @@ import com.punkipunk.world.entity.Player;
 import com.punkipunk.world.entity.item.*;
 
 /**
- * Funciones especificas del inventario como equipar o consumir un item.
+ * <p>
+ * Clase que representa el inventario del jugador.
+ * <p>
+ * Extiende de Container y maneja los items que el jugador puede recolectar, equipar y consumir durante el juego. Tambien gestiona
+ * el equipamiento del jugador.
  */
 
 public class Inventory extends Container {
@@ -41,6 +45,17 @@ public class Inventory extends Container {
         equipment.equip(item);
     }
 
+    /**
+     * Consume un item del inventario si es posible.
+     * <p>
+     * Si el item se puede usar, reduce su cantidad en 1.
+     * <p>
+     * Si la cantidad llega a 0, elimina el item del inventario.
+     *
+     * @param item el item a consumir
+     * @param row  fila donde se encuentra el item en el inventario
+     * @param col  columna donde se encuentra el item en el inventario
+     */
     public void consume(Item item, int row, int col) {
         if (item.use(player)) {
             item.amount--;

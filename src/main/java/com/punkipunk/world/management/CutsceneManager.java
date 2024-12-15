@@ -12,8 +12,7 @@ import static com.punkipunk.utils.Global.tile;
 public class CutsceneManager {
 
     // Scenes types
-    public final int na = 0;
-    public final int boss = 1;
+    public final int na = 0, boss = 1;
     private final Game game;
     private final World world;
     public int n; // Scene number

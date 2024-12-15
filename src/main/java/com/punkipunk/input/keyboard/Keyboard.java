@@ -8,96 +8,135 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
- * Maneja los eventos del teclado.
+ * <p>
+ * Gestiona las entradas del teclado y el estado de las teclas en el juego. Procesa eventos de teclas presionadas y liberadas,
+ * manteniendo registro del estado de las teclas y delegando al controlador de estados.
  */
 
 public class Keyboard {
 
-    public final BitSet toggledKeys; // Para teclas que alternan su estado
+    /** Almacena el estado de las teclas que pueden alternarse (activado/desactivado) */
+    public final BitSet toggledKeys = new BitSet(256);
     private final Game game;
-    private final KeyboardState stateHandler;
-    private final Set<Key> keys;
+    private final KeyStateController keyStateController = new KeyStateController();
+    /** Conjunto de teclas actualmente presionadas */
+    private final Set<Key> keys = EnumSet.noneOf(Key.class);
+    /** Ultima tecla presionada, -1 si ninguna */
     private int lastKey = -1;
 
+    /**
+     * Crea un nuevo gestor de teclado.
+     *
+     * @param game el juego al que pertenece este teclado
+     */
     public Keyboard(Game game) {
         this.game = game;
-        stateHandler = new KeyboardState();
-        keys = EnumSet.noneOf(Key.class); // TODO Creo que se podria reemplazar por la clase de JavaFX que maneja todas las teclas KeyCode
-        toggledKeys = new BitSet(256);
-        setupKeyHandler();
+        setupKeyListeners();
     }
 
-    public void handleKeyPressed(KeyEvent e) {
+    /**
+     * Procesa el evento de tecla presionada.
+     * <p>
+     * Evita la repeticion de teclas mantenidas y notifica al controlador de estados.
+     *
+     * @param e el evento de tecla presionada
+     */
+    public void onKeyPressed(KeyEvent e) {
         Key key = Key.get(e.getCode().getCode());
         if (key != null && lastKey != key.ordinal() && !keys.contains(key)) {
             lastKey = key.ordinal();
             keys.add(key);
-            stateHandler.handleKeyPress(key, game);
+            keyStateController.notifyKeyPress(key, game);
         }
     }
 
-    public void handleKeyReleased(KeyEvent e) {
+    /**
+     * Procesa el evento de tecla liberada.
+     * <p>
+     * Actualiza el registro de teclas presionadas.
+     *
+     * @param e el evento de tecla liberada
+     */
+    public void onKeyReleased(KeyEvent e) {
         lastKey = -1;
         Key key = Key.get(e.getCode().getCode());
         if (key != null) keys.remove(key);
     }
 
     /**
-     * Verifica si se presiono la tecla.
+     * Verifica si una tecla especifica esta presionada.
      *
-     * @param key key.
-     * @return true si se presiono la tecla.
+     * @param key la tecla a verificar
+     * @return true si la tecla esta presionada
      */
     public boolean isKeyPressed(Key key) {
         return keys.contains(key);
     }
 
     /**
-     * Libera la tecla.
+     * Libera una tecla especifica del registro de teclas presionadas.
      *
-     * @param key key.
+     * @param key la tecla a liberar
      */
     public void releaseKey(Key key) {
-        keys.remove(key); // Elimina una unica instancia del elemento especificado de esta coleccion, si esta presente (operacion opcional)
+        keys.remove(key);
     }
 
     /**
-     * Alterna el estado de la tecla.
+     * Alterna el estado de una tecla entre activado y desactivado.
      *
-     * @param key key.
+     * @param key la tecla a alternar
      */
     public void toggleKey(Key key) {
         toggledKeys.flip(key.ordinal());
     }
 
     /**
-     * Verifica si la tecla alternada esta "activada".
+     * Verifica si una tecla alternada esta en estado activado.
      *
-     * @param key key.
-     * @return true si la tecla aternada esta activada o false.
+     * @param key la tecla a verificar
+     * @return true si la tecla esta activada
      */
     public boolean isKeyToggled(Key key) {
         return toggledKeys.get(key.ordinal());
     }
 
+    /**
+     * Verifica si hay alguna tecla de movimiento o accion presionada.
+     *
+     * @return true si hay alguna tecla de movimiento o accion presionada
+     */
     public boolean checkKeys() {
         return checkMovementKeys() || checkActionKeys();
     }
 
+    /**
+     * Verifica si hay alguna tecla de movimiento presionada.
+     *
+     * @return true si hay alguna tecla de movimiento presionada
+     */
     public boolean checkMovementKeys() {
         return Key.MOVEMENT_KEYS.stream().anyMatch(this::isKeyPressed);
     }
 
+    /**
+     * Verifica si hay alguna tecla de accion presionada.
+     *
+     * @return true si hay alguna tecla de accion presionada
+     */
     public boolean checkActionKeys() {
         return Key.ACTION_KEYS.stream().anyMatch(this::isKeyPressed);
     }
 
+    /**
+     * Libera todas las teclas de accion del registro de teclas presionadas.
+     */
     public void resetActionKeys() {
         Key.ACTION_KEYS.forEach(keys::remove);
     }
 
     /**
-     * Resetea las teclas alternadas.
+     * Desactiva todas las teclas alternadas que esten activas.
      */
     public void resetToggledKeys() {
         // Convierte las teclas alternadas en un flujo de datos (stream) para filtrar (filter) las activadas y alternarlas (forEach)
@@ -105,11 +144,11 @@ public class Keyboard {
     }
 
     /**
-     * Configura el administrador de teclas utilizando la escena del juego actual.
+     * Configura los listeners de eventos de teclado en la escena del juego.
      */
-    private void setupKeyHandler() {
-        game.getScene().setOnKeyPressed(this::handleKeyPressed);
-        game.getScene().setOnKeyReleased(this::handleKeyReleased);
+    private void setupKeyListeners() {
+        game.getScene().setOnKeyPressed(this::onKeyPressed);
+        game.getScene().setOnKeyReleased(this::onKeyReleased);
     }
 
 }

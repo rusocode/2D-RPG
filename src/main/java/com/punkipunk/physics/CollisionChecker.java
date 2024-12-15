@@ -8,6 +8,7 @@ import com.punkipunk.world.entity.Player;
 import static com.punkipunk.utils.Global.tile;
 
 /**
+ * <p>
  * The collision between two entities is generated when one of the limits of the hitbox passes 1 pixel of the hitbox of the other
  * entity. But in the case of the attackbox, a collision is only generated when the limits of both touch.
  */

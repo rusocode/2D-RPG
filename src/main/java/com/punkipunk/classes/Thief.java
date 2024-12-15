@@ -21,7 +21,7 @@ package com.punkipunk.classes;
 
 public class Thief extends Character {
 
-    private static Thief instance = null;
+    private static Thief instance;
 
     protected Thief() {
         this.name = "Thief";

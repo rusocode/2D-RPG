@@ -6,7 +6,7 @@ import com.punkipunk.UI;
 import com.punkipunk.ai.AStar;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
-import com.punkipunk.audio.AudioController;
+import com.punkipunk.controllers.AudioController;
 import com.punkipunk.input.keyboard.Keyboard;
 import com.punkipunk.io.File;
 import com.punkipunk.physics.CollisionChecker;

@@ -24,7 +24,7 @@ import com.punkipunk.utils.Utils;
 
 public class Jester extends Character {
 
-    private static Jester instance = null;
+    private static Jester instance;
 
     protected Jester() {
         this.name = "Jester";

@@ -7,11 +7,21 @@ import com.punkipunk.world.entity.item.ItemType;
 import java.util.EnumMap;
 import java.util.Map;
 
+/**
+ * <p>
+ * La <i>inicializacion en el punto de declaracion</i> es cuando asignas valores a campos directamente al declararlos en la clase,
+ * fuera de cualquier metodo o constructor. Es una buena practica para campos final que no dependen de parametros externos, como
+ * colecciones vacias o valores constantes, ya que ocurre antes de que el constructor se ejecute. Sin embargo, cuando necesitas
+ * parametros del constructor, calculos complejos o manejo de excepciones, la inicializacion debe realizarse en el constructor.
+ * Esta inicializacion ofrece <b>inmutabilidad</b>, <b>claridad</b> (hace mas claro que la coleccion {@code strategies} sea una
+ * parte fundamental de la clase y siempre debe existir) y <b>seguridad</b> (evita NPE).
+ */
+
 // TODO El paquete quipment no debria ir en inventory?
 public class Equipment {
 
-    private final Map<ItemType, EquipmentStrategy> strategies = new EnumMap<>(ItemType.class);
     private final Player player;
+    private final Map<ItemType, EquipmentStrategy> strategies = new EnumMap<>(ItemType.class);
 
     public Equipment(Player player) {
         this.player = player;
@@ -20,7 +30,7 @@ public class Equipment {
 
     private void registerStrategies() {
         EquipmentStrategy weaponStrategy = new WeaponEquipmentStrategy();
-        for (ItemType weaponType : ItemType.WEAPON_TYPES)
+        for (ItemType weaponType : ItemType.WEAPON)
             strategies.put(weaponType, weaponStrategy);
         strategies.put(ItemType.SHIELD, new ShieldEquipmentStrategy());
         strategies.put(ItemType.LIGHT, new LightEquipmentStrategy());

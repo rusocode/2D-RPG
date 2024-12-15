@@ -1,8 +1,9 @@
-package com.punkipunk.audio;
+package com.punkipunk.controllers;
 
 import com.punkipunk.Game;
 import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.AudioAssets;
+import com.punkipunk.audio.Audio;
 
 import java.net.URL;
 
@@ -14,15 +15,12 @@ public class AudioController {
 
     private final Game game;
 
-    private final Audio ambient;
-    private final Audio music;
-    private final Audio sound;
+    private final Audio ambient = new Audio();
+    private final Audio music = new Audio();
+    private final Audio sound = new Audio();
 
     public AudioController(Game game) {
         this.game = game;
-        this.music = new Audio();
-        this.ambient = new Audio();
-        this.sound = new Audio();
     }
 
     public void playSound(URL url) {

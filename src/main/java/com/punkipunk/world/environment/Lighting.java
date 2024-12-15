@@ -23,21 +23,18 @@ public class Lighting {
     // Day state
     public final int day = 0, dusk = 1, night = 2, dawn = 3;
     private final World world;
-    private final WritableImage darknessFilter;
-    private final Canvas canvas;
-    private final GraphicsContext gc;
+    private final WritableImage darknessFilter = new WritableImage(WINDOW_WIDTH, WINDOW_HEIGHT);
+    private final Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
+    private final GraphicsContext gc = canvas.getGraphicsContext2D();;
     // Filter
-    private final ImageView darknessFilterView;
+    private final ImageView darknessFilterView = new ImageView();
     public int dayCounter;
     public float filterAlpha;
     public int dayState = day;
 
     public Lighting(World world) {
         this.world = world;
-        this.canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-        this.gc = canvas.getGraphicsContext2D();
-        this.darknessFilter = new WritableImage(WINDOW_WIDTH, WINDOW_HEIGHT);
-        this.darknessFilterView = new ImageView();
+        // this.gc = canvas.getGraphicsContext2D();
         this.darknessFilterView.setImage(darknessFilter);
         illuminate(); // TODO Why is this method called from here?
     }

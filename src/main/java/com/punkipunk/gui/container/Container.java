@@ -7,7 +7,9 @@ import com.punkipunk.world.entity.item.*;
 import java.util.*;
 
 /**
- * Logica fundamental del contenedor (modelo).
+ * <p>
+ * Clase base abstracta que representa un contenedor de items en el juego. Gestiona una cuadricula de slots donde se pueden
+ * almacenar items, controlando la ocupacion de espacios y el apilamiento de items similares.
  * <p>
  * TODO Para obtener un mejor rendimiento con muchos listeners, considere usar un {@code CopyOnWriteArrayList} si los oyentes
  * pueden cambiar con frecuencia durante la iteracion.
@@ -17,14 +19,15 @@ import java.util.*;
 
 public abstract class Container {
 
-    // Almacena los datos del modelo (los items y sus posiciones) con acceso O(1) a slots (unico slot en cada posicion)
-    private final Map<SlotPosition, Item> slots;
     private final Game game;
     private final World world;
-    private final BitSet occupiedSlots; // Tracking de slots ocupados
     private final int rows;
     private final int cols;
-
+    /** Registro de que slots estan ocupados en el contenedor */
+    private final BitSet occupiedSlots;
+    /** Coleccion para los datos del modelo (los items y sus posiciones) con acceso O(1) a slots (unico slot en cada posicion) */
+    private final Map<SlotPosition, Item> slots = new HashMap<>();
+    /** Lista de listeners que seran notificados cuando el contenedor cambie */
     private final List<ContainerListener> listeners = new ArrayList<>();
 
     public Container(Game game, World world, int rows, int cols) {
@@ -32,23 +35,31 @@ public abstract class Container {
         this.world = world;
         this.rows = rows;
         this.cols = cols;
-        this.slots = new HashMap<>();
         this.occupiedSlots = new BitSet(rows * cols);
     }
 
     /**
-     * Notifica un cambio en el contenedor.
+     * Notifica a todos los listeners que el contenedor ha cambiado.
      */
     protected void notifyContainerChanged() {
         listeners.forEach(ContainerListener::onContainerChanged);
     }
 
+    /**
+     * Agrega un nuevo listener para cambios en el contenedor.
+     *
+     * @param listener el listener a agregar
+     */
     public void addListener(ContainerListener listener) {
         listeners.add(listener);
     }
 
     /**
-     * Agrega el item al contendor.
+     * Agrega un item al contenedor.
+     * <p>
+     * Si existe un item apilable similar, incrementa su cantidad. Si no, busca el primer slot libre y coloca el item alli.
+     *
+     * @param currentItem el item a agregar
      */
     public void add(Item currentItem) {
         // Filtra el primer item del contenedor que es stackable y igual al item actual
@@ -86,7 +97,10 @@ public abstract class Container {
     }
 
     /**
-     * Elimina el item en la posicion especificada del contenedor.
+     * Elimina el item en la posicion especificada.
+     *
+     * @param row fila del item a eliminar
+     * @param col columna del item a eliminar
      */
     public void remove(int row, int col) {
         SlotPosition pos = new SlotPosition(row, col);
@@ -99,16 +113,28 @@ public abstract class Container {
     }
 
     /**
-     * Obtiene el item en la posicion especificada del contenedor.
+     * Obtiene el item en la posicion especificada.
+     *
+     * @param row fila del item
+     * @param col columna del item
+     * @return el item en la posicion especificada o null si no hay ninguno
      */
     public Item get(int row, int col) {
         return slots.get(new SlotPosition(row, col));
     }
 
+    /**
+     * Devuelve el numero de items en el contenedor.
+     *
+     * @return cantidad de items almacenados
+     */
     public int size() {
         return slots.size();
     }
 
+    /**
+     * Elimina todos los items del contenedor.
+     */
     public void clear() {
         slots.clear();
     }
@@ -122,7 +148,7 @@ public abstract class Container {
      * @return true si se puede agregar el item al contenedor, false en caso contrario.
      */
     public boolean canAddItem(Item currentItem) {
-        return size() < getRows() * getCols() || isStackableSameItemInContainer(currentItem);
+        return size() < rows * cols || isStackableSameItemInContainer(currentItem);
     }
 
     /**
@@ -136,10 +162,11 @@ public abstract class Container {
     }
 
     /**
-     * Generates a new item.
+     * Genera un nuevo item segun el nombre especificado.
      *
-     * @param name name of the item.
-     * @return a new item.
+     * @param name nombre del item a generar
+     * @return el nuevo item generado
+     * @throws IllegalStateException si el nombre del item no es valido
      */
     public Item generate(String name) {
         return switch (name) {
@@ -169,19 +196,28 @@ public abstract class Container {
     }
 
     /**
-     * Obtiene los valores de los slots.
+     * Obtiene todos los items almacenados en el contenedor.
+     *
+     * @return coleccion con todos los items
      */
     public Collection<Item> getSlotsValues() {
         return slots.values();
     }
 
     /**
-     * Obtiene los slots con sus posiciones.
+     * Obtiene el mapa completo de posiciones e items.
+     *
+     * @return mapa con las posiciones y sus items correspondientes
      */
     public Map<SlotPosition, Item> getSlots() {
         return slots;
     }
 
+    /**
+     * Obtiene el registro de slots ocupados.
+     *
+     * @return BitSet con el registro de ocupacion
+     */
     public BitSet getOccupiedSlots() {
         return occupiedSlots;
     }
