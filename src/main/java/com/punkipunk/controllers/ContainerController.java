@@ -28,6 +28,7 @@ public abstract class ContainerController implements ContainerListener {
     protected ContainerDragDrop dragDrop;
     /** Manejador de eventos del mouse */
     protected ContainerMouse mouse;
+
     /** Panel de grilla que contiene los slots del contenedor */
     @FXML
     protected GridPane grid;
@@ -185,6 +186,10 @@ public abstract class ContainerController implements ContainerListener {
      */
     public StackPane getSlot(SlotPosition pos) {
         return containerSlots.get(pos);
+    }
+
+    public GridPane getGrid() {
+        return grid;
     }
 
 }

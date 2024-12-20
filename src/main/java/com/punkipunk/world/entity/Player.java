@@ -9,6 +9,7 @@ import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.classes.Character;
 import com.punkipunk.classes.Jester;
 import com.punkipunk.gfx.Animation;
+import com.punkipunk.gui.container.hotbar.Hotbar;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.gui.container.inventory.Inventory;
 import com.punkipunk.states.State;
@@ -36,6 +37,7 @@ public class Player extends Mob {
 
     public Item weapon, shield, light;
     public Inventory inventory;
+    public Hotbar hotbar;
     public boolean attackCanceled, lightUpdate;
     public Character character = Jester.getInstance();
     /* Variable to know when the player is inside the boss area to prevent the same event from occurring every time he goes
@@ -89,7 +91,8 @@ public class Player extends Mob {
     }
 
     private void init() {
-        inventory = new Inventory(game, world, this, 3, 9);
+        inventory = new Inventory(game, world, this);
+        hotbar = new Hotbar(game, world, this, inventory);
         dialogue = new Dialogue(game);
 
         type = Type.PLAYER;
@@ -392,8 +395,9 @@ public class Player extends Mob {
             Item item = world.entities.items[world.map.num][i];
             if (game.system.keyboard.isKeyPressed(Key.PICKUP) && item.type != Type.OBSTACLE) {
                 if (item.type == Type.PICKUP) item.use(world.entities.player);
-                else if (inventory.canAddItem(item)) {
-                    inventory.add(item);
+                // Si puede agregar items en el inventario o en la hotbar, entonces agrega los items a la hotbar
+                else if (inventory.canAddItem(item) || hotbar.canAddItem(item)) {
+                    hotbar.add(item);
                     game.system.audio.playSound(Assets.getAudio(AudioAssets.ITEM_PICKUP));
                 } else {
                     game.system.ui.addMessageToConsole("You cannot carry any more!");

@@ -75,7 +75,7 @@ public class InventoryMouse extends ContainerMouse {
      * @param tooltip     el tooltip a ocultar si el item se consume por completo
      */
     private void consume(Item itemClicked, int row, int col, Tooltip tooltip) {
-        inventory.consume(itemClicked, row, col);
+        container.consume(itemClicked, row, col);
         if (itemClicked.amount < 1) tooltip.hide();
     }
 

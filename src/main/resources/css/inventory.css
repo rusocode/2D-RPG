@@ -28,10 +28,13 @@
 }
 
 .inventory {
-    -fx-alignment: center; /* Hace falta? */
-    -fx-padding: 10px 10px;
-    /* -fx-hgap: 5px; /* Espacio horizontal entre slots */
-    /* -fx-vgap: 5px; */
+    -fx-padding: 0 0 5px 0;
+}
+
+.hotbar {
+    -fx-padding: 5px 0 0 0;
+    -fx-border-color: rgba(192, 192, 192, 0.7);
+    -fx-border-width: 1px 0 0 0;
 }
 
 .slot {
@@ -69,7 +72,7 @@
 .image {
     -fx-fit-width: 32px;
     -fx-fit-height: 32px;
-    -fx-preserve-ratio: true;
+    -fx-preserve-ratio: true; /* Hace falta? */
 }
 
 .amount {
@@ -77,20 +80,4 @@
     -fx-font-weight: bold;
     -fx-translate-x: 10px;
     -fx-translate-y: 10px;
-}
-
-.hotbar-slot {
-    -fx-pref-width: 32px;
-    -fx-pref-height: 32px;
-    -fx-background-color: #333;
-    -fx-border-color: #555;
-}
-
-.hotbar {
-    -fx-alignment: center;
-    -fx-padding: 10px 10px;
-    -fx-hgap: 5px;
-    -fx-vgap: 5px;
-    -fx-border-color: rgba(192, 192, 192, 0.7);
-    -fx-border-width: 1px 0 0 0;
 }

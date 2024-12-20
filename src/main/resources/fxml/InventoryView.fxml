@@ -3,15 +3,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.layout.Region?>
 <VBox xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.punkipunk.controllers.InventoryController"
-      stylesheets="@../css/inventory.css"
-      styleClass="container">
+      stylesheets="@../css/inventory.css" styleClass="container">
 
     <Label styleClass="title" text="Inventory"/>
 
-    <GridPane fx:id="grid" styleClass="grid"/>
+    <GridPane fx:id="grid" styleClass="inventory"/>
+
+    <fx:include fx:id="hotbarView" source="HotbarView.fxml"/>
 
 </VBox>

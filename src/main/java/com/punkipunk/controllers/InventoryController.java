@@ -5,6 +5,7 @@ import com.punkipunk.gui.container.ContainerMouse;
 import com.punkipunk.gui.container.inventory.InventoryDragDrop;
 import com.punkipunk.gui.container.inventory.InventoryMouse;
 import com.punkipunk.world.entity.Player;
+import javafx.fxml.FXML;
 
 /**
  * <p>
@@ -17,8 +18,11 @@ public class InventoryController extends ContainerController {
     /** Referencia al jugador propietario del inventario */
     private Player player;
 
+    @FXML
+    private HotbarController hotbarViewController;
+
     /**
-     * Inicializa el controlador del inventario con un jugador especifico.
+     * Inicializa el controlador del inventario y de la hotbar con un jugador especifico.
      * <p>
      * Configura el controlador base con el inventario del jugador.
      *
@@ -27,6 +31,7 @@ public class InventoryController extends ContainerController {
     public void initialize(Player player) {
         this.player = player;
         initialize(player.inventory);
+        hotbarViewController.initialize(player, this);
     }
 
     /**
@@ -36,7 +41,7 @@ public class InventoryController extends ContainerController {
      */
     @Override
     protected ContainerDragDrop createDragDrop() {
-        return new InventoryDragDrop(player.inventory, this);
+        return new InventoryDragDrop(player.inventory, this, player.hotbar, hotbarViewController);
     }
 
     /**

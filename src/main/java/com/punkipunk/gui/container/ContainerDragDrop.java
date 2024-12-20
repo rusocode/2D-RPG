@@ -9,6 +9,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
@@ -20,6 +21,8 @@ import java.util.Optional;
  * JavaFX.
  * <p>
  * Esta clase maneja la logica base para permitir el arrastre de elementos entre slots dentro de un contenedor.
+ * <p>
+ * TODO Agregar sonido de intercambio de items
  */
 
 public abstract class ContainerDragDrop {
@@ -55,6 +58,35 @@ public abstract class ContainerDragDrop {
         setDragOver(slot);
         setDragDropped(slot);
         setDragEnterExit(slot);
+    }
+
+    /**
+     * Verifica si el evento de drag no contiene la informacion necesaria.
+     *
+     * @param event el evento de drag a validar
+     * @return true si el evento no contiene la informacion necesaria, false en caso contrario
+     */
+    protected boolean isInvalidDrag(DragEvent event) {
+        return !event.getDragboard().hasString();
+    }
+
+    /**
+     * Extrae la informacion del drag and drop del evento y el slot de destino.
+     * <p>
+     * Convierte las coordenadas del string del dragboard a un objeto DragInfo.
+     *
+     * @param event el evento de drag que contiene las coordenadas
+     * @param slot  el slot donde se solto el item
+     * @return un objeto DragInfo con las coordenadas de origen y destino
+     */
+    protected DragInfo extractDragInfo(DragEvent event, StackPane slot) {
+        String[] coords = event.getDragboard().getString().split(",");
+        return new DragInfo(
+                Integer.parseInt(coords[0]),
+                Integer.parseInt(coords[1]),
+                GridPane.getRowIndex(slot),
+                GridPane.getColumnIndex(slot)
+        );
     }
 
     /**
@@ -156,6 +188,16 @@ public abstract class ContainerDragDrop {
             if (event.getGestureSource() != slot) slot.getStyleClass().add("drag");
         });
         slot.setOnDragExited(event -> slot.getStyleClass().remove("drag"));
+    }
+
+    /**
+     * Record que encapsula la informacion de origen y destino de una operacion de drag and drop.
+     */
+    protected record DragInfo(int sourceRow, int sourceCol, int destRow, int destCol) {
+        @Override
+        public String toString() {
+            return String.format("Slot [%d,%d] to [%d,%d]", sourceRow, sourceCol, destRow, destCol);
+        }
     }
 
 }

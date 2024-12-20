@@ -19,14 +19,12 @@ public class Inventory extends Container {
 
     private final Game game;
     private final World world;
-    private final Player player;
     private final Equipment equipment;
 
-    public Inventory(Game game, World world, Player player, int rows, int cols) {
-        super(game, world, rows, cols);
+    public Inventory(Game game, World world, Player player) {
+        super(game, world, player, 3, 9);
         this.game = game;
         this.world = world;
-        this.player = player;
         this.equipment = new Equipment(player);
         initializeDefaultItems();
     }
@@ -43,24 +41,6 @@ public class Inventory extends Container {
 
     public void equip(Item item) {
         equipment.equip(item);
-    }
-
-    /**
-     * Consume un item del inventario si es posible.
-     * <p>
-     * Si el item se puede usar, reduce su cantidad en 1.
-     * <p>
-     * Si la cantidad llega a 0, elimina el item del inventario.
-     *
-     * @param item el item a consumir
-     * @param row  fila donde se encuentra el item en el inventario
-     * @param col  columna donde se encuentra el item en el inventario
-     */
-    public void consume(Item item, int row, int col) {
-        if (item.use(player)) {
-            item.amount--;
-            if (item.amount <= 0) remove(row, col);
-        }
     }
 
     public Equipment getEquipment() {

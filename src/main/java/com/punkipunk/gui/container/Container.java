@@ -2,6 +2,7 @@ package com.punkipunk.gui.container;
 
 import com.punkipunk.Game;
 import com.punkipunk.world.World;
+import com.punkipunk.world.entity.Player;
 import com.punkipunk.world.entity.item.*;
 
 import java.util.*;
@@ -21,6 +22,7 @@ public abstract class Container {
 
     private final Game game;
     private final World world;
+    private final Player player;
     private final int rows;
     private final int cols;
     /** Registro de que slots estan ocupados en el contenedor */
@@ -30,9 +32,10 @@ public abstract class Container {
     /** Lista de listeners que seran notificados cuando el contenedor cambie */
     private final List<ContainerListener> listeners = new ArrayList<>();
 
-    public Container(Game game, World world, int rows, int cols) {
+    public Container(Game game, World world, Player player, int rows, int cols) {
         this.game = game;
         this.world = world;
+        this.player = player;
         this.rows = rows;
         this.cols = cols;
         this.occupiedSlots = new BitSet(rows * cols);
@@ -52,6 +55,24 @@ public abstract class Container {
      */
     public void addListener(ContainerListener listener) {
         listeners.add(listener);
+    }
+
+    /**
+     * Consume un item del inventario si es posible.
+     * <p>
+     * Si el item se puede usar, reduce su cantidad en 1.
+     * <p>
+     * Si la cantidad llega a 0, elimina el item del inventario.
+     *
+     * @param item el item a consumir
+     * @param row  fila donde se encuentra el item en el inventario
+     * @param col  columna donde se encuentra el item en el inventario
+     */
+    public void consume(Item item, int row, int col) {
+        if (item.use(player)) {
+            item.amount--;
+            if (item.amount <= 0) remove(row, col);
+        }
     }
 
     /**
@@ -94,6 +115,10 @@ public abstract class Container {
 
         notifyContainerChanged();
 
+    }
+
+    public void put(Item item, int row, int col) {
+        slots.put(new SlotPosition(row, col), item);
     }
 
     /**
@@ -157,7 +182,7 @@ public abstract class Container {
      * @param currentItem item actual.
      * @return true si hay un item apilable igual al item actual en el contenedor, false en caso contrario.
      */
-    private boolean isStackableSameItemInContainer(Item currentItem) {
+    public boolean isStackableSameItemInContainer(Item currentItem) {
         return getSlotsValues().stream().anyMatch(item -> item.stackable && item.stats.name.equals(currentItem.stats.name));
     }
 
@@ -229,5 +254,6 @@ public abstract class Container {
     public int getCols() {
         return cols;
     }
+
 
 }
