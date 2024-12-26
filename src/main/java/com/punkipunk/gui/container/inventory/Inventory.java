@@ -1,11 +1,11 @@
 package com.punkipunk.gui.container.inventory;
 
-import com.punkipunk.Game;
+import com.punkipunk.core.Game;
+import com.punkipunk.entity.item.*;
+import com.punkipunk.entity.player.Player;
 import com.punkipunk.gui.container.Container;
 import com.punkipunk.gui.container.equipment.Equipment;
 import com.punkipunk.world.World;
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.item.*;
 
 /**
  * <p>

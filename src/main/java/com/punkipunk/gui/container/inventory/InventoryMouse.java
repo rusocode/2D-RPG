@@ -1,14 +1,14 @@
 package com.punkipunk.gui.container.inventory;
 
 import com.punkipunk.controllers.ContainerController;
+import com.punkipunk.entity.item.Item;
+import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.player.Player;
 import com.punkipunk.gui.container.Container;
 import com.punkipunk.gui.container.ContainerMouse;
 import com.punkipunk.gui.container.SlotPosition;
 import com.punkipunk.gui.container.equipment.Equipment;
 import com.punkipunk.gui.container.equipment.EquipmentStrategy;
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.item.Item;
-import com.punkipunk.world.entity.item.ItemType;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;

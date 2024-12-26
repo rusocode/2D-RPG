@@ -1,10 +1,12 @@
 package com.punkipunk.io;
 
-import com.punkipunk.Game;
+import com.punkipunk.config.ConfigManager;
+import com.punkipunk.config.model.VolumeConfig;
+import com.punkipunk.core.Game;
+import com.punkipunk.entity.item.Item;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.Tile;
 import com.punkipunk.world.World;
-import com.punkipunk.world.entity.item.Item;
 
 import javax.swing.*;
 import java.io.*;
@@ -12,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Objects;
 
+import static com.punkipunk.audio.AudioServiceImpl.DEFAULT_VOLUME;
 import static com.punkipunk.utils.Global.*;
 
 public class File {
@@ -25,11 +28,13 @@ public class File {
     private final String tileData = "maps/tile_data.txt";
     private final ArrayList<String> names = new ArrayList<>();
     private final ArrayList<String> solids = new ArrayList<>();
+    private final ConfigManager configManager;
     public HashMap<Integer, String> maps = new HashMap<>();
 
     public File(Game game, World world) {
         this.game = game;
         this.world = world;
+        this.configManager = ConfigManager.getInstance();
     }
 
     public void load() {
@@ -59,7 +64,24 @@ public class File {
      * Load the game configuration.
      */
     private void loadConfig() {
-        try (BufferedReader br = new BufferedReader(new FileReader(config))) {
+        try {
+            VolumeConfig volumeConfig = new VolumeConfig(
+                    DEFAULT_VOLUME,
+                    DEFAULT_VOLUME,
+                    DEFAULT_VOLUME
+            );
+            // VolumeConfig volumeConfig = configManager.getConfig("audio.volume", VolumeConfig.class);
+            game.system.audio.getMusic().volumeScale = volumeConfig.music();
+            game.system.audio.getAmbient().volumeScale = volumeConfig.ambient();
+            game.system.audio.getSound().volumeScale = volumeConfig.sound();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error loading audio configuration: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        /* try (BufferedReader br = new BufferedReader(new FileReader(config))) {
             // game.fullScreen = ON.equals(br.readLine());
             // TODO Verificar null
             game.system.audio.getMusic().volumeScale = Integer.parseInt(br.readLine());
@@ -67,12 +89,12 @@ public class File {
             game.system.audio.getSound().volumeScale = Integer.parseInt(br.readLine());
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error loading configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        } */
     }
 
     /**
      * Save game data.
-     *
+     * <p>
      * TODO No guarda la posicino de los mobs
      */
     public void saveData() {
@@ -188,7 +210,7 @@ public class File {
                         world.entities.items[map][i].pos.y = data.itemY[map][i];
                         if (data.loot[map][i] != null && !data.empty[map][i])
                             //world.entities.items[map][i].loot = game.system.itemGenerator.generate(data.loot[map][i]);
-                        world.entities.items[map][i].opened = data.opened[map][i];
+                            world.entities.items[map][i].opened = data.opened[map][i];
                         world.entities.items[map][i].empty = data.empty[map][i];
                         if (world.entities.items[map][i].opened)
                             world.entities.items[map][i].sheet.frame = world.entities.items[map][i].sheet.item[1];

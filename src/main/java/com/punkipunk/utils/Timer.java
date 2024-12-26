@@ -1,8 +1,8 @@
 package com.punkipunk.utils;
 
 import com.punkipunk.Direction;
-import com.punkipunk.world.entity.Entity;
-import com.punkipunk.world.entity.Type;
+import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.base.Type;
 import javafx.scene.canvas.GraphicsContext;
 
 import static com.punkipunk.utils.Global.*;

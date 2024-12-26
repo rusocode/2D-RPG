@@ -1,7 +1,8 @@
 package com.punkipunk.gui.container.equipment;
 
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.item.Item;
+import com.punkipunk.entity.item.Item;
+import com.punkipunk.entity.player.Player;
+import com.punkipunk.entity.item.Item;
 
 /**
  * El patron que se esta usando aqui es el Template Method, donde:

@@ -1,14 +1,14 @@
 package com.punkipunk.world.management;
 
-import com.punkipunk.Game;
+import com.punkipunk.core.Game;
 import com.punkipunk.world.World;
-import com.punkipunk.world.entity.Entity;
-import com.punkipunk.world.entity.EntityFactory;
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.interactive.Interactive;
-import com.punkipunk.world.entity.item.Item;
-import com.punkipunk.world.entity.mob.Mob;
-import com.punkipunk.world.entity.projectile.Projectile;
+import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.factory.EntityFactory;
+import com.punkipunk.entity.player.Player;
+import com.punkipunk.entity.interactive.Interactive;
+import com.punkipunk.entity.item.Item;
+import com.punkipunk.entity.mob.Mob;
+import com.punkipunk.entity.projectile.Projectile;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;

@@ -19,22 +19,6 @@ public final class Utils {
     private Utils() {
     }
 
-    public static URL loadAudio(String path) {
-        // Primero verifica si el recurso existe usando getResourceAsStream
-        try (InputStream is = Utils.class.getResourceAsStream("/" + path)) {
-            if (is == null) throw new IllegalArgumentException("Cannot find resource: " + path);
-            /* Obtiene la URL si el recurso existe. Al usar Utils.class.getResource() en lugar de
-             * Utils.class.getClassLoader().getResource(), estas cambiando el punto de referencia para la busqueda de recursos.
-             * Class.getResource() busca relativo a la ubicacion de la clase, mientras que ClassLoader.getResource() busca desde
-             * la raiz del classpath. */
-            URL url = Utils.class.getResource("/" + path);
-            if (url == null) throw new IllegalArgumentException("Failed to get audio file URL: " + path);
-            return url;
-        } catch (IOException e) {
-            throw new RuntimeException("Error al acceder al archivo de audio: " + path, e);
-        }
-    }
-
     /**
      * Load the font.
      *

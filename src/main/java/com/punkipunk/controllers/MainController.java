@@ -1,9 +1,8 @@
 package com.punkipunk.controllers;
 
-import com.punkipunk.Game;
+import com.punkipunk.audio.AudioID;
+import com.punkipunk.core.Game;
 import com.punkipunk.GameBuilder;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.scene.GameViewLoader;
 import com.punkipunk.scene.SceneDirector;
 import com.punkipunk.states.State;
@@ -37,7 +36,7 @@ public class MainController {
     private void handleLoadGameClicked() {
         sceneDirector.switchScene(sceneDirector.getGameScene());
         game.system.file.loadData();
-        game.system.audio.playSound(Assets.getAudio(AudioAssets.SPAWN2));
+        game.system.audio.playSound(AudioID.Sound.SPAWN2);
         game.system.audio.playZoneAmbient();
         game.start();
         State.setState(State.PLAY);
@@ -48,7 +47,7 @@ public class MainController {
      */
     @FXML
     private void handleQuitClicked() {
-        game.system.audio.playSound(Assets.getAudio(AudioAssets.CLICK2));
+        game.system.audio.playSound(AudioID.Sound.CLICK2);
         System.exit(0);
     }
 
@@ -57,7 +56,7 @@ public class MainController {
      */
     @FXML
     private void handleMenuItemHovered() {
-        game.system.audio.playSound(Assets.getAudio(AudioAssets.HOVER));
+        game.system.audio.playSound(AudioID.Sound.HOVER);
     }
 
     /**
@@ -91,8 +90,8 @@ public class MainController {
     }
 
     private void startGame(Game game) {
-        game.system.audio.playSound(Assets.getAudio(AudioAssets.SPAWN2));
-        game.system.audio.stop();
+        game.system.audio.stopAll();
+        game.system.audio.playSound(AudioID.Sound.SPAWN2);
         game.system.audio.playZoneAmbient();
         game.start();
         State.setState(State.PLAY);

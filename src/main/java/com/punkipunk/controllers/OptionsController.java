@@ -1,6 +1,7 @@
 package com.punkipunk.controllers;
 
 import com.punkipunk.audio.Audio;
+import com.punkipunk.core.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -28,6 +29,7 @@ public class OptionsController implements Initializable {
     @FXML
     private Label quitToMainMenuButton;
 
+    private Game game;
     private GameController gameController;
     private Audio music, ambient, sound;
 
@@ -78,17 +80,20 @@ public class OptionsController implements Initializable {
             music.volumeScale = newValue.intValue();
             // Llama al metodo checkVolume() para aplicar los cambios de volumen
             music.checkVolume();
+            game.system.audio.saveVolumeSettings();
 
         });
 
         ambientSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             ambient.volumeScale = newValue.intValue();
             ambient.checkVolume();
+            game.system.audio.saveVolumeSettings();
         });
 
         soundSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             sound.volumeScale = newValue.intValue();
             sound.checkVolume();
+            game.system.audio.saveVolumeSettings();
         });
     }
 
@@ -99,6 +104,10 @@ public class OptionsController implements Initializable {
      */
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 
 }

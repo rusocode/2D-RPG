@@ -1,7 +1,7 @@
 package com.punkipunk.controllers;
 
 import com.punkipunk.gui.container.*;
-import com.punkipunk.world.entity.item.Item;
+import com.punkipunk.entity.item.Item;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;

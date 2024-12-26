@@ -1,7 +1,7 @@
 package com.punkipunk.gui.container;
 
 import com.punkipunk.controllers.ContainerController;
-import com.punkipunk.world.entity.item.Item;
+import com.punkipunk.entity.item.Item;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

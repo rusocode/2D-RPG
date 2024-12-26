@@ -2,8 +2,8 @@ package com.punkipunk.physics;
 
 import com.punkipunk.Direction;
 import com.punkipunk.world.World;
-import com.punkipunk.world.entity.Entity;
-import com.punkipunk.world.entity.Player;
+import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.player.Player;
 
 import static com.punkipunk.utils.Global.tile;
 

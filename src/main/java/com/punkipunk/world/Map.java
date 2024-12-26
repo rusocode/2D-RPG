@@ -1,8 +1,7 @@
 package com.punkipunk.world;
 
-import com.punkipunk.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.AudioAssets;
+import com.punkipunk.audio.AudioID;
+import com.punkipunk.core.Game;
 
 import static com.punkipunk.utils.Global.*;
 
@@ -126,9 +125,9 @@ public class Map {
     public void changeArea() {
         // If there is a change of area
         if (nextZone != zone) {
-            if (nextZone == BOSS) game.system.audio.playMusic(Assets.getAudio(AudioAssets.MUSIC_BOSS));
-            if (nextZone == DUNGEON) game.system.audio.playAmbient(Assets.getAudio(AudioAssets.AMBIENT_DUNGEON));
-            if (zone == DUNGEON && nextZone == OVERWORLD) game.system.audio.playAmbient(Assets.getAudio(AudioAssets.AMBIENT_OVERWORLD));
+            if (nextZone == BOSS) game.system.audio.playMusic(AudioID.Music.BOSS);
+            if (nextZone == DUNGEON) game.system.audio.playAmbient(AudioID.Ambient.DUNGEON);
+            if (zone == DUNGEON && nextZone == OVERWORLD) game.system.audio.playAmbient(AudioID.Ambient.OVERWORLD);
         }
         zone = nextZone;
         world.entities.factory.createMobs();

@@ -1,6 +1,6 @@
 package com.punkipunk.scene;
 
-import com.punkipunk.Game;
+import com.punkipunk.core.Game;
 import com.punkipunk.GameBuilder;
 import com.punkipunk.controllers.GameController;
 import javafx.scene.Scene;

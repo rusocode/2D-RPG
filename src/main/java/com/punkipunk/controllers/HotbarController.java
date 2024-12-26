@@ -4,7 +4,7 @@ import com.punkipunk.gui.container.ContainerDragDrop;
 import com.punkipunk.gui.container.ContainerMouse;
 import com.punkipunk.gui.container.hotbar.HotbarDragDrop;
 import com.punkipunk.gui.container.hotbar.HotbarMouse;
-import com.punkipunk.world.entity.Player;
+import com.punkipunk.entity.player.Player;
 
 public class HotbarController extends ContainerController {
 

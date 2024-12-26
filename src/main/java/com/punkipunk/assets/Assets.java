@@ -1,7 +1,7 @@
 package com.punkipunk.assets;
 
 import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.world.entity.item.IronAxe;
+import com.punkipunk.entity.item.IronAxe;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
 
@@ -15,7 +15,7 @@ import java.net.URL;
  * Aqui esta la explicacion de como se aplica el patron de fachada en este caso:
  * <ol>
  * <li><b>Separacion de responsabilidades</b>:
- * Dividimos los assets en clases especificas ({@link AudioAssets}, {@link FontAssets}, {@link SpriteSheetAssets},
+ * Dividimos los assets en clases especificas ({@link FontAssets}, {@link FontAssets}, {@link SpriteSheetAssets},
  * {@link TextureAssets}). Cada una maneja un tipo especifico de asset.
  * <li><b>Clase fachada</b>: Creamos {@link Assets}, que proporciona una interfaz simplificada para acceder a todos los
  * assets.</b>
@@ -68,10 +68,6 @@ import java.net.URL;
 public final class Assets {
 
     private Assets() {
-    }
-
-    public static URL getAudio(AudioAssets audio) {
-        return AudioAssets.getAudio(audio);
     }
 
     public static Font getFont(FontAssets font) {

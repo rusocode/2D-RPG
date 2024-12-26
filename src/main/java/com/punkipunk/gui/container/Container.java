@@ -1,9 +1,9 @@
 package com.punkipunk.gui.container;
 
-import com.punkipunk.Game;
+import com.punkipunk.core.Game;
 import com.punkipunk.world.World;
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.item.*;
+import com.punkipunk.entity.player.Player;
+import com.punkipunk.entity.item.*;
 
 import java.util.*;
 

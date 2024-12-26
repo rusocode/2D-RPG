@@ -1,7 +1,7 @@
 package com.punkipunk.gui.container;
 
 import com.punkipunk.controllers.ContainerController;
-import com.punkipunk.world.entity.item.Item;
+import com.punkipunk.entity.item.Item;
 import javafx.geometry.Bounds;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;

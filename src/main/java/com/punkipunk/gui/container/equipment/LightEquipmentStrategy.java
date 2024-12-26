@@ -1,7 +1,7 @@
 package com.punkipunk.gui.container.equipment;
 
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.item.Item;
+import com.punkipunk.entity.item.Item;
+import com.punkipunk.entity.player.Player;
 
 public class LightEquipmentStrategy extends BaseEquipmentStrategy {
 

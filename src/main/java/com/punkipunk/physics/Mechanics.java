@@ -1,8 +1,8 @@
 package com.punkipunk.physics;
 
-import com.punkipunk.world.entity.Entity;
-import com.punkipunk.world.entity.Type;
-import com.punkipunk.world.entity.mob.Box;
+import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.base.Type;
+import com.punkipunk.entity.mob.Box;
 
 /**
  * Game mechanics.

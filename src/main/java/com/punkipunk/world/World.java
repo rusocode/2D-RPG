@@ -1,6 +1,6 @@
 package com.punkipunk.world;
 
-import com.punkipunk.Game;
+import com.punkipunk.core.Game;
 import com.punkipunk.states.State;
 import com.punkipunk.world.management.CutsceneManager;
 import com.punkipunk.world.management.EntityManager;

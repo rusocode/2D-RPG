@@ -2,11 +2,11 @@ package com.punkipunk.gui.container.inventory;
 
 import com.punkipunk.controllers.ContainerController;
 import com.punkipunk.controllers.HotbarController;
+import com.punkipunk.entity.item.Item;
 import com.punkipunk.gui.container.Container;
 import com.punkipunk.gui.container.ContainerDragDrop;
 import com.punkipunk.gui.container.SlotPosition;
 import com.punkipunk.gui.container.hotbar.Hotbar;
-import com.punkipunk.world.entity.item.Item;
 import javafx.scene.Node;
 import javafx.scene.input.DragEvent;
 import javafx.scene.layout.GridPane;

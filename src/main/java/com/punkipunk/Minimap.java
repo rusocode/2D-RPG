@@ -1,5 +1,6 @@
 package com.punkipunk;
 
+import com.punkipunk.core.Game;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.Canvas;

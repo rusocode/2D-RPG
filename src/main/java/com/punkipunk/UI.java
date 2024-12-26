@@ -1,15 +1,14 @@
 package com.punkipunk;
 
 import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.assets.FontAssets;
-import com.punkipunk.assets.TextureAssets;
+import com.punkipunk.core.Game;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import com.punkipunk.world.entity.Entity;
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.mob.Mob;
+import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.player.Player;
+import com.punkipunk.entity.mob.Mob;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;

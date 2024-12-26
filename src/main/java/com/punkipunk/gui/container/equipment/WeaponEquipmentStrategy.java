@@ -1,11 +1,11 @@
 package com.punkipunk.gui.container.equipment;
 
 import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.AudioAssets;
 import com.punkipunk.assets.SpriteSheetAssets;
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.item.Item;
-import com.punkipunk.world.entity.item.ItemType;
+import com.punkipunk.audio.AudioID;
+import com.punkipunk.entity.item.Item;
+import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.player.Player;
 
 public class WeaponEquipmentStrategy extends BaseEquipmentStrategy {
 
@@ -39,12 +39,12 @@ public class WeaponEquipmentStrategy extends BaseEquipmentStrategy {
     }
 
     private void playWeaponAudio(Player player, ItemType type) {
-        AudioAssets audioAsset = switch (type) {
-            case PICKAXE -> AudioAssets.DRAW_PICKAXE;
-            case SWORD -> AudioAssets.DRAW_SWORD;
+        String sound = switch (type) {
+            case PICKAXE -> AudioID.Sound.DRAW_PICKAXE;
+            case SWORD -> AudioID.Sound.DRAW_SWORD;
             default -> null;
         };
-        if (audioAsset != null) player.game.system.audio.playSound(Assets.getAudio(audioAsset));
+        if (sound != null) player.game.system.audio.playSound(sound);
     }
 
 }

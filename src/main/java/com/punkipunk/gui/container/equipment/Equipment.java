@@ -1,8 +1,8 @@
 package com.punkipunk.gui.container.equipment;
 
-import com.punkipunk.world.entity.Player;
-import com.punkipunk.world.entity.item.Item;
-import com.punkipunk.world.entity.item.ItemType;
+import com.punkipunk.entity.item.Item;
+import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.player.Player;
 
 import java.util.EnumMap;
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.punkipunk.gfx;
 
 import com.punkipunk.utils.Utils;
-import com.punkipunk.world.entity.Entity;
+import com.punkipunk.entity.base.Entity;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;

@@ -1,8 +1,7 @@
 package com.punkipunk.controllers;
 
-import com.punkipunk.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.AudioAssets;
+import com.punkipunk.audio.AudioID;
+import com.punkipunk.core.Game;
 import com.punkipunk.scene.SceneDirector;
 import com.punkipunk.scene.ViewState;
 import com.punkipunk.scene.ViewToggle;
@@ -91,6 +90,7 @@ public class GameController implements Initializable {
      */
     public void initialize(Game game) {
         this.game = game;
+        optionsViewController.setGame(game);
         optionsViewController.setAudioSystems(game.system.audio.getMusic(), game.system.audio.getAmbient(), game.system.audio.getSound());
         inventoryViewController.initialize(game.system.world.entities.player);
     }
@@ -114,7 +114,7 @@ public class GameController implements Initializable {
                  * clic y luego ejecuta el manejador original si existia uno. Esto preserva cualquier funcionalidad que el Label
                  * ya tuviera. */
                 label.setOnMouseClicked(event -> {
-                    game.system.audio.playSound(Assets.getAudio(AudioAssets.CLICK2));
+                    game.system.audio.playSound(AudioID.Sound.CLICK2);
                     if (originalHandler != null) originalHandler.handle(event); // Si habia un handler original, lo ejecuta
                 });
             }
@@ -148,7 +148,7 @@ public class GameController implements Initializable {
 
     public void quitToMainMenu() {
         sceneManager.switchScene(sceneManager.getMainScene());
-        game.system.audio.stop();
+        game.system.audio.stopAll();
     }
 
     public Canvas getCanvas() {

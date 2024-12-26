@@ -1,11 +1,11 @@
 package com.punkipunk.world.management;
 
-import com.punkipunk.Game;
+import com.punkipunk.core.Game;
+import com.punkipunk.entity.item.IronDoor;
+import com.punkipunk.entity.mob.Lizard;
+import com.punkipunk.entity.player.PlayerDummy;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import com.punkipunk.world.entity.PlayerDummy;
-import com.punkipunk.world.entity.item.IronDoor;
-import com.punkipunk.world.entity.mob.Lizard;
 
 import static com.punkipunk.utils.Global.tile;
 

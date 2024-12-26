@@ -1,66 +1,76 @@
 package com.punkipunk.audio;
 
-import javax.sound.sampled.*;
-import javax.swing.*;
-import java.io.IOException;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 import java.net.URL;
 
 /**
- * This class only reads audio in wav format.
+ * Clase que maneja la reproduccion de archivos de audio en formato WAV.
  */
 
 public class Audio {
 
-    private Clip clip;
-    private FloatControl fc; // This class accepts values between -80f and 6f, so 6 is the maximum and -80 has no sound
-    public int volumeScale = 2; // There are only 5 volume scales
-    private float volume;
+    private final float[] VOLUME_LEVELS = {
+            -80f,  // Muted
+            -20f,  // Very Low
+            -12f,  // Low
+            -5f,   // Medium
+            1f,    // High
+            6f     // Maximum
+    };
 
+    /** Indice actual del nivel de volumen, por defecto esta en nivel bajo (2) */
+    public int volumeScale = 2;
+    /** Clip que maneja la reproduccion del audio */
+    private Clip clip;
+    /** Control para ajustar el volumen maestro del clip */
+    private FloatControl volumeControl;
+
+    /**
+     * Reproduce un archivo de audio.
+     * <p>
+     * Abre el recurso de audio especificado, configura su volumen inicial y comienza la reproduccion.
+     *
+     * @param url URL del archivo de audio a reproducir
+     */
     public void play(URL url) {
         try {
-            // Get the clip
             clip = AudioSystem.getClip();
-            // Opens the clip with the format and audio data present in the provided audio input stream
             clip.open(AudioSystem.getAudioInputStream(url));
-            // Gets control to be able to pass a value to the clip and change its volume
-            fc = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            // This check is only necessary if the music is already playing.
+            volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             checkVolume();
-            // Start the clip
             clip.start();
-        } catch (UnsupportedAudioFileException e) {
-            JOptionPane.showMessageDialog(null, "The audio format is not supported.", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error reading audio file.", "Error", JOptionPane.ERROR_MESSAGE);
-        } catch (LineUnavailableException e) {
-            JOptionPane.showMessageDialog(null, "Could not get audio clip. \n" + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            System.err.println("Failed to play audio: " + e.getMessage());
         }
     }
 
     /**
-     * Stops the clip.
+     * Detiene la reproduccion del audio y libera los recursos.
      */
     public void stop() {
-        if (clip != null) clip.stop();
-    }
-
-    public void loop() {
-        clip.loop(Clip.LOOP_CONTINUOUSLY);
+        if (clip != null) {
+            clip.stop();
+            clip.close();
+        }
     }
 
     /**
-     * Check the volume.
+     * Activa la reproduccion en bucle continuo del audio actual.
+     */
+    public void loop() {
+        if (clip != null) clip.loop(Clip.LOOP_CONTINUOUSLY);
+    }
+
+    /**
+     * Actualiza el volumen del audio segun el nivel seleccionado.
+     * <p>
+     * Verifica que el indice de volumen sea valido y que exista un control de volumen antes de realizar el cambio.
      */
     public void checkVolume() {
-        switch (volumeScale) {
-            case 0 -> volume = -80f;
-            case 1 -> volume = -20f;
-            case 2 -> volume = -12f;
-            case 3 -> volume = -5f;
-            case 4 -> volume = 1f;
-            case 5 -> volume = 6f;
-        }
-        if (fc != null) fc.setValue(volume);
+        if (volumeScale >= 0 && volumeScale < VOLUME_LEVELS.length && volumeControl != null)
+            volumeControl.setValue(VOLUME_LEVELS[volumeScale]);
     }
 
 }

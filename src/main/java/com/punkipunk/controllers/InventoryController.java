@@ -4,7 +4,7 @@ import com.punkipunk.gui.container.ContainerDragDrop;
 import com.punkipunk.gui.container.ContainerMouse;
 import com.punkipunk.gui.container.inventory.InventoryDragDrop;
 import com.punkipunk.gui.container.inventory.InventoryMouse;
-import com.punkipunk.world.entity.Player;
+import com.punkipunk.entity.player.Player;
 import javafx.fxml.FXML;
 
 /**
