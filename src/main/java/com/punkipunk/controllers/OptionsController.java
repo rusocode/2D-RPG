@@ -50,16 +50,9 @@ public class OptionsController implements Initializable {
         this.music = music;
         this.ambient = ambient;
         this.sound = sound;
-        updateSliderValues(); // Actualizar los sliders con los valores actuales
-    }
-
-    /**
-     * Actualiza los valores de los sliders segun los valores actuales de los objetos Audio.
-     */
-    private void updateSliderValues() {
-        musicSlider.setValue(music.volumeScale);
-        ambientSlider.setValue(ambient.volumeScale);
-        soundSlider.setValue(sound.volumeScale);
+        musicSlider.setValue(music.volume);
+        ambientSlider.setValue(ambient.volume);
+        soundSlider.setValue(sound.volume);
     }
 
     /**
@@ -76,24 +69,23 @@ public class OptionsController implements Initializable {
      */
     private void setupVolumeControls() {
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            // Actualiza la propiedad volumeScale del objeto musica con el nuevo valor del slider
-            music.volumeScale = newValue.intValue();
-            // Llama al metodo checkVolume() para aplicar los cambios de volumen
-            music.checkVolume();
-            game.system.audio.saveVolumeSettings();
-
+            // Actualiza el nivel de volumen de la musica con el nuevo valor del slider
+            music.volume = newValue.intValue();
+            music.setVolume();
+            // Guarda el nuevo valor del volumen en el archivo de configuracion de nivel de volumen
+            game.system.audio.save();
         });
 
         ambientSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            ambient.volumeScale = newValue.intValue();
-            ambient.checkVolume();
-            game.system.audio.saveVolumeSettings();
+            ambient.volume = newValue.intValue();
+            ambient.setVolume();
+            game.system.audio.save();
         });
 
         soundSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            sound.volumeScale = newValue.intValue();
-            sound.checkVolume();
-            game.system.audio.saveVolumeSettings();
+            sound.volume = newValue.intValue();
+            sound.setVolume();
+            game.system.audio.save();
         });
     }
 

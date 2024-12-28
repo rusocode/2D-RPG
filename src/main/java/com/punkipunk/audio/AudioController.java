@@ -17,11 +17,6 @@ public class AudioController {
     private final AudioService audioService;
     private final World world;
 
-    /**
-     * Constructor que inicializa el controlador de audio.
-     *
-     * @param world referencia al mundo del juego
-     */
     public AudioController(World world) {
         this.audioService = new AudioServiceImpl();
         this.world = world;
@@ -43,76 +38,72 @@ public class AudioController {
     /**
      * Reproduce un efecto de sonido.
      *
-     * @param audioId identificador del sonido a reproducir
+     * @param id identificador del sonido a reproducir
      */
-    public void playSound(String audioId) {
-        audioService.play(AudioChannel.SOUND, audioId);
+    public void playSound(String id) {
+        audioService.play(AudioChannel.SOUND, id);
     }
 
     /**
      * Reproduce un sonido ambiental.
-     * <p>
-     * Detiene cualquier sonido ambiental que este reproduciendose actualmente.
      *
-     * @param audioId identificador del sonido ambiental a reproducir
+     * @param id identificador del sonido ambiental a reproducir
      */
-    public void playAmbient(String audioId) {
+    public void playAmbient(String id) {
         audioService.stop(AudioChannel.AMBIENT);
-        audioService.play(AudioChannel.AMBIENT, audioId);
+        audioService.play(AudioChannel.AMBIENT, id);
     }
 
 
     /**
      * Reproduce una pista musical.
-     * <p>
-     * Detiene cualquier musica que este reproduciendose actualmente.
      *
-     * @param audioId identificador de la musica a reproducir
+     * @param id identificador de la musica a reproducir
      */
-    public void playMusic(String audioId) {
+    public void playMusic(String id) {
         audioService.stop(AudioChannel.MUSIC);
-        audioService.play(AudioChannel.MUSIC, audioId);
+        audioService.play(AudioChannel.MUSIC, id);
     }
 
     /**
-     * Detiene toda la reproduccion de audio en todos los canales.
+     * Detiene la reproduccion del audio en todos los canales.
      */
     public void stopAll() {
         audioService.stopAll();
     }
 
     /**
-     * Obtiene el controlador de audio ambiental.
+     * Obtiene la instancia de Audio asociada al canal MUSIC.
      *
-     * @return instancia de Audio para el canal ambiental
-     */
-    public Audio getAmbient() {
-        return audioService.getAudio(AudioChannel.AMBIENT);
-    }
-
-    /**
-     * Obtiene el controlador de musica.
-     *
-     * @return instancia de Audio para el canal de musica
+     * @return la instancia de Audio asociada al canal MUSIC
      */
     public Audio getMusic() {
-        return audioService.getAudio(AudioChannel.MUSIC);
+        return audioService.get(AudioChannel.MUSIC);
     }
 
     /**
-     * Obtiene el controlador de efectos de sonido.
+     * Obtiene la instancia de Audio asociada al canal AMBIENT.
      *
-     * @return instancia de Audio para el canal de sonido
+     * @return la instancia de Audio asociada al canal AMBIENT
+     */
+    public Audio getAmbient() {
+        return audioService.get(AudioChannel.AMBIENT);
+    }
+
+    /**
+     * Obtiene la instancia de Audio asociada al canal SOUND.
+     *
+     * @return la instancia de Audio asociada al canal SOUND
      */
     public Audio getSound() {
-        return audioService.getAudio(AudioChannel.SOUND);
+        return audioService.get(AudioChannel.SOUND);
     }
 
     /**
-     * Guarda la configuracion actual de volumen.
+     * Guarda el volumen en un archivo de configuracion.
      */
-    public void saveVolumeSettings() {
-        audioService.saveVolumeSettings();
+    public void save() {
+        audioService.save();
     }
 
 }

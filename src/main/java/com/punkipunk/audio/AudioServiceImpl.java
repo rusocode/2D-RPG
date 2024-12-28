@@ -1,9 +1,9 @@
 package com.punkipunk.audio;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.punkipunk.config.ConfigManager;
-import com.punkipunk.config.model.AudioConfig;
-import com.punkipunk.config.model.VolumeConfig;
+import com.punkipunk.config.Config;
+import com.punkipunk.config.json.AudioConfig;
+import com.punkipunk.config.json.VolumeConfig;
 import com.punkipunk.utils.ConfigPaths;
 
 import java.io.File;
@@ -21,187 +21,134 @@ import java.util.Optional;
 
 public class AudioServiceImpl implements AudioService {
 
+    /** Volumen por defecto para todos los canales */
     public static final int DEFAULT_VOLUME = 3;
-    /** Nombre del archivo que almacena la configuracion de volumen */
-    private static final String VOLUME_CONFIG_FILE = "volume_settings.json";
+    /** Nombre del archivo que almacena el volumen de cada canal */
+    private static final String VOLUME_FILE = "volume.json";
+    /** Archivo de volumen */
+    private final File volumeFile = ConfigPaths.getConfigPath(VOLUME_FILE).toFile();
     /** Mapa que relaciona cada canal con su instancia de Audio */
-    private final Map<AudioChannel, Audio> audioChannels;
+    private final Map<AudioChannel, Audio> channels = new EnumMap<>(AudioChannel.class);
     /** Gestor de configuraciones para obtener las rutas de los archivos de audio */
-    private final ConfigManager configManager;
+    private final Config config = Config.getInstance();
     /** Objeto para manejar la serializacion y deserializacion de JSON */
-    private final ObjectMapper mapper;
+    private final ObjectMapper mapper = new ObjectMapper();
 
-    /**
-     * Constructor que inicializa el servicio de audio.
-     * <p>
-     * Crea una instancia de Audio para cada canal disponible y carga la configuracion de volumen guardada o los valores por
-     * defecto si no existe configuracion previa.
-     */
     public AudioServiceImpl() {
-        this.configManager = ConfigManager.getInstance();
-        this.audioChannels = new EnumMap<>(AudioChannel.class);
-        this.mapper = new ObjectMapper();
-        initializeAudioChannels();
-        loadVolumeSettings();
+        initAudioChannels();
+        loadVolumeConfig();
     }
 
     @Override
-    public void play(AudioChannel channel, String audioId) {
-        getAudioForChannel(channel).ifPresent(audio -> {
-            try {
-                String configPath = buildConfigPath(channel, audioId);
-                AudioConfig config = configManager.getConfig(configPath, AudioConfig.class);
-                playAudio(audio, config);
-            } catch (Exception e) {
-                System.err.println("Failed to play audio [" + audioId + "]\n" + e.getMessage());
-            }
-        });
+    public void play(AudioChannel channel, String id) {
+        try {
+            String configPath = buildConfigPath(channel, id);
+            AudioConfig audioConfig = config.getJsonValue(configPath, AudioConfig.class);
+            play(get(channel), audioConfig);
+        } catch (Exception e) {
+            System.err.println("Failed to play audio " + id + "\n" + e.getMessage());
+        }
     }
 
     @Override
     public void stop(AudioChannel channel) {
-        getAudioForChannel(channel).ifPresent(Audio::stop);
+        get(channel).stop();
     }
 
     @Override
     public void stopAll() {
-        audioChannels.values().forEach(Audio::stop);
+        channels.values().forEach(Audio::stop);
     }
 
     @Override
-    public Audio getAudio(AudioChannel channel) {
-        return audioChannels.get(channel);
+    public Audio get(AudioChannel channel) {
+        return channels.get(channel);
     }
 
     @Override
-    public void saveVolumeSettings() {
+    public void save() {
         try {
-            VolumeConfig currentConfig = createVolumeConfig();
-            File configFile = ConfigPaths.getConfigPath(VOLUME_CONFIG_FILE).toFile();
-            mapper.writerWithDefaultPrettyPrinter().writeValue(configFile, currentConfig);
+            // Crea un objeto VolumeConfig con el volumen de cada canal
+            VolumeConfig volumeConfig = new VolumeConfig(get(AudioChannel.MUSIC).volume, get(AudioChannel.AMBIENT).volume, get(AudioChannel.SOUND).volume);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, volumeConfig);
         } catch (IOException e) {
-            System.err.println("Failed to save volume settings\n" + e.getMessage());
+            System.err.println("Failed to save volume config\n" + e.getMessage());
         }
     }
 
     /**
-     * Inicializa los canales de audio creando una instancia de Audio para cada canal disponible.
+     * Carga la configuracion de volumen desde el archivo.
+     * <p>
+     * Intenta cargar la configuracion de volumen desde un archivo JSON. Si el archivo existe, lee y aplica la configuracion
+     * almacenada. Si no existe, crea un nuevo archivo con valores por defecto. En caso de error durante la carga, establece el
+     * volumen por defecto para todos los canales.
+     * <p>
+     * El metodo {@code writerWithDefaultPrettyPrinter()} configura el escritor para que genere JSON formateado con saltos de
+     * linea, sangria (indentacion) y espaciado consistente, en lugar de escribir todo el JSON en una sola linea. Finalmente
+     * {@code writeValue()} toma dos parametros: {@code volumeFile} que es el archivo de destino donde se guardara el JSON, y
+     * {@code volumeConfig} que es el objeto VolumeConfig que contiene los volumenes actuales para musica, ambiente y efectos de
+     * sonido. Por ejemplo, el archivo resultante se vera asi:
+     * <pre>{@code
+     * {
+     *   "musicVolume" : 5,
+     *   "ambientVolume" : 3,
+     *   "soundVolume" : 3
+     * }
+     * }</pre>
+     * <p>
+     * En lugar de:
+     * <pre>{@code
+     * {"musicVolume":3,"ambientVolume":2,"soundVolume":4}
+     * }</pre>
+     * <p>
+     * Esto hace que el archivo de configuracion sea mas facil de leer y editar manualmente si fuera necesario, aunque ocupe un
+     * poco mas de espacio en disco.
      */
-    private void initializeAudioChannels() {
+    private void loadVolumeConfig() {
+        try {
+            if (volumeFile.exists()) {
+                VolumeConfig volumeConfig = mapper.readValue(volumeFile, VolumeConfig.class);
+                setVolumens(volumeConfig);
+                return; // Sale del metodo una vez cargado el archivo de volumen para evitar sobreescribir los valores
+            }
+            // Si no existe el archivo de volumen, crea una nueva configuracion de volumen con los valores por defecto
+            VolumeConfig defaultVolumeConfig = new VolumeConfig(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, defaultVolumeConfig);
+            setVolumens(defaultVolumeConfig);
+        } catch (IOException e) {
+            System.err.println("Error loading volume file, using defaults\n" + e.getMessage());
+            Arrays.stream(AudioChannel.values()).forEach(channel -> get(channel).volume = DEFAULT_VOLUME);
+        }
+    }
+
+    /**
+     * Establece los volumenes a todos los canales de audio.
+     *
+     * @param config VolumeConfig que contiene los volumenes de cada canal
+     */
+    private void setVolumens(VolumeConfig config) {
+        get(AudioChannel.MUSIC).volume = config.musicVolume();
+        get(AudioChannel.AMBIENT).volume = config.ambientVolume();
+        get(AudioChannel.SOUND).volume = config.soundVolume();
+    }
+
+    /**
+     * Inicializa los canales de audio creando una instancia de Audio para cada canal.
+     */
+    private void initAudioChannels() {
         for (AudioChannel channel : AudioChannel.values())
-            audioChannels.put(channel, new Audio());
-    }
-
-    /**
-     * Carga la configuracion de volumen desde el archivo de configuracion.
-     * <p>
-     * Si el archivo no existe o hay errores, utiliza los valores por defecto.
-     */
-    private void loadVolumeSettings() {
-        try {
-            File configFile = ConfigPaths.getConfigPath(VOLUME_CONFIG_FILE).toFile();
-            VolumeConfig volumeConfig = loadOrCreateVolumeConfig(configFile);
-            applyVolumeSettings(volumeConfig);
-        } catch (IOException e) {
-            System.err.println("Error loading volume settings, using defaults\n" + e.getMessage());
-            setDefaultVolumes();
-        }
-    }
-
-    /**
-     * Carga la configuracion de volumen desde un archivo o crea una nueva si no existe.
-     *
-     * @param configFile archivo de configuracion a leer o crear
-     * @return configuracion de volumen cargada o creada con valores por defecto
-     * @throws IOException si hay errores al leer o escribir el archivo
-     */
-    private VolumeConfig loadOrCreateVolumeConfig(File configFile) throws IOException {
-        if (configFile.exists()) return mapper.readValue(configFile, VolumeConfig.class);
-
-        // Si no existe el archivo, crear uno nuevo con valores por defecto
-        VolumeConfig defaultConfig = new VolumeConfig(
-                DEFAULT_VOLUME,
-                DEFAULT_VOLUME,
-                DEFAULT_VOLUME
-        );
-        mapper.writerWithDefaultPrettyPrinter().writeValue(configFile, defaultConfig);
-        return defaultConfig;
-    }
-
-    /**
-     * Aplica una configuracion de volumen a todos los canales de audio.
-     *
-     * @param config configuracion de volumen a aplicar
-     */
-    private void applyVolumeSettings(VolumeConfig config) {
-        setChannelVolume(AudioChannel.MUSIC, config.music());
-        setChannelVolume(AudioChannel.AMBIENT, config.ambient());
-        setChannelVolume(AudioChannel.SOUND, config.sound());
-    }
-
-    /**
-     * Establece el volumen para un canal especifico.
-     *
-     * @param channel canal al cual establecer el volumen
-     * @param volume  valor de volumen a establecer
-     */
-    private void setChannelVolume(AudioChannel channel, int volume) {
-        getAudioForChannel(channel).ifPresent(audio -> audio.volumeScale = volume);
-    }
-
-    /**
-     * Establece los valores de volumen por defecto en todos los canales.
-     * <p>
-     * Se utiliza cuando hay errores al cargar la configuracion guardada.
-     */
-    private void setDefaultVolumes() {
-        Arrays.stream(AudioChannel.values()).forEach(channel -> setChannelVolume(channel, DEFAULT_VOLUME));
-    }
-
-    /**
-     * Crea un objeto VolumeConfig con los valores actuales de volumen de cada canal.
-     *
-     * @return nueva instancia de VolumeConfig con los valores actuales
-     */
-    private VolumeConfig createVolumeConfig() {
-        return new VolumeConfig(
-                getChannelVolume(AudioChannel.MUSIC),
-                getChannelVolume(AudioChannel.AMBIENT),
-                getChannelVolume(AudioChannel.SOUND)
-        );
-    }
-
-    /**
-     * Obtiene el volumen actual para un canal especifico.
-     *
-     * @param channel canal del cual obtener el volumen
-     * @return valor actual del volumen o valor por defecto si el canal no existe
-     */
-    private int getChannelVolume(AudioChannel channel) {
-        return Optional.ofNullable(getAudio(channel))
-                .map(audio -> audio.volumeScale)
-                .orElse(DEFAULT_VOLUME);
-    }
-
-    /**
-     * Obtiene la instancia de Audio para un canal de forma segura.
-     *
-     * @param channel canal del cual obtener la instancia de Audio
-     * @return optional conteniendo la instancia de Audio si existe
-     */
-    private Optional<Audio> getAudioForChannel(AudioChannel channel) {
-        return Optional.ofNullable(audioChannels.get(channel));
+            channels.put(channel, new Audio());
     }
 
     /**
      * Construye la ruta de configuracion para un audio especifico.
      *
      * @param channel canal de audio
-     * @param audioId identificador del audio
-     * @return ruta completa en el formato requerido por el ConfigManager
+     * @param id      identificador del audio
+     * @return la ruta completa en el formato requerido por el ConfigManager
      */
-    private String buildConfigPath(AudioChannel channel, String audioId) {
-        return String.format("audio.%s.%s", channel.name().toLowerCase(), audioId);
+    private String buildConfigPath(AudioChannel channel, String id) {
+        return String.format("audio.%s.%s", channel.name().toLowerCase(), id);
     }
 
     /**
@@ -210,16 +157,14 @@ public class AudioServiceImpl implements AudioService {
      * @param audio  instancia de Audio donde se reproducira el sonido
      * @param config configuracion que contiene la ruta del archivo y si debe reproducirse en bucle
      */
-    private void playAudio(Audio audio, AudioConfig config) {
+    private void play(Audio audio, AudioConfig config) {
         Optional.ofNullable(getClass().getResource("/" + config.file()))
                 .ifPresentOrElse(
                         url -> {
                             audio.play(url);
-                            if (config.loop()) {
-                                audio.loop();
-                            }
+                            if (config.loop()) audio.loop();
                         },
-                        () -> System.out.println("Audio resource not found: " + config.file())
+                        () -> System.err.println("Audio resource not found: " + config.file())
                 );
     }
 

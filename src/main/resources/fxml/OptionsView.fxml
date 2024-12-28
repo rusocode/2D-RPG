@@ -19,21 +19,21 @@
             <!-- snapToTicks="true" hace que el slider "salte" a las marcas principales, haciendo mas facil seleccionar valores exactos -->
             <!-- showTickMarks="true" muestra visualmente las marcas en el slider -->
             <!-- showTickLabels="true" muestra etiquetas numericas -->
-            <Slider fx:id="musicSlider" max="5" value="3"
+            <Slider fx:id="musicSlider" max="5"
                     majorTickUnit="1" minorTickCount="0"
                     snapToTicks="true" showTickMarks="true" showTickLabels="true"/>
         </HBox>
 
         <HBox styleClass="slider-row">
             <Label text="Ambient"/>
-            <Slider fx:id="ambientSlider" max="5" value="3"
+            <Slider fx:id="ambientSlider" max="5"
                     majorTickUnit="1" minorTickCount="0"
                     snapToTicks="true" showTickMarks="true" showTickLabels="true"/>
         </HBox>
 
         <HBox styleClass="slider-row">
             <Label text="Sound"/>
-            <Slider fx:id="soundSlider" max="5" value="3"
+            <Slider fx:id="soundSlider" max="5"
                     majorTickUnit="1" minorTickCount="0"
                     snapToTicks="true" showTickMarks="true" showTickLabels="true"/>
         </HBox>

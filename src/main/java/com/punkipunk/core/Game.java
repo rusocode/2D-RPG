@@ -77,8 +77,8 @@ public class Game {
 
     public void setup() {
         system = System.createDefault(this);
-        system.initialize();
         system.audio.playMusic(AudioID.Music.MAIN);
+        system.initialize();
         gameController.initialize(this);
     }
 

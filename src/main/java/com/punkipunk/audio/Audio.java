@@ -6,12 +6,14 @@ import javax.sound.sampled.FloatControl;
 import java.net.URL;
 
 /**
- * Clase que maneja la reproduccion de archivos de audio en formato WAV.
+ * <p>
+ * La clase Audio proporciona funcionalidad para la reproduccion y control de archivos de audio en el juego. Maneja clips de audio
+ * individuales y permite controlar su reproduccion, volumen y estado.
  */
 
 public class Audio {
 
-    private final float[] VOLUME_LEVELS = {
+    private static final float[] VOLUMES = {
             -80f,  // Muted
             -20f,  // Very Low
             -12f,  // Low
@@ -20,17 +22,20 @@ public class Audio {
             6f     // Maximum
     };
 
-    /** Indice actual del nivel de volumen, por defecto esta en nivel bajo (2) */
-    public int volumeScale = 2;
-    /** Clip que maneja la reproduccion del audio */
+    /** Indice que determina el nivel de volumen actual, referenciando al array VOLUMES */
+    public int volume;
+    /** Objeto que maneja la reproduccion del archivo de audio */
     private Clip clip;
-    /** Control para ajustar el volumen maestro del clip */
+    /** Control para ajustar el volumen maestro del clip de audio */
     private FloatControl volumeControl;
 
     /**
      * Reproduce un archivo de audio.
      * <p>
-     * Abre el recurso de audio especificado, configura su volumen inicial y comienza la reproduccion.
+     * El metodo play gestiona la reproduccion de archivos de audio. Obtiene un clip de audio, carga el archivo desde la URL
+     * proporcionada, configura el control de volumen y comienza la reproduccion. Si ocurre algun error durante el proceso, lo
+     * captura e imprime en la consola sin detener el programa. La reproduccion se realiza de forma asincrona, permitiendo que el
+     * programa continue su ejecucion mientras el audio suena en segundo plano.
      *
      * @param url URL del archivo de audio a reproducir
      */
@@ -39,7 +44,7 @@ public class Audio {
             clip = AudioSystem.getClip();
             clip.open(AudioSystem.getAudioInputStream(url));
             volumeControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            checkVolume();
+            setVolume();
             clip.start();
         } catch (Exception e) {
             System.err.println("Failed to play audio: " + e.getMessage());
@@ -47,7 +52,7 @@ public class Audio {
     }
 
     /**
-     * Detiene la reproduccion del audio y libera los recursos.
+     * Detiene la reproduccion del audio actual y libera los recursos asociados.
      */
     public void stop() {
         if (clip != null) {
@@ -57,20 +62,21 @@ public class Audio {
     }
 
     /**
-     * Activa la reproduccion en bucle continuo del audio actual.
+     * Configura el audio actual para reproducirse en bucle continuo.
      */
     public void loop() {
         if (clip != null) clip.loop(Clip.LOOP_CONTINUOUSLY);
     }
 
     /**
-     * Actualiza el volumen del audio segun el nivel seleccionado.
+     * Establece el nivel de volumen del audio basado en el indice almacenado en el atributo {@code volume}.
      * <p>
-     * Verifica que el indice de volumen sea valido y que exista un control de volumen antes de realizar el cambio.
+     * Este metodo ajusta el volumen del audio basado en el valor almacenado en, utilizando un array de volumenes (VOLUMES) para
+     * mapear el indice de volume a un valor de volumen especifico.
      */
-    public void checkVolume() {
-        if (volumeScale >= 0 && volumeScale < VOLUME_LEVELS.length && volumeControl != null)
-            volumeControl.setValue(VOLUME_LEVELS[volumeScale]);
+    public void setVolume() {
+        if (volumeControl != null && volume >= 0 && volume < VOLUMES.length)
+            volumeControl.setValue(VOLUMES[volume]);
     }
 
 }

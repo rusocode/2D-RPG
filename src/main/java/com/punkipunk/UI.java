@@ -23,7 +23,7 @@ import static com.punkipunk.utils.Global.*;
  * User interface.
  *
  * <p>TODO Replace these UIs with textures made like MC and THROW THEM TO SHIT!
- * <p>TODO Implement music for title screen (<a href="https://www.youtube.com/watch?v=blyK-QkZkQ8">...</a>)
+ * <p>TODO Implement musicVolume for title screen (<a href="https://www.youtube.com/watch?v=blyK-QkZkQ8">...</a>)
  */
 
 public class UI {

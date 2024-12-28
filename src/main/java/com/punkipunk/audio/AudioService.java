@@ -5,36 +5,34 @@ public interface AudioService {
     /**
      * Reproduce el audio en el canal especificado.
      *
-     * @param channel canal del audio a reproducir
-     * @param audioId identificador del audio a reproducir
+     * @param channel canal del audio
+     * @param id      identificador del audio
      */
-    void play(AudioChannel channel, String audioId);
+    void play(AudioChannel channel, String id);
 
     /**
-     * Detiene el audio en el canal especificado.
+     * Detiene el audio que se esta reproduciendo en el canal especificado.
      *
-     * @param channel canal del audio a detener
+     * @param channel canal del audio
      */
     void stop(AudioChannel channel);
 
     /**
-     * Detiene la reproduccion en todos los canales de audio.
+     * Detiene la reproduccion del audio en todos los canales.
      */
     void stopAll();
 
     /**
      * Obtiene la instancia de Audio asociada al canal especificado.
      *
-     * @param channel canal del cual obtener la instancia de Audio
-     * @return instancia de Audio asociada al canal o null si el canal no existe
+     * @param channel canal del audio
+     * @return la instancia de Audio asociada al canal especificado
      */
-    Audio getAudio(AudioChannel channel);
+    Audio get(AudioChannel channel);
 
     /**
-     * Guarda la configuracion actual de volumen en un archivo JSON.
-     * <p>
-     * Los valores se almacenan en la ubicacion especifica del sistema definida por UserDataUtils.
+     * Guarda el volumen en un archivo de configuracion.
      */
-    void saveVolumeSettings();
+    void save();
 
 }
