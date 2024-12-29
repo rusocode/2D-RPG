@@ -30,35 +30,37 @@ public class ConfigPaths {
     private static final String APP_NAME = "2D-RPG";
 
     /**
-     * Obtiene la ruta completa para un archivo de configuracion.
+     * Obtiene la ruta completa para un archivo de configuracion, creando el directorio si es necesario.
      *
      * @param filename nombre del archivo de configuracion
-     * @return ruta completa al archivo de configuracion
+     * @return la ruta completa al archivo de configuracion
      * @throws RuntimeException si no se puede crear el directorio de configuracion o no hay permisos de escritura
      */
     public static Path getConfigPath(String filename) {
-        Path configDir = getUserDataDirectory();
+        Path configDir = getConfigDir();
         File dirFile = configDir.toFile();
 
         if (!dirFile.exists()) {
+            // Crea el directorio de configuracion si no existe, antes de intentar usarlo
             boolean created = dirFile.mkdirs();
             if (!created && !dirFile.exists())
                 throw new RuntimeException("Failed to create configuration directory: " + configDir);
-        } else if (!dirFile.isDirectory()) {
+        } else if (!dirFile.isDirectory())
             throw new RuntimeException("The path exists but is not a directory: " + configDir);
-        } else if (!dirFile.canWrite()) {
+        else if (!dirFile.canWrite())
             throw new RuntimeException("There are no write permissions on the directory: " + configDir);
-        }
 
+        /* Combina la ruta del directorio de configuracion con el nombre del archivo usando resolve(). Por ejemplo, si recibio
+         * "volume.json", devolveria algo como: "C:/Users/usuario/AppData/Local/2D-RPG/volume.json" */
         return configDir.resolve(filename);
     }
 
     /**
      * Obtiene el directorio de configuracion especifico del sistema operativo actual.
      *
-     * @return Ruta al directorio de configuracion
+     * @return la ruta al directorio de configuracion
      */
-    private static Path getUserDataDirectory() {
+    private static Path getConfigDir() {
         String userHome = System.getProperty("user.home");
         String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) return Paths.get(userHome, "AppData", "Local", APP_NAME);

@@ -69,10 +69,9 @@ public class Audio {
     }
 
     /**
-     * Establece el nivel de volumen del audio basado en el indice almacenado en el atributo {@code volume}.
      * <p>
-     * Este metodo ajusta el volumen del audio basado en el valor almacenado en, utilizando un array de volumenes (VOLUMES) para
-     * mapear el indice de volume a un valor de volumen especifico.
+     * Establece el volumen del audio basado en el indice almacenado en {@code volume}, utilizando un array de volumenes (VOLUMES)
+     * para mapear el indice de volume a un valor de volumen especifico.
      */
     public void setVolume() {
         if (volumeControl != null && volume >= 0 && volume < VOLUMES.length)

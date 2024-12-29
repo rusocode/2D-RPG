@@ -1,23 +1,41 @@
 package com.punkipunk.audio;
 
-public class AudioID {
+/**
+ * Define las constantes para identificar los diferentes archivos de audio del juego.
+ * <p>
+ * Esta clase agrupa los identificadores en categorias internas:
+ * <ul>
+ * <li>{@link Music} - Pistas musicales de fondo
+ * <li>{@link Ambient} - Sonidos ambientales de las zonas
+ * <li>{@link Sound} - Efectos de sonido del juego
+ * </ul>
+ * <p>
+ * Las constantes se usan para referenciar archivos de audio sin acoplar el codigo a rutas especificas. Las rutas reales se
+ * definen en el archivo {@code audio.json}.
+ */
 
-    private AudioID() {}
+public final class AudioID {
+
+    private AudioID() {
+    }
 
     public static final class Music {
-        private Music() {}
         public static final String BOSS = "boss";
         public static final String MAIN = "main";
+
+        private Music() {
+        }
     }
 
     public static final class Ambient {
-        private Ambient() {}
         public static final String DUNGEON = "dungeon";
         public static final String OVERWORLD = "overworld";
+
+        private Ambient() {
+        }
     }
 
     public static final class Sound {
-        private Sound() {}
         public static final String BAT_DEATH = "batDeath";
         public static final String BAT_DEATH2 = "batDeath2";
         public static final String BAT_HIT = "batHit";
@@ -55,6 +73,9 @@ public class AudioID {
         public static final String TRADE_BUY = "tradeBuy";
         public static final String TRADE_OPENING = "tradeOpening";
         public static final String TRADE_SELL = "tradeSell";
+
+        private Sound() {
+        }
     }
 
 }

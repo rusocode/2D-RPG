@@ -30,6 +30,17 @@ import java.util.Map;
  * Las configuraciones se cargan desde los archivos JSON ubicados en el directorio de recursos.
  * <p>
  * Esta clase es thread-safe debido a su naturaleza inmutable una vez inicializada.
+ * <p>
+ * El metodo {@code readTree()} permite convertir un JSON a un arbol de nodos, mientras que el metodo {@code treeToValue()}
+ * convierte un nodo del arbol a un objeto Java. Estos metodos generalmente se utilizan juntos cuando necesitas primero leer y
+ * navegar por un JSON complejo usando readTree() y luego convertir partes especificas de ese JSON a objetos Java usando
+ * treeToValue().
+ * <p>
+ * En resumen:
+ * <ul>
+ * <li>{@code readTree()}: JSON → Arbol de nodos
+ * <li>{@code treeToValue()}: Nodo del arbol → Objeto Java
+ * </ul>
  */
 
 public class Config {
@@ -50,69 +61,22 @@ public class Config {
     }
 
     /**
-     * Carga todos los archivos de configuracion en memoria.
-     *
-     * @throws RuntimeException si las configuraciones no pueden ser cargadas
-     */
-    private void loadConfigs() {
-        try {
-            // Carga las configuraciones al inicio
-            // configs.put("entities", loadConfig("config/entities.json"));
-            // configs.put("items", loadConfig("config/items.json"));
-            configs.put("audio", parseJsonConfig("config/audio.json"));
-        } catch (IOException e) {
-            throw new RuntimeException("Failed to load configurations", e);
-        }
-    }
-
-    /**
      * <p>
-     * Parsea un archivo de configuracion en formato JSON y lo convierte en una estructura de arbol. El metodo lee el archivo JSON
-     * especificado usando Jackson y crea una representacion jerarquica en memoria. Esta estructura de arbol permite acceder y
-     * navegar por los datos JSON usando notacion de puntos. Por ejemplo, asi es la estructura de audio.json:
+     * Convierte un nodo del arbol JSON (JsonNode) a un objeto Java de una clase especifica. El metodo navega por el arbol JSON
+     * usando una ruta con notacion de puntos y convierte el nodo encontrado al tipo solicitado. Por ejemplo:
      * <pre>{@code
-     * {
-     *   "music": {
-     *     "main": {
-     *       "file": "audio/music/main.wav",
-     *       "loop": true
-     *     }
-     *   }
-     * }
-     * }</pre>
-     * <p>
-     * El arbol resultante permite acceder a los nodos mediante encadenamiento de get():
-     * root.get("audio").get("music").get("main).
+     * // Teniendo una clase Java:
+     * public record AudioConfig(String file, boolean loop) {}
      *
-     * @param path ruta al archivo JSON dentro del classpath
-     * @return el JsonNode representando el arbol de datos JSON
-     * @throws IOException si hay errores al leer o parsear el JSON
-     */
-    private JsonNode parseJsonConfig(String path) throws IOException {
-        try (InputStream is = Config.class.getResourceAsStream("/" + path)) {
-            return mapper.readTree(is);
-        }
-    }
-
-    /**
-     * <p>
-     * Extrae y convierte un valor del JSON a un objeto Java del tipo especificado. El metodo navega por el arbol JSON usando una
-     * ruta con notacion de puntos y convierte el nodo encontrado al tipo solicitado. Por ejemplo:
-     * <pre>{@code
-     * {
-     *   "music": {
-     *     "main": {
-     *       "file": "audio/music/main.wav",
-     *       "loop": true
-     *     }
-     *   }
-     * }
-     * // Podemos obtener la configuracion asi:
-     * AudioConfig config = getJsonValue("audio.music.main", AudioConfig.class);
-     * // Resultando en: AudioConfig("audio/music/main.wav", true)
+     * // Y un nodo del arbol JSON que contiene "file" y "loop":
+     * JsonNode mainNode = root.get("music").get("main");
+     *
+     * // Podemos convertirlo a un objeto AudioConfig:
+     * AudioConfig config = mapper.treeToValue(mainNode, AudioConfig.class);
+     * // Ahora tenemos un objeto con:
+     * // config.file() = "audio/music/main.wav"
+     * // config.loop() = true
      * }</pre>
-     * <p>
-     * La conversion utiliza Jackson para mapear automaticamente los campos JSON a las propiedades del objeto Java.
      *
      * @param path ruta en notacion de puntos al valor JSON deseado
      * @param type clase destino para la conversion del valor JSON
@@ -137,6 +101,53 @@ public class Config {
             return mapper.treeToValue(node, type);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to parse config: " + path, e);
+        }
+    }
+
+    /**
+     * Carga todos los archivos de configuracion en memoria.
+     *
+     * @throws RuntimeException si las configuraciones no pueden ser cargadas
+     */
+    private void loadConfigs() {
+        try {
+            // Carga las configuraciones al inicio
+            // configs.put("entities", loadConfig("config/entities.json"));
+            // configs.put("items", loadConfig("config/items.json"));
+            configs.put("audio", parseJsonConfig("config/audio.json"));
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load configurations", e);
+        }
+    }
+
+    /**
+     * <p>
+     * Parsea un archivo de configuracion en formato JSON y lo convierte a un arbol de nodos ({@code JsonNode}). Es como construir
+     * un arbol donde cada elemento del JSON es un nodo que puede contener mas nodos. Ejemplo:
+     * <pre>{@code
+     * {
+     *   "music": {
+     *     "main": {
+     *       "file": "audio/music/main.wav",
+     *       "loop": true
+     *     }
+     *   }
+     * }
+     * // Se convierte en un arbol de nodos:
+     * JsonNode root = mapper.readTree(InputStream);
+     * JsonNode musicNode = root.get("music");
+     * JsonNode mainNode = musicNode.get("main");
+     * String file = mainNode.get("file").asText(); // "audio/music/main.wav"
+     * boolean loop = mainNode.get("loop").asBoolean(); // true
+     * }</pre>
+     *
+     * @param path ruta al archivo JSON dentro del classpath
+     * @return el JsonNode representando el arbol de datos JSON
+     * @throws IOException si hay errores al leer o parsear el JSON
+     */
+    private JsonNode parseJsonConfig(String path) throws IOException {
+        try (InputStream is = Config.class.getResourceAsStream("/" + path)) {
+            return mapper.readTree(is);
         }
     }
 

@@ -116,7 +116,7 @@ public class AudioServiceImpl implements AudioService {
             mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, defaultVolumeConfig);
             setVolumens(defaultVolumeConfig);
         } catch (IOException e) {
-            System.err.println("Error loading volume file, using defaults\n" + e.getMessage());
+            System.err.println("Error loading volume file, using default volume\n" + e.getMessage());
             Arrays.stream(AudioChannel.values()).forEach(channel -> get(channel).volume = DEFAULT_VOLUME);
         }
     }
@@ -155,7 +155,7 @@ public class AudioServiceImpl implements AudioService {
      * Reproduce un audio usando la configuracion especificada.
      *
      * @param audio  instancia de Audio donde se reproducira el sonido
-     * @param config configuracion que contiene la ruta del archivo y si debe reproducirse en bucle
+     * @param config configuracion de audio
      */
     private void play(Audio audio, AudioConfig config) {
         Optional.ofNullable(getClass().getResource("/" + config.file()))
