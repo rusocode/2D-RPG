@@ -8,7 +8,6 @@ import com.punkipunk.gfx.Animation;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Type;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -21,7 +20,7 @@ public class Oldman extends Mob {
     public Oldman(Game game, World world, int col, int row) {
         super(game, world, col, row);
         dialogue = new Dialogue(game);
-        type = Type.NPC;
+        mobType = MobType.NPC;
         stats.name = "Oldman";
         stats.speed = 1;
         int scale = 1;

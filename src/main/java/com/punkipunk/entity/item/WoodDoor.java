@@ -1,31 +1,25 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
+import com.punkipunk.config.Config;
+import com.punkipunk.config.json.ItemConfig;
 import com.punkipunk.core.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.TextureAssets;
 import com.punkipunk.states.State;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Type;
 import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.tile;
 
-public class Door extends Item {
+public class WoodDoor extends Item {
 
-    public static final String NAME = "Door";
+    public static final String NAME = "Wood Door";
 
-    public Door(Game game, World world, int... pos) {
-        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
+    public WoodDoor(Game game, World world, int... pos) {
+        super(game, world, Config.getInstance().getJsonValue("items.woodDoor", ItemConfig.class), pos);
         dialogue = new Dialogue(game);
-        type = Type.OBSTACLE;
-        stats.name = NAME;
-        solid = true;
         hitbox = new Rectangle(0, 16, 31, tile - 18);
         hitboxDefaultX = hitbox.getX();
         hitboxDefaultY = hitbox.getY();
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.DOOR), tile, tile);
         initDialogue();
     }
 

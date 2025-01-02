@@ -27,10 +27,10 @@ public enum SpriteSheetAssets {
     private static final String textures_projectile_path = "textures/entity/projectile/";
 
     // Items
-    private static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadTexture(textures_items_path + "axe_frame.png"));
+    private static final SpriteSheet axe_frame = new SpriteSheet(Utils.loadTexture(textures_items_path + "stone_axe_frame.png"));
     private static final SpriteSheet chest = new SpriteSheet(Utils.loadTexture(textures_items_path + "chest.png"));
-    private static final SpriteSheet pickaxe_frame = new SpriteSheet(Utils.loadTexture(textures_items_path + "pickaxe_frame.png"));
-    private static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadTexture(textures_items_path + "sword_frame.png"));
+    private static final SpriteSheet pickaxe_frame = new SpriteSheet(Utils.loadTexture(textures_items_path + "stone_pickaxe_frame.png"));
+    private static final SpriteSheet sword_frame = new SpriteSheet(Utils.loadTexture(textures_items_path + "stone_sword_frame.png"));
 
     // Mobs
     private static final SpriteSheet bat = new SpriteSheet(Utils.loadTexture(textures_mob_path + "bat.png"));

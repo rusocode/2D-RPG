@@ -1,9 +1,9 @@
 package com.punkipunk.gui.container;
 
 import com.punkipunk.core.Game;
-import com.punkipunk.world.World;
-import com.punkipunk.entity.player.Player;
 import com.punkipunk.entity.item.*;
+import com.punkipunk.entity.player.Player;
+import com.punkipunk.world.World;
 
 import java.util.*;
 
@@ -78,9 +78,9 @@ public abstract class Container {
     /**
      * Agrega un item al contenedor.
      * <p>
-     * Si existe un item apilable similar, incrementa su cantidad. Si no, busca el primer slot libre y coloca el item alli.
+     * Si existe un item apilable similar, incrementa su cantidad. Si no, busca el primer slot libre y lo agrega ahi.
      *
-     * @param currentItem el item a agregar
+     * @param currentItem item a agregar
      */
     public void add(Item currentItem) {
         // Filtra el primer item del contenedor que es stackable y igual al item actual
@@ -193,18 +193,18 @@ public abstract class Container {
      * @return el nuevo item generado
      * @throws IllegalStateException si el nombre del item no es valido
      */
-    public Item generate(String name) {
+    private Item generate(String name) {
         return switch (name) {
-            case IronAxe.NAME -> new IronAxe(game, world);
+            case StoneAxe.NAME -> new StoneAxe(game, world);
             case Boots.NAME -> new Boots(game, world);
             case Chest.NAME -> new Chest(game, world);
             case Chicken.NAME -> new Chicken(game, world);
             case Gold.NAME -> new Gold(game, world, 0);
-            case Door.NAME -> new Door(game, world);
+            case WoodDoor.NAME -> new WoodDoor(game, world);
             case IronDoor.NAME -> new IronDoor(game, world);
-            case Key.NAME -> new Key(game, world, 0);
+            case Key.NAME -> new Key(game, world);
             case Lantern.NAME -> new Lantern(game, world);
-            case IronPickaxe.NAME -> new IronPickaxe(game, world);
+            case StonePickaxe.NAME -> new StonePickaxe(game, world);
             case PotionBlue.NAME -> new PotionBlue(game, world, 0);
             /* In the case of trading with the Trader and buying 1 at a time, it would be inefficient since 1 object is
              * created per potion, therefore it would be good for the player to be able to determine the quantity to buy.
@@ -213,7 +213,7 @@ public abstract class Container {
             case IronShield.NAME -> new IronShield(game, world);
             case WoodShield.NAME -> new WoodShield(game, world);
             case Stone.NAME -> new Stone(game, world, 0);
-            case IronSword.NAME -> new IronSword(game, world);
+            case StoneSword.NAME -> new StoneSword(game, world);
             case Tent.NAME -> new Tent(game, world);
             case Wood.NAME -> new Wood(game, world, 0);
             default -> throw new IllegalStateException("Unexpected value: " + name);

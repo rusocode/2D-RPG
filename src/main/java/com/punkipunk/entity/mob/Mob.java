@@ -4,9 +4,7 @@ import com.punkipunk.Direction;
 import com.punkipunk.core.Game;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
-
-import java.net.URL;
+import com.punkipunk.entity.Entity;
 
 import static com.punkipunk.utils.Global.tile;
 
@@ -28,7 +26,7 @@ import static com.punkipunk.utils.Global.tile;
  * TODO I could create a MobStats class and create it from here, where that class will only have the attributes of mobs
  */
 
-public class Mob extends Entity {
+public abstract class Mob extends Entity {
 
     public String soundHit, soundDeath;
 

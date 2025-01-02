@@ -1,40 +1,24 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.audio.AudioID;
+import com.punkipunk.config.Config;
+import com.punkipunk.config.json.ItemConfig;
 import com.punkipunk.core.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.TextureAssets;
-import com.punkipunk.utils.Utils;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
-
-import static com.punkipunk.utils.Global.tile;
-
-/**
- * To specify the texture of the item on the ground with a smaller size:
- * <pre>{@code
- * sheet.frame = pos.length > 0 ? Utils.scaleImage(key, tile / 2, tile / 2) : Utils.scaleImage(key, tile, tile);
- * }</pre>
- */
 
 public class Key extends Item {
 
     public static final String NAME = "Key";
 
-    public Key(Game game, World world, int amount, int... pos) {
-        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        itemType = ItemType.CONSUMABLE;
-        stats.name = NAME;
-        description = "[" + stats.name + "]\nIt opens a door.";
-        this.amount = amount;
-        stackable = true;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.KEY), tile, tile);
+    public Key(Game game, World world, int... pos) {
+        super(game, world, Config.getInstance().getJsonValue("items.key", ItemConfig.class), pos);
     }
 
     @Override
     public boolean use(Entity entity) {
         // If the entity detects a door, then it can use the key
-        int i = detect(entity, world.entities.items, Door.NAME);
+        int i = detect(entity, world.entities.items, WoodDoor.NAME);
         if (i != -1) {
             game.system.audio.playSound(AudioID.Sound.DOOR_OPENING);
             world.entities.items[world.map.num][i] = null;

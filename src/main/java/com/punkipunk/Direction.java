@@ -1,7 +1,7 @@
 package com.punkipunk;
 
 import com.punkipunk.input.keyboard.Key;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 
 public enum Direction {
 

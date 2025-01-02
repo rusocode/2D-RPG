@@ -3,12 +3,10 @@ package com.punkipunk.entity.projectile;
 import com.punkipunk.Direction;
 import com.punkipunk.core.Game;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.player.Player;
-import com.punkipunk.entity.base.Type;
+import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.mob.Mob;
-
-import java.net.URL;
 
 import static com.punkipunk.utils.Global.INTERVAL_PROJECTILE_ANIMATION;
 
@@ -42,7 +40,7 @@ public class Projectile extends Entity {
                  * is redrawn, it will remain in motion frame 1 since in the ternary operator, the condition remains true
                  * and never changes to false in order to display motion frame 2. The following line solves this problem. */
                 flags.colliding = false;
-                if (!mob.flags.invincible && mob.type != Type.NPC) {
+                if (!mob.flags.invincible && mob.mobType != MobType.NPC) {
                     world.entities.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
                     // In this case, the particle generator is the fireball when the player throws it against a mob
                     generateParticle(entity.projectile, mob);

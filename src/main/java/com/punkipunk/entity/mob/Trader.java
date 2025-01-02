@@ -8,7 +8,6 @@ import com.punkipunk.assets.TextureAssets;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Type;
 import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.tile;
@@ -18,7 +17,7 @@ public class Trader extends Mob {
     public Trader(Game game, World world, int col, int row) {
         super(game, world, col, row);
         dialogue = new Dialogue(game);
-        type = Type.NPC;
+        mobType = MobType.NPC;
         stats.name = "Trader";
         hitbox = new Rectangle(7, 40, 15, 24);
         hitboxDefaultX = hitbox.getX();

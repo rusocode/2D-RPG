@@ -30,13 +30,13 @@ public class Inventory extends Container {
     }
 
     public void initializeDefaultItems() {
-        add(new IronSword(game, world));
+        add(new StoneSword(game, world));
         add(new WoodShield(game, world));
         add(new PotionBlue(game, world, 1));
-        add(new Key(game, world, 1));
-        add(new IronAxe(game, world));
-        add(new IronPickaxe(game, world));
-        add(new IronAxe(game, world));
+        add(new Key(game, world));
+        add(new StoneAxe(game, world));
+        add(new StonePickaxe(game, world));
+        add(new StoneAxe(game, world));
     }
 
     public void equip(Item item) {

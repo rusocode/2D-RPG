@@ -1,7 +1,7 @@
 package com.punkipunk.gfx;
 
 import com.punkipunk.utils.Utils;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -17,7 +17,7 @@ public class SpriteSheet {
     public Image[] down, up, left, right; // Player with more than one frame for each direction
     public Image[] weapon; // Item with a frame for each direction
     // Represents the first frame of each entity
-    public Image frame; // TODO Cambiar nombre
+    public Image frame; // TODO Cambiar nombre y mover
     // SpriteSheet
     private Image image;
 

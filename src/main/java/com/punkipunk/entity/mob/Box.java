@@ -9,8 +9,7 @@ import com.punkipunk.assets.TextureAssets;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
-import com.punkipunk.entity.base.Type;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.interactive.MetalPlate;
 import com.punkipunk.entity.item.IronDoor;
@@ -27,7 +26,7 @@ public class Box extends Mob {
     public Box(Game game, World world, int col, int row) {
         super(game, world, col, row);
         dialogue = new Dialogue(game);
-        type = Type.NPC;
+        mobType = MobType.NPC;
         stats.name = NAME;
         stats.speed = 1;
         hitbox = new Rectangle(1, 1, tile - 2, tile - 2);

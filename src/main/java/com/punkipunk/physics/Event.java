@@ -6,7 +6,7 @@ import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.io.Progress;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.*;

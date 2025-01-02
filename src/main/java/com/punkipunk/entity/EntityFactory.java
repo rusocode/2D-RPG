@@ -1,4 +1,4 @@
-package com.punkipunk.entity.factory;
+package com.punkipunk.entity;
 
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.interactive.DestructibleWall;
@@ -48,26 +48,26 @@ public class EntityFactory {
     public void createItems() {
         int i = 0;
 
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 33, 7);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 21);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 33, 7);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 21);
         items[ABANDONED_ISLAND][i++] = new PotionBlue(game, world, 3, 23, 22);
         items[ABANDONED_ISLAND][i++] = new PotionBlue(game, world, 4, 24, 22);
         items[ABANDONED_ISLAND][i++] = new PotionRed(game, world, 4, 25, 22);
-        items[ABANDONED_ISLAND][i++] = new IronSword(game, world, 22, 22);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 23);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 24);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 25);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 26);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 27);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 28);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 29);
-        items[ABANDONED_ISLAND][i++] = new IronAxe(game, world, 23, 30);
-        items[ABANDONED_ISLAND][i++] = new Door(game, world, 14, 28);
-        items[ABANDONED_ISLAND][i++] = new Door(game, world, 12, 12);
+        items[ABANDONED_ISLAND][i++] = new StoneSword(game, world, 22, 22);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 23);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 24);
+        items[ABANDONED_ISLAND][i++] = new Boots(game, world, 23, 25);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 26);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 27);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 28);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 29);
+        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 30);
+        items[ABANDONED_ISLAND][i++] = new WoodDoor(game, world, 14, 28);
+        items[ABANDONED_ISLAND][i++] = new WoodDoor(game, world, 12, 12);
         // TODO No es mejor pasarle directamente al cofre el item que va a tener desde el constructor?
         items[ABANDONED_ISLAND][i] = new Chest(game, world, 30, 29);
         // TODO What if there are many items?
-        items[ABANDONED_ISLAND][i++].setLoot(new Key(game, world, 1));
+        items[ABANDONED_ISLAND][i++].setLoot(new Key(game, world));
         items[ABANDONED_ISLAND][i] = new Chest(game, world, 23, 40);
         items[ABANDONED_ISLAND][i].setLoot(new PotionBlue(game, world, 2));
 
@@ -78,7 +78,7 @@ public class EntityFactory {
         items[DUNGEON_BREG][i] = new Chest(game, world, 26, 34);
         items[DUNGEON_BREG][i++].setLoot(new PotionBlue(game, world, 5));
         items[DUNGEON_BREG][i] = new Chest(game, world, 40, 41);
-        items[DUNGEON_BREG][i++].setLoot(new IronPickaxe(game, world));
+        items[DUNGEON_BREG][i++].setLoot(new StonePickaxe(game, world));
         items[DUNGEON_BREG][i] = new IronDoor(game, world, 18, 23);
 
         i = 0;

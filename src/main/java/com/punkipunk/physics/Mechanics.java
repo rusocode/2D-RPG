@@ -1,7 +1,7 @@
 package com.punkipunk.physics;
 
-import com.punkipunk.entity.base.Entity;
-import com.punkipunk.entity.base.Type;
+import com.punkipunk.entity.Entity;
+import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.mob.Box;
 
 /**
@@ -52,7 +52,7 @@ public class Mechanics {
      * @return true if all specified conditions are met or false.
      */
     private boolean checkConditionsForUnion(Entity player, Entity mob) {
-        return mob != null && mob.type == Type.NPC && player.flags.collidingOnMob
+        return mob != null && mob.mobType == MobType.NPC && player.flags.collidingOnMob
                 && player.direction == mob.direction && !isDistanceWithMob(player, mob) && !mob.flags.colliding;
     }
 

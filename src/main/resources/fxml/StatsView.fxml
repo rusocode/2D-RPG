@@ -66,10 +66,10 @@
 
     <HBox>
         <ImageView>
-            <Image url="@../textures/entity/items/sword_iron.png"/>
+            <Image url="@../textures/entity/items/stone_sword.png"/>
         </ImageView>
         <ImageView>
-            <Image url="@../textures/entity/items/shield_wood.png"/>
+            <Image url="@../textures/entity/items/wood_shield.png"/>
         </ImageView>
     </HBox>
 

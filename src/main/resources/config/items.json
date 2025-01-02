@@ -1,0 +1,136 @@
+{
+  "stoneAxe": {
+    "name": "Stone Axe",
+    "type": "AXE",
+    "description": "A bit rusty but still can cut some trees",
+    "price": 75,
+    "attackValue": 1,
+    "knockbackValue": 8,
+    "texture": "textures/entity/items/stone_axe.png"
+  },
+  "boots": {
+    "name": "Boots",
+    "type": "USABLE",
+    "texture": "textures/entity/items/boots.png"
+  },
+  "chest": {
+    "name": "Chest",
+    "type": "OBSTACLE",
+    "solid": true,
+    "spriteSheet": "textures/entity/items/chest.png"
+  },
+  "chicken": {
+    "name": "Chicken",
+    "type": "USABLE",
+    "description": "Yes...\nLizard's treasure",
+    "price": 1,
+    "texture": "textures/entity/items/chicken.png"
+  },
+  "woodDoor": {
+    "name": "Wood Door",
+    "type": "OBSTACLE",
+    "solid": true,
+    "texture": "textures/entity/items/wood_door.png"
+  },
+  "ironDoor": {
+    "name": "Iron Door",
+    "type": "OBSTACLE",
+    "solid": true,
+    "texture": "textures/entity/items/door_iron.png"
+  },
+  "gold": {
+    "name": "Gold",
+    "type": "PICKUP",
+    "stackable": true,
+    "texture": "textures/entity/items/gold.png"
+  },
+  "key": {
+    "name": "Key",
+    "type": "USABLE",
+    "description": "It opens a door",
+    "texture": "textures/entity/items/key.png"
+  },
+  "lantern": {
+    "name": "Lantern",
+    "type": "LIGHT",
+    "description": "Illuminates your surroundings",
+    "price": 45,
+    "lightRadius": 350,
+    "texture": "textures/entity/items/lantern.png"
+  },
+  "stonePickaxe": {
+    "name": "Stone Pickaxe",
+    "type": "PICKAXE",
+    "description": "You will dig it!",
+    "price": 60,
+    "attackValue": 1,
+    "knockbackValue": 8,
+    "texture": "textures/entity/items/stone_pickaxe.png"
+  },
+  "potionBlue": {
+    "name": "Blue Potion",
+    "type": "USABLE",
+    "description": "Increase your mana by {points}",
+    "price": 4,
+    "points": 2,
+    "stackable": true,
+    "texture": "textures/entity/items/potion_blue.png"
+  },
+  "potionRed": {
+    "name": "Red Potion",
+    "type": "USABLE",
+    "description": "Heals your life by {points}",
+    "price": 2,
+    "points": 2,
+    "stackable": true,
+    "texture": "textures/entity/items/potion_red.png"
+  },
+  "ironShield": {
+    "name": "Iron Shield",
+    "type": "SHIELD",
+    "description": "A shiny iron shield",
+    "price": 250,
+    "defenseValue": 2,
+    "texture": "textures/entity/items/iron_shield.png"
+  },
+  "woodShield": {
+    "name": "Wood Shield",
+    "type": "SHIELD",
+    "description": "Made by wood",
+    "price": 150,
+    "defenseValue": 1,
+    "texture": "textures/entity/items/wood_shield.png"
+  },
+  "stone": {
+    "name": "Stone",
+    "type": "USABLE",
+    "description": "It's just a stone",
+    "price": 7,
+    "stackable": true,
+    "texture": "textures/entity/items/stone.png"
+  },
+  "stoneSword": {
+    "name": "Stone Sword",
+    "type": "SWORD",
+    "description": "An old sword",
+    "price": 20,
+    "attackValue": 1,
+    "knockbackValue": 2,
+    "texture": "textures/entity/items/stone_sword.png"
+  },
+  "tent": {
+    "name": "Tent",
+    "type": "USABLE",
+    "description": "You can sleep until next morning",
+    "price": 380,
+    "texture": "textures/entity/items/tent.png"
+  },
+  "wood": {
+    "name": "Wood",
+    "type": "USABLE",
+    "description": "Forest wood",
+    "price": 5,
+    "stackable": true,
+    "texture": "textures/entity/items/wood.png"
+  }
+}

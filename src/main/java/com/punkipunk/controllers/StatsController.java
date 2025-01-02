@@ -1,6 +1,6 @@
 package com.punkipunk.controllers;
 
-import com.punkipunk.entity.base.Stats;
+import com.punkipunk.entity.components.Stats;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 

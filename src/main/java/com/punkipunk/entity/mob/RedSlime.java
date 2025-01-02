@@ -6,7 +6,6 @@ import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Type;
 import com.punkipunk.entity.item.Gold;
 import com.punkipunk.entity.projectile.Fireball;
 import javafx.scene.shape.Rectangle;
@@ -17,7 +16,7 @@ public class RedSlime extends Mob {
 
     public RedSlime(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        type = Type.HOSTILE;
+        mobType = MobType.HOSTILE;
         stats.name = "Red Slime";
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 6;

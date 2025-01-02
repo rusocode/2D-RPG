@@ -4,7 +4,6 @@ import com.punkipunk.assets.Assets;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.base.Type;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.utils.Utils;
@@ -21,7 +20,7 @@ public class Orc extends Mob {
 
     public Orc(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        type = Type.HOSTILE;
+        mobType = MobType.HOSTILE;
         stats.name = "Orc";
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 10;
@@ -75,7 +74,7 @@ public class Orc extends Mob {
             tempScreenX = getScreenX();
             tempScreenY = getScreenY();
 
-            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
+            if (mobType == MobType.HOSTILE && flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
 
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
@@ -99,7 +98,7 @@ public class Orc extends Mob {
 
     @Override
     public void checkDrop() {
-        drop(this, new com.punkipunk.entity.item.Key(game, world, 1));
+        drop(this, new com.punkipunk.entity.item.Key(game, world));
     }
 
     private Image getCurrentAnimationFrame() {

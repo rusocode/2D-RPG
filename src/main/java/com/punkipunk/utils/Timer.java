@@ -1,8 +1,8 @@
 package com.punkipunk.utils;
 
 import com.punkipunk.Direction;
-import com.punkipunk.entity.base.Entity;
-import com.punkipunk.entity.base.Type;
+import com.punkipunk.entity.Entity;
+import com.punkipunk.entity.mob.MobType;
 import javafx.scene.canvas.GraphicsContext;
 
 import static com.punkipunk.utils.Global.*;
@@ -118,9 +118,9 @@ public class Timer {
      */
     public void checkTimers(Entity entity) {
         // Time the movement if the entity is not a player
-        if (entity.type != Type.PLAYER) timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
+        if (entity.mobType != MobType.PLAYER) timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
         // Controls the attack interval if the entity is a player
-        if (entity.type == Type.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
+        if (entity.mobType == MobType.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
         if (entity.flags.invincible) timeInvincible(entity, INTERVAL_INVINCIBLE);
         // TODO No tiene que cambiarse a entity.interval?
         if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;

@@ -40,21 +40,21 @@ public enum TextureAssets {
     private static final String textures_tiles_interactive_path = "textures/tiles/interactive/";
 
     // Items
-    private static final Image axe = Utils.loadTexture(textures_items_path + "axe.png");
+    private static final Image axe = Utils.loadTexture(textures_items_path + "stone_axe.png");
     private static final Image boots = Utils.loadTexture(textures_items_path + "boots.png");
     private static final Image chicken = Utils.loadTexture(textures_items_path + "chicken.png");
-    private static final Image door = Utils.loadTexture(textures_items_path + "door.png");
+    private static final Image door = Utils.loadTexture(textures_items_path + "wood_door.png");
     private static final Image door_iron = Utils.loadTexture(textures_items_path + "door_iron.png");
     private static final Image gold = Utils.loadTexture(textures_items_path + "gold.png");
     private static final Image key = Utils.loadTexture(textures_items_path + "key.png");
     private static final Image lantern = Utils.loadTexture(textures_items_path + "lantern.png");
-    private static final Image pickaxe = Utils.loadTexture(textures_items_path + "pickaxe.png");
+    private static final Image pickaxe = Utils.loadTexture(textures_items_path + "stone_pickaxe.png");
     private static final Image potion_blue = Utils.loadTexture(textures_items_path + "potion_blue.png");
     private static final Image potion_red = Utils.loadTexture(textures_items_path + "potion_red.png");
-    private static final Image shield_iron = Utils.loadTexture(textures_items_path + "shield_iron.png");
-    private static final Image shield_wood = Utils.loadTexture(textures_items_path + "shield_wood.png");
+    private static final Image shield_iron = Utils.loadTexture(textures_items_path + "iron_shield.png");
+    private static final Image shield_wood = Utils.loadTexture(textures_items_path + "wood_shield.png");
     private static final Image stone = Utils.loadTexture(textures_items_path + "stone.png");
-    private static final Image sword_iron = Utils.loadTexture(textures_items_path + "sword_iron.png");
+    private static final Image sword_iron = Utils.loadTexture(textures_items_path + "stone_sword.png");
     private static final Image tent = Utils.loadTexture(textures_items_path + "tent.png");
     private static final Image wood = Utils.loadTexture(textures_items_path + "wood.png");
 

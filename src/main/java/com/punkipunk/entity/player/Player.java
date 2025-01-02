@@ -8,8 +8,8 @@ import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.classes.Character;
 import com.punkipunk.classes.Jester;
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.base.Entity;
-import com.punkipunk.entity.base.Type;
+import com.punkipunk.entity.Entity;
+import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.item.IronDoor;
 import com.punkipunk.entity.item.Item;
@@ -97,7 +97,7 @@ public class Player extends Mob {
         hotbar = new Hotbar(game, world, this, inventory);
         dialogue = new Dialogue(game);
 
-        type = Type.PLAYER;
+        mobType = MobType.PLAYER;
         stats.init();
 
         projectile = new BurstOfFire(game, world);
@@ -251,7 +251,7 @@ public class Player extends Mob {
         if (i != -1) {
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
-            if (game.system.keyboard.isKeyPressed(Key.ENTER) && mob.type == Type.NPC) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER) && mob.mobType == MobType.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
             } else mob.move(direction); // In case it's the box
@@ -267,7 +267,7 @@ public class Player extends Mob {
         if (i != -1) {
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
-            if (!flags.invincible && !mob.flags.dead && mob.type == Type.HOSTILE) {
+            if (!flags.invincible && !mob.flags.dead && mob.mobType == MobType.HOSTILE) {
                 game.system.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
                 int damage = Math.max(mob.stats.attack - stats.defense, 1);
                 stats.decreaseHp(damage);
@@ -288,7 +288,7 @@ public class Player extends Mob {
         if (i != -1) { // TODO I change it to >= 0 to avoid double negation and comparison -1?
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
-            if (!mob.flags.invincible && mob.type != Type.NPC) {
+            if (!mob.flags.invincible && mob.mobType != MobType.NPC) {
 
                 if (knockbackValue > 0) mechanics.setKnockback(mob, attacker, knockbackValue);
 
@@ -395,8 +395,8 @@ public class Player extends Mob {
     public void pickup(int i) {
         if (i != -1) {
             Item item = world.entities.items[world.map.num][i];
-            if (game.system.keyboard.isKeyPressed(Key.PICKUP) && item.type != Type.OBSTACLE) {
-                if (item.type == Type.PICKUP) item.use(world.entities.player);
+            if (game.system.keyboard.isKeyPressed(Key.PICKUP) && item.itemType != ItemType.OBSTACLE) {
+                if (item.itemType == ItemType.PICKUP) item.use(world.entities.player);
                     // Si puede agregar items en el inventario o en la hotbar, entonces agrega los items a la hotbar
                 else if (inventory.canAddItem(item) || hotbar.canAddItem(item)) {
                     hotbar.add(item);
@@ -407,7 +407,7 @@ public class Player extends Mob {
                 }
                 world.entities.items[world.map.num][i] = null;
             }
-            if (game.system.keyboard.isKeyPressed(Key.ENTER) && item.type == Type.OBSTACLE) {
+            if (game.system.keyboard.isKeyPressed(Key.ENTER) && item.itemType == ItemType.OBSTACLE) {
                 world.entities.player.attackCanceled = true;
                 item.interact();
             }

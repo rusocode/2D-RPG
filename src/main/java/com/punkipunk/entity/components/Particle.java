@@ -1,7 +1,7 @@
 package com.punkipunk.entity.components;
 
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

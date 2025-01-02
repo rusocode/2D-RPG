@@ -19,7 +19,7 @@ import java.util.Optional;
  * juego.
  */
 
-public class AudioServiceImpl implements AudioService {
+    public class AudioServiceImpl implements AudioService {
 
     /** Volumen por defecto para todos los canales */
     public static final int DEFAULT_VOLUME = 3;
@@ -42,7 +42,8 @@ public class AudioServiceImpl implements AudioService {
     @Override
     public void play(AudioChannel channel, String id) {
         try {
-            String configPath = buildConfigPath(channel, id);
+            // Construye la ruta de configuracion para el audio especifico
+            String configPath = String.format("audio.%s.%s", channel.name().toLowerCase(), id); // TODO Por que hay que especificar el objeto "audio" si ya forma parte del nombre del archivo json?
             AudioConfig audioConfig = config.getJsonValue(configPath, AudioConfig.class);
             play(get(channel), audioConfig);
         } catch (Exception e) {
@@ -138,17 +139,6 @@ public class AudioServiceImpl implements AudioService {
     private void initAudioChannels() {
         for (AudioChannel channel : AudioChannel.values())
             channels.put(channel, new Audio());
-    }
-
-    /**
-     * Construye la ruta de configuracion para un audio especifico.
-     *
-     * @param channel canal de audio
-     * @param id      identificador del audio
-     * @return la ruta completa en el formato requerido por el ConfigManager
-     */
-    private String buildConfigPath(AudioChannel channel, String id) {
-        return String.format("audio.%s.%s", channel.name().toLowerCase(), id);
     }
 
     /**

@@ -1,9 +1,11 @@
-package com.punkipunk.entity.base;
+package com.punkipunk.entity;
 
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.entity.components.Stats;
+import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.input.keyboard.Key;
@@ -30,7 +32,7 @@ public abstract class Entity {
     public final World world;
 
     // TODO Faltaria el sonido
-    public Type type = Type.HOSTILE;
+    public MobType mobType = MobType.HOSTILE;
     public Direction direction = Direction.DOWN;
     public Position pos = new Position(); // TODO Podria ir en World
     public Stats stats = new Stats();
@@ -101,7 +103,7 @@ public abstract class Entity {
             tempScreenY = getScreenY();
 
             // If the hostile mob that is not a boss has the life bar activated
-            if (type == Type.HOSTILE && flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
+            if (mobType == MobType.HOSTILE && flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
 
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
@@ -231,7 +233,7 @@ public abstract class Entity {
      */
     public void hitPlayer(boolean contact, int attack) {
         // If the entity is hostile and makes contact with the player who is not invincible
-        if (type == Type.HOSTILE && contact && !world.entities.player.flags.invincible) {
+        if (mobType == MobType.HOSTILE && contact && !world.entities.player.flags.invincible) {
             game.system.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
             // Subtract the player's defense from the mob's attack to calculate fair damage
             int damage = Math.max(attack - world.entities.player.stats.defense, 1);

@@ -111,9 +111,7 @@ public class Config {
      */
     private void loadConfigs() {
         try {
-            // Carga las configuraciones al inicio
-            // configs.put("entities", loadConfig("config/entities.json"));
-            // configs.put("items", loadConfig("config/items.json"));
+            configs.put("items", parseJsonConfig("config/items.json"));
             configs.put("audio", parseJsonConfig("config/audio.json"));
         } catch (IOException e) {
             throw new RuntimeException("Failed to load configurations", e);

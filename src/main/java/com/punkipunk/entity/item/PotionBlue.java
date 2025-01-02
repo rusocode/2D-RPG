@@ -1,29 +1,19 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.audio.AudioID;
+import com.punkipunk.config.Config;
+import com.punkipunk.config.json.ItemConfig;
 import com.punkipunk.core.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.TextureAssets;
-import com.punkipunk.utils.Utils;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
-
-import static com.punkipunk.utils.Global.tile;
 
 public class PotionBlue extends Item {
 
     public static final String NAME = "Blue Potion";
 
     public PotionBlue(Game game, World world, int amount, int... pos) {
-        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
-        itemType = ItemType.CONSUMABLE;
-        stats.name = NAME;
-        points = 2;
-        description = "[" + stats.name + "]\nIncrease your mana \nby " + points + ".";
-        price = 4;
+        super(game, world, Config.getInstance().getJsonValue("items.potionBlue", ItemConfig.class), pos);
         this.amount = amount;
-        stackable = true;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.POTION_BLUE), tile, tile);
     }
 
     @Override

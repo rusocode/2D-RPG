@@ -1,11 +1,9 @@
 package com.punkipunk.assets;
 
 import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.entity.item.IronAxe;
+import com.punkipunk.entity.item.StoneAxe;
 import javafx.scene.image.Image;
 import javafx.scene.text.Font;
-
-import java.net.URL;
 
 /**
  * <p>
@@ -25,7 +23,7 @@ import java.net.URL;
  * programador solo necesita conocer el nombre del assets que quiere usar.
  * <li><b>Flexibilidad</b>: Si necesitamos cambiar como se cargan o almacenan los assets, solo necesitamos modificar las clases
  * especificas y la fachada, sin afectar al codigo que utiliza los assets.
- * <li><b>Uso simplificado</b>: Por ejemplo, como se muestra en la clase {@link IronAxe Axe}, el uso de
+ * <li><b>Uso simplificado</b>: Por ejemplo, como se muestra en la clase {@link StoneAxe Axe}, el uso de
  * assets se vuelve muy simple y consistente: {@code Assets.getTexture(TextureAssets.AXE)} reemplazando a {@code Assets.axe}.
  * Aunque esta diferencia no parece beneficiosa, ya que la nueva forma es mas larga de escribir, si es simple en terminos de
  * consistencia.

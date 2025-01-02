@@ -4,7 +4,6 @@ import com.punkipunk.assets.Assets;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.base.Type;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import com.punkipunk.entity.item.Gold;
@@ -16,7 +15,7 @@ public class Bat extends Mob {
 
     public Bat(Game game, World world, int col, int row) {
         super(game, world, col, row);
-        type = Type.HOSTILE;
+        mobType = MobType.HOSTILE;
         stats.name = "Bat";
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 2;

@@ -2,7 +2,7 @@ package com.punkipunk.ai;
 
 import com.punkipunk.Direction;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 
 import java.util.ArrayList;
 

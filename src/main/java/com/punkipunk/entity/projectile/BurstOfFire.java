@@ -7,8 +7,8 @@ import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
-import com.punkipunk.entity.base.Type;
+import com.punkipunk.entity.Entity;
+import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.mob.Mob;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -61,7 +61,7 @@ public class BurstOfFire extends Projectile {
         int mobIndex = game.system.collisionChecker.checkEntity(this, world.entities.mobs);
         if (mobIndex != -1) {
             Mob mob = world.entities.mobs[world.map.num][mobIndex];
-            if (!mob.flags.invincible && mob.type != Type.NPC) {
+            if (!mob.flags.invincible && mob.mobType != MobType.NPC) {
                 world.entities.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
                 generateParticle(entity.projectile, mob);
                 flags.alive = false;

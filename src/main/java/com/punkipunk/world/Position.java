@@ -1,7 +1,7 @@
 package com.punkipunk.world;
 
 import com.punkipunk.Direction;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 
 import static com.punkipunk.utils.Global.tile;
 

@@ -1,7 +1,7 @@
 package com.punkipunk.classes;
 
 import com.punkipunk.entity.player.Player;
-import com.punkipunk.entity.base.Stats;
+import com.punkipunk.entity.components.Stats;
 
 /**
  * It represents the different classes that are part of the game.

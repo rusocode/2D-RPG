@@ -5,7 +5,7 @@ import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.TextureAssets;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 

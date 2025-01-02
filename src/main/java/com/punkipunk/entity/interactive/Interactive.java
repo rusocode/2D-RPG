@@ -2,7 +2,7 @@ package com.punkipunk.entity.interactive;
 
 import com.punkipunk.core.Game;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.item.Item;
 
 import static com.punkipunk.utils.Global.INTERVAL_INVINCIBLE_INTERACTIVE;

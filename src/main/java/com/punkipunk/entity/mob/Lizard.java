@@ -7,7 +7,6 @@ import com.punkipunk.assets.Assets;
 import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.io.Progress;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Type;
 import com.punkipunk.entity.item.IronDoor;
 import com.punkipunk.entity.item.Gold;
 import javafx.scene.shape.Rectangle;
@@ -22,7 +21,7 @@ public class Lizard extends Mob {
     public Lizard(Game game, World world, int col, int row) {
         super(game, world, col, row);
         dialogue = new Dialogue(game);
-        type = Type.HOSTILE;
+        mobType = MobType.HOSTILE;
         stats.name = NAME;
         stats.speed = stats.defaultSpeed = 1;
         stats.hp = stats.maxHp = 50;

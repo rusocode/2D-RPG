@@ -1,4 +1,4 @@
-package com.punkipunk.entity.base;
+package com.punkipunk.entity.components;
 
 /**
  * Stats of the entities.

@@ -1,30 +1,55 @@
 package com.punkipunk.entity.item;
 
+import com.punkipunk.config.json.ItemConfig;
 import com.punkipunk.core.Game;
+import com.punkipunk.entity.Entity;
+import com.punkipunk.gfx.SpriteSheet;
+import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.base.Entity;
 
 import static com.punkipunk.utils.Global.tile;
 
 /**
  * Items are rendered on the ground and in the inventory.
+ * <p>
+ * Para especificar la textura del item en el suelo con un tamaño mas pequeño:
+ * <pre>{@code
+ * sheet.frame = pos.length > 0 ? Utils.scaleImage(key, tile / 2, tile / 2) : Utils.scaleImage(key, tile, tile);
+ * }</pre>
  */
 
-public class Item extends Entity {
+public abstract class Item extends Entity {
 
     public Item loot;
     public ItemType itemType;
     public String description;
     public int price;
     public int amount;
-    public int lightRadius = 350;
+    public int lightRadius;
     public int attackValue, defenseValue;
     public boolean solid, stackable;
     public boolean opened, empty;
     protected int points;
 
-    public Item(Game game, World world, int col, int row) {
-        super(game, world, col, row);
+    public Item(Game game, World world, ItemConfig config, int... pos) {
+        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
+
+        stats.name = config.name();
+        itemType = ItemType.valueOf(config.type());
+        description = config.description();
+        price = config.price();
+        attackValue = config.attackValue();
+        defenseValue = config.defenseValue();
+        stats.knockbackValue = config.knockbackValue();
+        points = config.points();
+        lightRadius = config.lightRadius();
+        stackable = config.stackable();
+        solid = config.solid();
+
+        if (config.spriteSheet() != null)
+            sheet.loadItemFrames(new SpriteSheet(Utils.loadTexture(config.spriteSheet())), tile, tile, 1);
+        if (config.texture() != null) sheet.frame = Utils.scaleTexture(Utils.loadTexture(config.texture()), tile, tile);
+
     }
 
     /**
