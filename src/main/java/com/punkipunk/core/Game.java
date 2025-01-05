@@ -2,9 +2,11 @@ package com.punkipunk.core;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.controllers.GameController;
+import com.punkipunk.utils.Utils;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 /**
  * <p>
@@ -78,6 +80,9 @@ public class Game {
     public void setup() {
         system = System.createDefault(this);
         system.audio.playMusic(AudioID.Music.MAIN);
+        // Al cargar la fuente todo el tiempo desde el render de la UI se generaba lag por lo tanto se carga una sola vez desde aca
+        context.setFont(Utils.loadFont("font/BlackPearl.ttf", 18));
+        context.setFill(Color.WHITE);
         system.initialize();
         gameController.initialize(this);
     }

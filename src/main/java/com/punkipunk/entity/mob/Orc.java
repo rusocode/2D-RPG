@@ -1,10 +1,10 @@
 package com.punkipunk.entity.mob;
 
-import com.punkipunk.assets.Assets;
-import com.punkipunk.audio.AudioID;
-import com.punkipunk.assets.SpriteSheetAssets;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
 import com.punkipunk.gfx.Animation;
+import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -18,26 +18,16 @@ import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
 
 public class Orc extends Mob {
 
-    public Orc(Game game, World world, int col, int row) {
-        super(game, world, col, row);
+    public Orc(Game game, World world, int... pos) {
+        super(game, world, JsonLoader.getInstance().deserialize("mobs.orc", MobData.class), pos);
         mobType = MobType.HOSTILE;
-        stats.name = "Orc";
-        stats.speed = stats.defaultSpeed = 1;
-        stats.hp = stats.maxHp = 10;
-        stats.exp = 30;
-        stats.attack = 8;
-        stats.defense = 2;
-        stats.motion1 = 25;
-        stats.motion2 = 30;
-        soundHit = AudioID.Sound.ORC_HIT;
-        soundDeath = AudioID.Sound.ORC_DEATH;
-        int scale = 1;
-        sheet.loadOrcMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.ORC), scale);
+        sheet.loadOrcMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
         hitbox.setX(5);
         hitbox.setY(32);
         hitbox.setWidth(20);
         hitbox.setHeight(25);
         hitbox = new Rectangle(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
+        // TODO El orco no tiene animacion de ataque
         hitboxDefaultX = hitbox.getX();
         hitboxDefaultY = hitbox.getY();
         attackbox.setWidth(44);
@@ -74,7 +64,7 @@ public class Orc extends Mob {
             tempScreenX = getScreenX();
             tempScreenY = getScreenY();
 
-            if (mobType == MobType.HOSTILE && flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
+            if (/* mobType == MobType.HOSTILE && */ flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
 
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob

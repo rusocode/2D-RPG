@@ -1,8 +1,8 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.config.Config;
-import com.punkipunk.config.json.ItemConfig;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.world.World;
@@ -12,7 +12,8 @@ public class PotionBlue extends Item {
     public static final String NAME = "Blue Potion";
 
     public PotionBlue(Game game, World world, int amount, int... pos) {
-        super(game, world, Config.getInstance().getJsonValue("items.potionBlue", ItemConfig.class), pos);
+        super(game, world, JsonLoader.getInstance().deserialize("items.potionBlue", ItemData.class), pos);
+        itemType = ItemType.USABLE;
         this.amount = amount;
     }
 

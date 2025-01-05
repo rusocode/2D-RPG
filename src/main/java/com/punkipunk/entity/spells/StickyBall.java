@@ -1,11 +1,11 @@
-package com.punkipunk.entity.projectile;
+package com.punkipunk.entity.spells;
 
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.SpellData;
 import com.punkipunk.core.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.TextureAssets;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.Entity;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -15,20 +15,14 @@ import static com.punkipunk.utils.Global.tile;
  * TODO Implement the decrease in the player's speed when the sticky ball hits him.
  */
 
-public class StickyBall extends Projectile {
+public class StickyBall extends Spell {
 
     public StickyBall(Game game, World world) {
-        super(game, world);
-        stats.name = "Sticky Ball";
-        stats.speed = 5;
-        stats.hp = stats.maxHp = 120;
-        stats.attack = 3;
-        flags.alive = false;
-        cost = 1;
+        super(game, world, JsonLoader.getInstance().deserialize("spells.stickyBall", SpellData.class));
         hitbox = new Rectangle(8, 8, 15, 15);
         hitboxDefaultX = hitbox.getX();
         hitboxDefaultY = hitbox.getY();
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.STICKY_BALL), tile, tile);
+        sheet.frame = Utils.scaleTexture(Utils.loadTexture(spellData.texturePath()), tile, tile);
     }
 
     @Override

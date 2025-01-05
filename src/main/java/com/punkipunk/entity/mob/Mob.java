@@ -1,41 +1,52 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.Direction;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.Entity;
 
 import static com.punkipunk.utils.Global.tile;
 
 /**
  * <p>
- * Mob (Enemy/Monster or NPC - Non-Playable Character): A "mob" (short for "mobile" or "mobility") is a term generally used to
- * refer to characters or creatures in the game that are not controlled by the player. Mobs can include enemies, monsters,
- * non-playable characters (NPCs), allies controlled by artificial intelligence (AI), and other in-game characters. Mobs can have
- * varied roles, such as being enemies that the player must defeat, vendors in a city, allies on a mission, etc.
+ * En videojuegos, un "mob" (abreviatura de "mobile" o "mobiles") es un termino que se refiere a cualquier criatura o personaje
+ * controlado por la computadora que los jugadores pueden encontrar durante el juego. El termino se origino en los primeros MUDs
+ * (Multi-User Dungeons) y se popularizo con juegos como World of Warcraft y Minecraft.
  * <p>
- * For this game the mobs are divided into
+ * Los mobs comparten caracteristicas comunes implementadas en la clase base {@code Mob}:
  * <ul>
- * <li>NPC: entities with which you interact, trade, etc. TODO or NO_HOSTILE?
- * <li>HOSTILE: are aggressive entities that can attack and be attacked.
+ * <li>Sistema de movimiento
+ * <li>Inteligencia artificial para seguimiento
+ * <li>Sistema de sonidos (golpes, muerte)
+ * <li>Capacidad de interaccion con el jugador
+ * <li>Animaciones y estados
  * </ul>
- * <p>
- * TODO Is it possible to create the enum here?
- * <p>
- * TODO I could create a MobStats class and create it from here, where that class will only have the attributes of mobs
+ * La implementacion en el codigo sigue patrones comunes en juegos RPG, donde los mobs son fundamentales para crear una
+ * experiencia de juego completa y variada.
  */
 
 public abstract class Mob extends Entity {
 
-    public String soundHit, soundDeath;
+    protected MobData mobData;
 
-    public Mob(Game game, World world, int col, int row) {
-        super(game, world, col, row);
-    }
+    public Mob(Game game, World world, MobData mobData, int... pos) {
+        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 
-    public Mob(Game game, World world) {
-        super(game, world);
+        this.mobData = mobData;
+
+        stats.name = mobData.name();
+        stats.speed = stats.baseSpeed = mobData.speed();
+        stats.hp = stats.maxHp = mobData.hp();
+        stats.exp = mobData.exp();
+        stats.attack = mobData.attack();
+        stats.defense = mobData.defense();
+        flags.boss = mobData.boss();
+        sleep = mobData.sleep();
+        soundHit = mobData.soundHit();
+        soundDeath = mobData.soundDeath();
+
     }
 
     /**
@@ -71,7 +82,8 @@ public abstract class Mob extends Entity {
     }
 
     /**
-     * Checks if the player is within the mob's attack range. In case this is true, the mob can hit.
+     * Comprueba si el jugador se encuentra dentro del rango de ataque del enemigo. En caso de que esto sea asi, el enemigo puede
+     * atacar.
      *
      * @param interval   interval between each attack.
      * @param vertical   vertical distance within attack range.
@@ -115,7 +127,7 @@ public abstract class Mob extends Entity {
      * @param distance distance in tiles.
      * @param rate     rate that determines if the mob follows the target.
      */
-    protected void checkFollow(Mob target, int distance, int rate) {
+    protected void checkFollow(Entity target, int distance, int rate) {
         if (getTileDistance(target) < distance && Utils.random(rate) == 1) flags.following = true;
     }
 
@@ -125,7 +137,7 @@ public abstract class Mob extends Entity {
      * @param target   target.
      * @param distance distance in tiles.
      */
-    protected void checkUnfollow(Mob target, int distance) {
+    protected void checkUnfollow(Entity target, int distance) {
         if (getTileDistance(target) > distance) flags.following = false;
     }
 
@@ -145,7 +157,7 @@ public abstract class Mob extends Entity {
      * @param target   target.
      * @param interval time interval in ms.
      */
-    protected void moveTowardPlayer(Mob target, int interval) {
+    protected void moveTowardPlayer(Entity target, int interval) {
         if (++timer.directionCounter > interval) { // TODO o =?
             if (getXDistance(game.system.world.entities.player) > getYDistance(game.system.world.entities.player))
                 direction = target.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
@@ -155,53 +167,5 @@ public abstract class Mob extends Entity {
         }
     }
 
-    /**
-     * Gets the distance in tiles of the target with respect to the mob.
-     *
-     * @param target target.
-     * @return the distance in tiles of the target with respect to the mob.
-     */
-    protected int getTileDistance(Mob target) {
-        return (getXDistance(target) + getYDistance(target)) / tile;
-    }
-
-    /**
-     * Gets the distance in x of the target with respect to the mob.
-     *
-     * @param target target.
-     * @return the distance in x of the target with respect to the mob.
-     */
-    private int getXDistance(Mob target) {
-        return Math.abs(getCenterX() - target.getCenterX());
-    }
-
-    /**
-     * Gets the distance in y of the target with respect to the mob.
-     *
-     * @param target target.
-     * @return the distance in y of the target with respect to the mob.
-     */
-    private int getYDistance(Mob target) {
-        return Math.abs(getCenterY() - target.getCenterY());
-    }
-
-
-    /**
-     * Gets the central position of x of the entity.
-     *
-     * @return the center x position of the entity.
-     */
-    private int getCenterX() {
-        return (int) (pos.x + sheet.frame.getWidth() / 2);
-    }
-
-    /**
-     * Gets the central position of y of the entity.
-     *
-     * @return the central position of y of the entity.
-     */
-    private int getCenterY() {
-        return (int) (pos.y + sheet.frame.getHeight() / 2);
-    }
 
 }

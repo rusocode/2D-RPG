@@ -1,0 +1,98 @@
+{
+  "bat": {
+    "name": "Bat",
+    "speed": 1,
+    "hp": 2,
+    "exp": 7,
+    "gold": 10,
+    "probabilityItemDrop": 30,
+    "defense": 1,
+    "frameWidth": 32,
+    "frameHeight": 32,
+    "frameScale": 1,
+    "soundHit": "batHit2",
+    "soundDeath": "batDeath2",
+    "spriteSheetPath": "textures/entity/mob/bat.png"
+  },
+  "box": {
+    "name": "Box",
+    "speed": 1,
+    "frameWidth": 32,
+    "frameHeight": 32,
+    "texturePath": "textures/entity/mob/box.png"
+  },
+  "lizard": {
+    "name": "Lizard",
+    "speed": 1,
+    "hp": 50,
+    "exp": 50,
+    "attack": 10,
+    "defense": 2,
+    "motion1": 25,
+    "motion2": 50,
+    "frameWidth": 170,
+    "frameHeight": 180,
+    "frameScale": 1,
+    "boss": true,
+    "sleep": true,
+    "soundHit": "mobHit",
+    "soundDeath": "mobDeath",
+    "spriteSheetPath": "textures/entity/mob/lizard.png"
+  },
+  "oldman": {
+    "name": "Oldman",
+    "speed": 1,
+    "frameScale": 1,
+    "spriteSheetPath": "textures/entity/mob/oldman.png"
+  },
+  "orc": {
+    "name": "Orc",
+    "speed": 1,
+    "hp": 10,
+    "exp": 30,
+    "attack": 8,
+    "defense": 2,
+    "motion1": 25,
+    "motion2": 30,
+    "frameScale": 1,
+    "soundHit": "orcHit",
+    "soundDeath": "orcDeath",
+    "spriteSheetPath": "textures/entity/mob/orc.png"
+  },
+  "redSlime": {
+    "name": "Red Slime",
+    "speed": 1,
+    "hp": 6,
+    "exp": 15,
+    "attack": 3,
+    "defense": 2,
+    "frameWidth": 16,
+    "frameHeight": 16,
+    "frameScale": 2,
+    "soundHit": "slimeHit",
+    "spriteSheetPath": "textures/entity/mob/red_slime.png"
+  },
+  "slime": {
+    "name": "Slime",
+    "speed": 1,
+    "hp": 4,
+    "exp": 10,
+    "attack": 2,
+    "defense": 1,
+    "frameWidth": 16,
+    "frameHeight": 16,
+    "frameScale": 2,
+    "soundHit": "slimeHit",
+    "spriteSheetPath": "textures/entity/mob/slime.png"
+  },
+  "trader": {
+    "name": "Trader",
+    "frameWidth": 32,
+    "frameHeight": 64,
+    "texturePath": "textures/entity/mob/trader.png"
+  },
+  "playerDummy": {
+    "frameScale": 1,
+    "spriteSheetPath": "textures/entity/mob/player/player.png"
+  }
+}

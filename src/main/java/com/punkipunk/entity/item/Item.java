@@ -1,16 +1,15 @@
 package com.punkipunk.entity.item;
 
-import com.punkipunk.config.json.ItemConfig;
+import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
-import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
 import static com.punkipunk.utils.Global.tile;
 
 /**
- * Items are rendered on the ground and in the inventory.
+ * Los items se muestran en el suelo y en los contenedores.
  * <p>
  * Para especificar la textura del item en el suelo con un tamaño mas pequeño:
  * <pre>{@code
@@ -20,9 +19,11 @@ import static com.punkipunk.utils.Global.tile;
 
 public abstract class Item extends Entity {
 
+    public ItemData itemData;
     public Item loot;
     public ItemType itemType;
     public String description;
+    public String sound;
     public int price;
     public int amount;
     public int lightRadius;
@@ -31,24 +32,25 @@ public abstract class Item extends Entity {
     public boolean opened, empty;
     protected int points;
 
-    public Item(Game game, World world, ItemConfig config, int... pos) {
+    public Item(Game game, World world, ItemData itemData, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
 
-        stats.name = config.name();
-        itemType = ItemType.valueOf(config.type());
-        description = config.description();
-        price = config.price();
-        attackValue = config.attackValue();
-        defenseValue = config.defenseValue();
-        stats.knockbackValue = config.knockbackValue();
-        points = config.points();
-        lightRadius = config.lightRadius();
-        stackable = config.stackable();
-        solid = config.solid();
+        this.itemData = itemData;
 
-        if (config.spriteSheet() != null)
-            sheet.loadItemFrames(new SpriteSheet(Utils.loadTexture(config.spriteSheet())), tile, tile, 1);
-        if (config.texture() != null) sheet.frame = Utils.scaleTexture(Utils.loadTexture(config.texture()), tile, tile);
+        stats.name = itemData.name();
+        description = itemData.description();
+        sound = itemData.sound();
+        price = itemData.price();
+        attackValue = itemData.attackValue();
+        defenseValue = itemData.defenseValue();
+        stats.knockback = itemData.knockbackValue();
+        points = itemData.points();
+        lightRadius = itemData.lightRadius();
+        stackable = itemData.stackable();
+        solid = itemData.solid();
+        if (itemData.texturePath() != null) sheet.frame = Utils.scaleTexture(Utils.loadTexture(itemData.texturePath()), tile, tile);
+
+        // TODO Cambiar nombre del "stone_sword_frame.png" a algo mas relacionado a un SS
 
     }
 

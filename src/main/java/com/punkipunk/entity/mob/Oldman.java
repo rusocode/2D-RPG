@@ -1,12 +1,14 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.Dialogue;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.gfx.Animation;
+import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.states.State;
+import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -17,14 +19,11 @@ import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
 
 public class Oldman extends Mob {
 
-    public Oldman(Game game, World world, int col, int row) {
-        super(game, world, col, row);
+    public Oldman(Game game, World world, int... pos) {
+        super(game, world, JsonLoader.getInstance().deserialize("mobs.oldman", MobData.class), pos);
         dialogue = new Dialogue(game);
         mobType = MobType.NPC;
-        stats.name = "Oldman";
-        stats.speed = 1;
-        int scale = 1;
-        sheet.loadOldmanFrames(Assets.getSpriteSheet(SpriteSheetAssets.OLDMAN), scale);
+        sheet.loadOldmanFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
         hitbox.setWidth(sheet.frame.getWidth() / 2);
         hitbox.setHeight(sheet.frame.getHeight() / 2);
         hitbox.setX(hitbox.getWidth() - hitbox.getWidth() / 2 + 1);

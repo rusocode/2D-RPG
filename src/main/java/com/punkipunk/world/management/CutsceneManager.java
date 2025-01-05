@@ -98,7 +98,6 @@ public class CutsceneManager {
             n = na;
             phase = 0;
             State.setState(State.PLAY);
-            // game.state = PLAY_STATE;
         }
 
     }

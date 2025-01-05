@@ -2,25 +2,22 @@ package com.punkipunk.entity.player;
 
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
-import com.punkipunk.assets.Assets;
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.assets.SpriteSheetAssets;
 import com.punkipunk.classes.Character;
 import com.punkipunk.classes.Jester;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.PlayerData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
-import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.item.IronDoor;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.item.ItemType;
-import com.punkipunk.entity.mob.Lizard;
-import com.punkipunk.entity.mob.Mob;
-import com.punkipunk.entity.mob.RedSlime;
-import com.punkipunk.entity.mob.Slime;
-import com.punkipunk.entity.projectile.BurstOfFire;
-import com.punkipunk.entity.projectile.Projectile;
+import com.punkipunk.entity.mob.*;
+import com.punkipunk.entity.spells.BurstOfFire;
+import com.punkipunk.entity.spells.Spell;
 import com.punkipunk.gfx.Animation;
+import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.gui.container.hotbar.Hotbar;
 import com.punkipunk.gui.container.inventory.Inventory;
 import com.punkipunk.input.keyboard.Key;
@@ -35,7 +32,7 @@ import javafx.scene.shape.Rectangle;
 import static com.punkipunk.utils.Global.*;
 
 // TODO Shouldn't it become the Client class?
-public class Player extends Mob {
+public class Player extends Entity {
 
     public Item weapon, shield, light;
     public Inventory inventory;
@@ -49,12 +46,54 @@ public class Player extends Mob {
 
     public Player(Game game, World world) {
         super(game, world);
-        init();
+
+        inventory = new Inventory(game, world, this);
+        hotbar = new Hotbar(game, world, this, inventory);
+        dialogue = new Dialogue(game);
+
+        PlayerData playerData = JsonLoader.getInstance().deserialize("player", PlayerData.class);
+
+        stats.lvl = playerData.lvl();
+        stats.exp = playerData.exp();
+        stats.nextExp = playerData.nextExp();
+        stats.speed = stats.baseSpeed = playerData.speed();
+        stats.hp = stats.maxHp = playerData.hp();
+        stats.mana = stats.maxMana = playerData.mana();
+        stats.ammo = playerData.ammo();
+        stats.gold = playerData.gold();
+        stats.strength = playerData.strength();
+        stats.dexterity = playerData.dexterity();
+        stats.motion1 = playerData.motion1();
+        stats.motion2 = playerData.motion2();
+
+        spell = new BurstOfFire(game, world);
+        stats.attack = getAttack();
+        stats.defense = getDefense();
+
+        sheet.loadPlayerMovementFrames(new SpriteSheet(Utils.loadTexture(playerData.spriteSheetPath())), playerData.frameScale());
+
+        int additionalPixelsForY = 19;
+        hitbox.setWidth(sheet.frame.getWidth() / 2);
+        hitbox.setHeight(sheet.frame.getHeight() / 2 - 6);
+        hitbox.setX(hitbox.getWidth() - hitbox.getWidth() / 2);
+        hitbox.setY(hitbox.getHeight() - hitbox.getHeight() / 2 + additionalPixelsForY);
+        hitbox = new Rectangle(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
+        hitboxDefaultX = hitbox.getX();
+        hitboxDefaultY = hitbox.getY();
+
+        int animationSpeed = 90;
+        down = new Animation(animationSpeed, sheet.down);
+        up = new Animation(animationSpeed, sheet.up);
+        left = new Animation(animationSpeed, sheet.left);
+        right = new Animation(animationSpeed, sheet.right);
+
+        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 20, Direction.DOWN);
+
     }
 
     @Override
     public void update() {
-        // The order of the methods is very important
+        // El orden de los metodos es muy importante
         if (flags.hitting) hit();
         if (game.system.keyboard.checkKeys()) {
             direction.get(this);
@@ -90,44 +129,6 @@ public class Player extends Mob {
         if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
 
         Utils.changeAlpha(g2, 1);
-    }
-
-    private void init() {
-        inventory = new Inventory(game, world, this);
-        hotbar = new Hotbar(game, world, this, inventory);
-        dialogue = new Dialogue(game);
-
-        mobType = MobType.PLAYER;
-        stats.init();
-
-        projectile = new BurstOfFire(game, world);
-        // TODO No hace falta null creo
-        weapon = null;
-        shield = null;
-        light = null;
-        stats.attack = getAttack();
-        stats.defense = getDefense();
-
-        int scale = 1;
-        sheet.loadPlayerMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.PLAYER), scale);
-        sheet.loadWeaponFrames(Assets.getSpriteSheet(SpriteSheetAssets.SWORD_FRAME), 16, 16, scale);
-
-        int additionalPixelsForY = 19;
-        hitbox.setWidth(sheet.frame.getWidth() / 2);
-        hitbox.setHeight(sheet.frame.getHeight() / 2 - 6);
-        hitbox.setX(hitbox.getWidth() - hitbox.getWidth() / 2);
-        hitbox.setY(hitbox.getHeight() - hitbox.getHeight() / 2 + additionalPixelsForY);
-        hitbox = new Rectangle(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
-
-        int animationSpeed = 90;
-        down = new Animation(animationSpeed, sheet.down);
-        up = new Animation(animationSpeed, sheet.up);
-        left = new Animation(animationSpeed, sheet.left);
-        right = new Animation(animationSpeed, sheet.right);
-
-        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 20, Direction.DOWN);
     }
 
     public void hit() {
@@ -181,12 +182,12 @@ public class Player extends Mob {
 
             // Check the collision with the mob using the position and size of the updated hitbox, that is, with the attackbox
             int mobIndex = game.system.collisionChecker.checkEntity(this, world.entities.mobs);
-            world.entities.player.hitMob(mobIndex, this, weapon.stats.knockbackValue, stats.attack);
+            world.entities.player.hitMob(mobIndex, this, weapon.stats.knockback, stats.attack);
 
             int interactiveIndex = game.system.collisionChecker.checkEntity(this, world.entities.interactives);
             world.entities.player.hitInteractive(interactiveIndex);
 
-            int projectileIndex = game.system.collisionChecker.checkEntity(this, world.entities.projectiles);
+            int projectileIndex = game.system.collisionChecker.checkEntity(this, world.entities.spells);
             world.entities.player.hitProjectile(projectileIndex);
 
             // After verifying the collision, reset the original data
@@ -220,18 +221,18 @@ public class Player extends Mob {
      * Check if it can shooting a projectile.
      */
     private void checkShoot() {
-        if (game.system.keyboard.isKeyPressed(Key.SHOOT) && !projectile.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && projectile.haveResource(this) && !flags.hitting) {
+        if (game.system.keyboard.isKeyPressed(Key.SHOOT) && !spell.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE && spell.haveResource(this) && !flags.hitting) {
             flags.shooting = true;
-            game.system.audio.playSound(projectile.sound);
-            projectile.set(pos.x, pos.y, direction, true, this);
+            game.system.audio.playSound(spell.sound);
+            spell.set(pos.x, pos.y, direction, true, this);
             // Check vacancy to add the projectile
-            for (int i = 0; i < world.entities.projectiles[1].length; i++) {
-                if (world.entities.projectiles[world.map.num][i] == null) {
-                    world.entities.projectiles[world.map.num][i] = projectile;
+            for (int i = 0; i < world.entities.spells[1].length; i++) {
+                if (world.entities.spells[world.map.num][i] == null) {
+                    world.entities.spells[world.map.num][i] = spell;
                     break;
                 }
             }
-            projectile.subtractResource(this);
+            spell.subtractResource(this);
             timer.projectileCounter = 0;
         }
     }
@@ -247,7 +248,7 @@ public class Player extends Mob {
      *
      * @param i index of the npc.
      */
-    private void interactNpc(int i) {
+    private void interactWithMob(int i) {
         if (i != -1) {
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
@@ -259,7 +260,7 @@ public class Player extends Mob {
     }
 
     /**
-     * Hurt the player if he collides with a hostile mob.
+     * Daña al jugador si colisiona con un mob hostil o neutral.
      *
      * @param i index of the mob.
      */
@@ -267,7 +268,7 @@ public class Player extends Mob {
         if (i != -1) {
             auxEntity = world.entities.mobs[world.map.num][i];
             Mob mob = world.entities.mobs[world.map.num][i];
-            if (!flags.invincible && !mob.flags.dead && mob.mobType == MobType.HOSTILE) {
+            if (!flags.invincible && !mob.flags.dead && (mob.mobType == MobType.HOSTILE || mob.mobType == MobType.NEUTRAL)) {
                 game.system.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
                 int damage = Math.max(mob.stats.attack - stats.defense, 1);
                 stats.decreaseHp(damage);
@@ -356,10 +357,10 @@ public class Player extends Mob {
 
     public void hitProjectile(int i) {
         if (i != -1) {
-            auxEntity = world.entities.projectiles[world.map.num][i];
-            Projectile projectile = world.entities.projectiles[world.map.num][i];
+            auxEntity = world.entities.spells[world.map.num][i];
+            Spell projectile = world.entities.spells[world.map.num][i];
             // Avoid damaging the projectile itself
-            if (projectile != this.projectile) {
+            if (projectile != this.spell) {
                 game.system.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
                 projectile.flags.alive = false;
                 generateParticle(projectile, projectile);
@@ -419,7 +420,7 @@ public class Player extends Mob {
         flags.colliding = false;
         if (!game.system.keyboard.isKeyToggled(Key.TEST)) game.system.collisionChecker.checkTile(this);
         pickup(game.system.collisionChecker.checkItem(this)); // FIXME Se genera un pequeño lag al apretar muchas veces la P mientras camino y no hay items
-        interactNpc(game.system.collisionChecker.checkEntity(this, world.entities.mobs));
+        interactWithMob(game.system.collisionChecker.checkEntity(this, world.entities.mobs));
         hurt(game.system.collisionChecker.checkEntity(this, world.entities.mobs));
         setCurrentInteractive(game.system.collisionChecker.checkEntity(this, world.entities.interactives));
         // game.systems.collision.checkEntity(this, world.entities.interactives);

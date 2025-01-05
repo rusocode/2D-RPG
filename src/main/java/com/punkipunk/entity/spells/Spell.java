@@ -1,32 +1,43 @@
-package com.punkipunk.entity.projectile;
+package com.punkipunk.entity.spells;
 
 import com.punkipunk.Direction;
+import com.punkipunk.json.model.SpellData;
 import com.punkipunk.core.Game;
-import com.punkipunk.world.World;
 import com.punkipunk.entity.Entity;
-import com.punkipunk.entity.player.Player;
-import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.mob.Mob;
+import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.player.Player;
+import com.punkipunk.world.World;
 
 import static com.punkipunk.utils.Global.INTERVAL_PROJECTILE_ANIMATION;
 
-/**
- * TODO Cambiar nombre a Spell
- */
-
-public class Projectile extends Entity {
+public abstract class Spell extends Entity {
 
     public String sound;
     protected Entity entity;
     protected int cost;
 
-    public Projectile(Game game, World world) {
+    protected SpellData spellData;
+
+    public Spell(Game game, World world, SpellData spellData) {
         super(game, world);
+
+        this.spellData = spellData;
+
+        stats.name = spellData.name();
+        stats.speed = spellData.speed();
+        stats.hp = stats.maxHp = spellData.hp();
+        stats.attack = spellData.attack();
+        stats.knockback = spellData.knockback();
+        cost = spellData.cost();
+        flags.alive = spellData.alive();
+        sound = spellData.sound();
+
     }
 
     /**
-     * Updates the position of the projectile if it does not collide with a mob or if its life does not end. Otherwise, stop
-     * living.
+     * Actualiza la posicion del hechizo si no colisiona con un mob hostil o neutral o si su vida no termina. De lo contrario,
+     * deja de vivir.
      */
     @Override
     public void update() {
@@ -41,9 +52,9 @@ public class Projectile extends Entity {
                  * and never changes to false in order to display motion frame 2. The following line solves this problem. */
                 flags.colliding = false;
                 if (!mob.flags.invincible && mob.mobType != MobType.NPC) {
-                    world.entities.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
+                    world.entities.player.hitMob(mobIndex, this, stats.knockback, getAttack());
                     // In this case, the particle generator is the fireball when the player throws it against a mob
-                    generateParticle(entity.projectile, mob);
+                    generateParticle(entity.spell, mob);
                     flags.alive = false;
                 }
             }
@@ -54,7 +65,7 @@ public class Projectile extends Entity {
             boolean contact = game.system.collisionChecker.checkPlayer(this);
             if (contact && !world.entities.player.flags.invincible) {
                 hitPlayer(true, stats.attack);
-                generateParticle(entity.projectile, world.entities.player);
+                generateParticle(entity.spell, world.entities.player);
                 flags.alive = false;
             }
         }

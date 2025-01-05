@@ -1,14 +1,15 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.Dialogue;
-import com.punkipunk.audio.AudioID;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.SpriteSheetAssets;
-import com.punkipunk.io.Progress;
-import com.punkipunk.world.World;
-import com.punkipunk.entity.item.IronDoor;
 import com.punkipunk.entity.item.Gold;
+import com.punkipunk.entity.item.IronDoor;
+import com.punkipunk.gfx.SpriteSheet;
+import com.punkipunk.io.Progress;
+import com.punkipunk.utils.Utils;
+import com.punkipunk.world.World;
 import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
@@ -18,38 +19,24 @@ public class Lizard extends Mob {
 
     public static final String NAME = "Lizard";
 
-    public Lizard(Game game, World world, int col, int row) {
-        super(game, world, col, row);
+    public Lizard(Game game, World world, int... pos) {
+        super(game, world, JsonLoader.getInstance().deserialize("mobs.lizard", MobData.class), pos);
         dialogue = new Dialogue(game);
         mobType = MobType.HOSTILE;
-        stats.name = NAME;
-        stats.speed = stats.defaultSpeed = 1;
-        stats.hp = stats.maxHp = 50;
-        stats.exp = 50;
-        stats.attack = 10;
-        stats.defense = 2;
-        stats.motion1 = 25;
-        stats.motion2 = 50;
-        soundHit = AudioID.Sound.MOB_HIT;
-        soundDeath = AudioID.Sound.MOB_DEATH;
-        flags.boss = true;
-        sleep = true;
-        int scale = 1;
-        int size = tile * scale;
         hitbox = new Rectangle(tile, tile * 2, 170 - tile * 2, 180 - tile * 3);
         hitboxDefaultX = hitbox.getX();
         hitboxDefaultY = hitbox.getY();
         attackbox.setWidth(90);
         attackbox.setHeight(90);
-        sheet.loadMovementFrames(Assets.getSpriteSheet(SpriteSheetAssets.LIZARD), 170, 180, scale);
+        sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
 
         initDialogue();
     }
 
     @Override
     public void doActions() {
-        // TODO Make it follow the player when the Skeleton is stuck on a tile
-        // If the distance of the player with respect to the mob is less than 10 tiles
+        // TODO Haz que siga al jugador cuando el lagarto este atascado en una tile
+        // Si la distancia del jugador con respecto al mob es menor a 10 tiles
         if (getTileDistance(game.system.world.entities.player) < 10) moveTowardPlayer(game.system.world.entities.player, 30);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
         // if (!flags.hitting) isPlayerWithinAttackRange(60, tile * 6, tile * 4, 60); // TODO No se utiliza ya que por ahora el boss no tiene un sprite de ataque

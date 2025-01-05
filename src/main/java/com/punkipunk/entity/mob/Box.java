@@ -3,37 +3,36 @@ package com.punkipunk.entity.mob;
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.TextureAssets;
-import com.punkipunk.states.State;
-import com.punkipunk.utils.Utils;
-import com.punkipunk.world.World;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.interactive.MetalPlate;
 import com.punkipunk.entity.item.IronDoor;
+import com.punkipunk.states.State;
+import com.punkipunk.utils.Utils;
+import com.punkipunk.world.World;
 import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 
 import static com.punkipunk.utils.Global.tile;
 
+// FIXME Bug visual al mover la caja
 public class Box extends Mob {
 
     public static final String NAME = "Box";
 
-    public Box(Game game, World world, int col, int row) {
-        super(game, world, col, row);
-        dialogue = new Dialogue(game);
+    public Box(Game game, World world, int... pos) {
+        super(game, world, JsonLoader.getInstance().deserialize("mobs.box", MobData.class), pos);
         mobType = MobType.NPC;
-        stats.name = NAME;
-        stats.speed = 1;
+        dialogue = new Dialogue(game);
         hitbox = new Rectangle(1, 1, tile - 2, tile - 2);
         hitboxDefaultX = hitbox.getX();
         hitboxDefaultY = hitbox.getY();
         dialogue.set = -1;
-        sheet.frame = Utils.scaleTexture(Assets.getTexture(TextureAssets.BOX), tile, tile);
+        sheet.frame = Utils.scaleTexture(Utils.loadTexture(mobData.texturePath()), mobData.frameWidth(), mobData.frameHeight());
         initDialogue();
     }
 
@@ -70,14 +69,14 @@ public class Box extends Mob {
     }
 
     /**
-     * Detect the plates and if all the boxes are linked to it, the iron door opens.
+     * Detecta las placas y si todas las cajas estan vinculadas a ella, la puerta de hierro se abre.
      */
     private void detectedPlate() {
         int c = 0;
         ArrayList<Interactive> plates = new ArrayList<>();
         ArrayList<Entity> boxes = new ArrayList<>();
 
-        // Add the plates to the list
+        // Añade las placas a la lista
         for (int i = 0; i < world.entities.interactives[1].length; i++)
             // TODO Hace falta comprobar si el nombre de la placa es distinto a null?
             if (world.entities.interactives[world.map.num][i] != null && world.entities.interactives[world.map.num][i].stats.name != null && world.entities.interactives[world.map.num][i].stats.name.equals(MetalPlate.NAME))

@@ -1,14 +1,12 @@
 package com.punkipunk;
 
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.FontAssets;
 import com.punkipunk.core.Game;
+import com.punkipunk.entity.Entity;
+import com.punkipunk.entity.mob.Mob;
+import com.punkipunk.entity.player.Player;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.Entity;
-import com.punkipunk.entity.player.Player;
-import com.punkipunk.entity.mob.Mob;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -47,17 +45,6 @@ public class UI {
     public void render(GraphicsContext context) {
 
         this.context = context;
-
-        // context.setFontSmoothingType(FontSmoothingType.GRAY); // TODO Funciona?
-        context.setFont(Assets.getFont(FontAssets.BLACK_PEARL));
-        context.setFill(Color.WHITE);
-        /* Determina como se posicionara el texto horizontalmente respecto al punto de origen. En este caso, indica que el texto
-         * se alineara desde el borde izquierdo, que por cierto, es el valor por defecto. */
-        // context.setTextAlign(TextAlignment.LEFT);
-        /* Define la alineacion vertical del texto. En este caso, indica que el texto se alineara sobre la linea base de los
-         * caracteres. La linea base es la linea imaginaria sobre la que "descansan" las letras, que por cierto, es el valor por
-         * defecto.*/
-        // context.setTextBaseline(VPos.BASELINE);
 
         switch (State.getState()) {
             case PLAY -> {

@@ -61,7 +61,6 @@ public final class Global {
     public static final int INTERVAL_INVINCIBLE = 60;
     public static final int INTERVAL_INVINCIBLE_INTERACTIVE = 20;
     public static final int INTERVAL_DIRECTION = 120;
-    public static final int INTERVAL_DIRECTION_BAT = 50;
     public static final int INTERVAL_HP_BAR = 240;
     public static final int INTERVAL_KNOCKBACK = 10;
     public static final int INTERVAL_TELEPORT = 50;

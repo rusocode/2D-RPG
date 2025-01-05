@@ -1,14 +1,40 @@
 package com.punkipunk.entity.components;
 
 /**
- * Stats of the entities.
+ * Estadisticas de las entidades.
+ * <p>
+ * La variable {@code baseSpeed} cumple una funcion importante en el manejo de la velocidad de las entidades, especialmente en
+ * relacion con el efecto de "knockback" (retroceso). Veamos por que:
+ * <ol>
+ * <li>{@code baseSpeed} actua como la velocidad base o normal de una entidad. Se usa como punto de referencia al cual volver
+ * despues de efectos temporales que modifican la velocidad.
+ * <li>Por otro lado, {@code speed} es la velocidad actual de la entidad, que puede variar temporalmente debido a diferentes
+ * efectos del juego.
+ * </ol>
+ * La separacion entre speed y baseSpeed es necesaria porque:
+ * <ol>
+ * <li>Permite modificar temporalmente la velocidad de una entidad sin perder la referencia a su velocidad base
+ * <li>Facilita restaurar la velocidad normal despues de efectos temporales
+ * <li>Mantiene la consistencia del movimiento en el juego
+ * </ol>
+ * Si solo se usara speed, seria mas dificil:
+ * <ul>
+ * <li>Recordar cual era la velocidad original de la entidad
+ * <li>Restaurar la velocidad correcta despues de efectos temporales
+ * <li>Manejar multiples efectos que afectan la velocidad
+ * </ul>
+ * Por lo tanto, aunque parezca redundante, mantener ambas variables es una buena practica de diseño que facilita el manejo de 
+ * estados temporales en el juego.
+ * <p>
+ * TODO speed deberia ser flotante
  */
 
 public class Stats {
 
     public String name;
     public int lvl, exp, nextExp;
-    public int speed, defaultSpeed; // TODO It should be float
+    public int speed;
+    public int baseSpeed;
     public int hp, maxHp;
     public int mana, maxMana;
     public int ammo;
@@ -16,25 +42,7 @@ public class Stats {
     public int strength, dexterity;
     public int attack, defense;
     public int motion1, motion2;
-    public int knockbackValue;
-
-    /**
-     * Initializes the player stats.
-     */
-    public void init() {
-        lvl = 1;
-        exp = 0;
-        nextExp = 10;
-        speed = defaultSpeed = 2;
-        hp = maxHp = 6;
-        mana = maxMana = 15;
-        ammo = 5;
-        gold = 0;
-        strength = 1;
-        dexterity = 1;
-        motion1 = 5;
-        motion2 = 18;
-    }
+    public int knockback;
 
     /**
      * Increase hp.

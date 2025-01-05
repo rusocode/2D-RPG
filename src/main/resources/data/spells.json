@@ -1,0 +1,38 @@
+{
+  "burstOfFire": {
+    "name": "Burst of Fire",
+    "speed": 5,
+    "attack": 4,
+    "knockback": 7,
+    "cost": 2,
+    "animationSpeed": 120,
+    "frameScale": 2,
+    "alive": false,
+    "sound": "burstOfFire2",
+    "spriteSheetPath": "textures/entity/spell/burst_of_fire.png"
+  },
+  "fireball": {
+    "name": "Fireball",
+    "speed": 5,
+    "hp": 80,
+    "attack": 1,
+    "knockback": 5,
+    "cost": 2,
+    "animationSpeed": 120,
+    "frameWidth": 16,
+    "frameHeight": 16,
+    "frameScale": 2,
+    "alive": false,
+    "sound": "fireball",
+    "spriteSheetPath": "textures/entity/spell/fireball.png"
+  },
+  "stickyBall": {
+    "name": "Sticky Ball",
+    "speed": 5,
+    "hp": 120,
+    "attack": 3,
+    "cost": 1,
+    "alive": false,
+    "texturePath": "textures/entity/spell/sticky_ball.png"
+  }
+}

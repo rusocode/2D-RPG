@@ -1,7 +1,7 @@
 package com.punkipunk.io;
 
-import com.punkipunk.config.Config;
-import com.punkipunk.config.json.VolumeConfig;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.VolumeData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.utils.Utils;
@@ -28,13 +28,13 @@ public class File {
     private final String tileData = "maps/tile_data.txt";
     private final ArrayList<String> names = new ArrayList<>();
     private final ArrayList<String> solids = new ArrayList<>();
-    private final Config configManager;
+    private final JsonLoader configManager;
     public HashMap<Integer, String> maps = new HashMap<>();
 
     public File(Game game, World world) {
         this.game = game;
         this.world = world;
-        this.configManager = Config.getInstance();
+        this.configManager = JsonLoader.getInstance();
     }
 
     public void load() {
@@ -65,7 +65,7 @@ public class File {
      */
     private void loadConfig() {
         try {
-            VolumeConfig volumeConfig = new VolumeConfig(
+            VolumeData volumeConfig = new VolumeData(
                     DEFAULT_VOLUME,
                     DEFAULT_VOLUME,
                     DEFAULT_VOLUME
@@ -154,7 +154,7 @@ public class File {
             output.writeObject(data);
 
         } catch (IOException e) {
-            throw new RuntimeException("Error saving file " + data, e);
+            throw new RuntimeException("Error saving path " + data, e);
         }
     }
 
@@ -219,12 +219,12 @@ public class File {
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            throw new RuntimeException("Error load file " + data, e);
+            throw new RuntimeException("Error load path " + data, e);
         }
     }
 
     /**
-     * Reads the data of each tile (name and solid state) from the "tile_data.txt" file and adds them to their respective lists.
+     * Reads the data of each tile (name and solid state) from the "tile_data.txt" path and adds them to their respective lists.
      * It then uses that data to load all the tiles into an array.
      */
     private void loadTiles() {
@@ -238,7 +238,7 @@ public class File {
             for (int i = 0; i < names.size(); i++)
                 loadTile(i, names.get(i), Boolean.parseBoolean(solids.get(i)));
         } catch (IOException e) {
-            throw new RuntimeException("Error reading file tile_data.txt", e);
+            throw new RuntimeException("Error reading path tile_data.txt", e);
         }
     }
 
@@ -266,7 +266,7 @@ public class File {
     }
 
     /**
-     * Loads the map using the specified path and stores each tile read from the file in the array.
+     * Loads the map using the specified path and stores each tile read from the path in the array.
      *
      * @param path path of the resource.
      * @param map  map number as key.
@@ -283,7 +283,7 @@ public class File {
                     world.map.tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
             }
         } catch (IOException e) {
-            throw new RuntimeException("Error reading file " + path + " on the line " + (row + 1), e);
+            throw new RuntimeException("Error reading path " + path + " on the line " + (row + 1), e);
         }
     }
 

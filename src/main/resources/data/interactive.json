@@ -1,0 +1,18 @@
+{
+  "destructibleWall": {
+    "hp": 3,
+    "destructible": true,
+    "sound": "mine",
+    "texturePath": "textures/tiles/interactive/destructible_wall.png"
+  },
+  "metalPlate": {
+    "name": "Metal Plate",
+    "texturePath": "textures/tiles/interactive/metal_plate.png"
+  },
+  "dryTree": {
+    "hp": 1,
+    "destructible": true,
+    "sound": "cutTree",
+    "texturePath": "textures/tiles/interactive/dry_tree.png"
+  }
+}

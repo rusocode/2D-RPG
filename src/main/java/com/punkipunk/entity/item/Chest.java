@@ -2,10 +2,12 @@ package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.config.Config;
-import com.punkipunk.config.json.ItemConfig;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
+import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.states.State;
+import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import javafx.scene.shape.Rectangle;
 
@@ -16,11 +18,13 @@ public class Chest extends Item {
     public static final String NAME = "Chest";
 
     public Chest(Game game, World world, int... pos) {
-        super(game, world, Config.getInstance().getJsonValue("items.chest", ItemConfig.class), pos);
+        super(game, world, JsonLoader.getInstance().deserialize("items.chest", ItemData.class), pos);
+        itemType = ItemType.OBSTACLE;
         dialogue = new Dialogue(game);
         hitbox = new Rectangle(3, 16, tile - 7, tile - 20);
         hitboxDefaultX = hitbox.getX();
         hitboxDefaultY = hitbox.getY();
+        sheet.loadItemFrames(new SpriteSheet(Utils.loadTexture(itemData.spriteSheetPath())), itemData.frameWidth(), itemData.frameHeight(), itemData.frameScale());
     }
 
     @Override

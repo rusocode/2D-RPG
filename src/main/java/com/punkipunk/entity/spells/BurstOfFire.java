@@ -1,15 +1,16 @@
-package com.punkipunk.entity.projectile;
+package com.punkipunk.entity.spells;
 
-import com.punkipunk.audio.AudioID;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.SpellData;
 import com.punkipunk.core.Game;
-import com.punkipunk.assets.Assets;
-import com.punkipunk.assets.SpriteSheetAssets;
-import com.punkipunk.gfx.Animation;
-import com.punkipunk.input.keyboard.Key;
-import com.punkipunk.world.World;
 import com.punkipunk.entity.Entity;
-import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.mob.Mob;
+import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.gfx.Animation;
+import com.punkipunk.gfx.SpriteSheet;
+import com.punkipunk.input.keyboard.Key;
+import com.punkipunk.utils.Utils;
+import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -18,38 +19,25 @@ import javafx.scene.shape.Rectangle;
 import static com.punkipunk.utils.Global.tile;
 
 /**
- * This spell is different from Fireball since it has 5 frames as opposed to 2. Therefore, the logic would be that only the 5
- * frames are rendered to fulfill the animation of the spell correctly and not until its life runs out (therefore life would be
- * unnecessary).
  * <p>
- * TODO Increase the duration of the last frame
+ * Este hechizo es diferente de Fireball ya que tiene 5 cuadros en lugar de 2. Por lo tanto, la logica seria que solo se
+ * rendericen los 5 cuadros para cumplir correctamente la animacion del hechizo y no hasta que se acabe su vida (por lo tanto, la
+ * vida seria innecesaria).
+ * <p>
+ * TODO Aumentar la duracion del ultimo fotograma
  */
 
-public class BurstOfFire extends Projectile {
+public class BurstOfFire extends Spell {
 
     public BurstOfFire(Game game, World world) {
-        super(game, world);
-        stats.name = "Burst of Fire";
-        stats.speed = 5;
-        stats.attack = 4;
-        stats.knockbackValue = 7;
-        flags.alive = false;
-        cost = 2;
-        int scale = 2;
-        sound = AudioID.Sound.BURST_OF_FIRE2;
-        hitbox = new Rectangle(0, 0, tile * scale - 35, tile * scale);
-        sheet.loadBurstOfFireFrames(Assets.getSpriteSheet(SpriteSheetAssets.BURST_OF_FIRE), scale);
-        interval = 180;
-
-        int animationSpeed = 120; // 80
-        down = new Animation(animationSpeed, sheet.down);
-        up = new Animation(animationSpeed, sheet.up);
-        left = new Animation(animationSpeed, sheet.left);
-        right = new Animation(animationSpeed, sheet.right);
+        super(game, world, JsonLoader.getInstance().deserialize("spells.burstOfFire", SpellData.class));
+        hitbox = new Rectangle(0, 0, tile * spellData.frameScale() - 35, tile * spellData.frameScale());
+        sheet.loadBurstOfFireFrames(new SpriteSheet(Utils.loadTexture(spellData.spriteSheetPath())), spellData.frameScale());
+        down = new Animation(spellData.animationSpeed(), sheet.down);
+        up = new Animation(spellData.animationSpeed(), sheet.up);
+        left = new Animation(spellData.animationSpeed(), sheet.left);
+        right = new Animation(spellData.animationSpeed(), sheet.right);
     }
-
-    /* It is important to know that if a method such as update() is overridden, then the function of the original method
-     * (inherited method) is OVERRIDED by the new implementation. */
 
     @Override
     public void update() {
@@ -62,13 +50,12 @@ public class BurstOfFire extends Projectile {
         if (mobIndex != -1) {
             Mob mob = world.entities.mobs[world.map.num][mobIndex];
             if (!mob.flags.invincible && mob.mobType != MobType.NPC) {
-                world.entities.player.hitMob(mobIndex, this, stats.knockbackValue, getAttack());
-                generateParticle(entity.projectile, mob);
+                world.entities.player.hitMob(mobIndex, this, stats.knockback, getAttack());
+                generateParticle(entity.spell, mob);
                 flags.alive = false;
                 resetFrames();
             }
         }
-
 
         if (flags.alive) {
             // Update the position!

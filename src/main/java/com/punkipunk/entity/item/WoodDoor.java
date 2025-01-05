@@ -1,8 +1,8 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
-import com.punkipunk.config.Config;
-import com.punkipunk.config.json.ItemConfig;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
@@ -15,7 +15,8 @@ public class WoodDoor extends Item {
     public static final String NAME = "Wood Door";
 
     public WoodDoor(Game game, World world, int... pos) {
-        super(game, world, Config.getInstance().getJsonValue("items.woodDoor", ItemConfig.class), pos);
+        super(game, world, JsonLoader.getInstance().deserialize("items.woodDoor", ItemData.class), pos);
+        itemType = ItemType.OBSTACLE;
         dialogue = new Dialogue(game);
         hitbox = new Rectangle(0, 16, 31, tile - 18);
         hitboxDefaultX = hitbox.getX();

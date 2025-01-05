@@ -8,7 +8,7 @@ import com.punkipunk.entity.player.Player;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.mob.Mob;
-import com.punkipunk.entity.projectile.Projectile;
+import com.punkipunk.entity.spells.Spell;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class EntityManager { // TODO Ya que implementa la interfaz Renderable no
     public Item[][] items = new Item[MAPS][20]; // TODO Shouldn't they be declared as HashMap or ArrayList?
     public Mob[][] mobs = new Mob[MAPS][40];
     public Interactive[][] interactives = new Interactive[MAPS][50];
-    public Projectile[][] projectiles = new Projectile[MAPS][20];
+    public Spell[][] spells = new Spell[MAPS][20];
 
     public EntityManager(Game game, World world) {
         this.world = world;
@@ -56,10 +56,10 @@ public class EntityManager { // TODO Ya que implementa la interfaz Renderable no
                 }
             }
         }
-        for (int i = 0; i < projectiles[1].length; i++) {
-            if (projectiles[world.map.num][i] != null) {
-                if (projectiles[world.map.num][i].flags.alive) projectiles[world.map.num][i].update();
-                else projectiles[world.map.num][i] = null;
+        for (int i = 0; i < spells[1].length; i++) {
+            if (spells[world.map.num][i] != null) {
+                if (spells[world.map.num][i].flags.alive) spells[world.map.num][i].update();
+                else spells[world.map.num][i] = null;
             }
         }
         for (int i = 0; i < particles.size(); i++) {
@@ -90,8 +90,8 @@ public class EntityManager { // TODO Ya que implementa la interfaz Renderable no
         for (int i = 0; i < mobs[1].length; i++)
             if (mobs[world.map.num][i] != null) entities.add(mobs[world.map.num][i]);
 
-        for (int i = 0; i < projectiles[1].length; i++)
-            if (projectiles[world.map.num][i] != null) projectilesList.add(projectiles[world.map.num][i]);
+        for (int i = 0; i < spells[1].length; i++)
+            if (spells[world.map.num][i] != null) projectilesList.add(spells[world.map.num][i]);
 
         for (Entity particle : particles)
             if (particle != null) entities.add(particle);

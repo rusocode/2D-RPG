@@ -4,22 +4,22 @@ import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.entity.components.Flags;
+import com.punkipunk.entity.components.Particle;
 import com.punkipunk.entity.components.Stats;
+import com.punkipunk.entity.item.Item;
+import com.punkipunk.entity.mob.Mob;
 import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.spells.Spell;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.gui.container.Container;
+import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.physics.Mechanics;
 import com.punkipunk.utils.Timer;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.Position;
 import com.punkipunk.world.World;
-import com.punkipunk.entity.components.Flags;
-import com.punkipunk.entity.components.Particle;
-import com.punkipunk.entity.item.Item;
-import com.punkipunk.entity.mob.Mob;
-import com.punkipunk.entity.projectile.Projectile;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -31,8 +31,8 @@ public abstract class Entity {
     public final Game game;
     public final World world;
 
-    // TODO Faltaria el sonido
-    public MobType mobType = MobType.HOSTILE;
+    public String soundHit, soundDeath;
+    public MobType mobType;
     public Direction direction = Direction.DOWN;
     public Position pos = new Position(); // TODO Podria ir en World
     public Stats stats = new Stats();
@@ -49,7 +49,7 @@ public abstract class Entity {
     public Animation down, up, left, right;
     public Image currentFrame, currentSwordFrame;
 
-    public Projectile projectile;
+    public Spell spell;
 
     public Entity linkedEntity;
 
@@ -61,8 +61,6 @@ public abstract class Entity {
     /* Esta variable sirve para controlar la puerta de entrada al boss, es decir si morimos mientras peleamos con el
      * boss, la puerta temporal desaparece para que podemos entrar de nuevo al boss. */
     public boolean temp;
-
-    public int interval;
 
     // Variables temporales
     public int tempScreenX, tempScreenY;
@@ -102,8 +100,8 @@ public abstract class Entity {
             tempScreenX = getScreenX();
             tempScreenY = getScreenY();
 
-            // If the hostile mob that is not a boss has the life bar activated
-            if (mobType == MobType.HOSTILE && flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
+            // Si tiene la barra de vida activada y si no es un boss
+            if (flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
 
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
@@ -232,8 +230,8 @@ public abstract class Entity {
      * @param attack  attack points.
      */
     public void hitPlayer(boolean contact, int attack) {
-        // If the entity is hostile and makes contact with the player who is not invincible
-        if (mobType == MobType.HOSTILE && contact && !world.entities.player.flags.invincible) {
+        // Si el mob es hostil o neutral, y hay contacto, y el player no es invencible
+        if ((mobType == MobType.HOSTILE || mobType == MobType.NEUTRAL) && contact && !world.entities.player.flags.invincible) {
             game.system.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
             // Subtract the player's defense from the mob's attack to calculate fair damage
             int damage = Math.max(attack - world.entities.player.stats.defense, 1);
@@ -299,6 +297,54 @@ public abstract class Entity {
                     getScreenY() + attackbox.getY() + hitbox.getY(),
                     attackbox.getWidth(), attackbox.getHeight());
         }
+    }
+
+    /**
+     * Gets the central position of x of the entity.
+     *
+     * @return the center x position of the entity.
+     */
+    public int getCenterX() {
+        return (int) (pos.x + sheet.frame.getWidth() / 2);
+    }
+
+    /**
+     * Gets the central position of y of the entity.
+     *
+     * @return the central position of y of the entity.
+     */
+    public int getCenterY() {
+        return (int) (pos.y + sheet.frame.getHeight() / 2);
+    }
+
+    /**
+     * Gets the distance in tiles of the target with respect to the mob.
+     *
+     * @param target target.
+     * @return the distance in tiles of the target with respect to the mob.
+     */
+    protected int getTileDistance(Entity target) {
+        return (getXDistance(target) + getYDistance(target)) / tile;
+    }
+
+    /**
+     * Gets the distance in x of the target with respect to the mob.
+     *
+     * @param target target.
+     * @return the distance in x of the target with respect to the mob.
+     */
+    protected int getXDistance(Entity target) {
+        return Math.abs(getCenterX() - target.getCenterX());
+    }
+
+    /**
+     * Gets the distance in y of the target with respect to the mob.
+     *
+     * @param target target.
+     * @return the distance in y of the target with respect to the mob.
+     */
+    protected int getYDistance(Entity target) {
+        return Math.abs(getCenterY() - target.getCenterY());
     }
 
 }

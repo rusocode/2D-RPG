@@ -10,9 +10,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URL;
 
 public final class Utils {
 
@@ -43,7 +41,7 @@ public final class Utils {
     }
 
     /**
-     * Load the texture.
+     * Load the texturePath.
      *
      * @param path path of the asset.
      * @return an Image containing the decoded content of the input.
@@ -58,8 +56,8 @@ public final class Utils {
         } catch (Exception e) {
             Alert alert = new Alert(AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Error during texture loading");
-            alert.setContentText("Failed to load texture: " + path + "\n\n" + e);
+            alert.setHeaderText("Error during texturePath loading");
+            alert.setContentText("Failed to load texturePath: " + path + "\n\n" + e);
             alert.showAndWait();
             System.exit(1);
         }
@@ -67,17 +65,17 @@ public final class Utils {
     }
 
     /**
-     * Scale the texture before rendering for better performance.
+     * Scale the texturePath before rendering for better performance.
      * <p>
      * It is important that the scale value for the width and height be a multiple of the original size to avoid stretching or
-     * deformations in the scaled texture.
+     * deformations in the scaled texturePath.
      * <p>
-     * To maintain the original size of the texture, 1 is specified as the scale value.
+     * To maintain the original size of the texturePath, 1 is specified as the scale value.
      *
-     * @param texture texture.
-     * @param width   width of the texture.
-     * @param height  height of the texture.
-     * @return the scaled texture.
+     * @param texture texturePath.
+     * @param width   width of the texturePath.
+     * @param height  height of the texturePath.
+     * @return the scaled texturePath.
      */
     public static Image scaleTexture(Image texture, int width, int height) {
         if (texture == null) return null;
@@ -112,21 +110,21 @@ public final class Utils {
     }
 
     /**
-     * Returns a pseudorandom value between a specified minimum and maximum, both included.
+     * Devuelve un valor pseudoaleatorio entre un minimo y un maximo especificados, ambos incluidos.
      *
-     * @param min minimum value.
-     * @param max maximum value.
-     * @return the pseudorandom value.
+     * @param min valor minimo.
+     * @param max valor maximo.
+     * @return el valor pseudoaleatorio.
      */
     public static int random(int min, int max) {
         return (int) (Math.random() * (max - min + 1)) + min;
     }
 
     /**
-     * Returns a pseudorandom value between 1 and the specified maximum, both included.
+     * Devuelve un valor pseudoaleatorio entre 1 y el maximo especificado, ambos incluidos.
      *
-     * @param max maximum value.
-     * @return the pseudorandom value.
+     * @param max valor maximo.
+     * @return el valor pseudoaleatorio.
      */
     public static int random(int max) {
         return (int) (Math.random() * max) + 1;

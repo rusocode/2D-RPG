@@ -2,7 +2,6 @@ package com.punkipunk.utils;
 
 import com.punkipunk.Direction;
 import com.punkipunk.entity.Entity;
-import com.punkipunk.entity.mob.MobType;
 import javafx.scene.canvas.GraphicsContext;
 
 import static com.punkipunk.utils.Global.*;
@@ -62,12 +61,12 @@ public class Timer {
     }
 
     /**
-     * Time the direction.
+     * Temporiza la direccion.
      * <p>
-     * If the interval is complete, calculate a random number between 1 and 100 to determine the new direction. If the number is
-     * less than or equal to 25, switch to "down" and reset the counter. If the number is between 26 and 50, both included, change
-     * to "up" and reset the counter. If the number is between 51 and 75, both included, change to "left" and reset the counter.
-     * If the number is greater than 75, change to "right" and reset the counter.
+     * Si el intervalo esta completo, calcula un numero aleatorio entre 1 y 100 para determinar la nueva direccion. Si el numero
+     * es menor o igual a 25, cambia a DOWN y reinicia el contador. Si el numero esta entre 26 y 50, ambos incluidos, cambia a UP
+     * y reinicia el contador. Si el numero esta entre 51 y 75, ambos incluidos, cambia a LEFT y reinicia el contador. Si el
+     * numero es mayor a 75, cambia a RIGHT y reinicia el contador.
      */
     public void timeDirection(Entity entity, int interval) {
         if (++directionCounter >= interval) {
@@ -106,7 +105,7 @@ public class Timer {
     public void timerKnockback(Entity entity, int interval) {
         if (++knockbackCounter >= interval) {
             entity.flags.knockback = false;
-            entity.stats.speed = entity.stats.defaultSpeed;
+            entity.stats.speed = entity.stats.baseSpeed;
             knockbackCounter = 0;
         }
     }
@@ -117,10 +116,12 @@ public class Timer {
      * @param entity entity.
      */
     public void checkTimers(Entity entity) {
-        // Time the movement if the entity is not a player
-        if (entity.mobType != MobType.PLAYER) timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
-        // Controls the attack interval if the entity is a player
-        if (entity.mobType == MobType.PLAYER) if (attackCounter < INTERVAL_WEAPON) attackCounter++;
+        // Temporiza el movimiento si la entidad no es un jugador
+        /* if (entity.mobType != MobType.PLAYER) */
+        timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
+        // Controla el intervalo de ataque si la entidad es un jugador
+        /* if (entity.mobType == MobType.PLAYER) */
+        if (attackCounter < INTERVAL_WEAPON) attackCounter++;
         if (entity.flags.invincible) timeInvincible(entity, INTERVAL_INVINCIBLE);
         // TODO No tiene que cambiarse a entity.interval?
         if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;

@@ -1,9 +1,9 @@
 package com.punkipunk.audio;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.punkipunk.config.Config;
-import com.punkipunk.config.json.AudioConfig;
-import com.punkipunk.config.json.VolumeConfig;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.AudioData;
+import com.punkipunk.json.model.VolumeData;
 import com.punkipunk.utils.ConfigPaths;
 
 import java.io.File;
@@ -19,7 +19,7 @@ import java.util.Optional;
  * juego.
  */
 
-    public class AudioServiceImpl implements AudioService {
+public class AudioServiceImpl implements AudioService {
 
     /** Volumen por defecto para todos los canales */
     public static final int DEFAULT_VOLUME = 3;
@@ -29,8 +29,8 @@ import java.util.Optional;
     private final File volumeFile = ConfigPaths.getConfigPath(VOLUME_FILE).toFile();
     /** Mapa que relaciona cada canal con su instancia de Audio */
     private final Map<AudioChannel, Audio> channels = new EnumMap<>(AudioChannel.class);
-    /** Gestor de configuraciones para obtener las rutas de los archivos de audio */
-    private final Config config = Config.getInstance();
+    /** Cargador Json para obtener los datos de audio */
+    private final JsonLoader jsonLoader = JsonLoader.getInstance();
     /** Objeto para manejar la serializacion y deserializacion de JSON */
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -42,10 +42,10 @@ import java.util.Optional;
     @Override
     public void play(AudioChannel channel, String id) {
         try {
-            // Construye la ruta de configuracion para el audio especifico
-            String configPath = String.format("audio.%s.%s", channel.name().toLowerCase(), id); // TODO Por que hay que especificar el objeto "audio" si ya forma parte del nombre del archivo json?
-            AudioConfig audioConfig = config.getJsonValue(configPath, AudioConfig.class);
-            play(get(channel), audioConfig);
+            // Construye la ruta de datos de audio con notacion de puntos
+            String path = String.format("audio.%s.%s", channel.name().toLowerCase(), id); // TODO Por que hay que especificar el objeto "audio" si ya forma parte del nombre del archivo json?
+            AudioData audioData = jsonLoader.deserialize(path, AudioData.class);
+            play(get(channel), audioData);
         } catch (Exception e) {
             System.err.println("Failed to play audio " + id + "\n" + e.getMessage());
         }
@@ -70,8 +70,8 @@ import java.util.Optional;
     public void save() {
         try {
             // Crea un objeto VolumeConfig con el volumen de cada canal
-            VolumeConfig volumeConfig = new VolumeConfig(get(AudioChannel.MUSIC).volume, get(AudioChannel.AMBIENT).volume, get(AudioChannel.SOUND).volume);
-            mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, volumeConfig);
+            VolumeData volumeData = new VolumeData(get(AudioChannel.MUSIC).volume, get(AudioChannel.AMBIENT).volume, get(AudioChannel.SOUND).volume);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, volumeData);
         } catch (IOException e) {
             System.err.println("Failed to save volume config\n" + e.getMessage());
         }
@@ -108,16 +108,16 @@ import java.util.Optional;
     private void loadVolumeConfig() {
         try {
             if (volumeFile.exists()) {
-                VolumeConfig volumeConfig = mapper.readValue(volumeFile, VolumeConfig.class);
+                VolumeData volumeConfig = mapper.readValue(volumeFile, VolumeData.class);
                 setVolumens(volumeConfig);
                 return; // Sale del metodo una vez cargado el archivo de volumen para evitar sobreescribir los valores
             }
             // Si no existe el archivo de volumen, crea una nueva configuracion de volumen con los valores por defecto
-            VolumeConfig defaultVolumeConfig = new VolumeConfig(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME);
+            VolumeData defaultVolumeConfig = new VolumeData(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME);
             mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, defaultVolumeConfig);
             setVolumens(defaultVolumeConfig);
         } catch (IOException e) {
-            System.err.println("Error loading volume file, using default volume\n" + e.getMessage());
+            System.err.println("Error loading volume path, using default volume\n" + e.getMessage());
             Arrays.stream(AudioChannel.values()).forEach(channel -> get(channel).volume = DEFAULT_VOLUME);
         }
     }
@@ -127,7 +127,7 @@ import java.util.Optional;
      *
      * @param config VolumeConfig que contiene los volumenes de cada canal
      */
-    private void setVolumens(VolumeConfig config) {
+    private void setVolumens(VolumeData config) {
         get(AudioChannel.MUSIC).volume = config.musicVolume();
         get(AudioChannel.AMBIENT).volume = config.ambientVolume();
         get(AudioChannel.SOUND).volume = config.soundVolume();
@@ -142,19 +142,19 @@ import java.util.Optional;
     }
 
     /**
-     * Reproduce un audio usando la configuracion especificada.
+     * Reproduce un audio.
      *
-     * @param audio  instancia de Audio donde se reproducira el sonido
-     * @param config configuracion de audio
+     * @param audio     instancia de Audio donde se reproducira el sonido
+     * @param audioData datos de audio
      */
-    private void play(Audio audio, AudioConfig config) {
-        Optional.ofNullable(getClass().getResource("/" + config.file()))
+    private void play(Audio audio, AudioData audioData) {
+        Optional.ofNullable(getClass().getResource("/" + audioData.path()))
                 .ifPresentOrElse(
                         url -> {
                             audio.play(url);
-                            if (config.loop()) audio.loop();
+                            if (audioData.loop()) audio.loop();
                         },
-                        () -> System.err.println("Audio resource not found: " + config.file())
+                        () -> System.err.println("Audio resource not found: " + audioData.path())
                 );
     }
 

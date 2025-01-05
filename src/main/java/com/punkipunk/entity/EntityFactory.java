@@ -97,6 +97,7 @@ public class EntityFactory {
 
         mobs[ABANDONED_ISLAND][i++] = new Oldman(game, world, 23, 16); // TODO set pos?
         mobs[ABANDONED_ISLAND][i++] = new Bat(game, world, 26, 19);
+        mobs[ABANDONED_ISLAND][i++] = new Bat(game, world, 19, 19);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 24, 38);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 34, 42);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 38, 42);

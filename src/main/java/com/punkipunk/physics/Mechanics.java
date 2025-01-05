@@ -1,8 +1,8 @@
 package com.punkipunk.physics;
 
 import com.punkipunk.entity.Entity;
-import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.mob.Box;
+import com.punkipunk.entity.mob.MobType;
 
 /**
  * Game mechanics.
@@ -28,7 +28,7 @@ public class Mechanics {
 
     public void stopKnockback(Entity entity) {
         entity.flags.knockback = false;
-        entity.stats.speed = entity.stats.defaultSpeed;
+        entity.stats.speed = entity.stats.baseSpeed;
         entity.timer.knockbackCounter = 0;
     }
 
@@ -47,12 +47,14 @@ public class Mechanics {
     /**
      * Checks if the Mob is other than null, and if the Mob is an Npc, and if the Player is colliding with the Mob, and if the
      * Player is in the same direction as the Mob, and if the Player has no distance from it Mob and if the Mob did not collide.
+     * <p>
+     * FIXME Cuando se une a un mob pacifico
      *
      * @param mob current mob.
      * @return true if all specified conditions are met or false.
      */
     private boolean checkConditionsForUnion(Entity player, Entity mob) {
-        return mob != null && mob.mobType == MobType.NPC && player.flags.collidingOnMob
+        return mob != null && (mob.mobType == MobType.NPC) && player.flags.collidingOnMob
                 && player.direction == mob.direction && !isDistanceWithMob(player, mob) && !mob.flags.colliding;
     }
 
@@ -116,7 +118,7 @@ public class Mechanics {
      * Return to the default speed and check if they are joined to "unlock" both entities by subtracting or adding a pixel.
      */
     private void disunite(Entity player) {
-        player.stats.speed = player.stats.defaultSpeed;
+        player.stats.speed = player.stats.baseSpeed;
         player.flags.collidingOnMob = false;
         if (united) {
             switch (player.direction) {
