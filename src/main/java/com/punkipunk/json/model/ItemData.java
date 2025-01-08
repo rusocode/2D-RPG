@@ -3,11 +3,10 @@ package com.punkipunk.json.model;
 public record ItemData(
         String name,
         String description,
-        String sound,
         Integer price,
-        Integer attackValue,
-        Integer defenseValue,
-        Integer knockbackValue,
+        Integer attack,
+        Integer defense,
+        Integer knockback,
         Integer points,
         Integer lightRadius,
         Integer frameWidth,
@@ -16,15 +15,15 @@ public record ItemData(
         Boolean stackable,
         Boolean solid,
         String texturePath,
-        String spriteSheetPath) {
+        String spriteSheetPath,
+        HitboxData hitbox) {
 
     // Constructor con valores por defecto para campos opcionales
     public ItemData {
-        // Si no se especifican, usar valores por defecto
         if (price == null) price = 0;
-        if (attackValue == null) attackValue = 0;
-        if (defenseValue == null) defenseValue = 0;
-        if (knockbackValue == null) knockbackValue = 0;
+        if (attack == null) attack = 0;
+        if (defense == null) defense = 0;
+        if (knockback == null) knockback = 0;
         if (points == null) points = 0;
         if (lightRadius == null) lightRadius = 0;
         if (frameWidth == null) frameWidth = 0;

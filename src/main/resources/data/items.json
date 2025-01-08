@@ -1,13 +1,4 @@
 {
-  "stoneAxe": {
-    "name": "Stone Axe",
-    "description": "A bit rusty but still can cut some trees",
-    "price": 75,
-    "attackValue": 1,
-    "knockbackValue": 8,
-    "texturePath": "textures/entity/items/stone_axe.png",
-    "spriteSheetPath": "textures/entity/items/stone_axe_frame.png"
-  },
   "boots": {
     "name": "Boots",
     "texturePath": "textures/entity/items/boots.png"
@@ -18,7 +9,13 @@
     "frameWidth": 32,
     "frameHeight": 32,
     "frameScale": 1,
-    "spriteSheetPath": "textures/entity/items/chest.png"
+    "spriteSheetPath": "textures/entity/items/chest.png",
+    "hitbox": {
+      "x": 3,
+      "y": 16,
+      "width": 25,
+      "height": 14
+    }
   },
   "chicken": {
     "name": "Chicken",
@@ -26,20 +23,28 @@
     "price": 1,
     "texturePath": "textures/entity/items/chicken.png"
   },
-  "woodDoor": {
-    "name": "Wood Door",
-    "solid": true,
-    "texturePath": "textures/entity/items/wood_door.png"
-  },
-  "ironDoor": {
-    "name": "Iron Door",
-    "solid": true,
-    "texturePath": "textures/entity/items/door_iron.png"
-  },
   "gold": {
     "name": "Gold",
     "stackable": true,
     "texturePath": "textures/entity/items/gold.png"
+  },
+  "ironDoor": {
+    "name": "Iron Door",
+    "solid": true,
+    "texturePath": "textures/entity/items/door_iron.png",
+    "hitbox": {
+      "x": 1,
+      "y": 16,
+      "width": 30,
+      "height": 16
+    }
+  },
+  "ironShield": {
+    "name": "Iron Shield",
+    "description": "A shiny iron shield",
+    "price": 250,
+    "defense": 2,
+    "texturePath": "textures/entity/items/iron_shield.png"
   },
   "key": {
     "name": "Key",
@@ -52,16 +57,6 @@
     "price": 45,
     "lightRadius": 350,
     "texturePath": "textures/entity/items/lantern.png"
-  },
-  "stonePickaxe": {
-    "name": "Stone Pickaxe",
-    "description": "You will dig it!",
-    "sound": "drawPickaxe",
-    "price": 60,
-    "attackValue": 1,
-    "knockbackValue": 8,
-    "texturePath": "textures/entity/items/stone_pickaxe.png",
-    "spriteSheetPath": "textures/entity/items/stone_pickaxe_frame.png"
   },
   "potionBlue": {
     "name": "Blue Potion",
@@ -79,20 +74,6 @@
     "stackable": true,
     "texturePath": "textures/entity/items/potion_red.png"
   },
-  "ironShield": {
-    "name": "Iron Shield",
-    "description": "A shiny iron shield",
-    "price": 250,
-    "defenseValue": 2,
-    "texturePath": "textures/entity/items/iron_shield.png"
-  },
-  "woodShield": {
-    "name": "Wood Shield",
-    "description": "Made by wood",
-    "price": 150,
-    "defenseValue": 1,
-    "texturePath": "textures/entity/items/wood_shield.png"
-  },
   "stone": {
     "name": "Stone",
     "description": "It's just a stone",
@@ -100,13 +81,30 @@
     "stackable": true,
     "texturePath": "textures/entity/items/stone.png"
   },
+  "stoneAxe": {
+    "name": "Stone Axe",
+    "description": "A bit rusty but still can cut some trees",
+    "price": 75,
+    "attack": 1,
+    "knockback": 8,
+    "texturePath": "textures/entity/items/stone_axe.png",
+    "spriteSheetPath": "textures/entity/items/stone_axe_frame.png"
+  },
+  "stonePickaxe": {
+    "name": "Stone Pickaxe",
+    "description": "You will dig it!",
+    "price": 60,
+    "attack": 1,
+    "knockback": 8,
+    "texturePath": "textures/entity/items/stone_pickaxe.png",
+    "spriteSheetPath": "textures/entity/items/stone_pickaxe_frame.png"
+  },
   "stoneSword": {
     "name": "Stone Sword",
     "description": "An old sword",
-    "sound": "drawSword",
     "price": 20,
-    "attackValue": 1,
-    "knockbackValue": 2,
+    "attack": 1,
+    "knockback": 2,
     "texturePath": "textures/entity/items/stone_sword.png",
     "spriteSheetPath": "textures/entity/items/stone_sword_frame.png"
   },
@@ -122,5 +120,23 @@
     "price": 5,
     "stackable": true,
     "texturePath": "textures/entity/items/wood.png"
+  },
+  "woodDoor": {
+    "name": "Wood Door",
+    "solid": true,
+    "texturePath": "textures/entity/items/wood_door.png",
+    "hitbox": {
+      "x": 0,
+      "y": 16,
+      "width": 31,
+      "height": 14
+    }
+  },
+  "woodShield": {
+    "name": "Wood Shield",
+    "description": "Made by wood",
+    "price": 150,
+    "defense": 1,
+    "texturePath": "textures/entity/items/wood_shield.png"
   }
 }

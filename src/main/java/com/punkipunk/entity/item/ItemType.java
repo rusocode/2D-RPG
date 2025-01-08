@@ -2,6 +2,10 @@ package com.punkipunk.entity.item;
 
 import java.util.Set;
 
+/**
+ * TODO Cambiar PICKUP
+ * */
+
 public enum ItemType {
 
     SWORD, AXE, SHIELD, USABLE, LIGHT, PICKAXE, OBSTACLE, PICKUP;

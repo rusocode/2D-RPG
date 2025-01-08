@@ -18,9 +18,6 @@ public class IronDoor extends Item {
         super(game, world, JsonLoader.getInstance().deserialize("items.ironDoor", ItemData.class), pos);
         itemType = ItemType.OBSTACLE;
         dialogue = new Dialogue(game);
-        hitbox = new Rectangle(1, 16, tile - 2, tile - 16);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
         initDialogue();
     }
 

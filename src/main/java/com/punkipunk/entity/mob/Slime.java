@@ -17,9 +17,6 @@ public class Slime extends Mob {
     public Slime(Game game, World world, int... pos) {
         super(game, world, JsonLoader.getInstance().deserialize("mobs.slime", MobData.class), pos);
         mobType = MobType.HOSTILE;
-        hitbox = new Rectangle(3, 6, tile - 7, tile - 11);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
         spell = new StickyBall(game, world);
         sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
     }

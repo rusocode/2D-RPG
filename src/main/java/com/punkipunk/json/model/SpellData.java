@@ -14,8 +14,7 @@ public record SpellData(
         Boolean alive,
         String sound,
         String texturePath,
-        String spriteSheetPath
-) {
+        String spriteSheetPath) {
 
     public SpellData {
         if (speed == null) speed = 0;

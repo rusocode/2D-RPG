@@ -1,14 +1,13 @@
 package com.punkipunk.entity.mob;
 
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Gold;
 import com.punkipunk.entity.spells.Fireball;
 import com.punkipunk.gfx.SpriteSheet;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.*;
 
@@ -17,9 +16,6 @@ public class RedSlime extends Mob {
     public RedSlime(Game game, World world, int... pos) {
         super(game, world, JsonLoader.getInstance().deserialize("mobs.redSlime", MobData.class), pos);
         mobType = MobType.HOSTILE;
-        hitbox = new Rectangle(3, 6, tile - 7, tile - 11);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
         spell = new Fireball(game, world);
         sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
     }

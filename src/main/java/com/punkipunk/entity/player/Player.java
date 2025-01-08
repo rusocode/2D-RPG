@@ -5,8 +5,6 @@ import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.classes.Character;
 import com.punkipunk.classes.Jester;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.PlayerData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.interactive.Interactive;
@@ -21,6 +19,8 @@ import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.gui.container.hotbar.Hotbar;
 import com.punkipunk.gui.container.inventory.Inventory;
 import com.punkipunk.input.keyboard.Key;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.PlayerData;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -31,7 +31,10 @@ import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.*;
 
-// TODO Shouldn't it become the Client class?
+/**
+ * TODO No deberia ser la clase Client?
+ */
+
 public class Player extends Entity {
 
     public Item weapon, shield, light;
@@ -87,7 +90,7 @@ public class Player extends Entity {
         left = new Animation(animationSpeed, sheet.left);
         right = new Animation(animationSpeed, sheet.right);
 
-        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 20, Direction.DOWN);
+        pos.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 14, Direction.DOWN);
 
     }
 
@@ -99,7 +102,7 @@ public class Player extends Entity {
             direction.get(this);
             checkCollisions();
             if (!flags.colliding && !game.system.keyboard.checkActionKeys()) pos.update(this, direction);
-            mechanics.checkDirectionSpeed(this, auxEntity);
+            mechanics.checkSpeed(this, auxEntity);
             checkAttack();
             checkShoot();
             // Resetea las teclas de accion (atacar, por ejemplo) para darle prioridad a las teclas de movimiento y asi evitar que se "choquen"
@@ -255,7 +258,7 @@ public class Player extends Entity {
             if (game.system.keyboard.isKeyPressed(Key.ENTER) && mob.mobType == MobType.NPC) {
                 attackCanceled = true;
                 mob.dialogue();
-            } else mob.move(direction); // In case it's the box
+            } else mob.move(this, direction); // Si es un Box
         }
     }
 
@@ -340,7 +343,7 @@ public class Player extends Entity {
         if (i != -1) {
             auxEntity = world.entities.interactives[world.map.num][i];
             Interactive interactive = world.entities.interactives[world.map.num][i];
-            if (interactive.destructible && interactive.isCorrectWeapon(weapon) && !interactive.flags.invincible) {
+            if (interactive.interactiveData.destructible() && interactive.isCorrectWeapon(weapon) && !interactive.flags.invincible) {
                 interactive.playSound();
                 interactive.stats.hp--;
                 interactive.flags.invincible = true;
@@ -397,7 +400,7 @@ public class Player extends Entity {
         if (i != -1) {
             Item item = world.entities.items[world.map.num][i];
             if (game.system.keyboard.isKeyPressed(Key.PICKUP) && item.itemType != ItemType.OBSTACLE) {
-                if (item.itemType == ItemType.PICKUP) item.use(world.entities.player);
+                if (item.itemType == ItemType.PICKUP) item.use(this);
                     // Si puede agregar items en el inventario o en la hotbar, entonces agrega los items a la hotbar
                 else if (inventory.canAddItem(item) || hotbar.canAddItem(item)) {
                     hotbar.add(item);
@@ -499,11 +502,11 @@ public class Player extends Entity {
     }
 
     public int getAttack() {
-        return stats.strength + (weapon != null ? weapon.attackValue : 0);
+        return stats.strength + (weapon != null ? weapon.attack : 0);
     }
 
     public int getDefense() {
-        return stats.dexterity + (shield != null ? shield.defenseValue : 0);
+        return stats.dexterity + (shield != null ? shield.defense : 0);
     }
 
     public void initSleepImage(Image image) {

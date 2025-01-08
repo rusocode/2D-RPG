@@ -2,8 +2,8 @@ package com.punkipunk.entity.components;
 
 /**
  * <p>
- * "Flags" are variables or individual bits used as boolean indicators to represent and control specific state or conditions
- * within the game.
+ * Los "flags" son variables o bits individuales que se utilizan como indicadores booleanos para representar y controlar estados o
+ * condiciones especificas dentro del juego.
  */
 
 public final class Flags {
@@ -20,9 +20,6 @@ public final class Flags {
     public boolean hpBar;
     public boolean boss;
 
-    /**
-     * Reset the flags.
-     */
     public void reset() {
         hitting = false;
         invincible = false;

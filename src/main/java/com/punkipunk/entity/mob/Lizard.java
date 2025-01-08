@@ -1,19 +1,21 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.Dialogue;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Gold;
 import com.punkipunk.entity.item.IronDoor;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.io.Progress;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
-import static com.punkipunk.utils.Global.tile;
+
+/**
+ * Es el unico mob que va a tener animacion de ataque.
+ */
 
 public class Lizard extends Mob {
 
@@ -21,13 +23,10 @@ public class Lizard extends Mob {
 
     public Lizard(Game game, World world, int... pos) {
         super(game, world, JsonLoader.getInstance().deserialize("mobs.lizard", MobData.class), pos);
-        dialogue = new Dialogue(game);
         mobType = MobType.HOSTILE;
-        hitbox = new Rectangle(tile, tile * 2, 170 - tile * 2, 180 - tile * 3);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
-        attackbox.setWidth(90);
-        attackbox.setHeight(90);
+        dialogue = new Dialogue(game);
+        attackbox.setWidth(mobData.attackboxWidth());
+        attackbox.setHeight(mobData.attackboxHeight());
         sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
 
         initDialogue();
@@ -35,7 +34,7 @@ public class Lizard extends Mob {
 
     @Override
     public void doActions() {
-        // TODO Haz que siga al jugador cuando el lagarto este atascado en una tile
+        // TODO Haz que siga al player cuando este atascado en un tile
         // Si la distancia del jugador con respecto al mob es menor a 10 tiles
         if (getTileDistance(game.system.world.entities.player) < 10) moveTowardPlayer(game.system.world.entities.player, 30);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
@@ -60,7 +59,7 @@ public class Lizard extends Mob {
 
         Progress.bossDefeated = true;
 
-        // Remove the iron doors
+        // Elimina la IronDoor
         for (int i = 0; i < world.entities.items[1].length; i++)
             if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(IronDoor.NAME))
                 world.entities.items[world.map.num][i] = null;

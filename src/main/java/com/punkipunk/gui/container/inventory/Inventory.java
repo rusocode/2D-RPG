@@ -11,8 +11,8 @@ import com.punkipunk.world.World;
  * <p>
  * Clase que representa el inventario del jugador.
  * <p>
- * Extiende de Container y maneja los items que el jugador puede recolectar, equipar y consumir durante el juego. Tambien gestiona
- * el equipamiento del jugador.
+ * Extiende de Container y maneja los items que el jugador puede recolectar, equipar y usar durante el juego. Tambien gestiona el
+ * equipamiento del jugador.
  */
 
 public class Inventory extends Container {
@@ -32,11 +32,12 @@ public class Inventory extends Container {
     public void initializeDefaultItems() {
         add(new StoneSword(game, world));
         add(new WoodShield(game, world));
-        add(new PotionBlue(game, world, 1));
+        add(new PotionBlue(game, world, 5));
         add(new Key(game, world));
+        add(new Tent(game, world));
         add(new StoneAxe(game, world));
         add(new StonePickaxe(game, world));
-        add(new StoneAxe(game, world));
+        add(new PotionRed(game, world, 10));
     }
 
     public void equip(Item item) {

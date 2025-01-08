@@ -18,9 +18,6 @@ public class WoodDoor extends Item {
         super(game, world, JsonLoader.getInstance().deserialize("items.woodDoor", ItemData.class), pos);
         itemType = ItemType.OBSTACLE;
         dialogue = new Dialogue(game);
-        hitbox = new Rectangle(0, 16, 31, tile - 18);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
         initDialogue();
     }
 

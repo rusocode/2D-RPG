@@ -58,17 +58,17 @@ public abstract class Container {
     }
 
     /**
-     * Consume un item del inventario si es posible.
+     * Usa un item del inventario si es posible.
      * <p>
      * Si el item se puede usar, reduce su cantidad en 1.
      * <p>
      * Si la cantidad llega a 0, elimina el item del inventario.
      *
-     * @param item el item a consumir
+     * @param item el item a usar
      * @param row  fila donde se encuentra el item en el inventario
      * @param col  columna donde se encuentra el item en el inventario
      */
-    public void consume(Item item, int row, int col) {
+    public void use(Item item, int row, int col) {
         if (item.use(player)) {
             item.amount--;
             if (item.amount <= 0) remove(row, col);

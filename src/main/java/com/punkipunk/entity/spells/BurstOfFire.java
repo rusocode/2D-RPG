@@ -20,8 +20,8 @@ import static com.punkipunk.utils.Global.tile;
 
 /**
  * <p>
- * Este hechizo es diferente de Fireball ya que tiene 5 cuadros en lugar de 2. Por lo tanto, la logica seria que solo se
- * rendericen los 5 cuadros para cumplir correctamente la animacion del hechizo y no hasta que se acabe su vida (por lo tanto, la
+ * Este hechizo es diferente de Fireball ya que tiene 5 frames en lugar de 2. Por lo tanto, la logica seria que solo se
+ * rendericen los 5 frames para cumplir correctamente la animacion del hechizo y no hasta que se acabe su vida (por lo tanto, la
  * vida seria innecesaria).
  * <p>
  * TODO Aumentar la duracion del ultimo fotograma

@@ -11,9 +11,8 @@ public class WeaponEquipmentStrategy extends BaseEquipmentStrategy {
     protected void onEquip(Player player, Item item) {
         player.weapon = item;
         player.stats.attack = player.getAttack();
-        // FIXME Se crea un nuevo objeto SS cada vez que equipo el arma
-        player.sheet.loadWeaponFrames(new SpriteSheet(Utils.loadTexture(item.itemData.spriteSheetPath())), 16, 16, 1);
-        player.game.system.audio.playSound(item.itemData.sound());
+        player.sheet.loadWeaponFrames(item.ss, 16, 16, 1);
+        player.game.system.audio.playSound(item.sound);
     }
 
     @Override

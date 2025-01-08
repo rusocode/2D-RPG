@@ -2,17 +2,32 @@
   "destructibleWall": {
     "hp": 3,
     "destructible": true,
-    "sound": "mine",
-    "texturePath": "textures/tiles/interactive/destructible_wall.png"
-  },
-  "metalPlate": {
-    "name": "Metal Plate",
-    "texturePath": "textures/tiles/interactive/metal_plate.png"
+    "texturePath": "textures/tiles/interactive/destructible_wall.png",
+    "hitbox": {
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 32
+    }
   },
   "dryTree": {
     "hp": 1,
     "destructible": true,
-    "sound": "cutTree",
-    "texturePath": "textures/tiles/interactive/dry_tree.png"
+    "texturePath": "textures/tiles/interactive/dry_tree.png",
+    "hitbox": {
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 32
+    }
+  },
+  "metalPlate": {
+    "texturePath": "textures/tiles/interactive/metal_plate.png",
+    "hitbox": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0
+    }
   }
 }

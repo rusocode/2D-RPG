@@ -9,7 +9,11 @@ import javafx.scene.paint.Color;
 import static com.punkipunk.utils.Global.*;
 
 /**
- * Particles are small rectangles drawn with the fillRect() method. This is optional, but you can also add images for this case.
+ * <p>
+ * Las particulas son pequeños rectangulos dibujados con el metodo fillRect(). Esto es opcional, pero tambien puedes agregar
+ * imagenes en este caso.
+ * <p>
+ * TODO Usar libreria externa para el efecto de particulas
  */
 
 public class Particle extends Entity {
@@ -21,7 +25,7 @@ public class Particle extends Entity {
 
     public Particle(Game game, World world, Entity generator, Color color, int size, int speed, int maxHp, int xd, int yd) {
         super(game, world);
-        //The generator would be, for example, a dry tree or a projectile.
+        // El generador seria, por ejemplo, un DryTree
         this.color = color;
         this.size = size;
         stats.speed = speed;
@@ -39,8 +43,7 @@ public class Particle extends Entity {
     public void update() {
         stats.hp--;
 
-        /* If the life of the particle is half of its maximum life, then the position y increases by 1, thus generating
-         * a gravity effect. */
+        /* Si la vida de la particula es la mitad de su vida maxima, entonces la posicion y aumenta en 1, generando asi un efecto de gravedad */
         if (stats.hp < stats.maxHp / 3) {
             yd++;
             size--;

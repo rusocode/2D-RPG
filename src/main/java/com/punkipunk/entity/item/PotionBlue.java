@@ -1,10 +1,10 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.ItemData;
 import com.punkipunk.world.World;
 
 public class PotionBlue extends Item {
@@ -19,13 +19,12 @@ public class PotionBlue extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        if (entity.stats.mana != entity.stats.maxMana) {
+        if (entity.stats.mana < entity.stats.maxMana) {
             game.system.audio.playSound(AudioID.Sound.DRINK_POTION);
-            entity.stats.mana += points;
-            if (entity.stats.mana > entity.stats.maxMana) entity.stats.mana = entity.stats.maxMana;
+            entity.stats.increaseMana(points);
             return true;
         } else {
-            game.system.ui.addMessageToConsole("You have a full mana");
+            game.system.ui.addMessageToConsole("You have a full mana!");
             return false;
         }
     }

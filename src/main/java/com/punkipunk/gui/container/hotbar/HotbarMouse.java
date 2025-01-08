@@ -28,7 +28,7 @@ public class HotbarMouse extends ContainerMouse {
             Item itemClicked = container.get(row, col);
             if (itemClicked != null) {
                 switch (itemClicked.itemType) {
-                    case USABLE -> consume(itemClicked, row, col, tooltip);
+                    case USABLE -> use(itemClicked, row, col, tooltip);
                     case AXE, SWORD, PICKAXE, SHIELD, LIGHT -> equip(itemClicked, slot);
                 }
                 controller.updateSlot(row, col);
@@ -36,8 +36,8 @@ public class HotbarMouse extends ContainerMouse {
         }
     }
 
-    private void consume(Item itemClicked, int row, int col, Tooltip tooltip) {
-        container.consume(itemClicked, row, col);
+    private void use(Item itemClicked, int row, int col, Tooltip tooltip) {
+        container.use(itemClicked, row, col);
         if (itemClicked.amount < 1) tooltip.hide();
     }
 

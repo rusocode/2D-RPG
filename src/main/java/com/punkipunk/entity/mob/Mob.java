@@ -1,11 +1,12 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.Direction;
-import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
+import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.tile;
 
@@ -47,6 +48,17 @@ public abstract class Mob extends Entity {
         soundHit = mobData.soundHit();
         soundDeath = mobData.soundDeath();
 
+        if (mobData.hitbox() != null) {
+            hitbox = new Rectangle(
+                    mobData.hitbox().x(),
+                    mobData.hitbox().y(),
+                    mobData.hitbox().width(),
+                    mobData.hitbox().height()
+            );
+            hitboxDefaultX = hitbox.getX();
+            hitboxDefaultY = hitbox.getY();
+        }
+
     }
 
     /**
@@ -54,7 +66,7 @@ public abstract class Mob extends Entity {
      *
      * @param direction direction in which it moves.
      */
-    public void move(Direction direction) {
+    public void move(Entity entity, Direction direction) {
     }
 
     /**

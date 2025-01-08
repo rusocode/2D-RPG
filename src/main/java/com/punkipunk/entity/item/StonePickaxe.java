@@ -1,5 +1,6 @@
 package com.punkipunk.entity.item;
 
+import com.punkipunk.audio.AudioID;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
@@ -12,6 +13,7 @@ public class StonePickaxe extends Item {
     public StonePickaxe(Game game, World world, int... pos) {
         super(game, world, JsonLoader.getInstance().deserialize("items.stonePickaxe", ItemData.class), pos);
         itemType = ItemType.PICKAXE;
+        sound = AudioID.Sound.DRAW_PICKAXE;
     }
 
 }

@@ -1,10 +1,12 @@
 package com.punkipunk.entity.item;
 
-import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.gfx.SpriteSheet;
+import com.punkipunk.json.model.ItemData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
+import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.tile;
 
@@ -22,15 +24,16 @@ public abstract class Item extends Entity {
     public ItemData itemData;
     public Item loot;
     public ItemType itemType;
-    public String description;
+    public String description; // TODO Donde se usa?
     public String sound;
-    public int price;
+    public int price; // TODO Donde se usa?
     public int amount;
     public int lightRadius;
-    public int attackValue, defenseValue;
+    public int attack, defense;
     public boolean solid, stackable;
     public boolean opened, empty;
-    protected int points;
+    public SpriteSheet ss;
+    protected int points; // Puntos de las pociones azules y rojas que se usan para incrementar hp y mana
 
     public Item(Game game, World world, ItemData itemData, int... pos) {
         super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
@@ -39,16 +42,29 @@ public abstract class Item extends Entity {
 
         stats.name = itemData.name();
         description = itemData.description();
-        sound = itemData.sound();
         price = itemData.price();
-        attackValue = itemData.attackValue();
-        defenseValue = itemData.defenseValue();
-        stats.knockback = itemData.knockbackValue();
+        attack = itemData.attack();
+        defense = itemData.defense();
+        stats.knockback = itemData.knockback();
         points = itemData.points();
         lightRadius = itemData.lightRadius();
         stackable = itemData.stackable();
         solid = itemData.solid();
-        if (itemData.texturePath() != null) sheet.frame = Utils.scaleTexture(Utils.loadTexture(itemData.texturePath()), tile, tile);
+        if (itemData.texturePath() != null) sheet.frame = Utils.loadTexture(itemData.texturePath());
+        // TODO No se esta creando dos veces para el Chest?
+        if (itemData.spriteSheetPath() != null) ss = new SpriteSheet(Utils.loadTexture(itemData.spriteSheetPath()));
+
+        // Crea un Hitbox solo para los items de tipo OBSTACLE
+        if (itemData.hitbox() != null) {
+            hitbox = new Rectangle(
+                    itemData.hitbox().x(),
+                    itemData.hitbox().y(),
+                    itemData.hitbox().width(),
+                    itemData.hitbox().height()
+            );
+            hitboxDefaultX = hitbox.getX();
+            hitboxDefaultY = hitbox.getY();
+        }
 
         // TODO Cambiar nombre del "stone_sword_frame.png" a algo mas relacionado a un SS
 

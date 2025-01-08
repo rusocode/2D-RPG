@@ -1,6 +1,5 @@
 package com.punkipunk.json.model;
 
-// TODO Creo que seria mejor otro nombre para el record
 public record MobData(
         String name,
         Integer speed,
@@ -12,6 +11,7 @@ public record MobData(
         Integer defense,
         Integer motion1,
         Integer motion2,
+        Integer animationSpeed,
         Integer frameWidth,
         Integer frameHeight,
         Integer frameScale,
@@ -20,7 +20,10 @@ public record MobData(
         String soundHit,
         String soundDeath,
         String texturePath,
-        String spriteSheetPath) {
+        String spriteSheetPath,
+        HitboxData hitbox,
+        Integer attackboxWidth,
+        Integer attackboxHeight) {
 
     public MobData {
         if (speed == null) speed = 0;
@@ -32,11 +35,14 @@ public record MobData(
         if (defense == null) defense = 0;
         if (motion1 == null) motion1 = 0;
         if (motion2 == null) motion2 = 0;
+        if (animationSpeed == null) animationSpeed = 0;
         if (frameWidth == null) frameWidth = 0;
         if (frameHeight == null) frameHeight = 0;
         if (frameScale == null) frameScale = 0;
         if (boss == null) boss = false;
         if (sleep == null) sleep = false;
+        if (attackboxWidth == null) attackboxWidth = 0;
+        if (attackboxHeight == null) attackboxHeight = 0;
     }
 
 }

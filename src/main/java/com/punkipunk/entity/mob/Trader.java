@@ -14,11 +14,8 @@ public class Trader extends Mob {
 
     public Trader(Game game, World world, int... pos) {
         super(game, world, JsonLoader.getInstance().deserialize("mobs.trader", MobData.class), pos);
-        dialogue = new Dialogue(game);
         mobType = MobType.NPC;
-        hitbox = new Rectangle(7, 40, 15, 24);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
+        dialogue = new Dialogue(game);
         sheet.frame = Utils.scaleTexture(Utils.loadTexture(mobData.texturePath()), mobData.frameWidth(), mobData.frameHeight());
         initDialogue();
         addItemsToInventory();

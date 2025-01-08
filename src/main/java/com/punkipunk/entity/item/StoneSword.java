@@ -1,5 +1,6 @@
 package com.punkipunk.entity.item;
 
+import com.punkipunk.audio.AudioID;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
@@ -12,6 +13,7 @@ public class StoneSword extends Item {
     public StoneSword(Game game, World world, int... pos) {
         super(game, world, JsonLoader.getInstance().deserialize("items.stoneSword", ItemData.class), pos);
         itemType = ItemType.SWORD;
+        sound = AudioID.Sound.DRAW_SWORD;
     }
 
 }

@@ -40,7 +40,7 @@ public abstract class Entity {
     public SpriteSheet sheet = new SpriteSheet();
     public Timer timer = new Timer();
     public Mechanics mechanics = new Mechanics();
-    public Rectangle hitbox = new Rectangle(0, 0, tile, tile);
+    public Rectangle hitbox = new Rectangle(0, 0, tile, tile); // TODO Se crea aca?
     public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
     public Container inventory;
     public Dialogue dialogue;
@@ -110,10 +110,13 @@ public abstract class Entity {
             }
             if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
 
-            // If it is an animation
+            // Si es una animacion con dos frames para cada direccion
             if (sheet.movement != null || sheet.attack != null)
                 g2.drawImage(sheet.getCurrentAnimationFrame(this), tempScreenX, tempScreenY);
-                // If it is a static image (item, interactive tile)
+            // Si es una animacion con mas de dos framas para cada direccion
+            else if (sheet.down != null || sheet.up != null || sheet.left != null || sheet.right != null)
+                g2.drawImage(sheet.getCurrentAnimationFrame2(this), tempScreenX, tempScreenY);
+                // Si es una imagen estatica (item, interactive)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY());
 
             if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
@@ -288,7 +291,7 @@ public abstract class Entity {
         gc.setLineWidth(1);
         gc.strokeRect(getScreenX(), getScreenY(), sheet.frame.getWidth(), sheet.frame.getHeight());
         // Hitbox
-        gc.setStroke(Color.YELLOW);
+        gc.setStroke(Color.BLUE);
         gc.strokeRect(getScreenX() + hitbox.getX(), getScreenY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
         // Attackbox
         if (flags.hitting) {

@@ -1,22 +1,19 @@
 package com.punkipunk.entity.interactive;
 
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.InteractiveData;
+import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.item.ItemType;
 import com.punkipunk.entity.item.Wood;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.InteractiveData;
 import com.punkipunk.world.World;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-
-import static com.punkipunk.utils.Global.tile;
 
 public class DryTree extends Interactive {
 
     public DryTree(Game game, World world, int... pos) {
         super(game, world, JsonLoader.getInstance().deserialize("interactive.dryTree", InteractiveData.class), pos);
-        hitbox = new Rectangle(0, 0, tile, tile);
     }
 
     public boolean isCorrectWeapon(Item weapon) {
@@ -45,6 +42,6 @@ public class DryTree extends Interactive {
 
     @Override
     public void playSound() {
-        game.system.audio.playSound(interactiveData.sound());
+        game.system.audio.playSound(AudioID.Sound.CUT_TREE);
     }
 }

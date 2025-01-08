@@ -1,5 +1,8 @@
 package com.punkipunk.entity.components;
 
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.PlayerData;
+
 /**
  * Estadisticas de las entidades.
  * <p>
@@ -23,10 +26,10 @@ package com.punkipunk.entity.components;
  * <li>Restaurar la velocidad correcta despues de efectos temporales
  * <li>Manejar multiples efectos que afectan la velocidad
  * </ul>
- * Por lo tanto, aunque parezca redundante, mantener ambas variables es una buena practica de diseño que facilita el manejo de 
+ * Por lo tanto, aunque parezca redundante, mantener ambas variables es una buena practica de diseño que facilita el manejo de
  * estados temporales en el juego.
  * <p>
- * TODO speed deberia ser flotante
+ * TODO speed deberia ser float
  */
 
 public class Stats {
@@ -44,66 +47,55 @@ public class Stats {
     public int motion1, motion2;
     public int knockback;
 
-    /**
-     * Increase hp.
-     *
-     * @param amount amount of hp to increase.
-     */
-    public void increaseHp(int amount) {
-        hp += amount;
+    public void increaseHp(int points) {
+        hp += points;
         if (hp > maxHp) hp = maxHp;
     }
 
-    /**
-     * Decreases hp.
-     *
-     * @param amount amount of hp to be decreased.
-     */
-    public void decreaseHp(int amount) {
-        hp -= amount;
+    public void decreaseHp(int points) {
+        hp -= points;
         if (hp < 0) hp = 0;
     }
 
-    public void increaseMaxHp(int amount) {
-        maxHp += amount;
+    public void increaseMaxHp(int points) {
+        maxHp += points;
+        fullHp();
     }
 
-    public void increaseMaxMana(int amount) {
-        maxMana += amount;
+    public void increaseMana(int points) {
+        mana += points;
+        if (mana > maxMana) mana = maxMana;
     }
 
-    /**
-     * Fills the hp.
-     */
+    public void increaseMaxMana(int points) {
+        maxMana += points;
+        fullMana();
+    }
+
     public void fullHp() {
         hp = maxHp;
     }
 
-    /**
-     * Fills the mana.
-     */
     public void fullMana() {
         mana = maxMana;
     }
 
-    /**
-     * Reset the stats.
-     *
-     * @param fullReset true to reset the lvl, exp, nextLvlExp, strength and dexterity; false otherwise.
-     */
     public void reset(boolean fullReset) {
+        PlayerData playerData = JsonLoader.getInstance().deserialize("player", PlayerData.class);
         hp = maxHp;
         mana = maxMana;
-        ammo = 5;
+        ammo = 0;
         gold = 0;
         if (fullReset) {
-            lvl = 1;
-            exp = 0;
-            nextExp = 10;
-            hp = maxHp = 6;
-            mana = maxMana = 15;
-            strength = 1;
-            dexterity = 1;
+            lvl = playerData.lvl();
+            exp = playerData.exp();
+            nextExp = playerData.nextExp();
+            hp = maxHp = playerData.hp();
+            mana = maxMana = playerData.mana();
+            ammo = playerData.ammo();
+            gold = playerData.gold();
+            strength = playerData.strength();
+            dexterity = playerData.dexterity();
         }
     }
 

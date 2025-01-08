@@ -16,7 +16,7 @@ import javafx.scene.layout.StackPane;
 /**
  * <p>
  * Clase que implementa la funcionalidad especifica de interaccion con el mouse para el inventario. Extiende de ContainerMouse
- * para manejar las operaciones de consumo y equipamiento de items mediante doble click.
+ * para manejar las operaciones de uso y equipamiento de items mediante doble click.
  * <p>
  * TODO Implementar la division de items para items apilables
  */
@@ -44,7 +44,7 @@ public class InventoryMouse extends ContainerMouse {
     /**
      * Implementa la logica cuando se hace click en un item del inventario.
      * <p>
-     * Maneja el doble click para consumir o equipar items segun su tipo.
+     * Maneja el doble click para usar o equipar items segun su tipo.
      *
      * @param event   el evento del mouse que contiene la informacion de la interaccion
      * @param slot    el StackPane donde se hizo click
@@ -58,7 +58,7 @@ public class InventoryMouse extends ContainerMouse {
             Item itemClicked = container.get(row, col);
             if (itemClicked != null) {
                 switch (itemClicked.itemType) {
-                    case USABLE -> consume(itemClicked, row, col, tooltip);
+                    case USABLE -> use(itemClicked, row, col, tooltip);
                     case AXE, SWORD, PICKAXE, SHIELD, LIGHT -> equip(itemClicked, slot);
                 }
                 controller.updateSlot(row, col); // TODO Deberia llamar a onContainerChanged()
@@ -67,15 +67,15 @@ public class InventoryMouse extends ContainerMouse {
     }
 
     /**
-     * Consume un item del inventario y actualiza el tooltip si es necesario.
+     * Usa un item del inventario y actualiza el tooltip si es necesario.
      *
-     * @param itemClicked el item a consumir
+     * @param itemClicked el item a usar
      * @param row         la fila del item en el inventario
      * @param col         la columna del item en el inventario
-     * @param tooltip     el tooltip a ocultar si el item se consume por completo
+     * @param tooltip     el tooltip a ocultar si el item se usa por completo
      */
-    private void consume(Item itemClicked, int row, int col, Tooltip tooltip) {
-        container.consume(itemClicked, row, col);
+    private void use(Item itemClicked, int row, int col, Tooltip tooltip) {
+        container.use(itemClicked, row, col);
         if (itemClicked.amount < 1) tooltip.hide();
     }
 

@@ -3,23 +3,19 @@ package com.punkipunk.entity.mob;
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.interactive.MetalPlate;
 import com.punkipunk.entity.item.IronDoor;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.MobData;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
 
 import java.util.ArrayList;
 
-import static com.punkipunk.utils.Global.tile;
-
-// FIXME Bug visual al mover la caja
 public class Box extends Mob {
 
     public static final String NAME = "Box";
@@ -28,9 +24,6 @@ public class Box extends Mob {
         super(game, world, JsonLoader.getInstance().deserialize("mobs.box", MobData.class), pos);
         mobType = MobType.NPC;
         dialogue = new Dialogue(game);
-        hitbox = new Rectangle(1, 1, tile - 2, tile - 2);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
         dialogue.set = -1;
         sheet.frame = Utils.scaleTexture(Utils.loadTexture(mobData.texturePath()), mobData.frameWidth(), mobData.frameHeight());
         initDialogue();
@@ -42,7 +35,7 @@ public class Box extends Mob {
     }
 
     @Override
-    public void move(Direction direction) {
+    public void move(Entity entity, Direction direction) {
         this.direction = direction;
         checkCollisions();
         if (!flags.colliding) {

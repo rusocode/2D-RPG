@@ -14,7 +14,7 @@ import javafx.scene.layout.StackPane;
  * <p>
  * Ahora la funcionalidad de tooltips es reutilizable por otros contenedores. Otros contenedores pueden implementar sus propias
  * acciones especificas sobrescribiendo {@code onItemClicked()}. Por ejemplo, en un inventario al hacer doble click sobre un item,
- * este se consume o equipa, y en una boveda, este se deposita.
+ * este se usa o equipa, y en una boveda, este se deposita.
  */
 
 public abstract class ContainerMouse {

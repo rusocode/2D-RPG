@@ -1,9 +1,9 @@
 package com.punkipunk.entity.spells;
 
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.SpellData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.SpellData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import javafx.scene.paint.Color;
@@ -12,7 +12,8 @@ import javafx.scene.shape.Rectangle;
 import static com.punkipunk.utils.Global.tile;
 
 /**
- * TODO Implement the decrease in the player's speed when the sticky ball hits him.
+ * FIXME Este objeto forma parte de un proyectil y no de un hechizo
+ * TODO Implementar disminucion en la velocidad del jugador cuando este colisiona con StickyBall
  */
 
 public class StickyBall extends Spell {

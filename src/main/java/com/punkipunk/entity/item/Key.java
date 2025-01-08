@@ -18,7 +18,7 @@ public class Key extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        // If the entity detects a door, then it can use the key
+        // Si la entidad detecta una puerta, entonces puede usar la llave
         int i = detect(entity, world.entities.items, WoodDoor.NAME);
         if (i != -1) {
             game.system.audio.playSound(AudioID.Sound.DOOR_OPENING);

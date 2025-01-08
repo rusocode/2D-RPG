@@ -146,7 +146,7 @@ public class AStar {
                 if (world.map.tileData[tileIndex].solid) node[row][col].solid = true;
 
                 for (int i = 0; i < world.entities.interactives[1].length; i++) {
-                    if (world.entities.interactives[world.map.num][i] != null && world.entities.interactives[world.map.num][i].destructible) {
+                    if (world.entities.interactives[world.map.num][i] != null && world.entities.interactives[world.map.num][i].interactiveData.destructible()) {
                         int itRow = world.entities.interactives[world.map.num][i].pos.y / tile; // TODO The hitbox needs to be added
                         int itCol = world.entities.interactives[world.map.num][i].pos.x / tile;
                         node[itRow][itCol].solid = true;

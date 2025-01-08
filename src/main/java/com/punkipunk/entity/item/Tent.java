@@ -1,10 +1,10 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.json.JsonLoader;
+import com.punkipunk.json.model.ItemData;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
 
@@ -21,8 +21,8 @@ public class Tent extends Item {
     public boolean use(Entity entity) {
         State.setState(State.SLEEP);
         game.system.audio.playSound(AudioID.Sound.SLEEP);
-        world.entities.player.stats.hp = world.entities.player.stats.maxHp;
-        world.entities.player.stats.mana = world.entities.player.stats.maxMana;
+        entity.stats.fullHp();
+        entity.stats.fullMana();
         world.entities.player.initSleepImage(sheet.frame);
         return true;
     }

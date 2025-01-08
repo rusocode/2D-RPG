@@ -17,9 +17,6 @@ public class Bat extends Mob {
     public Bat(Game game, World world, int... pos) {
         super(game, world, JsonLoader.getInstance().deserialize("mobs.bat", MobData.class), pos);
         mobType = MobType.PEACEFUL;
-        hitbox = new Rectangle(0, 0, tile, tile);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
         sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
     }
 

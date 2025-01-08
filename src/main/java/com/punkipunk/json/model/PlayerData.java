@@ -14,6 +14,5 @@ public record PlayerData(
         Integer motion1,
         Integer motion2,
         Integer frameScale,
-        String spriteSheetPath
-) {
+        String spriteSheetPath) {
 }

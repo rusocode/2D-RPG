@@ -49,15 +49,9 @@ public class EntityFactory {
         int i = 0;
 
         items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 33, 7);
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 21);
-        items[ABANDONED_ISLAND][i++] = new PotionBlue(game, world, 3, 23, 22);
-        items[ABANDONED_ISLAND][i++] = new PotionBlue(game, world, 4, 24, 22);
-        items[ABANDONED_ISLAND][i++] = new PotionRed(game, world, 4, 25, 22);
-        items[ABANDONED_ISLAND][i++] = new StoneSword(game, world, 22, 22);
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 23);
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 24);
+        items[ABANDONED_ISLAND][i++] = new Chest(game, world, 23, 21);
         items[ABANDONED_ISLAND][i++] = new Boots(game, world, 23, 25);
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 26);
+        items[ABANDONED_ISLAND][i++] = new Chicken(game, world, 23, 26);
         items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 27);
         items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 28);
         items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 29);
@@ -96,7 +90,7 @@ public class EntityFactory {
         int i = 0;
 
         mobs[ABANDONED_ISLAND][i++] = new Oldman(game, world, 23, 16); // TODO set pos?
-        mobs[ABANDONED_ISLAND][i++] = new Bat(game, world, 26, 19);
+        mobs[ABANDONED_ISLAND][i++] = new Box(game, world, 26, 19);
         mobs[ABANDONED_ISLAND][i++] = new Bat(game, world, 19, 19);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 24, 38);
         mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 34, 42);

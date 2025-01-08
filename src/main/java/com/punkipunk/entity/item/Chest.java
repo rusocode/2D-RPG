@@ -21,9 +21,6 @@ public class Chest extends Item {
         super(game, world, JsonLoader.getInstance().deserialize("items.chest", ItemData.class), pos);
         itemType = ItemType.OBSTACLE;
         dialogue = new Dialogue(game);
-        hitbox = new Rectangle(3, 16, tile - 7, tile - 20);
-        hitboxDefaultX = hitbox.getX();
-        hitboxDefaultY = hitbox.getY();
         sheet.loadItemFrames(new SpriteSheet(Utils.loadTexture(itemData.spriteSheetPath())), itemData.frameWidth(), itemData.frameHeight(), itemData.frameScale());
     }
 

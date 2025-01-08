@@ -116,8 +116,6 @@ public class JsonLoader {
 
     /**
      * Carga y parsea todos los archivos JSON necesarios para el juego.
-     * <p>
-     * Los archivos se cargan desde el directorio "data/" en los recursos.
      *
      * @throws RuntimeException si hay errores al cargar o parsear los archivos
      */

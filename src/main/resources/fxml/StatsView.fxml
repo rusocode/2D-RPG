@@ -30,7 +30,7 @@
     </HBox>
 
     <HBox>
-        <Label text="Life: "/>
+        <Label text="Health: "/>
         <Label fx:id="maxHpLabel"/>
     </HBox>
 

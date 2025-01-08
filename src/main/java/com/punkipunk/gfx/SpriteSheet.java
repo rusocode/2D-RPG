@@ -1,7 +1,7 @@
 package com.punkipunk.gfx;
 
-import com.punkipunk.utils.Utils;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.utils.Utils;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
@@ -251,20 +251,35 @@ public class SpriteSheet {
     }
 
     /**
-     * Gets the current frame.
-     *
-     * @param entity entity.
-     * @return the current frame of the entity.
+     * Obtiene el frame actual de la animacion con MAS de dos frames para cada direccion.
+     */
+    public Image getCurrentAnimationFrame2(Entity entity) {
+        switch (entity.direction) {
+            case DOWN ->
+                    entity.currentFrame = entity.flags.colliding ? entity.down.getFirstFrame() : entity.down.getCurrentFrame();
+            case UP -> entity.currentFrame = entity.flags.colliding ? entity.up.getFirstFrame() : entity.up.getCurrentFrame();
+            case LEFT ->
+                    entity.currentFrame = entity.flags.colliding ? entity.left.getFirstFrame() : entity.left.getCurrentFrame();
+            case RIGHT ->
+                    entity.currentFrame = entity.flags.colliding ? entity.right.getFirstFrame() : entity.right.getCurrentFrame();
+        }
+        return entity.currentFrame;
+    }
+
+    /**
+     * Obtiene el frame actual de la animacion con dos frames para cada direccion.
      */
     public Image getCurrentAnimationFrame(Entity entity) {
         int i = 0;
 
+        // Si la entidad no esta atacando
         if (!entity.flags.hitting) {
-            if (movement.length == 2) { // If these are entities with two frames
+            // Si la entidad tiene dos frames iguales para todas las direcciones
+            if (movement.length == 2) {
                 switch (entity.direction) {
                     case DOWN, UP, LEFT, RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
                 }
-            } else {
+            } else { // Si la entidad tiene dos frames diferentes para todas las direcciones
                 switch (entity.direction) {
                     case DOWN -> i = movementNum == 1 || entity.flags.colliding ? 0 : 1;
                     case UP -> i = movementNum == 1 || entity.flags.colliding ? 2 : 3;
@@ -272,7 +287,7 @@ public class SpriteSheet {
                     case RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 6 : 7;
                 }
             }
-        } else {
+        } else { // Si la entidad esta atacando (solo el seria para el boss)
             switch (entity.direction) {
                 case DOWN -> i = attackNum == 1 ? 0 : 1;
                 case UP -> {
@@ -288,6 +303,7 @@ public class SpriteSheet {
             }
         }
 
+        // Si la entidad no esta atacando, entonces devuelve el frame de movimiento en el indice calculado
         return !entity.flags.hitting ? movement[i] : attack[i];
     }
 

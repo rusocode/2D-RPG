@@ -12,14 +12,26 @@
     "frameScale": 1,
     "soundHit": "batHit2",
     "soundDeath": "batDeath2",
-    "spriteSheetPath": "textures/entity/mob/bat.png"
+    "spriteSheetPath": "textures/entity/mob/bat.png",
+    "hitbox": {
+      "x": 0,
+      "y": 0,
+      "width": 32,
+      "height": 32
+    }
   },
   "box": {
     "name": "Box",
     "speed": 1,
     "frameWidth": 32,
     "frameHeight": 32,
-    "texturePath": "textures/entity/mob/box.png"
+    "texturePath": "textures/entity/mob/box.png",
+    "hitbox": {
+      "x": 1,
+      "y": 1,
+      "width": 30,
+      "height": 30
+    }
   },
   "lizard": {
     "name": "Lizard",
@@ -37,11 +49,20 @@
     "sleep": true,
     "soundHit": "mobHit",
     "soundDeath": "mobDeath",
-    "spriteSheetPath": "textures/entity/mob/lizard.png"
+    "spriteSheetPath": "textures/entity/mob/lizard.png",
+    "hitbox": {
+      "x": 32,
+      "y": 64,
+      "width": 106,
+      "height": 84
+    },
+    "attackboxWidth": 90,
+    "attackboxHeight": 90
   },
   "oldman": {
     "name": "Oldman",
     "speed": 1,
+    "animationSpeed": 120,
     "frameScale": 1,
     "spriteSheetPath": "textures/entity/mob/oldman.png"
   },
@@ -52,12 +73,17 @@
     "exp": 30,
     "attack": 8,
     "defense": 2,
-    "motion1": 25,
-    "motion2": 30,
+    "animationSpeed": 150,
     "frameScale": 1,
     "soundHit": "orcHit",
     "soundDeath": "orcDeath",
-    "spriteSheetPath": "textures/entity/mob/orc.png"
+    "spriteSheetPath": "textures/entity/mob/orc.png",
+    "hitbox": {
+      "x": 5,
+      "y": 32,
+      "width": 20,
+      "height": 26
+    }
   },
   "redSlime": {
     "name": "Red Slime",
@@ -70,7 +96,13 @@
     "frameHeight": 16,
     "frameScale": 2,
     "soundHit": "slimeHit",
-    "spriteSheetPath": "textures/entity/mob/red_slime.png"
+    "spriteSheetPath": "textures/entity/mob/red_slime.png",
+    "hitbox": {
+      "x": 3,
+      "y": 6,
+      "width": 25,
+      "height": 21
+    }
   },
   "slime": {
     "name": "Slime",
@@ -83,13 +115,25 @@
     "frameHeight": 16,
     "frameScale": 2,
     "soundHit": "slimeHit",
-    "spriteSheetPath": "textures/entity/mob/slime.png"
+    "spriteSheetPath": "textures/entity/mob/slime.png",
+    "hitbox": {
+      "x": 3,
+      "y": 6,
+      "width": 25,
+      "height": 21
+    }
   },
   "trader": {
     "name": "Trader",
     "frameWidth": 32,
     "frameHeight": 64,
-    "texturePath": "textures/entity/mob/trader.png"
+    "texturePath": "textures/entity/mob/trader.png",
+    "hitbox": {
+      "x": 7,
+      "y": 40,
+      "width": 15,
+      "height": 24
+    }
   },
   "playerDummy": {
     "frameScale": 1,
