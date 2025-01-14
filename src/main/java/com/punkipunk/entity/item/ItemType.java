@@ -1,16 +1,39 @@
 package com.punkipunk.entity.item;
 
-import java.util.Set;
-
-/**
- * TODO Cambiar PICKUP
- * */
-
 public enum ItemType {
+    BOOTS("boots", ItemCategory.USABLE),
+    CHEST("chest", ItemCategory.OBSTACLE),
+    CHICKEN("chicken", ItemCategory.USABLE),
+    GOLD("gold", ItemCategory.PICKUP),
+    IRON_DOOR("ironDoor", ItemCategory.OBSTACLE),
+    IRON_SHIELD("ironShield", ItemCategory.SHIELD),
+    KEY("key", ItemCategory.USABLE),
+    LANTERN("lantern", ItemCategory.LIGHT),
+    POTION_BLUE("potionBlue", ItemCategory.USABLE),
+    POTION_RED("potionRed", ItemCategory.USABLE),
+    STONE("stone", ItemCategory.USABLE),
+    STONE_AXE("stoneAxe", ItemCategory.AXE),
+    STONE_PICKAXE("stonePickaxe", ItemCategory.PICKAXE),
+    STONE_SWORD("stoneSword", ItemCategory.SWORD),
+    TENT("tent", ItemCategory.USABLE),
+    WOOD("wood", ItemCategory.USABLE),
+    WOOD_DOOR("woodDoor", ItemCategory.OBSTACLE),
+    WOOD_SHIELD("woodShield", ItemCategory.SHIELD);
 
-    SWORD, AXE, SHIELD, USABLE, LIGHT, PICKAXE, OBSTACLE, PICKUP;
+    private final String name;
+    private final ItemCategory category;
 
-    // Conjunto de constantes para tipos de items que comparten el mismo espacio de equipamiento
-    public static final Set<ItemType> WEAPON = Set.of(SWORD, AXE, PICKAXE);
+    ItemType(String name, ItemCategory category) {
+        this.name = name;
+        this.category = category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ItemCategory getCategory() {
+        return category;
+    }
 
 }

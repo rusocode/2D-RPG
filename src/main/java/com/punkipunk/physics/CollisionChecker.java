@@ -1,16 +1,23 @@
 package com.punkipunk.physics;
 
 import com.punkipunk.Direction;
-import com.punkipunk.world.World;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.entity.interactive.Interactive;
+import com.punkipunk.entity.item.Item;
+import com.punkipunk.entity.mob.Mob;
 import com.punkipunk.entity.player.Player;
+import com.punkipunk.entity.spells.Spell;
+import com.punkipunk.world.World;
+
+import java.util.List;
+import java.util.Optional;
 
 import static com.punkipunk.utils.Global.tile;
 
 /**
  * <p>
- * The collision between two entities is generated when one of the limits of the hitbox passes 1 pixel of the hitbox of the other
- * entity. But in the case of the attackbox, a collision is only generated when the limits of both touch.
+ * La colision entre dos entidades se genera cuando uno de los limites del hitbox pasa 1 pixel del hitbox de la otra entidad. Pero
+ * en el caso del attackbox, solo se genera una colision cuando los limites de ambos se tocan.
  */
 
 public class CollisionChecker {
@@ -22,29 +29,25 @@ public class CollisionChecker {
     }
 
     /**
-     * Checks if the entity collides with a solid tile.
-     *
-     * @param entity the entity.
+     * Comprueba si la entidad colisiono con un tile solido.
      */
     public void checkTile(Entity entity) {
 
-        int entityBottomWorldY = (int) (entity.pos.y + entity.hitbox.getY() + entity.hitbox.getHeight());
-        int entityTopWorldY = (int) (entity.pos.y + entity.hitbox.getY());
-        int entityLeftWorldX = (int) (entity.pos.x + entity.hitbox.getX());
-        int entityRightWorldX = (int) (entity.pos.x + entity.hitbox.getX() + entity.hitbox.getWidth());
+        int entityBottomWorldY = (int) (entity.position.y + entity.hitbox.getY() + entity.hitbox.getHeight());
+        int entityTopWorldY = (int) (entity.position.y + entity.hitbox.getY());
+        int entityLeftWorldX = (int) (entity.position.x + entity.hitbox.getX());
+        int entityRightWorldX = (int) (entity.position.x + entity.hitbox.getX() + entity.hitbox.getWidth());
 
         int entityBottomRow = entityBottomWorldY / tile;
         int entityTopRow = entityTopWorldY / tile;
         int entityLeftCol = entityLeftWorldX / tile;
         int entityRightCol = entityRightWorldX / tile;
 
-        // In case the entity collides in the middle of two solid tools
+        // En caso de que la entidad colisione en medio de dos tiles solidos
         int tile1, tile2;
 
-        Direction direction = entity.direction;
-
-        // Gets the direction of the attacker if the entity is knockback to prevent the collision check from becoming inaccurate
-        if (entity.flags.knockback) direction = entity.direction.knockbackDirection;
+        // Obtiene la direccion del atacante si la entidad es empujada para evitar que la verificacion de colision se vuelva inexacta
+        Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
 
         switch (direction) {
             case DOWN -> {
@@ -76,132 +79,105 @@ public class CollisionChecker {
     }
 
     /**
-     * Checks if the entity collides with an item.
-     *
-     * @param entity the entity.
-     * @return the index of the item in case the player collides with it.
+     * Comprueba si la entidad colisiono con un item.
      */
-    public int checkItem(Entity entity) {
-        int index = -1;
-        for (int i = 0; i < world.entities.items[1].length; i++) {
-            if (world.entities.items[world.map.num][i] != null) {
-                // Gets the hitbox position of the entity and the item
-                // TODO
-                entity.hitbox.setX(entity.hitbox.getX() + entity.pos.x);
-                entity.hitbox.setY(entity.hitbox.getY() + entity.pos.y);
-                world.entities.items[world.map.num][i].hitbox.setX(world.entities.items[world.map.num][i].hitbox.getX() + world.entities.items[world.map.num][i].pos.x);
-                world.entities.items[world.map.num][i].hitbox.setY(world.entities.items[world.map.num][i].hitbox.getY() + world.entities.items[world.map.num][i].pos.y);
-
-                Direction direction = entity.direction;
-                if (entity.flags.knockback) direction = entity.direction.knockbackDirection;
-
-                switch (direction) {
-                    case DOWN -> entity.hitbox.setY(entity.hitbox.getY() + entity.stats.speed);
-                    case UP -> entity.hitbox.setY(entity.hitbox.getY() - entity.stats.speed);
-                    case LEFT -> entity.hitbox.setX(entity.hitbox.getX() - entity.stats.speed);
-                    case RIGHT -> entity.hitbox.setX(entity.hitbox.getX() + entity.stats.speed);
-                }
-
-                if (entity.hitbox.intersects(world.entities.items[world.map.num][i].hitbox.getBoundsInParent())) {
-                    if (world.entities.items[world.map.num][i].solid) entity.flags.colliding = true;
-                    if (entity instanceof Player) index = i;
-                }
-
-                entity.hitbox.setX(entity.hitboxDefaultX);
-                entity.hitbox.setY(entity.hitboxDefaultY);
-
-                world.entities.items[world.map.num][i].hitbox.setX(world.entities.items[world.map.num][i].hitboxDefaultX);
-                world.entities.items[world.map.num][i].hitbox.setY(world.entities.items[world.map.num][i].hitboxDefaultY);
-            }
-        }
-        return index;
+    public Optional<Item> checkItem(Entity entity) {
+        List<Item> items = world.entities.getItems(world.map.num);
+        Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
+        return items.stream()
+                .filter(item -> checkCollision(entity, item, direction))
+                .peek(item -> {
+                    if (item.solid) entity.flags.colliding = true;
+                })
+                .findFirst();
     }
 
     /**
-     * Check the collision between entities.
-     *
-     * @param entity      entity.
-     * @param otherEntity another entity.
-     * @return the index of the other entity in case the entity collides with it.
+     * Comprueba si la entidad colisiono con un mob.
      */
-    public int checkEntity(Entity entity, Entity[][] otherEntity) {
-        int index = -1;
-
-        // Temporary direction of the entity
-        Direction direction = entity.direction;
-        // Gets the direction of the attacker if the entity is knockback
-        if (entity.flags.knockback) direction = entity.direction.knockbackDirection;
-        int speed = entity.stats.speed;
-
-        for (int i = 0; i < otherEntity[1].length; i++) {
-            if (otherEntity[world.map.num][i] != null) {
-                // Gets the position of the hitbox of the entity and the other entity
-                entity.hitbox.setX(entity.hitbox.getX() + entity.pos.x);
-                entity.hitbox.setY(entity.hitbox.getY() + entity.pos.y);
-                otherEntity[world.map.num][i].hitbox.setX(otherEntity[world.map.num][i].hitbox.getX() + otherEntity[world.map.num][i].pos.x);
-                otherEntity[world.map.num][i].hitbox.setY(otherEntity[world.map.num][i].hitbox.getY() + otherEntity[world.map.num][i].pos.y);
-
-                switch (direction) {
-                    case DOWN -> entity.hitbox.setY(entity.hitbox.getY() + speed);
-                    case UP -> entity.hitbox.setY(entity.hitbox.getY() - speed);
-                    case LEFT -> entity.hitbox.setX(entity.hitbox.getX() - speed);
-                    case RIGHT -> entity.hitbox.setX(entity.hitbox.getX() + speed);
-                }
-
-                if (entity.hitbox.intersects(otherEntity[world.map.num][i].hitbox.getBoundsInParent())) {
-                    if (otherEntity[world.map.num][i] != entity) { // Avoid the collision itself
-                        entity.flags.colliding = true;
-                        entity.flags.collidingOnMob = true;
-                        index = i;
-                    }
-                }
-
-                entity.hitbox.setX(entity.hitboxDefaultX);
-                entity.hitbox.setY(entity.hitboxDefaultY);
-
-                otherEntity[world.map.num][i].hitbox.setX(otherEntity[world.map.num][i].hitboxDefaultX);
-                otherEntity[world.map.num][i].hitbox.setY(otherEntity[world.map.num][i].hitboxDefaultY);
-
-            }
-        }
-        return index;
+    public Optional<Mob> checkMob(Entity entity) {
+        List<Mob> mobs = world.entities.getMobs(world.map.num);
+        Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
+        return mobs.stream()
+                .filter(mob -> mob != entity) // Evita colision consigo mismo
+                .filter(mob -> checkCollision(entity, mob, direction))
+                .peek(mob -> {
+                    entity.flags.colliding = true;
+                    entity.flags.collidingOnMob = true;
+                })
+                .findFirst();
     }
 
     /**
-     * Checks if the entity collides with the player.
-     *
-     * <p>TODO Can it work with the checkEntity() method?
-     *
-     * @param entity the entity.
-     * @return true if the entity collides with the player.
+     * Comprueba si la entidad colisiono con un interactivo.
+     */
+    public Optional<Interactive> checkInteractive(Entity entity) {
+        List<Interactive> interactives = world.entities.getInteractives(world.map.num);
+        Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
+        return interactives.stream()
+                .filter(interactive -> checkCollision(entity, interactive, direction))
+                .peek(interactive -> entity.flags.colliding = true)
+                .findFirst();
+    }
+
+    /**
+     * Comprueba si la entidad colisiono con un spell.
+     */
+    public Optional<Spell> checkSpell(Entity entity) {
+        List<Spell> spells = world.entities.getSpells(world.map.num);
+        Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
+        return spells.stream()
+                .filter(spell -> spell != entity.spell) // ?
+                .filter(spell -> checkCollision(entity, spell, direction))
+                .findFirst();
+    }
+
+    /**
+     * Comprueba si la entidad colisiono con el player.
      */
     public boolean checkPlayer(Entity entity) {
-        boolean contact = false;
+        Player player = world.entities.player;
+        // No comprueba si es el propio player
+        if (entity == player) return false;
+        return checkCollision(entity, player, entity.direction);
+    }
 
-        entity.hitbox.setX(entity.hitbox.getX() + entity.pos.x);
-        entity.hitbox.setY(entity.hitbox.getY() + entity.pos.y);
-        world.entities.player.hitbox.setX(world.entities.player.hitbox.getX() + world.entities.player.pos.x);
-        world.entities.player.hitbox.setY(world.entities.player.hitbox.getY() + world.entities.player.pos.y);
+    /**
+     * Comprueba la colision entre dos entidades.
+     */
+    private boolean checkCollision(Entity entity1, Entity entity2, Direction direction) {
 
-        switch (entity.direction) {
-            case DOWN -> entity.hitbox.setY(entity.hitbox.getY() + entity.stats.speed);
-            case UP -> entity.hitbox.setY(entity.hitbox.getY() - entity.stats.speed);
-            case LEFT -> entity.hitbox.setX(entity.hitbox.getX() - entity.stats.speed);
-            case RIGHT -> entity.hitbox.setX(entity.hitbox.getX() + entity.stats.speed);
+        // Guarda las posiciones originales
+        // TODO Creo que estas variables reemplazan a hitboxDefaultX y hitboxDefaultY
+        double originalX1 = entity1.hitbox.getX();
+        double originalY1 = entity1.hitbox.getY();
+        double originalX2 = entity2.hitbox.getX();
+        double originalY2 = entity2.hitbox.getY();
+
+        // Ajusta las posiciones para la deteccion
+        entity1.hitbox.setX(originalX1 + entity1.position.x);
+        entity1.hitbox.setY(originalY1 + entity1.position.y);
+        entity2.hitbox.setX(originalX2 + entity2.position.x);
+        entity2.hitbox.setY(originalY2 + entity2.position.y);
+
+        // Ajusta por direccion y velocidad
+        switch (direction) {
+            case DOWN -> entity1.hitbox.setY(entity1.hitbox.getY() + entity1.stats.speed);
+            case UP -> entity1.hitbox.setY(entity1.hitbox.getY() - entity1.stats.speed);
+            case LEFT -> entity1.hitbox.setX(entity1.hitbox.getX() - entity1.stats.speed);
+            case RIGHT -> entity1.hitbox.setX(entity1.hitbox.getX() + entity1.stats.speed);
         }
 
-        if (entity.hitbox.intersects(world.entities.player.hitbox.getBoundsInParent())) {
-            entity.flags.colliding = true;
-            contact = true;
-        }
+        // Verifica la colision
+        boolean collision = entity1.hitbox.intersects(entity2.hitbox.getBoundsInParent());
 
-        entity.hitbox.setX(entity.hitboxDefaultX);
-        entity.hitbox.setY(entity.hitboxDefaultY);
-        world.entities.player.hitbox.setX(world.entities.player.hitboxDefaultX);
-        world.entities.player.hitbox.setY(world.entities.player.hitboxDefaultY);
+        // Restaura las posiciones originales
+        entity1.hitbox.setX(originalX1);
+        entity1.hitbox.setY(originalY1);
+        entity2.hitbox.setX(originalX2);
+        entity2.hitbox.setY(originalY2);
 
-        return contact;
-
+        return collision;
     }
 
 }

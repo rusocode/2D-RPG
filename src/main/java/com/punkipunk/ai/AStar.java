@@ -1,8 +1,8 @@
 package com.punkipunk.ai;
 
 import com.punkipunk.Direction;
-import com.punkipunk.world.World;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.world.World;
 
 import java.util.ArrayList;
 
@@ -34,8 +34,8 @@ public class AStar {
         /* TODO Hay un bug con respecto a el rectangulo colisionador de la entidad cuando este es mas grande o igual al
          * tile (32 en este caso). Es decir que cuando es mas grande, la ruta que encuentra la entidad hacia el objetivo
          * (player, por ejemplo) se bugea. No entiendo la razon de esto. */
-        int startRow = (int) ((entity.pos.y + entity.hitbox.getY()) / tile);
-        int startCol = (int) ((entity.pos.x + entity.hitbox.getX()) / tile);
+        int startRow = (int) ((entity.position.y + entity.hitbox.getY()) / tile);
+        int startCol = (int) ((entity.position.x + entity.hitbox.getX()) / tile);
 
         setNodes(startRow, startCol, goalRow, goalCol);
 
@@ -46,10 +46,10 @@ public class AStar {
             int nextX = pathList.get(0).col * tile;
             int nextY = pathList.get(0).row * tile;
             // Gets the position of the entity
-            int left = (int) (entity.pos.x + entity.hitbox.getX());
-            int right = (int) (entity.pos.x + entity.hitbox.getX() + entity.hitbox.getWidth());
-            int top = (int) (entity.pos.y + entity.hitbox.getY());
-            int bottom = (int) (entity.pos.y + entity.hitbox.getY() + entity.hitbox.getHeight());
+            int left = (int) (entity.position.x + entity.hitbox.getX());
+            int right = (int) (entity.position.x + entity.hitbox.getX() + entity.hitbox.getWidth());
+            int top = (int) (entity.position.y + entity.hitbox.getY());
+            int bottom = (int) (entity.position.y + entity.hitbox.getY() + entity.hitbox.getHeight());
 
             // Find out the relative address of the next node based on the current position of the entity
             /* If the left and right side of the entity are between the next x position of the path, then its movement
@@ -145,30 +145,27 @@ public class AStar {
                 int tileIndex = world.map.tileIndex[world.map.num][row][col];
                 if (world.map.tileData[tileIndex].solid) node[row][col].solid = true;
 
-                for (int i = 0; i < world.entities.interactives[1].length; i++) {
-                    if (world.entities.interactives[world.map.num][i] != null && world.entities.interactives[world.map.num][i].interactiveData.destructible()) {
-                        int itRow = world.entities.interactives[world.map.num][i].pos.y / tile; // TODO The hitbox needs to be added
-                        int itCol = world.entities.interactives[world.map.num][i].pos.x / tile;
-                        node[itRow][itCol].solid = true;
-                    }
-                }
+                world.entities.getInteractives(world.map.num).stream()
+                        .filter(interactive -> interactive.interactiveData.destructible())
+                        .forEach(interactive -> {
+                            int itRow = interactive.position.y / tile;
+                            int itCol = interactive.position.x / tile;
+                            node[itRow][itCol].solid = true;
+                        });
 
-                // It works fine, but when the entity is in a closed position (not literally) of interactive tiles, it gets stuck
-                for (int i = 0; i < world.entities.items[1].length; i++) {
-                    if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].solid) {
-                        int itRow = (int) ((world.entities.items[world.map.num][i].pos.y + world.entities.items[world.map.num][i].hitbox.getY()) / tile);
-                        int itCol = (int) ((world.entities.items[world.map.num][i].pos.x + world.entities.items[world.map.num][i].hitbox.getX()) / tile);
-                        node[itRow][itCol].solid = true;
-                    }
-                }
+                world.entities.getItems(world.map.num).stream()
+                        .filter(item -> item.solid)
+                        .forEach(item -> {
+                            int itRow = (int) ((item.position.y + item.hitbox.getY()) / tile);
+                            int itCol = (int) ((item.position.x + item.hitbox.getX()) / tile);
+                            node[itRow][itCol].solid = true;
+                        });
 
-                for (int i = 0; i < world.entities.mobs[1].length; i++) {
-                    if (world.entities.mobs[world.map.num][i] != null) {
-                        int itRow = (int) ((world.entities.mobs[world.map.num][i].pos.y + world.entities.mobs[world.map.num][i].hitbox.getY()) / tile);
-                        int itCol = (int) ((world.entities.mobs[world.map.num][i].pos.x + world.entities.mobs[world.map.num][i].hitbox.getX()) / tile);
-                        node[itRow][itCol].solid = true;
-                    }
-                }
+                world.entities.getMobs(world.map.num).forEach(mob -> {
+                    int itRow = (int) ((mob.position.y + mob.hitbox.getY()) / tile);
+                    int itCol = (int) ((mob.position.x + mob.hitbox.getX()) / tile);
+                    node[itRow][itCol].solid = true;
+                });
 
                 getCost(node[row][col]);
             }

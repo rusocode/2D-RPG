@@ -287,7 +287,7 @@ public class SpriteSheet {
                     case RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 6 : 7;
                 }
             }
-        } else { // Si la entidad esta atacando (solo el seria para el boss)
+        } else { // Si la entidad esta atacando (solo seria para el boss)
             switch (entity.direction) {
                 case DOWN -> i = attackNum == 1 ? 0 : 1;
                 case UP -> {

@@ -1,9 +1,8 @@
 package com.punkipunk.entity.player;
 
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.mob.Mob;
+import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -19,9 +18,14 @@ public class PlayerDummy extends Mob {
     public static final String NAME = "Dummy";
 
     public PlayerDummy(Game game, World world) {
-        super(game, world, JsonLoader.getInstance().deserialize("mobs.playerDummy", MobData.class));
+        super(game, world);
         stats.name = NAME;
         sheet.loadPlayerMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
+    }
+
+    @Override
+    protected MobType getType() {
+        return MobType.PLAYER_DUMMY;
     }
 
 }

@@ -64,12 +64,12 @@ public class Renderer implements Renderable {
             context.setFont(Font.font(context.getFont().getFamily(), FontWeight.NORMAL, 8));
             int x = 8, y = (int) (WINDOW_HEIGHT - tile * 2.8), gap = 15;
             String map = game.system.file.maps.get(game.system.world.map.num);
-            int posX = (int) ((game.system.world.entities.player.pos.x + game.system.world.entities.player.hitbox.getX()) / tile);
-            int posY = (int) ((game.system.world.entities.player.pos.y + game.system.world.entities.player.hitbox.getY()) / tile);
+            int posX = (int) ((game.system.world.entities.player.position.x + game.system.world.entities.player.hitbox.getX()) / tile);
+            int posY = (int) ((game.system.world.entities.player.position.y + game.system.world.entities.player.hitbox.getY()) / tile);
             context.setTextBaseline(VPos.BASELINE);
             context.fillText(map + " (" + posX + ", " + posY + ")", x, y);
             y += gap;
-            context.fillText("x: " + (game.system.world.entities.player.pos.x + game.system.world.entities.player.hitbox.getX()) + " y: " + (game.system.world.entities.player.pos.y + game.system.world.entities.player.hitbox.getY()), x, y);
+            context.fillText("x: " + (game.system.world.entities.player.position.x + game.system.world.entities.player.hitbox.getX()) + " y: " + (game.system.world.entities.player.position.y + game.system.world.entities.player.hitbox.getY()), x, y);
             y += gap;
             if (game.system.oldGameLoop.showFPS) {
                 context.fillText("FPS: " + game.system.oldGameLoop.framesInRender, x, y);

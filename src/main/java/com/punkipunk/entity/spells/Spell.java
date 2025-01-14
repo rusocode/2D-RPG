@@ -1,12 +1,11 @@
 package com.punkipunk.entity.spells;
 
 import com.punkipunk.Direction;
-import com.punkipunk.json.model.SpellData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
-import com.punkipunk.entity.mob.Mob;
-import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.player.Player;
+import com.punkipunk.json.model.SpellData;
 import com.punkipunk.world.World;
 
 import static com.punkipunk.utils.Global.INTERVAL_PROJECTILE_ANIMATION;
@@ -35,36 +34,26 @@ public abstract class Spell extends Entity {
 
     }
 
-    /**
-     * Actualiza la posicion del hechizo si no colisiona con un mob hostil o neutral o si su vida no termina. De lo contrario,
-     * deja de vivir.
-     */
     @Override
     public void update() {
 
-        // If the player shooting a projectile
+        // Si el player lanza el hechizo
         if (entity instanceof Player) {
-            int mobIndex = game.system.collisionChecker.checkEntity(this, world.entities.mobs);
-            if (mobIndex != -1) {
-                Mob mob = world.entities.mobs[world.map.num][mobIndex];
-                /* When the projectile collides with a mob, set the colliding state to true. Therefore, when the projectilew
-                 * is redrawn, it will remain in motion frame 1 since in the ternary operator, the condition remains true
-                 * and never changes to false in order to display motion frame 2. The following line solves this problem. */
-                flags.colliding = false;
-                if (!mob.flags.invincible && mob.mobType != MobType.NPC) {
-                    world.entities.player.hitMob(mobIndex, this, stats.knockback, getAttack());
-                    // In this case, the particle generator is the fireball when the player throws it against a mob
+            game.system.collisionChecker.checkMob(this).ifPresent(mob -> {
+                // flags.colliding = false; // ?
+                if (!mob.flags.invincible && mob.mobCategory != MobCategory.NPC) {
+                    world.entities.player.hitMob(mob, this, stats.knockback, getAttack());
                     generateParticle(entity.spell, mob);
                     flags.alive = false;
                 }
-            }
+            });
         }
 
-        // If the mob shooting a projectile
+        // Si el mob lanza el hechizo
         if (!(entity instanceof Player)) {
             boolean contact = game.system.collisionChecker.checkPlayer(this);
             if (contact && !world.entities.player.flags.invincible) {
-                hitPlayer(true, stats.attack);
+                hitPlayer(this, true, stats.attack);
                 generateParticle(entity.spell, world.entities.player);
                 flags.alive = false;
             }
@@ -73,19 +62,19 @@ public abstract class Spell extends Entity {
         if (stats.hp-- <= 0) flags.alive = false;
 
         if (flags.alive) {
-            pos.update(this, direction);
+            position.update(this, direction);
             timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);
         }
     }
 
     public void set(int x, int y, Direction direction, boolean alive, Entity entity) {
-        pos.x = x;
-        pos.y = y;
+        position.x = x;
+        position.y = y;
         this.direction = direction;
         flags.alive = alive;
         this.entity = entity;
-        /* Once the projectile dies (alive=false) the hp remains at 0, therefore to launch the next one you need to set
-         * the life to maximum again. */
+        /* Una vez que el proyectil muere (alive=false), el hp se establece en 0, por lo tanto, para lanzar el siguiente debes
+         * volver a poner la vida al maximo. */
         stats.hp = stats.maxHp;
     }
 

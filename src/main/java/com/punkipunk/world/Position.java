@@ -6,10 +6,11 @@ import com.punkipunk.entity.Entity;
 import static com.punkipunk.utils.Global.tile;
 
 /**
- * These coordinates are nothing more than the sum of pixels starting from the upper left corner of the map (0, 0). When this sum
- * is divided by the size of the tile, the position in rows and columns is obtained. This is done to facilitate the handling of
- * coordinates. Another thing to keep in mind is that the entity's hitbox is added to the x-y coordinates to obtain the exact
- * position of the collider rectangle and not the frame. It is important to clarify that the hitbox is positioned, NOT the image.
+ * <p>
+ * Estas coordenadas no son mas que la suma de pixeles comenzando desde la esquina superior izquierda del mapa (0, 0). Al dividir
+ * esta suma por el tamaño del tile se obtiene la posición en filas y columnas. Esto se hace para facilitar el manejo de
+ * coordenadas. Otra cosa a tener en cuenta es que a las coordenadas x-y se suma el hitbox de la entidad para obtener la posición
+ * exacta del rectangulo del colisionador y no del frame. Es importante aclarar que se posiciona el hitbox, NO la imagen.
  */
 
 public class Position {

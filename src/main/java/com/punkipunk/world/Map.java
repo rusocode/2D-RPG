@@ -109,16 +109,14 @@ import static com.punkipunk.utils.Global.*;
 public class Map {
 
     private final Game game;
-    private final World world;
 
     public int num, zone, nextZone;
 
     public Tile[] tileData;
     public int[][][] tileIndex;
 
-    public Map(Game game, World world) {
+    public Map(Game game) {
         this.game = game;
-        this.world = world;
         tileIndex = new int[MAPS][MAX_MAP_ROW][MAX_MAP_COL];
     }
 
@@ -130,7 +128,7 @@ public class Map {
             if (zone == DUNGEON && nextZone == OVERWORLD) game.system.audio.playAmbient(AudioID.Ambient.OVERWORLD);
         }
         zone = nextZone;
-        world.entities.factory.createMobs();
+        // world.entityFactory.createMobs();
     }
 
 

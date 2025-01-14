@@ -1,9 +1,11 @@
 package com.punkipunk.io;
 
+import com.punkipunk.core.Game;
+import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.item.Chest;
+import com.punkipunk.entity.item.Item;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.VolumeData;
-import com.punkipunk.core.Game;
-import com.punkipunk.entity.item.Item;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.Tile;
 import com.punkipunk.world.World;
@@ -104,8 +106,8 @@ public class File {
             // Player stats
             data.map = world.map.num;
             data.zone = world.map.zone;
-            data.x = world.entities.player.pos.x;
-            data.y = world.entities.player.pos.y;
+            data.x = world.entities.player.position.x;
+            data.y = world.entities.player.position.y;
             data.direction = world.entities.player.direction;
             data.hp = world.entities.player.stats.hp;
             data.maxHp = world.entities.player.stats.maxHp;
@@ -130,7 +132,7 @@ public class File {
             // data.light = world.entities.player.inventory.getSlot(world.entities.player.light);
 
             // Items on map
-            data.itemName = new String[MAPS][world.entities.items[1].length];
+            /* data.itemName = new String[MAPS][world.entities.items[1].length];
             data.itemX = new int[MAPS][world.entities.items[1].length];
             data.itemY = new int[MAPS][world.entities.items[1].length];
             data.loot = new String[MAPS][world.entities.items[1].length];
@@ -148,6 +150,26 @@ public class File {
                         data.opened[map][i] = item.opened;
                         data.empty[map][i] = item.empty;
                     }
+                }
+            } */
+
+            // Items en el mapa
+            data.itemLists = new ArrayList[MAPS];
+            for (int map = 0; map < MAPS; map++) {
+                data.itemLists[map] = new ArrayList<>();
+                for (Item item : world.entities.getItems(map)) {
+                    ItemData2 itemData = new ItemData2();
+                    itemData.name = item.stats.name;
+                    itemData.x = item.position.x;
+                    itemData.y = item.position.y;
+                    if (item instanceof Chest chest) {
+                        if (chest.loot != null) {
+                            itemData.loot = chest.loot.stats.name;
+                        }
+                        itemData.opened = chest.opened;
+                        itemData.empty = chest.empty;
+                    }
+                    data.itemLists[map].add(itemData);
                 }
             }
 
@@ -168,8 +190,8 @@ public class File {
             Data data = (Data) input.readObject();
             world.map.num = data.map;
             world.map.zone = data.zone;
-            world.entities.player.pos.x = data.x;
-            world.entities.player.pos.y = data.y;
+            world.entities.player.position.x = data.x;
+            world.entities.player.position.y = data.y;
             switch (data.direction) {
                 case DOWN -> world.entities.player.currentFrame = world.entities.player.down.getFirstFrame();
                 case UP -> world.entities.player.currentFrame = world.entities.player.up.getFirstFrame();
@@ -200,7 +222,7 @@ public class File {
             world.entities.player.getDefense();
             // world.entities.player.frame.loadWeaponFrames(world.entities.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
-            for (int map = 0; map < MAPS; map++) {
+            /* for (int map = 0; map < MAPS; map++) {
                 for (int i = 0; i < world.entities.items[1].length; i++) {
                     if (data.itemName[map][i].equals("NA")) world.entities.items[map][i] = null;
                     else {
@@ -214,6 +236,35 @@ public class File {
                         world.entities.items[map][i].empty = data.empty[map][i];
                         if (world.entities.items[map][i].opened)
                             world.entities.items[map][i].sheet.frame = world.entities.items[map][i].sheet.item[1];
+                    }
+                }
+            } */
+
+            // Cargar items en el mapa
+            for (int map = 0; map < MAPS; map++) {
+                // Limpiar items existentes en el mapa
+                world.entities.clearItems(map);
+
+                // Cargar items guardados
+                for (ItemData2 itemData : data.itemLists[map]) {
+                    if (!itemData.name.equals("NA")) {
+                        Item item = world.entities.createItem(
+                                ItemType.valueOf(itemData.name.toUpperCase()),
+                                map,
+                                itemData.x,
+                                itemData.y
+                        );
+
+                        if (item instanceof Chest chest) {
+                            if (itemData.loot != null && !itemData.empty) {
+                                chest.setLoot(world.entities.createItem(ItemType.valueOf(itemData.loot.toUpperCase()), map));
+                            }
+                            chest.opened = itemData.opened;
+                            chest.empty = itemData.empty;
+                            if (chest.opened) {
+                                chest.sheet.frame = chest.sheet.item[1];
+                            }
+                        }
                     }
                 }
             }

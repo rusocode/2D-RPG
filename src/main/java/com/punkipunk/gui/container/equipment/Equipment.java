@@ -1,7 +1,7 @@
 package com.punkipunk.gui.container.equipment;
 
 import com.punkipunk.entity.item.Item;
-import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.item.ItemCategory;
 import com.punkipunk.entity.player.Player;
 
 import java.util.EnumMap;
@@ -21,7 +21,7 @@ import java.util.Map;
 public class Equipment {
 
     private final Player player;
-    private final Map<ItemType, EquipmentStrategy> strategies = new EnumMap<>(ItemType.class);
+    private final Map<ItemCategory, EquipmentStrategy> strategies = new EnumMap<>(ItemCategory.class);
 
     public Equipment(Player player) {
         this.player = player;
@@ -30,27 +30,27 @@ public class Equipment {
 
     private void registerStrategies() {
         EquipmentStrategy weaponStrategy = new WeaponEquipmentStrategy();
-        for (ItemType weaponType : ItemType.WEAPON)
+        for (ItemCategory weaponType : ItemCategory.WEAPON)
             strategies.put(weaponType, weaponStrategy);
-        strategies.put(ItemType.SHIELD, new ShieldEquipmentStrategy());
-        strategies.put(ItemType.LIGHT, new LightEquipmentStrategy());
+        strategies.put(ItemCategory.SHIELD, new ShieldEquipmentStrategy());
+        strategies.put(ItemCategory.LIGHT, new LightEquipmentStrategy());
     }
 
     public void equip(Item item) {
         if (item == null) return;
-        EquipmentStrategy strategy = strategies.get(item.itemType);
-        if (strategy == null) throw new UnsupportedOperationException("No strategy for item type: " + item.itemType);
+        EquipmentStrategy strategy = strategies.get(item.itemCategory);
+        if (strategy == null) throw new UnsupportedOperationException("No strategy for item type: " + item.itemCategory);
         strategy.equip(player, item);
     }
 
     public void unequip(Item item) {
         if (item == null) return;
-        EquipmentStrategy strategy = strategies.get(item.itemType);
-        if (strategy == null) throw new UnsupportedOperationException("No strategy for item type: " + item.itemType);
+        EquipmentStrategy strategy = strategies.get(item.itemCategory);
+        if (strategy == null) throw new UnsupportedOperationException("No strategy for item type: " + item.itemCategory);
         strategy.unequip(player, item);
     }
 
-    public EquipmentStrategy getStrategyForItemType(ItemType itemType) {
+    public EquipmentStrategy getStrategyForItemType(ItemCategory itemType) {
         return strategies.get(itemType);
     }
 

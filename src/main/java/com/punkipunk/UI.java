@@ -2,7 +2,6 @@ package com.punkipunk;
 
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
-import com.punkipunk.entity.mob.Mob;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.states.State;
@@ -99,28 +98,28 @@ public class UI {
     }
 
     private void renderBossHpBar() {
-        for (int i = 0; i < world.entities.mobs[1].length; i++) {
-            Mob mob = world.entities.mobs[world.map.num][i];
-            if (mob != null && mob.isOnCamera() && mob.flags.boss) {
-                double oneScale = (double) tile * 8 / mob.stats.maxHp;
-                double hpBarValue = oneScale * mob.stats.hp;
+        world.entities.getMobs(world.map.num).stream()
+                .filter(mob -> mob.isOnCamera() && mob.flags.boss)
+                .findFirst()
+                .ifPresent(boss -> {
+                    double oneScale = (double) tile * 8 / boss.stats.maxHp;
+                    double hpBarValue = oneScale * boss.stats.hp;
 
-                int x = WINDOW_WIDTH / 2 - tile * 4;
-                int y = (int) (tile * 10.5);
+                    int x = WINDOW_WIDTH / 2 - tile * 4;
+                    int y = (int) (tile * 10.5);
 
-                if (hpBarValue < 0) hpBarValue = 0;
+                    if (hpBarValue < 0) hpBarValue = 0;
 
-                context.setFill(Color.rgb(35, 35, 35));
-                context.fillRect(x - 1, y - 1, tile * 8 + 2, 22);
+                    context.setFill(Color.rgb(35, 35, 35));
+                    context.fillRect(x - 1, y - 1, tile * 8 + 2, 22);
 
-                context.setFill(Color.rgb(255, 0, 30));
-                context.fillRect(x, y, (int) hpBarValue, 20); // TODO Or 21?
+                    context.setFill(Color.rgb(255, 0, 30));
+                    context.fillRect(x, y, (int) hpBarValue, 20); // TODO Or 21?
 
-                changeFontSize(24);
-                context.setFill(Color.WHITE);
-                context.fillText(mob.stats.name, x + 4, y - 10);
-            }
-        }
+                    changeFontSize(24);
+                    context.setFill(Color.WHITE);
+                    context.fillText(boss.stats.name, x + 4, y - 10);
+                });
     }
 
     private void renderLvl() {
@@ -372,10 +371,10 @@ public class UI {
             counter = 0;
             State.setState(State.PLAY);
             world.map.num = game.system.event.mapNum;
-            world.entities.player.pos.x = (int) ((game.system.event.col * tile) + world.entities.player.hitbox.getWidth() / 2);
-            world.entities.player.pos.y = (int) ((game.system.event.row * tile) - world.entities.player.hitbox.getHeight());
-            game.system.event.previousEventX = world.entities.player.pos.x;
-            game.system.event.previousEventY = world.entities.player.pos.y;
+            world.entities.player.position.x = (int) ((game.system.event.col * tile) + world.entities.player.hitbox.getWidth() / 2);
+            world.entities.player.position.y = (int) ((game.system.event.row * tile) - world.entities.player.hitbox.getHeight());
+            game.system.event.previousEventX = world.entities.player.position.x;
+            game.system.event.previousEventY = world.entities.player.position.y;
             world.map.changeArea();
         }
     }

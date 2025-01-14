@@ -66,8 +66,8 @@ public class Minimap {
 
             // Draw a red square that represents the player's position
             double scale = (double) (tile * MAX_MAP_COL) / width;
-            int playerX = (int) (x + (world.entities.player.pos.x + world.entities.player.hitbox.getX()) / scale);
-            int playerY = (int) (y + (world.entities.player.pos.y + world.entities.player.hitbox.getY()) / scale);
+            int playerX = (int) (x + (world.entities.player.position.x + world.entities.player.hitbox.getX()) / scale);
+            int playerY = (int) (y + (world.entities.player.position.y + world.entities.player.hitbox.getY()) / scale);
             int playerSize = (int) (tile / scale);
             gc.setFill(Color.RED);
             gc.fillRect(playerX, playerY, playerSize, playerSize);

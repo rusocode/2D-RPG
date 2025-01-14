@@ -3,7 +3,7 @@ package com.punkipunk.entity.interactive;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Item;
-import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.item.ItemCategory;
 import com.punkipunk.entity.item.Wood;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.InteractiveData;
@@ -17,7 +17,7 @@ public class DryTree extends Interactive {
     }
 
     public boolean isCorrectWeapon(Item weapon) {
-        return weapon.itemType == ItemType.AXE;
+        return weapon.itemCategory == ItemCategory.AXE;
     }
 
     public Color getParticleColor() {
@@ -37,7 +37,7 @@ public class DryTree extends Interactive {
     }
 
     public void checkDrop() {
-        drop(this, new Wood(game, world, 1));
+        drop(new Wood(game, world, 1));
     }
 
     @Override

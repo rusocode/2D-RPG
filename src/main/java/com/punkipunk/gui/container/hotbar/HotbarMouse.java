@@ -2,7 +2,7 @@ package com.punkipunk.gui.container.hotbar;
 
 import com.punkipunk.controllers.ContainerController;
 import com.punkipunk.entity.item.Item;
-import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.item.ItemCategory;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.gui.container.Container;
 import com.punkipunk.gui.container.ContainerMouse;
@@ -27,7 +27,7 @@ public class HotbarMouse extends ContainerMouse {
         if (event.getClickCount() == 2) {
             Item itemClicked = container.get(row, col);
             if (itemClicked != null) {
-                switch (itemClicked.itemType) {
+                switch (itemClicked.itemCategory) {
                     case USABLE -> use(itemClicked, row, col, tooltip);
                     case AXE, SWORD, PICKAXE, SHIELD, LIGHT -> equip(itemClicked, slot);
                 }
@@ -71,18 +71,18 @@ public class HotbarMouse extends ContainerMouse {
 
     private boolean isItemEquipped(Item itemClicked) {
         Equipment equipment = player.inventory.getEquipment(); // hotbar.getEquipment();
-        EquipmentStrategy strategy = equipment.getStrategyForItemType(itemClicked.itemType);
+        EquipmentStrategy strategy = equipment.getStrategyForItemType(itemClicked.itemCategory);
         if (strategy == null) return false;
         return strategy.isEquipped(player, itemClicked);
     }
 
     private boolean isSameItemType(Item itemIndexed, Item itemClicked) {
-        return (ItemType.WEAPON.contains(itemClicked.itemType) &&
-                ItemType.WEAPON.contains(itemIndexed.itemType)) ||
-                (itemClicked.itemType == ItemType.SHIELD &&
-                        itemIndexed.itemType == ItemType.SHIELD) ||
-                (itemClicked.itemType == ItemType.LIGHT &&
-                        itemIndexed.itemType == ItemType.LIGHT);
+        return (ItemCategory.WEAPON.contains(itemClicked.itemCategory) &&
+                ItemCategory.WEAPON.contains(itemIndexed.itemCategory)) ||
+                (itemClicked.itemCategory == ItemCategory.SHIELD &&
+                        itemIndexed.itemCategory == ItemCategory.SHIELD) ||
+                (itemClicked.itemCategory == ItemCategory.LIGHT &&
+                        itemIndexed.itemCategory == ItemCategory.LIGHT);
     }
 
 }

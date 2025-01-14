@@ -1,164 +1,122 @@
 package com.punkipunk.entity;
 
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.interactive.DestructibleWall;
-import com.punkipunk.entity.interactive.DryTree;
-import com.punkipunk.entity.interactive.Interactive;
-import com.punkipunk.entity.interactive.MetalPlate;
+import com.punkipunk.entity.interactive.InteractiveType;
 import com.punkipunk.entity.item.*;
-import com.punkipunk.entity.mob.*;
+import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.io.Progress;
 import com.punkipunk.world.World;
 
 import static com.punkipunk.utils.Global.*;
 
-/**
- * Implementa la logica de creacion de diferentes tipos de entidades.
- */
-
 public class EntityFactory {
 
     private final Game game;
     private final World world;
-    private final Item[][] items;
-    private final Mob[][] mobs;
-    private final Interactive[][] interactives;
+    private final EntityManager entityManager;
 
-    public EntityFactory(Game game, World world, Item[][] items, Mob[][] mobs, Interactive[][] interactives) {
+    public EntityFactory(Game game, World world, EntityManager entityManager) {
         this.game = game;
         this.world = world;
-        this.items = items;
-        this.mobs = mobs;
-        this.interactives = interactives;
-        createEntities();
+        this.entityManager = entityManager;
     }
 
-    /**
-     * Create the entities.
-     */
     public void createEntities() {
         createItems();
         createMobs();
-        createInteractiveTile();
+        createInteractives();
     }
 
-    /**
-     * Create the items.
-     */
     public void createItems() {
-        int i = 0;
 
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 33, 7);
-        items[ABANDONED_ISLAND][i++] = new Chest(game, world, 23, 21);
-        items[ABANDONED_ISLAND][i++] = new Boots(game, world, 23, 25);
-        items[ABANDONED_ISLAND][i++] = new Chicken(game, world, 23, 26);
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 27);
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 28);
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 29);
-        items[ABANDONED_ISLAND][i++] = new StoneAxe(game, world, 23, 30);
-        items[ABANDONED_ISLAND][i++] = new WoodDoor(game, world, 14, 28);
-        items[ABANDONED_ISLAND][i++] = new WoodDoor(game, world, 12, 12);
-        // TODO No es mejor pasarle directamente al cofre el item que va a tener desde el constructor?
-        items[ABANDONED_ISLAND][i] = new Chest(game, world, 30, 29);
-        // TODO What if there are many items?
-        items[ABANDONED_ISLAND][i++].setLoot(new Key(game, world));
-        items[ABANDONED_ISLAND][i] = new Chest(game, world, 23, 40);
-        items[ABANDONED_ISLAND][i].setLoot(new PotionBlue(game, world, 2));
+        // Items en Abandoned Island
+        entityManager.createItem(ItemType.CHEST, ABANDONED_ISLAND, 21, 22).setLoot(new StoneSword(game, world));
+        entityManager.createItem(ItemType.CHEST, ABANDONED_ISLAND, 30, 29).setLoot(new Key(game, world));
+        entityManager.createItem(ItemType.STONE_AXE, ABANDONED_ISLAND, 33, 7);
+        entityManager.createItem(ItemType.BOOTS, ABANDONED_ISLAND, 23, 25);
+        entityManager.createItem(ItemType.CHICKEN, ABANDONED_ISLAND, 23, 26);
+        entityManager.createItemWithAmount(ItemType.POTION_RED, ABANDONED_ISLAND, 5, 23, 27);
+        entityManager.createItem(ItemType.WOOD_DOOR, ABANDONED_ISLAND, 14, 28);
+        entityManager.createItem(ItemType.WOOD_DOOR, ABANDONED_ISLAND, 12, 12);
 
-        i = 0; // Reset the subscript of the array
+        // Items en Dungeon Breg
+        entityManager.createItem(ItemType.IRON_DOOR, DUNGEON_BREG, 18, 23);
+        entityManager.createItem(ItemType.CHEST, DUNGEON_BREG, 13, 16).setLoot(new PotionRed(game, world, 5));
 
-        items[DUNGEON_BREG][i] = new Chest(game, world, 13, 16);
-        items[DUNGEON_BREG][i++].setLoot(new PotionRed(game, world, 10));
-        items[DUNGEON_BREG][i] = new Chest(game, world, 26, 34);
-        items[DUNGEON_BREG][i++].setLoot(new PotionBlue(game, world, 5));
-        items[DUNGEON_BREG][i] = new Chest(game, world, 40, 41);
-        items[DUNGEON_BREG][i++].setLoot(new StonePickaxe(game, world));
-        items[DUNGEON_BREG][i] = new IronDoor(game, world, 18, 23);
-
-        i = 0;
-
-        items[DUNGEON_BREG_SUB][i++] = new IronDoor(game, world, 25, 15);
-        items[DUNGEON_BREG_SUB][i] = new Chest(game, world, 25, 8);
-        items[DUNGEON_BREG_SUB][i].setLoot(new Chicken(game, world));
+        // Items en Dungeon Breg Sub
+        entityManager.createItem(ItemType.IRON_DOOR, DUNGEON_BREG_SUB, 25, 15);
+        entityManager.createItem(ItemType.CHEST, DUNGEON_BREG_SUB, 25, 8).setLoot(new Chicken(game, world));
 
     }
 
-    /**
-     * Create the mobs.
-     */
     public void createMobs() {
-        int i = 0;
 
-        mobs[ABANDONED_ISLAND][i++] = new Oldman(game, world, 23, 16); // TODO set pos?
-        mobs[ABANDONED_ISLAND][i++] = new Box(game, world, 26, 19);
-        mobs[ABANDONED_ISLAND][i++] = new Bat(game, world, 19, 19);
-        mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 24, 38);
-        mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 34, 42);
-        mobs[ABANDONED_ISLAND][i++] = new Slime(game, world, 38, 42);
-        mobs[ABANDONED_ISLAND][i] = new Orc(game, world, 12, 33);
+        // Mobs en Abandoned Island
+        entityManager.createMob(MobType.OLDMAN, ABANDONED_ISLAND, 23, 16);
+        entityManager.createMob(MobType.BOX, ABANDONED_ISLAND, 26, 19);
+        entityManager.createMob(MobType.BAT, ABANDONED_ISLAND, 18, 20);
+        entityManager.createMob(MobType.BAT, ABANDONED_ISLAND, 20, 20);
+        entityManager.createMob(MobType.SLIME, ABANDONED_ISLAND, 24, 38);
+        entityManager.createMob(MobType.SLIME, ABANDONED_ISLAND, 34, 42);
+        entityManager.createMob(MobType.SLIME, ABANDONED_ISLAND, 38, 42);
+        entityManager.createMob(MobType.ORC, ABANDONED_ISLAND, 12, 33);
 
-        i = 0;
+        // Mobs en Abandoned Island Market
+        entityManager.createMob(MobType.TRADER, ABANDONED_ISLAND_MARKET, 12, 7);
 
-        mobs[ABANDONED_ISLAND_MARKET][i] = new Trader(game, world, 12, 7);
+        // Mobs en Dungeon Breg
+        entityManager.createMob(MobType.BOX, DUNGEON_BREG, 20, 25);
+        entityManager.createMob(MobType.BOX, DUNGEON_BREG, 11, 19);
+        entityManager.createMob(MobType.BOX, DUNGEON_BREG, 23, 14);
+        entityManager.createMob(MobType.RED_SLIME, DUNGEON_BREG, 34, 39);
+        entityManager.createMob(MobType.RED_SLIME, DUNGEON_BREG, 36, 25);
+        entityManager.createMob(MobType.BAT, DUNGEON_BREG, 28, 11);
 
-        mobs[DUNGEON_BREG][i++] = new Box(game, world, 20, 25);
-        mobs[DUNGEON_BREG][i++] = new Box(game, world, 11, 18);
-        mobs[DUNGEON_BREG][i++] = new Box(game, world, 23, 14);
-        mobs[DUNGEON_BREG][i++] = new RedSlime(game, world, 34, 39);
-        mobs[DUNGEON_BREG][i++] = new RedSlime(game, world, 36, 25);
-        mobs[DUNGEON_BREG][i++] = new RedSlime(game, world, 39, 26);
-        mobs[DUNGEON_BREG][i++] = new Bat(game, world, 28, 11);
-        mobs[DUNGEON_BREG][i] = new Bat(game, world, 10, 19);
-
-        i = 0;
-
-        if (!Progress.bossDefeated) mobs[DUNGEON_BREG_SUB][i] = new Lizard(game, world, 23, 16);
+        // Mobs en Dungeon Breg Sub
+        if (!Progress.bossDefeated) entityManager.createMob(MobType.LIZARD, DUNGEON_BREG_SUB, 23, 16);
 
     }
 
-    /**
-     * Create the interactive tiles.
-     */
-    public void createInteractiveTile() {
-        int i = 0;
+    public void createInteractives() {
+        createDryTrees();
+        createDestructibleWalls();
+        createMetalPlates();
+    }
 
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 25, 27);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 26, 27);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 27, 27);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 27, 28);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 27, 29);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 27, 30);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 27, 31);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 28, 31);
-        interactives[ABANDONED_ISLAND][i++] = new DryTree(game, world, 29, 31);
-        interactives[ABANDONED_ISLAND][i] = new DryTree(game, world, 30, 31);
+    private void createDryTrees() {
+        int[][] dryTreesPos = {
+                {18, 19}, {19, 19}, {25, 27}, {26, 27},
+                {27, 27}, {27, 28}, {27, 29}, {27, 30},
+                {27, 31}, {28, 31}, {29, 31}, {30, 31}
+        };
 
-        i = 0;
+        for (int[] pos : dryTreesPos)
+            entityManager.createInteractive(InteractiveType.DRY_TREE, OVERWORLD, pos[0], pos[1]);
 
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 18, 30);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 17, 31);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 17, 32);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 17, 34);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 18, 34);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 18, 33);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 10, 22);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 10, 24);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 38, 18);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 38, 19);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 38, 20);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 38, 21);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 18, 13);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 18, 14);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 22, 28);
-        interactives[DUNGEON_BREG][i++] = new DestructibleWall(game, world, 30, 28);
-        interactives[DUNGEON_BREG][i] = new DestructibleWall(game, world, 32, 28);
+    }
 
-        i = 0;
+    private void createDestructibleWalls() {
+        int[][] destructibleWallsPos = {
+                {18, 30}, {17, 31}, {17, 32}, {17, 34},
+                {18, 34}, {18, 33}, {10, 22}, {10, 24},
+                {38, 18}, {38, 19}, {38, 20}, {38, 21},
+                {18, 13}, {18, 14}, {22, 28}, {30, 28},
+                {32, 28}
+        };
 
-        interactives[DUNGEON_BREG][i++] = new MetalPlate(game, world, 20, 22);
-        interactives[DUNGEON_BREG][i++] = new MetalPlate(game, world, 8, 17);
-        interactives[DUNGEON_BREG][i] = new MetalPlate(game, world, 39, 31);
+        for (int[] pos : destructibleWallsPos)
+            entityManager.createInteractive(InteractiveType.DESTRUCTIBLE_WALL, DUNGEON_BREG, pos[0], pos[1]);
 
+    }
+
+    private void createMetalPlates() {
+        // Metal Plate en Abandoned Island
+        entityManager.createInteractive(InteractiveType.METAL_PLATE, ABANDONED_ISLAND, 26, 18);
+
+        // Metal Plate en Dungeon Breg
+        entityManager.createInteractive(InteractiveType.METAL_PLATE, DUNGEON_BREG, 20, 22);
+        entityManager.createInteractive(InteractiveType.METAL_PLATE, DUNGEON_BREG, 8, 17);
+        entityManager.createInteractive(InteractiveType.METAL_PLATE, DUNGEON_BREG, 39, 31);
     }
 
 }

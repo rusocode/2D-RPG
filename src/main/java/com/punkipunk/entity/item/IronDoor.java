@@ -1,22 +1,16 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
-
-import static com.punkipunk.utils.Global.tile;
 
 public class IronDoor extends Item {
 
     public static final String NAME = "Iron Door";
 
     public IronDoor(Game game, World world, int... pos) {
-        super(game, world, JsonLoader.getInstance().deserialize("items.ironDoor", ItemData.class), pos);
-        itemType = ItemType.OBSTACLE;
+        super(game, world, pos);
         dialogue = new Dialogue(game);
         initDialogue();
     }
@@ -28,6 +22,11 @@ public class IronDoor extends Item {
 
     private void initDialogue() {
         dialogue.dialogues[0][0] = "It won't budge.";
+    }
+
+    @Override
+    protected ItemType getType() {
+        return ItemType.IRON_DOOR;
     }
 
 }

@@ -2,19 +2,15 @@ package com.punkipunk.entity.mob;
 
 import com.punkipunk.Dialogue;
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.MobData;
 import com.punkipunk.core.Game;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
 
 public class Trader extends Mob {
 
     public Trader(Game game, World world, int... pos) {
-        super(game, world, JsonLoader.getInstance().deserialize("mobs.trader", MobData.class), pos);
-        mobType = MobType.NPC;
+        super(game, world, pos);
         dialogue = new Dialogue(game);
         sheet.frame = Utils.scaleTexture(Utils.loadTexture(mobData.texturePath()), mobData.frameWidth(), mobData.frameHeight());
         initDialogue();
@@ -25,6 +21,11 @@ public class Trader extends Mob {
     public void dialogue() {
         game.system.audio.playSound(AudioID.Sound.TRADE_OPENING);
         dialogue.startDialogue(State.TRADE, this, 0);
+    }
+
+    @Override
+    protected MobType getType() {
+        return MobType.TRADER;
     }
 
     private void initDialogue() {

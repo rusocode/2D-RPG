@@ -1,8 +1,6 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.world.World;
@@ -12,8 +10,7 @@ public class Gold extends Item {
     public static final String NAME = "Gold";
 
     public Gold(Game game, World world, int amount, int... pos) {
-        super(game, world, JsonLoader.getInstance().deserialize("items.gold", ItemData.class), pos);
-        itemType = ItemType.PICKUP;
+        super(game, world, pos);
         this.amount = amount;
     }
 
@@ -23,6 +20,11 @@ public class Gold extends Item {
         game.system.ui.addMessageToConsole("Gold +" + amount);
         entity.stats.gold += amount;
         return true;
+    }
+
+    @Override
+    protected ItemType getType() {
+        return ItemType.GOLD;
     }
 
 }

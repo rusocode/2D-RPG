@@ -35,8 +35,8 @@ public class Particle extends Entity {
 
         stats.hp = maxHp;
         int offset = (tile / 2) - (size - 2);
-        pos.x = generator.pos.x + offset;
-        pos.y = generator.pos.y + offset;
+        position.x = generator.position.x + offset;
+        position.y = generator.position.y + offset;
 
     }
 
@@ -49,16 +49,16 @@ public class Particle extends Entity {
             size--;
         }
 
-        pos.x += xd * stats.speed;
-        pos.y += yd * stats.speed;
+        position.x += xd * stats.speed;
+        position.y += yd * stats.speed;
 
         if (stats.hp == 0) flags.alive = false;
 
     }
 
     public void render(GraphicsContext g2) {
-        int screenX = pos.x - world.entities.player.pos.x + X_OFFSET;
-        int screenY = pos.y - world.entities.player.pos.y + Y_OFFSET;
+        int screenX = position.x - world.entities.player.position.x + X_OFFSET;
+        int screenY = position.y - world.entities.player.position.y + Y_OFFSET;
         g2.setFill(color);
         // g2.setColor(color);
         g2.fillRect(screenX, screenY, size, size); // Draw a rectangle as a particle

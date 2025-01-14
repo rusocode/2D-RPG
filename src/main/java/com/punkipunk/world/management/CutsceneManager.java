@@ -1,7 +1,8 @@
 package com.punkipunk.world.management;
 
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.item.IronDoor;
+import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.mob.MobType;
 import com.punkipunk.entity.mob.Lizard;
 import com.punkipunk.entity.player.PlayerDummy;
 import com.punkipunk.states.State;
@@ -11,12 +12,12 @@ import static com.punkipunk.utils.Global.tile;
 
 public class CutsceneManager {
 
-    // Scenes types
+    // Tipos de escena
     public final int na = 0, boss = 1;
     private final Game game;
     private final World world;
-    public int n; // Scene number
-    public int phase; // Scene phase
+    public int n; // Numero de escena
+    public int phase; // Fase de escena
 
     public CutsceneManager(Game game, World world) {
         this.game = game;
@@ -29,72 +30,59 @@ public class CutsceneManager {
     }
 
     private void sceneSkeleton() {
-
-        // Place the iron door
+        // Coloca la puerta de hierro
         if (phase == 0) {
-            // Look for a free space in the item array to add the iron door
-            for (int i = 0; i < world.entities.items[1].length; i++) {
-                if (world.entities.items[world.map.num][i] == null) {
-                    world.entities.items[world.map.num][i] = new IronDoor(game, world, 25, 28);
-                    world.entities.items[world.map.num][i].temp = true;
-                    break;
-                }
-            }
 
-            // Search a vacant slot for the dummy
-            for (int i = 0; i < world.entities.mobs[1].length; i++) {
-                if (world.entities.mobs[world.map.num][i] == null) {
-                    world.entities.mobs[world.map.num][i] = new PlayerDummy(game, world);
-                    world.entities.mobs[world.map.num][i].direction = world.entities.player.direction;
-                    world.entities.mobs[world.map.num][i].pos.x = world.entities.player.pos.x;
-                    world.entities.mobs[world.map.num][i].pos.y = world.entities.player.pos.y;
-                    break;
-                }
-            }
+            world.entities.createItem(ItemType.IRON_DOOR, world.map.num, 25, 28);
+
+            world.entities.createMob(MobType.PLAYER_DUMMY, world.map.num,
+                    world.entities.player.position.x,
+                    world.entities.player.position.y
+            ).direction = world.entities.player.direction;
 
             world.entities.player.drawing = false;
             phase++;
         }
 
-        // Move the camera towards the boss
+        // Mueve la camara hacia el boss
         if (phase == 1) {
-            world.entities.player.pos.y -= 2;
-            if (world.entities.player.pos.y < tile * 16) phase++;
+            world.entities.player.position.y -= 2;
+            if (world.entities.player.position.y < tile * 16) phase++;
         }
 
-        // Wake up the boss
+        // Despierta al boss
         if (phase == 2) {
-            for (int i = 0; i < world.entities.mobs[1].length; i++) {
-                if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(Lizard.NAME)) {
-                    world.entities.mobs[world.map.num][i].sleep = false; // Now the boss wakes up
-                    game.system.ui.entity = world.entities.mobs[world.map.num][i]; // Passes the boss to the UI so it can render the dialog window
-                    phase++;
-                    break;
-                }
-            }
+            world.entities.getMobs(world.map.num).stream()
+                    .filter(mob -> mob instanceof Lizard)
+                    .findFirst()
+                    .ifPresent(lizard -> {
+                        lizard.sleep = false;
+                        game.system.ui.entity = lizard; // Pasa el boss a la interfaz de usuario para que pueda representar la ventana de dialogo
+                        phase++;
+                    });
         }
 
-        // The boss speaks
+        // El boss habla
         if (phase == 3) game.system.ui.renderDialogueWindow();
 
-        // Return the camera to the player
+        // Devuelve la camara al player
         if (phase == 4) {
-            // Find the fictional character (PlayerDummy)
-            for (int i = 0; i < world.entities.mobs[1].length; i++) {
-                if (world.entities.mobs[world.map.num][i] != null && world.entities.mobs[world.map.num][i].stats.name.equals(PlayerDummy.NAME)) {
-                    // Restores the position of the player
-                    world.entities.player.pos.x = world.entities.mobs[world.map.num][i].pos.x;
-                    world.entities.player.pos.y = world.entities.mobs[world.map.num][i].pos.y;
-                    // Delete the fictional character
-                    world.entities.mobs[world.map.num][i] = null;
-                    break;
-                }
-            }
+            // Encuentra el personaje ficticio
+            world.entities.getMobs(world.map.num).stream()
+                    .filter(mob -> mob instanceof PlayerDummy)
+                    .findFirst()
+                    .ifPresent(dummy -> {
+                        // Restaura la posicion del player
+                        world.entities.player.position.x = dummy.position.x;
+                        world.entities.player.position.y = dummy.position.y;
+                        // Elimina al personaje ficticio
+                        world.entities.removeMob(world.map.num, dummy);
+                    });
 
-            // Now you can draw the player
+            // Ahora puede dibujar al player
             world.entities.player.drawing = true;
 
-            // Restart the scene
+            // Reinicia la escena
             n = na;
             phase = 0;
             State.setState(State.PLAY);

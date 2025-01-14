@@ -4,8 +4,6 @@ import com.punkipunk.Dialogue;
 import com.punkipunk.core.Game;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.MobData;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -16,8 +14,7 @@ import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
 public class Oldman extends Mob {
 
     public Oldman(Game game, World world, int... pos) {
-        super(game, world, JsonLoader.getInstance().deserialize("mobs.oldman", MobData.class), pos);
-        mobType = MobType.NPC;
+        super(game, world, pos);
         dialogue = new Dialogue(game);
         sheet.loadOldmanFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
         hitbox.setWidth(sheet.frame.getWidth() / 2);
@@ -62,6 +59,11 @@ public class Oldman extends Mob {
         if (dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
     }
 
+    @Override
+    protected MobType getType() {
+        return MobType.OLDMAN;
+    }
+
     private void initDialogue() {
         dialogue.dialogues[0][0] = "Hello stranger!";
         dialogue.dialogues[0][1] = "To the north there is a small \nlagoon with a beautiful view...";
@@ -70,5 +72,6 @@ public class Oldman extends Mob {
         dialogue.dialogues[1][1] = "Everything started happening since \nthat strange guy arrived on the \nisland.";
         dialogue.dialogues[1][2] = "I will continue exploring, until \nthen traveler!";
     }
+
 
 }

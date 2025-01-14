@@ -15,7 +15,7 @@ public abstract class Interactive extends Entity {
     public InteractiveData interactiveData;
 
     public Interactive(Game game, World world, InteractiveData interactiveData, int... pos) {
-        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
+        super(game, world, pos);
 
         this.interactiveData = interactiveData;
 

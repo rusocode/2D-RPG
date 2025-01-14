@@ -2,7 +2,7 @@ package com.punkipunk.physics;
 
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.mob.Box;
-import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.mob.Trader;
 
 public class Mechanics {
@@ -51,7 +51,7 @@ public class Mechanics {
      */
     private boolean checkConditionsForUnion(Entity player, Entity mob) {
         return mob != null
-                && (mob.mobType == MobType.NPC /* || mob.mobType == MobType.PEACEFUL*/)
+                && (mob.mobCategory == MobCategory.NPC /* || mob.mobType == MobType.PEACEFUL*/)
                 && !(mob instanceof Box || mob instanceof Trader)
                 && player.flags.collidingOnMob
                 && player.direction == mob.direction
@@ -73,19 +73,19 @@ public class Mechanics {
     private boolean isDistanceWithMob(Entity player, Entity mob) {
         switch (mob.direction) {
             case DOWN -> {
-                if (player.pos.y + player.hitbox.getY() + player.hitbox.getHeight() + player.stats.speed < mob.pos.y + mob.hitbox.getY())
+                if (player.position.y + player.hitbox.getY() + player.hitbox.getHeight() + player.stats.speed < mob.position.y + mob.hitbox.getY())
                     return true;
             }
             case UP -> {
-                if (player.pos.y + player.hitbox.getY() - player.stats.speed > mob.pos.y + mob.hitbox.getY() + mob.hitbox.getHeight())
+                if (player.position.y + player.hitbox.getY() - player.stats.speed > mob.position.y + mob.hitbox.getY() + mob.hitbox.getHeight())
                     return true;
             }
             case LEFT -> {
-                if (player.pos.x + player.hitbox.getX() - player.stats.speed > mob.pos.x + mob.hitbox.getX() + mob.hitbox.getWidth())
+                if (player.position.x + player.hitbox.getX() - player.stats.speed > mob.position.x + mob.hitbox.getX() + mob.hitbox.getWidth())
                     return true;
             }
             case RIGHT -> {
-                if (player.pos.x + player.hitbox.getX() + player.hitbox.getWidth() + player.stats.speed < mob.pos.x + mob.hitbox.getX())
+                if (player.position.x + player.hitbox.getX() + player.hitbox.getWidth() + player.stats.speed < mob.position.x + mob.hitbox.getX())
                     return true;
             }
         }
@@ -102,10 +102,10 @@ public class Mechanics {
         player.stats.speed = mob.stats.speed;
         united = true;
         switch (player.direction) {
-            case DOWN -> player.pos.y++;
-            case UP -> player.pos.y--;
-            case LEFT -> player.pos.x--;
-            case RIGHT -> player.pos.x++;
+            case DOWN -> player.position.y++;
+            case UP -> player.position.y--;
+            case LEFT -> player.position.x--;
+            case RIGHT -> player.position.x++;
         }
     }
 
@@ -119,10 +119,10 @@ public class Mechanics {
         player.flags.collidingOnMob = false;
         if (united) {
             switch (player.direction) {
-                case DOWN -> player.pos.y--;
-                case UP -> player.pos.y++;
-                case LEFT -> player.pos.x++;
-                case RIGHT -> player.pos.x--;
+                case DOWN -> player.position.y--;
+                case UP -> player.position.y++;
+                case LEFT -> player.position.x++;
+                case RIGHT -> player.position.x--;
             }
             united = false;
         }

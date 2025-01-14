@@ -3,6 +3,7 @@ package com.punkipunk.entity.item;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.gfx.SpriteSheet;
+import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.ItemData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -23,7 +24,7 @@ public abstract class Item extends Entity {
 
     public ItemData itemData;
     public Item loot;
-    public ItemType itemType;
+    public ItemCategory itemCategory;
     public String description; // TODO Donde se usa?
     public String sound;
     public int price; // TODO Donde se usa?
@@ -35,10 +36,11 @@ public abstract class Item extends Entity {
     public SpriteSheet ss;
     protected int points; // Puntos de las pociones azules y rojas que se usan para incrementar hp y mana
 
-    public Item(Game game, World world, ItemData itemData, int... pos) {
-        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
+    public Item(Game game, World world, int... pos) {
+        super(game, world, pos);
 
-        this.itemData = itemData;
+        this.itemData = JsonLoader.getInstance().deserialize("items." + getType().getName(), ItemData.class);
+        this.itemCategory = getType().getCategory();
 
         stats.name = itemData.name();
         description = itemData.description();
@@ -70,6 +72,8 @@ public abstract class Item extends Entity {
 
     }
 
+    protected abstract ItemType getType();
+
     /**
      * Use the item.
      *
@@ -97,13 +101,20 @@ public abstract class Item extends Entity {
     /**
      * Detects if the specified item is in the position adjacent to the entity.
      *
-     * @param entity entity.
-     * @param items  list of items.
-     * @param name   name of the item.
+     * @param entity  entity.
+     * @param //items list of items.
+     * @param //name  name of the item.
      * @return the index of the specified item to the adjacent position of the entity or -1 if it does not exist.
      */
-    protected int detect(Entity entity, Item[][] items, String name) {
-        // Check the item adjacent to the entity
+
+    protected boolean isNearby(Entity entity, String itemName) {
+        return world.entities.getItems(world.map.num).stream()
+                .filter(item -> item.stats.name.equals(itemName))
+                .anyMatch(item -> isAdjacentTo(entity, item));
+    }
+
+    protected boolean isAdjacentTo(Entity entity, Item item) {
+        // Verificar el item adyacente a la entidad
         int nextX = getLeftHitbox(entity);
         int nextY = getTopHitbox(entity);
 
@@ -114,17 +125,13 @@ public abstract class Item extends Entity {
             case RIGHT -> nextX = getRightHitbox(entity) + entity.stats.speed;
         }
 
-        int row = nextY / tile;
-        int col = nextX / tile;
+        int itemRow = (int) (item.position.y + item.hitbox.getY()) / tile;
+        int itemCol = (int) (item.position.x + item.hitbox.getX()) / tile;
 
-        // If the iterated item is equal to the adjacent position of the entity
-        for (int i = 0; i < items[1].length; i++) {
-            if (items[world.map.num][i] != null)
-                if (items[world.map.num][i].getRow() == row && items[world.map.num][i].getCol() == col && items[world.map.num][i].stats.name.equals(name))
-                    return i;
-        }
+        int entityRow = nextY / tile;
+        int entityCol = nextX / tile;
 
-        return -1;
+        return itemRow == entityRow && itemCol == entityCol;
     }
 
     /**
@@ -134,7 +141,7 @@ public abstract class Item extends Entity {
      * @return the top position of the hitbox.
      */
     private int getTopHitbox(Entity entity) {
-        return (int) (entity.pos.y + entity.hitbox.getY());
+        return (int) (entity.position.y + entity.hitbox.getY());
     }
 
     /**
@@ -144,7 +151,7 @@ public abstract class Item extends Entity {
      * @return the bottom position of the hitbox.
      */
     private int getBottomHitbox(Entity entity) {
-        return (int) (entity.pos.y + entity.hitbox.getY() + entity.hitbox.getHeight());
+        return (int) (entity.position.y + entity.hitbox.getY() + entity.hitbox.getHeight());
     }
 
     /**
@@ -154,7 +161,7 @@ public abstract class Item extends Entity {
      * @return the left position of the hitbox.
      */
     private int getLeftHitbox(Entity entity) {
-        return (int) (entity.pos.x + entity.hitbox.getX());
+        return (int) (entity.position.x + entity.hitbox.getX());
     }
 
     /**
@@ -164,7 +171,7 @@ public abstract class Item extends Entity {
      * @return the right position of the hitbox.
      */
     private int getRightHitbox(Entity entity) {
-        return (int) (entity.pos.x + entity.hitbox.getX() + entity.hitbox.getWidth());
+        return (int) (entity.position.x + entity.hitbox.getX() + entity.hitbox.getWidth());
     }
 
     /**
@@ -173,7 +180,7 @@ public abstract class Item extends Entity {
      * @return the entity row.
      */
     private int getRow() {
-        return (int) ((pos.y + hitbox.getY()) / tile);
+        return (int) ((position.y + hitbox.getY()) / tile);
     }
 
     /**
@@ -182,7 +189,7 @@ public abstract class Item extends Entity {
      * @return the entity column.
      */
     private int getCol() {
-        return (int) ((pos.x + hitbox.getX()) / tile);
+        return (int) ((position.x + hitbox.getX()) / tile);
     }
 
 }

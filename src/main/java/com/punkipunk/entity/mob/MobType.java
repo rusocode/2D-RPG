@@ -1,17 +1,35 @@
 package com.punkipunk.entity.mob;
 
 /**
- * Los mobs se clasifican en:
- * <ul>
- * <li>NPC: Es la entidad con la que el jugador puede interactuar, dialogar o comerciar, pero no pueden ser atacados.
- * <li>Hostiles: Atacan al jugador cuando lo detectan.
- * <li>Neutrales: Atacan al jugador si son provocados.
- * <li>Pacificos: Nunca atacan al jugador pero si pueden ser atacados.
- * </ul>
+ * El nombre tiene que ser igual al objeto en mobs.json.
  */
 
 public enum MobType {
 
-    NPC, HOSTILE, NEUTRAL, PEACEFUL;
+    BAT("bat", MobCategory.PEACEFUL),
+    BOX("box", MobCategory.NPC),
+    LIZARD("lizard", MobCategory.HOSTILE),
+    OLDMAN("oldman", MobCategory.NPC),
+    ORC("orc", MobCategory.HOSTILE),
+    RED_SLIME("redSlime", MobCategory.HOSTILE),
+    SLIME("slime", MobCategory.HOSTILE),
+    TRADER("trader", MobCategory.NPC),
+    PLAYER_DUMMY("playerDummy", MobCategory.NPC);
+
+    private final String name;
+    private final MobCategory category;
+
+    MobType(String name, MobCategory category) {
+        this.name = name;
+        this.category = category;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public MobCategory getCategory() {
+        return category;
+    }
 
 }

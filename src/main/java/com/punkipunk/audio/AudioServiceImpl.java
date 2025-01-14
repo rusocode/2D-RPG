@@ -17,6 +17,9 @@ import java.util.Optional;
  * <p>
  * Implementacion del servicio de audio que gestiona la reproduccion, detencion y acceso a los diferentes canales de audio del
  * juego.
+ * <p>
+ * El sistema utiliza <i>lazy loading</i>, cargando los sonidos bajo demanda cuando se necesitan a traves del metodo
+ * {@code play()}.
  */
 
 public class AudioServiceImpl implements AudioService {
@@ -36,7 +39,7 @@ public class AudioServiceImpl implements AudioService {
 
     public AudioServiceImpl() {
         initAudioChannels();
-        loadVolumeConfig();
+        loadVolume();
     }
 
     @Override
@@ -69,25 +72,25 @@ public class AudioServiceImpl implements AudioService {
     @Override
     public void save() {
         try {
-            // Crea un objeto VolumeConfig con el volumen de cada canal
+            // Crea un objeto VolumeData con el volumen de cada canal
             VolumeData volumeData = new VolumeData(get(AudioChannel.MUSIC).volume, get(AudioChannel.AMBIENT).volume, get(AudioChannel.SOUND).volume);
             mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, volumeData);
         } catch (IOException e) {
-            System.err.println("Failed to save volume config\n" + e.getMessage());
+            System.err.println("Failed to save volume data\n" + e.getMessage());
         }
     }
 
     /**
-     * Carga la configuracion de volumen desde el archivo.
+     * Carga los datos de volumen desde el archivo.
      * <p>
-     * Intenta cargar la configuracion de volumen desde un archivo JSON. Si el archivo existe, lee y aplica la configuracion
-     * almacenada. Si no existe, crea un nuevo archivo con valores por defecto. En caso de error durante la carga, establece el
-     * volumen por defecto para todos los canales.
+     * Intenta cargar los datos de volumen desde un archivo JSON. Si el archivo existe, lee y aplica la los datos. Si no existe,
+     * crea un nuevo archivo con valores por defecto. En caso de error durante la carga, establece el volumen por defecto para
+     * todos los canales.
      * <p>
      * El metodo {@code writerWithDefaultPrettyPrinter()} configura el escritor para que genere JSON formateado con saltos de
      * linea, sangria (indentacion) y espaciado consistente, en lugar de escribir todo el JSON en una sola linea. Finalmente
      * {@code writeValue()} toma dos parametros: {@code volumeFile} que es el archivo de destino donde se guardara el JSON, y
-     * {@code volumeConfig} que es el objeto VolumeConfig que contiene los volumenes actuales para musica, ambiente y efectos de
+     * {@code volumeData} que es el objeto VolumeData que contiene los volumenes actuales para musica, ambiente y efectos de
      * sonido. Por ejemplo, el archivo resultante se vera asi:
      * <pre>{@code
      * {
@@ -102,20 +105,20 @@ public class AudioServiceImpl implements AudioService {
      * {"musicVolume":3,"ambientVolume":2,"soundVolume":4}
      * }</pre>
      * <p>
-     * Esto hace que el archivo de configuracion sea mas facil de leer y editar manualmente si fuera necesario, aunque ocupe un
-     * poco mas de espacio en disco.
+     * Esto hace que el archivo de datos sea mas facil de leer y editar manualmente si fuera necesario, aunque ocupe un poco mas
+     * de espacio en disco.
      */
-    private void loadVolumeConfig() {
+    private void loadVolume() {
         try {
             if (volumeFile.exists()) {
-                VolumeData volumeConfig = mapper.readValue(volumeFile, VolumeData.class);
-                setVolumens(volumeConfig);
+                VolumeData volumeData = mapper.readValue(volumeFile, VolumeData.class);
+                setVolumens(volumeData);
                 return; // Sale del metodo una vez cargado el archivo de volumen para evitar sobreescribir los valores
             }
-            // Si no existe el archivo de volumen, crea una nueva configuracion de volumen con los valores por defecto
-            VolumeData defaultVolumeConfig = new VolumeData(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME);
-            mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, defaultVolumeConfig);
-            setVolumens(defaultVolumeConfig);
+            // Si no existe el archivo de volumen, crea los datos de volumen con los valores por defecto
+            VolumeData defaultVolumeData = new VolumeData(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME);
+            mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, defaultVolumeData);
+            setVolumens(defaultVolumeData);
         } catch (IOException e) {
             System.err.println("Error loading volume path, using default volume\n" + e.getMessage());
             Arrays.stream(AudioChannel.values()).forEach(channel -> get(channel).volume = DEFAULT_VOLUME);
@@ -125,12 +128,12 @@ public class AudioServiceImpl implements AudioService {
     /**
      * Establece los volumenes a todos los canales de audio.
      *
-     * @param config VolumeConfig que contiene los volumenes de cada canal
+     * @param volumeData datos de volumenes de cada canal
      */
-    private void setVolumens(VolumeData config) {
-        get(AudioChannel.MUSIC).volume = config.musicVolume();
-        get(AudioChannel.AMBIENT).volume = config.ambientVolume();
-        get(AudioChannel.SOUND).volume = config.soundVolume();
+    private void setVolumens(VolumeData volumeData) {
+        get(AudioChannel.MUSIC).volume = volumeData.musicVolume();
+        get(AudioChannel.AMBIENT).volume = volumeData.ambientVolume();
+        get(AudioChannel.SOUND).volume = volumeData.soundVolume();
     }
 
     /**

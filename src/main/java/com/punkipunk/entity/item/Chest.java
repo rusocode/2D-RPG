@@ -2,24 +2,18 @@ package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.ItemData;
 import com.punkipunk.core.Game;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
-
-import static com.punkipunk.utils.Global.tile;
 
 public class Chest extends Item {
 
     public static final String NAME = "Chest";
 
     public Chest(Game game, World world, int... pos) {
-        super(game, world, JsonLoader.getInstance().deserialize("items.chest", ItemData.class), pos);
-        itemType = ItemType.OBSTACLE;
+        super(game, world, pos);
         dialogue = new Dialogue(game);
         sheet.loadItemFrames(new SpriteSheet(Utils.loadTexture(itemData.spriteSheetPath())), itemData.frameWidth(), itemData.frameHeight(), itemData.frameScale());
     }
@@ -33,6 +27,7 @@ public class Chest extends Item {
             if (world.entities.player.inventory.canAddItem(loot)) {
                 dialogue.dialogues[0][0] = "You open the chest and find a \n" + loot.stats.name + "!";
                 dialogue.startDialogue(State.DIALOGUE, this, 0);
+                world.entities.player.hotbar.add(loot);
                 empty = true;
             } else {
                 dialogue.dialogues[1][0] = "You open the chest and find a \n" + loot.stats.name + "! But you cannot carry \nany more!";
@@ -41,6 +36,7 @@ public class Chest extends Item {
         } else if (!empty) {
             if (world.entities.player.inventory.canAddItem(loot)) {
                 dialogue.dialogues[2][0] = "You obtain the " + loot.stats.name + "!";
+                world.entities.player.hotbar.add(loot);
                 dialogue.startDialogue(State.DIALOGUE, this, 2);
                 empty = true;
             } else {
@@ -56,6 +52,11 @@ public class Chest extends Item {
     @Override
     public void setLoot(Item loot) {
         this.loot = loot;
+    }
+
+    @Override
+    protected ItemType getType() {
+        return ItemType.CHEST;
     }
 
 }

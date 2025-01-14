@@ -3,6 +3,7 @@ package com.punkipunk.entity.mob;
 import com.punkipunk.Direction;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.MobData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -32,10 +33,13 @@ public abstract class Mob extends Entity {
 
     protected MobData mobData;
 
-    public Mob(Game game, World world, MobData mobData, int... pos) {
-        super(game, world, pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
+    public Mob(Game game, World world, int... pos) {
+        super(game, world, pos);
 
-        this.mobData = mobData;
+        this.mobData = JsonLoader.getInstance().deserialize("mobs." + getType().getName(), MobData.class);
+
+        // La categoria se obtiene automaticamente del tipo
+        this.mobCategory = getType().getCategory();
 
         stats.name = mobData.name();
         stats.speed = stats.baseSpeed = mobData.speed();
@@ -60,6 +64,8 @@ public abstract class Mob extends Entity {
         }
 
     }
+
+    protected abstract MobType getType();
 
     /**
      * Moves the mob in a specified direction.
@@ -119,7 +125,7 @@ public abstract class Mob extends Entity {
      * @return the target's goal row.
      */
     protected int getGoalRow(Entity target) {
-        return (int) ((target.pos.y + target.hitbox.getY()) / tile);
+        return (int) ((target.position.y + target.hitbox.getY()) / tile);
     }
 
     /**
@@ -129,7 +135,7 @@ public abstract class Mob extends Entity {
      * @return the target's goal column.
      */
     protected int getGoalCol(Entity target) {
-        return (int) ((target.pos.x + target.hitbox.getX()) / tile);
+        return (int) ((target.position.x + target.hitbox.getX()) / tile);
     }
 
     /**

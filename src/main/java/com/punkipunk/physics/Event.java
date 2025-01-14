@@ -19,7 +19,6 @@ public class Event {
 
     private static final int EVENT_WIDTH = 22;
     private static final int EVENT_HEIGHT = 18;
-    private static final int INTERACTION_DISTANCE = 1;
 
     private final Game game;
     private final World world;
@@ -66,13 +65,15 @@ public class Event {
     /**
      * Check the event.
      *
+     * TODO Se podria mover a CollisionChecker?
+     *
      * @param entity entity that generates the event.
      */
     public void check(Entity entity) {
 
         // Check if the player is more than 1 tile away from the last event using the previous event as information
-        int xDis = Math.abs(world.entities.player.pos.x - previousEventX);
-        int yDis = Math.abs(world.entities.player.pos.y - previousEventY);
+        int xDis = Math.abs(world.entities.player.position.x - previousEventX);
+        int yDis = Math.abs(world.entities.player.position.y - previousEventY);
         int dis = Math.max(xDis, yDis);
         if (dis > tile) canCollideEvent = true;
 
@@ -98,8 +99,8 @@ public class Event {
      * @return si el jugador esta a mas de 1 tile del ultimo evento.
      */
     private boolean isPlayerFarEnoughFromPreviousEvent() {
-        int xDis = Math.abs(world.entities.player.pos.x - previousEventX);
-        int yDis = Math.abs(world.entities.player.pos.y - previousEventY);
+        int xDis = Math.abs(world.entities.player.position.x - previousEventX);
+        int yDis = Math.abs(world.entities.player.position.y - previousEventY);
         int dis = Math.max(xDis, yDis);
         return dis > tile;
     }
@@ -120,8 +121,8 @@ public class Event {
 
         // If the player is on the same map as the event
         if (map == world.map.num) {
-            world.entities.player.hitbox.setX(world.entities.player.hitbox.getX() + world.entities.player.pos.x);
-            world.entities.player.hitbox.setY(world.entities.player.hitbox.getY() + world.entities.player.pos.y);
+            world.entities.player.hitbox.setX(world.entities.player.hitbox.getX() + world.entities.player.position.x);
+            world.entities.player.hitbox.setY(world.entities.player.hitbox.getY() + world.entities.player.position.y);
             event[map][row][col].setX(event[map][row][col].getX() + col * tile);
             event[map][row][col].setY(event[map][row][col].getY() + row * tile);
 
@@ -130,8 +131,8 @@ public class Event {
                 colliding = true;
                 world.entities.player.attackCanceled = true; // Cancels the attack if you interact with an event using enter (key used to attack)
                 // Based on this information, verify the distance between the player and the last event
-                previousEventX = world.entities.player.pos.x;
-                previousEventY = world.entities.player.pos.y;
+                previousEventX = world.entities.player.position.x;
+                previousEventY = world.entities.player.position.y;
             }
 
             // Resets the player hitbox position and event position

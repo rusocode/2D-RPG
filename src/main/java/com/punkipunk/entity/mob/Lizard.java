@@ -6,8 +6,6 @@ import com.punkipunk.entity.item.Gold;
 import com.punkipunk.entity.item.IronDoor;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.io.Progress;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.MobData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
@@ -22,13 +20,11 @@ public class Lizard extends Mob {
     public static final String NAME = "Lizard";
 
     public Lizard(Game game, World world, int... pos) {
-        super(game, world, JsonLoader.getInstance().deserialize("mobs.lizard", MobData.class), pos);
-        mobType = MobType.HOSTILE;
+        super(game, world, pos);
         dialogue = new Dialogue(game);
         attackbox.setWidth(mobData.attackboxWidth());
         attackbox.setHeight(mobData.attackboxHeight());
         sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
-
         initDialogue();
     }
 
@@ -54,16 +50,18 @@ public class Lizard extends Mob {
 
     @Override
     public void checkDrop() {
-
-        drop(this, new Gold(game, world, 1000));
-
+        drop(new Gold(game, world, mobData.gold()));
         Progress.bossDefeated = true;
-
         // Elimina la IronDoor
-        for (int i = 0; i < world.entities.items[1].length; i++)
-            if (world.entities.items[world.map.num][i] != null && world.entities.items[world.map.num][i].stats.name.equals(IronDoor.NAME))
-                world.entities.items[world.map.num][i] = null;
+        world.entities.getItems(world.map.num).stream()
+                .filter(item -> item instanceof IronDoor)
+                .findFirst()
+                .ifPresent(door -> world.entities.removeItem(world.map.num, door));
+    }
 
+    @Override
+    protected MobType getType() {
+        return MobType.LIZARD;
     }
 
 }

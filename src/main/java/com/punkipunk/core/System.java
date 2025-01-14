@@ -90,13 +90,13 @@ public class System {
     public void reset(boolean fullReset) {
         ui.console.clear();
         world.entities.player.reset(fullReset);
-        world.entities.factory.createMobs();
+        world.entityFactory.createMobs();
         world.entities.removeTempEntities();
         world.entities.player.bossBattleOn = false;
         audio.playAmbient(AudioID.Ambient.OVERWORLD);
         if (fullReset) {
             audio.playMusic(AudioID.Music.MAIN);
-            world.entities.factory.createEntities();
+            world.entityFactory.createEntities();
             world.environment.lighting.resetDay();
             keyboard.resetToggledKeys();
         }

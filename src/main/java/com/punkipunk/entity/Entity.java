@@ -8,8 +8,8 @@ import com.punkipunk.entity.components.Flags;
 import com.punkipunk.entity.components.Particle;
 import com.punkipunk.entity.components.Stats;
 import com.punkipunk.entity.item.Item;
-import com.punkipunk.entity.mob.Mob;
-import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.spells.Spell;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
@@ -32,9 +32,9 @@ public abstract class Entity {
     public final World world;
 
     public String soundHit, soundDeath;
-    public MobType mobType;
+    public MobCategory mobCategory; // TODO Se podria mover a Mob?
     public Direction direction = Direction.DOWN;
-    public Position pos = new Position(); // TODO Podria ir en World
+    public Position position = new Position(); // TODO Podria ir en World
     public Stats stats = new Stats();
     public Flags flags = new Flags();
     public SpriteSheet sheet = new SpriteSheet();
@@ -55,8 +55,8 @@ public abstract class Entity {
 
     // Si el boss esta o no dormido para la cutscene
     public boolean sleep;
-    /* Para indicar si el player entro en el area del boss, entonces evita dibujarlo para simular el movimiento de la
-     * camara con PlayerDummy (personaje ficticio). */
+    /* Para indicar si el player entro en el area del boss, entonces evita dibujarlo para simular el movimiento de la camara con
+     * PlayerDummy (personaje ficticio). */
     public boolean drawing = true;
     /* Esta variable sirve para controlar la puerta de entrada al boss, es decir si morimos mientras peleamos con el
      * boss, la puerta temporal desaparece para que podemos entrar de nuevo al boss. */
@@ -70,10 +70,10 @@ public abstract class Entity {
         this.world = world;
     }
 
-    public Entity(Game game, World world, int col, int row) {
+    public Entity(Game game, World world, int... pos) {
         this.game = game;
         this.world = world;
-        pos.set(col, row);
+        position.set(pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
     }
 
     public void update() {
@@ -81,7 +81,7 @@ public abstract class Entity {
             if (flags.knockback) {
                 checkCollisions();
                 // If it doesn't collide, then update the position depending on the attacker's direction
-                if (!flags.colliding) pos.update(this, direction.knockbackDirection);
+                if (!flags.colliding) position.update(this, direction.knockbackDirection);
                 else mechanics.stopKnockback(this); // If it collides, it stops the knockback
                 timer.timerKnockback(this, INTERVAL_KNOCKBACK);
             } else if (flags.hitting) hit();
@@ -89,7 +89,7 @@ public abstract class Entity {
                 // It is important that you perform the actions before checking for collisions
                 doActions();
                 checkCollisions();
-                if (!flags.colliding) pos.update(this, direction);
+                if (!flags.colliding) position.update(this, direction);
             }
             timer.checkTimers(this);
         }
@@ -113,7 +113,7 @@ public abstract class Entity {
             // Si es una animacion con dos frames para cada direccion
             if (sheet.movement != null || sheet.attack != null)
                 g2.drawImage(sheet.getCurrentAnimationFrame(this), tempScreenX, tempScreenY);
-            // Si es una animacion con mas de dos framas para cada direccion
+                // Si es una animacion con mas de dos framas para cada direccion
             else if (sheet.down != null || sheet.up != null || sheet.left != null || sheet.right != null)
                 g2.drawImage(sheet.getCurrentAnimationFrame2(this), tempScreenX, tempScreenY);
                 // Si es una imagen estatica (item, interactive)
@@ -180,23 +180,23 @@ public abstract class Entity {
         if (timer.attackAnimationCounter > stats.motion1 && timer.attackAnimationCounter <= stats.motion2) {
             sheet.attackNum = 2;
 
-            int currentX = pos.x, currentY = pos.y;
+            int currentX = position.x, currentY = position.y;
             int hitboxWidth = (int) hitbox.getWidth(), hitboxHeight = (int) hitbox.getHeight();
 
             switch (direction) {
-                case DOWN -> pos.y += (int) attackbox.getHeight();
-                case UP -> pos.y -= (int) attackbox.getHeight();
-                case LEFT -> pos.x -= (int) attackbox.getWidth();
-                case RIGHT -> pos.x += (int) attackbox.getWidth();
+                case DOWN -> position.y += (int) attackbox.getHeight();
+                case UP -> position.y -= (int) attackbox.getHeight();
+                case LEFT -> position.x -= (int) attackbox.getWidth();
+                case RIGHT -> position.x += (int) attackbox.getWidth();
             }
 
             hitbox.setWidth(attackbox.getWidth());
             hitbox.setHeight(attackbox.getHeight());
 
-            hitPlayer(game.system.collisionChecker.checkPlayer(this), stats.attack);
+            hitPlayer(this, game.system.collisionChecker.checkPlayer(this), stats.attack);
 
-            pos.x = currentX;
-            pos.y = currentY;
+            position.x = currentX;
+            position.y = currentY;
 
             hitbox.setWidth(hitboxWidth);
             hitbox.setHeight(hitboxHeight);
@@ -209,34 +209,55 @@ public abstract class Entity {
     }
 
     /**
-     * Drops an object.
+     * Dropea un item.
+     * <p>
+     * FIXME El item no siempre dropea en el centro de la entidad
      *
-     * @param entity entity.
-     * @param item   object that drops the entity.
+     * @param item item a dropear
      */
-    protected void drop(Entity entity, Item item) {
-        for (int i = 0; i < world.entities.items[1].length; i++) {
-            if (world.entities.items[world.map.num][i] == null) {
-                world.entities.items[world.map.num][i] = item;
-                world.entities.items[world.map.num][i].pos.x = (int) (pos.x + (sheet.frame.getWidth() / 2 - item.sheet.frame.getWidth() / 2));
-                // Add half of the hitbox of just the mobs to the position and the item
-                world.entities.items[world.map.num][i].pos.y = (int) (pos.y + (sheet.frame.getHeight() / 2 + (entity instanceof Mob ? hitbox.getHeight() / 2 : 0) - item.sheet.frame.getHeight() / 2));
-                break;
-            }
-        }
+    protected void drop(Item item) {
+        // Ajusta la posicion del item en el centro del tile
+        int x = (int) (position.x + (sheet.frame.getWidth() / 2)) / tile;
+        int y = (int) (position.y + (sheet.frame.getHeight() / 2)) / tile;
+        if (item.amount > 0) world.entities.createItemWithAmount(getItemType(item), world.map.num, item.amount, x, y);
+        else world.entities.createItem(getItemType(item), world.map.num, x, y);
+    }
+
+    private ItemType getItemType(Item item) {
+        // Convierte el nombre de la clase del item a su correspondiente ItemType
+        return switch (item.getClass().getSimpleName()) {
+            case "Boots" -> ItemType.BOOTS;
+            case "Chest" -> ItemType.CHEST;
+            case "Chicken" -> ItemType.CHICKEN;
+            case "Gold" -> ItemType.GOLD;
+            case "IronShield" -> ItemType.IRON_SHIELD;
+            case "Key" -> ItemType.KEY;
+            case "Lantern" -> ItemType.LANTERN;
+            case "PotionBlue" -> ItemType.POTION_BLUE;
+            case "PotionRed" -> ItemType.POTION_RED;
+            case "Stone" -> ItemType.STONE;
+            case "StoneAxe" -> ItemType.STONE_AXE;
+            case "StonePickaxe" -> ItemType.STONE_PICKAXE;
+            case "StoneSword" -> ItemType.STONE_SWORD;
+            case "Tent" -> ItemType.TENT;
+            case "Wood" -> ItemType.WOOD;
+            case "WoodShield" -> ItemType.WOOD_SHIELD;
+            default -> throw new IllegalArgumentException("Unknown item type: " + item.getClass().getSimpleName());
+        };
     }
 
     /**
-     * Hit the player.
+     * Golpea al player.
+     * <p>
      *
-     * @param contact if the hostile mob makes contact with the player.
-     * @param attack  attack points.
+     * @param entity  entidad con la que hace contacto el player.
+     * @param contact si la entidad hace contacto con el player.
+     * @param attack  ataque de la entidad.
      */
-    public void hitPlayer(boolean contact, int attack) {
-        // Si el mob es hostil o neutral, y hay contacto, y el player no es invencible
-        if ((mobType == MobType.HOSTILE || mobType == MobType.NEUTRAL) && contact && !world.entities.player.flags.invincible) {
+    public void hitPlayer(Entity entity, boolean contact, int attack) {
+        if (entity.mobCategory != MobCategory.NPC && entity.mobCategory != MobCategory.PEACEFUL && contact && !world.entities.player.flags.invincible) {
             game.system.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
-            // Subtract the player's defense from the mob's attack to calculate fair damage
+            // Resta la defensa del player del ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.entities.player.stats.defense, 1);
             world.entities.player.stats.decreaseHp(damage);
             world.entities.player.flags.invincible = true;
@@ -247,12 +268,15 @@ public abstract class Entity {
      * Check collisions.
      */
     public void checkCollisions() {
-        flags.colliding = false;
+        flags.colliding = false; // Resetea colliding para que la entidad se pueda mover cuando no este colisionando
         game.system.collisionChecker.checkTile(this);
         game.system.collisionChecker.checkItem(this);
-        game.system.collisionChecker.checkEntity(this, world.entities.mobs);
-        game.system.collisionChecker.checkEntity(this, world.entities.interactives);
-        hitPlayer(game.system.collisionChecker.checkPlayer(this), stats.attack);
+        game.system.collisionChecker.checkMob(this);
+        game.system.collisionChecker.checkInteractive(this);
+        if (game.system.collisionChecker.checkPlayer(this)) {
+            hitPlayer(this, true, stats.attack);
+            flags.colliding = true;
+        }
     }
 
     /**
@@ -268,18 +292,18 @@ public abstract class Entity {
          * (or the center?) is a lot with respect to the view of the player on the screen. Therefore, this vision is
          * increased by multiplying the bossArea. */
         int bossArea = 5;
-        return pos.x + tile * bossArea > world.entities.player.pos.x - X_OFFSET &&
-                pos.x - tile < world.entities.player.pos.x + X_OFFSET &&
-                pos.y + tile * bossArea > world.entities.player.pos.y - Y_OFFSET &&
-                pos.y - tile < world.entities.player.pos.y + Y_OFFSET;
+        return position.x + tile * bossArea > world.entities.player.position.x - X_OFFSET &&
+                position.x - tile < world.entities.player.position.x + X_OFFSET &&
+                position.y + tile * bossArea > world.entities.player.position.y - Y_OFFSET &&
+                position.y - tile < world.entities.player.position.y + Y_OFFSET;
     }
 
     public int getScreenX() {
-        return pos.x - world.entities.player.pos.x + X_OFFSET;
+        return position.x - world.entities.player.position.x + X_OFFSET;
     }
 
     public int getScreenY() {
-        return pos.y - world.entities.player.pos.y + Y_OFFSET;
+        return position.y - world.entities.player.position.y + Y_OFFSET;
     }
 
     /**
@@ -308,7 +332,7 @@ public abstract class Entity {
      * @return the center x position of the entity.
      */
     public int getCenterX() {
-        return (int) (pos.x + sheet.frame.getWidth() / 2);
+        return (int) (position.x + sheet.frame.getWidth() / 2);
     }
 
     /**
@@ -317,7 +341,7 @@ public abstract class Entity {
      * @return the central position of y of the entity.
      */
     public int getCenterY() {
-        return (int) (pos.y + sheet.frame.getHeight() / 2);
+        return (int) (position.y + sheet.frame.getHeight() / 2);
     }
 
     /**

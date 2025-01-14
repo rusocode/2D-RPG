@@ -101,16 +101,16 @@ public class JsonLoader {
             // Obtiene el valor de la clave (ej. de clave "audio")
             JsonNode node = nodeTree.get(parts[0]);
 
-            if (node == null) throw new RuntimeException("Config not found: " + parts[0]);
+            if (node == null) throw new RuntimeException("Data not found: " + parts[0]);
 
             for (int i = 1; i < parts.length; i++) {
                 node = node.get(parts[i]);
-                if (node == null) throw new RuntimeException("Config path not found: " + path);
+                if (node == null) throw new RuntimeException("Data path not found: " + path);
             }
 
             return mapper.treeToValue(node, type);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to parse config: " + path, e);
+            throw new RuntimeException("Failed to parse data: " + path, e);
         }
     }
 
@@ -128,7 +128,7 @@ public class JsonLoader {
             nodeTree.put("interactive", parseFile("data/interactive.json"));
             nodeTree.put("player", parseFile("data/player.json"));
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load configurations", e);
+            throw new RuntimeException("Failed to load data", e);
         }
     }
 
