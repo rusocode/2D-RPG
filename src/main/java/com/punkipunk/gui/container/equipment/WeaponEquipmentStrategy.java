@@ -2,8 +2,6 @@ package com.punkipunk.gui.container.equipment;
 
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.player.Player;
-import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.utils.Utils;
 
 public class WeaponEquipmentStrategy extends BaseEquipmentStrategy {
 
@@ -12,7 +10,7 @@ public class WeaponEquipmentStrategy extends BaseEquipmentStrategy {
         player.weapon = item;
         player.stats.attack = player.getAttack();
         player.sheet.loadWeaponFrames(item.ss, 16, 16, 1);
-        player.game.system.audio.playSound(item.sound);
+        player.game.gameSystem.audio.playSound(item.soundDraw);
     }
 
     @Override

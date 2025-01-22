@@ -8,8 +8,6 @@ import com.punkipunk.world.World;
 
 public class Tent extends Item {
 
-    public static final String NAME = "Tent";
-
     public Tent(Game game, World world, int... pos) {
         super(game, world, pos);
     }
@@ -17,15 +15,15 @@ public class Tent extends Item {
     @Override
     public boolean use(Entity entity) {
         State.setState(State.SLEEP);
-        game.system.audio.playSound(AudioID.Sound.SLEEP);
+        game.gameSystem.audio.playSound(AudioID.Sound.SLEEP);
         entity.stats.fullHp();
         entity.stats.fullMana();
-        world.entities.player.initSleepImage(sheet.frame);
+        world.entitySystem.player.initSleepImage(sheet.frame);
         return true;
     }
 
     @Override
-    protected ItemType getType() {
+    public ItemType getType() {
         return ItemType.TENT;
     }
 

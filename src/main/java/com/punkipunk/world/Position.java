@@ -49,10 +49,7 @@ public class Position {
     }
 
     /**
-     * Updates the position of the entity.
-     *
-     * @param entity    entity.
-     * @param direction direction of the entity.
+     * Actualiza la posicion de la entidad dependiendo de la direccion.
      */
     public void update(Entity entity, Direction direction) {
         switch (direction) {

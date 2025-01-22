@@ -50,6 +50,12 @@ public class Equipment {
         strategy.unequip(player, item);
     }
 
+    public boolean isEquipped(Item item) {
+        if (item == null) return false;
+        EquipmentStrategy strategy = strategies.get(item.itemCategory);
+        return strategy.isEquipped(player, item);
+    }
+
     public EquipmentStrategy getStrategyForItemType(ItemCategory itemType) {
         return strategies.get(itemType);
     }

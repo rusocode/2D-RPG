@@ -29,8 +29,7 @@ public class WindowManager {
     }
 
     private void showExitConfirmation() {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                "Are you sure you want to exit?", ButtonType.YES, ButtonType.NO);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait().ifPresent(response -> {
             if (response == ButtonType.YES) stage.close();
         });

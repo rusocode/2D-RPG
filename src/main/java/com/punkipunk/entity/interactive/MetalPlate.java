@@ -1,17 +1,17 @@
 package com.punkipunk.entity.interactive;
 
 import com.punkipunk.core.Game;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.InteractiveData;
 import com.punkipunk.world.World;
 
 public class MetalPlate extends Interactive {
 
-    public static final String NAME = "Metal Plate";
-
     public MetalPlate(Game game, World world, int... pos) {
-        super(game, world, JsonLoader.getInstance().deserialize("interactive.metalPlate", InteractiveData.class), pos);
-        stats.name = NAME;
+        super(game, world, pos);
+    }
+
+    @Override
+    public InteractiveType getType() {
+        return InteractiveType.METAL_PLATE;
     }
 
 }

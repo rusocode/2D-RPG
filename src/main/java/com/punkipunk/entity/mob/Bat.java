@@ -1,5 +1,6 @@
 package com.punkipunk.entity.mob;
 
+import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Gold;
 import com.punkipunk.entity.item.StoneAxe;
@@ -11,6 +12,8 @@ public class Bat extends Mob {
 
     public Bat(Game game, World world, int... pos) {
         super(game, world, pos);
+        soundHit = AudioID.Sound.BAT_HIT;
+        soundDeath = AudioID.Sound.BAT_DEATH;
         sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
     }
 
@@ -26,7 +29,7 @@ public class Bat extends Mob {
     }
 
     @Override
-    protected MobType getType() {
+    public MobType getType() {
         return MobType.BAT;
     }
 

@@ -145,15 +145,15 @@ public class AStar {
                 int tileIndex = world.map.tileIndex[world.map.num][row][col];
                 if (world.map.tileData[tileIndex].solid) node[row][col].solid = true;
 
-                world.entities.getInteractives(world.map.num).stream()
-                        .filter(interactive -> interactive.interactiveData.destructible())
+                world.entitySystem.getInteractives(world.map.num).stream()
+                        .filter(interactive -> interactive.destructible)
                         .forEach(interactive -> {
                             int itRow = interactive.position.y / tile;
                             int itCol = interactive.position.x / tile;
                             node[itRow][itCol].solid = true;
                         });
 
-                world.entities.getItems(world.map.num).stream()
+                world.entitySystem.getItems(world.map.num).stream()
                         .filter(item -> item.solid)
                         .forEach(item -> {
                             int itRow = (int) ((item.position.y + item.hitbox.getY()) / tile);
@@ -161,7 +161,7 @@ public class AStar {
                             node[itRow][itCol].solid = true;
                         });
 
-                world.entities.getMobs(world.map.num).forEach(mob -> {
+                world.entitySystem.getMobs(world.map.num).forEach(mob -> {
                     int itRow = (int) ((mob.position.y + mob.hitbox.getY()) / tile);
                     int itCol = (int) ((mob.position.x + mob.hitbox.getX()) / tile);
                     node[itRow][itCol].solid = true;

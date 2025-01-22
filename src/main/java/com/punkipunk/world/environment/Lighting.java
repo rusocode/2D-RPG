@@ -43,7 +43,7 @@ public class Lighting {
      * Illuminate.
      */
     public void illuminate() {
-        if (world.entities.player.light == null) {
+        if (world.entitySystem.player.light == null) {
             gc.setFill(Color.color(0, 0, 0, 0.90));
             gc.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         } else { // If the player selected the latern
@@ -70,7 +70,7 @@ public class Lighting {
 
             RadialGradient gradient = new RadialGradient(
                     0, 0, centerX, centerY,
-                    (double) world.entities.player.light.lightRadius / 2,
+                    (double) world.entitySystem.player.light.lightRadius / 2,
                     false, CycleMethod.NO_CYCLE, stops
             );
 
@@ -88,9 +88,9 @@ public class Lighting {
     public void update() {
         /* Updates the item's lighting only when the player selects the specified item, preventing the illuminate()
          * method from being called 60 times per second, affecting game performance. */
-        if (world.entities.player.lightUpdate) {
+        if (world.entitySystem.player.lightUpdate) {
             illuminate();
-            world.entities.player.lightUpdate = false;
+            world.entitySystem.player.lightUpdate = false;
         }
 
         // cycleDay();

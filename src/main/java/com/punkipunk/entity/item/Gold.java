@@ -7,8 +7,6 @@ import com.punkipunk.world.World;
 
 public class Gold extends Item {
 
-    public static final String NAME = "Gold";
-
     public Gold(Game game, World world, int amount, int... pos) {
         super(game, world, pos);
         this.amount = amount;
@@ -16,14 +14,14 @@ public class Gold extends Item {
 
     @Override
     public boolean use(Entity entity) {
-        game.system.audio.playSound(AudioID.Sound.GOLD_PICKUP);
-        game.system.ui.addMessageToConsole("Gold +" + amount);
+        game.gameSystem.audio.playSound(AudioID.Sound.GOLD_PICKUP);
+        game.gameSystem.ui.addMessageToConsole("Gold +" + amount);
         entity.stats.gold += amount;
         return true;
     }
 
     @Override
-    protected ItemType getType() {
+    public ItemType getType() {
         return ItemType.GOLD;
     }
 

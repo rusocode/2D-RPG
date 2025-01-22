@@ -52,11 +52,11 @@ public class File {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(config))) {
             // bw.write(game.fullScreen ? ON : OFF);
             // bw.newLine();
-            bw.write(String.valueOf(game.system.audio.getMusic().volume));
+            bw.write(String.valueOf(game.gameSystem.audio.getMusic().volume));
             bw.newLine();
-            bw.write(String.valueOf(game.system.audio.getAmbient().volume));
+            bw.write(String.valueOf(game.gameSystem.audio.getAmbient().volume));
             bw.newLine();
-            bw.write(String.valueOf(game.system.audio.getSound().volume));
+            bw.write(String.valueOf(game.gameSystem.audio.getSound().volume));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -73,9 +73,9 @@ public class File {
                     DEFAULT_VOLUME
             );
             // VolumeLevelConfig volumeConfig = configManager.getConfig("audio.volume", VolumeLevelConfig.class);
-            game.system.audio.getMusic().volume = volumeConfig.musicVolume();
-            game.system.audio.getAmbient().volume = volumeConfig.ambientVolume();
-            game.system.audio.getSound().volume = volumeConfig.soundVolume();
+            game.gameSystem.audio.getMusic().volume = volumeConfig.musicVolume();
+            game.gameSystem.audio.getAmbient().volume = volumeConfig.ambientVolume();
+            game.gameSystem.audio.getSound().volume = volumeConfig.soundVolume();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
                     "Error loading audio configuration: " + e.getMessage(),
@@ -106,19 +106,19 @@ public class File {
             // Player stats
             data.map = world.map.num;
             data.zone = world.map.zone;
-            data.x = world.entities.player.position.x;
-            data.y = world.entities.player.position.y;
-            data.direction = world.entities.player.direction;
-            data.hp = world.entities.player.stats.hp;
-            data.maxHp = world.entities.player.stats.maxHp;
-            data.mana = world.entities.player.stats.mana;
-            data.maxMana = world.entities.player.stats.maxMana;
-            data.strength = world.entities.player.stats.strength;
-            data.dexterity = world.entities.player.stats.dexterity;
-            data.lvl = world.entities.player.stats.lvl;
-            data.exp = world.entities.player.stats.exp;
-            data.nextLvlExp = world.entities.player.stats.nextExp;
-            data.gold = world.entities.player.stats.gold;
+            data.x = world.entitySystem.player.position.x;
+            data.y = world.entitySystem.player.position.y;
+            data.direction = world.entitySystem.player.direction;
+            data.hp = world.entitySystem.player.stats.hp;
+            data.maxHp = world.entitySystem.player.stats.maxHp;
+            data.mana = world.entitySystem.player.stats.mana;
+            data.maxMana = world.entitySystem.player.stats.maxMana;
+            data.strength = world.entitySystem.player.stats.strength;
+            data.dexterity = world.entitySystem.player.stats.dexterity;
+            data.lvl = world.entitySystem.player.stats.lvl;
+            data.exp = world.entitySystem.player.stats.exp;
+            data.nextLvlExp = world.entitySystem.player.stats.nextExp;
+            data.gold = world.entitySystem.player.stats.gold;
 
             // Player inventory
             /* for (int i = 0; i < world.entities.player.inventory.size(); i++) {
@@ -157,7 +157,7 @@ public class File {
             data.itemLists = new ArrayList[MAPS];
             for (int map = 0; map < MAPS; map++) {
                 data.itemLists[map] = new ArrayList<>();
-                for (Item item : world.entities.getItems(map)) {
+                for (Item item : world.entitySystem.getItems(map)) {
                     ItemData2 itemData = new ItemData2();
                     itemData.name = item.stats.name;
                     itemData.x = item.position.x;
@@ -190,27 +190,27 @@ public class File {
             Data data = (Data) input.readObject();
             world.map.num = data.map;
             world.map.zone = data.zone;
-            world.entities.player.position.x = data.x;
-            world.entities.player.position.y = data.y;
+            world.entitySystem.player.position.x = data.x;
+            world.entitySystem.player.position.y = data.y;
             switch (data.direction) {
-                case DOWN -> world.entities.player.currentFrame = world.entities.player.down.getFirstFrame();
-                case UP -> world.entities.player.currentFrame = world.entities.player.up.getFirstFrame();
-                case LEFT -> world.entities.player.currentFrame = world.entities.player.left.getFirstFrame();
-                case RIGHT -> world.entities.player.currentFrame = world.entities.player.right.getFirstFrame();
+                case DOWN -> world.entitySystem.player.currentFrame = world.entitySystem.player.down.getFirstFrame();
+                case UP -> world.entitySystem.player.currentFrame = world.entitySystem.player.up.getFirstFrame();
+                case LEFT -> world.entitySystem.player.currentFrame = world.entitySystem.player.left.getFirstFrame();
+                case RIGHT -> world.entitySystem.player.currentFrame = world.entitySystem.player.right.getFirstFrame();
             }
-            world.entities.player.direction = data.direction;
-            world.entities.player.stats.hp = data.hp;
-            world.entities.player.stats.maxHp = data.maxHp;
-            world.entities.player.stats.mana = data.mana;
-            world.entities.player.stats.maxMana = data.maxMana;
-            world.entities.player.stats.strength = data.strength;
-            world.entities.player.stats.dexterity = data.dexterity;
-            world.entities.player.stats.lvl = data.lvl;
-            world.entities.player.stats.exp = data.exp;
-            world.entities.player.stats.nextExp = data.nextLvlExp;
-            world.entities.player.stats.gold = data.gold;
+            world.entitySystem.player.direction = data.direction;
+            world.entitySystem.player.stats.hp = data.hp;
+            world.entitySystem.player.stats.maxHp = data.maxHp;
+            world.entitySystem.player.stats.mana = data.mana;
+            world.entitySystem.player.stats.maxMana = data.maxMana;
+            world.entitySystem.player.stats.strength = data.strength;
+            world.entitySystem.player.stats.dexterity = data.dexterity;
+            world.entitySystem.player.stats.lvl = data.lvl;
+            world.entitySystem.player.stats.exp = data.exp;
+            world.entitySystem.player.stats.nextExp = data.nextLvlExp;
+            world.entitySystem.player.stats.gold = data.gold;
 
-            world.entities.player.inventory.clear();
+            world.entitySystem.player.inventory.clear();
             /* for (int i = 0; i < data.names.size(); i++) {
                 world.entities.player.inventory.add(game.system.itemGenerator.generate(data.names.get(i)));
                 world.entities.player.inventory.get(i).amount = data.amounts.get(i);
@@ -218,8 +218,8 @@ public class File {
             world.entities.player.weapon = world.entities.player.inventory.get(data.weapon);
             world.entities.player.shield = world.entities.player.inventory.get(data.shield);
             world.entities.player.light = world.entities.player.inventory.get(data.light); */
-            world.entities.player.getAttack();
-            world.entities.player.getDefense();
+            world.entitySystem.player.getAttack();
+            world.entitySystem.player.getDefense();
             // world.entities.player.frame.loadWeaponFrames(world.entities.player.weapon.type == Type.SWORD ? player_sword : player_axe, ENTITY_WIDTH, ENTITY_HEIGHT);
 
             /* for (int map = 0; map < MAPS; map++) {
@@ -243,12 +243,12 @@ public class File {
             // Cargar items en el mapa
             for (int map = 0; map < MAPS; map++) {
                 // Limpiar items existentes en el mapa
-                world.entities.clearItems(map);
+                world.entitySystem.clearItems(map);
 
                 // Cargar items guardados
                 for (ItemData2 itemData : data.itemLists[map]) {
                     if (!itemData.name.equals("NA")) {
-                        Item item = world.entities.createItem(
+                        Item item = world.entitySystem.createItem(
                                 ItemType.valueOf(itemData.name.toUpperCase()),
                                 map,
                                 itemData.x,
@@ -257,7 +257,7 @@ public class File {
 
                         if (item instanceof Chest chest) {
                             if (itemData.loot != null && !itemData.empty) {
-                                chest.setLoot(world.entities.createItem(ItemType.valueOf(itemData.loot.toUpperCase()), map));
+                                chest.setLoot(world.entitySystem.createItem(ItemType.valueOf(itemData.loot.toUpperCase()), map));
                             }
                             chest.opened = itemData.opened;
                             chest.empty = itemData.empty;

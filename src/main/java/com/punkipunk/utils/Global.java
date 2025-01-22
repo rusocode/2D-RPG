@@ -54,7 +54,7 @@ public final class Global {
     public static final int INTERVAL_MOVEMENT_ANIMATION = 15;
     public static final int INTERVAL_PROJECTILE_ANIMATION = 10;
     // Weapons interval
-    public static final int INTERVAL_WEAPON = 30; // TODO o INTERVAL_ATTACK?
+    public static final int INTERVAL_ATTACK = 60; // TODO o INTERVAL_ATTACK?
     // Projectiles interval
     public static final int INTERVAL_PROJECTILE = 60;
     // Others interval

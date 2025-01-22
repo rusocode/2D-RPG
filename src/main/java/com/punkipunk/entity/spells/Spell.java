@@ -39,10 +39,10 @@ public abstract class Spell extends Entity {
 
         // Si el player lanza el hechizo
         if (entity instanceof Player) {
-            game.system.collisionChecker.checkMob(this).ifPresent(mob -> {
+            game.gameSystem.collisionChecker.checkMob(this).ifPresent(mob -> {
                 // flags.colliding = false; // ?
                 if (!mob.flags.invincible && mob.mobCategory != MobCategory.NPC) {
-                    world.entities.player.hitMob(mob, this, stats.knockback, getAttack());
+                    world.entitySystem.player.hitMob(mob, this, stats.knockback, getAttack());
                     generateParticle(entity.spell, mob);
                     flags.alive = false;
                 }
@@ -51,10 +51,10 @@ public abstract class Spell extends Entity {
 
         // Si el mob lanza el hechizo
         if (!(entity instanceof Player)) {
-            boolean contact = game.system.collisionChecker.checkPlayer(this);
-            if (contact && !world.entities.player.flags.invincible) {
+            boolean contact = game.gameSystem.collisionChecker.checkPlayer(this);
+            if (contact && !world.entitySystem.player.flags.invincible) {
                 hitPlayer(this, true, stats.attack);
-                generateParticle(entity.spell, world.entities.player);
+                generateParticle(entity.spell, world.entitySystem.player);
                 flags.alive = false;
             }
         }

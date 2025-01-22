@@ -33,13 +33,13 @@ public class Renderer implements Renderable {
 
     @Override
     public void render(GraphicsContext context) {
-        if (game.system.keyboard.isKeyToggled(Key.DEBUG)) renderStart = System.nanoTime();
+        if (game.gameSystem.keyboard.isKeyToggled(Key.DEBUG)) renderStart = System.nanoTime();
 
         world.render(context);
         minimap.render(context);
         ui.render(context);
 
-        if (game.system.keyboard.isKeyToggled(Key.TEST)) {
+        if (game.gameSystem.keyboard.isKeyToggled(Key.TEST)) {
 
             context.setFont(Font.font(context.getFont().getFamily(), 24));
             // g2.setFont(g2.getFont().deriveFont(Font.PLAIN, 17));
@@ -60,21 +60,21 @@ public class Renderer implements Renderable {
 
         }
 
-        if (game.system.keyboard.isKeyToggled(Key.DEBUG)) {
+        if (game.gameSystem.keyboard.isKeyToggled(Key.DEBUG)) {
             context.setFont(Font.font(context.getFont().getFamily(), FontWeight.NORMAL, 8));
             int x = 8, y = (int) (WINDOW_HEIGHT - tile * 2.8), gap = 15;
-            String map = game.system.file.maps.get(game.system.world.map.num);
-            int posX = (int) ((game.system.world.entities.player.position.x + game.system.world.entities.player.hitbox.getX()) / tile);
-            int posY = (int) ((game.system.world.entities.player.position.y + game.system.world.entities.player.hitbox.getY()) / tile);
+            String map = game.gameSystem.file.maps.get(game.gameSystem.world.map.num);
+            int posX = (int) ((game.gameSystem.world.entitySystem.player.position.x + game.gameSystem.world.entitySystem.player.hitbox.getX()) / tile);
+            int posY = (int) ((game.gameSystem.world.entitySystem.player.position.y + game.gameSystem.world.entitySystem.player.hitbox.getY()) / tile);
             context.setTextBaseline(VPos.BASELINE);
             context.fillText(map + " (" + posX + ", " + posY + ")", x, y);
             y += gap;
-            context.fillText("x: " + (game.system.world.entities.player.position.x + game.system.world.entities.player.hitbox.getX()) + " y: " + (game.system.world.entities.player.position.y + game.system.world.entities.player.hitbox.getY()), x, y);
+            context.fillText("x: " + (game.gameSystem.world.entitySystem.player.position.x + game.gameSystem.world.entitySystem.player.hitbox.getX()) + " y: " + (game.gameSystem.world.entitySystem.player.position.y + game.gameSystem.world.entitySystem.player.hitbox.getY()), x, y);
             y += gap;
-            if (game.system.oldGameLoop.showFPS) {
-                context.fillText("FPS: " + game.system.oldGameLoop.framesInRender, x, y);
-                lastFrames = game.system.oldGameLoop.framesInRender;
-                game.system.oldGameLoop.showFPS = false;
+            if (game.gameSystem.oldGameLoop.showFPS) {
+                context.fillText("FPS: " + game.gameSystem.oldGameLoop.framesInRender, x, y);
+                lastFrames = game.gameSystem.oldGameLoop.framesInRender;
+                game.gameSystem.oldGameLoop.showFPS = false;
             } else context.fillText("FPS: " + lastFrames, x, y); // Shows the last fps until the second is completed
             y += gap;
             context.fillText("Render time: " + (System.nanoTime() - renderStart) / 1_000_000 + " ms", x, y);

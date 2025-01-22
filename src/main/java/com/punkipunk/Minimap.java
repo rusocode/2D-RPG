@@ -54,7 +54,7 @@ public class Minimap {
     }
 
     public void render(final GraphicsContext gc) {
-        if (game.system.keyboard.isKeyToggled(Key.MINIMAP)) {
+        if (game.gameSystem.keyboard.isKeyToggled(Key.MINIMAP)) {
             int width = 100;
             int height = 100;
             int x = WINDOW_WIDTH - width - 22;
@@ -66,8 +66,8 @@ public class Minimap {
 
             // Draw a red square that represents the player's position
             double scale = (double) (tile * MAX_MAP_COL) / width;
-            int playerX = (int) (x + (world.entities.player.position.x + world.entities.player.hitbox.getX()) / scale);
-            int playerY = (int) (y + (world.entities.player.position.y + world.entities.player.hitbox.getY()) / scale);
+            int playerX = (int) (x + (world.entitySystem.player.position.x + world.entitySystem.player.hitbox.getX()) / scale);
+            int playerY = (int) (y + (world.entitySystem.player.position.y + world.entitySystem.player.hitbox.getY()) / scale);
             int playerSize = (int) (tile / scale);
             gc.setFill(Color.RED);
             gc.fillRect(playerX, playerY, playerSize, playerSize);

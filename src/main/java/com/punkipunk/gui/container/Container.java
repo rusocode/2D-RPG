@@ -106,7 +106,7 @@ public abstract class Container {
             SlotPosition freePos = new SlotPosition(row, col);
 
             // Genera el nuevo item y ajusta la cantidad si es stackable
-            Item newItem = generate(currentItem.stats.name);
+            Item newItem = generate(currentItem.getType());
             newItem.amount = currentItem.stackable ? currentItem.amount : 1;
 
             slots.put(freePos, newItem);
@@ -187,36 +187,31 @@ public abstract class Container {
     }
 
     /**
-     * Genera un nuevo item segun el nombre especificado.
+     * Genera un nuevo item segun el tipo de item.
      *
-     * @param name nombre del item a generar
+     * @param type tipo de item
      * @return el nuevo item generado
-     * @throws IllegalStateException si el nombre del item no es valido
      */
-    private Item generate(String name) {
-        return switch (name) {
-            case StoneAxe.NAME -> new StoneAxe(game, world);
-            case Boots.NAME -> new Boots(game, world);
-            case Chest.NAME -> new Chest(game, world);
-            case Chicken.NAME -> new Chicken(game, world);
-            case Gold.NAME -> new Gold(game, world, 0);
-            case WoodDoor.NAME -> new WoodDoor(game, world);
-            case IronDoor.NAME -> new IronDoor(game, world);
-            case Key.NAME -> new Key(game, world);
-            case Lantern.NAME -> new Lantern(game, world);
-            case StonePickaxe.NAME -> new StonePickaxe(game, world);
-            case PotionBlue.NAME -> new PotionBlue(game, world, 0);
-            /* In the case of trading with the Trader and buying 1 at a time, it would be inefficient since 1 object is
-             * created per potion, therefore it would be good for the player to be able to determine the quantity to buy.
-             * It is important to pass 0 when it is generated to only create the object and not specify a quantity. */
-            case PotionRed.NAME -> new PotionRed(game, world, 0);
-            case IronShield.NAME -> new IronShield(game, world);
-            case WoodShield.NAME -> new WoodShield(game, world);
-            case Stone.NAME -> new Stone(game, world, 0);
-            case StoneSword.NAME -> new StoneSword(game, world);
-            case Tent.NAME -> new Tent(game, world);
-            case Wood.NAME -> new Wood(game, world, 0);
-            default -> throw new IllegalStateException("Unexpected value: " + name);
+    private Item generate(ItemType type) {
+        return switch (type) {
+            case STONE_AXE -> new StoneAxe(game, world);
+            case BOOTS -> new Boots(game, world);
+            case CHEST -> new Chest(game, world);
+            case CHICKEN -> new Chicken(game, world);
+            case GOLD -> new Gold(game, world, 0);
+            case WOOD_DOOR -> new WoodDoor(game, world);
+            case IRON_DOOR -> new IronDoor(game, world);
+            case KEY -> new Key(game, world);
+            case LANTERN -> new Lantern(game, world);
+            case STONE_PICKAXE -> new StonePickaxe(game, world);
+            case POTION_BLUE -> new PotionBlue(game, world, 0);
+            case POTION_RED -> new PotionRed(game, world, 0);
+            case IRON_SHIELD -> new IronShield(game, world);
+            case WOOD_SHIELD -> new WoodShield(game, world);
+            case STONE -> new Stone(game, world, 0);
+            case STONE_SWORD -> new StoneSword(game, world);
+            case TENT -> new Tent(game, world);
+            case WOOD -> new Wood(game, world, 0);
         };
     }
 

@@ -72,8 +72,8 @@ public class Event {
     public void check(Entity entity) {
 
         // Check if the player is more than 1 tile away from the last event using the previous event as information
-        int xDis = Math.abs(world.entities.player.position.x - previousEventX);
-        int yDis = Math.abs(world.entities.player.position.y - previousEventY);
+        int xDis = Math.abs(world.entitySystem.player.position.x - previousEventX);
+        int yDis = Math.abs(world.entitySystem.player.position.y - previousEventY);
         int dis = Math.max(xDis, yDis);
         if (dis > tile) canCollideEvent = true;
 
@@ -99,8 +99,8 @@ public class Event {
      * @return si el jugador esta a mas de 1 tile del ultimo evento.
      */
     private boolean isPlayerFarEnoughFromPreviousEvent() {
-        int xDis = Math.abs(world.entities.player.position.x - previousEventX);
-        int yDis = Math.abs(world.entities.player.position.y - previousEventY);
+        int xDis = Math.abs(world.entitySystem.player.position.x - previousEventX);
+        int yDis = Math.abs(world.entitySystem.player.position.y - previousEventY);
         int dis = Math.max(xDis, yDis);
         return dis > tile;
     }
@@ -121,23 +121,23 @@ public class Event {
 
         // If the player is on the same map as the event
         if (map == world.map.num) {
-            world.entities.player.hitbox.setX(world.entities.player.hitbox.getX() + world.entities.player.position.x);
-            world.entities.player.hitbox.setY(world.entities.player.hitbox.getY() + world.entities.player.position.y);
+            world.entitySystem.player.hitbox.setX(world.entitySystem.player.hitbox.getX() + world.entitySystem.player.position.x);
+            world.entitySystem.player.hitbox.setY(world.entitySystem.player.hitbox.getY() + world.entitySystem.player.position.y);
             event[map][row][col].setX(event[map][row][col].getX() + col * tile);
             event[map][row][col].setY(event[map][row][col].getY() + row * tile);
 
             // If the player collides with the event and if the direction matches that of the event
-            if (world.entities.player.hitbox.intersects(event[map][row][col].getBoundsInParent()) && (world.entities.player.direction == direction || direction == Direction.ANY)) {
+            if (world.entitySystem.player.hitbox.intersects(event[map][row][col].getBoundsInParent()) && (world.entitySystem.player.direction == direction || direction == Direction.ANY)) {
                 colliding = true;
-                world.entities.player.attackCanceled = true; // Cancels the attack if you interact with an event using enter (key used to attack)
+                world.entitySystem.player.attackCanceled = true; // Cancels the attack if you interact with an event using enter (key used to attack)
                 // Based on this information, verify the distance between the player and the last event
-                previousEventX = world.entities.player.position.x;
-                previousEventY = world.entities.player.position.y;
+                previousEventX = world.entitySystem.player.position.x;
+                previousEventY = world.entitySystem.player.position.y;
             }
 
             // Resets the player hitbox position and event position
-            world.entities.player.hitbox.setX(world.entities.player.hitboxDefaultX);
-            world.entities.player.hitbox.setY(world.entities.player.hitboxDefaultY);
+            world.entitySystem.player.hitbox.setX(world.entitySystem.player.hitboxDefaultX);
+            world.entitySystem.player.hitbox.setY(world.entitySystem.player.hitboxDefaultY);
             event[map][row][col].setX(x);
             event[map][row][col].setY(y);
         }
@@ -165,7 +165,7 @@ public class Event {
      * @param entity entity to heal.
      */
     private void heal(Entity entity) {
-        if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
+        if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
             entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
             entity.dialogue.startDialogue(State.DIALOGUE, entity, 1);
             entity.stats.fullHp();
@@ -176,10 +176,10 @@ public class Event {
      * Generate the boss scene.
      */
     private void bossScene() {
-        if (!world.entities.player.bossBattleOn && !Progress.bossDefeated) {
+        if (!world.entitySystem.player.bossBattleOn && !Progress.bossDefeated) {
             State.setState(State.CUTSCENE);
             world.cutscene.n = world.cutscene.boss;
-            world.entities.player.bossBattleOn = true;
+            world.entitySystem.player.bossBattleOn = true;
         }
     }
 

@@ -123,9 +123,9 @@ public class Map {
     public void changeArea() {
         // If there is a change of area
         if (nextZone != zone) {
-            if (nextZone == BOSS) game.system.audio.playMusic(AudioID.Music.BOSS);
-            if (nextZone == DUNGEON) game.system.audio.playAmbient(AudioID.Ambient.DUNGEON);
-            if (zone == DUNGEON && nextZone == OVERWORLD) game.system.audio.playAmbient(AudioID.Ambient.OVERWORLD);
+            if (nextZone == BOSS) game.gameSystem.audio.playMusic(AudioID.Music.BOSS);
+            if (nextZone == DUNGEON) game.gameSystem.audio.playAmbient(AudioID.Ambient.DUNGEON);
+            if (zone == DUNGEON && nextZone == OVERWORLD) game.gameSystem.audio.playAmbient(AudioID.Ambient.OVERWORLD);
         }
         zone = nextZone;
         // world.entityFactory.createMobs();

@@ -49,8 +49,6 @@ public abstract class Mob extends Entity {
         stats.defense = mobData.defense();
         flags.boss = mobData.boss();
         sleep = mobData.sleep();
-        soundHit = mobData.soundHit();
-        soundDeath = mobData.soundDeath();
 
         if (mobData.hitbox() != null) {
             hitbox = new Rectangle(
@@ -65,7 +63,7 @@ public abstract class Mob extends Entity {
 
     }
 
-    protected abstract MobType getType();
+    public abstract MobType getType();
 
     /**
      * Moves the mob in a specified direction.
@@ -91,7 +89,7 @@ public abstract class Mob extends Entity {
      * Look at the Player.
      */
     protected void lookPlayer() {
-        switch (world.entities.player.direction) {
+        switch (world.entitySystem.player.direction) {
             case DOWN -> direction = Direction.UP;
             case UP -> direction = Direction.DOWN;
             case LEFT -> direction = Direction.RIGHT;
@@ -110,7 +108,7 @@ public abstract class Mob extends Entity {
      */
     protected void isPlayerWithinAttackRange(int interval, int vertical, int horizontal, int rate) {
         if (++timer.attackCounter > interval) {
-            if (getXDistance(world.entities.player) < horizontal && getYDistance(world.entities.player) < vertical && Utils.random(rate) == 1) {
+            if (getXDistance(world.entitySystem.player) < horizontal && getYDistance(world.entitySystem.player) < vertical && Utils.random(rate) == 1) {
                 flags.hitting = true;
                 timer.projectileCounter = 0;
                 timer.attackCounter = 0;
@@ -177,9 +175,9 @@ public abstract class Mob extends Entity {
      */
     protected void moveTowardPlayer(Entity target, int interval) {
         if (++timer.directionCounter > interval) { // TODO o =?
-            if (getXDistance(game.system.world.entities.player) > getYDistance(game.system.world.entities.player))
+            if (getXDistance(game.gameSystem.world.entitySystem.player) > getYDistance(game.gameSystem.world.entitySystem.player))
                 direction = target.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
-            else if (getXDistance(game.system.world.entities.player) < getYDistance(game.system.world.entities.player))
+            else if (getXDistance(game.gameSystem.world.entitySystem.player) < getYDistance(game.gameSystem.world.entitySystem.player))
                 direction = target.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
             timer.directionCounter = 0;
         }

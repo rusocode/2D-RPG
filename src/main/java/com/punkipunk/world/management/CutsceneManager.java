@@ -3,8 +3,6 @@ package com.punkipunk.world.management;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.ItemType;
 import com.punkipunk.entity.mob.MobType;
-import com.punkipunk.entity.mob.Lizard;
-import com.punkipunk.entity.player.PlayerDummy;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
 
@@ -33,54 +31,54 @@ public class CutsceneManager {
         // Coloca la puerta de hierro
         if (phase == 0) {
 
-            world.entities.createItem(ItemType.IRON_DOOR, world.map.num, 25, 28);
+            world.entitySystem.createItem(ItemType.IRON_DOOR, world.map.num, 25, 28);
 
-            world.entities.createMob(MobType.PLAYER_DUMMY, world.map.num,
-                    world.entities.player.position.x,
-                    world.entities.player.position.y
-            ).direction = world.entities.player.direction;
+            world.entitySystem.createMob(MobType.PLAYER_DUMMY, world.map.num,
+                    world.entitySystem.player.position.x,
+                    world.entitySystem.player.position.y
+            ).direction = world.entitySystem.player.direction;
 
-            world.entities.player.drawing = false;
+            world.entitySystem.player.drawing = false;
             phase++;
         }
 
         // Mueve la camara hacia el boss
         if (phase == 1) {
-            world.entities.player.position.y -= 2;
-            if (world.entities.player.position.y < tile * 16) phase++;
+            world.entitySystem.player.position.y -= 2;
+            if (world.entitySystem.player.position.y < tile * 16) phase++;
         }
 
         // Despierta al boss
         if (phase == 2) {
-            world.entities.getMobs(world.map.num).stream()
-                    .filter(mob -> mob instanceof Lizard)
+            world.entitySystem.getMobs(world.map.num).stream()
+                    .filter(mob -> mob.getType() == MobType.LIZARD)
                     .findFirst()
                     .ifPresent(lizard -> {
                         lizard.sleep = false;
-                        game.system.ui.entity = lizard; // Pasa el boss a la interfaz de usuario para que pueda representar la ventana de dialogo
+                        game.gameSystem.ui.entity = lizard; // Pasa el boss a la interfaz de usuario para que pueda representar la ventana de dialogo
                         phase++;
                     });
         }
 
         // El boss habla
-        if (phase == 3) game.system.ui.renderDialogueWindow();
+        if (phase == 3) game.gameSystem.ui.renderDialogueWindow();
 
         // Devuelve la camara al player
         if (phase == 4) {
             // Encuentra el personaje ficticio
-            world.entities.getMobs(world.map.num).stream()
-                    .filter(mob -> mob instanceof PlayerDummy)
+            world.entitySystem.getMobs(world.map.num).stream()
+                    .filter(mob -> mob.getType() == MobType.PLAYER_DUMMY)
                     .findFirst()
                     .ifPresent(dummy -> {
                         // Restaura la posicion del player
-                        world.entities.player.position.x = dummy.position.x;
-                        world.entities.player.position.y = dummy.position.y;
+                        world.entitySystem.player.position.x = dummy.position.x;
+                        world.entitySystem.player.position.y = dummy.position.y;
                         // Elimina al personaje ficticio
-                        world.entities.removeMob(world.map.num, dummy);
+                        world.entitySystem.removeMob(world.map.num, dummy);
                     });
 
             // Ahora puede dibujar al player
-            world.entities.player.drawing = true;
+            world.entitySystem.player.drawing = true;
 
             // Reinicia la escena
             n = na;

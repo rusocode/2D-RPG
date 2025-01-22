@@ -2,7 +2,7 @@
   "bat": {
     "name": "Bat",
     "speed": 1,
-    "hp": 2,
+    "hp": 5,
     "exp": 7,
     "gold": 10,
     "probabilityItemDrop": 30,
@@ -10,8 +10,6 @@
     "frameWidth": 32,
     "frameHeight": 32,
     "frameScale": 1,
-    "soundHit": "batHit2",
-    "soundDeath": "batDeath2",
     "spriteSheetPath": "textures/entity/mob/bat.png",
     "hitbox": {
       "x": 0,
@@ -48,8 +46,6 @@
     "frameScale": 1,
     "boss": true,
     "sleep": true,
-    "soundHit": "mobHit",
-    "soundDeath": "mobDeath",
     "spriteSheetPath": "textures/entity/mob/lizard.png",
     "hitbox": {
       "x": 32,
@@ -76,8 +72,6 @@
     "defense": 2,
     "animationSpeed": 150,
     "frameScale": 1,
-    "soundHit": "orcHit",
-    "soundDeath": "orcDeath",
     "spriteSheetPath": "textures/entity/mob/orc.png",
     "hitbox": {
       "x": 5,
@@ -97,7 +91,6 @@
     "frameWidth": 16,
     "frameHeight": 16,
     "frameScale": 2,
-    "soundHit": "slimeHit",
     "spriteSheetPath": "textures/entity/mob/red_slime.png",
     "hitbox": {
       "x": 3,
@@ -117,7 +110,6 @@
     "frameWidth": 16,
     "frameHeight": 16,
     "frameScale": 2,
-    "soundHit": "slimeHit",
     "spriteSheetPath": "textures/entity/mob/slime.png",
     "hitbox": {
       "x": 3,

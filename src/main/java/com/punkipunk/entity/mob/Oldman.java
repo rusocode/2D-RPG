@@ -31,13 +31,12 @@ public class Oldman extends Mob {
         up = new Animation(mobData.animationSpeed(), sheet.up);
         left = new Animation(mobData.animationSpeed(), sheet.left);
         right = new Animation(mobData.animationSpeed(), sheet.right);
-
     }
 
     @Override
     public void doActions() {
         if (flags.following)
-            game.system.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
+            game.gameSystem.aStar.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
         else {
             // checkFollow(world.entities.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
@@ -60,7 +59,7 @@ public class Oldman extends Mob {
     }
 
     @Override
-    protected MobType getType() {
+    public MobType getType() {
         return MobType.OLDMAN;
     }
 
@@ -72,6 +71,5 @@ public class Oldman extends Mob {
         dialogue.dialogues[1][1] = "Everything started happening since \nthat strange guy arrived on the \nisland.";
         dialogue.dialogues[1][2] = "I will continue exploring, until \nthen traveler!";
     }
-
 
 }

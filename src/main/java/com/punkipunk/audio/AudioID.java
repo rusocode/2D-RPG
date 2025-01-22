@@ -69,7 +69,7 @@ public final class AudioID {
         public static final String SPAWN = "spawn";
         public static final String SPAWN2 = "spawn2";
         public static final String SWING_AXE = "swingAxe";
-        public static final String SWING_WEAPON = "swingWeapon";
+        public static final String SWING_WEAPON = "swingWeapon"; // TODO Cambiar por SWING_SWORD
         public static final String TRADE_BUY = "tradeBuy";
         public static final String TRADE_OPENING = "tradeOpening";
         public static final String TRADE_SELL = "tradeSell";

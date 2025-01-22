@@ -53,13 +53,12 @@ import static com.punkipunk.utils.Global.MAPS;
  * Por ejemplo:
  * <pre>{@code
  * plates = world.entities.getInteractives(world.map.num).stream()
- *                 .filter(interactive -> interactive instanceof MetalPlate && interactive.stats.name != null)
+ *                 .filter(interactive -> interactive.getType() == InteractiveType.METAL_PLATE)
  *                 .toList();
  * }</pre>
  * <p>
  * Este ejemplo obtiene todas las entidades interactivas del mapa actual, las convierte en un Stream para filtrar solamente
- * aquellas que son placas metalicas y tienen un nombre asignado, y finalmente las convierte en una lista que se guarda en la
- * variable plates.
+ * aquellas que son placas metalicas, y finalmente las convierte en una lista que se guarda en la variable plates.
  * <p>
  * Las principales ventajas de usar streams son:
  * <ul>
@@ -81,7 +80,7 @@ import static com.punkipunk.utils.Global.MAPS;
  * }</pre>
  */
 
-public class EntityManager {
+public class EntitySystem {
 
     public final Player player;
     public final List<Particle> particles = new ArrayList<>();
@@ -103,7 +102,7 @@ public class EntityManager {
      */
     private final List<Entity> renderOrder = new ArrayList<>();
 
-    public EntityManager(Game game, World world) {
+    public EntitySystem(Game game, World world) {
         this.world = world;
         this.mobFactory = new MobFactory(game, world);
         this.itemFactory = new ItemFactory(game, world);

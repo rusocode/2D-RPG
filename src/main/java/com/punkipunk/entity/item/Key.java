@@ -7,23 +7,21 @@ import com.punkipunk.world.World;
 
 public class Key extends Item {
 
-    public static final String NAME = "Key";
-
     public Key(Game game, World world, int... pos) {
         super(game, world, pos);
     }
 
     @Override
     public boolean use(Entity entity) {
-        // Si la entidad detecta una puerta, entonces puede usar la llave
-        if (isNearby(entity, WoodDoor.NAME)) {
-            world.entities.getItems(world.map.num).stream()
-                    .filter(item -> item instanceof WoodDoor)
+        // Si la entidad detecta una puerta de madera, entonces puede usar la llave
+        if (isNearby(entity, ItemType.WOOD_DOOR)) {
+            world.entitySystem.getItems(world.map.num).stream()
+                    .filter(item -> item.getType() == ItemType.WOOD_DOOR)
                     .filter(door -> isAdjacentTo(entity, door))
                     .findFirst()
                     .ifPresent(door -> {
-                        game.system.audio.playSound(AudioID.Sound.DOOR_OPENING);
-                        world.entities.removeItem(world.map.num, door);
+                        game.gameSystem.audio.playSound(AudioID.Sound.DOOR_OPENING);
+                        world.entitySystem.removeItem(world.map.num, door);
                     });
             return true;
         }
@@ -31,7 +29,7 @@ public class Key extends Item {
     }
 
     @Override
-    protected ItemType getType() {
+    public ItemType getType() {
         return ItemType.KEY;
     }
 

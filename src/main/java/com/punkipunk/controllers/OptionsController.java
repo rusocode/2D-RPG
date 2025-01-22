@@ -73,19 +73,19 @@ public class OptionsController implements Initializable {
             music.volume = newValue.intValue();
             music.setVolume();
             // Guarda el nuevo valor del volumen en el archivo de configuracion de nivel de volumen
-            game.system.audio.save();
+            game.gameSystem.audio.save();
         });
 
         ambientSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             ambient.volume = newValue.intValue();
             ambient.setVolume();
-            game.system.audio.save();
+            game.gameSystem.audio.save();
         });
 
         soundSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             sound.volume = newValue.intValue();
             sound.setVolume();
-            game.system.audio.save();
+            game.gameSystem.audio.save();
         });
     }
 

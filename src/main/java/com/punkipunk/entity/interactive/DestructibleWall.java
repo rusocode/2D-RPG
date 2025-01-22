@@ -5,15 +5,13 @@ import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.item.ItemCategory;
 import com.punkipunk.entity.item.Stone;
-import com.punkipunk.json.JsonLoader;
-import com.punkipunk.json.model.InteractiveData;
 import com.punkipunk.world.World;
 import javafx.scene.paint.Color;
 
 public class DestructibleWall extends Interactive {
 
     public DestructibleWall(Game game, World world, int... pos) {
-        super(game, world, JsonLoader.getInstance().deserialize("interactive.destructibleWall", InteractiveData.class), pos);
+        super(game, world, pos);
     }
 
     public boolean isCorrectWeapon(Item weapon) {
@@ -42,6 +40,12 @@ public class DestructibleWall extends Interactive {
 
     @Override
     public void playSound() {
-        game.system.audio.playSound(AudioID.Sound.MINE);
+        game.gameSystem.audio.playSound(AudioID.Sound.MINE);
     }
+
+    @Override
+    public InteractiveType getType() {
+        return InteractiveType.DESTRUCTIBLE_WALL;
+    }
+
 }

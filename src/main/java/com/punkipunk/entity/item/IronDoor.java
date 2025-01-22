@@ -7,8 +7,6 @@ import com.punkipunk.world.World;
 
 public class IronDoor extends Item {
 
-    public static final String NAME = "Iron Door";
-
     public IronDoor(Game game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
@@ -25,7 +23,7 @@ public class IronDoor extends Item {
     }
 
     @Override
-    protected ItemType getType() {
+    public ItemType getType() {
         return ItemType.IRON_DOOR;
     }
 

@@ -6,17 +6,19 @@ import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.interactive.Interactive;
-import com.punkipunk.entity.interactive.MetalPlate;
-import com.punkipunk.entity.item.IronDoor;
+import com.punkipunk.entity.interactive.InteractiveType;
+import com.punkipunk.entity.item.ItemType;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
 import java.util.List;
 
-public class Box extends Mob {
+/**
+ * TODO No deberia ser un interactive?
+ */
 
-    public static final String NAME = "Box";
+public class Box extends Mob {
 
     public Box(Game game, World world, int... pos) {
         super(game, world, pos);
@@ -68,12 +70,12 @@ public class Box extends Mob {
 
         /* Obtiene un flujo secuencial de las entidades interactivas del mapa actual y en base al flujo filtra todas las placas de
          * metal con nombre asignado para convertirlas en una lista, lo mismo hace para las cajas. */
-        plates = world.entities.getInteractives(world.map.num).stream()
-                .filter(interactive -> interactive instanceof MetalPlate && interactive.stats.name != null)
+        plates = world.entitySystem.getInteractives(world.map.num).stream()
+                .filter(interactive -> interactive.getType() == InteractiveType.METAL_PLATE)
                 .toList();
 
-        boxes = world.entities.getMobs(world.map.num).stream()
-                .filter(mob -> mob instanceof Box)
+        boxes = world.entitySystem.getMobs(world.map.num).stream()
+                .filter(mob -> mob.getType() == MobType.BOX)
                 .toList();
 
         // Itera las placas y verifica la distancia con la caja
@@ -85,7 +87,7 @@ public class Box extends Mob {
             if (distance < 8) {
                 if (linkedEntity == null) {
                     linkedEntity = plate;
-                    game.system.audio.playSound(AudioID.Sound.CHIPWALL);
+                    game.gameSystem.audio.playSound(AudioID.Sound.CHIPWALL);
                 }
             } else if (linkedEntity == plate) linkedEntity = null; // Desvincula la caja de la placa si se mueve de esta placa
         }
@@ -95,19 +97,19 @@ public class Box extends Mob {
 
         // Si todas las cajas estan sobre las placas, la puerta de hierro se abre
         if (c == boxes.size()) {
-            world.entities.getItems(world.map.num).stream()
-                    .filter(item -> item instanceof IronDoor)
+            world.entitySystem.getItems(world.map.num).stream()
+                    .filter(item -> item.getType() == ItemType.IRON_DOOR)
                     .findFirst()
                     .ifPresent(door -> {
-                        world.entities.removeItem(world.map.num, door);
-                        game.system.audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
+                        world.entitySystem.removeItem(world.map.num, door);
+                        game.gameSystem.audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
                     });
         }
 
     }
 
     @Override
-    protected MobType getType() {
+    public MobType getType() {
         return MobType.BOX;
     }
 

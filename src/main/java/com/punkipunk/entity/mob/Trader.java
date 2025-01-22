@@ -19,12 +19,12 @@ public class Trader extends Mob {
 
     @Override
     public void dialogue() {
-        game.system.audio.playSound(AudioID.Sound.TRADE_OPENING);
+        game.gameSystem.audio.playSound(AudioID.Sound.TRADE_OPENING);
         dialogue.startDialogue(State.TRADE, this, 0);
     }
 
     @Override
-    protected MobType getType() {
+    public MobType getType() {
         return MobType.TRADER;
     }
 

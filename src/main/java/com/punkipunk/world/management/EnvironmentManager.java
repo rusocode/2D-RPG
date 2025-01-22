@@ -20,7 +20,7 @@ public class EnvironmentManager {
     }
 
     public void render(GraphicsContext g2) {
-        if (!world.entities.player.game.system.keyboard.isKeyToggled(Key.TEST)) lighting.render(g2);
+        if (!world.entitySystem.player.game.gameSystem.keyboard.isKeyToggled(Key.TEST)) lighting.render(g2);
     }
 
 }

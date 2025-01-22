@@ -17,8 +17,6 @@ public record MobData(
         Integer frameScale,
         Boolean boss,
         Boolean sleep,
-        String soundHit,
-        String soundDeath,
         String texturePath,
         String spriteSheetPath,
         HitboxData hitbox,

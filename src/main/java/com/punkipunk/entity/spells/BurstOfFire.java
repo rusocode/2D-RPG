@@ -44,10 +44,10 @@ public class BurstOfFire extends Spell {
     public void update() {
 
         if (entity instanceof Player) {
-            game.system.collisionChecker.checkMob(this).ifPresent(mob -> {
+            game.gameSystem.collisionChecker.checkMob(this).ifPresent(mob -> {
                 // flags.colliding = false;
                 if (!mob.flags.invincible && mob.mobCategory != MobCategory.NPC) {
-                    world.entities.player.hitMob(mob, this, stats.knockback, getAttack());
+                    world.entitySystem.player.hitMob(mob, this, stats.knockback, getAttack());
                     generateParticle(entity.spell, mob);
                     flags.alive = false;
                     resetFrames();
@@ -56,10 +56,10 @@ public class BurstOfFire extends Spell {
         }
 
         if (!(entity instanceof Player)) {
-            boolean contact = game.system.collisionChecker.checkPlayer(this);
-            if (contact && !world.entities.player.flags.invincible) {
+            boolean contact = game.gameSystem.collisionChecker.checkPlayer(this);
+            if (contact && !world.entitySystem.player.flags.invincible) {
                 hitPlayer(this, true, stats.attack);
-                generateParticle(entity.spell, world.entities.player);
+                generateParticle(entity.spell, world.entitySystem.player);
                 flags.alive = false;
                 resetFrames();
             }
@@ -86,7 +86,7 @@ public class BurstOfFire extends Spell {
     @Override
     public void render(GraphicsContext g2) {
         g2.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY());
-        if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
+        if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
     }
 
     @Override

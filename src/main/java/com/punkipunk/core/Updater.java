@@ -24,7 +24,7 @@ public class Updater implements Updatable {
     }
 
     private void updateStats() {
-        game.getGameController().getStatsViewController().update(game.system.world.entities.player.stats);
+        game.getGameController().getStatsViewController().update(game.gameSystem.world.entitySystem.player.stats);
     }
 
 }

@@ -10,8 +10,6 @@ import com.punkipunk.world.World;
 
 public class Chest extends Item {
 
-    public static final String NAME = "Chest";
-
     public Chest(Game game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
@@ -21,22 +19,22 @@ public class Chest extends Item {
     @Override
     public void interact() {
         if (!opened) {
-            game.system.audio.playSound(AudioID.Sound.CHEST_OPENING);
+            game.gameSystem.audio.playSound(AudioID.Sound.CHEST_OPENING);
             sheet.frame = sheet.item[1];
             opened = true;
-            if (world.entities.player.inventory.canAddItem(loot)) {
+            if (world.entitySystem.player.inventory.canAddItem(loot)) {
                 dialogue.dialogues[0][0] = "You open the chest and find a \n" + loot.stats.name + "!";
                 dialogue.startDialogue(State.DIALOGUE, this, 0);
-                world.entities.player.hotbar.add(loot);
+                world.entitySystem.player.hotbar.add(loot);
                 empty = true;
             } else {
                 dialogue.dialogues[1][0] = "You open the chest and find a \n" + loot.stats.name + "! But you cannot carry \nany more!";
                 dialogue.startDialogue(State.DIALOGUE, this, 1);
             }
         } else if (!empty) {
-            if (world.entities.player.inventory.canAddItem(loot)) {
+            if (world.entitySystem.player.inventory.canAddItem(loot)) {
                 dialogue.dialogues[2][0] = "You obtain the " + loot.stats.name + "!";
-                world.entities.player.hotbar.add(loot);
+                world.entitySystem.player.hotbar.add(loot);
                 dialogue.startDialogue(State.DIALOGUE, this, 2);
                 empty = true;
             } else {
@@ -55,7 +53,7 @@ public class Chest extends Item {
     }
 
     @Override
-    protected ItemType getType() {
+    public ItemType getType() {
         return ItemType.CHEST;
     }
 

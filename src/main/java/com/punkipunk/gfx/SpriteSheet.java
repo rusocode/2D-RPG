@@ -11,12 +11,12 @@ import static com.punkipunk.utils.Global.tile;
 
 public class SpriteSheet {
 
-    // Entities with two frames for each direction (movement and attack)
+    // Entidades con dos frames para cada direccion (movimiento y ataque)
     public Image[] movement, attack, item;
     public int movementNum = 1, attackNum = 1;
-    public Image[] down, up, left, right; // Player with more than one frame for each direction
-    public Image[] weapon; // Item with a frame for each direction
-    // Represents the first frame of each entity
+    public Image[] down, up, left, right; // Player con mas de un frame para cada direccion
+    public Image[] weapon; // Item con frame para cada direccion (frame de ataque del player)
+    // Representa el primer frame de cada entidad
     public Image frame; // TODO Cambiar nombre y mover
     // SpriteSheet
     private Image image;
@@ -217,6 +217,14 @@ public class SpriteSheet {
 
     }
 
+    /**
+     * Carga los frames de armas para representar la animacion de ataque del player.
+     *
+     * @param ss    SpriteSheet del arma
+     * @param w     ancho del frame del SpriteSheet
+     * @param h     ancho del frame del SpriteSheet
+     * @param scale escala del frame
+     */
     public void loadWeaponFrames(SpriteSheet ss, int w, int h, int scale) {
         int col = (int) (ss.getWidth() / w);
         int row = (int) (ss.getHeight() / h);
@@ -287,7 +295,7 @@ public class SpriteSheet {
                     case RIGHT -> i = movementNum == 1 || entity.flags.colliding ? 6 : 7;
                 }
             }
-        } else { // Si la entidad esta atacando (solo seria para el boss)
+        } else { // Si la entidad esta atacando (por ahora solo seria para el boss)
             switch (entity.direction) {
                 case DOWN -> i = attackNum == 1 ? 0 : 1;
                 case UP -> {

@@ -2,7 +2,7 @@ package com.punkipunk.world;
 
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.EntityFactory;
-import com.punkipunk.entity.EntityManager;
+import com.punkipunk.entity.EntitySystem;
 import com.punkipunk.states.State;
 import com.punkipunk.world.management.CutsceneManager;
 import com.punkipunk.world.management.EnvironmentManager;
@@ -23,7 +23,7 @@ public class World {
     private final Game game;
     private final TileManager tiles;
     public Map map;
-    public EntityManager entities;
+    public EntitySystem entitySystem;
     public EntityFactory entityFactory;
     public EnvironmentManager environment;
     public CutsceneManager cutscene;
@@ -33,8 +33,8 @@ public class World {
         map = new Map(game);
         tiles = new TileManager(this);
 
-        entities = new EntityManager(game, this);
-        entityFactory = new EntityFactory(game, this, entities);
+        entitySystem = new EntitySystem(game, this);
+        entityFactory = new EntityFactory(game, this, entitySystem);
         entityFactory.createEntities();
 
         environment = new EnvironmentManager(this);
@@ -45,7 +45,7 @@ public class World {
      * Updates the entities and environment.
      */
     public void update() {
-        if (State.isState(State.PLAY)) entities.update();
+        if (State.isState(State.PLAY)) entitySystem.update();
         if (State.isState(State.INVENTORY) || State.isState(State.PLAY)) environment.update();
     }
 
@@ -58,7 +58,7 @@ public class World {
         // Render tiles, entities, and weather only if the game is other than MAIN_STATE
         if (!State.isState(State.MAIN)) {
             tiles.render(context);
-            entities.render(context);
+            entitySystem.render(context);
             environment.render(context);
             cutscene.render();
         }
@@ -71,11 +71,11 @@ public class World {
         // Dibuja el recorrido del pathfinding
         if (false) {
             context.setFill(new Color(1, 0, 0, 0.3));
-            for (int i = 0; i < game.system.aStar.pathList.size(); i++) {
-                int x = game.system.aStar.pathList.get(i).col * tile;
-                int y = game.system.aStar.pathList.get(i).row * tile;
-                int screenX = x - entities.player.position.x + X_OFFSET;
-                int screenY = y - entities.player.position.y + Y_OFFSET;
+            for (int i = 0; i < game.gameSystem.aStar.pathList.size(); i++) {
+                int x = game.gameSystem.aStar.pathList.get(i).col * tile;
+                int y = game.gameSystem.aStar.pathList.get(i).row * tile;
+                int screenX = x - entitySystem.player.position.x + X_OFFSET;
+                int screenY = y - entitySystem.player.position.y + Y_OFFSET;
                 context.fillRect(screenX, screenY, tile, tile);
             }
         }

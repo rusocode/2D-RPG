@@ -1,5 +1,6 @@
 package com.punkipunk.entity.mob;
 
+import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Key;
 import com.punkipunk.gfx.Animation;
@@ -13,6 +14,8 @@ public class Orc extends Mob {
 
     public Orc(Game game, World world, int... pos) {
         super(game, world, pos);
+        soundHit = AudioID.Sound.ORC_HIT;
+        soundDeath = AudioID.Sound.ORC_DEATH;
         sheet.loadOrcMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
         down = new Animation(mobData.animationSpeed(), sheet.down);
         up = new Animation(mobData.animationSpeed(), sheet.up);
@@ -23,10 +26,10 @@ public class Orc extends Mob {
     @Override
     public void doActions() {
         if (flags.following) {
-            checkUnfollow(world.entities.player, 10);
-            game.system.aStar.searchPath(this, getGoalRow(world.entities.player), getGoalCol(world.entities.player));
+            checkUnfollow(world.entitySystem.player, 10);
+            game.gameSystem.aStar.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
         } else {
-            checkFollow(world.entities.player, 5, 100);
+            checkFollow(world.entitySystem.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);
         }
         if (!flags.colliding) {
@@ -48,7 +51,7 @@ public class Orc extends Mob {
     }
 
     @Override
-    protected MobType getType() {
+    public MobType getType() {
         return MobType.ORC;
     }
 

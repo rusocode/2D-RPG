@@ -47,8 +47,8 @@ public class UI {
 
         switch (State.getState()) {
             case PLAY -> {
-                renderManaBar(world.entities.player);
-                renderHpBar(world.entities.player);
+                renderManaBar(world.entitySystem.player);
+                renderHpBar(world.entitySystem.player);
                 renderBossHpBar();
                 renderLvl();
             }
@@ -98,7 +98,7 @@ public class UI {
     }
 
     private void renderBossHpBar() {
-        world.entities.getMobs(world.map.num).stream()
+        world.entitySystem.getMobs(world.map.num).stream()
                 .filter(mob -> mob.isOnCamera() && mob.flags.boss)
                 .findFirst()
                 .ifPresent(boss -> {
@@ -128,24 +128,24 @@ public class UI {
         changeFontSize(24);
         // context.setFont(Font.font(context.getFont().getFamily(), 24));
         context.setFill(Color.BLACK);
-        context.fillText("Level: " + world.entities.player.stats.lvl, x + 2, y + 2);
+        context.fillText("Level: " + world.entitySystem.player.stats.lvl, x + 2, y + 2);
         context.setFill(Color.WHITE);
-        context.fillText("Level: " + world.entities.player.stats.lvl, x, y);
+        context.fillText("Level: " + world.entitySystem.player.stats.lvl, x, y);
         y += gap;
         context.setFill(Color.BLACK);
-        context.fillText("Exp: " + world.entities.player.stats.exp, x + 2, y + 2);
+        context.fillText("Exp: " + world.entitySystem.player.stats.exp, x + 2, y + 2);
         context.setFill(Color.WHITE);
-        context.fillText("Exp: " + world.entities.player.stats.exp, x, y);
+        context.fillText("Exp: " + world.entitySystem.player.stats.exp, x, y);
         y += gap;
         context.setFill(Color.BLACK);
-        context.fillText("Next Exp: " + world.entities.player.stats.nextExp, x + 2, y + 2);
+        context.fillText("Next Exp: " + world.entitySystem.player.stats.nextExp, x + 2, y + 2);
         context.setFill(Color.WHITE);
-        context.fillText("Next Exp: " + world.entities.player.stats.nextExp, x, y);
+        context.fillText("Next Exp: " + world.entitySystem.player.stats.nextExp, x, y);
         y += gap;
         context.setFill(Color.BLACK);
-        context.fillText("Gold: " + world.entities.player.stats.gold, x + 2, y + 2);
+        context.fillText("Gold: " + world.entitySystem.player.stats.gold, x + 2, y + 2);
         context.setFill(Color.WHITE);
-        context.fillText("Gold: " + world.entities.player.stats.gold, x, y);
+        context.fillText("Gold: " + world.entitySystem.player.stats.gold, x, y);
     }
 
     public void renderDialogueWindow() {
@@ -169,23 +169,23 @@ public class UI {
             }
 
             // In the case of having several dialog boxes (example, Oldman)
-            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.DIALOGUE) || State.isState(State.CUTSCENE)) {
                     entity.dialogue.index++;
-                    game.system.keyboard.releaseKey(Key.ENTER);
+                    game.gameSystem.keyboard.releaseKey(Key.ENTER);
                 }
             }
 
-            if (game.system.keyboard.isKeyPressed(Key.ESCAPE)) { // TODO Or else if?
+            if (game.gameSystem.keyboard.isKeyPressed(Key.ESCAPE)) { // TODO Or else if?
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.TRADE)) {
                     State.setState(State.PLAY);
                     currentDialogue = "";
                     entity.dialogue.index++;
-                    game.system.keyboard.releaseKey(Key.ESCAPE);
+                    game.gameSystem.keyboard.releaseKey(Key.ESCAPE);
                 }
             }
 
@@ -213,7 +213,7 @@ public class UI {
             case 2 -> renderOptionEndGameConfirmationWindow(x, y);
         }
 
-        game.system.keyboard.releaseKey(Key.ENTER);
+        game.gameSystem.keyboard.releaseKey(Key.ENTER);
 
     }
 
@@ -284,7 +284,7 @@ public class UI {
         context.fillText("Back", textX, textY);
         if (command == 0) {
             context.fillText(">", textX - 25, textY);
-            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 command = 2;
             }
@@ -307,7 +307,7 @@ public class UI {
         context.fillText(text, textX, textY);
         if (command == 0) {
             context.fillText(">", textX - 25, textY);
-            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 State.setState(State.MAIN);
                 game.reset(true);
@@ -320,7 +320,7 @@ public class UI {
         context.fillText(text, textX, textY);
         if (command == 1) {
             context.fillText(">", textX - 25, textY);
-            if (game.system.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
                 subState = 0;
                 command = 4;
             }
@@ -370,11 +370,11 @@ public class UI {
         if (counter >= INTERVAL_TELEPORT) {
             counter = 0;
             State.setState(State.PLAY);
-            world.map.num = game.system.event.mapNum;
-            world.entities.player.position.x = (int) ((game.system.event.col * tile) + world.entities.player.hitbox.getWidth() / 2);
-            world.entities.player.position.y = (int) ((game.system.event.row * tile) - world.entities.player.hitbox.getHeight());
-            game.system.event.previousEventX = world.entities.player.position.x;
-            game.system.event.previousEventY = world.entities.player.position.y;
+            world.map.num = game.gameSystem.event.mapNum;
+            world.entitySystem.player.position.x = (int) ((game.gameSystem.event.col * tile) + world.entitySystem.player.hitbox.getWidth() / 2);
+            world.entitySystem.player.position.y = (int) ((game.gameSystem.event.row * tile) - world.entitySystem.player.hitbox.getHeight());
+            game.gameSystem.event.previousEventX = world.entitySystem.player.position.x;
+            game.gameSystem.event.previousEventY = world.entitySystem.player.position.y;
             world.map.changeArea();
         }
     }
@@ -397,7 +397,7 @@ public class UI {
                 world.environment.lighting.filterAlpha = 0f;
                 world.environment.lighting.dayState = world.environment.lighting.day;
                 world.environment.lighting.dayCounter = 0;
-                world.entities.player.currentFrame = world.entities.player.sheet.down[0];
+                world.entitySystem.player.currentFrame = world.entitySystem.player.sheet.down[0];
                 State.setState(State.PLAY);
                 counter = 0; // Reset the counter to regenerate the effect from 0
             }

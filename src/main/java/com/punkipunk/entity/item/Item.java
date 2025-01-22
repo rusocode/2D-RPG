@@ -22,11 +22,11 @@ import static com.punkipunk.utils.Global.tile;
 
 public abstract class Item extends Entity {
 
-    public ItemData itemData;
     public Item loot;
     public ItemCategory itemCategory;
     public String description; // TODO Donde se usa?
-    public String sound;
+    public String soundSwing;
+    public String soundDraw;
     public int price; // TODO Donde se usa?
     public int amount;
     public int lightRadius;
@@ -34,6 +34,7 @@ public abstract class Item extends Entity {
     public boolean solid, stackable;
     public boolean opened, empty;
     public SpriteSheet ss;
+    protected ItemData itemData;
     protected int points; // Puntos de las pociones azules y rojas que se usan para incrementar hp y mana
 
     public Item(Game game, World world, int... pos) {
@@ -72,7 +73,7 @@ public abstract class Item extends Entity {
 
     }
 
-    protected abstract ItemType getType();
+    public abstract ItemType getType();
 
     /**
      * Use the item.
@@ -107,9 +108,9 @@ public abstract class Item extends Entity {
      * @return the index of the specified item to the adjacent position of the entity or -1 if it does not exist.
      */
 
-    protected boolean isNearby(Entity entity, String itemName) {
-        return world.entities.getItems(world.map.num).stream()
-                .filter(item -> item.stats.name.equals(itemName))
+    protected boolean isNearby(Entity entity, ItemType itemType) {
+        return world.entitySystem.getItems(world.map.num).stream()
+                .filter(item -> item.getType() == itemType) // La comparacion de enums es mas rapida que la comparacion de strings
                 .anyMatch(item -> isAdjacentTo(entity, item));
     }
 
@@ -172,24 +173,6 @@ public abstract class Item extends Entity {
      */
     private int getRightHitbox(Entity entity) {
         return (int) (entity.position.x + entity.hitbox.getX() + entity.hitbox.getWidth());
-    }
-
-    /**
-     * Gets the row of the entity.
-     *
-     * @return the entity row.
-     */
-    private int getRow() {
-        return (int) ((position.y + hitbox.getY()) / tile);
-    }
-
-    /**
-     * Gets the entity column.
-     *
-     * @return the entity column.
-     */
-    private int getCol() {
-        return (int) ((position.x + hitbox.getX()) / tile);
     }
 
 }

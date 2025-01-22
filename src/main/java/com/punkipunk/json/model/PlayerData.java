@@ -11,8 +11,6 @@ public record PlayerData(
         Integer gold,
         Integer strength,
         Integer dexterity,
-        Integer motion1,
-        Integer motion2,
         Integer frameScale,
         String spriteSheetPath) {
 }

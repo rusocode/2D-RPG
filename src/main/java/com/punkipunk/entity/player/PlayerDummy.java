@@ -15,16 +15,13 @@ import com.punkipunk.world.World;
 
 public class PlayerDummy extends Mob {
 
-    public static final String NAME = "Dummy";
-
     public PlayerDummy(Game game, World world) {
         super(game, world);
-        stats.name = NAME;
         sheet.loadPlayerMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
     }
 
     @Override
-    protected MobType getType() {
+    public MobType getType() {
         return MobType.PLAYER_DUMMY;
     }
 

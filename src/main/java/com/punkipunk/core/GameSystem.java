@@ -30,7 +30,7 @@ import com.punkipunk.world.World;
  * casos especiales. El constructor de System es privado, forzando el uso del builder.
  */
 
-public class System {
+public class GameSystem {
 
     public final World world;
     public final UI ui;
@@ -45,7 +45,7 @@ public class System {
     public final Renderer renderer;
     public final OldGameLoop oldGameLoop;
 
-    private System(Builder builder) {
+    private GameSystem(Builder builder) {
         this.world = builder.world;
         this.ui = builder.ui;
         this.minimap = builder.minimap;
@@ -66,7 +66,7 @@ public class System {
      * @param game juego.
      * @return el sistema con la configuracion completa por defecto.
      */
-    public static System createDefault(Game game) {
+    public static GameSystem createDefault(Game game) {
         return new Builder(game)
                 .withUI()
                 .withMinimap()
@@ -89,10 +89,10 @@ public class System {
 
     public void reset(boolean fullReset) {
         ui.console.clear();
-        world.entities.player.reset(fullReset);
+        world.entitySystem.player.reset(fullReset);
         world.entityFactory.createMobs();
-        world.entities.removeTempEntities();
-        world.entities.player.bossBattleOn = false;
+        world.entitySystem.removeTempEntities();
+        world.entitySystem.player.bossBattleOn = false;
         audio.playAmbient(AudioID.Ambient.OVERWORLD);
         if (fullReset) {
             audio.playMusic(AudioID.Music.MAIN);
@@ -179,8 +179,8 @@ public class System {
             return this;
         }
 
-        public System build() {
-            return new System(this);
+        public GameSystem build() {
+            return new GameSystem(this);
         }
 
     }

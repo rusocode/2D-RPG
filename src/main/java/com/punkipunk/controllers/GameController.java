@@ -91,8 +91,8 @@ public class GameController implements Initializable {
     public void initialize(Game game) {
         this.game = game;
         optionsViewController.setGame(game);
-        optionsViewController.setAudioSystems(game.system.audio.getMusic(), game.system.audio.getAmbient(), game.system.audio.getSound());
-        inventoryViewController.initialize(game.system.world.entities.player);
+        optionsViewController.setAudioSystems(game.gameSystem.audio.getMusic(), game.gameSystem.audio.getAmbient(), game.gameSystem.audio.getSound());
+        inventoryViewController.initialize(game.gameSystem.world.entitySystem.player);
     }
 
     /**
@@ -114,7 +114,7 @@ public class GameController implements Initializable {
                  * clic y luego ejecuta el manejador original si existia uno. Esto preserva cualquier funcionalidad que el Label
                  * ya tuviera. */
                 label.setOnMouseClicked(event -> {
-                    game.system.audio.playSound(AudioID.Sound.CLICK2);
+                    game.gameSystem.audio.playSound(AudioID.Sound.CLICK2);
                     if (originalHandler != null) originalHandler.handle(event); // Si habia un handler original, lo ejecuta
                 });
             }
@@ -143,12 +143,12 @@ public class GameController implements Initializable {
     }
 
     public void saveGame() {
-        game.system.file.saveData();
+        game.gameSystem.file.saveData();
     }
 
     public void quitToMainMenu() {
         sceneManager.switchScene(sceneManager.getMainScene());
-        game.system.audio.stopAll();
+        game.gameSystem.audio.stopAll();
     }
 
     public Canvas getCanvas() {

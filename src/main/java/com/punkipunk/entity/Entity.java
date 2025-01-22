@@ -8,12 +8,10 @@ import com.punkipunk.entity.components.Flags;
 import com.punkipunk.entity.components.Particle;
 import com.punkipunk.entity.components.Stats;
 import com.punkipunk.entity.item.Item;
-import com.punkipunk.entity.item.ItemType;
 import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.spells.Spell;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.gui.container.Container;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.physics.Mechanics;
 import com.punkipunk.utils.Timer;
@@ -28,29 +26,27 @@ import javafx.scene.shape.Rectangle;
 import static com.punkipunk.utils.Global.*;
 
 public abstract class Entity {
+
     public final Game game;
     public final World world;
+
+    public final Stats stats;
+    public final Flags flags;
+    public final SpriteSheet sheet;
+    public final Timer timer;
+    public final Mechanics mechanics;
+    public final Position position; // TODO Podria ir en World
 
     public String soundHit, soundDeath;
     public MobCategory mobCategory; // TODO Se podria mover a Mob?
     public Direction direction = Direction.DOWN;
-    public Position position = new Position(); // TODO Podria ir en World
-    public Stats stats = new Stats();
-    public Flags flags = new Flags();
-    public SpriteSheet sheet = new SpriteSheet();
-    public Timer timer = new Timer();
-    public Mechanics mechanics = new Mechanics();
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile); // TODO Se crea aca?
     public Rectangle attackbox = new Rectangle(0, 0, 0, 0);
-    public Container inventory;
     public Dialogue dialogue;
     public double hitboxDefaultX, hitboxDefaultY;
-
     public Animation down, up, left, right;
-    public Image currentFrame, currentSwordFrame;
-
+    public Image currentFrame;
     public Spell spell;
-
     public Entity linkedEntity;
 
     // Si el boss esta o no dormido para la cutscene
@@ -65,14 +61,15 @@ public abstract class Entity {
     // Variables temporales
     public int tempScreenX, tempScreenY;
 
-    public Entity(Game game, World world) {
-        this.game = game;
-        this.world = world;
-    }
-
     public Entity(Game game, World world, int... pos) {
         this.game = game;
         this.world = world;
+        this.stats = new Stats();
+        this.flags = new Flags();
+        this.sheet = new SpriteSheet();
+        this.timer = new Timer();
+        this.mechanics = new Mechanics();
+        this.position = new Position();
         position.set(pos.length > 0 ? pos[0] : -1, pos.length > 1 ? pos[1] : -1);
     }
 
@@ -101,7 +98,7 @@ public abstract class Entity {
             tempScreenY = getScreenY();
 
             // Si tiene la barra de vida activada y si no es un boss
-            if (flags.hpBar && !flags.boss) game.system.ui.renderHpBar(this);
+            if (flags.hpBar && !flags.boss) game.gameSystem.ui.renderHpBar(this);
 
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
@@ -119,7 +116,7 @@ public abstract class Entity {
                 // Si es una imagen estatica (item, interactive)
             else g2.drawImage(sheet.frame, getScreenX(), getScreenY());
 
-            if (game.system.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
+            if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
 
             Utils.changeAlpha(g2, 1f);
         }
@@ -160,10 +157,10 @@ public abstract class Entity {
      * @param target    target where the particles will be generated.
      */
     protected void generateParticle(Entity generator, Entity target) {
-        world.entities.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
-        world.entities.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
-        world.entities.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
-        world.entities.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
+        world.entitySystem.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, -1)); // Top left
+        world.entitySystem.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, -1)); // Top right
+        world.entitySystem.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), -2, 1)); // Down left
+        world.entitySystem.particles.add(new Particle(game, world, target, generator.getParticleColor(), generator.getParticleSize(), generator.getParticleSpeed(), generator.getParticleMaxLife(), 2, 1)); // Down right
     }
 
     /**
@@ -193,7 +190,7 @@ public abstract class Entity {
             hitbox.setWidth(attackbox.getWidth());
             hitbox.setHeight(attackbox.getHeight());
 
-            hitPlayer(this, game.system.collisionChecker.checkPlayer(this), stats.attack);
+            hitPlayer(this, game.gameSystem.collisionChecker.checkPlayer(this), stats.attack);
 
             position.x = currentX;
             position.y = currentY;
@@ -219,31 +216,8 @@ public abstract class Entity {
         // Ajusta la posicion del item en el centro del tile
         int x = (int) (position.x + (sheet.frame.getWidth() / 2)) / tile;
         int y = (int) (position.y + (sheet.frame.getHeight() / 2)) / tile;
-        if (item.amount > 0) world.entities.createItemWithAmount(getItemType(item), world.map.num, item.amount, x, y);
-        else world.entities.createItem(getItemType(item), world.map.num, x, y);
-    }
-
-    private ItemType getItemType(Item item) {
-        // Convierte el nombre de la clase del item a su correspondiente ItemType
-        return switch (item.getClass().getSimpleName()) {
-            case "Boots" -> ItemType.BOOTS;
-            case "Chest" -> ItemType.CHEST;
-            case "Chicken" -> ItemType.CHICKEN;
-            case "Gold" -> ItemType.GOLD;
-            case "IronShield" -> ItemType.IRON_SHIELD;
-            case "Key" -> ItemType.KEY;
-            case "Lantern" -> ItemType.LANTERN;
-            case "PotionBlue" -> ItemType.POTION_BLUE;
-            case "PotionRed" -> ItemType.POTION_RED;
-            case "Stone" -> ItemType.STONE;
-            case "StoneAxe" -> ItemType.STONE_AXE;
-            case "StonePickaxe" -> ItemType.STONE_PICKAXE;
-            case "StoneSword" -> ItemType.STONE_SWORD;
-            case "Tent" -> ItemType.TENT;
-            case "Wood" -> ItemType.WOOD;
-            case "WoodShield" -> ItemType.WOOD_SHIELD;
-            default -> throw new IllegalArgumentException("Unknown item type: " + item.getClass().getSimpleName());
-        };
+        if (item.amount > 0) world.entitySystem.createItemWithAmount(item.getType(), world.map.num, item.amount, x, y);
+        else world.entitySystem.createItem(item.getType(), world.map.num, x, y);
     }
 
     /**
@@ -255,12 +229,12 @@ public abstract class Entity {
      * @param attack  ataque de la entidad.
      */
     public void hitPlayer(Entity entity, boolean contact, int attack) {
-        if (entity.mobCategory != MobCategory.NPC && entity.mobCategory != MobCategory.PEACEFUL && contact && !world.entities.player.flags.invincible) {
-            game.system.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
+        if (entity.mobCategory != MobCategory.NPC && entity.mobCategory != MobCategory.PEACEFUL && contact && !world.entitySystem.player.flags.invincible) {
+            game.gameSystem.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
             // Resta la defensa del player del ataque del mob para calcular el daño justo
-            int damage = Math.max(attack - world.entities.player.stats.defense, 1);
-            world.entities.player.stats.decreaseHp(damage);
-            world.entities.player.flags.invincible = true;
+            int damage = Math.max(attack - world.entitySystem.player.stats.defense, 1);
+            world.entitySystem.player.stats.decreaseHp(damage);
+            world.entitySystem.player.flags.invincible = true;
         }
     }
 
@@ -269,11 +243,11 @@ public abstract class Entity {
      */
     public void checkCollisions() {
         flags.colliding = false; // Resetea colliding para que la entidad se pueda mover cuando no este colisionando
-        game.system.collisionChecker.checkTile(this);
-        game.system.collisionChecker.checkItem(this);
-        game.system.collisionChecker.checkMob(this);
-        game.system.collisionChecker.checkInteractive(this);
-        if (game.system.collisionChecker.checkPlayer(this)) {
+        game.gameSystem.collisionChecker.checkTile(this);
+        game.gameSystem.collisionChecker.checkItem(this);
+        game.gameSystem.collisionChecker.checkMob(this);
+        game.gameSystem.collisionChecker.checkInteractive(this);
+        if (game.gameSystem.collisionChecker.checkPlayer(this)) {
             hitPlayer(this, true, stats.attack);
             flags.colliding = true;
         }
@@ -292,18 +266,18 @@ public abstract class Entity {
          * (or the center?) is a lot with respect to the view of the player on the screen. Therefore, this vision is
          * increased by multiplying the bossArea. */
         int bossArea = 5;
-        return position.x + tile * bossArea > world.entities.player.position.x - X_OFFSET &&
-                position.x - tile < world.entities.player.position.x + X_OFFSET &&
-                position.y + tile * bossArea > world.entities.player.position.y - Y_OFFSET &&
-                position.y - tile < world.entities.player.position.y + Y_OFFSET;
+        return position.x + tile * bossArea > world.entitySystem.player.position.x - X_OFFSET &&
+                position.x - tile < world.entitySystem.player.position.x + X_OFFSET &&
+                position.y + tile * bossArea > world.entitySystem.player.position.y - Y_OFFSET &&
+                position.y - tile < world.entitySystem.player.position.y + Y_OFFSET;
     }
 
     public int getScreenX() {
-        return position.x - world.entities.player.position.x + X_OFFSET;
+        return position.x - world.entitySystem.player.position.x + X_OFFSET;
     }
 
     public int getScreenY() {
-        return position.y - world.entities.player.position.y + Y_OFFSET;
+        return position.y - world.entitySystem.player.position.y + Y_OFFSET;
     }
 
     /**

@@ -82,7 +82,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con un item.
      */
     public Optional<Item> checkItem(Entity entity) {
-        List<Item> items = world.entities.getItems(world.map.num);
+        List<Item> items = world.entitySystem.getItems(world.map.num);
         Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
         return items.stream()
                 .filter(item -> checkCollision(entity, item, direction))
@@ -96,7 +96,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con un mob.
      */
     public Optional<Mob> checkMob(Entity entity) {
-        List<Mob> mobs = world.entities.getMobs(world.map.num);
+        List<Mob> mobs = world.entitySystem.getMobs(world.map.num);
         Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
         return mobs.stream()
                 .filter(mob -> mob != entity) // Evita colision consigo mismo
@@ -112,7 +112,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con un interactivo.
      */
     public Optional<Interactive> checkInteractive(Entity entity) {
-        List<Interactive> interactives = world.entities.getInteractives(world.map.num);
+        List<Interactive> interactives = world.entitySystem.getInteractives(world.map.num);
         Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
         return interactives.stream()
                 .filter(interactive -> checkCollision(entity, interactive, direction))
@@ -124,7 +124,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con un spell.
      */
     public Optional<Spell> checkSpell(Entity entity) {
-        List<Spell> spells = world.entities.getSpells(world.map.num);
+        List<Spell> spells = world.entitySystem.getSpells(world.map.num);
         Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
         return spells.stream()
                 .filter(spell -> spell != entity.spell) // ?
@@ -136,7 +136,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con el player.
      */
     public boolean checkPlayer(Entity entity) {
-        Player player = world.entities.player;
+        Player player = world.entitySystem.player;
         // No comprueba si es el propio player
         if (entity == player) return false;
         return checkCollision(entity, player, entity.direction);

@@ -12,8 +12,7 @@ import static com.punkipunk.utils.Global.*;
 
 public class Timer {
 
-    // Counters
-    public int attackAnimationCounter; // Counter for attack animation that changes between attack frame 1 and 2
+    public int attackAnimationCounter; // Contador de animacion de ataque que cambia entre el frame de ataque 1 y 2
     public int attackCounter;
     public int deadCounter;
     public int directionCounter;
@@ -111,20 +110,37 @@ public class Timer {
     }
 
     /**
+     * Temporiza el ataque. Si el intervalo esta completo, el player puede atacar de nuevo.
+     */
+    public void timeAttack() {
+        if (attackCounter < INTERVAL_ATTACK) attackCounter++;
+
+    }
+
+    public boolean isAttackReady() {
+        return attackCounter >= INTERVAL_ATTACK;
+    }
+
+    public void timeShoot() {
+        if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
+
+    }
+
+    public boolean isShootReady() {
+        return projectileCounter >= INTERVAL_PROJECTILE;
+    }
+
+    /**
      * Control the timers.
      *
      * @param entity entity.
      */
     public void checkTimers(Entity entity) {
-        // Temporiza el movimiento si la entidad no es un jugador
-        /* if (entity.mobType != MobType.PLAYER) */
         timeMovement(entity, INTERVAL_MOVEMENT_ANIMATION);
-        // Controla el intervalo de ataque si la entidad es un jugador
-        /* if (entity.mobType == MobType.PLAYER) */
-        if (attackCounter < INTERVAL_WEAPON) attackCounter++;
+        timeAttack();
+        timeShoot();
         if (entity.flags.invincible) timeInvincible(entity, INTERVAL_INVINCIBLE);
-        // TODO No tiene que cambiarse a entity.interval?
-        if (projectileCounter < INTERVAL_PROJECTILE) projectileCounter++;
+
     }
 
     /**

@@ -51,7 +51,7 @@ public class KeyStateController {
      * @param game referencia al juego actual
      */
     private void processPlayState(Key key, Game game) {
-        if (Key.TOGGLE_KEYS.contains(key)) game.system.keyboard.toggleKey(key);
+        if (Key.TOGGLE_KEYS.contains(key)) game.gameSystem.keyboard.toggleKey(key);
         switch (key) {
             case ESCAPE -> game.getGameController().toggleOptionsView();
             case INVENTORY -> game.getGameController().toggleInventoryView();
@@ -72,10 +72,10 @@ public class KeyStateController {
      * @param game referencia al juego actual
      */
     private void processMapLoading(Game game) {
-        switch (game.system.world.map.num) {
-            case 0 -> game.system.file.loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
+        switch (game.gameSystem.world.map.num) {
+            case 0 -> game.gameSystem.file.loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
             case 1 ->
-                    game.system.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
+                    game.gameSystem.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
         }
     }
 
