@@ -44,8 +44,8 @@ public class DryTree extends Interactive {
     }
 
     @Override
-    public InteractiveType getType() {
-        return InteractiveType.DRY_TREE;
+    public InteractiveID getID() {
+        return InteractiveID.DRY_TREE;
     }
 
 }

@@ -8,6 +8,8 @@ package com.punkipunk.entity.mob;
  * <li>Neutrales: Atacan al jugador si son provocados.
  * <li>Pacificos: Nunca atacan al jugador pero si pueden ser atacados.
  * </ul>
+ * <p>
+ * TODO Podria renombrarlo a MobType
  */
 
 public enum MobCategory {

@@ -2,56 +2,103 @@ package com.punkipunk.gui.container;
 
 /**
  * <p>
- * Los Record en Java (introducidos en Java 14) son un tipo especial de clase diseñada especificamente para almacenar datos
- * inmutables de manera concisa. La clase SlotPosition es un candidato perfecto para ser un record porque:
- * <ol>
- * <li>Solo tiene campos finales (inmutables)
- * <li>Su propocito principal es almacenar datos (row,col)
- * <li>Tienes implementados equals() y hashCode()</li>
- * <li>Tienes getters para acceder a los datos
- * </ol>
+ * Los records son una caracteristica introducida en Java 16 (preview en Java 14) que proporciona una forma concisa de declarar
+ * clases inmutables que actuan principalmente como portadores de datos.
  * <p>
- * Por la tanto se podria simplificar a:
+ * Caracteristicas principales:
  * <pre>{@code
- * public record SlotPosition(int row, int col) { }
- * }</pre>
- * <p>
- * Este simple record automaticamente te proporciona:
- * <ul>
- * <li>Constructor con todos los campos
- * <li>Metodos getters (aunque se llamen sin 'get', directamente row() y col())
- * <li>equals() y hashCode()
- * <li>Los campos finales por defecto
- * <li>Es inmutable
- * </ul>
- * <p>
- * Las ventajas de usar records son:
- * <ol>
- * <li>Menos codigo boilerplate (codigo repetitivo)
- * <li>Menos probabilidad de errores al no tener que implementar manualmente equals/hashCode
- * <li>Intencion mas clara del proposito de la clase (transportar datos)
- * <li>Inmutabilidad garantizada
- * </ol>
- * <p>
- * El unico "inconveniente" es que si necesitas añadir logica adicional o validaciones, tendrias que hacerlo de forma explicita,
- * pero aun asi puedes hacerlo dentro del record:
- * <pre>{@code
- * public record SlotPosition(int row, int col) {
- *     // Constructor compacto para validaciones
- *     public SlotPosition {
- *         if (row < 0 || col < 0) {
- *             throw new IllegalArgumentException("Row and col must be positive");
- *         }
+ * // Forma tradicional sin records
+ * public class Point {
+ *     private final int x;
+ *     private final int y;
+ *
+ *     public Point(int x, int y) {
+ *         this.x = x;
+ *         this.y = y;
  *     }
  *
- *     // Metodos adicionales si los necesitas
- *     public boolean isValid() {
- *         return row >= 0 && col >= 0;
+ *     public int getX() { return x; }
+ *     public int getY() { return y; }
+ *
+ *     @Override
+ *     public boolean equals(Object o) {
+ *         if (this == o) return true;
+ *         if (o == null || getClass() != o.getClass()) return false;
+ *         Point point = (Point) o;
+ *         return x == point.x && y == point.y;
+ *     }
+ *
+ *     @Override
+ *     public int hashCode() {
+ *         return Objects.hash(x, y);
+ *     }
+ *
+ *     @Override
+ *     public String toString() {
+ *         return "Point[x=" + x + ", y=" + y + "]";
  *     }
  * }
+ *
+ * // La misma clase usando record
+ * public record Point(int x, int y) {}
+ * }</pre>
+ * <p>
+ * Beneficios principales:
+ * <ol>
+ * <li><b>Inmutabilidad automatica</b>
+ * <ul>
+ * <li>Todos los campos son automaticamente final
+ * <li>No se pueden modificar despues de la creacion
+ * </ul>
+ * <li><b>Metodos generados automaticamente</b>
+ * <ul>
+ * <li>Constructor
+ * <li>Getters (usando nombres de campos)
+ * <li>equals() y hashCode()
+ * <li>toString()
+ * </ul>
+ * <li><b>Uso en colecciones</b>
+ * <pre>{@code
+ * // Son excelentes como claves en Maps
+ * Map<Point, String> locationDescriptions = new HashMap<>();
+ * locationDescriptions.put(new Point(0, 0), "Origin");
+ * }</pre>
+ * <li><b>Constructores compactos</b>
+ * <pre>{@code
+ * public record Point(int x, int y) {
+ *     // Validacion en constructor compacto
+ *     public Point {
+ *         if (x < 0 || y < 0) {
+ *             throw new IllegalArgumentException("Coordinates cannot be negative");
+ *         }
+ *     }
+ * }
+ * }</pre>
+ * <li><b>Metodos adicionales</b>
+ * <pre>{@code
+ * public record Point(int x, int y) {
+ *     // Puedes agregar metodos
+ *     public double distanceFromOrigin() {
+ *         return Math.sqrt(x * x + y * y);
+ *     }
+ * }
+ * }</pre>
+ * <li><b>Deconstruccion</b>
+ * <pre>{@code
+ * Point point = new Point(10, 20);
+ * int x = point.x();  // En lugar de getX()
+ * int y = point.y();  // En lugar de getY()
+ * }</pre>
+ * </ol>
+ * Casos de uso ideal en mensajes o eventos:
+ * <pre>{@code
+ * public record GameEvent(
+ *     String eventType,
+ *     long timestamp,
+ *     Map<String, Object> data
+ * ) {}
  * }</pre>
  */
 
 public record SlotPosition(int row, int col) {
-
 }

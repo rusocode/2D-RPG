@@ -45,14 +45,14 @@ public class RedSlime extends Mob {
     private void checkShoot() {
         if (Utils.random(100) == 1 && !spell.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
             spell.set(position.x, position.y, direction, true, this);
-            world.entitySystem.getSpells(world.map.num).add(spell);
+            world.entitySystem.getSpells(world.map.id).add(spell);
             timer.projectileCounter = 0;
         }
     }
 
     @Override
-    public MobType getType() {
-        return MobType.RED_SLIME;
+    public MobID getID() {
+        return MobID.RED_SLIME;
     }
 
 }

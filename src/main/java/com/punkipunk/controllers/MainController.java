@@ -37,7 +37,7 @@ public class MainController {
         sceneDirector.switchScene(sceneDirector.getGameScene());
         game.gameSystem.file.loadData();
         game.gameSystem.audio.playSound(AudioID.Sound.SPAWN2);
-        game.gameSystem.audio.playZoneAmbient();
+        game.gameSystem.audio.playAmbient(game.gameSystem.world.map.id.zone.name().toLowerCase());
         game.start();
         State.setState(State.PLAY);
     }
@@ -92,7 +92,7 @@ public class MainController {
     private void startGame(Game game) {
         game.gameSystem.audio.stopAll();
         game.gameSystem.audio.playSound(AudioID.Sound.SPAWN2);
-        game.gameSystem.audio.playZoneAmbient();
+        game.gameSystem.audio.playAmbient(game.gameSystem.world.map.id.zone.name().toLowerCase());
         game.start();
         State.setState(State.PLAY);
     }

@@ -1,7 +1,7 @@
 package com.punkipunk.entity.interactive;
 
 
-public enum InteractiveType {
+public enum InteractiveID {
 
     DESTRUCTIBLE_WALL("destructibleWall"),
     DRY_TREE("dryTree"),
@@ -9,7 +9,7 @@ public enum InteractiveType {
 
     private final String name;
 
-    InteractiveType(String name) {
+    InteractiveID(String name) {
         this.name = name;
     }
 

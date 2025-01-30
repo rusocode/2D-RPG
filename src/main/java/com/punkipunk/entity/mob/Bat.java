@@ -29,8 +29,8 @@ public class Bat extends Mob {
     }
 
     @Override
-    public MobType getType() {
-        return MobType.BAT;
+    public MobID getID() {
+        return MobID.BAT;
     }
 
 }

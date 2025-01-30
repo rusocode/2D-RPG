@@ -23,8 +23,8 @@ public class Tent extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.TENT;
+    public ItemID getID() {
+        return ItemID.TENT;
     }
 
 }

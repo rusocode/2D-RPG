@@ -5,8 +5,11 @@ import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.player.Player;
+import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.json.model.SpellData;
 import com.punkipunk.world.World;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 import static com.punkipunk.utils.Global.INTERVAL_PROJECTILE_ANIMATION;
 
@@ -65,6 +68,8 @@ public abstract class Spell extends Entity {
             position.update(this, direction);
             timer.timeMovement(this, INTERVAL_PROJECTILE_ANIMATION);
         }
+
+
     }
 
     public void set(int x, int y, Direction direction, boolean alive, Entity entity) {
@@ -95,5 +100,6 @@ public abstract class Spell extends Entity {
     protected int getAttack() {
         return stats.attack * (entity.stats.lvl / 2);
     }
+
 
 }

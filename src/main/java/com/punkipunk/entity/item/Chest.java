@@ -53,8 +53,8 @@ public class Chest extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.CHEST;
+    public ItemID getID() {
+        return ItemID.CHEST;
     }
 
 }

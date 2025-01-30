@@ -10,8 +10,8 @@ public class WoodShield extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.WOOD_SHIELD;
+    public ItemID getID() {
+        return ItemID.WOOD_SHIELD;
     }
 
 }

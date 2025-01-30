@@ -1,81 +1,85 @@
 package com.punkipunk.utils;
 
 /**
- * TODO Shouldn't these values go in JSON?
+ * <p>
+ * Una aplicacion puede ejecutarse mucho mas rapido si las imagenes que elige mostrar comparten la misma profundidad de bits que
+ * la pantalla. Ver: <a href="https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html">Display Mode</a>
+ * <p>
+ * TODO ¿No deberian estos valores ir en JSON?
+ * <p>
+ * TODO Cuando se agranda la ventana, los items tendria que cambiar a x64 para evitar deformaciones, por lo tanto el tamaño
+ * original de cada item tiene que ser de 64px para poder escalar hacia abajo sin perder calidad.
  */
 
 public final class Global {
 
-    /* Defines the number of updates (ticks) per second. When using a value like 40, a stuttering effect is generated in
-     * the rendering of tiles when the player moves (try in full screen and increase the speed of the player to better
-     * appreciate the effect). Why is this? The higher the ticks (short steps, little time difference between cycles),
-     * the more processing time is needed to catch up in real time. The lower it is (long steps, a lot of time
-     * difference between cycles), the more choppy the game is. Ideally, it should be quite high, often faster than 60
-     * FPS, so that the game simulates with high quality on fast machines. */
-    public static final int UPDATES = 60; // Se relaciona con los ticks (actualizaciones logicas)
-    /* Maximum number of times that GameLoop CAN render the screen per second. When I say "can", it means that it can't
-     * always reach the specified maximum. TIP: Synchronize the amount of fps with the monitor's Hz to avoid possible
-     * "tearing" or "stuttering". */
-    public static final int FRAMES = 120; // Se relaciona con los FPS (actualizaciones visuales)
-    /* If unlimited fps is activated, the rendering will be performed as many times as possible. The limit for the
-     * number of fps is governed by the computer's processing power, game performance, the number of objects rendered on
-     * the screen, CPU usage, among others. TIP: Activate this option to test fps drops in different areas of the game. */
-    public static final boolean FPS_UNLIMITED = false; // FIXME Al usar AnimationTimer queda obsoleto
-    // Others
+    /**
+     * <p>
+     * Define el numero de actualizaciones logicas (ticks) por segundo. Al utilizar un valor como 40, se genera un efecto de
+     * tartamudeo en la representacion de los tiles cuando el jugador se mueve. Pruebe en pantalla completa y aumente la velocidad
+     * del jugador para apreciar mejor el efecto. ¿A que se debe esto? Cuanto mas altos sean los ticks (pasos cortos, poca
+     * diferencia de tiempo entre ciclos), mas tiempo de procesamiento se necesita para ponerse al dia en tiempo real. Cuanto mas
+     * bajo sea (pasos largos, mucha diferencia de tiempo entre ciclos), mas entrecortado sera el juego. Lo ideal es que sea
+     * bastante alto, a menudo mas rapido que 60 FPS, para que el juego simule con alta calidad en maquinas rapidas.
+     */
+    public static final int UPDATES = 60;
+
+    /**
+     * <p>
+     * Numero maximo de veces que el GameLoop PUEDE renderizar la pantalla por segundo. Cuando digo "puede", quiero decir que no
+     * siempre puede alcanzar el maximo especificado.
+     * <p>
+     * TIP: Sincroniza la cantidad de FPS con los Hz del monitor para evitar posibles "tearing" o "stuttering". Aunque esto ultimo
+     * se soluciona con la implementacion de JavaFX.
+     */
+    public static final int FRAMES = 120;
+
+    /**
+     * <p>
+     * Si se activa la opcion de {@code FPS_UNLIMITED}, el renderizado se realizara tantas veces como sea posible. El limite de
+     * FPS esta determinado por la potencia de procesamiento del hardware, el rendimiento del juego, la cantidad de objetos
+     * renderizados en pantalla, el uso de la CPU, entre otros.
+     * <p>
+     * TIP: Activa esta opcion para probar caidas de FPS en diferentes areas del juego.
+     * <p>
+     * Aunque al usar AnimationTimer, esta propiedad queda obsoleta
+     */
+    @Deprecated
+    public static final boolean FPS_UNLIMITED = false;
+
+    // Otros
     public static final String VERSION = "0.0.11a";
     public static final int MAX_LVL = 50;
     public static final int SUBWINDOW_ALPHA = 1;
-    // Number of visible tiles
+    // Numero de tiles visibles
     public static final int MAX_WINDOW_ROW = 15;
     public static final int MAX_WINDOW_COL = 21; // TODO o MAX_TILES_COL?
-    // Map settings
-    public static final int MAPS = 10;
+    // Configuracion del mapa
     public static final int MAX_MAP_ROW = 50;
     public static final int MAX_MAP_COL = 50;
-    // Maps
-    public static final int ABANDONED_ISLAND = 0;
-    public static final int ABANDONED_ISLAND_MARKET = 1;
-    public static final int DUNGEON_BREG = 2;
-    public static final int DUNGEON_BREG_SUB = 3;
-    // Zones
-    public static final int OVERWORLD = 0;
-    public static final int MARKET = 1;
-    public static final int DUNGEON = 2;
-    public static final int BOSS = 3;
-    // Main window
-    public static final int MAIN_WINDOW = 0;
-    public static final int SELECTION_WINDOW = 1;
-    // Probabilitys
-    public static final int PROBABILITY_GOLD_DROP = 47;
-    public static final int PROBABILITY_STONE_DROP = 90;
-    public static final int PROBABILITY_WOOD_DROP = 80;
-    // Animations interval
+    // Intervalo de animaciones
     public static final int INTERVAL_DEAD_ANIMATION = 10;
     public static final int INTERVAL_MOVEMENT_ANIMATION = 15;
     public static final int INTERVAL_PROJECTILE_ANIMATION = 10;
-    // Weapons interval
-    public static final int INTERVAL_ATTACK = 60; // TODO o INTERVAL_ATTACK?
-    // Projectiles interval
+    // Intervalo de armas
+    public static final int INTERVAL_ATTACK = 30;
+    // Intervalo de proyectiles
     public static final int INTERVAL_PROJECTILE = 60;
-    // Others interval
+    // Otros intervalo
     public static final int INTERVAL_INVINCIBLE = 60;
     public static final int INTERVAL_INVINCIBLE_INTERACTIVE = 20;
     public static final int INTERVAL_DIRECTION = 120;
     public static final int INTERVAL_HP_BAR = 240;
     public static final int INTERVAL_KNOCKBACK = 10;
     public static final int INTERVAL_TELEPORT = 50;
-    /* An application can run much faster if the images it chooses to display share the same bit depth as the screen.
-     * https://docs.oracle.com/javase/tutorial/extra/fullscreen/displaymode.html */
-    // Window settings
-    /* TODO Cuando se agrande la ventana, los items tendria que cambiar a x64 para evitar deformaciones, por lo tanto
-     * el tamanio original de cada item tiene que ser de 64px para poder escalar hacia abajo sin perder calidad. */
+    // Configuracion de la ventana
     private static final int original_tile = 16;
     private static final int scale = 2;
     public static final int tile = original_tile * scale;
-    // Window size
+    // Tamaño de la ventana
     public static final int WINDOW_WIDTH = tile * MAX_WINDOW_COL;
-    public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW;
     public static final int X_OFFSET = WINDOW_WIDTH / 2 - (tile / 2);
+    public static final int WINDOW_HEIGHT = tile * MAX_WINDOW_ROW;
     public static final int Y_OFFSET = WINDOW_HEIGHT / 2 - (tile * 2 / 2);
 
     private Global() {

@@ -13,8 +13,8 @@ public class ItemFactory {
         this.world = world;
     }
 
-    public Item createEntity(ItemType type, int... pos) {
-        return switch (type) {
+    public Item createEntity(ItemID id, int... pos) {
+        return switch (id) {
             case BOOTS -> new Boots(game, world, pos);
             case CHEST -> new Chest(game, world, pos);
             case CHICKEN -> new Chicken(game, world, pos);
@@ -28,18 +28,18 @@ public class ItemFactory {
             case TENT -> new Tent(game, world, pos);
             case WOOD_DOOR -> new WoodDoor(game, world, pos);
             case WOOD_SHIELD -> new WoodShield(game, world, pos);
-            default -> throw new IllegalStateException("Unexpected value: " + type);
+            default -> throw new IllegalStateException("Unexpected value: " + id);
         };
     }
 
-    public Item createEntityWithAmount(ItemType type, int amount, int... pos) {
-        return switch (type) {
+    public Item createEntityWithAmount(ItemID id, int amount, int... pos) {
+        return switch (id) {
             case GOLD -> new Gold(game, world, amount, pos);
             case POTION_RED -> new PotionRed(game, world, amount, pos);
             case POTION_BLUE -> new PotionBlue(game, world, amount, pos);
             case STONE -> new Stone(game, world, amount, pos);
             case WOOD -> new Wood(game, world, amount, pos);
-            default -> throw new IllegalStateException("Unexpected value: " + type);
+            default -> throw new IllegalStateException("Unexpected value: " + id);
         };
     }
 

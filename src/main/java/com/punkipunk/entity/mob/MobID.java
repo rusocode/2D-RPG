@@ -4,7 +4,7 @@ package com.punkipunk.entity.mob;
  * El nombre tiene que ser igual al objeto en mobs.json.
  */
 
-public enum MobType {
+public enum MobID {
 
     BAT("bat", MobCategory.PEACEFUL),
     BOX("box", MobCategory.NPC),
@@ -19,7 +19,7 @@ public enum MobType {
     private final String name;
     private final MobCategory category;
 
-    MobType(String name, MobCategory category) {
+    MobID(String name, MobCategory category) {
         this.name = name;
         this.category = category;
     }

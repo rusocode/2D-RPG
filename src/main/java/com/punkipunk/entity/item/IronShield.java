@@ -10,8 +10,8 @@ public class IronShield extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.IRON_SHIELD;
+    public ItemID getID() {
+        return ItemID.IRON_SHIELD;
     }
 
 }

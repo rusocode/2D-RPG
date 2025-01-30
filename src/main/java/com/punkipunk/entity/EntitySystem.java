@@ -4,22 +4,20 @@ import com.punkipunk.core.Game;
 import com.punkipunk.entity.components.Particle;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.interactive.InteractiveFactory;
-import com.punkipunk.entity.interactive.InteractiveType;
-import com.punkipunk.entity.interactive.MetalPlate;
+import com.punkipunk.entity.interactive.InteractiveID;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.item.ItemFactory;
-import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.item.ItemID;
 import com.punkipunk.entity.mob.Mob;
 import com.punkipunk.entity.mob.MobFactory;
-import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.entity.spells.Spell;
+import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.*;
-
-import static com.punkipunk.utils.Global.MAPS;
 
 /**
  * Logica relacionada con la actualizacion y renderizado de entidades.
@@ -52,7 +50,7 @@ import static com.punkipunk.utils.Global.MAPS;
  * </ul>
  * Por ejemplo:
  * <pre>{@code
- * plates = world.entities.getInteractives(world.map.num).stream()
+ * plates = world.entities.getInteractives(world.map.id).stream()
  *                 .filter(interactive -> interactive.getType() == InteractiveType.METAL_PLATE)
  *                 .toList();
  * }</pre>
@@ -85,13 +83,13 @@ public class EntitySystem {
     public final Player player;
     public final List<Particle> particles = new ArrayList<>();
     /**
-     * Mapas para almacenar entidades por tipo y numero de mapa, por lo tanto cada mapa del juego tendra su propia lista de
-     * entidades (mas flexible y dinamico que arrays fijos).
+     * Colecciones de tipo Map para almacenar entidades por tipo y numero de mapa, por lo tanto cada mapa del juego tendra su
+     * propia lista de entidades (mas flexible y dinamico que arrays fijos).
      */
-    private final Map<Integer, List<Mob>> mobs = new HashMap<>();
-    private final Map<Integer, List<Item>> items = new HashMap<>();
-    private final Map<Integer, List<Interactive>> interactives = new HashMap<>();
-    private final Map<Integer, List<Spell>> spells = new HashMap<>();
+    private final Map<MapID, List<Mob>> mobs = new EnumMap<>(MapID.class);
+    private final Map<MapID, List<Item>> items = new EnumMap<>(MapID.class);
+    private final Map<MapID, List<Interactive>> interactives = new EnumMap<>(MapID.class);
+    private final Map<MapID, List<Spell>> spells = new EnumMap<>(MapID.class);
     private final World world;
     private final MobFactory mobFactory;
     private final ItemFactory itemFactory;
@@ -102,44 +100,28 @@ public class EntitySystem {
      */
     private final List<Entity> renderOrder = new ArrayList<>();
 
+    public EntityFactory entityFactory;
+
     public EntitySystem(Game game, World world) {
         this.world = world;
         this.mobFactory = new MobFactory(game, world);
         this.itemFactory = new ItemFactory(game, world);
         this.interactiveFactory = new InteractiveFactory(game, world);
         this.player = new Player(game, world);
-        for (int i = 0; i < MAPS; i++) {
-            mobs.put(i, new ArrayList<>());
-            items.put(i, new ArrayList<>());
-            interactives.put(i, new ArrayList<>());
-            spells.put(i, new ArrayList<>());
+        for (MapID mapId : MapID.values()) {
+            mobs.put(mapId, new ArrayList<>());
+            items.put(mapId, new ArrayList<>());
+            interactives.put(mapId, new ArrayList<>());
+            spells.put(mapId, new ArrayList<>());
         }
-    }
 
-    public Item createItem(ItemType type, int mapNum, int... pos) {
-        Item item = itemFactory.createEntity(type, pos);
-        items.get(mapNum).add(item);
-        return item;
-    }
+        // Debe crearse despues de crear MobFactory, ItemFactory, etc. para evitar un NPE
+        this.entityFactory = new EntityFactory(game, world, this);
 
-    public void createItemWithAmount(ItemType type, int mapNum, int amount, int... pos) {
-        Item item = itemFactory.createEntityWithAmount(type, amount, pos);
-        items.get(mapNum).add(item);
-    }
-
-    public Mob createMob(MobType type, int mapNum, int... pos) {
-        Mob mob = mobFactory.createEntity(type, pos);
-        mobs.get(mapNum).add(mob);
-        return mob;
-    }
-
-    public void createInteractive(InteractiveType type, int mapNum, int... pos) {
-        Interactive interactive = interactiveFactory.createEntity(type, pos);
-        interactives.get(mapNum).add(interactive);
     }
 
     public void update() {
-        int currentMap = world.map.num;
+        MapID currentMap = world.map.id;
 
         player.update();
 
@@ -167,13 +149,13 @@ public class EntitySystem {
         interactives.get(currentMap).forEach(Interactive::update);
     }
 
-    public void render(GraphicsContext g2) {
-        int currentMap = world.map.num;
+    public void render(GraphicsContext context) {
+        MapID currentMap = world.map.id;
         renderOrder.clear();
 
         // Agrega las entidades interactivas menos la placa de metal
         interactives.get(currentMap).forEach(interactive -> {
-            if (!(interactive instanceof MetalPlate)) renderOrder.add(interactive);
+            if (!(interactive.getID() == InteractiveID.METAL_PLATE)) renderOrder.add(interactive);
         });
 
         // Agrega el player si se puede dibujar
@@ -199,60 +181,82 @@ public class EntitySystem {
 
         // Renderiza la placa de metal por debajo de todas las entidades
         interactives.get(currentMap).forEach(interactive -> {
-            if (interactive instanceof MetalPlate) interactive.render(g2);
+            if (interactive.getID() == InteractiveID.METAL_PLATE) interactive.render(context);
         });
 
         // Renderiza los items no solidos por debajo de las demas entidades
         items.get(currentMap).forEach(item -> {
-            if (!item.solid) item.render(g2);
+            if (!item.solid) item.render(context);
         });
 
         // Renderizar todas las entidades
-        renderOrder.forEach(entity -> entity.render(g2));
+        renderOrder.forEach(entity -> entity.render(context));
 
     }
 
-    public void removeItem(int mapNum, Item item) {
-        items.get(mapNum).remove(item);
+    public Item createItem(ItemID itemId, MapID mapId, int... pos) {
+        Item item = itemFactory.createEntity(itemId, pos);
+        items.get(mapId).add(item);
+        return item;
     }
 
-    public void removeMob(int mapNum, Mob mob) {
-        mobs.get(mapNum).remove(mob);
+    public void createItemWithAmount(ItemID itemId, MapID mapId, int amount, int... pos) {
+        Item item = itemFactory.createEntityWithAmount(itemId, amount, pos);
+        items.get(mapId).add(item);
     }
 
-    public void removeInteractive(int mapNum, Interactive interactive) {
-        interactives.get(mapNum).remove(interactive);
+    public Mob createMob(MobID mobId, MapID mapId, int... pos) {
+        Mob mob = mobFactory.createEntity(mobId, pos);
+        mobs.get(mapId).add(mob);
+        return mob;
     }
 
-    public void replaceInteractive(int mapNum, Interactive oldInteractive, Interactive newInteractive) {
-        List<Interactive> interactive = interactives.get(mapNum);
+    public void createInteractive(InteractiveID interactiveId, MapID mapId, int... pos) {
+        Interactive interactive = interactiveFactory.createEntity(interactiveId, pos);
+        interactives.get(mapId).add(interactive);
+    }
+
+    public void replaceInteractive(MapID mapId, Interactive oldInteractive, Interactive newInteractive) {
+        List<Interactive> interactive = interactives.get(mapId);
         int index = interactive.indexOf(oldInteractive);
         if (index != -1) interactive.set(index, newInteractive);
     }
 
     public void removeTempEntities() {
-        for (int map = 0; map < MAPS; map++)
-            items.get(map).removeIf(item -> item.temp);
+        for (MapID mapId : MapID.values())
+            items.get(mapId).removeIf(item -> item.temp);
     }
 
-    public List<Mob> getMobs(int mapNum) {
-        return mobs.get(mapNum);
+    public void removeItem(MapID mapId, Item item) {
+        items.get(mapId).remove(item);
     }
 
-    public List<Item> getItems(int mapNum) {
-        return items.get(mapNum);
+    public void removeMob(MapID mapId, Mob mob) {
+        mobs.get(mapId).remove(mob);
     }
 
-    public List<Spell> getSpells(int mapNum) {
-        return spells.get(mapNum);
+    public void removeInteractive(MapID mapId, Interactive interactive) {
+        interactives.get(mapId).remove(interactive);
     }
 
-    public List<Interactive> getInteractives(int mapNum) {
-        return interactives.get(mapNum);
+    public void clearItems(MapID mapId) {
+        items.get(mapId).clear();
     }
 
-    public void clearItems(int mapNum) {
-        items.get(mapNum).clear();
+    public List<Mob> getMobs(MapID mapId) {
+        return mobs.get(mapId);
+    }
+
+    public List<Item> getItems(MapID mapId) {
+        return items.get(mapId);
+    }
+
+    public List<Spell> getSpells(MapID mapId) {
+        return spells.get(mapId);
+    }
+
+    public List<Interactive> getInteractives(MapID mapId) {
+        return interactives.get(mapId);
     }
 
 }

@@ -28,8 +28,8 @@ public class PotionRed extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.POTION_RED;
+    public ItemID getID() {
+        return ItemID.POTION_RED;
     }
 
 }

@@ -40,8 +40,8 @@ public abstract class Item extends Entity {
     public Item(Game game, World world, int... pos) {
         super(game, world, pos);
 
-        this.itemData = JsonLoader.getInstance().deserialize("items." + getType().getName(), ItemData.class);
-        this.itemCategory = getType().getCategory();
+        this.itemData = JsonLoader.getInstance().deserialize("items." + getID().getName(), ItemData.class);
+        this.itemCategory = getID().getCategory();
 
         stats.name = itemData.name();
         description = itemData.description();
@@ -73,7 +73,7 @@ public abstract class Item extends Entity {
 
     }
 
-    public abstract ItemType getType();
+    public abstract ItemID getID();
 
     /**
      * Use the item.
@@ -99,18 +99,9 @@ public abstract class Item extends Entity {
     public void interact() {
     }
 
-    /**
-     * Detects if the specified item is in the position adjacent to the entity.
-     *
-     * @param entity  entity.
-     * @param //items list of items.
-     * @param //name  name of the item.
-     * @return the index of the specified item to the adjacent position of the entity or -1 if it does not exist.
-     */
-
-    protected boolean isNearby(Entity entity, ItemType itemType) {
-        return world.entitySystem.getItems(world.map.num).stream()
-                .filter(item -> item.getType() == itemType) // La comparacion de enums es mas rapida que la comparacion de strings
+    protected boolean isNearby(Entity entity, ItemID id) {
+        return world.entitySystem.getItems(world.map.id).stream()
+                .filter(item -> item.getID() == id) // La comparacion de enums es mas rapida que la comparacion de strings
                 .anyMatch(item -> isAdjacentTo(entity, item));
     }
 

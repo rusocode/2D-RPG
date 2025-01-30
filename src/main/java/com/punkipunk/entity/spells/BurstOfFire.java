@@ -84,9 +84,9 @@ public class BurstOfFire extends Spell {
     }
 
     @Override
-    public void render(GraphicsContext g2) {
-        g2.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY());
-        if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
+    public void render(GraphicsContext context) {
+        context.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY());
+        if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
     }
 
     @Override

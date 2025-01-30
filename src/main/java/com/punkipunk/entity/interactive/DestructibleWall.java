@@ -44,8 +44,8 @@ public class DestructibleWall extends Interactive {
     }
 
     @Override
-    public InteractiveType getType() {
-        return InteractiveType.DESTRUCTIBLE_WALL;
+    public InteractiveID getID() {
+        return InteractiveID.DESTRUCTIBLE_WALL;
     }
 
 }

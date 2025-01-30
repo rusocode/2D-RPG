@@ -10,8 +10,8 @@ public class Lantern extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.LANTERN;
+    public ItemID getID() {
+        return ItemID.LANTERN;
     }
 
 }

@@ -4,7 +4,7 @@ import com.punkipunk.Dialogue;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.item.Gold;
-import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.item.ItemID;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.io.Progress;
 import com.punkipunk.utils.Utils;
@@ -54,15 +54,15 @@ public class Lizard extends Mob {
         drop(new Gold(game, world, mobData.gold()));
         Progress.bossDefeated = true;
         // Elimina la IronDoor
-        world.entitySystem.getItems(world.map.num).stream()
-                .filter(item -> item.getType() == ItemType.IRON_DOOR)
+        world.entitySystem.getItems(world.map.id).stream()
+                .filter(item -> item.getID() == ItemID.IRON_DOOR)
                 .findFirst()
-                .ifPresent(door -> world.entitySystem.removeItem(world.map.num, door));
+                .ifPresent(door -> world.entitySystem.removeItem(world.map.id, door));
     }
 
     @Override
-    public MobType getType() {
-        return MobType.LIZARD;
+    public MobID getID() {
+        return MobID.LIZARD;
     }
 
 }

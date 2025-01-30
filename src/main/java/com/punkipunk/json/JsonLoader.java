@@ -127,6 +127,8 @@ public class JsonLoader {
             nodeTree.put("spells", parseFile("data/spells.json"));
             nodeTree.put("interactive", parseFile("data/interactive.json"));
             nodeTree.put("player", parseFile("data/player.json"));
+            nodeTree.put("events", parseFile("data/events.json"));
+            nodeTree.put("maps", parseFile("data/maps.json"));
         } catch (IOException e) {
             throw new RuntimeException("Failed to load data", e);
         }

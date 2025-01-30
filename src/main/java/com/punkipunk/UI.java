@@ -9,7 +9,6 @@ import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontSmoothingType;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -50,12 +49,9 @@ public class UI {
                 renderManaBar(world.entitySystem.player);
                 renderHpBar(world.entitySystem.player);
                 renderBossHpBar();
-                renderLvl();
             }
             case DIALOGUE -> renderDialogueWindow();
-            case OPTION -> renderOptionWindow();
             case GAME_OVER -> renderGameOverWindow();
-            case TELEPORT -> renderTeleportEffect();
             case SLEEP -> renderSleepEffect();
         }
 
@@ -98,7 +94,7 @@ public class UI {
     }
 
     private void renderBossHpBar() {
-        world.entitySystem.getMobs(world.map.num).stream()
+        world.entitySystem.getMobs(world.map.id).stream()
                 .filter(mob -> mob.isOnCamera() && mob.flags.boss)
                 .findFirst()
                 .ifPresent(boss -> {
@@ -120,32 +116,6 @@ public class UI {
                     context.setFill(Color.WHITE);
                     context.fillText(boss.stats.name, x + 4, y - 10);
                 });
-    }
-
-    private void renderLvl() {
-        int x = tile - 15, y = tile, gap = 20;
-        context.setFontSmoothingType(FontSmoothingType.GRAY);
-        changeFontSize(24);
-        // context.setFont(Font.font(context.getFont().getFamily(), 24));
-        context.setFill(Color.BLACK);
-        context.fillText("Level: " + world.entitySystem.player.stats.lvl, x + 2, y + 2);
-        context.setFill(Color.WHITE);
-        context.fillText("Level: " + world.entitySystem.player.stats.lvl, x, y);
-        y += gap;
-        context.setFill(Color.BLACK);
-        context.fillText("Exp: " + world.entitySystem.player.stats.exp, x + 2, y + 2);
-        context.setFill(Color.WHITE);
-        context.fillText("Exp: " + world.entitySystem.player.stats.exp, x, y);
-        y += gap;
-        context.setFill(Color.BLACK);
-        context.fillText("Next Exp: " + world.entitySystem.player.stats.nextExp, x + 2, y + 2);
-        context.setFill(Color.WHITE);
-        context.fillText("Next Exp: " + world.entitySystem.player.stats.nextExp, x, y);
-        y += gap;
-        context.setFill(Color.BLACK);
-        context.fillText("Gold: " + world.entitySystem.player.stats.gold, x + 2, y + 2);
-        context.setFill(Color.WHITE);
-        context.fillText("Gold: " + world.entitySystem.player.stats.gold, x, y);
     }
 
     public void renderDialogueWindow() {
@@ -193,137 +163,12 @@ public class UI {
             entity.dialogue.index = 0;
             if (State.isState(State.DIALOGUE))
                 State.setState(State.PLAY);
-            if (State.isState(State.CUTSCENE)) world.cutscene.phase++;
+            if (State.isState(State.CUTSCENE)) world.cutsceneSystem.phase++;
         }
 
         for (String line : currentDialogue.split("\n")) {
             context.fillText(line, textX, textY);
             textY += 40;
-        }
-
-    }
-
-    private void renderOptionWindow() {
-        int width = tile * 10, height = tile * 10;
-        int x = (WINDOW_WIDTH / 2 - width / 2), y = tile;
-        renderSubwindow(x, y, width, height, SUBWINDOW_ALPHA);
-
-        switch (subState) {
-            case 1 -> renderOptionControlWindow(x, y, width, height);
-            case 2 -> renderOptionEndGameConfirmationWindow(x, y);
-        }
-
-        game.gameSystem.keyboard.releaseKey(Key.ENTER);
-
-    }
-
-    private void renderOptionControlWindow(int frameX, int frameY, int frameWidth, int frameHeight) {
-        int textX, textY, gap = 22;
-
-        // Title
-        changeFontSize(28);
-        String text = "Controls";
-        textX = getXForCenteredText(text);
-        textY = frameY + tile;
-        context.fillText(text, textX, textY);
-        // Title
-
-        changeFontSize(18);
-
-        textX = frameX + tile;
-        textY += gap + 10;
-        context.fillText("Confirm/Attack", textX, textY);
-        textY += gap;
-        context.fillText("Options/Back", textX, textY);
-        textY += gap;
-        context.fillText("Move", textX, textY);
-        textY += gap;
-        context.fillText("Shoot", textX, textY);
-        textY += gap;
-        context.fillText("Pickup Item", textX, textY);
-        textY += gap;
-        context.fillText("Minimap", textX, textY);
-        textY += gap;
-        context.fillText("Inventory", textX, textY);
-        textY += gap;
-        context.fillText("Stats Window", textX, textY);
-        textY += gap;
-        context.fillText("Debug", textX, textY);
-        textY += gap;
-        context.fillText("Test Mode", textX, textY);
-        textY += gap;
-        context.fillText("Hitbox", textX, textY);
-
-        textX = frameX + frameWidth - tile * 3;
-        textY = frameY + tile + gap + 10;
-        context.fillText("Enter", textX, textY);
-        textY += gap;
-        context.fillText("ESC", textX, textY);
-        textY += gap;
-        context.fillText("WASD", textX, textY);
-        textY += gap;
-        context.fillText("F", textX, textY);
-        textY += gap;
-        context.fillText("P", textX, textY);
-        textY += gap;
-        context.fillText("M", textX, textY);
-        textY += gap;
-        context.fillText("I", textX, textY);
-        textY += gap;
-        context.fillText("C", textX, textY);
-        textY += gap;
-        context.fillText("Q", textX, textY);
-        textY += gap;
-        context.fillText("T", textX, textY);
-        textY += gap;
-        context.fillText("H", textX, textY);
-
-        // Back
-        textX = frameX + tile;
-        textY = frameHeight + 25;
-        context.fillText("Back", textX, textY);
-        if (command == 0) {
-            context.fillText(">", textX - 25, textY);
-            if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
-                subState = 0;
-                command = 2;
-            }
-        }
-    }
-
-    private void renderOptionEndGameConfirmationWindow(int frameX, int frameY) {
-        int textX = frameX + tile;
-        int textY = frameY + tile * 3;
-
-        currentDialogue = "Quit the game and \nreturn to the title \nscreen?";
-        for (String line : currentDialogue.split("\n")) {
-            context.fillText(line, textX, textY);
-            textY += 40;
-        }
-
-        String text = "Yes";
-        textX = getXForCenteredText(text);
-        textY += (int) (tile * 1.9);
-        context.fillText(text, textX, textY);
-        if (command == 0) {
-            context.fillText(">", textX - 25, textY);
-            if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
-                subState = 0;
-                State.setState(State.MAIN);
-                game.reset(true);
-            }
-        }
-
-        text = "No";
-        textX = getXForCenteredText(text);
-        textY += tile;
-        context.fillText(text, textX, textY);
-        if (command == 1) {
-            context.fillText(">", textX - 25, textY);
-            if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
-                subState = 0;
-                command = 4;
-            }
         }
 
     }
@@ -361,42 +206,23 @@ public class UI {
     }
 
     /**
-     * Renders a teleport effect and when it finishes, teleports the player.
-     */
-    private void renderTeleportEffect() {
-        context.setFill(new Color(0, 0, 0, /* counter * 5 */ 0.5));
-        context.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        counter++;
-        if (counter >= INTERVAL_TELEPORT) {
-            counter = 0;
-            State.setState(State.PLAY);
-            world.map.num = game.gameSystem.event.mapNum;
-            world.entitySystem.player.position.x = (int) ((game.gameSystem.event.col * tile) + world.entitySystem.player.hitbox.getWidth() / 2);
-            world.entitySystem.player.position.y = (int) ((game.gameSystem.event.row * tile) - world.entitySystem.player.hitbox.getHeight());
-            game.gameSystem.event.previousEventX = world.entitySystem.player.position.x;
-            game.gameSystem.event.previousEventY = world.entitySystem.player.position.y;
-            world.map.changeArea();
-        }
-    }
-
-    /**
      * Renders a dream effect that goes from darkest to brightest.
      */
     private void renderSleepEffect() {
         // If the counter is less than 120, darken the render by 0.01 until it is completely dark
         if (counter < 120) {
             counter++;
-            world.environment.lighting.filterAlpha += 0.01f;
+            world.environmentSystem.lighting.filterAlpha += 0.01f;
             // If the value exceeds the maximum darkness, set it to 1
-            if (world.environment.lighting.filterAlpha > 1f) world.environment.lighting.filterAlpha = 1f;
+            if (world.environmentSystem.lighting.filterAlpha > 1f) world.environmentSystem.lighting.filterAlpha = 1f;
         }
         // When you reach 120, brighten the render by 0.01 until it is completely bright
         if (counter >= 120) {
-            world.environment.lighting.filterAlpha -= 0.01f;
-            if (world.environment.lighting.filterAlpha <= 0f) {
-                world.environment.lighting.filterAlpha = 0f;
-                world.environment.lighting.dayState = world.environment.lighting.day;
-                world.environment.lighting.dayCounter = 0;
+            world.environmentSystem.lighting.filterAlpha -= 0.01f;
+            if (world.environmentSystem.lighting.filterAlpha <= 0f) {
+                world.environmentSystem.lighting.filterAlpha = 0f;
+                world.environmentSystem.lighting.dayState = world.environmentSystem.lighting.day;
+                world.environmentSystem.lighting.dayCounter = 0;
                 world.entitySystem.player.currentFrame = world.entitySystem.player.sheet.down[0];
                 State.setState(State.PLAY);
                 counter = 0; // Reset the counter to regenerate the effect from 0
@@ -485,17 +311,6 @@ public class UI {
          * getLayoutBounds() puede ser mas preciso en algunos casos, especialmente con fuentes complejas. */
         double textWidth = theText.getBoundsInLocal().getWidth();
         return (int) (WINDOW_WIDTH / 2 - textWidth / 2);
-    }
-
-    private int getYForCenteredText(String text) {
-        Text theText = new Text(text);
-        theText.setFont(context.getFont());
-        double textHeight = theText.getBoundsInLocal().getHeight();
-        /* La diferencia clave es el uso de getBaselineOffset(). Este metodo nos da la distancia desde la parte superior del texto
-         * hasta su linea base, lo cual es crucial para un centrado vertical preciso. */
-        double baselineOffset = theText.getBaselineOffset();
-        // Encuentra el centro de la ventana, luego ajusta hacia abajo por la mitad de la altura del texto y el baselineOffset
-        return (int) (WINDOW_HEIGHT / 2 + textHeight / 2 + baselineOffset);
     }
 
 }

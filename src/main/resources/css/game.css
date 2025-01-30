@@ -1,2 +1,20 @@
-.container {
+.debug-container {
+    -fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+}
+
+.label {
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+}
+
+.test-mode-label {
+    -fx-font-size: 24px;
+    -fx-font-family: 'BlackPearl';
+    -fx-alignment: center;
+}
+
+.test-mode-label .text {
+    -fx-font-smoothing-type: gray;
 }

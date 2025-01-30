@@ -10,8 +10,8 @@ public class MetalPlate extends Interactive {
     }
 
     @Override
-    public InteractiveType getType() {
-        return InteractiveType.METAL_PLATE;
+    public InteractiveID getID() {
+        return InteractiveID.METAL_PLATE;
     }
 
 }

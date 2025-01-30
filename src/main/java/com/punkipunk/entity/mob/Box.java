@@ -6,8 +6,8 @@ import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.interactive.Interactive;
-import com.punkipunk.entity.interactive.InteractiveType;
-import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.interactive.InteractiveID;
+import com.punkipunk.entity.item.ItemID;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -70,12 +70,12 @@ public class Box extends Mob {
 
         /* Obtiene un flujo secuencial de las entidades interactivas del mapa actual y en base al flujo filtra todas las placas de
          * metal con nombre asignado para convertirlas en una lista, lo mismo hace para las cajas. */
-        plates = world.entitySystem.getInteractives(world.map.num).stream()
-                .filter(interactive -> interactive.getType() == InteractiveType.METAL_PLATE)
+        plates = world.entitySystem.getInteractives(world.map.id).stream()
+                .filter(interactive -> interactive.getID() == InteractiveID.METAL_PLATE)
                 .toList();
 
-        boxes = world.entitySystem.getMobs(world.map.num).stream()
-                .filter(mob -> mob.getType() == MobType.BOX)
+        boxes = world.entitySystem.getMobs(world.map.id).stream()
+                .filter(mob -> mob.getID() == MobID.BOX)
                 .toList();
 
         // Itera las placas y verifica la distancia con la caja
@@ -97,11 +97,11 @@ public class Box extends Mob {
 
         // Si todas las cajas estan sobre las placas, la puerta de hierro se abre
         if (c == boxes.size()) {
-            world.entitySystem.getItems(world.map.num).stream()
-                    .filter(item -> item.getType() == ItemType.IRON_DOOR)
+            world.entitySystem.getItems(world.map.id).stream()
+                    .filter(item -> item.getID() == ItemID.IRON_DOOR)
                     .findFirst()
                     .ifPresent(door -> {
-                        world.entitySystem.removeItem(world.map.num, door);
+                        world.entitySystem.removeItem(world.map.id, door);
                         game.gameSystem.audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
                     });
         }
@@ -109,8 +109,8 @@ public class Box extends Mob {
     }
 
     @Override
-    public MobType getType() {
-        return MobType.BOX;
+    public MobID getID() {
+        return MobID.BOX;
     }
 
 }

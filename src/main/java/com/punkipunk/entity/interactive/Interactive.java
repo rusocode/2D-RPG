@@ -19,7 +19,7 @@ public abstract class Interactive extends Entity {
     public Interactive(Game game, World world, int... pos) {
         super(game, world, pos);
 
-        this.interactiveData = JsonLoader.getInstance().deserialize("interactive." + getType().getName(), InteractiveData.class);
+        this.interactiveData = JsonLoader.getInstance().deserialize("interactive." + getID().getName(), InteractiveData.class);
 
         stats.hp = interactiveData.hp();
         destructible = interactiveData.destructible();
@@ -36,7 +36,7 @@ public abstract class Interactive extends Entity {
 
     }
 
-    public abstract InteractiveType getType();
+    public abstract InteractiveID getID();
 
     public void update() {
         if (flags.invincible) timer.timeInvincible(this, INTERVAL_INVINCIBLE_INTERACTIVE);

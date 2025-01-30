@@ -21,8 +21,8 @@ public class Gold extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.GOLD;
+    public ItemID getID() {
+        return ItemID.GOLD;
     }
 
 }

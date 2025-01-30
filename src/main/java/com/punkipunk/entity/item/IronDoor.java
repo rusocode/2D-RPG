@@ -23,8 +23,8 @@ public class IronDoor extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.IRON_DOOR;
+    public ItemID getID() {
+        return ItemID.IRON_DOOR;
     }
 
 }

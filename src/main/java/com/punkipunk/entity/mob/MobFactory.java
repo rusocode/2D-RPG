@@ -18,8 +18,8 @@ public class MobFactory {
         this.world = world;
     }
 
-    public Mob createEntity(MobType type, int... pos) {
-        return switch (type) {
+    public Mob createEntity(MobID id, int... pos) {
+        return switch (id) {
             case BAT -> new Bat(game, world, pos);
             case BOX -> new Box(game, world, pos);
             case LIZARD -> new Lizard(game, world, pos);
@@ -33,7 +33,7 @@ public class MobFactory {
     }
 
     public List<Mob> createMobsByCategory(MobCategory category, int count) {
-        return Arrays.stream(MobType.values())
+        return Arrays.stream(MobID.values())
                 .filter(type -> type.getCategory() == category)
                 .limit(count)
                 .map(this::createEntity)

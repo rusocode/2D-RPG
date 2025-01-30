@@ -27,6 +27,8 @@ import static com.punkipunk.utils.Global.tile;
  * </ul>
  * La implementacion en el codigo sigue patrones comunes en juegos RPG, donde los mobs son fundamentales para crear una
  * experiencia de juego completa y variada.
+ * <p>
+ * TODO Es eficiente crear los mobs por clases o es mejor meterlos todos en el json?
  */
 
 public abstract class Mob extends Entity {
@@ -36,10 +38,10 @@ public abstract class Mob extends Entity {
     public Mob(Game game, World world, int... pos) {
         super(game, world, pos);
 
-        this.mobData = JsonLoader.getInstance().deserialize("mobs." + getType().getName(), MobData.class);
+        this.mobData = JsonLoader.getInstance().deserialize("mobs." + getID().getName(), MobData.class);
 
-        // La categoria se obtiene automaticamente del tipo
-        this.mobCategory = getType().getCategory();
+        // La categoria se obtiene automaticamente del id
+        this.mobCategory = getID().getCategory();
 
         stats.name = mobData.name();
         stats.speed = stats.baseSpeed = mobData.speed();
@@ -63,7 +65,7 @@ public abstract class Mob extends Entity {
 
     }
 
-    public abstract MobType getType();
+    public abstract MobID getID();
 
     /**
      * Moves the mob in a specified direction.
@@ -117,10 +119,10 @@ public abstract class Mob extends Entity {
     }
 
     /**
-     * Gets the target's goal row.
+     * Gets the target's goal y.
      *
      * @param target target.
-     * @return the target's goal row.
+     * @return the target's goal y.
      */
     protected int getGoalRow(Entity target) {
         return (int) ((target.position.y + target.hitbox.getY()) / tile);

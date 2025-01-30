@@ -27,7 +27,7 @@ public class AStar {
     /**
      * Find the best path for the entity.
      *
-     * @param goalRow goal row.
+     * @param goalRow goal y.
      * @param goalCol goal column.
      */
     public void searchPath(Entity entity, int goalRow, int goalCol) {
@@ -142,10 +142,10 @@ public class AStar {
         // Set solid nodes by checking solid tiles and destructible interactive tiles
         for (int row = 0; row < MAX_MAP_ROW; row++) {
             for (int col = 0; col < MAX_MAP_COL; col++) {
-                int tileIndex = world.map.tileIndex[world.map.num][row][col];
-                if (world.map.tileData[tileIndex].solid) node[row][col].solid = true;
+                int tileIndex = world.map.tileIndex[world.map.id.ordinal()][row][col];
+                if (world.map.tile[tileIndex].solid) node[row][col].solid = true;
 
-                world.entitySystem.getInteractives(world.map.num).stream()
+                world.entitySystem.getInteractives(world.map.id).stream()
                         .filter(interactive -> interactive.destructible)
                         .forEach(interactive -> {
                             int itRow = interactive.position.y / tile;
@@ -153,7 +153,7 @@ public class AStar {
                             node[itRow][itCol].solid = true;
                         });
 
-                world.entitySystem.getItems(world.map.num).stream()
+                world.entitySystem.getItems(world.map.id).stream()
                         .filter(item -> item.solid)
                         .forEach(item -> {
                             int itRow = (int) ((item.position.y + item.hitbox.getY()) / tile);
@@ -161,7 +161,7 @@ public class AStar {
                             node[itRow][itCol].solid = true;
                         });
 
-                world.entitySystem.getMobs(world.map.num).forEach(mob -> {
+                world.entitySystem.getMobs(world.map.id).forEach(mob -> {
                     int itRow = (int) ((mob.position.y + mob.hitbox.getY()) / tile);
                     int itCol = (int) ((mob.position.x + mob.hitbox.getX()) / tile);
                     node[itRow][itCol].solid = true;

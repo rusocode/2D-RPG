@@ -11,8 +11,8 @@ public class Wood extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.WOOD;
+    public ItemID getID() {
+        return ItemID.WOOD;
     }
 
 }

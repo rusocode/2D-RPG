@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.*?>
 <AnchorPane fx:id="root" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.punkipunk.controllers.GameController"
@@ -8,6 +9,15 @@
 
     <!-- El canvas debe ir primero porque sino estaria tapando todas las vistas -->
     <Canvas fx:id="canvas"/>
+
+    <Label fx:id="testModeLabel" text="Test Mode" styleClass="test-mode-label" visible="false"
+           AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
+
+    <VBox fx:id="debug" styleClass="debug-container" visible="false" AnchorPane.topAnchor="5" AnchorPane.leftAnchor="5">
+        <Label fx:id="fpsLabel"/>
+        <Label fx:id="positionLabel"/>
+        <Label fx:id="cycleLabel"/>
+    </VBox>
 
     <!-- Cuando los anclajes se establecen a 0 en todos los lados, AnchorPane intentara expandir el nodo hijo para
          llenar todo el espacio disponible. Sin embargo, si el nodo tiene un tamaño maximo especificado (como en el caso

@@ -18,7 +18,7 @@ public class Position {
     public int x, y;
 
     /**
-     * Set up the position of the entity.
+     * Establece la posicion de la entidad.
      */
     public void set(int col, int row) {
         x = col * tile;
@@ -26,21 +26,20 @@ public class Position {
     }
 
     /**
-     * Sets the position of the player.
+     * Establece la posicion del player.
      * <p>
-     * TODO Prevent the entity from appearing on a solid entity, solid tile or outside the map boundaries.
+     * TODO Evitar que la entidad aparezca sobre otra entidad, sobre un tile solido y fuera de los limites del mapa
      */
-    public void set(World world, Entity entity, int map, int zone, int col, int row, Direction dir) {
-        world.map.num = map;
-        world.map.zone = zone;
-        // Add half the width of the hitbox and subtract one pixel to center the horizontal position within the tile
+    public void set(World world, Entity entity, MapID mapId, int col, int row, Direction direction) {
+        world.map.id = mapId;
+        // Agregua la mitad del ancho del hitbox y resta un pixel para centrar la posicion horizontal dentro del tile
         x = (int) ((col * tile) + entity.hitbox.getWidth() / 2 - 1);
-        /* Subtracts the height of the hitbox so that the position fits in the specified row, since the player image
-         * occupies two vertical tiles. Finally, a pixel is subtracted in case the position is above a solid tile to
-         * prevent it from "locking". */
+        /* Resta la altura del hitbox para que la posicion encaje en la coordenada Y especificada, ya que la imagen del player
+         * ocupa dos tiles verticales. Por ultimo, resta un pixel en caso de que la posicion este sobre un tile solido para evitar
+         * que se bloquee. */
         y = (int) ((row * tile) - entity.hitbox.getHeight() - 1);
-        entity.direction = dir;
-        switch (dir) {
+        entity.direction = direction;
+        switch (direction) {
             case DOWN -> entity.currentFrame = entity.down.getFirstFrame();
             case UP -> entity.currentFrame = entity.up.getFirstFrame();
             case LEFT -> entity.currentFrame = entity.left.getFirstFrame();

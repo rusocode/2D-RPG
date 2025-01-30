@@ -106,7 +106,7 @@ public abstract class Container {
             SlotPosition freePos = new SlotPosition(row, col);
 
             // Genera el nuevo item y ajusta la cantidad si es stackable
-            Item newItem = generate(currentItem.getType());
+            Item newItem = generate(currentItem.getID());
             newItem.amount = currentItem.stackable ? currentItem.amount : 1;
 
             slots.put(freePos, newItem);
@@ -189,11 +189,11 @@ public abstract class Container {
     /**
      * Genera un nuevo item segun el tipo de item.
      *
-     * @param type tipo de item
+     * @param id id del item
      * @return el nuevo item generado
      */
-    private Item generate(ItemType type) {
-        return switch (type) {
+    private Item generate(ItemID id) {
+        return switch (id) {
             case STONE_AXE -> new StoneAxe(game, world);
             case BOOTS -> new Boots(game, world);
             case CHEST -> new Chest(game, world);

@@ -51,8 +51,8 @@ public class Orc extends Mob {
     }
 
     @Override
-    public MobType getType() {
-        return MobType.ORC;
+    public MobID getID() {
+        return MobID.ORC;
     }
 
 }

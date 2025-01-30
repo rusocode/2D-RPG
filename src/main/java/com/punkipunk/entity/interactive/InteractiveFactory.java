@@ -13,8 +13,8 @@ public class InteractiveFactory {
         this.world = world;
     }
 
-    public Interactive createEntity(InteractiveType type, int... pos) {
-        return switch (type) {
+    public Interactive createEntity(InteractiveID id, int... pos) {
+        return switch (id) {
             case DESTRUCTIBLE_WALL -> new DestructibleWall(game, world, pos);
             case DRY_TREE -> new DryTree(game, world, pos);
             case METAL_PLATE -> new MetalPlate(game, world, pos);

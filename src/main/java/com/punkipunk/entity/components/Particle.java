@@ -56,12 +56,12 @@ public class Particle extends Entity {
 
     }
 
-    public void render(GraphicsContext g2) {
+    public void render(GraphicsContext context) {
         int screenX = position.x - world.entitySystem.player.position.x + X_OFFSET;
         int screenY = position.y - world.entitySystem.player.position.y + Y_OFFSET;
-        g2.setFill(color);
+        context.setFill(color);
         // g2.setColor(color);
-        g2.fillRect(screenX, screenY, size, size); // Draw a rectangle as a particle
+        context.fillRect(screenX, screenY, size, size); // Draw a rectangle as a particle
     }
 
 }

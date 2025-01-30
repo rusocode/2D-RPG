@@ -11,10 +11,10 @@ import com.punkipunk.entity.combat.AttackSystem;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.item.ItemCategory;
-import com.punkipunk.entity.item.ItemType;
+import com.punkipunk.entity.item.ItemID;
 import com.punkipunk.entity.mob.Mob;
 import com.punkipunk.entity.mob.MobCategory;
-import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.entity.spells.BurstOfFire;
 import com.punkipunk.entity.spells.Spell;
 import com.punkipunk.gfx.Animation;
@@ -26,6 +26,7 @@ import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.PlayerData;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
+import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -121,7 +122,7 @@ public class Player extends Entity {
     }
 
     private void setInitialPosition() {
-        position.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 20, Direction.DOWN);
+        position.set(world, this, MapID.ABANDONED_ISLAND, 23, 20, Direction.DOWN);
     }
 
     @Override
@@ -145,14 +146,14 @@ public class Player extends Entity {
     }
 
     @Override
-    public void render(GraphicsContext g2) {
-        if (flags.invincible) Utils.changeAlpha(g2, 0.3f);
+    public void render(GraphicsContext context) {
+        if (flags.invincible) Utils.changeAlpha(context, 0.3f);
         if (drawing) {
-            if (!flags.hitting) g2.drawImage(getCurrentAnimationFrame(), X_OFFSET, Y_OFFSET);
-            else getCurrentItemFrame(g2);
+            if (!flags.hitting) context.drawImage(getCurrentAnimationFrame(), X_OFFSET, Y_OFFSET);
+            else getCurrentItemFrame(context);
         }
-        if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
-        Utils.changeAlpha(g2, 1);
+        if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
+        Utils.changeAlpha(context, 1);
     }
 
     /**
@@ -187,7 +188,7 @@ public class Player extends Entity {
     private void shoot() {
         game.gameSystem.audio.playSound(spell.sound);
         spell.set(position.x, position.y, direction, true, this);
-        world.entitySystem.getSpells(world.map.num).add(spell);
+        world.entitySystem.getSpells(world.map.id).add(spell);
         spell.subtractResource(this);
         timer.projectileCounter = 0; // Una vez que lanza un hechizo, resetea el contador de proyectiles
     }
@@ -227,16 +228,16 @@ public class Player extends Entity {
         game.gameSystem.ui.addMessageToConsole("Exp + " + mob.stats.exp);
         stats.exp += mob.stats.exp;
         checkLevelUp();
-        if (mob.getType() == MobType.LIZARD) handleLizardDeath();
+        if (mob.getID() == MobID.LIZARD) handleLizardDeath();
     }
 
     // Remueve IronDoor cuando el boss muere
     private void handleLizardDeath() {
-        world.entitySystem.getItems(world.map.num).stream()
-                .filter(item -> item.getType() == ItemType.IRON_DOOR)
+        world.entitySystem.getItems(world.map.id).stream()
+                .filter(item -> item.getID() == ItemID.IRON_DOOR)
                 .findFirst()
                 .ifPresent(door -> {
-                    world.entitySystem.removeItem(world.map.num, door);
+                    world.entitySystem.removeItem(world.map.id, door);
                     game.gameSystem.audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
                 });
     }
@@ -252,8 +253,8 @@ public class Player extends Entity {
                 // ?
                 // Reemplazar el interactive si es necesario
                 if (interactive.replaceBy() != null)
-                    world.entitySystem.replaceInteractive(world.map.num, interactive, interactive.replaceBy());
-                else world.entitySystem.removeInteractive(world.map.num, interactive);
+                    world.entitySystem.replaceInteractive(world.map.id, interactive, interactive.replaceBy());
+                else world.entitySystem.removeInteractive(world.map.id, interactive);
             }
         }
     }
@@ -277,7 +278,7 @@ public class Player extends Entity {
                 game.gameSystem.ui.addMessageToConsole("You cannot carry any more!");
                 return;
             }
-            world.entitySystem.removeItem(world.map.num, item);
+            world.entitySystem.removeItem(world.map.id, item);
         } else if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER) && item.itemCategory == ItemCategory.OBSTACLE) {
             attackCanceled = true;
             item.interact();
@@ -292,7 +293,7 @@ public class Player extends Entity {
                     attackCanceled = true;
                     mob.dialogue();
                 }
-                if (mob.getType() == MobType.BOX) mob.move(this, direction);
+                if (mob.getID() == MobID.BOX) mob.move(this, direction);
             }
             case HOSTILE, NEUTRAL -> {
                 if (!flags.invincible && !mob.flags.dead) {
@@ -313,7 +314,7 @@ public class Player extends Entity {
         game.gameSystem.collisionChecker.checkItem(this).ifPresent(this::executeItemInteraction);
         game.gameSystem.collisionChecker.checkMob(this).ifPresent(this::executeMobInteraction);
         game.gameSystem.collisionChecker.checkInteractive(this);
-        game.gameSystem.event.check(this);
+        game.gameSystem.eventSystem.checkAndTriggerEvents(this);
     }
 
     private void updateAnimation() {
@@ -336,9 +337,9 @@ public class Player extends Entity {
             stats.nextExp = 0;
             return;
         }
-        /* Checks the exp with a while loop to verify if the player exceeded the amount of exp for the next level
-         * several times (for example, killing a mob that gives a lot of exp). Therefore, raise the lvl as long as the
-         * exp is greater than the exp of the next lvl. */
+        /* Comprueba la exp con un bucle while para verificar si el jugador supero la cantidad de exp para el siguiente nivel
+         * varias veces (por ejemplo, matando a un mob que otorga mucha exp). Por lo tanto, aumenta el nivel siempre que la
+         * exp sea mayor que la exp del siguiente nivel. */
         while (stats.exp >= stats.nextExp) {
             game.gameSystem.audio.playSound(AudioID.Sound.LEVEL_UP);
             character.upStats(this);
@@ -372,7 +373,7 @@ public class Player extends Entity {
             }
             case RIGHT -> {
                 currentFrame = right.getFirstFrame();
-                g2.drawImage(sheet.right[2], X_OFFSET, Y_OFFSET);
+                g2.drawImage(sheet.right[4], X_OFFSET, Y_OFFSET);
                 g2.drawImage(sheet.weapon[3], X_OFFSET + 15, Y_OFFSET + 28);
             }
         }
@@ -425,7 +426,7 @@ public class Player extends Entity {
     }
 
     public void reset(boolean fullReset) {
-        position.set(world, this, ABANDONED_ISLAND, OVERWORLD, 23, 21, Direction.DOWN);
+        position.set(world, this, MapID.ABANDONED_ISLAND, 23, 21, Direction.DOWN);
         stats.reset(fullReset);
         timer.reset();
         flags.reset();
@@ -443,9 +444,9 @@ public class Player extends Entity {
         // Attackbox
         if (flags.hitting) {
             gc.setStroke(Color.RED);
-            /* The position of the attackbox is added to the position of the player because after verifying the
-             * detection of the hit in the hit method, the position of the player is reset, therefore it is added from
-             * here so that the drawn rectangle coincides with the position specified in the hit method. */
+            /* La posicion del cuadro de ataque se suma a la posicion del player porque despues de verificar la deteccion de
+             * ataque, la posicion del player se reinicia, por lo tanto, se calcula desde aqui para que el rectangulo dibujado
+             * coincida con la posicion especificada de ataque. */
             gc.strokeRect(getScreenX() + attackbox.getX() + hitbox.getX(),
                     getScreenY() + attackbox.getY() + hitbox.getY(),
                     attackbox.getWidth(), attackbox.getHeight());

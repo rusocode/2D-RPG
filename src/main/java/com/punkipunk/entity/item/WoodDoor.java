@@ -19,8 +19,8 @@ public class WoodDoor extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.WOOD_DOOR;
+    public ItemID getID() {
+        return ItemID.WOOD_DOOR;
     }
 
     private void initDialogue() {

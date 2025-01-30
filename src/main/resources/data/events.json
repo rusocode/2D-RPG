@@ -1,0 +1,97 @@
+{
+  "events": {
+    "hurt": {
+      "map": "ABANDONED_ISLAND",
+      "x": 27,
+      "y": 16,
+      "direction": "ANY",
+      "type": "HURT"
+    },
+    "heal": {
+      "map": "ABANDONED_ISLAND",
+      "x": 23,
+      "y": 12,
+      "direction": "UP",
+      "type": "HEAL"
+    },
+    "bossScene": {
+      "map": "DUNGEON_BREG_SUB",
+      "x": 25,
+      "y": 27,
+      "direction": "ANY",
+      "type": "BOSS_SCENE"
+    },
+    "abandonedIslandToAbandonedIslandMarket": {
+      "map": "ABANDONED_ISLAND",
+      "x": 10,
+      "y": 39,
+      "direction": "UP",
+      "type": "TELEPORT",
+      "target": {
+        "map": "ABANDONED_ISLAND_MARKET",
+        "x": 12,
+        "y": 13
+      }
+    },
+    "abandonedIslandMarketToAbandondedIsland": {
+      "map": "ABANDONED_ISLAND_MARKET",
+      "x": 12,
+      "y": 13,
+      "direction": "DOWN",
+      "type": "TELEPORT",
+      "target": {
+        "map": "ABANDONED_ISLAND",
+        "x": 10,
+        "y": 39
+      }
+    },
+    "abandonedIslandToDungeonBreg": {
+      "map": "ABANDONED_ISLAND",
+      "x": 12,
+      "y": 9,
+      "direction": "ANY",
+      "type": "TELEPORT",
+      "target": {
+        "map": "DUNGEON_BREG",
+        "x": 9,
+        "y": 40
+      }
+    },
+    "dungeonBregToAbandonedIsland": {
+      "map": "DUNGEON_BREG",
+      "x": 9,
+      "y": 41,
+      "direction": "ANY",
+      "type": "TELEPORT",
+      "target": {
+        "map": "ABANDONED_ISLAND",
+        "x": 12,
+        "y": 10
+      }
+    },
+    "dungeonBregToDungeonBregSub": {
+      "map": "DUNGEON_BREG",
+      "x": 8,
+      "y": 7,
+      "direction": "ANY",
+      "type": "TELEPORT",
+      "target": {
+        "map": "DUNGEON_BREG_SUB",
+        "x": 26,
+        "y": 40
+      }
+    },
+    "dungeonBregSubToDungeonBreg": {
+      "map": "DUNGEON_BREG_SUB",
+      "x": 26,
+      "y": 41,
+      "direction": "ANY",
+      "type": "TELEPORT",
+      "target": {
+        "map": "DUNGEON_BREG",
+        "x": 9,
+        "y": 7
+      }
+    }
+  }
+}

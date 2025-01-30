@@ -2,12 +2,10 @@ package com.punkipunk.input.keyboard;
 
 import com.punkipunk.core.Game;
 import com.punkipunk.states.State;
+import com.punkipunk.world.MapID;
 
 import java.util.EnumMap;
 import java.util.Map;
-
-import static com.punkipunk.utils.Global.ABANDONED_ISLAND;
-import static com.punkipunk.utils.Global.ABANDONED_ISLAND_MARKET;
 
 /**
  * <p>
@@ -56,6 +54,7 @@ public class KeyStateController {
             case ESCAPE -> game.getGameController().toggleOptionsView();
             case INVENTORY -> game.getGameController().toggleInventoryView();
             case LOAD_MAP -> processMapLoading(game);
+            case TEST -> game.getGameController().toggleTestMode();
         }
     }
 
@@ -72,11 +71,10 @@ public class KeyStateController {
      * @param game referencia al juego actual
      */
     private void processMapLoading(Game game) {
-        switch (game.gameSystem.world.map.num) {
-            case 0 -> game.gameSystem.file.loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
-            case 1 ->
-                    game.gameSystem.file.loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
-        }
+        /* if (game.gameSystem.world.map.id.equals(MapID.ABANDONED_ISLAND))
+            game.gameSystem.file.loadMap("maps/abandoned_island.txt", MapID.ABANDONED_ISLAND);
+        if (game.gameSystem.world.map.id.equals(MapID.ABANDONED_ISLAND_MARKET))
+            game.gameSystem.file.loadMap("maps/abandoned_island_market.txt", MapID.ABANDONED_ISLAND); */
     }
 
 }

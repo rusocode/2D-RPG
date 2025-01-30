@@ -31,7 +31,7 @@ public class GameBuilder {
 
     public GameBuilder withRenderingComponents(GameController gameController) {
         canvas = gameController.getCanvas();
-        context = canvas.getGraphicsContext2D();
+        context = canvas.getGraphicsContext2D(); // Devuelve el GraphicsContext asociado con este Canvas
         return this;
     }
 

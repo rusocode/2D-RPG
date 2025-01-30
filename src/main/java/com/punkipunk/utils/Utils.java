@@ -98,15 +98,12 @@ public final class Utils {
 
     /**
      * Change the transparency of the image.
-     *
-     * @param g2    graphic component.
-     * @param alpha transparency value.
      */
-    public static void changeAlpha(GraphicsContext g2, double alpha) {
+    public static void changeAlpha(GraphicsContext context, double alpha) {
         // Asegurarse de que alpha esté en el rango válido
         alpha = Math.max(0.0, Math.min(1.0, alpha));
         // Establecer la opacidad global para todas las operaciones de dibujo subsiguientes
-        g2.setGlobalAlpha(alpha);
+        context.setGlobalAlpha(alpha);
     }
 
     /**

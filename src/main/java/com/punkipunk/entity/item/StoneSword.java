@@ -13,8 +13,8 @@ public class StoneSword extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.STONE_SWORD;
+    public ItemID getID() {
+        return ItemID.STONE_SWORD;
     }
 
 }

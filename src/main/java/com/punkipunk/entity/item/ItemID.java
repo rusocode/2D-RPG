@@ -1,6 +1,6 @@
 package com.punkipunk.entity.item;
 
-public enum ItemType {
+public enum ItemID {
     BOOTS("boots", ItemCategory.USABLE),
     CHEST("chest", ItemCategory.OBSTACLE),
     CHICKEN("chicken", ItemCategory.USABLE),
@@ -23,7 +23,7 @@ public enum ItemType {
     private final String name;
     private final ItemCategory category;
 
-    ItemType(String name, ItemCategory category) {
+    ItemID(String name, ItemCategory category) {
         this.name = name;
         this.category = category;
     }

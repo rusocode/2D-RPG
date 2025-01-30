@@ -11,8 +11,8 @@ public class Stone extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.STONE;
+    public ItemID getID() {
+        return ItemID.STONE;
     }
 
 }

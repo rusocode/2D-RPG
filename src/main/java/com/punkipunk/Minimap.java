@@ -2,6 +2,7 @@ package com.punkipunk;
 
 import com.punkipunk.core.Game;
 import com.punkipunk.input.keyboard.Key;
+import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -33,11 +34,11 @@ public class Minimap {
     }
 
     public void create() {
-        Canvas[] minimapCanvases = new Canvas[MAPS];
-        minimap = new Image[MAPS];
+        Canvas[] minimapCanvases = new Canvas[MapID.values().length];
+        minimap = new Image[MapID.values().length];
         int width = tile * MAX_MAP_COL;
         int height = tile * MAX_MAP_ROW;
-        for (int map = 0; map < MAPS; map++) {
+        for (int map = 0; map < MapID.values().length; map++) {
             minimapCanvases[map] = new Canvas(width, height);
             GraphicsContext gc = minimapCanvases[map].getGraphicsContext2D();
             for (int row = 0; row < MAX_MAP_ROW; row++) {
@@ -45,32 +46,32 @@ public class Minimap {
                     int tileIndex = world.map.tileIndex[map][row][col];
                     int x = tile * col;
                     int y = tile * row;
-                    gc.drawImage(world.map.tileData[tileIndex].texture, x, y);
+                    gc.drawImage(world.map.tile[tileIndex].texture, x, y);
                 }
             }
-            // Inmediatamente despues de dibujar, convertimos cada Canvas a una Image usando el metodo snapshot()
-            minimap[map] = minimapCanvases[map].snapshot(null, null); // Convert Canvas to Image
+            // Convierte cada canvas a una imagen con snapshot() despues de dibujar
+            minimap[map] = minimapCanvases[map].snapshot(null, null);
         }
     }
 
-    public void render(final GraphicsContext gc) {
+    public void render(final GraphicsContext context) {
         if (game.gameSystem.keyboard.isKeyToggled(Key.MINIMAP)) {
             int width = 100;
             int height = 100;
             int x = WINDOW_WIDTH - width - 22;
             int y = 15;
-            gc.setStroke(Color.BLACK);
-            gc.setLineWidth(0);
-            gc.strokeRect(x - 1, y - 1, width + 1, height + 1);
-            gc.drawImage(minimap[world.map.num], x, y, width, height);
+            context.setStroke(Color.BLACK);
+            context.setLineWidth(0);
+            context.strokeRect(x - 1, y - 1, width + 1, height + 1);
+            context.drawImage(minimap[world.map.id.ordinal()], x, y, width, height);
 
-            // Draw a red square that represents the player's position
+            // Dibuja un cuadrado rojo que represente la posicion del player
             double scale = (double) (tile * MAX_MAP_COL) / width;
             int playerX = (int) (x + (world.entitySystem.player.position.x + world.entitySystem.player.hitbox.getX()) / scale);
             int playerY = (int) (y + (world.entitySystem.player.position.y + world.entitySystem.player.hitbox.getY()) / scale);
             int playerSize = (int) (tile / scale);
-            gc.setFill(Color.RED);
-            gc.fillRect(playerX, playerY, playerSize, playerSize);
+            context.setFill(Color.RED);
+            context.fillRect(playerX, playerY, playerSize, playerSize);
         }
     }
 

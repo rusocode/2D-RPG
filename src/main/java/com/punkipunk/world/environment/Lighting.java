@@ -1,6 +1,7 @@
 package com.punkipunk.world.environment;
 
 import com.punkipunk.world.World;
+import com.punkipunk.world.Zone;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlendMode;
@@ -25,7 +26,8 @@ public class Lighting {
     private final World world;
     private final WritableImage darknessFilter = new WritableImage(WINDOW_WIDTH, WINDOW_HEIGHT);
     private final Canvas canvas = new Canvas(WINDOW_WIDTH, WINDOW_HEIGHT);
-    private final GraphicsContext gc = canvas.getGraphicsContext2D();;
+    private final GraphicsContext gc = canvas.getGraphicsContext2D();
+    ;
     // Filter
     private final ImageView darknessFilterView = new ImageView();
     public int dayCounter;
@@ -104,19 +106,21 @@ public class Lighting {
      * <p>
      * If the zone is INDOOR, it does not configure or draw the dark filter. It means that it remains luminous all the time.
      */
-    public void render(GraphicsContext g2) {
+    public void render(GraphicsContext context) {
         // if (world.map.zone == OVERWORLD) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         // if (world.map.zone == OVERWORLD || world.map.zone == DUNGEON || world.map.zone == BOSS) g2.drawImage(darknessFilter, 0, 0, null);
         // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));
         // debug(g2);
 
-        // Asumimos que gc es el GraphicsContext de tu canvas principal
-        if (world.map.zone == OVERWORLD || world.map.zone == DUNGEON || world.map.zone == BOSS) {
+        // Asumimos que context es el GraphicsContext del canvas principal
+        if (world.map.id.zone.name().equals(Zone.OVERWORLD.name()) ||
+                world.map.id.zone.name().equals(Zone.DUNGEON.name()) ||
+                world.map.id.zone.name().equals(Zone.BOSS.name())) {
             // Actualiza la imagen del ImageView
             darknessFilterView.setImage(darknessFilter);
 
             // Configura la opacidad
-            if (world.map.zone == OVERWORLD) darknessFilterView.setOpacity(filterAlpha);
+            if (world.map.id.zone.name().equalsIgnoreCase(Zone.OVERWORLD.name())) darknessFilterView.setOpacity(filterAlpha);
             else darknessFilterView.setOpacity(1.0);
 
             // Configura el modo de mezcla

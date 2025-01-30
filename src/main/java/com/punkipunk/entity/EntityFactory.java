@@ -1,10 +1,11 @@
 package com.punkipunk.entity;
 
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.interactive.InteractiveType;
+import com.punkipunk.entity.interactive.InteractiveID;
 import com.punkipunk.entity.item.*;
-import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.io.Progress;
+import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
 
 import static com.punkipunk.utils.Global.*;
@@ -19,6 +20,7 @@ public class EntityFactory {
         this.game = game;
         this.world = world;
         this.entitySystem = entitySystem;
+        createEntities();
     }
 
     public void createEntities() {
@@ -30,50 +32,50 @@ public class EntityFactory {
     public void createItems() {
 
         // Items en Abandoned Island
-        entitySystem.createItem(ItemType.CHEST, ABANDONED_ISLAND, 21, 22).setLoot(new StoneSword(game, world));
-        entitySystem.createItem(ItemType.CHEST, ABANDONED_ISLAND, 30, 29).setLoot(new Key(game, world));
-        entitySystem.createItem(ItemType.STONE_AXE, ABANDONED_ISLAND, 33, 7);
-        entitySystem.createItem(ItemType.BOOTS, ABANDONED_ISLAND, 23, 25);
-        entitySystem.createItem(ItemType.CHICKEN, ABANDONED_ISLAND, 23, 26);
-        entitySystem.createItemWithAmount(ItemType.POTION_RED, ABANDONED_ISLAND, 5, 23, 27);
-        entitySystem.createItem(ItemType.WOOD_DOOR, ABANDONED_ISLAND, 14, 28);
-        entitySystem.createItem(ItemType.WOOD_DOOR, ABANDONED_ISLAND, 12, 12);
+        entitySystem.createItem(ItemID.CHEST, MapID.ABANDONED_ISLAND, 21, 22).setLoot(new StoneSword(game, world));
+        entitySystem.createItem(ItemID.CHEST, MapID.ABANDONED_ISLAND, 30, 29).setLoot(new Key(game, world));
+        entitySystem.createItem(ItemID.STONE_AXE, MapID.ABANDONED_ISLAND, 33, 7);
+        entitySystem.createItem(ItemID.BOOTS, MapID.ABANDONED_ISLAND, 23, 25);
+        entitySystem.createItem(ItemID.CHICKEN, MapID.ABANDONED_ISLAND, 23, 26);
+        entitySystem.createItemWithAmount(ItemID.POTION_RED, MapID.ABANDONED_ISLAND, 5, 23, 27);
+        entitySystem.createItem(ItemID.WOOD_DOOR, MapID.ABANDONED_ISLAND, 14, 28);
+        entitySystem.createItem(ItemID.WOOD_DOOR, MapID.ABANDONED_ISLAND, 12, 12);
 
         // Items en Dungeon Breg
-        entitySystem.createItem(ItemType.IRON_DOOR, DUNGEON_BREG, 18, 23);
-        entitySystem.createItem(ItemType.CHEST, DUNGEON_BREG, 13, 16).setLoot(new PotionRed(game, world, 5));
+        entitySystem.createItem(ItemID.IRON_DOOR, MapID.DUNGEON_BREG, 18, 23);
+        entitySystem.createItem(ItemID.CHEST, MapID.DUNGEON_BREG, 13, 16).setLoot(new PotionRed(game, world, 5));
 
         // Items en Dungeon Breg Sub
-        entitySystem.createItem(ItemType.IRON_DOOR, DUNGEON_BREG_SUB, 25, 15);
-        entitySystem.createItem(ItemType.CHEST, DUNGEON_BREG_SUB, 25, 8).setLoot(new Chicken(game, world));
+        entitySystem.createItem(ItemID.IRON_DOOR, MapID.DUNGEON_BREG_SUB, 25, 15);
+        entitySystem.createItem(ItemID.CHEST, MapID.DUNGEON_BREG_SUB, 25, 8).setLoot(new Chicken(game, world));
 
     }
 
     public void createMobs() {
 
         // Mobs en Abandoned Island
-        entitySystem.createMob(MobType.OLDMAN, ABANDONED_ISLAND, 23, 16);
-        entitySystem.createMob(MobType.BOX, ABANDONED_ISLAND, 26, 19);
-        entitySystem.createMob(MobType.BAT, ABANDONED_ISLAND, 18, 20);
-        entitySystem.createMob(MobType.BAT, ABANDONED_ISLAND, 20, 20);
-        entitySystem.createMob(MobType.SLIME, ABANDONED_ISLAND, 24, 38);
-        entitySystem.createMob(MobType.SLIME, ABANDONED_ISLAND, 34, 42);
-        entitySystem.createMob(MobType.SLIME, ABANDONED_ISLAND, 38, 42);
-        entitySystem.createMob(MobType.ORC, ABANDONED_ISLAND, 12, 33);
+        entitySystem.createMob(MobID.OLDMAN, MapID.ABANDONED_ISLAND, 23, 16);
+        entitySystem.createMob(MobID.BOX, MapID.ABANDONED_ISLAND, 26, 19);
+        entitySystem.createMob(MobID.BAT, MapID.ABANDONED_ISLAND, 18, 20);
+        entitySystem.createMob(MobID.BAT, MapID.ABANDONED_ISLAND, 20, 20);
+        entitySystem.createMob(MobID.SLIME, MapID.ABANDONED_ISLAND, 24, 38);
+        entitySystem.createMob(MobID.SLIME, MapID.ABANDONED_ISLAND, 34, 42);
+        entitySystem.createMob(MobID.SLIME, MapID.ABANDONED_ISLAND, 38, 42);
+        entitySystem.createMob(MobID.ORC, MapID.ABANDONED_ISLAND, 12, 33);
 
         // Mobs en Abandoned Island Market
-        entitySystem.createMob(MobType.TRADER, ABANDONED_ISLAND_MARKET, 12, 7);
+        entitySystem.createMob(MobID.TRADER, MapID.ABANDONED_ISLAND_MARKET, 12, 7);
 
         // Mobs en Dungeon Breg
-        entitySystem.createMob(MobType.BOX, DUNGEON_BREG, 20, 25);
-        entitySystem.createMob(MobType.BOX, DUNGEON_BREG, 11, 19);
-        entitySystem.createMob(MobType.BOX, DUNGEON_BREG, 23, 14);
-        entitySystem.createMob(MobType.RED_SLIME, DUNGEON_BREG, 34, 39);
-        entitySystem.createMob(MobType.RED_SLIME, DUNGEON_BREG, 36, 25);
-        entitySystem.createMob(MobType.BAT, DUNGEON_BREG, 28, 11);
+        entitySystem.createMob(MobID.BOX, MapID.DUNGEON_BREG, 20, 25);
+        entitySystem.createMob(MobID.BOX, MapID.DUNGEON_BREG, 11, 19);
+        entitySystem.createMob(MobID.BOX, MapID.DUNGEON_BREG, 23, 14);
+        entitySystem.createMob(MobID.RED_SLIME, MapID.DUNGEON_BREG, 34, 39);
+        entitySystem.createMob(MobID.RED_SLIME, MapID.DUNGEON_BREG, 36, 25);
+        entitySystem.createMob(MobID.BAT, MapID.DUNGEON_BREG, 28, 11);
 
         // Mobs en Dungeon Breg Sub
-        if (!Progress.bossDefeated) entitySystem.createMob(MobType.LIZARD, DUNGEON_BREG_SUB, 23, 16);
+        if (!Progress.bossDefeated) entitySystem.createMob(MobID.LIZARD, MapID.DUNGEON_BREG_SUB, 23, 16);
 
     }
 
@@ -91,7 +93,7 @@ public class EntityFactory {
         };
 
         for (int[] pos : dryTreesPos)
-            entitySystem.createInteractive(InteractiveType.DRY_TREE, OVERWORLD, pos[0], pos[1]);
+            entitySystem.createInteractive(InteractiveID.DRY_TREE, MapID.ABANDONED_ISLAND, pos[0], pos[1]);
 
     }
 
@@ -105,18 +107,18 @@ public class EntityFactory {
         };
 
         for (int[] pos : destructibleWallsPos)
-            entitySystem.createInteractive(InteractiveType.DESTRUCTIBLE_WALL, DUNGEON_BREG, pos[0], pos[1]);
+            entitySystem.createInteractive(InteractiveID.DESTRUCTIBLE_WALL, MapID.DUNGEON_BREG, pos[0], pos[1]);
 
     }
 
     private void createMetalPlates() {
         // Metal Plate en Abandoned Island
-        entitySystem.createInteractive(InteractiveType.METAL_PLATE, ABANDONED_ISLAND, 26, 18);
+        entitySystem.createInteractive(InteractiveID.METAL_PLATE, MapID.ABANDONED_ISLAND, 26, 18);
 
         // Metal Plate en Dungeon Breg
-        entitySystem.createInteractive(InteractiveType.METAL_PLATE, DUNGEON_BREG, 20, 22);
-        entitySystem.createInteractive(InteractiveType.METAL_PLATE, DUNGEON_BREG, 8, 17);
-        entitySystem.createInteractive(InteractiveType.METAL_PLATE, DUNGEON_BREG, 39, 31);
+        entitySystem.createInteractive(InteractiveID.METAL_PLATE, MapID.DUNGEON_BREG, 20, 22);
+        entitySystem.createInteractive(InteractiveID.METAL_PLATE, MapID.DUNGEON_BREG, 8, 17);
+        entitySystem.createInteractive(InteractiveID.METAL_PLATE, MapID.DUNGEON_BREG, 39, 31);
     }
 
 }

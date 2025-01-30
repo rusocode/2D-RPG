@@ -1,0 +1,29 @@
+{
+  "maps": {
+    "abandonedIsland": {
+      "id": 0,
+      "name": "Abandoned Island",
+      "zone": "Overworld",
+      "ambient": "overworld",
+      "path": "maps/abandoned_island.txt"
+    },
+    "abandonedIslandMarket": {
+      "id": 1,
+      "name": "Abandoned Island Market",
+      "zone": "Market",
+      "path": "maps/abandoned_island_market.txt"
+    },
+    "dungeonBreg": {
+      "id": 2,
+      "name": "Dungeon Breg",
+      "zone": "Dungeon",
+      "path": "maps/dungeon_breg.txt"
+    },
+    "dungeonBregSub": {
+      "id": 3,
+      "name": "Dungeon Breg Sub",
+      "zone": "Boss",
+      "path": "maps/dungeon_breg_sub.txt"
+    }
+  }
+}

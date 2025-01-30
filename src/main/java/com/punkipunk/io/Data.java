@@ -2,6 +2,7 @@ package com.punkipunk.io;
 
 import com.punkipunk.Direction;
 import com.punkipunk.json.model.ItemData;
+import com.punkipunk.world.MapID;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,8 +11,8 @@ public class Data implements Serializable {
 
     ArrayList<ItemData2>[] itemLists; // Cambiamos a lista de ItemData por mapa
 
-    // TODO The environment is missing
-    int zone, map, x, y, hp, maxHp, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, gold;
+    MapID map;
+    int x, y, hp, maxHp, mana, maxMana, strength, dexterity, lvl, exp, nextLvlExp, gold;
     int weapon, shield, light;
     Direction direction;
 

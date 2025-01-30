@@ -1,14 +1,14 @@
-package com.punkipunk.world.management;
+package com.punkipunk.world.system;
 
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.item.ItemType;
-import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.item.ItemID;
+import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
 
 import static com.punkipunk.utils.Global.tile;
 
-public class CutsceneManager {
+public class CutsceneSystem {
 
     // Tipos de escena
     public final int na = 0, boss = 1;
@@ -17,7 +17,7 @@ public class CutsceneManager {
     public int n; // Numero de escena
     public int phase; // Fase de escena
 
-    public CutsceneManager(Game game, World world) {
+    public CutsceneSystem(Game game, World world) {
         this.game = game;
         this.world = world;
     }
@@ -31,9 +31,9 @@ public class CutsceneManager {
         // Coloca la puerta de hierro
         if (phase == 0) {
 
-            world.entitySystem.createItem(ItemType.IRON_DOOR, world.map.num, 25, 28);
+            world.entitySystem.createItem(ItemID.IRON_DOOR, world.map.id, 25, 28);
 
-            world.entitySystem.createMob(MobType.PLAYER_DUMMY, world.map.num,
+            world.entitySystem.createMob(MobID.PLAYER_DUMMY, world.map.id,
                     world.entitySystem.player.position.x,
                     world.entitySystem.player.position.y
             ).direction = world.entitySystem.player.direction;
@@ -50,8 +50,8 @@ public class CutsceneManager {
 
         // Despierta al boss
         if (phase == 2) {
-            world.entitySystem.getMobs(world.map.num).stream()
-                    .filter(mob -> mob.getType() == MobType.LIZARD)
+            world.entitySystem.getMobs(world.map.id).stream()
+                    .filter(mob -> mob.getID() == MobID.LIZARD)
                     .findFirst()
                     .ifPresent(lizard -> {
                         lizard.sleep = false;
@@ -66,15 +66,15 @@ public class CutsceneManager {
         // Devuelve la camara al player
         if (phase == 4) {
             // Encuentra el personaje ficticio
-            world.entitySystem.getMobs(world.map.num).stream()
-                    .filter(mob -> mob.getType() == MobType.PLAYER_DUMMY)
+            world.entitySystem.getMobs(world.map.id).stream()
+                    .filter(mob -> mob.getID() == MobID.PLAYER_DUMMY)
                     .findFirst()
                     .ifPresent(dummy -> {
                         // Restaura la posicion del player
                         world.entitySystem.player.position.x = dummy.position.x;
                         world.entitySystem.player.position.y = dummy.position.y;
                         // Elimina al personaje ficticio
-                        world.entitySystem.removeMob(world.map.num, dummy);
+                        world.entitySystem.removeMob(world.map.id, dummy);
                     });
 
             // Ahora puede dibujar al player

@@ -92,7 +92,7 @@ public abstract class Entity {
         }
     }
 
-    public void render(GraphicsContext g2) {
+    public void render(GraphicsContext context) {
         if (isOnCamera()) {
             tempScreenX = getScreenX();
             tempScreenY = getScreenY();
@@ -103,22 +103,22 @@ public abstract class Entity {
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
                 timer.hpBarCounter = 0;
-                Utils.changeAlpha(g2, 0.4f);
+                Utils.changeAlpha(context, 0.4f);
             }
-            if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, g2);
+            if (flags.dead) timer.timeDeadAnimation(this, INTERVAL_DEAD_ANIMATION, context);
 
             // Si es una animacion con dos frames para cada direccion
             if (sheet.movement != null || sheet.attack != null)
-                g2.drawImage(sheet.getCurrentAnimationFrame(this), tempScreenX, tempScreenY);
+                context.drawImage(sheet.getCurrentAnimationFrame(this), tempScreenX, tempScreenY);
                 // Si es una animacion con mas de dos framas para cada direccion
             else if (sheet.down != null || sheet.up != null || sheet.left != null || sheet.right != null)
-                g2.drawImage(sheet.getCurrentAnimationFrame2(this), tempScreenX, tempScreenY);
+                context.drawImage(sheet.getCurrentAnimationFrame2(this), tempScreenX, tempScreenY);
                 // Si es una imagen estatica (item, interactive)
-            else g2.drawImage(sheet.frame, getScreenX(), getScreenY());
+            else context.drawImage(sheet.frame, getScreenX(), getScreenY());
 
-            if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(g2);
+            if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
 
-            Utils.changeAlpha(g2, 1f);
+            Utils.changeAlpha(context, 1f);
         }
     }
 
@@ -216,8 +216,8 @@ public abstract class Entity {
         // Ajusta la posicion del item en el centro del tile
         int x = (int) (position.x + (sheet.frame.getWidth() / 2)) / tile;
         int y = (int) (position.y + (sheet.frame.getHeight() / 2)) / tile;
-        if (item.amount > 0) world.entitySystem.createItemWithAmount(item.getType(), world.map.num, item.amount, x, y);
-        else world.entitySystem.createItem(item.getType(), world.map.num, x, y);
+        if (item.amount > 0) world.entitySystem.createItemWithAmount(item.getID(), world.map.id, item.amount, x, y);
+        else world.entitySystem.createItem(item.getID(), world.map.id, x, y);
     }
 
     /**

@@ -52,27 +52,27 @@ public class CollisionChecker {
         switch (direction) {
             case DOWN -> {
                 entityBottomRow = (entityBottomWorldY + entity.stats.speed) / tile;
-                tile1 = world.map.tileIndex[world.map.num][entityBottomRow][entityLeftCol];
-                tile2 = world.map.tileIndex[world.map.num][entityBottomRow][entityRightCol];
-                if (world.map.tileData[tile1].solid || world.map.tileData[tile2].solid) entity.flags.colliding = true;
+                tile1 = world.map.tileIndex[world.map.id.ordinal()][entityBottomRow][entityLeftCol];
+                tile2 = world.map.tileIndex[world.map.id.ordinal()][entityBottomRow][entityRightCol];
+                if (world.map.tile[tile1].solid || world.map.tile[tile2].solid) entity.flags.colliding = true;
             }
             case UP -> {
                 entityTopRow = (entityTopWorldY - entity.stats.speed) / tile;
-                tile1 = world.map.tileIndex[world.map.num][entityTopRow][entityLeftCol];
-                tile2 = world.map.tileIndex[world.map.num][entityTopRow][entityRightCol];
-                if (world.map.tileData[tile1].solid || world.map.tileData[tile2].solid) entity.flags.colliding = true;
+                tile1 = world.map.tileIndex[world.map.id.ordinal()][entityTopRow][entityLeftCol];
+                tile2 = world.map.tileIndex[world.map.id.ordinal()][entityTopRow][entityRightCol];
+                if (world.map.tile[tile1].solid || world.map.tile[tile2].solid) entity.flags.colliding = true;
             }
             case LEFT -> {
                 entityLeftCol = (entityLeftWorldX - entity.stats.speed) / tile;
-                tile1 = world.map.tileIndex[world.map.num][entityTopRow][entityLeftCol];
-                tile2 = world.map.tileIndex[world.map.num][entityBottomRow][entityLeftCol];
-                if (world.map.tileData[tile1].solid || world.map.tileData[tile2].solid) entity.flags.colliding = true;
+                tile1 = world.map.tileIndex[world.map.id.ordinal()][entityTopRow][entityLeftCol];
+                tile2 = world.map.tileIndex[world.map.id.ordinal()][entityBottomRow][entityLeftCol];
+                if (world.map.tile[tile1].solid || world.map.tile[tile2].solid) entity.flags.colliding = true;
             }
             case RIGHT -> {
                 entityRightCol = (entityRightWorldX + entity.stats.speed) / tile;
-                tile1 = world.map.tileIndex[world.map.num][entityTopRow][entityRightCol];
-                tile2 = world.map.tileIndex[world.map.num][entityBottomRow][entityRightCol];
-                if (world.map.tileData[tile1].solid || world.map.tileData[tile2].solid) entity.flags.colliding = true;
+                tile1 = world.map.tileIndex[world.map.id.ordinal()][entityTopRow][entityRightCol];
+                tile2 = world.map.tileIndex[world.map.id.ordinal()][entityBottomRow][entityRightCol];
+                if (world.map.tile[tile1].solid || world.map.tile[tile2].solid) entity.flags.colliding = true;
             }
         }
 
@@ -82,7 +82,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con un item.
      */
     public Optional<Item> checkItem(Entity entity) {
-        List<Item> items = world.entitySystem.getItems(world.map.num);
+        List<Item> items = world.entitySystem.getItems(world.map.id);
         Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
         return items.stream()
                 .filter(item -> checkCollision(entity, item, direction))
@@ -96,7 +96,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con un mob.
      */
     public Optional<Mob> checkMob(Entity entity) {
-        List<Mob> mobs = world.entitySystem.getMobs(world.map.num);
+        List<Mob> mobs = world.entitySystem.getMobs(world.map.id);
         Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
         return mobs.stream()
                 .filter(mob -> mob != entity) // Evita colision consigo mismo
@@ -112,7 +112,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con un interactivo.
      */
     public Optional<Interactive> checkInteractive(Entity entity) {
-        List<Interactive> interactives = world.entitySystem.getInteractives(world.map.num);
+        List<Interactive> interactives = world.entitySystem.getInteractives(world.map.id);
         Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
         return interactives.stream()
                 .filter(interactive -> checkCollision(entity, interactive, direction))
@@ -124,7 +124,7 @@ public class CollisionChecker {
      * Comprueba si la entidad colisiono con un spell.
      */
     public Optional<Spell> checkSpell(Entity entity) {
-        List<Spell> spells = world.entitySystem.getSpells(world.map.num);
+        List<Spell> spells = world.entitySystem.getSpells(world.map.id);
         Direction direction = entity.flags.knockback ? entity.direction.knockbackDirection : entity.direction;
         return spells.stream()
                 .filter(spell -> spell != entity.spell) // ?

@@ -10,8 +10,8 @@ public class Boots extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.BOOTS;
+    public ItemID getID() {
+        return ItemID.BOOTS;
     }
 
 }

@@ -24,8 +24,8 @@ public class Trader extends Mob {
     }
 
     @Override
-    public MobType getType() {
-        return MobType.TRADER;
+    public MobID getID() {
+        return MobID.TRADER;
     }
 
     private void initDialogue() {

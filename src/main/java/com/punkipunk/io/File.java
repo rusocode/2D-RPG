@@ -1,55 +1,35 @@
 package com.punkipunk.io;
 
 import com.punkipunk.core.Game;
-import com.punkipunk.entity.item.ItemType;
 import com.punkipunk.entity.item.Chest;
 import com.punkipunk.entity.item.Item;
-import com.punkipunk.json.JsonLoader;
+import com.punkipunk.entity.item.ItemID;
 import com.punkipunk.json.model.VolumeData;
-import com.punkipunk.utils.Utils;
-import com.punkipunk.world.Tile;
+import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
 
 import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Objects;
 
 import static com.punkipunk.audio.AudioServiceImpl.DEFAULT_VOLUME;
-import static com.punkipunk.utils.Global.*;
 
 public class File {
 
-    private static final String ON = "On";
-    private static final String OFF = "Off";
     private final Game game;
     private final World world;
-    private final String config = "config.txt";
     private final String data = "data.dat";
-    private final String tileData = "maps/tile_data.txt";
-    private final ArrayList<String> names = new ArrayList<>();
-    private final ArrayList<String> solids = new ArrayList<>();
-    private final JsonLoader configManager;
-    public HashMap<Integer, String> maps = new HashMap<>();
 
     public File(Game game, World world) {
         this.game = game;
         this.world = world;
-        this.configManager = JsonLoader.getInstance();
-    }
-
-    public void load() {
-        // loadConfig();
-        loadTiles();
-        loadMaps();
     }
 
     /**
      * Save the game settings.
      */
     public void saveConfig() {
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(config))) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter("config.txt"))) {
             // bw.write(game.fullScreen ? ON : OFF);
             // bw.newLine();
             bw.write(String.valueOf(game.gameSystem.audio.getMusic().volume));
@@ -104,8 +84,7 @@ public class File {
             Data data = new Data();
 
             // Player stats
-            data.map = world.map.num;
-            data.zone = world.map.zone;
+            data.map = world.map.id;
             data.x = world.entitySystem.player.position.x;
             data.y = world.entitySystem.player.position.y;
             data.direction = world.entitySystem.player.direction;
@@ -154,10 +133,11 @@ public class File {
             } */
 
             // Items en el mapa
-            data.itemLists = new ArrayList[MAPS];
-            for (int map = 0; map < MAPS; map++) {
-                data.itemLists[map] = new ArrayList<>();
-                for (Item item : world.entitySystem.getItems(map)) {
+
+            data.itemLists = new ArrayList[MapID.values().length];
+            for (MapID mapId : MapID.values()) {
+                data.itemLists[mapId.ordinal()] = new ArrayList<>();
+                for (Item item : world.entitySystem.getItems(mapId)) {
                     ItemData2 itemData = new ItemData2();
                     itemData.name = item.stats.name;
                     itemData.x = item.position.x;
@@ -169,7 +149,7 @@ public class File {
                         itemData.opened = chest.opened;
                         itemData.empty = chest.empty;
                     }
-                    data.itemLists[map].add(itemData);
+                    data.itemLists[mapId.ordinal()].add(itemData);
                 }
             }
 
@@ -188,8 +168,7 @@ public class File {
         try (ObjectInputStream input = new ObjectInputStream(new FileInputStream(data))) {
             // Reads the bytes from the input stream and deserializes them into a Data object
             Data data = (Data) input.readObject();
-            world.map.num = data.map;
-            world.map.zone = data.zone;
+            world.map.id = data.map;
             world.entitySystem.player.position.x = data.x;
             world.entitySystem.player.position.y = data.y;
             switch (data.direction) {
@@ -241,23 +220,23 @@ public class File {
             } */
 
             // Cargar items en el mapa
-            for (int map = 0; map < MAPS; map++) {
+            for (MapID mapId : MapID.values()) {
                 // Limpiar items existentes en el mapa
-                world.entitySystem.clearItems(map);
+                world.entitySystem.clearItems(mapId);
 
                 // Cargar items guardados
-                for (ItemData2 itemData : data.itemLists[map]) {
+                for (ItemData2 itemData : data.itemLists[mapId.ordinal()]) {
                     if (!itemData.name.equals("NA")) {
                         Item item = world.entitySystem.createItem(
-                                ItemType.valueOf(itemData.name.toUpperCase()),
-                                map,
+                                ItemID.valueOf(itemData.name.toUpperCase()),
+                                mapId,
                                 itemData.x,
                                 itemData.y
                         );
 
                         if (item instanceof Chest chest) {
                             if (itemData.loot != null && !itemData.empty) {
-                                chest.setLoot(world.entitySystem.createItem(ItemType.valueOf(itemData.loot.toUpperCase()), map));
+                                chest.setLoot(world.entitySystem.createItem(ItemID.valueOf(itemData.loot.toUpperCase()), mapId));
                             }
                             chest.opened = itemData.opened;
                             chest.empty = itemData.empty;
@@ -271,70 +250,6 @@ public class File {
 
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Error load path " + data, e);
-        }
-    }
-
-    /**
-     * Reads the data of each tile (name and solid state) from the "tile_data.txt" path and adds them to their respective lists.
-     * It then uses that data to load all the tiles into an array.
-     */
-    private void loadTiles() {
-        String line;
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/" + tileData))))) {
-            while ((line = br.readLine()) != null) {
-                names.add(line);
-                solids.add(br.readLine());
-            }
-            world.map.tileData = new Tile[names.size()];
-            for (int i = 0; i < names.size(); i++)
-                loadTile(i, names.get(i), Boolean.parseBoolean(solids.get(i)));
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading path tile_data.txt", e);
-        }
-    }
-
-    /**
-     * Load all the maps that make up the world.
-     */
-    private void loadMaps() {
-        loadMap("maps/abandoned_island.txt", ABANDONED_ISLAND, "Abandoned Island");
-        loadMap("maps/abandoned_island_market.txt", ABANDONED_ISLAND_MARKET, "Abandoned Island Market");
-        loadMap("maps/dungeon_breg.txt", DUNGEON_BREG, "Dungeon Breg");
-        loadMap("maps/dungeon_breg_sub.txt", DUNGEON_BREG_SUB, "Dungeon Breg Sub");
-    }
-
-    /**
-     * Load the tile.
-     *
-     * @param i     index of the tile.
-     * @param name  name of the tile.
-     * @param solid whether it is solid or not.
-     */
-    private void loadTile(int i, String name, boolean solid) {
-        world.map.tileData[i] = new Tile();
-        world.map.tileData[i].texture = Utils.scaleTexture(Utils.loadTexture("textures/tiles/" + name), tile, tile);
-        world.map.tileData[i].solid = solid;
-    }
-
-    /**
-     * Loads the map using the specified path and stores each tile read from the path in the array.
-     *
-     * @param path path of the resource.
-     * @param map  map number as key.
-     * @param name map name as value.
-     */
-    public void loadMap(String path, int map, String name) {
-        maps.put(map, name);
-        int row = 0;
-        try (BufferedReader br = new BufferedReader(new InputStreamReader((Objects.requireNonNull(getClass().getResourceAsStream("/" + path)))))) {
-            for (row = 0; row < MAX_MAP_ROW; row++) {
-                String line = br.readLine();
-                String[] numbers = line.split(" ");
-                for (int col = 0; col < MAX_MAP_COL; col++)
-                    world.map.tileIndex[map][row][col] = Integer.parseInt(numbers[col]);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Error reading path " + path + " on the line " + (row + 1), e);
         }
     }
 

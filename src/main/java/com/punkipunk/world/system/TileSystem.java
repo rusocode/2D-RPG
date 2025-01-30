@@ -1,4 +1,4 @@
-package com.punkipunk.world.management;
+package com.punkipunk.world.system;
 
 import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
@@ -6,11 +6,11 @@ import javafx.scene.image.Image;
 
 import static com.punkipunk.utils.Global.*;
 
-public class TileManager {
+public class TileSystem {
 
     private final World world;
 
-    public TileManager(World world) {
+    public TileSystem(World world) {
         this.world = world;
     }
 
@@ -33,8 +33,8 @@ public class TileManager {
 
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
-                final int tileIndex = world.map.tileIndex[world.map.num][y][x];
-                final Image tileImage = world.map.tileData[tileIndex].texture;
+                final int tileIndex = world.map.tileIndex[world.map.id.ordinal()][y][x];
+                final Image tileImage = world.map.tile[tileIndex].texture;
                 context.drawImage(tileImage, x * tile - xOffset, y * tile - yOffset);
                 // context.setStroke(Color.GREEN);
                 // context.strokeRect(x * tile - xOffset, y * tile - yOffset, tile, tile);

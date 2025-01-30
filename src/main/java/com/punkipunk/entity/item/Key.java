@@ -14,14 +14,14 @@ public class Key extends Item {
     @Override
     public boolean use(Entity entity) {
         // Si la entidad detecta una puerta de madera, entonces puede usar la llave
-        if (isNearby(entity, ItemType.WOOD_DOOR)) {
-            world.entitySystem.getItems(world.map.num).stream()
-                    .filter(item -> item.getType() == ItemType.WOOD_DOOR)
+        if (isNearby(entity, ItemID.WOOD_DOOR)) {
+            world.entitySystem.getItems(world.map.id).stream()
+                    .filter(item -> item.getID() == ItemID.WOOD_DOOR)
                     .filter(door -> isAdjacentTo(entity, door))
                     .findFirst()
                     .ifPresent(door -> {
                         game.gameSystem.audio.playSound(AudioID.Sound.DOOR_OPENING);
-                        world.entitySystem.removeItem(world.map.num, door);
+                        world.entitySystem.removeItem(world.map.id, door);
                     });
             return true;
         }
@@ -29,8 +29,8 @@ public class Key extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.KEY;
+    public ItemID getID() {
+        return ItemID.KEY;
     }
 
 }

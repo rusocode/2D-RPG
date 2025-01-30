@@ -3,12 +3,12 @@ package com.punkipunk.core;
 import com.punkipunk.Minimap;
 import com.punkipunk.UI;
 import com.punkipunk.ai.AStar;
-import com.punkipunk.audio.AudioID;
 import com.punkipunk.audio.AudioController;
+import com.punkipunk.audio.AudioID;
 import com.punkipunk.input.keyboard.Keyboard;
 import com.punkipunk.io.File;
 import com.punkipunk.physics.CollisionChecker;
-import com.punkipunk.physics.Event;
+import com.punkipunk.physics.event.EventSystem;
 import com.punkipunk.world.World;
 
 /**
@@ -38,7 +38,7 @@ public class GameSystem {
     public final Keyboard keyboard;
     public final CollisionChecker collisionChecker;
     public final AStar aStar;
-    public final Event event;
+    public final EventSystem eventSystem;
     public final AudioController audio;
     public final File file;
     public final Updater updater;
@@ -52,7 +52,7 @@ public class GameSystem {
         this.keyboard = builder.keyboard;
         this.collisionChecker = builder.collisionChecker;
         this.aStar = builder.aStar;
-        this.event = builder.event;
+        this.eventSystem = builder.eventSystem;
         this.audio = builder.audio;
         this.file = builder.file;
         this.updater = builder.updater;
@@ -83,21 +83,20 @@ public class GameSystem {
     }
 
     public void initialize() {
-        if (file != null) file.load();
         if (minimap != null) minimap.create();
     }
 
     public void reset(boolean fullReset) {
         ui.console.clear();
         world.entitySystem.player.reset(fullReset);
-        world.entityFactory.createMobs();
+        world.entitySystem.entityFactory.createMobs();
         world.entitySystem.removeTempEntities();
         world.entitySystem.player.bossBattleOn = false;
         audio.playAmbient(AudioID.Ambient.OVERWORLD);
         if (fullReset) {
             audio.playMusic(AudioID.Music.MAIN);
-            world.entityFactory.createEntities();
-            world.environment.lighting.resetDay();
+            world.entitySystem.entityFactory.createEntities();
+            world.environmentSystem.lighting.resetDay();
             keyboard.resetToggledKeys();
         }
     }
@@ -110,7 +109,7 @@ public class GameSystem {
         private Keyboard keyboard;
         private CollisionChecker collisionChecker;
         private AStar aStar;
-        private Event event;
+        private EventSystem eventSystem;
         private AudioController audio;
         private File file;
         private Updater updater;
@@ -148,12 +147,12 @@ public class GameSystem {
         }
 
         public Builder withEvent() {
-            this.event = new Event(game, world);
+            this.eventSystem = new EventSystem(game, world);
             return this;
         }
 
         public Builder withAudio() {
-            this.audio = new AudioController(world);
+            this.audio = new AudioController();
             return this;
         }
 
@@ -170,7 +169,7 @@ public class GameSystem {
         public Builder withRenderer() {
             if (ui == null || minimap == null)
                 throw new IllegalStateException("UI systems must be initialized first using withUI()");
-            this.renderer = new Renderer(game, world, ui, minimap);
+            this.renderer = new Renderer(world, ui, minimap);
             return this;
         }
 

@@ -2,6 +2,7 @@ package com.punkipunk.controllers;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.scene.SceneDirector;
 import com.punkipunk.scene.ViewState;
 import com.punkipunk.scene.ViewToggle;
@@ -19,8 +20,7 @@ import javafx.scene.layout.VBox;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import static com.punkipunk.utils.Global.WINDOW_HEIGHT;
-import static com.punkipunk.utils.Global.WINDOW_WIDTH;
+import static com.punkipunk.utils.Global.*;
 
 /**
  * Controla la logica de la escena con respecto a todo lo que tiene que ver con los componentes graficos.
@@ -39,6 +39,16 @@ import static com.punkipunk.utils.Global.WINDOW_WIDTH;
 public class GameController implements Initializable {
 
     private final SceneDirector sceneManager = SceneDirector.getInstance();
+    @FXML
+    public Label fpsLabel;
+    @FXML
+    public Label cycleLabel;
+    @FXML
+    public Label testModeLabel;
+    @FXML
+    private VBox debug;
+    @FXML
+    private Label positionLabel;
 
     @FXML
     private AnchorPane root; // @FXML crea una conexion entre el elemento en el archivo FXML y la variable en el controlador
@@ -96,6 +106,23 @@ public class GameController implements Initializable {
     }
 
     /**
+     * <a href="https://minecraft.wiki/w/Debug_screen">MC Debug Screen</a>
+     */
+    public void showDebugInfo(int fps, double cycleTime) {
+
+        int x = (int) ((game.gameSystem.world.entitySystem.player.position.x + game.gameSystem.world.entitySystem.player.hitbox.getX()) / tile);
+        int y = (int) ((game.gameSystem.world.entitySystem.player.position.y + game.gameSystem.world.entitySystem.player.hitbox.getY()) / tile);
+
+        if (game.gameSystem.keyboard.isKeyToggled(Key.DEBUG)) {
+            fpsLabel.setText(String.format("%d FPS", fps));
+            positionLabel.setText(String.format("X: %d  Y: %d", x, y));
+            cycleLabel.setText(String.format("Cycle time: %.2f ms", cycleTime));
+            debug.setVisible(true);
+        } else debug.setVisible(false);
+
+    }
+
+    /**
      * Configura todos los botones.
      *
      * @param node nodo del arbol de la interfaz grafica.
@@ -124,6 +151,10 @@ public class GameController implements Initializable {
          * todos sus hijos. Usa method reference (this::configureButtons) para aplicar este mismo metodo a cada hijo. */
         if (node instanceof Parent parent) parent.getChildrenUnmodifiable().forEach(this::configureButtons);
 
+    }
+
+    public void toggleTestMode() {
+        testModeLabel.setVisible(game.gameSystem.keyboard.isKeyToggled(Key.TEST));
     }
 
     public void toggleStatsView() {

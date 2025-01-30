@@ -1,16 +1,16 @@
-package com.punkipunk.world.management;
+package com.punkipunk.world.system;
 
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.world.World;
 import com.punkipunk.world.environment.Lighting;
 import javafx.scene.canvas.GraphicsContext;
 
-public class EnvironmentManager {
+public class EnvironmentSystem {
 
     public final Lighting lighting;
     private final World world;
 
-    public EnvironmentManager(World world) {
+    public EnvironmentSystem(World world) {
         this.world = world;
         lighting = new Lighting(world);
     }
@@ -19,8 +19,8 @@ public class EnvironmentManager {
         lighting.update();
     }
 
-    public void render(GraphicsContext g2) {
-        if (!world.entitySystem.player.game.gameSystem.keyboard.isKeyToggled(Key.TEST)) lighting.render(g2);
+    public void render(GraphicsContext context) {
+        if (!world.entitySystem.player.game.gameSystem.keyboard.isKeyToggled(Key.TEST)) lighting.render(context);
     }
 
 }

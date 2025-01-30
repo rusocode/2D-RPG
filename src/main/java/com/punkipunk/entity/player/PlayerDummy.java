@@ -2,7 +2,7 @@ package com.punkipunk.entity.player;
 
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.mob.Mob;
-import com.punkipunk.entity.mob.MobType;
+import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
@@ -21,8 +21,8 @@ public class PlayerDummy extends Mob {
     }
 
     @Override
-    public MobType getType() {
-        return MobType.PLAYER_DUMMY;
+    public MobID getID() {
+        return MobID.PLAYER_DUMMY;
     }
 
 }

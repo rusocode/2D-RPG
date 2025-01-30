@@ -33,7 +33,7 @@ public enum Key {
     RIGHT(KeyEvent.VK_D),
     SHOOT(KeyEvent.VK_F),
     STATS(KeyEvent.VK_C),
-    TEST(KeyEvent.VK_T),
+    TEST(KeyEvent.VK_T), // TODO Que se vean los rects, el pathfinding, y las otras cosas tipicas de test mode
     UP(KeyEvent.VK_W);
 
     public static final EnumSet<Key> ACTION_KEYS = EnumSet.of(ENTER, PICKUP, SHOOT);

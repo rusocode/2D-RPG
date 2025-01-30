@@ -59,8 +59,8 @@ public class Oldman extends Mob {
     }
 
     @Override
-    public MobType getType() {
-        return MobType.OLDMAN;
+    public MobID getID() {
+        return MobID.OLDMAN;
     }
 
     private void initDialogue() {

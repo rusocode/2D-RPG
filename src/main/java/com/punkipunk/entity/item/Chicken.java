@@ -20,8 +20,8 @@ public class Chicken extends Item {
     }
 
     @Override
-    public ItemType getType() {
-        return ItemType.CHICKEN;
+    public ItemID getID() {
+        return ItemID.CHICKEN;
     }
 
 }

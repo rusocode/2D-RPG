@@ -1,9 +1,5 @@
 package com.punkipunk.audio;
 
-import com.punkipunk.world.World;
-
-import static com.punkipunk.utils.Global.*;
-
 /**
  * Controlador que gestiona la reproduccion de audio en el juego.
  * <p>
@@ -15,24 +11,9 @@ public class AudioController {
 
     /** Servicio que maneja las operaciones de audio de bajo nivel */
     private final AudioService audioService;
-    private final World world;
 
-    public AudioController(World world) {
+    public AudioController() {
         this.audioService = new AudioServiceImpl();
-        this.world = world;
-    }
-
-    /**
-     * Reproduce el audio ambiental correspondiente a la zona actual del mapa.
-     * <p>
-     * Cada zona tiene su propia musica o sonido ambiental caracteristico.
-     */
-    public void playZoneAmbient() {
-        switch (world.map.zone) {
-            case OVERWORLD -> playAmbient(AudioID.Ambient.OVERWORLD);
-            case DUNGEON -> playAmbient(AudioID.Ambient.DUNGEON);
-            case BOSS -> playMusic(AudioID.Music.BOSS);
-        }
     }
 
     /**
@@ -54,7 +35,6 @@ public class AudioController {
         audioService.play(AudioChannel.AMBIENT, id);
     }
 
-
     /**
      * Reproduce una pista musical.
      *
@@ -70,6 +50,13 @@ public class AudioController {
      */
     public void stopAll() {
         audioService.stopAll();
+    }
+
+    /**
+     * Guarda el volumen en un archivo de configuracion.
+     */
+    public void save() {
+        audioService.save();
     }
 
     /**
@@ -97,13 +84,6 @@ public class AudioController {
      */
     public Audio getSound() {
         return audioService.get(AudioChannel.SOUND);
-    }
-
-    /**
-     * Guarda el volumen en un archivo de configuracion.
-     */
-    public void save() {
-        audioService.save();
     }
 
 }

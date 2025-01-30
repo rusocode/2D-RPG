@@ -83,9 +83,9 @@ public class Timer {
      * <p>
      * Calculates the transparency based on the remainder of the division of the counter by the interval.
      */
-    public void timeDeadAnimation(Entity entity, int interval, GraphicsContext g2) {
+    public void timeDeadAnimation(Entity entity, int interval, GraphicsContext context) {
         int alpha = (++deadCounter / interval) % 2 == 0 ? 0 : 1;
-        Utils.changeAlpha(g2, alpha);
+        Utils.changeAlpha(context, alpha);
         if (deadCounter > interval * 8) entity.flags.alive = false;
     }
 
