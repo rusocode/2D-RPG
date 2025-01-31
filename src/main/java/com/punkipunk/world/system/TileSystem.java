@@ -14,7 +14,6 @@ public class TileSystem {
         this.world = world;
     }
 
-
     /**
      * Renders the tiles within the camera view by applying offsets to each one.
      */
@@ -34,8 +33,8 @@ public class TileSystem {
         for (int y = yStart; y < yEnd; y++) {
             for (int x = xStart; x < xEnd; x++) {
                 final int tileIndex = world.map.tileIndex[world.map.id.ordinal()][y][x];
-                final Image tileImage = world.map.tile[tileIndex].texture;
-                context.drawImage(tileImage, x * tile - xOffset, y * tile - yOffset);
+                final Image tileTexture = world.map.tiles.get(tileIndex).texture;
+                context.drawImage(tileTexture, x * tile - xOffset, y * tile - yOffset);
                 // context.setStroke(Color.GREEN);
                 // context.strokeRect(x * tile - xOffset, y * tile - yOffset, tile, tile);
             }

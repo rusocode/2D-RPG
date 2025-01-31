@@ -143,7 +143,7 @@ public class AStar {
         for (int row = 0; row < MAX_MAP_ROW; row++) {
             for (int col = 0; col < MAX_MAP_COL; col++) {
                 int tileIndex = world.map.tileIndex[world.map.id.ordinal()][row][col];
-                if (world.map.tile[tileIndex].solid) node[row][col].solid = true;
+                if (world.map.tiles.get(tileIndex).solid) node[row][col].solid = true;
 
                 world.entitySystem.getInteractives(world.map.id).stream()
                         .filter(interactive -> interactive.destructible)

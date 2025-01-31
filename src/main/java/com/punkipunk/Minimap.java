@@ -46,7 +46,7 @@ public class Minimap {
                     int tileIndex = world.map.tileIndex[map][row][col];
                     int x = tile * col;
                     int y = tile * row;
-                    gc.drawImage(world.map.tile[tileIndex].texture, x, y);
+                    gc.drawImage(world.map.tiles.get(tileIndex).texture, x, y);
                 }
             }
             // Convierte cada canvas a una imagen con snapshot() despues de dibujar
