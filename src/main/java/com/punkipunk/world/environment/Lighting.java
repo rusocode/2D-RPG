@@ -100,11 +100,11 @@ public class Lighting {
     }
 
     /**
-     * If the zone is OUTSIDE, set the filterAlpha and draw the dark filter.
+     * Si la zona es EXTERIOR, configura el filtro Alfa y dibuja el filtro oscuro.
      * <p>
-     * If the zone is DUNGEON, just draw the dark filter. It means that it will remain dark all the time.
+     * Si la zona es DUNGEON, solo dibuja el filtro oscuro. Significa que permanecera oscura todo el tiempo.
      * <p>
-     * If the zone is INDOOR, it does not configure or draw the dark filter. It means that it remains luminous all the time.
+     * Si la zona es INTERIOR, no configura ni dibuja el filtro oscuro. Significa que permanecera luminosa todo el tiempo.
      */
     public void render(GraphicsContext context) {
         // if (world.map.zone == OVERWORLD) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
@@ -113,7 +113,7 @@ public class Lighting {
         // debug(g2);
 
         // Asumimos que context es el GraphicsContext del canvas principal
-        if (world.map.id.zone.name().equals(Zone.OVERWORLD.name()) ||
+        /* if (world.map.id.zone.name().equals(Zone.OVERWORLD.name()) ||
                 world.map.id.zone.name().equals(Zone.DUNGEON.name()) ||
                 world.map.id.zone.name().equals(Zone.BOSS.name())) {
             // Actualiza la imagen del ImageView
@@ -131,7 +131,7 @@ public class Lighting {
             gc.setGlobalBlendMode(BlendMode.MULTIPLY);
             gc.drawImage(darknessFilter, 0, 0);
             gc.restore(); // Restaura el estado anterior del GraphicsContext
-        }
+        } */
     }
 
     /**

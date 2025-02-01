@@ -121,11 +121,11 @@ public class EntitySystem {
     }
 
     public void update() {
-        MapID currentMap = world.map.id;
+        MapID mapId = world.map.id;
 
         player.update();
 
-        mobs.get(currentMap).removeIf(mob -> {
+        mobs.get(mapId).removeIf(mob -> {
             /* Cuando el mob muere, primero establece el estado dead en true para evitar que se mueva. Luego, genera la animacion
              * de muerte, y cuando termine, establece alive en false para que no genere movimiento y elimine el mob. */
             if (mob.flags.alive && !mob.flags.dead) mob.update();
@@ -136,7 +136,7 @@ public class EntitySystem {
             return false;
         });
 
-        spells.get(currentMap).removeIf(spell -> {
+        spells.get(mapId).removeIf(spell -> {
             if (spell.flags.alive) spell.update();
             return !spell.flags.alive; // Retorna true (para remover) si el spell esta muerto
         });
@@ -146,15 +146,15 @@ public class EntitySystem {
             return !particle.flags.alive;
         });
 
-        interactives.get(currentMap).forEach(Interactive::update);
+        interactives.get(mapId).forEach(Interactive::update);
     }
 
     public void render(GraphicsContext context) {
-        MapID currentMap = world.map.id;
+        MapID mapId = world.map.id;
         renderOrder.clear();
 
         // Agrega las entidades interactivas menos la placa de metal
-        interactives.get(currentMap).forEach(interactive -> {
+        interactives.get(mapId).forEach(interactive -> {
             if (!(interactive.getID() == InteractiveID.METAL_PLATE)) renderOrder.add(interactive);
         });
 
@@ -163,13 +163,13 @@ public class EntitySystem {
         renderOrder.add(player);
 
         // Agrega solo los items solidos a la lista
-        items.get(currentMap).forEach(item -> {
+        items.get(mapId).forEach(item -> {
             if (item.solid) renderOrder.add(item);
         });
 
-        renderOrder.addAll(mobs.get(currentMap));
+        renderOrder.addAll(mobs.get(mapId));
 
-        renderOrder.addAll(spells.get(currentMap));
+        renderOrder.addAll(spells.get(mapId));
 
         renderOrder.addAll(particles);
 
@@ -180,12 +180,12 @@ public class EntitySystem {
         renderOrder.sort(Comparator.comparingInt(e -> (int) (e.position.y + e.hitbox.getY())));
 
         // Renderiza la placa de metal por debajo de todas las entidades
-        interactives.get(currentMap).forEach(interactive -> {
+        interactives.get(mapId).forEach(interactive -> {
             if (interactive.getID() == InteractiveID.METAL_PLATE) interactive.render(context);
         });
 
         // Renderiza los items no solidos por debajo de las demas entidades
-        items.get(currentMap).forEach(item -> {
+        items.get(mapId).forEach(item -> {
             if (!item.solid) item.render(context);
         });
 
@@ -195,25 +195,24 @@ public class EntitySystem {
     }
 
     public Item createItem(ItemID itemId, MapID mapId, int... pos) {
-        Item item = itemFactory.createEntity(itemId, pos);
+        Item item = itemFactory.create(itemId, pos);
         items.get(mapId).add(item);
         return item;
     }
 
     public void createItemWithAmount(ItemID itemId, MapID mapId, int amount, int... pos) {
-        Item item = itemFactory.createEntityWithAmount(itemId, amount, pos);
+        Item item = itemFactory.createWithAmount(itemId, amount, pos);
         items.get(mapId).add(item);
     }
 
     public Mob createMob(MobID mobId, MapID mapId, int... pos) {
-        Mob mob = mobFactory.createEntity(mobId, pos);
+        Mob mob = mobFactory.create(mobId, pos);
         mobs.get(mapId).add(mob);
         return mob;
     }
 
     public void createInteractive(InteractiveID interactiveId, MapID mapId, int... pos) {
-        Interactive interactive = interactiveFactory.createEntity(interactiveId, pos);
-        interactives.get(mapId).add(interactive);
+        interactives.get(mapId).add(interactiveFactory.create(interactiveId, pos));
     }
 
     public void replaceInteractive(MapID mapId, Interactive oldInteractive, Interactive newInteractive) {

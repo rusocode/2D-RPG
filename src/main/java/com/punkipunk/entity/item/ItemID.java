@@ -20,20 +20,12 @@ public enum ItemID {
     WOOD_DOOR("woodDoor", ItemCategory.OBSTACLE),
     WOOD_SHIELD("woodShield", ItemCategory.SHIELD);
 
-    private final String name;
-    private final ItemCategory category;
+    public final String name;
+    public final ItemCategory category;
 
     ItemID(String name, ItemCategory category) {
         this.name = name;
         this.category = category;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public ItemCategory getCategory() {
-        return category;
     }
 
 }

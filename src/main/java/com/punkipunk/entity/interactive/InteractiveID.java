@@ -7,14 +7,10 @@ public enum InteractiveID {
     DRY_TREE("dryTree"),
     METAL_PLATE("metalPlate");
 
-    private final String name;
+    public final String name;
 
     InteractiveID(String name) {
         this.name = name;
-    }
-
-    public String getName() {
-        return name;
     }
 
 }

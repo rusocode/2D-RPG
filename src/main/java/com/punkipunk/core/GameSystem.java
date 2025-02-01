@@ -92,7 +92,7 @@ public class GameSystem {
         world.entitySystem.entityFactory.createMobs();
         world.entitySystem.removeTempEntities();
         world.entitySystem.player.bossBattleOn = false;
-        audio.playAmbient(AudioID.Ambient.OVERWORLD);
+        audio.playAmbient(AudioID.Ambient.FOREST);
         if (fullReset) {
             audio.playMusic(AudioID.Music.MAIN);
             world.entitySystem.entityFactory.createEntities();

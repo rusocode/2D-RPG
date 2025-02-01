@@ -20,6 +20,7 @@ public final class AudioID {
     }
 
     public static final class Music {
+
         public static final String BOSS = "boss";
         public static final String MAIN = "main";
 
@@ -28,14 +29,18 @@ public final class AudioID {
     }
 
     public static final class Ambient {
+
+        public static final String CITY = "city";
+        public static final String VILLAGE = "village";
+        public static final String FOREST = "forest";
         public static final String DUNGEON = "dungeon";
-        public static final String OVERWORLD = "overworld";
 
         private Ambient() {
         }
     }
 
     public static final class Sound {
+
         public static final String BAT_DEATH = "batDeath";
         public static final String BAT_DEATH2 = "batDeath2";
         public static final String BAT_HIT = "batHit";

@@ -19,7 +19,7 @@ public abstract class Interactive extends Entity {
     public Interactive(Game game, World world, int... pos) {
         super(game, world, pos);
 
-        this.interactiveData = JsonLoader.getInstance().deserialize("interactive." + getID().getName(), InteractiveData.class);
+        this.interactiveData = JsonLoader.getInstance().deserialize("interactive." + getID().name, InteractiveData.class);
 
         stats.hp = interactiveData.hp();
         destructible = interactiveData.destructible();

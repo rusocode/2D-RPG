@@ -33,10 +33,7 @@ public class CutsceneSystem {
 
             world.entitySystem.createItem(ItemID.IRON_DOOR, world.map.id, 25, 28);
 
-            world.entitySystem.createMob(MobID.PLAYER_DUMMY, world.map.id,
-                    world.entitySystem.player.position.x,
-                    world.entitySystem.player.position.y
-            ).direction = world.entitySystem.player.direction;
+            world.entitySystem.createMob(MobID.PLAYER_DUMMY, world.map.id,world.entitySystem.player.position.x,world.entitySystem.player.position.y).direction = world.entitySystem.player.direction;
 
             world.entitySystem.player.drawing = false;
             phase++;

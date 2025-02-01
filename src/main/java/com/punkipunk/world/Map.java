@@ -80,7 +80,10 @@ public class Map {
      */
     private void loadMaps() {
         MapsConfig config = JsonLoader.getInstance().deserialize("maps", MapsConfig.class);
-        config.maps().forEach((key, mapData) -> loadMap(mapData));
+        config.maps().forEach((key, mapData) -> {
+            MapID mapId = MapID.valueOf(key);
+            loadMap(mapId, mapData);
+        });
     }
 
     /**
@@ -104,10 +107,11 @@ public class Map {
      * <li>Evita la sobrecarga de iteracion en Java
      * </ul>
      *
+     * @param mapId   id del mapa
      * @param mapData datos del mapa
      * @throws RuntimeException si hay error al leer el archivo o el formato es invalido
      */
-    private void loadMap(MapData mapData) {
+    private void loadMap(MapID mapId, MapData mapData) {
         try (BufferedReader br = new BufferedReader(new InputStreamReader(Objects.requireNonNull(getClass().getResourceAsStream("/" + mapData.path()))))) {
 
             int row = 0;
@@ -115,7 +119,7 @@ public class Map {
 
             while ((line = br.readLine()) != null && row < MAX_MAP_ROW) {
                 int[] tileIndices = parseLine(line);
-                System.arraycopy(tileIndices, 0, tileIndex[mapData.id().ordinal()][row], 0, MAX_MAP_COL);
+                System.arraycopy(tileIndices, 0, tileIndex[mapId.ordinal()][row], 0, MAX_MAP_COL);
                 row++;
             }
 

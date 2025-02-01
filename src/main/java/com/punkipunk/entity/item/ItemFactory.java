@@ -13,7 +13,7 @@ public class ItemFactory {
         this.world = world;
     }
 
-    public Item createEntity(ItemID id, int... pos) {
+    public Item create(ItemID id, int... pos) {
         return switch (id) {
             case BOOTS -> new Boots(game, world, pos);
             case CHEST -> new Chest(game, world, pos);
@@ -32,7 +32,7 @@ public class ItemFactory {
         };
     }
 
-    public Item createEntityWithAmount(ItemID id, int amount, int... pos) {
+    public Item createWithAmount(ItemID id, int amount, int... pos) {
         return switch (id) {
             case GOLD -> new Gold(game, world, amount, pos);
             case POTION_RED -> new PotionRed(game, world, amount, pos);

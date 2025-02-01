@@ -2,10 +2,10 @@ package com.punkipunk.world;
 
 public enum MapID {
 
-    ABANDONED_ISLAND(Zone.OVERWORLD),
-    ABANDONED_ISLAND_MARKET(Zone.MARKET),
+    ABANDONED_ISLAND(Zone.FOREST),
+    ABANDONED_ISLAND_MARKET(Zone.FOREST),
     DUNGEON_BREG(Zone.DUNGEON),
-    DUNGEON_BREG_SUB(Zone.BOSS);
+    DUNGEON_BREG_SUB(Zone.DUNGEON);
 
     public final Zone zone;
 

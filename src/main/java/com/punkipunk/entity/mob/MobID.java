@@ -16,20 +16,12 @@ public enum MobID {
     TRADER("trader", MobCategory.NPC),
     PLAYER_DUMMY("playerDummy", MobCategory.NPC);
 
-    private final String name;
-    private final MobCategory category;
+    public final String name;
+    public final MobCategory category;
 
     MobID(String name, MobCategory category) {
         this.name = name;
         this.category = category;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public MobCategory getCategory() {
-        return category;
     }
 
 }

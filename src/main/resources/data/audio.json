@@ -10,12 +10,20 @@
     }
   },
   "ambient": {
+    "city": {
+      "path": "audio/ambient/city.wav",
+      "loop": true
+    },
     "dungeon": {
       "path": "audio/ambient/dungeon.wav",
       "loop": true
     },
-    "overworld": {
-      "path": "audio/ambient/overworld.wav",
+    "forest": {
+      "path": "audio/ambient/forest.wav",
+      "loop": true
+    },
+    "village": {
+      "path": "audio/ambient/village.wav",
       "loop": true
     }
   },

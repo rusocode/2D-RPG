@@ -64,10 +64,11 @@ public class EventActions {
      * Al cambiar de posicion no hace falta desactivar canTriggerEvent ya que la entidad se aleja cuando se teletransporta.
      */
     public void teleport(MapID mapId, int col, int row) {
+        // Si la zona del mapa actual es distinta a la zona que se teletransporta, entonces reproduce el sonido ambiente de la nueva zona
+        if (!world.map.id.zone.equals(mapId.zone)) game.gameSystem.audio.playAmbient(mapId.zone.name().toLowerCase());
         world.map.id = mapId;
         world.entitySystem.player.position.x = (int) ((col * tile) + world.entitySystem.player.hitbox.getWidth() / 2);
         world.entitySystem.player.position.y = (int) ((row * tile) - world.entitySystem.player.hitbox.getHeight());
-        game.gameSystem.audio.playAmbient(mapId.zone.name().toLowerCase());
     }
 
 }

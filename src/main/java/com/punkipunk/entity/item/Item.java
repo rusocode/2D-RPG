@@ -40,8 +40,8 @@ public abstract class Item extends Entity {
     public Item(Game game, World world, int... pos) {
         super(game, world, pos);
 
-        this.itemData = JsonLoader.getInstance().deserialize("items." + getID().getName(), ItemData.class);
-        this.itemCategory = getID().getCategory();
+        this.itemData = JsonLoader.getInstance().deserialize("items." + getID().name, ItemData.class);
+        this.itemCategory = getID().category;
 
         stats.name = itemData.name();
         description = itemData.description();

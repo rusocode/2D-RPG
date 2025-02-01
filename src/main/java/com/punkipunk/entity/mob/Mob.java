@@ -38,10 +38,10 @@ public abstract class Mob extends Entity {
     public Mob(Game game, World world, int... pos) {
         super(game, world, pos);
 
-        this.mobData = JsonLoader.getInstance().deserialize("mobs." + getID().getName(), MobData.class);
+        this.mobData = JsonLoader.getInstance().deserialize("mobs." + getID().name, MobData.class);
 
         // La categoria se obtiene automaticamente del id
-        this.mobCategory = getID().getCategory();
+        this.mobCategory = getID().category;
 
         stats.name = mobData.name();
         stats.speed = stats.baseSpeed = mobData.speed();

@@ -14,6 +14,9 @@ package com.punkipunk.entity.mob;
 
 public enum MobCategory {
 
-    NPC, HOSTILE, NEUTRAL, PEACEFUL;
+    NPC,
+    HOSTILE,
+    NEUTRAL,
+    PEACEFUL;
 
 }
