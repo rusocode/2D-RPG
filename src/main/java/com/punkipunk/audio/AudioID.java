@@ -42,14 +42,11 @@ public final class AudioID {
     public static final class Sound {
 
         public static final String BAT_DEATH = "batDeath";
-        public static final String BAT_DEATH2 = "batDeath2";
         public static final String BAT_HIT = "batHit";
-        public static final String BAT_HIT2 = "batHit2";
         public static final String BURST_OF_FIRE = "burstOfFire";
-        public static final String BURST_OF_FIRE2 = "burstOfFire2";
         public static final String CHEST_OPENING = "chestOpening";
         public static final String CHIPWALL = "chipwall";
-        public static final String CLICK2 = "click2";
+        public static final String CLICK = "click";
         public static final String CUT_TREE = "cutTree";
         public static final String DOOR_IRON_OPENING = "doorIronOpening";
         public static final String DOOR_OPENING = "doorOpening";
@@ -72,9 +69,8 @@ public final class AudioID {
         public static final String SLEEP = "sleep";
         public static final String SLIME_HIT = "slimeHit";
         public static final String SPAWN = "spawn";
-        public static final String SPAWN2 = "spawn2";
         public static final String SWING_AXE = "swingAxe";
-        public static final String SWING_WEAPON = "swingWeapon"; // TODO Cambiar por SWING_SWORD
+        public static final String SWING_SWORD = "swingSword";
         public static final String TRADE_BUY = "tradeBuy";
         public static final String TRADE_OPENING = "tradeOpening";
         public static final String TRADE_SELL = "tradeSell";

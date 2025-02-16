@@ -207,6 +207,7 @@ public class Game extends AnimationTimer {
         super.stop();
         running = false;
         paused = false;
+        gameSystem.audio.shutdown();
     }
 
     public void pause() {

@@ -8,7 +8,6 @@
     "animationSpeed": 120,
     "frameScale": 2,
     "alive": false,
-    "sound": "burstOfFire2",
     "spriteSheetPath": "textures/entity/spell/burst_of_fire.png"
   },
   "fireball": {
@@ -23,7 +22,6 @@
     "frameHeight": 16,
     "frameScale": 2,
     "alive": false,
-    "sound": "fireball",
     "spriteSheetPath": "textures/entity/spell/fireball.png"
   },
   "stickyBall": {

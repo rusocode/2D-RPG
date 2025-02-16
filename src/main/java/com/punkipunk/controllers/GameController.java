@@ -141,7 +141,7 @@ public class GameController implements Initializable {
                  * clic y luego ejecuta el manejador original si existia uno. Esto preserva cualquier funcionalidad que el Label
                  * ya tuviera. */
                 label.setOnMouseClicked(event -> {
-                    game.gameSystem.audio.playSound(AudioID.Sound.CLICK2);
+                    game.gameSystem.audio.playSound(AudioID.Sound.CLICK);
                     if (originalHandler != null) originalHandler.handle(event); // Si habia un handler original, lo ejecuta
                 });
             }
@@ -179,7 +179,7 @@ public class GameController implements Initializable {
 
     public void quitToMainMenu() {
         sceneManager.switchScene(sceneManager.getMainScene());
-        game.gameSystem.audio.stopAll();
+        game.gameSystem.audio.stopPlayback();
     }
 
     public Canvas getCanvas() {

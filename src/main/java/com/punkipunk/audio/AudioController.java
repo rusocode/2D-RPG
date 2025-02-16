@@ -1,15 +1,24 @@
 package com.punkipunk.audio;
 
 /**
- * Controlador que gestiona la reproduccion de audio en el juego.
+ * Fachada de alto nivel que proporciona una interfaz simplificada para el sistema de audio.
  * <p>
- * Actua como una capa de abstraccion entre el mundo del juego y el servicio de audio, facilitando la reproduccion de efectos de
- * sonido, musica y sonidos ambientales.
+ * Esta clase actua como punto de entrada principal para todas las operaciones de audio, incluyendo:
+ * <ul>
+ * <li>Reproduccion de musica de fondo</li>
+ * <li>Reproduccion de sonidos ambientales</li>
+ * <li>Reproduccion de efectos de sonido</li>
+ * <li>Control de volumen por canal</li>
+ * <li>Gestion del ciclo de vida de recursos de audio</li>
+ * </ul>
+ * <p>
+ * El controlador delega todas las operaciones al servicio de audio subyacente, manteniendo una clara separacion de
+ * responsabilidades y ocultando los detalles de implementacion.
  */
 
 public class AudioController {
 
-    /** Servicio que maneja las operaciones de audio de bajo nivel */
+    /** Servicio que implementa la logica de audio */
     private final AudioService audioService;
 
     public AudioController() {
@@ -18,8 +27,11 @@ public class AudioController {
 
     /**
      * Reproduce un efecto de sonido.
+     * <p>
+     * Los identificadores de sonido deben corresponder a las entradas definidas en la seccion "sound" del archivo
+     * {@code audio.json}.
      *
-     * @param id identificador del sonido a reproducir
+     * @param id identificador del efecto de sonido
      */
     public void playSound(String id) {
         audioService.play(AudioChannel.SOUND, id);
@@ -27,63 +39,82 @@ public class AudioController {
 
     /**
      * Reproduce un sonido ambiental.
+     * <p>
+     * Los identificadores ambientales deben corresponder a las entradas definidas en la seccion "ambient" del archivo
+     * {@code audio.json}.
      *
-     * @param id identificador del sonido ambiental a reproducir
+     * @param id identificador del sonido ambiental
      */
     public void playAmbient(String id) {
-        audioService.stop(AudioChannel.AMBIENT);
         audioService.play(AudioChannel.AMBIENT, id);
     }
 
     /**
      * Reproduce una pista musical.
+     * <p>
+     * Los identificadores de musica deben corresponder a las entradas definidas en la seccion "music" del archivo
+     * {@code audio.json}.
      *
-     * @param id identificador de la musica a reproducir
+     * @param id identificador de la pista musical
      */
     public void playMusic(String id) {
-        audioService.stop(AudioChannel.MUSIC);
         audioService.play(AudioChannel.MUSIC, id);
     }
 
     /**
-     * Detiene la reproduccion del audio en todos los canales.
+     * Detiene toda la reproduccion de audio.
      */
-    public void stopAll() {
-        audioService.stopAll();
+    public void stopPlayback() {
+        audioService.stopPlayback();
     }
 
     /**
-     * Guarda el volumen en un archivo de configuracion.
+     * Persiste la configuracion actual de volumen.
+     * <p>
+     * Guarda los niveles de volumen de todos los canales en el archivo {@code volume.json}.
      */
-    public void save() {
-        audioService.save();
+    public void saveVolume() {
+        audioService.saveVolume();
     }
 
     /**
-     * Obtiene la instancia de Audio asociada al canal MUSIC.
+     * Obtiene la source de audio para el canal de musica.
+     * <p>
+     * Permite control directo sobre la reproduccion y volumen de la musica.
      *
-     * @return la instancia de Audio asociada al canal MUSIC
+     * @return source de audio del canal de musica
      */
-    public Audio getMusic() {
-        return audioService.get(AudioChannel.MUSIC);
+    public AudioSource getMusic() {
+        return audioService.getAudioSource(AudioChannel.MUSIC);
     }
 
     /**
-     * Obtiene la instancia de Audio asociada al canal AMBIENT.
+     * Obtiene la source de audio para el canal ambiental.
+     * <p>
+     * Permite control directo sobre la reproduccion y volumen de sonidos ambientales.
      *
-     * @return la instancia de Audio asociada al canal AMBIENT
+     * @return source de audio del canal ambiental
      */
-    public Audio getAmbient() {
-        return audioService.get(AudioChannel.AMBIENT);
+    public AudioSource getAmbient() {
+        return audioService.getAudioSource(AudioChannel.AMBIENT);
     }
 
     /**
-     * Obtiene la instancia de Audio asociada al canal SOUND.
+     * Obtiene la source de audio para el canal de efectos de sonido.
+     * <p>
+     * Permite control directo sobre el volumen de los efectos de sonido.
      *
-     * @return la instancia de Audio asociada al canal SOUND
+     * @return source de audio del canal de efectos
      */
-    public Audio getSound() {
-        return audioService.get(AudioChannel.SOUND);
+    public AudioSource getSound() {
+        return audioService.getAudioSource(AudioChannel.SOUND);
+    }
+
+    /**
+     * Cierra el sistema de audio.
+     */
+    public void shutdown() {
+        audioService.shutdown();
     }
 
 }

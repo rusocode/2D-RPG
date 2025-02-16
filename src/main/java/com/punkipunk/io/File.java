@@ -12,8 +12,6 @@ import javax.swing.*;
 import java.io.*;
 import java.util.ArrayList;
 
-import static com.punkipunk.audio.AudioServiceImpl.DEFAULT_VOLUME;
-
 public class File {
 
     private final Game game;
@@ -48,9 +46,9 @@ public class File {
     private void loadConfig() {
         try {
             VolumeData volumeConfig = new VolumeData(
-                    DEFAULT_VOLUME,
-                    DEFAULT_VOLUME,
-                    DEFAULT_VOLUME
+                    3,
+                    3,
+                    3
             );
             // VolumeLevelConfig volumeConfig = configManager.getConfig("audio.volume", VolumeLevelConfig.class);
             game.gameSystem.audio.getMusic().volume = volumeConfig.musicVolume();

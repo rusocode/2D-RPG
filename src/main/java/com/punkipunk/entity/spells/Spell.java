@@ -33,7 +33,6 @@ public abstract class Spell extends Entity {
         stats.knockback = spellData.knockback();
         cost = spellData.cost();
         flags.alive = spellData.alive();
-        sound = spellData.sound();
 
     }
 

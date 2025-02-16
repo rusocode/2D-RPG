@@ -1,5 +1,6 @@
 package com.punkipunk;
 
+import com.punkipunk.core.Game;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -10,9 +11,11 @@ import java.util.Objects;
 public class WindowManager {
 
     private final Stage stage;
+    private final Game game;
 
-    public WindowManager(Stage stage) {
+    public WindowManager(Stage stage, Game game) {
         this.stage = stage;
+        this.game = game;
     }
 
     public void configureWindow(String title) {
@@ -31,7 +34,10 @@ public class WindowManager {
     private void showExitConfirmation() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to exit?", ButtonType.YES, ButtonType.NO);
         alert.showAndWait().ifPresent(response -> {
-            if (response == ButtonType.YES) stage.close();
+            if (response == ButtonType.YES) {
+                game.stop();
+                stage.close();
+            }
         });
     }
 

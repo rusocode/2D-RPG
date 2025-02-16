@@ -1,143 +1,125 @@
 {
   "music": {
     "boss": {
-      "path": "audio/music/boss.wav",
-      "loop": true
+      "path": "audio/music/boss.ogg"
     },
     "main": {
-      "path": "audio/music/main.wav",
-      "loop": true
+      "path": "audio/music/main.ogg"
     }
   },
   "ambient": {
     "city": {
-      "path": "audio/ambient/city.wav",
-      "loop": true
+      "path": "audio/ambient/city.ogg"
     },
     "dungeon": {
-      "path": "audio/ambient/dungeon.wav",
-      "loop": true
+      "path": "audio/ambient/dungeon.ogg"
     },
     "forest": {
-      "path": "audio/ambient/forest.wav",
-      "loop": true
+      "path": "audio/ambient/forest.ogg"
     },
     "village": {
-      "path": "audio/ambient/village.wav",
-      "loop": true
+      "path": "audio/ambient/village.ogg"
     }
   },
   "sound": {
     "batDeath": {
-      "path": "audio/sound/bat_death.wav"
-    },
-    "batDeath2": {
-      "path": "audio/sound/bat_death2.wav"
+      "path": "audio/sound/bat_death.ogg"
     },
     "batHit": {
-      "path": "audio/sound/bat_hit.wav"
-    },
-    "batHit2": {
-      "path": "audio/sound/bat_hit2.wav"
+      "path": "audio/sound/bat_hit.ogg"
     },
     "burstOfFire": {
-      "path": "audio/sound/burst_of_fire.wav"
-    },
-    "burstOfFire2": {
-      "path": "audio/sound/burst_of_fire2.wav"
+      "path": "audio/sound/burst_of_fire.ogg"
     },
     "chestOpening": {
-      "path": "audio/sound/chest_opening.wav"
+      "path": "audio/sound/chest_opening.ogg"
     },
     "chipwall": {
-      "path": "audio/sound/chipwall.wav"
+      "path": "audio/sound/chipwall.ogg"
     },
-    "click2": {
-      "path": "audio/sound/click2.wav"
+    "click": {
+      "path": "audio/sound/click.ogg"
     },
     "cutTree": {
-      "path": "audio/sound/cut_tree.wav"
+      "path": "audio/sound/cut_tree.ogg"
     },
     "doorIronOpening": {
-      "path": "audio/sound/door_iron_opening.wav"
+      "path": "audio/sound/door_iron_opening.ogg"
     },
     "doorOpening": {
-      "path": "audio/sound/door_opening.wav"
+      "path": "audio/sound/door_opening.ogg"
     },
     "drawPickaxe": {
-      "path": "audio/sound/draw_pickaxe.wav"
+      "path": "audio/sound/draw_pickaxe.ogg"
     },
     "drawSword": {
-      "path": "audio/sound/draw_sword.wav"
+      "path": "audio/sound/draw_sword.ogg"
     },
     "drinkPotion": {
-      "path": "audio/sound/drink_potion.wav"
+      "path": "audio/sound/drink_potion.ogg"
     },
     "eat": {
-      "path": "audio/sound/eat.wav"
+      "path": "audio/sound/eat.ogg"
     },
     "fireball": {
-      "path": "audio/sound/fireball.wav"
+      "path": "audio/sound/fireball.ogg"
     },
     "goldPickup": {
-      "path": "audio/sound/gold_pickup.wav"
+      "path": "audio/sound/gold_pickup.ogg"
     },
     "hover": {
-      "path": "audio/sound/hover.wav"
+      "path": "audio/sound/hover.ogg"
     },
     "itemPickup": {
-      "path": "audio/sound/item_pickup.wav"
+      "path": "audio/sound/item_pickup.ogg"
     },
     "levelUp": {
-      "path": "audio/sound/level_up2.wav"
+      "path": "audio/sound/level_up.ogg"
     },
     "mine": {
-      "path": "audio/sound/mine.wav"
+      "path": "audio/sound/mine.ogg"
     },
     "mobDeath": {
-      "path": "audio/sound/mob_death.wav"
+      "path": "audio/sound/mob_death.ogg"
     },
     "mobHit": {
-      "path": "audio/sound/mob_hit.wav"
+      "path": "audio/sound/mob_hit.ogg"
     },
     "orcDeath": {
-      "path": "audio/sound/orc_death2.wav"
+      "path": "audio/sound/orc_death2.ogg"
     },
     "orcHit": {
-      "path": "audio/sound/orc_hit.wav"
+      "path": "audio/sound/orc_hit.ogg"
     },
     "playerDamage": {
-      "path": "audio/sound/player_damage.wav"
+      "path": "audio/sound/player_damage.ogg"
     },
     "playerDeath": {
-      "path": "audio/sound/player_death.wav"
+      "path": "audio/sound/player_death.ogg"
     },
     "sleep": {
-      "path": "audio/sound/sleep.wav"
+      "path": "audio/sound/sleep.ogg"
     },
     "slimeHit": {
-      "path": "audio/sound/slime_hit.wav"
+      "path": "audio/sound/slime_hit.ogg"
     },
     "spawn": {
-      "path": "audio/sound/spawn.wav"
-    },
-    "spawn2": {
-      "path": "audio/sound/spawn2.wav"
+      "path": "audio/sound/spawn.ogg"
     },
     "swingAxe": {
-      "path": "audio/sound/swing_axe.wav"
+      "path": "audio/sound/swing_axe.ogg"
     },
-    "swingWeapon": {
-      "path": "audio/sound/swing_weapon.wav"
+    "swingSword": {
+      "path": "audio/sound/swing_sword3.ogg"
     },
     "tradeBuy": {
-      "path": "audio/sound/trade_buy.wav"
+      "path": "audio/sound/trade_buy.ogg"
     },
     "tradeOpening": {
-      "path": "audio/sound/trade_opening.wav"
+      "path": "audio/sound/trade_opening.ogg"
     },
     "tradeSell": {
-      "path": "audio/sound/trade_sell.wav"
+      "path": "audio/sound/trade_sell.ogg"
     }
   }
 }

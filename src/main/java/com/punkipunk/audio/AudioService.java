@@ -1,38 +1,62 @@
 package com.punkipunk.audio;
 
+/**
+ * <p>
+ * Define las operaciones basicas del servicio de audio.
+ * <p>
+ * Esta interfaz actua como una capa de abstraccion entre el controlador de audio y el engine de audio de bajo nivel,
+ * proporcionando operaciones para:
+ * <ul>
+ * <li>Reproduccion de audio en diferentes canales</li>
+ * <li>Control del sistema de audio</li>
+ * <li>Gestion de volumen</li>
+ * <li>Acceso a canales de audio individuales</li>
+ * </ul>
+ */
+
 public interface AudioService {
 
     /**
-     * Reproduce el audio en el canal especificado.
+     * Reproduce un archivo de audio en el canal especificado.
+     * <p>
+     * El identificador del audio debe corresponder a una entrada en el archivo {@code audio.json}. Por ejemplo, para reproducir
+     * musica de fondo:
+     * <pre>{@code
+     * play(AudioChannel.MUSIC, "main");
+     * }</pre>
      *
-     * @param channel canal del audio
-     * @param id      identificador del audio
+     * @param channel canal donde reproducir el audio
+     * @param id      identificador del archivo de audio en {@code audio.json}
      */
     void play(AudioChannel channel, String id);
 
     /**
-     * Detiene el audio que se esta reproduciendo en el canal especificado.
+     * Detiene toda la reproduccion de audio.
+     */
+    void stopPlayback();
+
+    /**
+     * Obtiene la source de audio asociada a un canal especifico.
+     * <p>
+     * Permite acceder a la configuracion y control detallado de un canal de audio. Para el canal SOUND, devuelve una source
+     * virtual que controla el volumen del pool.
      *
-     * @param channel canal del audio
+     * @param channel canal del cual obtener la source de audio
+     * @return source de audio asociada al canal especificado
      */
-    void stop(AudioChannel channel);
+    AudioSource getAudioSource(AudioChannel channel);
 
     /**
-     * Detiene la reproduccion del audio en todos los canales.
+     * Guarda la configuracion actual de volumen.
+     * <p>
+     * Persiste los niveles de volumen de todos los canales en el archivo {@code volume.json} para mantenerlos entre sesiones del
+     * juego.
      */
-    void stopAll();
+    void saveVolume();
 
     /**
-     * Obtiene la instancia de Audio asociada al canal especificado.
-     *
-     * @param channel canal del audio
-     * @return la instancia de Audio asociada al canal especificado
+     * Cierra el sistema de audio.
      */
-    Audio get(AudioChannel channel);
-
-    /**
-     * Guarda el volumen en un archivo de configuracion.
-     */
-    void save();
+    void shutdown();
 
 }

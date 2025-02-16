@@ -9,7 +9,7 @@ public class StoneSword extends Item {
     public StoneSword(Game game, World world, int... pos) {
         super(game, world, pos);
         soundDraw = AudioID.Sound.DRAW_SWORD;
-        soundSwing = AudioID.Sound.SWING_WEAPON;
+        soundSwing = AudioID.Sound.SWING_SWORD;
     }
 
     @Override

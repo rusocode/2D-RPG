@@ -36,7 +36,7 @@ public class MainController {
     private void handleLoadGameClicked() {
         sceneDirector.switchScene(sceneDirector.getGameScene());
         game.gameSystem.file.loadData();
-        game.gameSystem.audio.playSound(AudioID.Sound.SPAWN2);
+        game.gameSystem.audio.playSound(AudioID.Sound.SPAWN);
         game.gameSystem.audio.playAmbient(game.gameSystem.world.map.id.zone.name().toLowerCase());
         game.start();
         State.setState(State.PLAY);
@@ -47,7 +47,7 @@ public class MainController {
      */
     @FXML
     private void handleQuitClicked() {
-        game.gameSystem.audio.playSound(AudioID.Sound.CLICK2);
+        game.gameSystem.audio.playSound(AudioID.Sound.CLICK);
         System.exit(0);
     }
 
@@ -90,8 +90,8 @@ public class MainController {
     }
 
     private void startGame(Game game) {
-        game.gameSystem.audio.stopAll();
-        game.gameSystem.audio.playSound(AudioID.Sound.SPAWN2);
+        game.gameSystem.audio.stopPlayback();
+        game.gameSystem.audio.playSound(AudioID.Sound.SPAWN);
         game.gameSystem.audio.playAmbient(game.gameSystem.world.map.id.zone.name().toLowerCase());
         game.start();
         State.setState(State.PLAY);

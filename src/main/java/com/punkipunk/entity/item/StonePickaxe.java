@@ -8,6 +8,7 @@ public class StonePickaxe extends Item {
 
     public StonePickaxe(Game game, World world, int... pos) {
         super(game, world, pos);
+        soundSwing = AudioID.Sound.SWING_AXE;
         soundDraw = AudioID.Sound.DRAW_PICKAXE;
     }
 

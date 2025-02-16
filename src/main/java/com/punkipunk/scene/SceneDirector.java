@@ -17,6 +17,8 @@ public class SceneDirector {
     private Scene mainScene;
     private Scene gameScene;
 
+    public Game game;
+
     private GameController gameController;
 
     private SceneDirector() {
@@ -54,6 +56,7 @@ public class SceneDirector {
                 .withRenderingComponents(gameController)
                 .build();
         game.setup(); // Configura el juego una vez creado, obviamente!
+        this.game = game;
         return game;
     }
 
@@ -68,5 +71,7 @@ public class SceneDirector {
     public Scene getGameScene() {
         return gameScene;
     }
+
+
 
 }

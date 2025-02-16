@@ -209,7 +209,7 @@ public class Player extends Entity {
             int damage = Math.max(attack - mob.stats.defense, 1);
             mob.stats.decreaseHp(damage);
             game.gameSystem.ui.addMessageToConsole(damage + " damage!");
-            if (mob.stats.hp > 0) {
+            if (mob.stats.hp >= 0) {
                 game.gameSystem.audio.playSound(AudioID.Sound.MOB_HIT); // Sonido de mob golpeado
                 game.gameSystem.audio.playSound(mob.soundHit); // Sonido especifico de mob golpeado
             }
@@ -221,7 +221,6 @@ public class Player extends Entity {
     }
 
     private void handleMobDeath(Mob mob) {
-        game.gameSystem.audio.playSound(AudioID.Sound.MOB_DEATH);
         game.gameSystem.audio.playSound(mob.soundDeath);
         mob.flags.dead = true;
         game.gameSystem.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
@@ -328,7 +327,7 @@ public class Player extends Entity {
         game.gameSystem.audio.playSound(AudioID.Sound.PLAYER_DEATH);
         State.setState(State.GAME_OVER);
         game.gameSystem.ui.command = -1;
-        game.gameSystem.audio.stopAll();
+        game.gameSystem.audio.stopPlayback();
     }
 
     private void checkLevelUp() {

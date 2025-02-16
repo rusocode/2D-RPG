@@ -1,5 +1,6 @@
 package com.punkipunk.entity.spells;
 
+import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.mob.MobCategory;
@@ -32,6 +33,7 @@ public class BurstOfFire extends Spell {
 
     public BurstOfFire(Game game, World world) {
         super(game, world, JsonLoader.getInstance().deserialize("spells.burstOfFire", SpellData.class));
+        sound = AudioID.Sound.BURST_OF_FIRE;
         hitbox = new Rectangle(0, 0, tile * spellData.frameScale() - 35, tile * spellData.frameScale());
         sheet.loadBurstOfFireFrames(new SpriteSheet(Utils.loadTexture(spellData.spriteSheetPath())), spellData.frameScale());
         down = new Animation(spellData.animationSpeed(), sheet.down);

@@ -12,7 +12,6 @@ public record SpellData(
         Integer frameHeight,
         Integer frameScale,
         Boolean alive,
-        String sound,
         String texturePath,
         String spriteSheetPath) {
 

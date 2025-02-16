@@ -1,6 +1,6 @@
 package com.punkipunk.controllers;
 
-import com.punkipunk.audio.Audio;
+import com.punkipunk.audio.AudioSource;
 import com.punkipunk.core.Game;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,7 +31,7 @@ public class OptionsController implements Initializable {
 
     private Game game;
     private GameController gameController;
-    private Audio music, ambient, sound;
+    private AudioSource music, ambient, sound;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -46,10 +46,11 @@ public class OptionsController implements Initializable {
         gameController.saveGame();
     }
 
-    public void setAudioSystems(Audio music, Audio ambient, Audio sound) {
+    public void setAudioSystems(AudioSource music, AudioSource ambient, AudioSource sound) {
         this.music = music;
         this.ambient = ambient;
         this.sound = sound;
+        // TODO Se podria establecer el volumen desde fxml?
         musicSlider.setValue(music.volume);
         ambientSlider.setValue(ambient.volume);
         soundSlider.setValue(sound.volume);
@@ -70,22 +71,19 @@ public class OptionsController implements Initializable {
     private void setupVolumeControls() {
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
             // Actualiza el nivel de volumen de la musica con el nuevo valor del slider
-            music.volume = newValue.intValue();
-            music.setVolume();
-            // Guarda el nuevo valor del volumen en el archivo de configuracion de nivel de volumen
-            game.gameSystem.audio.save();
+            music.setVolume(newValue.intValue(), true);
+            // Guarda el nuevo valor del volumen en volume.json
+            game.gameSystem.audio.saveVolume();
         });
 
         ambientSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            ambient.volume = newValue.intValue();
-            ambient.setVolume();
-            game.gameSystem.audio.save();
+            ambient.setVolume(newValue.intValue(), true);
+            game.gameSystem.audio.saveVolume();
         });
 
         soundSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            sound.volume = newValue.intValue();
-            sound.setVolume();
-            game.gameSystem.audio.save();
+            sound.setVolume(newValue.intValue(), true);
+            game.gameSystem.audio.saveVolume();
         });
     }
 

@@ -15,10 +15,10 @@ public class Launcher extends Application {
     @Override
     public void start(Stage stage) {
         SceneDirector.getInstance().initialize(stage); // Inicializa el SceneManager con el stage principal
-        WindowManager windowManager = new WindowManager(stage);
+        stage.setScene(SceneDirector.getInstance().createMainScene());
+        WindowManager windowManager = new WindowManager(stage, SceneDirector.getInstance().game);
         windowManager.configureWindow("2D-RPG " + VERSION);
         windowManager.setOnCloseRequest();
-        stage.setScene(SceneDirector.getInstance().createMainScene());
         stage.show();
     }
 

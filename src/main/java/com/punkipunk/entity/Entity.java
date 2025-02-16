@@ -37,7 +37,7 @@ public abstract class Entity {
     public final Mechanics mechanics;
     public final Position position; // TODO Podria ir en World
 
-    public String soundHit, soundDeath;
+    public String soundHit, soundDeath = AudioID.Sound.MOB_DEATH;
     public MobCategory mobCategory; // TODO Se podria mover a Mob?
     public Direction direction = Direction.DOWN;
     public Rectangle hitbox = new Rectangle(0, 0, tile, tile); // TODO Se crea aca?
