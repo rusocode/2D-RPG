@@ -64,6 +64,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  * El WAV es un formato de audio sin comprimir que ofrece maxima calidad pero ocupa mucho espacio, mientras que el Ogg es un
  * formato comprimido que ofrece muy buena calidad ocupando mucho menos espacio. WAV se usa principalmente en entornos
  * profesionales de audio, mientras que Ogg es mas comun en videojuegos y streaming por su buen balance entre calidad y tamaño.
+ * Al reemplazar los .wav por los .ogg de este proyecto, se ahorraron casi 87 MB!
  * <p>
  * La clase {@link org.lwjgl.stb.STBVorbis STBVorbis} tiene la funcionalidad de decodificar archivos de audio Ogg Vorbis en
  * memoria antes de reproducirlos con el metodo {@link org.lwjgl.stb.STBVorbis#stb_vorbis_decode_memory stb_vorbis_decode_memory}.
