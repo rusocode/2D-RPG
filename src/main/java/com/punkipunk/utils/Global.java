@@ -48,7 +48,7 @@ public final class Global {
     public static final boolean FPS_UNLIMITED = false;
 
     // Otros
-    public static final String VERSION = "0.0.11a";
+    public static final String VERSION = "0.1.0-alpha"; // https://semver.org/
     public static final int MAX_LVL = 50;
     public static final int SUBWINDOW_ALPHA = 1;
     // Numero de tiles visibles

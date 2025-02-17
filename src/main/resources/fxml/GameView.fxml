@@ -14,6 +14,7 @@
            AnchorPane.topAnchor="5.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0"/>
 
     <VBox fx:id="debug" styleClass="debug-container" visible="false" AnchorPane.topAnchor="5" AnchorPane.leftAnchor="5">
+        <Label fx:id="versionLabel"/>
         <Label fx:id="fpsLabel"/>
         <Label fx:id="positionLabel"/>
         <Label fx:id="cycleLabel"/>
