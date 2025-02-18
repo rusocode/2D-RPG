@@ -70,6 +70,7 @@ public class OptionsController implements Initializable {
      */
     private void setupVolumeControls() {
         musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            // TODO Se podria hacer dos en 1 (actualizar el volumen y guardar la configuracion)
             // Actualiza el nivel de volumen de la musica con el nuevo valor del slider
             music.setVolume(newValue.intValue(), true);
             // Guarda el nuevo valor del volumen en volume.json

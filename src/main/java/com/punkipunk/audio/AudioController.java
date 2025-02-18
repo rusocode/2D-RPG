@@ -79,8 +79,6 @@ public class AudioController {
 
     /**
      * Obtiene la source de audio para el canal de musica.
-     * <p>
-     * Permite control directo sobre la reproduccion y volumen de la musica.
      *
      * @return source de audio del canal de musica
      */
@@ -90,8 +88,6 @@ public class AudioController {
 
     /**
      * Obtiene la source de audio para el canal ambiental.
-     * <p>
-     * Permite control directo sobre la reproduccion y volumen de sonidos ambientales.
      *
      * @return source de audio del canal ambiental
      */
@@ -101,10 +97,8 @@ public class AudioController {
 
     /**
      * Obtiene la source de audio para el canal de efectos de sonido.
-     * <p>
-     * Permite control directo sobre el volumen de los efectos de sonido.
      *
-     * @return source de audio del canal de efectos
+     * @return source de audio del canal de sonido
      */
     public AudioSource getSound() {
         return audioService.getAudioSource(AudioChannel.SOUND);

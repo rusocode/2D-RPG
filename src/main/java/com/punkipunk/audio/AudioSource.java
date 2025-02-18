@@ -5,8 +5,8 @@ import static org.lwjgl.openal.AL10.*;
 /**
  * Encapsula una source de audio OpenAL y proporciona una interfaz de alto nivel para su control.
  * <p>
- * Una source (source) en OpenAL es un "reproductor de audio virtual" que puede reproducir datos de audio almacenados en un
- * buffer. Esta clase gestiona:
+ * Una source en OpenAL es un "reproductor de audio virtual" que puede reproducir datos de audio almacenados en un buffer. Esta
+ * clase gestiona:
  * <ul>
  * <li>Reproduccion y detencion de audio</li>
  * <li>Control de volumen</li>
@@ -21,7 +21,7 @@ public class AudioSource {
     /** Nivel de volumen por defecto (rango 0-5) */
     public static final int DEFAULT_VOLUME = 3; // TODO No tendria que ir en VolumeManager?
     /**
-     * Mapa de niveles de volumen a valores OpenAL (0.0f a 1.0f).
+     * Niveles de volumen a valores OpenAL (0.0f a 1.0f).
      * <p>
      * Los indices representan:
      * <ul>
@@ -44,7 +44,7 @@ public class AudioSource {
     private final AudioChannel channel;
     /** Indica si los cambios de volumen deben propagarse al pool de sonidos */
     private final boolean propagateToSoundPool;
-    /** Nivel actual de volumen (0-5) */
+    /** Volumen actual (0-5) */
     public int volume = DEFAULT_VOLUME;
     /** ID del buffer asociado (-1 = ninguno) */
     private int buffer = -1;
@@ -65,7 +65,7 @@ public class AudioSource {
         this.volumeSystem = volumeSystem;
         this.propagateToSoundPool = propagateToSoundPool;
         this.channel = channel;
-        setVolume(volumeSystem.getVolume(channel), propagateToSoundPool);
+        initVolume(volumeSystem.get(channel));
         alSourcei(source, AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
     }
 
@@ -98,7 +98,7 @@ public class AudioSource {
     }
 
     /**
-     * Verifica si la source esta reproduciendo audio actualmente.
+     * Verifica si la source esta reproduciendo audio.
      * <p>
      * Consulta el estado de la source OpenAL usando AL_SOURCE_STATE para determinar si esta en estado AL_PLAYING.
      *
@@ -109,18 +109,31 @@ public class AudioSource {
     }
 
     /**
-     * Establece el nivel de volumen con control sobre la propagacion.
+     * Establece el volumen con control sobre la propagacion.
      *
-     * @param volume    nivel de volumen (0-5)
+     * @param volumen   volumen actual
      * @param propagate true para propagar el cambio al sistema de audio
      */
-    public void setVolume(int volume, boolean propagate) {
+    public void setVolume(int volumen, boolean propagate) {
+        if (volumen >= 0 && volumen < VOLUMES.length) {
+            this.volume = volumen;
+            alSourcef(source, AL_GAIN, VOLUMES[volumen]);
+            if (volumeSystem != null) volumeSystem.update(channel, volume);
+        }
+        if (propagate && propagateToSoundPool && audioEngine != null && audioEngine.soundPool != null)
+            audioEngine.setSoundVolume(volumen);
+    }
+
+    /**
+     * Inicializa el volumen.
+     *
+     * @param volume volumen actual
+     */
+    private void initVolume(int volume) {
         if (volume >= 0 && volume < VOLUMES.length) {
             this.volume = volume;
             alSourcef(source, AL_GAIN, VOLUMES[volume]);
-            if (volumeSystem != null) volumeSystem.update(channel, volume);
         }
-        if (propagate && propagateToSoundPool && audioEngine != null && audioEngine.soundPool != null) audioEngine.setSoundVolume(volume);
     }
 
 }

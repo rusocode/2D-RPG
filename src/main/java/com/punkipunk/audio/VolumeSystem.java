@@ -58,20 +58,6 @@ public class VolumeSystem {
     }
 
     /**
-     * Obtiene el nivel de volumen actual para un canal especifico.
-     *
-     * @param channel canal de audio del cual obtener el volumen
-     * @return nivel de volumen actual (0-5) para el canal especificado
-     */
-    public int getVolume(AudioChannel channel) {
-        return switch (channel) {
-            case MUSIC -> volumeData.musicVolume();
-            case AMBIENT -> volumeData.ambientVolume();
-            case SOUND -> volumeData.soundVolume();
-        };
-    }
-
-    /**
      * Carga la configuracion de volumen existente o crea una nueva por defecto.
      *
      * @return datos de volumen cargados o creados
@@ -80,9 +66,9 @@ public class VolumeSystem {
         try {
             if (volumeFile.exists())
                 return mapper.readValue(volumeFile, VolumeData.class); // Sale del metodo una vez cargado el archivo de volumen para evitar sobreescribir los valores por los predeterminados
-            return createDefaultVolume();
+            return createDefault();
         } catch (IOException e) {
-            return createDefaultVolume();
+            return createDefault();
         }
     }
 
@@ -91,7 +77,7 @@ public class VolumeSystem {
      *
      * @return configuracion de volumen por defecto
      */
-    private VolumeData createDefaultVolume() {
+    private VolumeData createDefault() {
         VolumeData defaultVolume = new VolumeData(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME);
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, defaultVolume);
@@ -103,7 +89,7 @@ public class VolumeSystem {
     }
 
     /**
-     * Guarda la configuracion actual de volumen en el archivo.
+     * Guarda la configuracion actual de volumen en el archivo {@code volume.json}.
      */
     public void save() {
         try {
@@ -115,13 +101,9 @@ public class VolumeSystem {
     }
 
     /**
-     * Actualiza el nivel de volumen para un canal especifico.
+     * Actualiza el volumen del canal especificado.
      * <p>
-     * Crea una nueva instancia de VolumeData con el valor actualizado para el canal especificado, manteniendo los valores
-     * existentes para los otros canales. El cambio se persiste automaticamente en el archivo de configuracion.
-     *
-     * @param channel canal de audio a actualizar
-     * @param volume  nuevo nivel de volumen (0-5)
+     * TODO Es necesario crear un VolumeData cada vez que se actualiza el volumen?
      */
     public void update(AudioChannel channel, int volume) {
         volumeData = switch (channel) {
@@ -129,7 +111,17 @@ public class VolumeSystem {
             case AMBIENT -> new VolumeData(volumeData.musicVolume(), volume, volumeData.soundVolume());
             case SOUND -> new VolumeData(volumeData.musicVolume(), volumeData.ambientVolume(), volume);
         };
-        save();
+    }
+
+    /**
+     * Obtiene el volumen del canal especificado.
+     */
+    public int get(AudioChannel channel) {
+        return switch (channel) {
+            case MUSIC -> volumeData.musicVolume();
+            case AMBIENT -> volumeData.ambientVolume();
+            case SOUND -> volumeData.soundVolume();
+        };
     }
 
 }

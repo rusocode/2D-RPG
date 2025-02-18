@@ -28,21 +28,10 @@ public class AudioSourcePool {
     private final Queue<AudioSource> availableSources = new LinkedList<>();
     /** Conjunto de sources activas */
     private final Set<AudioSource> activeSources = new HashSet<>();
-    /** Numero maximo de sources que puede manejar el pool */
-    private final int size;
-    private final VolumeSystem volumeSystem;
-    private final AudioEngine audioEngine;
 
     public AudioSourcePool(int size, VolumeSystem volumeSystem, AudioEngine audioEngine) {
-        this.size = size;
-        this.volumeSystem = volumeSystem;
-        this.audioEngine = audioEngine;
-        initialize();
-    }
-
-    private void initialize() {
         for (int i = 0; i < size; i++)
-            availableSources.offer(new AudioSource(alGenSources(), false, true, audioEngine, volumeSystem, AudioChannel.SOUND));
+            availableSources.offer(new AudioSource(alGenSources(), false, false, audioEngine, volumeSystem, AudioChannel.SOUND));
     }
 
     /**
@@ -91,7 +80,7 @@ public class AudioSourcePool {
      * @param level nivel de volumen a establecer
      */
     public void setVolume(int level) {
-        activeSources.forEach(source -> source.setVolume(level, false));
+        activeSources.forEach(source -> source.setVolume(level, false)); // Le pasa false para evitar llamadas recursivas
         availableSources.forEach(source -> source.setVolume(level, false));
     }
 

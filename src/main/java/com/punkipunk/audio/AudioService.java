@@ -1,17 +1,7 @@
 package com.punkipunk.audio;
 
 /**
- * <p>
- * Define las operaciones basicas del servicio de audio.
- * <p>
- * Esta interfaz actua como una capa de abstraccion entre el controlador de audio y el engine de audio de bajo nivel,
- * proporcionando operaciones para:
- * <ul>
- * <li>Reproduccion de audio en diferentes canales</li>
- * <li>Control del sistema de audio</li>
- * <li>Gestion de volumen</li>
- * <li>Acceso a canales de audio individuales</li>
- * </ul>
+ * Operaciones del servicio de audio.
  */
 
 public interface AudioService {
@@ -37,9 +27,6 @@ public interface AudioService {
 
     /**
      * Obtiene la source de audio asociada a un canal especifico.
-     * <p>
-     * Permite acceder a la configuracion y control detallado de un canal de audio. Para el canal SOUND, devuelve una source
-     * virtual que controla el volumen del pool.
      *
      * @param channel canal del cual obtener la source de audio
      * @return source de audio asociada al canal especificado
@@ -47,10 +34,7 @@ public interface AudioService {
     AudioSource getAudioSource(AudioChannel channel);
 
     /**
-     * Guarda la configuracion actual de volumen.
-     * <p>
-     * Persiste los niveles de volumen de todos los canales en el archivo {@code volume.json} para mantenerlos entre sesiones del
-     * juego.
+     * Guarda la configuracion actual de volumen de todos los canales en el archivo {@code volume.json}.
      */
     void saveVolume();
 

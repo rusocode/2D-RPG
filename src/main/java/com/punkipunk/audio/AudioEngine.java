@@ -9,7 +9,8 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
 import java.nio.ShortBuffer;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -21,7 +22,7 @@ import static org.lwjgl.stb.STBVorbis.stb_vorbis_decode_memory;
 import static org.lwjgl.system.MemoryStack.stackPush;
 
 /**
- * Motor de audio de bajo nivel que gestiona la reproduccion y recursos de audio usando OpenAL.
+ * Motor de audio de bajo nivel que gestiona el audio usando OpenAL.
  * <p>
  * Esta clase proporciona una capa de abstraccion sobre OpenAL para gestionar:
  * <ul>
@@ -38,8 +39,7 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  * <li>SOUND: Pool de sources que permite hasta {@value #MAX_SOUND_SOURCES} sonidos simultaneos</li>
  * </ul>
  * <p>
- * El sistema utiliza archivos Ogg Vorbis (.ogg) para optimizar el tamaño y calidad del audio. Los archivos se decodifican bajo
- * demanda y se almacenan en cache para mejorar el rendimiento.
+ * El motor tiene soporte para reproducir archivos Ogg Vorbis.
  * <h2>Ogg Vorbis</h2>
  * <p>
  * Ogg Vorbis es un formato de compresion de audio digital de codigo abierto, desarrollado por la
@@ -89,16 +89,16 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  * <h2>Monitoreo de sources de sonidos</h2>
  * <p>
  * El monitoreo es importante para el manejo eficiente del pool de sources de sonidos. El sistema utiliza un enfoque centralizado
- * con un unico hilo dedicado que verifica periodicamente el estado de todas las sources activas.
+ * con un unico hilo que verifica periodicamente el estado de todas las sources activas.
  * <p>
  * A traves del metodo {@code checkAndRecycleSoundSources()}, el sistema:
  * <ul>
  * <li>Identifica sources que han completado su reproduccion
- * <li>Las remueve del conjunto {@code activeSoundSources}
- * <li>Las devuelve a la cola {@code availableSoundSources} para su reutilizacion
+ * <li>Las remueve del conjunto {@code activeSources}
+ * <li>Las devuelve a la cola {@code availableSources} para su reutilizacion
  * </ul>
  * <p>
- * Sin este monitoreo, las sources se mantendrian en {@code activeSoundSources} incluso despues de terminar, el conjunto creceria
+ * Sin este monitoreo, las sources se mantendrian en {@code activeSources} incluso despues de terminar, el conjunto creceria
  * innecesariamente y eventualmente podrias quedarte sin sources disponibles. Si funciona sin el monitoreo, probablemente:
  * <ul>
  * <li>No estas reproduciendo muchos sonidos simultaneos
@@ -109,15 +109,15 @@ import static org.lwjgl.system.MemoryStack.stackPush;
  * Por ejemplo:
  * <pre>{@code
  * // Sin monitoreo:
- * play() -> source1 al activeSoundSources
- * play() -> source2 al activeSoundSources
- * play() -> source3 al activeSoundSources
- * // Las sources nunca vuelven al availableSoundSources aunque terminen
+ * play() -> source1 al activeSources
+ * play() -> source2 al activeSources
+ * play() -> source3 al activeSources
+ * // Las sources nunca vuelven al availableSources aunque terminen
  *
  * // Con monitoreo centralizado:
- * play() -> source1 al activeSoundSources
- * checkAndRecycleSoundSources() detecta source1 terminada -> la devuelve al availableSoundSources
- * play() -> reutiliza source1 del availableSoundSources
+ * play() -> source1 al activeSources
+ * checkAndRecycleSoundSources() detecta source1 terminada -> la devuelve al availableSources
+ * play() -> reutiliza source1 del availableSources
  * }</pre>
  * <p>
  * Actualmente esta clase no esta agotando realmente el pool de sources de sonido porque cuando se llama a {@code play()} sin
@@ -141,6 +141,7 @@ public class AudioEngine {
 
     /** Numero maximo de sources de sonido que pueden reproducirse simultaneamente */
     private static final int MAX_SOUND_SOURCES = 16;
+    /** Pool de sources de sonidos */
     public final AudioSourcePool soundPool;
     /** Cache que mapea rutas de archivo a IDs de buffers OpenAL */
     private final Map<String, Integer> buffers = new HashMap<>();
@@ -195,7 +196,7 @@ public class AudioEngine {
     /**
      * Inicia el monitoreo del pool de sonidos.
      * <p>
-     * Crea un hilo dedicado que verifica periodicamente el estado de las sources de sonido activas en el pool usando un
+     * Crea un hilo que verifica periodicamente el estado de las sources de sonido activas en el pool usando un
      * {@code ScheduledExecutorService} reciclando aquellas que han terminado de reproducirse. Este enfoque centralizado es mas
      * eficiente que monitorear cada source de sonido individualmente ya que:
      * <ul>

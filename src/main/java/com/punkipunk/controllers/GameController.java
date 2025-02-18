@@ -116,7 +116,7 @@ public class GameController implements Initializable {
         int y = (int) ((game.gameSystem.world.entitySystem.player.position.y + game.gameSystem.world.entitySystem.player.hitbox.getY()) / tile);
 
         if (game.gameSystem.keyboard.isKeyToggled(Key.DEBUG)) {
-            versionLabel.setText(String.format("2D-RPG v%s", VERSION));
+            versionLabel.setText(String.format("2D-RPG %s", VERSION));
             fpsLabel.setText(String.format("%d FPS", fps));
             positionLabel.setText(String.format("X: %d  Y: %d", x, y));
             cycleLabel.setText(String.format("Cycle time: %.2f ms", cycleTime));

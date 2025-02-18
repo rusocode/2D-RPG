@@ -5,7 +5,7 @@ import com.punkipunk.json.model.AudioData;
 
 /**
  * <p>
- * Implementacion por defecto del servicio de audio que maneja la reproduccion y control del sistema de audio.
+ * Implementacion del servicio de audio.
  * <p>
  * Esta clase actua como intermediaria entre el controlador de audio y el motor de audio, proporcionando una capa de abstraccion
  * que:
@@ -41,8 +41,8 @@ public class AudioServiceImpl implements AudioService {
 
     @Override
     public void play(AudioChannel channel, String id) {
-        String path = String.format("audio.%s.%s", channel.name().toLowerCase(), id);
-        AudioData audioData = jsonLoader.deserialize(path, AudioData.class);
+        String idPath = String.format("audio.%s.%s", channel.name().toLowerCase(), id);
+        AudioData audioData = jsonLoader.deserialize(idPath, AudioData.class);
         audioEngine.play(channel, audioData.path());
     }
 
