@@ -69,23 +69,20 @@ public class OptionsController implements Initializable {
      * </ul>
      */
     private void setupVolumeControls() {
-        musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            // TODO Se podria hacer dos en 1 (actualizar el volumen y guardar la configuracion)
-            // Actualiza el nivel de volumen de la musica con el nuevo valor del slider
-            music.setVolume(newValue.intValue(), true);
-            // Guarda el nuevo valor del volumen en volume.json
+        musicSlider.valueProperty().addListener((observable, oldValue, newValue) -> musicSlider.setOnMouseReleased(event -> { // Cuando se suelta el mouse
+            music.setVolume(newValue.intValue(), true); // Establece el volumen de la musica con el nuevo valor del slider
             game.gameSystem.audio.saveVolume();
-        });
+        }));
 
-        ambientSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+        ambientSlider.valueProperty().addListener((observable, oldValue, newValue) -> ambientSlider.setOnMouseReleased(event -> {
             ambient.setVolume(newValue.intValue(), true);
             game.gameSystem.audio.saveVolume();
-        });
+        }));
 
-        soundSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+        soundSlider.valueProperty().addListener((observable, oldValue, newValue) -> soundSlider.setOnMouseReleased(event -> {
             sound.setVolume(newValue.intValue(), true);
             game.gameSystem.audio.saveVolume();
-        });
+        }));
     }
 
     /**

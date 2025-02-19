@@ -50,48 +50,48 @@ public class VolumeSystem {
     private final File volumeFile = ConfigPaths.getConfigPath("volume.json").toFile();
     /** Objeto para serializar/deserializar datos de volumen en formato JSON */
     private final ObjectMapper mapper = new ObjectMapper();
-    /** Estado actual de los volumenes */
+    private int musicVolume = DEFAULT_VOLUME, ambientVolume = DEFAULT_VOLUME, soundVolume = DEFAULT_VOLUME;
+
     private VolumeData volumeData;
 
     public VolumeSystem() {
-        volumeData = loadOrCreateDefault();
+        loadOrCreateDefault();
     }
 
-    /**
-     * Carga la configuracion de volumen existente o crea una nueva por defecto.
-     *
-     * @return datos de volumen cargados o creados
-     */
-    private VolumeData loadOrCreateDefault() {
+    private void loadOrCreateDefault() {
         try {
-            if (volumeFile.exists())
-                return mapper.readValue(volumeFile, VolumeData.class); // Sale del metodo una vez cargado el archivo de volumen para evitar sobreescribir los valores por los predeterminados
-            return createDefault();
+            if (volumeFile.exists()) {
+                volumeData = mapper.readValue(volumeFile, VolumeData.class);
+                musicVolume = volumeData.musicVolume();
+                ambientVolume = volumeData.ambientVolume();
+                soundVolume = volumeData.soundVolume();
+                return;
+            }
+            createDefault();
         } catch (IOException e) {
-            return createDefault();
+            createDefault();
         }
     }
 
-    /**
-     * Crea y guarda una configuracion de volumen con valores por defecto.
-     *
-     * @return configuracion de volumen por defecto
-     */
-    private VolumeData createDefault() {
-        VolumeData defaultVolume = new VolumeData(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME);
+    private void createDefault() {
+        volumeData = new VolumeData(DEFAULT_VOLUME, DEFAULT_VOLUME, DEFAULT_VOLUME);
         try {
-            mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, defaultVolume);
-            System.out.println("Created default volume settings");
+            mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, volumeData);
         } catch (IOException e) {
             System.out.println("Failed to save default volume settings " + e.getMessage());
         }
-        return defaultVolume;
     }
 
-    /**
-     * Guarda la configuracion actual de volumen en el archivo {@code volume.json}.
-     */
+    public void update(AudioChannel channel, int volume) {
+        switch (channel) {
+            case MUSIC -> musicVolume = volume;
+            case AMBIENT -> ambientVolume = volume;
+            case SOUND -> soundVolume = volume;
+        }
+    }
+
     public void save() {
+        volumeData = new VolumeData(musicVolume, ambientVolume, soundVolume); // TODO No entiendo porque se crea un nuevo VolumeData cada vez que guarda
         try {
             mapper.writerWithDefaultPrettyPrinter().writeValue(volumeFile, volumeData);
             System.out.println("Volume settings saved successfully");
@@ -100,27 +100,11 @@ public class VolumeSystem {
         }
     }
 
-    /**
-     * Actualiza el volumen del canal especificado.
-     * <p>
-     * TODO Es necesario crear un VolumeData cada vez que se actualiza el volumen?
-     */
-    public void update(AudioChannel channel, int volume) {
-        volumeData = switch (channel) {
-            case MUSIC -> new VolumeData(volume, volumeData.ambientVolume(), volumeData.soundVolume());
-            case AMBIENT -> new VolumeData(volumeData.musicVolume(), volume, volumeData.soundVolume());
-            case SOUND -> new VolumeData(volumeData.musicVolume(), volumeData.ambientVolume(), volume);
-        };
-    }
-
-    /**
-     * Obtiene el volumen del canal especificado.
-     */
     public int get(AudioChannel channel) {
         return switch (channel) {
-            case MUSIC -> volumeData.musicVolume();
-            case AMBIENT -> volumeData.ambientVolume();
-            case SOUND -> volumeData.soundVolume();
+            case MUSIC -> musicVolume;
+            case AMBIENT -> ambientVolume;
+            case SOUND -> soundVolume;
         };
     }
 
