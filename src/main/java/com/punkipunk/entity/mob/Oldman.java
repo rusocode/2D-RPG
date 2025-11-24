@@ -36,7 +36,7 @@ public class Oldman extends Mob {
     @Override
     public void doActions() {
         if (flags.following)
-            game.gameSystem.aStar.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
+            game.gameSystem.pathfinding.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
         else {
             // checkFollow(world.entities.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);

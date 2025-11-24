@@ -2,7 +2,7 @@ package com.punkipunk.core;
 
 import com.punkipunk.Minimap;
 import com.punkipunk.UI;
-import com.punkipunk.ai.AStar;
+import com.punkipunk.ai.Pathfinding;
 import com.punkipunk.audio.AudioController;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.input.keyboard.Keyboard;
@@ -37,7 +37,7 @@ public class GameSystem {
     public final Minimap minimap;
     public final Keyboard keyboard;
     public final CollisionChecker collisionChecker;
-    public final AStar aStar;
+    public final Pathfinding pathfinding;
     public final EventSystem eventSystem;
     public final AudioController audio;
     public final File file;
@@ -51,7 +51,7 @@ public class GameSystem {
         this.minimap = builder.minimap;
         this.keyboard = builder.keyboard;
         this.collisionChecker = builder.collisionChecker;
-        this.aStar = builder.aStar;
+        this.pathfinding = builder.pathfinding;
         this.eventSystem = builder.eventSystem;
         this.audio = builder.audio;
         this.file = builder.file;
@@ -108,7 +108,7 @@ public class GameSystem {
         private Minimap minimap;
         private Keyboard keyboard;
         private CollisionChecker collisionChecker;
-        private AStar aStar;
+        private Pathfinding pathfinding;
         private EventSystem eventSystem;
         private AudioController audio;
         private File file;
@@ -142,7 +142,7 @@ public class GameSystem {
         }
 
         public Builder withAStar() { // TODO Deberia llamarse Pathfinding?
-            this.aStar = new AStar(world);
+            this.pathfinding = new Pathfinding(world);
             return this;
         }
 

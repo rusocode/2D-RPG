@@ -27,7 +27,7 @@ public class Orc extends Mob {
     public void doActions() {
         if (flags.following) {
             checkUnfollow(world.entitySystem.player, 10);
-            game.gameSystem.aStar.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
+            game.gameSystem.pathfinding.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
         } else {
             checkFollow(world.entitySystem.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);

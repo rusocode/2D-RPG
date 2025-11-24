@@ -15,7 +15,6 @@ import java.util.Optional;
 import static com.punkipunk.utils.Global.tile;
 
 /**
- * <p>
  * La colision entre dos entidades se genera cuando uno de los limites del hitbox pasa 1 pixel del hitbox de la otra entidad. Pero
  * en el caso del attackbox, solo se genera una colision cuando los limites de ambos se tocan.
  */

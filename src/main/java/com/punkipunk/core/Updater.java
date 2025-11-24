@@ -3,15 +3,7 @@ package com.punkipunk.core;
 import com.punkipunk.core.api.Updatable;
 import com.punkipunk.world.World;
 
-public class Updater implements Updatable {
-
-    private final Game game;
-    private final World world;
-
-    public Updater(World world, Game game) {
-        this.game = game;
-        this.world = world;
-    }
+public record Updater(World world, Game game) implements Updatable {
 
     @Override
     public void update() {

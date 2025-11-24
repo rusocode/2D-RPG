@@ -42,9 +42,9 @@ public class World {
         // Dibuja el recorrido del pathfinding
         if (false) {
             context.setFill(new Color(1, 0, 0, 0.3));
-            for (int i = 0; i < game.gameSystem.aStar.pathList.size(); i++) {
-                int x = game.gameSystem.aStar.pathList.get(i).col * tile;
-                int y = game.gameSystem.aStar.pathList.get(i).row * tile;
+            for (int i = 0; i < game.gameSystem.pathfinding.pathList.size(); i++) {
+                int x = game.gameSystem.pathfinding.pathList.get(i).col * tile;
+                int y = game.gameSystem.pathfinding.pathList.get(i).row * tile;
                 int screenX = x - entitySystem.player.position.x + X_OFFSET;
                 int screenY = y - entitySystem.player.position.y + Y_OFFSET;
                 context.fillRect(screenX, screenY, tile, tile);

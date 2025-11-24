@@ -6,17 +6,7 @@ import com.punkipunk.core.api.Renderable;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
 
-public class Renderer implements Renderable {
-
-    public final World world;
-    private final UI ui;
-    private final Minimap minimap;
-
-    public Renderer(World world, UI ui, Minimap minimap) {
-        this.world = world;
-        this.ui = ui;
-        this.minimap = minimap;
-    }
+public record Renderer(World world, UI ui, Minimap minimap) implements Renderable {
 
     @Override
     public void render(GraphicsContext context) {
