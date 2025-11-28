@@ -1,6 +1,7 @@
 package com.punkipunk.gui.container;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.*;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.world.World;
@@ -20,7 +21,7 @@ import java.util.*;
 
 public abstract class Container {
 
-    private final Game game;
+    private final IGame game;
     private final World world;
     private final Player player;
     private final int rows;
@@ -32,7 +33,7 @@ public abstract class Container {
     /** Lista de listeners que seran notificados cuando el contenedor cambie */
     private final List<ContainerListener> listeners = new ArrayList<>();
 
-    public Container(Game game, World world, Player player, int rows, int cols) {
+    public Container(IGame game, World world, Player player, int rows, int cols) {
         this.game = game;
         this.world = world;
         this.player = player;

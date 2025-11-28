@@ -2,12 +2,13 @@ package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
 
 public class WoodDoor extends Item {
 
-    public WoodDoor(Game game, World world, int... pos) {
+    public WoodDoor(IGame game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
         initDialogue();

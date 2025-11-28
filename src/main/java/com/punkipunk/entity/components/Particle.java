@@ -1,6 +1,7 @@
 package com.punkipunk.entity.components;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
@@ -23,7 +24,7 @@ public class Particle extends Entity {
     private int size;
     private int yd;
 
-    public Particle(Game game, World world, Entity generator, Color color, int size, int speed, int maxHp, int xd, int yd) {
+    public Particle(IGame game, World world, Entity generator, Color color, int size, int speed, int maxHp, int xd, int yd) {
         super(game, world);
         // El generador seria, por ejemplo, un DryTree
         this.color = color;

@@ -1,6 +1,7 @@
 package com.punkipunk.physics.event;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.io.Progress;
@@ -16,10 +17,10 @@ import static com.punkipunk.utils.Global.tile;
 
 public class EventActions {
 
-    private final Game game;
+    private final IGame game;
     private final World world;
 
-    public EventActions(Game game, World world) {
+    public EventActions(IGame game, World world) {
         this.game = game;
         this.world = world;
     }
@@ -31,7 +32,7 @@ public class EventActions {
         entity.stats.decreaseHp(1);
         /* Desactiva canTriggerEvent ya que la entidad esta dentro del area del evento, evitando asi que dañe a la entidad en el
          * mismo lugar todo el tiempo. */
-        game.gameSystem.eventSystem.canTriggerEvent = false;
+        game.getGameSystem().eventSystem.canTriggerEvent = false;
     }
 
     /**
@@ -40,7 +41,7 @@ public class EventActions {
      * No hace falta desactivar canTriggerEvent ya que el evento se activa en el mismo lugar solo si presiono ENTER.
      */
     public void heal(Entity entity) {
-        if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
+        if (game.getGameSystem().keyboard.isKeyPressed(Key.ENTER)) {
             // entity.dialogue.dialogues[1][0] = "You drink the water.\nYour life has been recovered.";
             // entity.dialogue.startDialogue(State.DIALOGUE, entity, 1);
             entity.stats.fullHp();
@@ -65,7 +66,7 @@ public class EventActions {
      */
     public void teleport(MapID mapId, int col, int row) {
         // Si la zona del mapa actual es distinta a la zona que se teletransporta, entonces reproduce el sonido ambiente de la nueva zona
-        if (!world.map.id.zone.equals(mapId.zone)) game.gameSystem.audio.playAmbient(mapId.zone.name().toLowerCase());
+        if (!world.map.id.zone.equals(mapId.zone)) game.getGameSystem().audio.playAmbient(mapId.zone.name().toLowerCase());
         world.map.id = mapId;
         world.entitySystem.player.position.x = (int) ((col * tile) + world.entitySystem.player.hitbox.getWidth() / 2);
         world.entitySystem.player.position.y = (int) ((row * tile) - world.entitySystem.player.hitbox.getHeight());

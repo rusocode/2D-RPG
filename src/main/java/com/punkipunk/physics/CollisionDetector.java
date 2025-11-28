@@ -1,6 +1,7 @@
 package com.punkipunk.physics;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.player.Player;
 
@@ -10,9 +11,9 @@ import com.punkipunk.entity.player.Player;
 
 public class CollisionDetector {
 
-    private final Game game;
+    private final IGame game;
 
-    public CollisionDetector(Game game) {
+    public CollisionDetector(IGame game) {
         this.game = game;
     }
 
@@ -26,7 +27,7 @@ public class CollisionDetector {
     }
 
     private void detectMobCollisions(Entity entity) {
-        game.gameSystem.collisionChecker.checkMob(entity)
+        game.getGameSystem().collisionChecker.checkMob(entity)
                 .ifPresent(mob -> ((Player) entity).hitMob(
                         mob,
                         entity,
@@ -37,11 +38,11 @@ public class CollisionDetector {
 
     private void detectInteractiveCollisions(Entity entity) {
         // Si hay un valor presente (usando Optional), realiza la accion indicada con el valor presente
-        game.gameSystem.collisionChecker.checkInteractive(entity).ifPresent(interactive -> ((Player) entity).hitInteractive(interactive));
+        game.getGameSystem().collisionChecker.checkInteractive(entity).ifPresent(interactive -> ((Player) entity).hitInteractive(interactive));
     }
 
     private void detectSpellCollisions(Entity entity) {
-        game.gameSystem.collisionChecker.checkSpell(entity).ifPresent(spell -> ((Player) entity).hitSpell(spell));
+        game.getGameSystem().collisionChecker.checkSpell(entity).ifPresent(spell -> ((Player) entity).hitSpell(spell));
     }
 
 }

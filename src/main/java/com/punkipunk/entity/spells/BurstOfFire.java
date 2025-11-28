@@ -2,6 +2,7 @@ package com.punkipunk.entity.spells;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.player.Player;
@@ -31,7 +32,7 @@ import static com.punkipunk.utils.Global.tile;
 
 public class BurstOfFire extends Spell {
 
-    public BurstOfFire(Game game, World world) {
+    public BurstOfFire(IGame game, World world) {
         super(game, world, JsonLoader.getInstance().deserialize("spells.burstOfFire", SpellData.class));
         sound = AudioID.Sound.BURST_OF_FIRE;
         hitbox = new Rectangle(0, 0, tile * spellData.frameScale() - 35, tile * spellData.frameScale());
@@ -46,7 +47,7 @@ public class BurstOfFire extends Spell {
     public void update() {
 
         if (entity instanceof Player) {
-            game.gameSystem.collisionChecker.checkMob(this).ifPresent(mob -> {
+            game.getGameSystem().collisionChecker.checkMob(this).ifPresent(mob -> {
                 // flags.colliding = false;
                 if (!mob.flags.invincible && mob.mobCategory != MobCategory.NPC) {
                     world.entitySystem.player.hitMob(mob, this, stats.knockback, getAttack());
@@ -58,7 +59,7 @@ public class BurstOfFire extends Spell {
         }
 
         if (!(entity instanceof Player)) {
-            boolean contact = game.gameSystem.collisionChecker.checkPlayer(this);
+            boolean contact = game.getGameSystem().collisionChecker.checkPlayer(this);
             if (contact && !world.entitySystem.player.flags.invincible) {
                 hitPlayer(this, true, stats.attack);
                 generateParticle(entity.spell, world.entitySystem.player);
@@ -88,7 +89,7 @@ public class BurstOfFire extends Spell {
     @Override
     public void render(GraphicsContext context) {
         context.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY());
-        if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
+        if (game.getGameSystem().keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
     }
 
     @Override

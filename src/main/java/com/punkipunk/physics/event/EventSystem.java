@@ -2,6 +2,7 @@ package com.punkipunk.physics.event;
 
 import com.punkipunk.Direction;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.json.JsonLoader;
@@ -44,7 +45,7 @@ public class EventSystem {
     /** Posicion del ultimo evento activado */
     private Position previousEvent = new Position(0, 0);
 
-    public EventSystem(Game game, World world) {
+    public EventSystem(IGame game, World world) {
         this.world = world;
         this.actions = new EventActions(game, world);
         loadEvents();

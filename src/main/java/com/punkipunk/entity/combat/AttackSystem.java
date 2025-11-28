@@ -1,6 +1,7 @@
 package com.punkipunk.entity.combat;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.physics.CollisionDetector;
 
@@ -16,7 +17,7 @@ import com.punkipunk.physics.CollisionDetector;
 
 public class AttackSystem {
 
-    private final Game game;
+    private final IGame game;
     /** Entidad que realiza el ataque */
     private final Player player;
     /** Detector de colisiones durante el ataque */
@@ -32,7 +33,7 @@ public class AttackSystem {
      * @param game   instancia del juego que contiene los sistemas requeridos
      * @param player entidad que usara este sistema de ataque
      */
-    public AttackSystem(Game game, Player player) {
+    public AttackSystem(IGame game, Player player) {
         this.game = game;
         this.player = player;
         this.collisionDetector = new CollisionDetector(game);

@@ -1,6 +1,7 @@
 package com.punkipunk.io;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Chest;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.item.ItemID;
@@ -14,11 +15,11 @@ import java.util.ArrayList;
 
 public class File {
 
-    private final Game game;
+    private final IGame game;
     private final World world;
     private final String data = "data.dat";
 
-    public File(Game game, World world) {
+    public File(IGame game, World world) {
         this.game = game;
         this.world = world;
     }
@@ -30,11 +31,11 @@ public class File {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter("config.txt"))) {
             // bw.write(game.fullScreen ? ON : OFF);
             // bw.newLine();
-            bw.write(String.valueOf(game.gameSystem.audio.getMusic().volume));
+            bw.write(String.valueOf(game.getGameSystem().audio.getMusic().volume));
             bw.newLine();
-            bw.write(String.valueOf(game.gameSystem.audio.getAmbient().volume));
+            bw.write(String.valueOf(game.getGameSystem().audio.getAmbient().volume));
             bw.newLine();
-            bw.write(String.valueOf(game.gameSystem.audio.getSound().volume));
+            bw.write(String.valueOf(game.getGameSystem().audio.getSound().volume));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -51,9 +52,9 @@ public class File {
                     3
             );
             // VolumeLevelConfig volumeConfig = configManager.getConfig("audio.volume", VolumeLevelConfig.class);
-            game.gameSystem.audio.getMusic().volume = volumeConfig.musicVolume();
-            game.gameSystem.audio.getAmbient().volume = volumeConfig.ambientVolume();
-            game.gameSystem.audio.getSound().volume = volumeConfig.soundVolume();
+            game.getGameSystem().audio.getMusic().volume = volumeConfig.musicVolume();
+            game.getGameSystem().audio.getAmbient().volume = volumeConfig.ambientVolume();
+            game.getGameSystem().audio.getSound().volume = volumeConfig.soundVolume();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
                     "Error loading audio configuration: " + e.getMessage(),

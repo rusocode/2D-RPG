@@ -1,6 +1,7 @@
 package com.punkipunk;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.input.keyboard.Key;
@@ -26,7 +27,7 @@ public class UI {
 
     // TODO The console would have to be a separate class
     public final ArrayList<String> console = new ArrayList<>();
-    private final Game game;
+    private final IGame game;
     private final World world;
     private final ArrayList<Integer> consoleCounter = new ArrayList<>();
     public Entity entity;
@@ -35,7 +36,7 @@ public class UI {
     private String currentDialogue, combinedText = "";
     private int charIndex, counter;
 
-    public UI(Game game, World world) {
+    public UI(IGame game, World world) {
         this.game = game;
         this.world = world;
     }
@@ -139,23 +140,23 @@ public class UI {
             }
 
             // In the case of having several dialog boxes (example, Oldman)
-            if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
+            if (game.getGameSystem().keyboard.isKeyPressed(Key.ENTER)) {
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.DIALOGUE) || State.isState(State.CUTSCENE)) {
                     entity.dialogue.index++;
-                    game.gameSystem.keyboard.releaseKey(Key.ENTER);
+                    game.getGameSystem().keyboard.releaseKey(Key.ENTER);
                 }
             }
 
-            if (game.gameSystem.keyboard.isKeyPressed(Key.ESCAPE)) { // TODO Or else if?
+            if (game.getGameSystem().keyboard.isKeyPressed(Key.ESCAPE)) { // TODO Or else if?
                 charIndex = 0;
                 combinedText = "";
                 if (State.isState(State.TRADE)) {
                     State.setState(State.PLAY);
                     currentDialogue = "";
                     entity.dialogue.index++;
-                    game.gameSystem.keyboard.releaseKey(Key.ESCAPE);
+                    game.getGameSystem().keyboard.releaseKey(Key.ESCAPE);
                 }
             }
 

@@ -2,6 +2,7 @@ package com.punkipunk.entity.spells;
 
 import com.punkipunk.Direction;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.player.Player;
@@ -21,7 +22,7 @@ public abstract class Spell extends Entity {
 
     protected SpellData spellData;
 
-    public Spell(Game game, World world, SpellData spellData) {
+    public Spell(IGame game, World world, SpellData spellData) {
         super(game, world);
 
         this.spellData = spellData;
@@ -41,7 +42,7 @@ public abstract class Spell extends Entity {
 
         // Si el player lanza el hechizo
         if (entity instanceof Player) {
-            game.gameSystem.collisionChecker.checkMob(this).ifPresent(mob -> {
+            game.getGameSystem().collisionChecker.checkMob(this).ifPresent(mob -> {
                 // flags.colliding = false; // ?
                 if (!mob.flags.invincible && mob.mobCategory != MobCategory.NPC) {
                     world.entitySystem.player.hitMob(mob, this, stats.knockback, getAttack());
@@ -53,7 +54,7 @@ public abstract class Spell extends Entity {
 
         // Si el mob lanza el hechizo
         if (!(entity instanceof Player)) {
-            boolean contact = game.gameSystem.collisionChecker.checkPlayer(this);
+            boolean contact = game.getGameSystem().collisionChecker.checkPlayer(this);
             if (contact && !world.entitySystem.player.flags.invincible) {
                 hitPlayer(this, true, stats.attack);
                 generateParticle(entity.spell, world.entitySystem.player);

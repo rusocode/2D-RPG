@@ -2,12 +2,13 @@ package com.punkipunk.entity.item;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.world.World;
 
 public class Key extends Item {
 
-    public Key(Game game, World world, int... pos) {
+    public Key(IGame game, World world, int... pos) {
         super(game, world, pos);
     }
 
@@ -20,7 +21,7 @@ public class Key extends Item {
                     .filter(door -> isAdjacentTo(entity, door))
                     .findFirst()
                     .ifPresent(door -> {
-                        game.gameSystem.audio.playSound(AudioID.Sound.DOOR_OPENING);
+                        game.getGameSystem().audio.playSound(AudioID.Sound.DOOR_OPENING);
                         world.entitySystem.removeItem(world.map.id, door);
                     });
             return true;

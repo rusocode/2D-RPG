@@ -1,7 +1,7 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.Dialogue;
-import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.states.State;
@@ -13,7 +13,7 @@ import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
 
 public class Oldman extends Mob {
 
-    public Oldman(Game game, World world, int... pos) {
+    public Oldman(IGame game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
         sheet.loadOldmanFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
@@ -36,7 +36,7 @@ public class Oldman extends Mob {
     @Override
     public void doActions() {
         if (flags.following)
-            game.gameSystem.pathfinding.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
+            game.getGameSystem().pathfinding.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
         else {
             // checkFollow(world.entities.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);

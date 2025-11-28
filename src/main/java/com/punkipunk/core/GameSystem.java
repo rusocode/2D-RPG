@@ -63,10 +63,10 @@ public class GameSystem {
     /**
      * Metodo de fabrica para crear el sistema con la configuracion completa por defecto.
      *
-     * @param game juego.
-     * @return el sistema con la configuracion completa por defecto.
+     * @param game acepta objetos que implementen la interfaz IGame, es decir Game (JavaFX) y GameLWJGL (LWJGL)
+     * @return el sistema con la configuracion completa por defecto
      */
-    public static GameSystem createDefault(Game game) {
+    public static GameSystem createDefault(IGame game) {
         return new Builder(game)
                 .withUI()
                 .withMinimap()
@@ -80,6 +80,13 @@ public class GameSystem {
                 .withRenderer()
                 .withOldGameLoop()
                 .build();
+    }
+
+    /**
+     * Por ahora dejo el metodo original para mantener compatibilidad hacia atras.
+     */
+    public static GameSystem createDefault(Game game) {
+        return createDefault((IGame) game);
     }
 
     public void initialize() {
@@ -102,7 +109,7 @@ public class GameSystem {
     }
 
     public static class Builder {
-        private final Game game;
+        private final IGame game;
         private final World world;
         private UI ui;
         private Minimap minimap;
@@ -116,7 +123,7 @@ public class GameSystem {
         private Renderer renderer;
         private OldGameLoop oldGameLoop;
 
-        public Builder(Game game) {
+        public Builder(IGame game) {
             this.game = game;
             this.world = new World(game);
         }

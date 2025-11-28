@@ -3,13 +3,14 @@ package com.punkipunk.entity.mob;
 import com.punkipunk.Dialogue;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
 public class Trader extends Mob {
 
-    public Trader(Game game, World world, int... pos) {
+    public Trader(IGame game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
         sheet.frame = Utils.scaleTexture(Utils.loadTexture(mobData.texturePath()), mobData.frameWidth(), mobData.frameHeight());
@@ -19,7 +20,7 @@ public class Trader extends Mob {
 
     @Override
     public void dialogue() {
-        game.gameSystem.audio.playSound(AudioID.Sound.TRADE_OPENING);
+        game.getGameSystem().audio.playSound(AudioID.Sound.TRADE_OPENING);
         dialogue.startDialogue(State.TRADE, this, 0);
     }
 

@@ -165,7 +165,7 @@ import javafx.scene.paint.Color;
  * <a href="https://stackoverflow.com/questions/71471546/how-to-make-a-smooth-time-based-animation-with-javafx-animationtimer">How to make a smooth time-based animation with JavaFx AnimationTimer?</a>
  */
 
-public class Game extends AnimationTimer {
+public class Game extends AnimationTimer implements IGame {
 
     private final Scene scene;
     private final GameController gameController;
@@ -271,6 +271,25 @@ public class Game extends AnimationTimer {
 
     }
 
+    @Override
+    public GameSystem getGameSystem() {
+        return gameSystem;
+    }
+
+    @Override
+    public GraphicsContext getContext() {
+        return context;
+    }
+
+    @Override
+    public Scene getScene() {
+        return scene;
+    }
+
+    public GameController getGameController() {
+        return gameController;
+    }
+
     private void prepare() {
         context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
     }
@@ -284,18 +303,6 @@ public class Game extends AnimationTimer {
      */
     private void render() {
         gameSystem.renderer.render(context);
-    }
-
-    public GraphicsContext getContext() {
-        return context;
-    }
-
-    public Scene getScene() {
-        return scene;
-    }
-
-    public GameController getGameController() {
-        return gameController;
     }
 
 }

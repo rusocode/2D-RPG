@@ -1,6 +1,7 @@
 package com.punkipunk.input.keyboard;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.states.State;
 import com.punkipunk.world.MapID;
 
@@ -27,7 +28,7 @@ public class KeyStateController {
      * @param key  la tecla presionada
      * @param game referencia al juego actual
      */
-    public void notifyKeyPress(Key key, Game game) {
+    public void notifyKeyPress(Key key, IGame game) {
         KeyPressListener listener = stateListeners.get(State.getState());
         if (listener != null) listener.onKeyPress(key, game);
     }
@@ -48,17 +49,17 @@ public class KeyStateController {
      * @param key  la tecla presionada
      * @param game referencia al juego actual
      */
-    private void processPlayState(Key key, Game game) {
-        if (Key.TOGGLE_KEYS.contains(key)) game.gameSystem.keyboard.toggleKey(key);
-        switch (key) {
+    private void processPlayState(Key key, IGame game) {
+        if (Key.TOGGLE_KEYS.contains(key)) game.getGameSystem().keyboard.toggleKey(key);
+        /* switch (key) {
             case ESCAPE -> game.getGameController().toggleOptionsView();
             case INVENTORY -> game.getGameController().toggleInventoryView();
             case LOAD_MAP -> processMapLoading(game);
             case TEST -> game.getGameController().toggleTestMode();
-        }
+        } */
     }
 
-    private void processTradeState(Key key, Game game) {
+    private void processTradeState(Key key, IGame game) {
         // if (key == Key.ENTER) game.system.world.entities.player.inventory.select();
     }
 
@@ -70,7 +71,7 @@ public class KeyStateController {
      *
      * @param game referencia al juego actual
      */
-    private void processMapLoading(Game game) {
+    private void processMapLoading(IGame game) {
         /* if (game.gameSystem.world.map.id.equals(MapID.ABANDONED_ISLAND))
             game.gameSystem.file.loadMap("maps/abandoned_island.txt", MapID.ABANDONED_ISLAND);
         if (game.gameSystem.world.map.id.equals(MapID.ABANDONED_ISLAND_MARKET))

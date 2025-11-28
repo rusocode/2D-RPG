@@ -1,6 +1,7 @@
 package com.punkipunk.entity.interactive;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.json.JsonLoader;
@@ -16,7 +17,7 @@ public abstract class Interactive extends Entity {
     public boolean destructible;
     protected InteractiveData interactiveData;
 
-    public Interactive(Game game, World world, int... pos) {
+    public Interactive(IGame game, World world, int... pos) {
         super(game, world, pos);
 
         this.interactiveData = JsonLoader.getInstance().deserialize("interactive." + getID().name, InteractiveData.class);

@@ -3,7 +3,7 @@ package com.punkipunk.core;
 import com.punkipunk.core.api.Updatable;
 import com.punkipunk.world.World;
 
-public record Updater(World world, Game game) implements Updatable {
+public record Updater(World world, IGame game) implements Updatable {
 
     @Override
     public void update() {
@@ -16,7 +16,7 @@ public record Updater(World world, Game game) implements Updatable {
     }
 
     private void updateStats() {
-        game.getGameController().getStatsViewController().update(game.gameSystem.world.entitySystem.player.stats);
+        // game.getGameController().getStatsViewController().update(game.gameSystem.world.entitySystem.player.stats);
     }
 
 }

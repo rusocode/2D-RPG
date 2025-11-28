@@ -1,6 +1,8 @@
 package com.punkipunk.input.keyboard;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 
 import java.util.BitSet;
@@ -17,7 +19,7 @@ public class Keyboard {
 
     /** Almacena el estado de las teclas que pueden alternarse (activado/desactivado) */
     public final BitSet toggledKeys = new BitSet(256);
-    private final Game game;
+    private final IGame game;
     private final KeyStateController keyStateController = new KeyStateController();
     /** Conjunto de teclas actualmente presionadas */
     private final Set<Key> keys = EnumSet.noneOf(Key.class);
@@ -29,7 +31,7 @@ public class Keyboard {
      *
      * @param game el juego al que pertenece este teclado
      */
-    public Keyboard(Game game) {
+    public Keyboard(IGame game) {
         this.game = game;
         setupKeyListeners();
     }
@@ -147,8 +149,18 @@ public class Keyboard {
      * Configura los listeners de eventos de teclado en la escena del juego.
      */
     private void setupKeyListeners() {
-        game.getScene().setOnKeyPressed(this::onKeyPressed);
-        game.getScene().setOnKeyReleased(this::onKeyReleased);
+        Scene scene = game.getScene();
+
+        if (scene != null) {
+            // Modo JavaFX: configurar listeners en la Scene
+            scene.setOnKeyPressed(this::onKeyPressed);
+            scene.setOnKeyReleased(this::onKeyReleased);
+            System.out.println("Keyboard configurado para JavaFX (usando Scene)");
+        } else {
+            // Modo LWJGL: los listeners se configurarán desde GLFW
+            // No hacemos nada aquí, se configurarán externamente
+            System.out.println("Keyboard configurado para LWJGL (esperando callbacks de GLFW)");
+        }
     }
 
 }

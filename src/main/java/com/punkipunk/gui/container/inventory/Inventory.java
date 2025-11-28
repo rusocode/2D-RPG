@@ -1,6 +1,7 @@
 package com.punkipunk.gui.container.inventory;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.*;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.gui.container.Container;
@@ -17,11 +18,11 @@ import com.punkipunk.world.World;
 
 public class Inventory extends Container {
 
-    private final Game game;
+    private final IGame game;
     private final World world;
     private final Equipment equipment;
 
-    public Inventory(Game game, World world, Player player) {
+    public Inventory(IGame game, World world, Player player) {
         super(game, world, player, 3, 9);
         this.game = game;
         this.world = world;

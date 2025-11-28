@@ -1,6 +1,7 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.json.JsonLoader;
@@ -37,7 +38,7 @@ public abstract class Item extends Entity {
     protected ItemData itemData;
     protected int points; // Puntos de las pociones azules y rojas que se usan para incrementar hp y mana
 
-    public Item(Game game, World world, int... pos) {
+    public Item(IGame game, World world, int... pos) {
         super(game, world, pos);
 
         this.itemData = JsonLoader.getInstance().deserialize("items." + getID().name, ItemData.class);

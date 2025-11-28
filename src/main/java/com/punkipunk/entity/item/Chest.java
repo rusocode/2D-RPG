@@ -3,6 +3,7 @@ package com.punkipunk.entity.item;
 import com.punkipunk.Dialogue;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
@@ -10,7 +11,7 @@ import com.punkipunk.world.World;
 
 public class Chest extends Item {
 
-    public Chest(Game game, World world, int... pos) {
+    public Chest(IGame game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
         sheet.loadItemFrames(new SpriteSheet(Utils.loadTexture(itemData.spriteSheetPath())), itemData.frameWidth(), itemData.frameHeight(), itemData.frameScale());
@@ -19,7 +20,7 @@ public class Chest extends Item {
     @Override
     public void interact() {
         if (!opened) {
-            game.gameSystem.audio.playSound(AudioID.Sound.CHEST_OPENING);
+            game.getGameSystem().audio.playSound(AudioID.Sound.CHEST_OPENING);
             sheet.frame = sheet.item[1];
             opened = true;
             if (world.entitySystem.player.inventory.canAddItem(loot)) {

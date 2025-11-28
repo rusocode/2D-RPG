@@ -2,6 +2,7 @@ package com.punkipunk.entity.interactive;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.item.ItemCategory;
 import com.punkipunk.entity.item.Stone;
@@ -10,7 +11,7 @@ import javafx.scene.paint.Color;
 
 public class DestructibleWall extends Interactive {
 
-    public DestructibleWall(Game game, World world, int... pos) {
+    public DestructibleWall(IGame game, World world, int... pos) {
         super(game, world, pos);
     }
 
@@ -40,7 +41,7 @@ public class DestructibleWall extends Interactive {
 
     @Override
     public void playSound() {
-        game.gameSystem.audio.playSound(AudioID.Sound.MINE);
+        game.getGameSystem().audio.playSound(AudioID.Sound.MINE);
     }
 
     @Override

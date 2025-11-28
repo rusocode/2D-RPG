@@ -1,11 +1,12 @@
 package com.punkipunk.entity.interactive;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.world.World;
 
 public class MetalPlate extends Interactive {
 
-    public MetalPlate(Game game, World world, int... pos) {
+    public MetalPlate(IGame game, World world, int... pos) {
         super(game, world, pos);
     }
 

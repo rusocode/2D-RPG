@@ -1,6 +1,7 @@
 package com.punkipunk.gui.container.hotbar;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.gui.container.Container;
@@ -11,7 +12,7 @@ public class Hotbar extends Container {
 
     private final Inventory inventory;
 
-    public Hotbar(Game game, World world, Player player, Inventory inventory) {
+    public Hotbar(IGame game, World world, Player player, Inventory inventory) {
         super(game, world, player, 1, 9); // TODO Usar constantes
         this.inventory = inventory;
     }

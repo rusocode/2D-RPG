@@ -1,6 +1,7 @@
 package com.punkipunk.entity;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.interactive.InteractiveID;
 import com.punkipunk.entity.item.*;
 import com.punkipunk.entity.mob.MobID;
@@ -12,11 +13,11 @@ import static com.punkipunk.utils.Global.*;
 
 public class EntityFactory {
 
-    private final Game game;
+    private final IGame game;
     private final World world;
     private final EntitySystem entitySystem;
 
-    public EntityFactory(Game game, World world, EntitySystem entitySystem) {
+    public EntityFactory(IGame game, World world, EntitySystem entitySystem) {
         this.game = game;
         this.world = world;
         this.entitySystem = entitySystem;

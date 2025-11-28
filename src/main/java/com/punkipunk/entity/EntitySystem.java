@@ -1,6 +1,7 @@
 package com.punkipunk.entity;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.components.Particle;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.interactive.InteractiveFactory;
@@ -102,7 +103,7 @@ public class EntitySystem {
 
     public EntityFactory entityFactory;
 
-    public EntitySystem(Game game, World world) {
+    public EntitySystem(IGame game, World world) {
         this.world = world;
         this.mobFactory = new MobFactory(game, world);
         this.itemFactory = new ItemFactory(game, world);

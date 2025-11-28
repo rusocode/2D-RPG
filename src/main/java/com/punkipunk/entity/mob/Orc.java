@@ -2,6 +2,7 @@ package com.punkipunk.entity.mob;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Key;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.SpriteSheet;
@@ -12,7 +13,7 @@ import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
 
 public class Orc extends Mob {
 
-    public Orc(Game game, World world, int... pos) {
+    public Orc(IGame game, World world, int... pos) {
         super(game, world, pos);
         soundHit = AudioID.Sound.ORC_HIT;
         soundDeath = AudioID.Sound.ORC_DEATH;
@@ -27,7 +28,7 @@ public class Orc extends Mob {
     public void doActions() {
         if (flags.following) {
             checkUnfollow(world.entitySystem.player, 10);
-            game.gameSystem.pathfinding.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
+            game.getGameSystem().pathfinding.searchPath(this, getGoalRow(world.entitySystem.player), getGoalCol(world.entitySystem.player));
         } else {
             checkFollow(world.entitySystem.player, 5, 100);
             timer.timeDirection(this, INTERVAL_DIRECTION);

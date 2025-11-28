@@ -1,6 +1,7 @@
 package com.punkipunk;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
@@ -24,11 +25,11 @@ import static com.punkipunk.utils.Global.*;
 
 public class Minimap {
 
-    private final Game game;
+    private final IGame game;
     private final World world;
     private Image[] minimap;
 
-    public Minimap(Game game, World world) {
+    public Minimap(IGame game, World world) {
         this.game = game;
         this.world = world;
     }
@@ -55,7 +56,7 @@ public class Minimap {
     }
 
     public void render(final GraphicsContext context) {
-        if (game.gameSystem.keyboard.isKeyToggled(Key.MINIMAP)) {
+        if (game.getGameSystem().keyboard.isKeyToggled(Key.MINIMAP)) {
             int width = 100;
             int height = 100;
             int x = WINDOW_WIDTH - width - 22;

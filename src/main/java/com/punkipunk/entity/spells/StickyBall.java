@@ -1,6 +1,7 @@
 package com.punkipunk.entity.spells;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.SpellData;
@@ -18,7 +19,7 @@ import static com.punkipunk.utils.Global.tile;
 
 public class StickyBall extends Spell {
 
-    public StickyBall(Game game, World world) {
+    public StickyBall(IGame game, World world) {
         super(game, world, JsonLoader.getInstance().deserialize("spells.stickyBall", SpellData.class));
         hitbox = new Rectangle(8, 8, 15, 15);
         hitboxDefaultX = hitbox.getX();

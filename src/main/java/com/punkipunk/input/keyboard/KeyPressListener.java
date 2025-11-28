@@ -1,6 +1,7 @@
 package com.punkipunk.input.keyboard;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 
 /**
  * <p>
@@ -19,6 +20,6 @@ public interface KeyPressListener {
      * @param key  la tecla presionada
      * @param game referencia al juego actual
      */
-    void onKeyPress(Key key, Game game);
+    void onKeyPress(Key key, IGame game);
 
 }

@@ -1,7 +1,7 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.Direction;
-import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.MobData;
@@ -35,7 +35,7 @@ public abstract class Mob extends Entity {
 
     protected MobData mobData;
 
-    public Mob(Game game, World world, int... pos) {
+    public Mob(IGame game, World world, int... pos) {
         super(game, world, pos);
 
         this.mobData = JsonLoader.getInstance().deserialize("mobs." + getID().name, MobData.class);
@@ -177,9 +177,9 @@ public abstract class Mob extends Entity {
      */
     protected void moveTowardPlayer(Entity target, int interval) {
         if (++timer.directionCounter > interval) { // TODO o =?
-            if (getXDistance(game.gameSystem.world.entitySystem.player) > getYDistance(game.gameSystem.world.entitySystem.player))
+            if (getXDistance(game.getGameSystem().world.entitySystem.player) > getYDistance(game.getGameSystem().world.entitySystem.player))
                 direction = target.getCenterX() < getCenterX() ? Direction.LEFT : Direction.RIGHT;
-            else if (getXDistance(game.gameSystem.world.entitySystem.player) < getYDistance(game.gameSystem.world.entitySystem.player))
+            else if (getXDistance(game.getGameSystem().world.entitySystem.player) < getYDistance(game.getGameSystem().world.entitySystem.player))
                 direction = target.getCenterY() < getCenterY() ? Direction.UP : Direction.DOWN;
             timer.directionCounter = 0;
         }

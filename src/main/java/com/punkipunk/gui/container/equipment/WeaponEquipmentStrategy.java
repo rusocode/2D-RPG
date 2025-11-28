@@ -10,7 +10,7 @@ public class WeaponEquipmentStrategy extends BaseEquipmentStrategy {
         player.weapon = item;
         player.stats.attack = player.getAttack();
         player.sheet.loadWeaponFrames(item.ss, 16, 16, 1);
-        player.game.gameSystem.audio.playSound(item.soundDraw);
+        player.game.getGameSystem().audio.playSound(item.soundDraw);
     }
 
     @Override

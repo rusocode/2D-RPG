@@ -1,14 +1,15 @@
 package com.punkipunk.entity.interactive;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.world.World;
 
 public class InteractiveFactory {
 
-    private final Game game;
+    private final IGame game;
     private final World world;
 
-    public InteractiveFactory(Game game, World world) {
+    public InteractiveFactory(IGame game, World world) {
         this.game = game;
         this.world = world;
     }

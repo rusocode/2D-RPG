@@ -4,6 +4,7 @@ import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.interactive.InteractiveID;
@@ -20,7 +21,7 @@ import java.util.List;
 
 public class Box extends Mob {
 
-    public Box(Game game, World world, int... pos) {
+    public Box(IGame game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
         dialogue.set = -1;
@@ -87,7 +88,7 @@ public class Box extends Mob {
             if (distance < 8) {
                 if (linkedEntity == null) {
                     linkedEntity = plate;
-                    game.gameSystem.audio.playSound(AudioID.Sound.CHIPWALL);
+                    game.getGameSystem().audio.playSound(AudioID.Sound.CHIPWALL);
                 }
             } else if (linkedEntity == plate) linkedEntity = null; // Desvincula la caja de la placa si se mueve de esta placa
         }
@@ -102,7 +103,7 @@ public class Box extends Mob {
                     .findFirst()
                     .ifPresent(door -> {
                         world.entitySystem.removeItem(world.map.id, door);
-                        game.gameSystem.audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
+                        game.getGameSystem().audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
                     });
         }
 

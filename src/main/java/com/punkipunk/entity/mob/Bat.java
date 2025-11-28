@@ -2,6 +2,7 @@ package com.punkipunk.entity.mob;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Gold;
 import com.punkipunk.entity.item.StoneAxe;
 import com.punkipunk.gfx.SpriteSheet;
@@ -10,7 +11,7 @@ import com.punkipunk.world.World;
 
 public class Bat extends Mob {
 
-    public Bat(Game game, World world, int... pos) {
+    public Bat(IGame game, World world, int... pos) {
         super(game, world, pos);
         soundHit = AudioID.Sound.BAT_HIT;
         soundDeath = AudioID.Sound.BAT_DEATH;

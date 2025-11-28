@@ -4,6 +4,7 @@ import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.components.Flags;
 import com.punkipunk.entity.components.Particle;
 import com.punkipunk.entity.components.Stats;
@@ -27,7 +28,7 @@ import static com.punkipunk.utils.Global.*;
 
 public abstract class Entity {
 
-    public final Game game;
+    public final IGame game;
     public final World world;
 
     public final Stats stats;
@@ -61,7 +62,7 @@ public abstract class Entity {
     // Variables temporales
     public int tempScreenX, tempScreenY;
 
-    public Entity(Game game, World world, int... pos) {
+    public Entity(IGame game, World world, int... pos) {
         this.game = game;
         this.world = world;
         this.stats = new Stats();
@@ -98,7 +99,7 @@ public abstract class Entity {
             tempScreenY = getScreenY();
 
             // Si tiene la barra de vida activada y si no es un boss
-            if (flags.hpBar && !flags.boss) game.gameSystem.ui.renderHpBar(this);
+            if (flags.hpBar && !flags.boss) game.getGameSystem().ui.renderHpBar(this);
 
             if (flags.invincible) {
                 // Without this, the bar disappears after 4 seconds, even if the player continues attacking the mob
@@ -116,7 +117,7 @@ public abstract class Entity {
                 // Si es una imagen estatica (item, interactive)
             else context.drawImage(sheet.frame, getScreenX(), getScreenY());
 
-            if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
+            if (game.getGameSystem().keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
 
             Utils.changeAlpha(context, 1f);
         }
@@ -190,7 +191,7 @@ public abstract class Entity {
             hitbox.setWidth(attackbox.getWidth());
             hitbox.setHeight(attackbox.getHeight());
 
-            hitPlayer(this, game.gameSystem.collisionChecker.checkPlayer(this), stats.attack);
+            hitPlayer(this, game.getGameSystem().collisionChecker.checkPlayer(this), stats.attack);
 
             position.x = currentX;
             position.y = currentY;
@@ -230,7 +231,7 @@ public abstract class Entity {
      */
     public void hitPlayer(Entity entity, boolean contact, int attack) {
         if (entity.mobCategory != MobCategory.NPC && entity.mobCategory != MobCategory.PEACEFUL && contact && !world.entitySystem.player.flags.invincible) {
-            game.gameSystem.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
+            game.getGameSystem().audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
             // Resta la defensa del player del ataque del mob para calcular el daño justo
             int damage = Math.max(attack - world.entitySystem.player.stats.defense, 1);
             world.entitySystem.player.stats.decreaseHp(damage);
@@ -243,11 +244,11 @@ public abstract class Entity {
      */
     public void checkCollisions() {
         flags.colliding = false; // Resetea colliding para que la entidad se pueda mover cuando no este colisionando
-        game.gameSystem.collisionChecker.checkTile(this);
-        game.gameSystem.collisionChecker.checkItem(this);
-        game.gameSystem.collisionChecker.checkMob(this);
-        game.gameSystem.collisionChecker.checkInteractive(this);
-        if (game.gameSystem.collisionChecker.checkPlayer(this)) {
+        game.getGameSystem().collisionChecker.checkTile(this);
+        game.getGameSystem().collisionChecker.checkItem(this);
+        game.getGameSystem().collisionChecker.checkMob(this);
+        game.getGameSystem().collisionChecker.checkInteractive(this);
+        if (game.getGameSystem().collisionChecker.checkPlayer(this)) {
             hitPlayer(this, true, stats.attack);
             flags.colliding = true;
         }

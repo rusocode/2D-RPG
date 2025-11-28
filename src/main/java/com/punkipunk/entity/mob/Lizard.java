@@ -3,6 +3,7 @@ package com.punkipunk.entity.mob;
 import com.punkipunk.Dialogue;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Gold;
 import com.punkipunk.entity.item.ItemID;
 import com.punkipunk.gfx.SpriteSheet;
@@ -18,7 +19,7 @@ import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
 
 public class Lizard extends Mob {
 
-    public Lizard(Game game, World world, int... pos) {
+    public Lizard(IGame game, World world, int... pos) {
         super(game, world, pos);
         soundHit = AudioID.Sound.MOB_HIT;
         soundDeath = AudioID.Sound.BAT_DEATH;
@@ -33,7 +34,7 @@ public class Lizard extends Mob {
     public void doActions() {
         // TODO Haz que siga al player cuando este atascado en un tile
         // Si la distancia del jugador con respecto al mob es menor a 10 tiles
-        if (getTileDistance(game.gameSystem.world.entitySystem.player) < 10) moveTowardPlayer(game.gameSystem.world.entitySystem.player, 30);
+        if (getTileDistance(game.getGameSystem().world.entitySystem.player) < 10) moveTowardPlayer(game.getGameSystem().world.entitySystem.player, 30);
         else timer.timeDirection(this, INTERVAL_DIRECTION);
         // if (!flags.hitting) isPlayerWithinAttackRange(60, tile * 6, tile * 4, 60); // TODO No se utiliza ya que por ahora el boss no tiene un sprite de ataque
     }

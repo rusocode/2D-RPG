@@ -1,6 +1,7 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.player.PlayerDummy;
 import com.punkipunk.world.World;
 
@@ -10,10 +11,10 @@ import java.util.stream.Collectors;
 
 public class MobFactory {
 
-    private final Game game;
+    private final IGame game;
     private final World world;
 
-    public MobFactory(Game game, World world) {
+    public MobFactory(IGame game, World world) {
         this.game = game;
         this.world = world;
     }

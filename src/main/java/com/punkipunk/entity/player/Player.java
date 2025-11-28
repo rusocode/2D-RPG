@@ -6,6 +6,7 @@ import com.punkipunk.audio.AudioID;
 import com.punkipunk.classes.Character;
 import com.punkipunk.classes.Jester;
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.combat.AttackSystem;
 import com.punkipunk.entity.interactive.Interactive;
@@ -59,7 +60,7 @@ public class Player extends Entity {
     /** Registra la otra entidad para poder comprobar la velocidad del player con respecto a la entidad a la que esta siguiendo. */
     private Entity otherEntity;
 
-    public Player(Game game, World world) {
+    public Player(IGame game, World world) {
         super(game, world);
         attackSystem = new AttackSystem(game, this);
         initializeContainers(game, world);
@@ -70,7 +71,7 @@ public class Player extends Entity {
         setInitialPosition();
     }
 
-    private void initializeContainers(Game game, World world) {
+    private void initializeContainers(IGame game, World world) {
         inventory = new Inventory(game, world, this);
         hotbar = new Hotbar(game, world, this, inventory);
         dialogue = new Dialogue(game);
@@ -129,16 +130,16 @@ public class Player extends Entity {
     public void update() {
         // El orden de los metodos es importante
         attackSystem.update();
-        if (game.gameSystem.keyboard.checkKeys()) {
+        if (game.getGameSystem().keyboard.checkKeys()) {
             checkCollisions();
             // Si no esta colisionando y esta presionando las teclas de movimiento
-            if (!flags.colliding && game.gameSystem.keyboard.checkMovementKeys()) position.update(this, direction);
+            if (!flags.colliding && game.getGameSystem().keyboard.checkMovementKeys()) position.update(this, direction);
             mechanics.checkSpeed(this, otherEntity);
             checkAttack();
             checkShoot();
             // Resetea las teclas de accion (atacar, por ejemplo) para darle prioridad a las teclas de movimiento y asi evitar que se "choquen"
-            game.gameSystem.keyboard.resetActionKeys();
-            if (game.gameSystem.keyboard.checkMovementKeys()) updateAnimation();
+            game.getGameSystem().keyboard.resetActionKeys();
+            if (game.getGameSystem().keyboard.checkMovementKeys()) updateAnimation();
         }
 
         timer.checkTimers(this);
@@ -152,7 +153,7 @@ public class Player extends Entity {
             if (!flags.hitting) context.drawImage(getCurrentAnimationFrame(), X_OFFSET, Y_OFFSET);
             else getCurrentItemFrame(context);
         }
-        if (game.gameSystem.keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
+        if (game.getGameSystem().keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
         Utils.changeAlpha(context, 1);
     }
 
@@ -168,11 +169,11 @@ public class Player extends Entity {
      * Si se presiono ENTER, y el ataque no se cancelo, y se completo el intervalo de ataque, y el arma esta equipada.
      */
     private boolean canAttack() {
-        return game.gameSystem.keyboard.isKeyPressed(Key.ENTER) && !attackCanceled && timer.isAttackReady() && inventory.getEquipment().isEquipped(weapon);
+        return game.getGameSystem().keyboard.isKeyPressed(Key.ENTER) && !attackCanceled && timer.isAttackReady() && inventory.getEquipment().isEquipped(weapon);
     }
 
     private void attack() {
-        game.gameSystem.audio.playSound(weapon.soundSwing);
+        game.getGameSystem().audio.playSound(weapon.soundSwing);
         flags.hitting = true; // Indica que esta atacando para poder generar la animacion de ataque
         timer.attackCounter = 0; // Una vez que ataca, resetea el contador de ataque
     }
@@ -182,11 +183,11 @@ public class Player extends Entity {
     }
 
     private boolean canShoot() {
-        return game.gameSystem.keyboard.isKeyPressed(Key.SHOOT) && !spell.flags.alive && timer.isShootReady() && spell.haveResource(this);
+        return game.getGameSystem().keyboard.isKeyPressed(Key.SHOOT) && !spell.flags.alive && timer.isShootReady() && spell.haveResource(this);
     }
 
     private void shoot() {
-        game.gameSystem.audio.playSound(spell.sound);
+        game.getGameSystem().audio.playSound(spell.sound);
         spell.set(position.x, position.y, direction, true, this);
         world.entitySystem.getSpells(world.map.id).add(spell);
         spell.subtractResource(this);
@@ -194,7 +195,7 @@ public class Player extends Entity {
     }
 
     private void checkStats() {
-        if (!game.gameSystem.keyboard.isKeyToggled(Key.TEST)) {
+        if (!game.getGameSystem().keyboard.isKeyToggled(Key.TEST)) {
             if (stats.hp <= 0) die();
         }
         if (stats.hp > stats.maxHp) stats.hp = stats.maxHp;
@@ -208,10 +209,10 @@ public class Player extends Entity {
             // Calcula y aplica daño
             int damage = Math.max(attack - mob.stats.defense, 1);
             mob.stats.decreaseHp(damage);
-            game.gameSystem.ui.addMessageToConsole(damage + " damage!");
+            game.getGameSystem().ui.addMessageToConsole(damage + " damage!");
             if (mob.stats.hp >= 0) {
-                game.gameSystem.audio.playSound(AudioID.Sound.MOB_HIT); // Sonido de mob golpeado
-                game.gameSystem.audio.playSound(mob.soundHit); // Sonido especifico de mob golpeado
+                game.getGameSystem().audio.playSound(AudioID.Sound.MOB_HIT); // Sonido de mob golpeado
+                game.getGameSystem().audio.playSound(mob.soundHit); // Sonido especifico de mob golpeado
             }
             mob.flags.invincible = true;
             mob.flags.hpBar = true;
@@ -221,10 +222,10 @@ public class Player extends Entity {
     }
 
     private void handleMobDeath(Mob mob) {
-        game.gameSystem.audio.playSound(mob.soundDeath);
+        game.getGameSystem().audio.playSound(mob.soundDeath);
         mob.flags.dead = true;
-        game.gameSystem.ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
-        game.gameSystem.ui.addMessageToConsole("Exp + " + mob.stats.exp);
+        game.getGameSystem().ui.addMessageToConsole("Killed the " + mob.stats.name + "!");
+        game.getGameSystem().ui.addMessageToConsole("Exp + " + mob.stats.exp);
         stats.exp += mob.stats.exp;
         checkLevelUp();
         if (mob.getID() == MobID.LIZARD) handleLizardDeath();
@@ -237,7 +238,7 @@ public class Player extends Entity {
                 .findFirst()
                 .ifPresent(door -> {
                     world.entitySystem.removeItem(world.map.id, door);
-                    game.gameSystem.audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
+                    game.getGameSystem().audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
                 });
     }
 
@@ -260,7 +261,7 @@ public class Player extends Entity {
 
     public void hitSpell(Spell spell) {
         if (spell != this.spell) { // Evita dañar el propio hechizo
-            game.gameSystem.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
+            game.getGameSystem().audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
             spell.flags.alive = false;
             generateParticle(spell, spell);
         }
@@ -268,17 +269,17 @@ public class Player extends Entity {
 
     private void executeItemInteraction(Item item) {
         // FIXME Se genera un pequeño lag al apretar muchas veces la P mientras camino y no hay items
-        if (game.gameSystem.keyboard.isKeyPressed(Key.PICKUP) && item.itemCategory != ItemCategory.OBSTACLE) {
+        if (game.getGameSystem().keyboard.isKeyPressed(Key.PICKUP) && item.itemCategory != ItemCategory.OBSTACLE) {
             if (item.itemCategory == ItemCategory.PICKUP) item.use(this);
             else if (inventory.canAddItem(item) || hotbar.canAddItem(item)) {
                 hotbar.add(item);
-                game.gameSystem.audio.playSound(AudioID.Sound.ITEM_PICKUP);
+                game.getGameSystem().audio.playSound(AudioID.Sound.ITEM_PICKUP);
             } else {
-                game.gameSystem.ui.addMessageToConsole("You cannot carry any more!");
+                game.getGameSystem().ui.addMessageToConsole("You cannot carry any more!");
                 return;
             }
             world.entitySystem.removeItem(world.map.id, item);
-        } else if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER) && item.itemCategory == ItemCategory.OBSTACLE) {
+        } else if (game.getGameSystem().keyboard.isKeyPressed(Key.ENTER) && item.itemCategory == ItemCategory.OBSTACLE) {
             attackCanceled = true;
             item.interact();
         }
@@ -288,7 +289,7 @@ public class Player extends Entity {
         otherEntity = mob;
         switch (mob.mobCategory) {
             case NPC -> {
-                if (game.gameSystem.keyboard.isKeyPressed(Key.ENTER)) {
+                if (game.getGameSystem().keyboard.isKeyPressed(Key.ENTER)) {
                     attackCanceled = true;
                     mob.dialogue();
                 }
@@ -296,7 +297,7 @@ public class Player extends Entity {
             }
             case HOSTILE, NEUTRAL -> {
                 if (!flags.invincible && !mob.flags.dead) {
-                    game.gameSystem.audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
+                    game.getGameSystem().audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
                     int damage = Math.max(mob.stats.attack - stats.defense, 1);
                     stats.decreaseHp(damage);
                     flags.invincible = true;
@@ -309,11 +310,11 @@ public class Player extends Entity {
     public void checkCollisions() {
         flags.colliding = false;
         direction.get(this);
-        if (!game.gameSystem.keyboard.isKeyToggled(Key.TEST)) game.gameSystem.collisionChecker.checkTile(this);
-        game.gameSystem.collisionChecker.checkItem(this).ifPresent(this::executeItemInteraction);
-        game.gameSystem.collisionChecker.checkMob(this).ifPresent(this::executeMobInteraction);
-        game.gameSystem.collisionChecker.checkInteractive(this);
-        game.gameSystem.eventSystem.checkAndTriggerEvents(this);
+        if (!game.getGameSystem().keyboard.isKeyToggled(Key.TEST)) game.getGameSystem().collisionChecker.checkTile(this);
+        game.getGameSystem().collisionChecker.checkItem(this).ifPresent(this::executeItemInteraction);
+        game.getGameSystem().collisionChecker.checkMob(this).ifPresent(this::executeMobInteraction);
+        game.getGameSystem().collisionChecker.checkInteractive(this);
+        game.getGameSystem().eventSystem.checkAndTriggerEvents(this);
     }
 
     private void updateAnimation() {
@@ -324,10 +325,10 @@ public class Player extends Entity {
     }
 
     private void die() {
-        game.gameSystem.audio.playSound(AudioID.Sound.PLAYER_DEATH);
+        game.getGameSystem().audio.playSound(AudioID.Sound.PLAYER_DEATH);
         State.setState(State.GAME_OVER);
-        game.gameSystem.ui.command = -1;
-        game.gameSystem.audio.stopPlayback();
+        game.getGameSystem().ui.command = -1;
+        game.getGameSystem().audio.stopPlayback();
     }
 
     private void checkLevelUp() {
@@ -340,7 +341,7 @@ public class Player extends Entity {
          * varias veces (por ejemplo, matando a un mob que otorga mucha exp). Por lo tanto, aumenta el nivel siempre que la
          * exp sea mayor que la exp del siguiente nivel. */
         while (stats.exp >= stats.nextExp) {
-            game.gameSystem.audio.playSound(AudioID.Sound.LEVEL_UP);
+            game.getGameSystem().audio.playSound(AudioID.Sound.LEVEL_UP);
             character.upStats(this);
             stats.attack = getAttack();
             stats.defense = getDefense();
@@ -380,7 +381,7 @@ public class Player extends Entity {
 
     private Image getCurrentAnimationFrame() {
         // Cuando deja de moverse, devuelve el primer frame guardado de la ultima direccion para representar la parada del player
-        if (game.gameSystem.keyboard.checkMovementKeys()) {
+        if (game.getGameSystem().keyboard.checkMovementKeys()) {
             switch (direction) {
                 case DOWN -> {
                     // Guarda el primer frame hacia abajo

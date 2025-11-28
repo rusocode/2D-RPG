@@ -1,6 +1,7 @@
 package com.punkipunk.world.system;
 
 import com.punkipunk.core.Game;
+import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.ItemID;
 import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.states.State;
@@ -12,12 +13,12 @@ public class CutsceneSystem {
 
     // Tipos de escena
     public final int na = 0, boss = 1;
-    private final Game game;
+    private final IGame game;
     private final World world;
     public int n; // Numero de escena
     public int phase; // Fase de escena
 
-    public CutsceneSystem(Game game, World world) {
+    public CutsceneSystem(IGame game, World world) {
         this.game = game;
         this.world = world;
     }
@@ -52,13 +53,13 @@ public class CutsceneSystem {
                     .findFirst()
                     .ifPresent(lizard -> {
                         lizard.sleep = false;
-                        game.gameSystem.ui.entity = lizard; // Pasa el boss a la interfaz de usuario para que pueda representar la ventana de dialogo
+                        game.getGameSystem().ui.entity = lizard; // Pasa el boss a la interfaz de usuario para que pueda representar la ventana de dialogo
                         phase++;
                     });
         }
 
         // El boss habla
-        if (phase == 3) game.gameSystem.ui.renderDialogueWindow();
+        if (phase == 3) game.getGameSystem().ui.renderDialogueWindow();
 
         // Devuelve la camara al player
         if (phase == 4) {
