@@ -15,6 +15,9 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
  * Clase que maneja la ventana principal del juego usando LWJGL/GLFW. Reemplaza el sistema de Stage/Scene de JavaFX.
+ * <p>
+ * Configurada para usar OpenGL 2.1 (Compatibility Profile) que soporta renderizado inmediato (glBegin/glEnd). Esto permite usar
+ * funciones legacy de OpenGL necesarias para el renderizado simple de texturas.
  */
 
 public class Window {
@@ -48,10 +51,12 @@ public class Window {
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // La ventana estara oculta despues de la creacion
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+
+        // Usamos OpenGL 3.3 Core Profile para compatibilidad moderna
+        /* glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE); */
 
         // Crea la ventana
         windowHandle = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -75,15 +80,14 @@ public class Window {
         // Esta linea es critica para que LWJGL pueda usar el contexto OpenGL
         GL.createCapabilities();
 
-        // Configuracion inicial de OpenGL
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        // Configuración inicial de OpenGL para renderizado 2D
+        setupOpenGL();
 
         isRunning = true;
 
         System.out.println("Initialized LWJGL Window: " + width + "x" + height);
         System.out.println("OpenGL Version: " + glGetString(GL_VERSION));
+        // System.out.println("GLSL Version: " + glGetString(GL_SHADING_LANGUAGE_VERSION));
     }
 
     /**
@@ -94,6 +98,13 @@ public class Window {
         glfwPollEvents();
         if (isResized) {
             glViewport(0, 0, width, height);
+
+            // Actualiza la proyección ortográfica cuando cambia el tamaño
+            glMatrixMode(GL_PROJECTION);
+            glLoadIdentity();
+            glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+            glMatrixMode(GL_MODELVIEW);
+
             isResized = false;
         }
     }
@@ -146,6 +157,17 @@ public class Window {
     public void setTitle(String title) {
         this.title = title;
         glfwSetWindowTitle(windowHandle, title);
+    }
+
+    /**
+     * Configura OpenGL para renderizado 2D optimizado.
+     */
+    private void setupOpenGL() {
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
     }
 
     /**

@@ -7,8 +7,8 @@ package com.punkipunk.core;
 public class MainGameLWJGL {
 
     /** Configuracion de la ventana. */
-    private static final int WINDOW_WIDTH = 1280;
-    private static final int WINDOW_HEIGHT = 720;
+    private static final int WINDOW_WIDTH = 672;
+    private static final int WINDOW_HEIGHT = 482;
     private static final String WINDOW_TITLE = "2D-RPG";
     private Window window;
     private GameLoop gameLoop;

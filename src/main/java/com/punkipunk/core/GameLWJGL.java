@@ -11,8 +11,9 @@ import javafx.scene.paint.Color;
 /**
  * Clase Game adaptada para LWJGL. Mantiene toda la logica original pero sin heredar de AnimationTimer.
  * <p>
- * NOTA: Por ahora mantenemos Canvas y GraphicsContext de JavaFX para minimizar cambios. En el siguiente paso migraremos esto a
- * OpenGL.
+ * NOTA: Por ahora mantenemos Canvas y GraphicsContext de JavaFX para minimizar cambios.
+ * <p>
+ * El Canvas renderiza en memoria y luego se copia a una textura OpenGL para visualización.
  */
 
 public class GameLWJGL implements IGame {
@@ -20,6 +21,9 @@ public class GameLWJGL implements IGame {
     private final Window window;
     private final Canvas canvas;
     private final GraphicsContext context;
+
+    // Sistema de transferencia Canvas -> OpenGL
+    private final CanvasToTexture canvasToTexture;
 
     public GameSystem gameSystem;
     public GameController gameController; // Por ahora null, lo migraremos despues
@@ -33,10 +37,13 @@ public class GameLWJGL implements IGame {
         this.window = window;
 
         // Crear Canvas temporal de JavaFX
-        this.canvas = new Canvas(window.getWidth(), window.getHeight()); // IMPORTANTE: Este Canvas no se mostrara en una ventana JavaFX, solo lo usamos para mantener tu codigo de renderizado funcionando
+        this.canvas = new Canvas(window.getWidth(), window.getHeight());
         this.context = canvas.getGraphicsContext2D();
 
-        System.out.println("GameLWJGL creado (usando Canvas temporal de JavaFX)");
+        // Crear el puente Canvas -> OpenGL
+        this.canvasToTexture = new CanvasToTexture(canvas);
+
+        System.out.println("GameLWJGL creado (usando Canvas temporal de JavaFX con puente a OpenGL)");
     }
 
     /**
@@ -70,18 +77,6 @@ public class GameLWJGL implements IGame {
             }
         });
 
-        // Crea el GameSystem exactamente como en tu codigo original
-        /* gameSystem = GameSystem.createDefault(this);
-
-        // Reproduce la musica inicial
-        gameSystem.audio.playMusic(AudioID.Music.MAIN);
-
-        // Configura la fuente
-        context.setFont(Utils.loadFont("font/BlackPearl.ttf", 18));
-        context.setFill(Color.WHITE);
-
-        // Inicializa los sistemas
-        gameSystem.initialize(); */
 
         // TODO: Inicializa el GameController cuando lo migremos
         // if (gameController != null) gameController.initialize(this);
@@ -103,25 +98,27 @@ public class GameLWJGL implements IGame {
     public void render() {
         if (!running) return;
 
-        // Prepara el canvas (limpia el frame anterior)
-        prepare();
+        // PASO 1 y 2: Renderizar y capturar Canvas (ambos en JavaFX Thread)
+        JavaFXHelper.runAndWait(() -> {
+            // 1a. Prepara el canvas (limpia el frame anterior)
+            prepare();
 
-        // Renderiza todo a traves del renderer
-        gameSystem.renderer.render(context);
+            // 1b. Renderiza todo a través del renderer
+            gameSystem.renderer.render(context);
 
-        // TODO: Aqui copiaremos el contenido del Canvas a la textura de OpenGL, por ahora solo renderizamos al Canvas
+            // 2. Captura los píxeles del Canvas
+            canvasToTexture.captureCanvas();
+        });
+
+        // PASO 3: Actualizar la textura OpenGL (en el thread actual = OpenGL Thread)
+        canvasToTexture.updateTexture();
+
+        // PASO 4: Renderizar la textura en la ventana LWJGL
+        canvasToTexture.render();
 
         // Actualiza los FPS
-        frames++;
-        long now = System.nanoTime();
-        if (now - lastTime >= 1_000_000_000) {
-            fps = frames;
-            frames = 0;
-            lastTime = now;
+        updateFPS();
 
-            // Muestra los FPS en el titulo de la ventana
-            window.setTitle("2D-RPG - FPS: " + fps);
-        }
     }
 
     /**
@@ -170,7 +167,18 @@ public class GameLWJGL implements IGame {
      */
     public void cleanup() {
         stop();
-        System.out.println("Game cleanup completado"); // El canvas sera recolectado por el GC
+
+        System.out.println("Limpiando recursos del juego...");
+
+        // Limpia el puente Canvas -> OpenGL
+        canvasToTexture.cleanup();
+
+        // Aquí puedes agregar limpieza de otros recursos si es necesario
+        // Por ejemplo: gameSystem.cleanup() si lo implementas en el futuro
+
+        running = false;
+        System.out.println("Recursos del juego liberados");
+
     }
 
     public Canvas getCanvas() {
@@ -189,7 +197,7 @@ public class GameLWJGL implements IGame {
 
     @Override
     public Scene getScene() {
-        return null;
+        return null; // GameLWJGL no usa JavaFX Scene
     }
 
     public boolean isPaused() {
@@ -213,10 +221,27 @@ public class GameLWJGL implements IGame {
     }
 
     /**
+     * Actualiza el contador de FPS.
+     */
+    private void updateFPS() {
+        frames++;
+        long now = System.nanoTime();
+        if (now - lastTime >= 1_000_000_000) {
+            fps = frames;
+            frames = 0;
+            lastTime = now;
+            // Muestra los FPS en el título de la ventana
+            window.setTitle("2D-RPG - FPS: " + fps);
+        }
+    }
+
+    /**
      * Limpia el canvas antes de renderizar.
      */
     private void prepare() {
-        context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        context.setFill(Color.BLACK);
+        context.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        // context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight()); // TODO Uso este?
     }
 
 }
