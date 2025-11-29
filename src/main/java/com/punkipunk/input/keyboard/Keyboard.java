@@ -1,6 +1,5 @@
 package com.punkipunk.input.keyboard;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
@@ -10,9 +9,12 @@ import java.util.EnumSet;
 import java.util.Set;
 
 /**
+ * Gestiona las entradas del teclado y el estado de las teclas en el juego.
  * <p>
- * Gestiona las entradas del teclado y el estado de las teclas en el juego. Procesa eventos de teclas presionadas y liberadas,
- * manteniendo registro del estado de las teclas y delegando al controlador de estados.
+ * Procesa eventos de teclas presionadas y liberadas, manteniendo registro del estado de las teclas y delegando al controlador de
+ * estados.
+ * <p>
+ * Compatible con JavaFX y LWJGL/GLFW.
  */
 
 public class Keyboard {
@@ -45,12 +47,22 @@ public class Keyboard {
      */
     public void onKeyPressed(KeyEvent e) {
         Key key = Key.get(e.getCode().getCode());
+        if (key != null) pressKey(key);
+    }
+
+    /**
+     * Registra una tecla como presionada (para LWJGL/GLFW).
+     *
+     * @param key la tecla presionada
+     */
+    public void pressKey(Key key) {
         if (key != null && lastKey != key.ordinal() && !keys.contains(key)) {
             lastKey = key.ordinal();
             keys.add(key);
             keyStateController.notifyKeyPress(key, game);
         }
     }
+
 
     /**
      * Procesa el evento de tecla liberada.
@@ -62,7 +74,7 @@ public class Keyboard {
     public void onKeyReleased(KeyEvent e) {
         lastKey = -1;
         Key key = Key.get(e.getCode().getCode());
-        if (key != null) keys.remove(key);
+        if (key != null) releaseKey(key);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.punkipunk.core;
 
+import com.punkipunk.input.keyboard.InputHandler;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -27,8 +28,9 @@ public class Window {
     private int height;
     private String title;
 
-    private boolean isRunning = false;
-    private boolean isResized = false;
+    private boolean isRunning, isResized;
+
+    private InputHandler inputHandler;
 
     public Window(int width, int height, String title) {
         this.width = width;
@@ -52,6 +54,7 @@ public class Window {
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // La ventana estara oculta despues de la creacion
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
 
+        // TODO Implementar esto
         // Usamos OpenGL 3.3 Core Profile para compatibilidad moderna
         /* glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -91,6 +94,19 @@ public class Window {
     }
 
     /**
+     * Inicializa el sistema de entrada con referencia al juego.
+     * <p>
+     * Debe llamarse después de que el juego esté creado.
+     *
+     * @param game referencia al juego
+     */
+    public void initInput(IGame game) {
+        if (inputHandler != null) inputHandler.cleanup();
+        inputHandler = new InputHandler(windowHandle, game);
+        System.out.println("Input system initialized");
+    }
+
+    /**
      * Actualiza la ventana (poll events y swap buffers).
      */
     public void update() {
@@ -127,6 +143,8 @@ public class Window {
      * Libera los recursos de la ventana.
      */
     public void cleanup() {
+        if (inputHandler != null) inputHandler.cleanup();
+
         glfwFreeCallbacks(windowHandle);
         glfwDestroyWindow(windowHandle);
         glfwTerminate();
@@ -148,6 +166,10 @@ public class Window {
 
     public int getHeight() {
         return height;
+    }
+
+    public InputHandler getInputHandler() {
+        return inputHandler;
     }
 
     public boolean isRunning() {

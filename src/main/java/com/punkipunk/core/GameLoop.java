@@ -122,6 +122,8 @@ public class GameLoop {
         game = new GameLWJGL(window);
         game.setup();
 
+        window.initInput(game);
+
         currentState = GameState.PLAYING;
 
         // TODO: Inicializar el juego
