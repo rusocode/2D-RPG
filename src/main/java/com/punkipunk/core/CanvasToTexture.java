@@ -11,12 +11,12 @@ import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL12.GL_CLAMP_TO_EDGE;
 
 /**
- * Clase que maneja la transferencia de píxeles desde un Canvas de JavaFX hacia una textura de OpenGL.
+ * Clase que maneja la transferencia de pixeles desde un Canvas de JavaFX hacia una textura de OpenGL.
  * <p>
- * Este puente temporal permite mantener toda la lógica de renderizado del juego (que usa GraphicsContext) mientras se visualiza
+ * Este puente temporal permite mantener toda la logica de renderizado del juego (que usa GraphicsContext) mientras se visualiza
  * el resultado en una ventana LWJGL.
  * <p>
- * IMPORTANTE: La captura del Canvas (snapshot) debe ejecutarse en el JavaFX Thread, mientras que la actualización de la textura
+ * IMPORTANTE: La captura del Canvas (snapshot) debe ejecutarse en el JavaFX Thread, mientras que la actualizacion de la textura
  * OpenGL debe ejecutarse en el OpenGL Thread.
  */
 
@@ -24,10 +24,9 @@ public class CanvasToTexture {
 
     private final Canvas canvas;
     private final int textureID;
-    private final int width;
-    private final int height;
+    private final int width, height;
 
-    // Buffers reutilizables para evitar crear objetos en cada frame
+    /** Buffers reutilizables para evitar crear objetos en cada frame. */
     private final WritableImage snapshot;
     private final ByteBuffer pixelBuffer;
     private final byte[] pixelArray;
@@ -35,7 +34,7 @@ public class CanvasToTexture {
     /**
      * Crea un nuevo CanvasToTexture.
      *
-     * @param canvas Canvas de JavaFX del que se extraerán los píxeles
+     * @param canvas Canvas de JavaFX del que se extraeran los pixeles
      */
     public CanvasToTexture(Canvas canvas) {
         this.canvas = canvas;
@@ -46,13 +45,13 @@ public class CanvasToTexture {
         this.textureID = glGenTextures();
         glBindTexture(GL_TEXTURE_2D, textureID);
 
-        // Configura parámetros de la textura
+        // Configura parametros de la textura
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST); // Filtrado nearest para pixel art
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-        // Inicializa la textura con datos vacíos
+        // Inicializa la textura con datos vacios
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
 
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -62,18 +61,18 @@ public class CanvasToTexture {
         this.pixelBuffer = BufferUtils.createByteBuffer(width * height * 4); // RGBA = 4 bytes por pixel
         this.pixelArray = new byte[width * height * 4];
 
-        System.out.println("CanvasToTexture creado - Tamaño: " + width + "x" + height + ", TextureID: " + textureID);
+        System.out.println("CanvasToTexture created - Size: " + width + "x" + height + ", TextureID: " + textureID);
     }
 
     /**
-     * Captura el Canvas como imagen. DEBE ejecutarse en el JavaFX Thread. Este método extrae los píxeles y los prepara para ser
-     * transferidos a OpenGL.
+     * Captura el Canvas como imagen que DEBE ejecutarse en el JavaFX Thread. Este metodo extrae los pixeles y los prepara para
+     * ser transferidos a OpenGL.
      */
     public void captureCanvas() {
         // PASO 1: Captura el Canvas como imagen (DEBE estar en JavaFX Thread)
         canvas.snapshot(null, snapshot);
 
-        // PASO 2: Extrae los píxeles de la imagen
+        // PASO 2: Extrae los pixeles de la imagen
         var pixelReader = snapshot.getPixelReader();
         pixelReader.getPixels(0, 0, width, height, PixelFormat.getByteBgraInstance(), pixelArray, 0, width * 4);
 
@@ -82,7 +81,7 @@ public class CanvasToTexture {
     }
 
     /**
-     * Actualiza la textura OpenGL con el contenido actual del Canvas. Este método debe llamarse después de renderizar en el
+     * Actualiza la textura OpenGL con el contenido actual del Canvas. Este metodo debe llamarse despues de renderizar en el
      * Canvas y antes de dibujar en OpenGL.
      */
     public void updateTexture() {
@@ -105,7 +104,7 @@ public class CanvasToTexture {
         glBindTexture(GL_TEXTURE_2D, textureID);
 
         // Dibuja un quad en modo inmediato (simple para empezar)
-        // Nota: En el futuro esto debería migrar a VAO/VBO para mejor rendimiento
+        // TODO: migrar a VAO/VBO para mejor rendimiento
         glEnable(GL_TEXTURE_2D);
 
         glBegin(GL_QUADS);
@@ -136,9 +135,7 @@ public class CanvasToTexture {
      * Libera los recursos de OpenGL.
      */
     public void cleanup() {
-        if (textureID != 0) {
-            glDeleteTextures(textureID);
-        }
+        if (textureID != 0) glDeleteTextures(textureID);
     }
 
     public int getTextureID() {
@@ -154,7 +151,7 @@ public class CanvasToTexture {
     }
 
     /**
-     * Convierte los píxeles de formato BGRA (JavaFX) a RGBA (OpenGL). Se modifica el array in-place para eficiencia.
+     * Convierte los pixeles de formato BGRA (JavaFX) a RGBA (OpenGL). Se modifica el array in-place para eficiencia.
      */
     private void convertBGRAtoRGBA(byte[] pixels) {
         for (int i = 0; i < pixels.length; i += 4) {

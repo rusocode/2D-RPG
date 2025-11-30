@@ -1,9 +1,8 @@
 package com.punkipunk.input.keyboard;
 
-import com.punkipunk.core.Game;
+import com.punkipunk.core.GameLWJGL;
 import com.punkipunk.core.IGame;
 import com.punkipunk.states.State;
-import com.punkipunk.world.MapID;
 
 import java.util.EnumMap;
 import java.util.Map;
@@ -51,6 +50,12 @@ public class KeyStateController {
      */
     private void processPlayState(Key key, IGame game) {
         if (Key.TOGGLE_KEYS.contains(key)) game.getGameSystem().keyboard.toggleKey(key);
+        switch (key) {
+            // LWJGL: usa GameUI en lugar de GameController
+            case STATS -> {
+                if (game instanceof GameLWJGL) ((GameLWJGL) game).getGameUI().toggleStatsView();
+            }
+        }
         /* switch (key) {
             case ESCAPE -> game.getGameController().toggleOptionsView();
             case INVENTORY -> game.getGameController().toggleInventoryView();

@@ -54,7 +54,7 @@ public class Lighting {
             int centerX = X_OFFSET + (tile / 2);
             int centerY = Y_OFFSET + (tile / 2);
 
-            // Crear el efecto de gradación para el círculo de luz
+            // Crear el efecto de gradacion para el circulo de luz
             Stop[] stops = new Stop[]{
                     new Stop(0, Color.color(0, 0, 0, 0.1)),
                     new Stop(0.4, Color.color(0, 0, 0, 0.42)),
@@ -76,7 +76,7 @@ public class Lighting {
                     false, CycleMethod.NO_CYCLE, stops
             );
 
-            // Establece el gradiente y dibuja el rectángulo
+            // Establece el gradiente y dibuja el rectangulo
             gc.setFill(gradient);
             gc.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
 

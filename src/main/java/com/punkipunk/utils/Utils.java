@@ -100,7 +100,7 @@ public final class Utils {
      * Change the transparency of the image.
      */
     public static void changeAlpha(GraphicsContext context, double alpha) {
-        // Asegurarse de que alpha esté en el rango válido
+        // Asegurarse de que alpha este en el rango valido
         alpha = Math.max(0.0, Math.min(1.0, alpha));
         // Establecer la opacidad global para todas las operaciones de dibujo subsiguientes
         context.setGlobalAlpha(alpha);

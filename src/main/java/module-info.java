@@ -27,6 +27,7 @@ module com.punkipunk {
     exports com.punkipunk.world.system;
     exports com.punkipunk.input.keyboard;
     exports com.punkipunk.io;
+    exports com.punkipunk.ui;
     exports com.punkipunk.physics;
     exports com.punkipunk.ai;
     exports com.punkipunk.states;

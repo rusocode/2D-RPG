@@ -37,7 +37,7 @@ import static com.punkipunk.utils.Global.*;
  * <h4>Ticks y FPS</h4>
  * <p>
  * La cantidad de UPDATES (ticks) y FRAMES (fps) no necesitan ser identicos, aunque 60 para ambos es comun. Esta eleccion depende
- * de factores como el rendimiento del hardware, la consistencia del juego y el género. Por ejemplo, 30 UPDATES y 60 FRAMES pueden
+ * de factores como el rendimiento del hardware, la consistencia del juego y el genero. Por ejemplo, 30 UPDATES y 60 FRAMES pueden
  * ser adecuados en ciertas situaciones.
  * <p>
  * El tiempo se mide en nanosegundos por varias razones:

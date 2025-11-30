@@ -8,8 +8,8 @@ import static com.punkipunk.utils.Global.tile;
 /**
  * <p>
  * Estas coordenadas no son mas que la suma de pixeles comenzando desde la esquina superior izquierda del mapa (0, 0). Al dividir
- * esta suma por el tamaño del tile se obtiene la posición en filas y columnas. Esto se hace para facilitar el manejo de
- * coordenadas. Otra cosa a tener en cuenta es que a las coordenadas x-y se suma el hitbox de la entidad para obtener la posición
+ * esta suma por el tamaño del tile se obtiene la posicion en filas y columnas. Esto se hace para facilitar el manejo de
+ * coordenadas. Otra cosa a tener en cuenta es que a las coordenadas x-y se suma el hitbox de la entidad para obtener la posicion
  * exacta del rectangulo del colisionador y no del frame. Es importante aclarar que se posiciona el hitbox, NO la imagen.
  */
 

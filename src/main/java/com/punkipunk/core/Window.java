@@ -83,7 +83,7 @@ public class Window {
         // Esta linea es critica para que LWJGL pueda usar el contexto OpenGL
         GL.createCapabilities();
 
-        // Configuración inicial de OpenGL para renderizado 2D
+        // Configuracion inicial de OpenGL para renderizado 2D
         setupOpenGL();
 
         isRunning = true;
@@ -96,7 +96,7 @@ public class Window {
     /**
      * Inicializa el sistema de entrada con referencia al juego.
      * <p>
-     * Debe llamarse después de que el juego esté creado.
+     * Debe llamarse despues de que el juego este creado.
      *
      * @param game referencia al juego
      */
@@ -115,7 +115,7 @@ public class Window {
         if (isResized) {
             glViewport(0, 0, width, height);
 
-            // Actualiza la proyección ortográfica cuando cambia el tamaño
+            // Actualiza la proyeccion ortografica cuando cambia el tamaño
             glMatrixMode(GL_PROJECTION);
             glLoadIdentity();
             glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);

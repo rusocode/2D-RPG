@@ -26,7 +26,7 @@ public class Hotbar extends Container {
             return;
         }
         if (canAddItem(currentItem)) super.add(currentItem); // Primero intenta agregar al hotbar
-        else inventory.add(currentItem); // Si el hotbar está lleno, agrega al inventario
+        else inventory.add(currentItem); // Si el hotbar esta lleno, agrega al inventario
     }
 
 }

@@ -49,24 +49,24 @@ public class InputHandler {
     }
 
     /**
-     * Obtiene la posición X actual del mouse.
+     * Obtiene la posicion X actual del mouse.
      */
     public double getMouseX() {
         return mouseX;
     }
 
     /**
-     * Obtiene la posición Y actual del mouse.
+     * Obtiene la posicion Y actual del mouse.
      */
     public double getMouseY() {
         return mouseY;
     }
 
     /**
-     * Verifica si un botón del mouse está presionado.
+     * Verifica si un boton del mouse esta presionado.
      *
-     * @param button código del botón (GLFW_MOUSE_BUTTON_*)
-     * @return true si el botón está presionado
+     * @param button codigo del boton (GLFW_MOUSE_BUTTON_*)
+     * @return true si el boton esta presionado
      */
     public boolean isMouseButtonPressed(int button) {
         if (button >= 0 && button < mouseButtons.length) return mouseButtons[button];
@@ -74,21 +74,21 @@ public class InputHandler {
     }
 
     /**
-     * Verifica si el botón izquierdo del mouse está presionado.
+     * Verifica si el boton izquierdo del mouse esta presionado.
      */
     public boolean isLeftButtonPressed() {
         return isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT);
     }
 
     /**
-     * Verifica si el botón derecho del mouse está presionado.
+     * Verifica si el boton derecho del mouse esta presionado.
      */
     public boolean isRightButtonPressed() {
         return isMouseButtonPressed(GLFW_MOUSE_BUTTON_RIGHT);
     }
 
     /**
-     * Verifica si el botón medio del mouse está presionado.
+     * Verifica si el boton medio del mouse esta presionado.
      */
     public boolean isMiddleButtonPressed() {
         return isMouseButtonPressed(GLFW_MOUSE_BUTTON_MIDDLE);
@@ -114,7 +114,7 @@ public class InputHandler {
             handleKeyEvent(key, action);
         });
 
-        // Callback de posición del cursor
+        // Callback de posicion del cursor
         cursorPosCallback = glfwSetCursorPosCallback(windowHandle, (window, xpos, ypos) -> {
             mouseX = xpos;
             mouseY = ypos;
@@ -127,26 +127,28 @@ public class InputHandler {
 
         // Callback de scroll del mouse
         scrollCallback = glfwSetScrollCallback(windowHandle, (window, xoffset, yoffset) -> {
-            // Aquí puedes manejar el scroll si es necesario
-            // Por ahora solo lo registramos para futura implementación
+            // Aqui puedes manejar el scroll si es necesario
+            // Por ahora solo lo registramos para futura implementacion
         });
     }
 
     /**
      * Maneja eventos de teclado de GLFW.
      *
-     * @param glfwKey código de tecla GLFW
-     * @param action  acción (PRESS, RELEASE, REPEAT)
+     * @param glfwKey codigo de tecla GLFW
+     * @param action  accion (PRESS, RELEASE, REPEAT)
      */
     private void handleKeyEvent(int glfwKey, int action) {
         Key key = KeyMapper.glfwToKey(glfwKey);
 
         if (key == null) return; // Tecla no mapeada
 
-        if (action == GLFW_PRESS) keyboard.pressKey(key);
+        if (action == GLFW_PRESS) {
+            keyboard.pressKey(key);
+        }
         else if (action == GLFW_RELEASE) keyboard.releaseKey(key);
 
-        // GLFW_REPEAT lo ignoramos para evitar repetición automática
+        // GLFW_REPEAT lo ignoramos para evitar repeticion automatica
     }
 
 }

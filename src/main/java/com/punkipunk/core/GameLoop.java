@@ -1,5 +1,6 @@
 package com.punkipunk.core;
 
+import com.punkipunk.states.State;
 import com.punkipunk.ui.MainMenuUI;
 
 import static org.lwjgl.glfw.GLFW.glfwGetTime;
@@ -125,6 +126,8 @@ public class GameLoop {
         window.initInput(game);
 
         currentState = GameState.PLAYING;
+
+        State.setState(State.PLAY);
 
         // TODO: Inicializar el juego
     }

@@ -169,8 +169,8 @@ public class Keyboard {
             scene.setOnKeyReleased(this::onKeyReleased);
             System.out.println("Keyboard configurado para JavaFX (usando Scene)");
         } else {
-            // Modo LWJGL: los listeners se configurarán desde GLFW
-            // No hacemos nada aquí, se configurarán externamente
+            // Modo LWJGL: los listeners se configuraran desde GLFW
+            // No hacemos nada aqui, se configuraran externamente
             System.out.println("Keyboard configurado para LWJGL (esperando callbacks de GLFW)");
         }
     }

@@ -1,7 +1,6 @@
 package com.punkipunk.physics.event;
 
 import com.punkipunk.Direction;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.player.Player;
@@ -20,7 +19,6 @@ import java.util.Optional;
 import static com.punkipunk.utils.Global.tile;
 
 /**
- * <p>
  * Maneja la logica de deteccion y disparo de eventos.
  * <p>
  * Los eventos son areas especificas en el mapa que disparan acciones cuando el player interactua con ellas, como
@@ -51,11 +49,33 @@ public class EventSystem {
         loadEvents();
     }
 
+    /**
+     * Verifica y dispara los eventos para una entidad.
+     * <p>
+     * El proceso ocurre en el siguiente orden:
+     * <ol>
+     * <li>Verifica si la entidad esta lo suficientemente lejos del ultimo evento activado
+     * <li>Filtra los eventos que pueden ser disparados
+     * <li>Busca el primer evento que colisiona con el jugador
+     * <li>Si encuentra un evento valido, ejecuta su accion asociada
+     * </ol>
+     *
+     * @param entity entidad para la que se verifican y disparan los eventos
+     */
+    public void checkAndTriggerEvents(Entity entity) {
+        isEntityFarEnoughFromPreviousEvent(entity);
+        events.stream()
+                .filter(event -> canTriggerEvent)
+                .filter(this::isPlayerCollidingEvent)
+                .findFirst()
+                .ifPresent(event -> event.action.execute(entity));
+    }
+
     private void loadEvents() {
         try {
             // Deserializa la configuracion completa
             EventsConfig config = jsonLoader.deserialize("events", EventsConfig.class); // TODO Cambiar nombre de mapas a "Abandoned Islan" por ejemplo
-            // Procesa cada evento en la configuración
+            // Procesa cada evento en la configuracion
             config.events().forEach((key, eventData) -> createEvent(eventData));
         } catch (Exception e) {
             System.err.println("Error loading events: " + e.getMessage());
@@ -94,28 +114,6 @@ public class EventSystem {
         for (MapID map : MapID.values())
             if (map.name().equals(mapName)) return map;
         return MapID.ABANDONED_ISLAND;
-    }
-
-    /**
-     * Verifica y dispara los eventos para una entidad.
-     * <p>
-     * El proceso ocurre en el siguiente orden:
-     * <ol>
-     * <li>Verifica si la entidad esta lo suficientemente lejos del ultimo evento activado
-     * <li>Filtra los eventos que pueden ser disparados
-     * <li>Busca el primer evento que colisiona con el jugador
-     * <li>Si encuentra un evento valido, ejecuta su accion asociada
-     * </ol>
-     *
-     * @param entity entidad para la que se verifican y disparan los eventos
-     */
-    public void checkAndTriggerEvents(Entity entity) {
-        isEntityFarEnoughFromPreviousEvent(entity);
-        events.stream()
-                .filter(event -> canTriggerEvent)
-                .filter(this::isPlayerCollidingEvent)
-                .findFirst()
-                .ifPresent(event -> event.action.execute(entity));
     }
 
     /**
