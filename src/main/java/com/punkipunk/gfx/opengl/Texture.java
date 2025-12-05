@@ -36,7 +36,7 @@ public class Texture {
         try {
             imageBuffer = loadResourceToByteBuffer(resourcePath);
         } catch (IOException e) {
-            throw new RuntimeException("Failed to load texture: " + resourcePath, e);
+            throw new RuntimeException("[Texture] Failed to load texture '" + resourcePath + "'");
         }
 
         // Voltea la imagen verticalmente (OpenGL espera el origen abajo-izquierda)
@@ -46,7 +46,7 @@ public class Texture {
         ByteBuffer imageData = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, 4); // RGBA
 
         if (imageData == null)
-            throw new RuntimeException("Failed to decode image: " + resourcePath + " - " + STBImage.stbi_failure_reason());
+            throw new RuntimeException("[Texture] Failed to decode image '" + resourcePath + "'. Reason: " + STBImage.stbi_failure_reason());
 
         this.width = w.get(0);
         this.height = h.get(0);
@@ -71,7 +71,7 @@ public class Texture {
         // Desvincula la textura
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        System.out.println("Loaded texture: " + resourcePath + " (" + width + "x" + height + ")");
+        System.out.println("[Texture] Successfully loaded '" + resourcePath + "' (ID: " + textureID + ", " + width + "x" + height + ")");
     }
 
     /**
@@ -120,8 +120,8 @@ public class Texture {
      * Carga un recurso del classpath a un ByteBuffer.
      */
     private ByteBuffer loadResourceToByteBuffer(String resource) throws IOException {
-        InputStream source = getClass().getClassLoader().getResourceAsStream(resource);
-        if (source == null) throw new IOException("Resource not found: " + resource);
+        InputStream source = Texture.class.getResourceAsStream("/" + resource);
+        if (source == null) throw new IOException("Resource not found: " + resource); // TODO Hace falta esto?
 
         ReadableByteChannel rbc = Channels.newChannel(source);
         ByteBuffer buffer = BufferUtils.createByteBuffer(8192);
