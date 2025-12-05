@@ -7,7 +7,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
+import com.punkipunk.gfx.opengl.Color;
 import javafx.scene.text.Font;
 
 import java.io.InputStream;
@@ -88,8 +88,8 @@ public final class Utils {
             for (int x = 0; x < width; x++) {
                 int srcX = (int) (x * texture.getWidth() / width);
                 int srcY = (int) (y * texture.getHeight() / height);
-                Color color = pixelReader.getColor(srcX, srcY);
-                pixelWriter.setColor(x, y, color);
+                //Color color = pixelReader.getColor(srcX, srcY);
+                //pixelWriter.setColor(x, y, color);
             }
         }
 

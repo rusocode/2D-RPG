@@ -7,7 +7,7 @@ import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.MobData;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
+import com.punkipunk.physics.Rectangle;
 
 import static com.punkipunk.utils.Global.tile;
 

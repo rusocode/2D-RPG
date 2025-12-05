@@ -6,7 +6,7 @@ import com.punkipunk.entity.Entity;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.SpellData;
 import com.punkipunk.world.World;
-import javafx.scene.paint.Color;
+import com.punkipunk.gfx.opengl.Color;
 
 public class Fireball extends Spell {
 

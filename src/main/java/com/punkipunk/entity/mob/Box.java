@@ -24,6 +24,7 @@ public class Box extends Mob {
         dialogue = new Dialogue(game);
         dialogue.set = -1;
         sheet.loadStaticFrame(mobData.texturePath(), mobData.frameWidth(), mobData.frameHeight());
+        currentFrame = sheet.frame;
         initDialogue();
     }
 

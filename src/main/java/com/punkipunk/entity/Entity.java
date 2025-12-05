@@ -20,8 +20,8 @@ import com.punkipunk.utils.Timer;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.Position;
 import com.punkipunk.world.World;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import com.punkipunk.gfx.opengl.Color;
+import com.punkipunk.physics.Rectangle;
 
 import static com.punkipunk.utils.Global.*;
 

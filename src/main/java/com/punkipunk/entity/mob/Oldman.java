@@ -5,7 +5,7 @@ import com.punkipunk.core.IGame;
 import com.punkipunk.gfx.Animation;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
+import com.punkipunk.physics.Rectangle;
 
 import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
 

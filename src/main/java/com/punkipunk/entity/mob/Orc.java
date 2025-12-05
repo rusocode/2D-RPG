@@ -15,6 +15,7 @@ public class Orc extends Mob {
         soundHit = AudioID.Sound.ORC_HIT;
         soundDeath = AudioID.Sound.ORC_DEATH;
         sheet.loadOrcMovementFrames(mobData.spriteSheetPath(), mobData.frameScale());
+        currentFrame = sheet.frame;
         down = new Animation(mobData.animationSpeed(), sheet.down);
         up = new Animation(mobData.animationSpeed(), sheet.up);
         left = new Animation(mobData.animationSpeed(), sheet.left);

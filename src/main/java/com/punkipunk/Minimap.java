@@ -7,7 +7,7 @@ import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import com.punkipunk.gfx.opengl.Color;
 
 import static com.punkipunk.utils.Global.*;
 

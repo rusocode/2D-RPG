@@ -7,7 +7,7 @@ import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import javafx.scene.paint.Color;
+import com.punkipunk.gfx.opengl.Color;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -61,7 +61,7 @@ public class UI {
     public void renderHpBar(Entity entity) {
         int x = entity.getScreenX();
         int y = (int) (entity.getScreenY() + entity.sheet.frame.height);
-        int width = (int) entity.sheet.frame.width;
+        int width =  0; //(int) entity.sheet.frame.width;
         int height = 1;
 
         double oneScale = (double) width / entity.stats.maxHp;
@@ -77,7 +77,7 @@ public class UI {
     public void renderManaBar(Entity entity) {
         int x = entity.getScreenX();
         int y = (int) (entity.getScreenY() + entity.sheet.frame.height);
-        int width = (int) entity.sheet.frame.width;
+        int width = 0;//(int) entity.sheet.frame.width;
         int height = 1;
 
         double oneScale = (double) width / entity.stats.maxMana;
@@ -175,7 +175,7 @@ public class UI {
     private void renderGameOverWindow() {
         int x, y;
         String text;
-        renderer.setFill(new Color(0, 0, 0, /* counter * 150 */ 0.5));
+        // renderer.setFill(new Color(0, 0, 0, /* counter * 150 */ 0.5));
         renderer.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         changeFontSize(82);
 
@@ -209,7 +209,7 @@ public class UI {
      */
     private void renderSleepEffect() {
         // If the counter is less than 120, darken the render by 0.01 until it is completely dark
-        if (counter < 120) {
+        /* if (counter < 120) {
             counter++;
             world.environmentSystem.lighting.filterAlpha += 0.01f;
             // If the value exceeds the maximum darkness, set it to 1
@@ -226,7 +226,7 @@ public class UI {
                 State.setState(State.PLAY);
                 counter = 0; // Reset the counter to regenerate the effect from 0
             }
-        }
+        } */
     }
 
     /**
@@ -240,7 +240,7 @@ public class UI {
      */
     private void renderSubwindow(int x, int y, int width, int height, int alpha) {
         // Black background
-        renderer.setFill(new Color(0, 0, 0, /* alpha */ 0.5));
+        // renderer.setFill(new Color(0, 0, 0, /* alpha */ 0.5));
         // renderer.fillRoundRect(x, y, width, height, 10, 10);
         // White background
         renderer.setFill(Color.rgb(255, 255, 255));

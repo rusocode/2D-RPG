@@ -24,6 +24,7 @@ public class Lizard extends Mob {
         attackbox.setWidth(mobData.attackboxWidth());
         attackbox.setHeight(mobData.attackboxHeight());
         sheet.loadMovementFrames(mobData.spriteSheetPath(), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
+        currentFrame = sheet.frame;
         initDialogue();
     }
 

@@ -4,7 +4,7 @@ import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.world.World;
-import javafx.scene.paint.Color;
+import com.punkipunk.gfx.opengl.Color;
 
 import static com.punkipunk.utils.Global.*;
 

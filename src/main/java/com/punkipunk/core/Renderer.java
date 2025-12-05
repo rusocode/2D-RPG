@@ -15,8 +15,8 @@ public record Renderer(World world, UI ui, Minimap minimap) implements Renderabl
     @Override
     public void render(Renderer2D renderer) {
         world.render(renderer);
-        minimap.render(renderer);
-        ui.render(renderer);
+        //minimap.render(renderer);
+        //ui.render(renderer);
     }
 
 }

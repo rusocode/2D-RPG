@@ -6,7 +6,7 @@ import com.punkipunk.entity.item.Item;
 import com.punkipunk.entity.item.ItemCategory;
 import com.punkipunk.entity.item.Wood;
 import com.punkipunk.world.World;
-import javafx.scene.paint.Color;
+import com.punkipunk.gfx.opengl.Color;
 
 public class DryTree extends Interactive {
 

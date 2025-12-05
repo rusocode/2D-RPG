@@ -133,16 +133,15 @@ public class Renderer2D {
     /**
      * Establece el color de relleno.
      */
-    public void setFill(javafx.scene.paint.Color color) {
-        this.fillColor = Color.fromJavaFX(color);
-        spriteBatch.setColor(this.fillColor);
+    public void setFill(Color color) {
+        spriteBatch.setColor(color);
     }
 
     /**
      * Establece el color de trazo.
      */
-    public void setStroke(javafx.scene.paint.Color color) {
-        this.strokeColor = Color.fromJavaFX(color);
+    public void setStroke(Color color) {
+        this.strokeColor = color;
     }
 
     /**

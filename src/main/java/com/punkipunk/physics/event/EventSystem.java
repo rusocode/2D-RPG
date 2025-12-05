@@ -10,7 +10,7 @@ import com.punkipunk.json.model.event.EventsConfig;
 import com.punkipunk.json.model.event.TeleportTarget;
 import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
+import com.punkipunk.physics.Rectangle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -196,7 +196,7 @@ public class EventSystem {
             );
 
             Rectangle eventArea = new Rectangle(x, y, width, height);
-            return playerHitbox.intersects(eventArea.getBoundsInParent());
+            return playerHitbox.intersects(eventArea);
         }
 
     }

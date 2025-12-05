@@ -6,7 +6,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.RadialGradient;
 import javafx.scene.paint.Stop;
@@ -45,7 +44,7 @@ public class Lighting {
      */
     public void illuminate() {
         if (world.entitySystem.player.light == null) {
-            gc.setFill(Color.color(0, 0, 0, 0.90));
+            // gc.setFill(Color.color(0, 0, 0, 0.90));
             gc.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         } else { // If the player selected the latern
 
@@ -55,7 +54,7 @@ public class Lighting {
 
             // Crear el efecto de gradacion para el circulo de luz
             Stop[] stops = new Stop[]{
-                    new Stop(0, Color.color(0, 0, 0, 0.1)),
+                    /* new Stop(0, Color.color(0, 0, 0, 0.1)),
                     new Stop(0.4, Color.color(0, 0, 0, 0.42)),
                     new Stop(0.5, Color.color(0, 0, 0, 0.52)),
                     new Stop(0.6, Color.color(0, 0, 0, 0.61)),
@@ -66,7 +65,7 @@ public class Lighting {
                     new Stop(0.85, Color.color(0, 0, 0, 0.87)),
                     new Stop(0.9, Color.color(0, 0, 0, 0.88)),
                     new Stop(0.95, Color.color(0, 0, 0, 0.89)),
-                    new Stop(1.0, Color.color(0, 0, 0, 0.90))
+                    new Stop(1.0, Color.color(0, 0, 0, 0.90)) */
             };
 
             RadialGradient gradient = new RadialGradient(
@@ -133,6 +132,11 @@ public class Lighting {
         } */
     }
 
+    public void resetDay() {
+        dayState = day;
+        filterAlpha = 0f;
+    }
+
     /**
      * Cycles the day every certain time. The day cycle has 4 states: day, dusk, night and dawn.
      * <p>
@@ -175,11 +179,6 @@ public class Lighting {
         }
     }
 
-    public void resetDay() {
-        dayState = day;
-        filterAlpha = 0f;
-    }
-
     private void debug(GraphicsContext g2) {
         String state = switch (dayState) {
             case day -> "Day";
@@ -188,7 +187,7 @@ public class Lighting {
             case dawn -> "Dawn";
             default -> "";
         };
-        g2.setFill(Color.WHITE);
+        // g2.setFill(Color.WHITE);
         g2.setFont(Font.font(g2.getFont().getFamily(), 24));
         g2.fillText(state, WINDOW_WIDTH - tile * 3, (int) (WINDOW_HEIGHT - tile * 1.5));
     }

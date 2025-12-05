@@ -168,7 +168,7 @@ public class CollisionChecker {
         }
 
         // Verifica la colision
-        boolean collision = entity1.hitbox.intersects(entity2.hitbox.getBoundsInParent());
+        boolean collision = entity1.hitbox.intersects(entity2.hitbox);
 
         // Restaura las posiciones originales
         entity1.hitbox.setX(originalX1);

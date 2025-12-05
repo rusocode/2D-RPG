@@ -1,7 +1,7 @@
 package com.punkipunk.gfx.opengl;
 
 /**
- * Clase simple de color RGBA que reemplaza javafx.scene.paint.Color. Los valores van de 0.0f a 1.0f.
+ * Clase simple de color RGBA que reemplaza com.punkipunk.gfx.opengl.Color. Los valores van de 0.0f a 1.0f.
  */
 
 public record Color(float r, float g, float b, float a) {
@@ -14,6 +14,7 @@ public record Color(float r, float g, float b, float a) {
     public static final Color BLUE = new Color(0, 0, 1, 1);
     public static final Color YELLOW = new Color(1, 1, 0, 1);
     public static final Color TRANSPARENT = new Color(0, 0, 0, 0);
+    public static final Color MAGENTA = new Color(1, 0, 1, 1);
 
     public Color(float r, float g, float b, float a) {
         this.r = clamp(r);
@@ -44,10 +45,24 @@ public record Color(float r, float g, float b, float a) {
     }
 
     /**
-     * Convierte un color de JavaFX a este formato. Util durante la transicion.
+     * Crea un color RGB desde valores 0-255 (método compatible con JavaFX Color.rgb).
      */
-    public static Color fromJavaFX(javafx.scene.paint.Color fxColor) {
-        return new Color((float) fxColor.getRed(), (float) fxColor.getGreen(), (float) fxColor.getBlue(), (float) fxColor.getOpacity());
+    public static Color rgb(int r, int g, int b) {
+        return fromRGB(r, g, b);
+    }
+
+    /**
+     * Crea un color RGBA desde valores 0-255 con alpha 0.0-1.0 (compatible con JavaFX Color.rgb).
+     */
+    public static Color rgb(int r, int g, int b, double opacity) {
+        return new Color(r / 255.0f, g / 255.0f, b / 255.0f, (float) opacity);
+    }
+
+    /**
+     * Crea un color RGBA desde valores float 0.0-1.0 (compatible con new Color() de JavaFX).
+     */
+    public static Color rgba(double r, double g, double b, double a) {
+        return new Color((float) r, (float) g, (float) b, (float) a);
     }
 
     @Override

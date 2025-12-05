@@ -29,8 +29,8 @@ import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import com.punkipunk.gfx.opengl.Color;
+import com.punkipunk.physics.Rectangle;
 
 import static com.punkipunk.utils.Global.*;
 

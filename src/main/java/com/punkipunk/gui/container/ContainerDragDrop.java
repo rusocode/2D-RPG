@@ -11,7 +11,6 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
 
 import java.util.Optional;
 
@@ -38,15 +37,6 @@ public abstract class ContainerDragDrop {
     }
 
     /**
-     * Metodo abstracto que debe ser implementado para manejar la logica cuando un item es soltado en un slot.
-     *
-     * @param event el evento de arrastre que contiene informacion sobre la operacion
-     * @param slot  el StackPane donde se solto el item
-     * @return true si la operacion de soltar fue exitosa, false en caso contrario
-     */
-    protected abstract boolean onItemDropped(DragEvent event, StackPane slot);
-
-    /**
      * Configura todos los eventos de drag and drop para un slot especifico.
      *
      * @param slot el StackPane al que se le agregaran los eventos
@@ -59,6 +49,15 @@ public abstract class ContainerDragDrop {
         setDragDropped(slot);
         setDragEnterExit(slot);
     }
+
+    /**
+     * Metodo abstracto que debe ser implementado para manejar la logica cuando un item es soltado en un slot.
+     *
+     * @param event el evento de arrastre que contiene informacion sobre la operacion
+     * @param slot  el StackPane donde se solto el item
+     * @return true si la operacion de soltar fue exitosa, false en caso contrario
+     */
+    protected abstract boolean onItemDropped(DragEvent event, StackPane slot);
 
     /**
      * Verifica si el evento de drag no contiene la informacion necesaria.
@@ -125,7 +124,7 @@ public abstract class ContainerDragDrop {
                 .map(node -> (ImageView) node)
                 .ifPresent(imageView -> {
                     SnapshotParameters params = new SnapshotParameters();
-                    params.setFill(Color.TRANSPARENT);
+                    // params.setFill(Color.TRANSPARENT);
                     Image snapshot = imageView.snapshot(params, null);
                     dragboard.setDragView(snapshot);
                 });

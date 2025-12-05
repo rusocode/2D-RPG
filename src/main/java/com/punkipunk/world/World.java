@@ -6,7 +6,7 @@ import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.world.system.CutsceneSystem;
 import com.punkipunk.world.system.EnvironmentSystem;
 import com.punkipunk.world.system.TileSystem;
-import javafx.scene.paint.Color;
+import com.punkipunk.gfx.opengl.Color;
 
 import static com.punkipunk.utils.Global.*;
 
@@ -16,7 +16,7 @@ public class World {
     private final TileSystem tileSystem;
     public Map map;
     public EntitySystem entitySystem;
-    public EnvironmentSystem environmentSystem;
+    // public EnvironmentSystem environmentSystem;
     public CutsceneSystem cutsceneSystem;
 
     public World(IGame game) {
@@ -24,24 +24,24 @@ public class World {
         this.map = new Map();
         this.tileSystem = new TileSystem(this);
         this.entitySystem = new EntitySystem(game, this);
-        this.environmentSystem = new EnvironmentSystem(this);
+        // this.environmentSystem = new EnvironmentSystem(this);
         this.cutsceneSystem = new CutsceneSystem(game, this);
     }
 
     public void update() {
         entitySystem.update();
-        environmentSystem.update();
+        //environmentSystem.update();
     }
 
     public void render(Renderer2D renderer) {
         tileSystem.render(renderer);
         entitySystem.render(renderer);
-        environmentSystem.render(renderer);
+        //environmentSystem.render(renderer);
         cutsceneSystem.render();
 
         // Dibuja el recorrido del pathfinding
         if (false) {
-            renderer.setFill(new Color(1, 0, 0, 0.3));
+            renderer.setFill(Color.rgba(1, 0, 0, 0.3));
             for (int i = 0; i < game.getGameSystem().pathfinding.pathList.size(); i++) {
                 int x = game.getGameSystem().pathfinding.pathList.get(i).col * tile;
                 int y = game.getGameSystem().pathfinding.pathList.get(i).row * tile;

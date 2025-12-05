@@ -68,8 +68,8 @@ public class GameSystem {
      */
     public static GameSystem createDefault(IGame game) {
         return new Builder(game)
-                .withUI()
-                .withMinimap()
+                //.withUI()
+                //.withMinimap()
                 .withKeyboard()
                 .withCollisionChecker()
                 .withAStar()
@@ -103,7 +103,7 @@ public class GameSystem {
         if (fullReset) {
             audio.playMusic(AudioID.Music.MAIN);
             world.entitySystem.entityFactory.createEntities();
-            world.environmentSystem.lighting.resetDay();
+            // world.environmentSystem.lighting.resetDay();
             keyboard.resetToggledKeys();
         }
     }
@@ -174,8 +174,7 @@ public class GameSystem {
         }
 
         public Builder withRenderer() {
-            if (ui == null || minimap == null)
-                throw new IllegalStateException("UI systems must be initialized first using withUI()");
+            // if (ui == null || minimap == null) throw new IllegalStateException("UI systems must be initialized first using withUI()");
             this.renderer = new Renderer(world, ui, minimap);
             return this;
         }

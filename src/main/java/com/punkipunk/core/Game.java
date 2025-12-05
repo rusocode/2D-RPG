@@ -8,7 +8,7 @@ import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
+import com.punkipunk.gfx.opengl.Color;
 
 /**
  * <h1>Sistemas de Renderizado</h1>
@@ -228,7 +228,7 @@ public class Game extends AnimationTimer implements IGame {
         gameSystem.audio.playMusic(AudioID.Music.MAIN);
         // Al cargar la fuente todo el tiempo desde el render de la UI se generaba lag por lo tanto se carga una sola vez desde aca
         context.setFont(Utils.loadFont("font/BlackPearl.ttf", 18));
-        context.setFill(Color.WHITE);
+        // context.setFill(Color.WHITE);
         gameSystem.initialize();
         gameController.initialize(this);
     }

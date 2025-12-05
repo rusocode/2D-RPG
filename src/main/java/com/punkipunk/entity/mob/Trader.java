@@ -12,6 +12,7 @@ public class Trader extends Mob {
         super(game, world, pos);
         dialogue = new Dialogue(game);
         sheet.loadStaticFrame(mobData.texturePath(), mobData.frameWidth(), mobData.frameHeight());
+        currentFrame = sheet.frame;
         initDialogue();
         addItemsToInventory();
     }

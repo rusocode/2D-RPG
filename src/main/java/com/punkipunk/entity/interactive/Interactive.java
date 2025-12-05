@@ -6,7 +6,7 @@ import com.punkipunk.entity.item.Item;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.InteractiveData;
 import com.punkipunk.world.World;
-import javafx.scene.shape.Rectangle;
+import com.punkipunk.physics.Rectangle;
 
 import static com.punkipunk.utils.Global.INTERVAL_INVINCIBLE_INTERACTIVE;
 import static com.punkipunk.utils.Global.tile;

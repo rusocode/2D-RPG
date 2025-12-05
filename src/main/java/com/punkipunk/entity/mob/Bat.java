@@ -14,6 +14,7 @@ public class Bat extends Mob {
         soundHit = AudioID.Sound.BAT_HIT;
         soundDeath = AudioID.Sound.BAT_DEATH;
         sheet.loadMovementFrames(mobData.spriteSheetPath(), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
+        currentFrame = sheet.frame;
     }
 
     @Override

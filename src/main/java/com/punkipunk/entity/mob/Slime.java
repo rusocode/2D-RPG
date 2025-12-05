@@ -17,6 +17,7 @@ public class Slime extends Mob {
         soundHit = AudioID.Sound.SLIME_HIT;
         spell = new StickyBall(game, world);
         sheet.loadMovementFrames(mobData.spriteSheetPath(), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
+        currentFrame = sheet.frame;
     }
 
     @Override
