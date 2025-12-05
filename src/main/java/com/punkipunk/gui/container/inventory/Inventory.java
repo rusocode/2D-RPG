@@ -1,6 +1,5 @@
 package com.punkipunk.gui.container.inventory;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.*;
 import com.punkipunk.entity.player.Player;

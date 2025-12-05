@@ -1,11 +1,12 @@
 package com.punkipunk.core;
 
+import com.punkipunk.gfx.Renderer2D;
 import javafx.scene.Scene;
-import javafx.scene.canvas.GraphicsContext;
 
 /**
- * Interfaz que define el contrato comun para implementaciones de juego. Permite que tanto Game (JavaFX) como GameLWJGL (LWJGL)
- * trabajen con GameSystem.
+ * Interfaz que define el contrato comun para implementaciones de juego.
+ * <p>
+ * Permite que tanto Game (JavaFX) como GameLWJGL (LWJGL) trabajen con GameSystem.
  */
 
 public interface IGame {
@@ -16,17 +17,18 @@ public interface IGame {
     GameSystem getGameSystem();
 
     /**
-     * Obtiene el contexto grafico para renderizado.
-     * <p>
-     * NOTA: Por ahora retorna GraphicsContext de JavaFX. En el futuro esto sera reemplazado por un contexto OpenGL.
+     * Obtiene el renderer 2D para renderizado.
+     *
+     * @return Renderer2D para operaciones de dibujo
      */
-    GraphicsContext getContext();
+    Renderer2D getRenderer();
 
     /**
      * Obtiene la escena (JavaFX Scene).
      * <p>
-     * NOTA: Para GameLWJGL esto retornara null ya que no usa JavaFX Scene. Usado principalmente para configuracion de input en la
-     * version JavaFX.
+     * NOTA: Para GameLWJGL esto retornara null ya que no usa JavaFX Scene.
+     * <p>
+     * Usado principalmente para configuracion de input en la version JavaFX.
      *
      * @return Scene de JavaFX o null si no aplica
      */

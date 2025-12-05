@@ -1,11 +1,8 @@
 package com.punkipunk.entity.player;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.mob.Mob;
 import com.punkipunk.entity.mob.MobID;
-import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
 /**
@@ -18,7 +15,7 @@ public class PlayerDummy extends Mob {
 
     public PlayerDummy(IGame game, World world) {
         super(game, world);
-        sheet.loadPlayerMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
+        sheet.loadPlayerMovementFrames(mobData.spriteSheetPath(), mobData.frameScale());
     }
 
     @Override

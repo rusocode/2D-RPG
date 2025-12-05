@@ -1,6 +1,5 @@
 package com.punkipunk.entity;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.interactive.InteractiveID;
 import com.punkipunk.entity.item.*;
@@ -8,8 +7,6 @@ import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.io.Progress;
 import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
-
-import static com.punkipunk.utils.Global.*;
 
 public class EntityFactory {
 

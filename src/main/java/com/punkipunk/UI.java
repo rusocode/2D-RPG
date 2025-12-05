@@ -1,15 +1,13 @@
 package com.punkipunk;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.player.Player;
+import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 import java.util.ArrayList;
@@ -32,7 +30,7 @@ public class UI {
     private final ArrayList<Integer> consoleCounter = new ArrayList<>();
     public Entity entity;
     public int subState, command; // TODO You could combine these two variables (mainWindowState and subState) referring to a single subState
-    private GraphicsContext context;
+    private Renderer2D renderer;
     private String currentDialogue, combinedText = "";
     private int charIndex, counter;
 
@@ -41,9 +39,9 @@ public class UI {
         this.world = world;
     }
 
-    public void render(GraphicsContext context) {
+    public void render(Renderer2D renderer) {
 
-        this.context = context;
+        this.renderer = renderer;
 
         switch (State.getState()) {
             case PLAY -> {
@@ -62,24 +60,24 @@ public class UI {
 
     public void renderHpBar(Entity entity) {
         int x = entity.getScreenX();
-        int y = (int) (entity.getScreenY() + entity.sheet.frame.getHeight());
-        int width = (int) entity.sheet.frame.getWidth();
+        int y = (int) (entity.getScreenY() + entity.sheet.frame.height);
+        int width = (int) entity.sheet.frame.width;
         int height = 1;
 
         double oneScale = (double) width / entity.stats.maxHp;
         double hpBarValue = oneScale * entity.stats.hp;
-        context.setFill(Color.BLACK);
-        context.fillRect(x - 1, y - 1, width + 2, (entity instanceof Player) ? height + 1 : height + 2); // En caso de que la barra de vida sea del player, entonces se agrega 1 px al alto de esta, y sino, se agrega 2 px al alto de la barra del mob hostil (esto lo hago para que se vea bien el borde inferior)
-        context.setFill(Color.RED);
-        context.fillRect(x, y, (int) hpBarValue, height);
+        renderer.setFill(Color.BLACK);
+        renderer.fillRect(x - 1, y - 1, width + 2, (entity instanceof Player) ? height + 1 : height + 2); // En caso de que la barra de vida sea del player, entonces se agrega 1 px al alto de esta, y sino, se agrega 2 px al alto de la barra del mob hostil (esto lo hago para que se vea bien el borde inferior)
+        renderer.setFill(Color.RED);
+        renderer.fillRect(x, y, (int) hpBarValue, height);
 
         entity.timer.timeHpBar(entity, INTERVAL_HP_BAR);
     }
 
     public void renderManaBar(Entity entity) {
         int x = entity.getScreenX();
-        int y = (int) (entity.getScreenY() + entity.sheet.frame.getHeight());
-        int width = (int) entity.sheet.frame.getWidth();
+        int y = (int) (entity.getScreenY() + entity.sheet.frame.height);
+        int width = (int) entity.sheet.frame.width;
         int height = 1;
 
         double oneScale = (double) width / entity.stats.maxMana;
@@ -87,10 +85,10 @@ public class UI {
 
         y += height;
 
-        context.setFill(Color.BLACK);
-        context.fillRect(x - 1, y, width + 2, height + 2);
-        context.setFill(Color.BLUE);
-        context.fillRect(x, y + 1, (int) manaBarValue, height);
+        renderer.setFill(Color.BLACK);
+        renderer.fillRect(x - 1, y, width + 2, height + 2);
+        renderer.setFill(Color.BLUE);
+        renderer.fillRect(x, y + 1, (int) manaBarValue, height);
 
     }
 
@@ -107,15 +105,15 @@ public class UI {
 
                     if (hpBarValue < 0) hpBarValue = 0;
 
-                    context.setFill(Color.rgb(35, 35, 35));
-                    context.fillRect(x - 1, y - 1, tile * 8 + 2, 22);
+                    renderer.setFill(Color.rgb(35, 35, 35));
+                    renderer.fillRect(x - 1, y - 1, tile * 8 + 2, 22);
 
-                    context.setFill(Color.rgb(255, 0, 30));
-                    context.fillRect(x, y, (int) hpBarValue, 20); // TODO Or 21?
+                    renderer.setFill(Color.rgb(255, 0, 30));
+                    renderer.fillRect(x, y, (int) hpBarValue, 20); // TODO Or 21?
 
                     changeFontSize(24);
-                    context.setFill(Color.WHITE);
-                    context.fillText(boss.stats.name, x + 4, y - 10);
+                    renderer.setFill(Color.WHITE);
+                    renderer.fillText(boss.stats.name, x + 4, y - 10);
                 });
     }
 
@@ -168,7 +166,7 @@ public class UI {
         }
 
         for (String line : currentDialogue.split("\n")) {
-            context.fillText(line, textX, textY);
+            renderer.fillText(line, textX, textY);
             textY += 40;
         }
 
@@ -177,32 +175,32 @@ public class UI {
     private void renderGameOverWindow() {
         int x, y;
         String text;
-        context.setFill(new Color(0, 0, 0, /* counter * 150 */ 0.5));
-        context.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+        renderer.setFill(new Color(0, 0, 0, /* counter * 150 */ 0.5));
+        renderer.fillRect(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
         changeFontSize(82);
 
         text = "Game Over";
         // Shade
-        context.setFill(Color.BLACK);
+        renderer.setFill(Color.BLACK);
         x = getXForCenteredText(text);
         y = tile * 4;
-        context.fillText(text, x, y);
+        renderer.fillText(text, x, y);
         // Main
-        context.setFill(Color.WHITE);
-        context.fillText(text, x - 4, y - 4);
+        renderer.setFill(Color.WHITE);
+        renderer.fillText(text, x - 4, y - 4);
         // Retry
         changeFontSize(50);
         text = "Retry";
         x = getXForCenteredText(text);
         y += tile * 4;
-        context.fillText(text, x, y);
-        if (command == 0) context.fillText(">", x - 40, y);
+        renderer.fillText(text, x, y);
+        if (command == 0) renderer.fillText(">", x - 40, y);
         // Quit
         text = "Quit";
         x = getXForCenteredText(text);
         y += 55;
-        context.fillText(text, x, y);
-        if (command == 1) context.fillText(">", x - 40, y);
+        renderer.fillText(text, x, y);
+        if (command == 1) renderer.fillText(">", x - 40, y);
 
     }
 
@@ -242,12 +240,12 @@ public class UI {
      */
     private void renderSubwindow(int x, int y, int width, int height, int alpha) {
         // Black background
-        context.setFill(new Color(0, 0, 0, /* alpha */ 0.5));
-        context.fillRoundRect(x, y, width, height, 10, 10);
+        renderer.setFill(new Color(0, 0, 0, /* alpha */ 0.5));
+        // renderer.fillRoundRect(x, y, width, height, 10, 10);
         // White background
-        context.setFill(Color.rgb(255, 255, 255));
-        context.setLineWidth(3); // Edge thickness
-        context.strokeRoundRect(x, y, width, height, 20, 20);
+        renderer.setFill(Color.rgb(255, 255, 255));
+        renderer.setLineWidth(3); // Edge thickness
+        // renderer.strokeRoundRect(x, y, width, height, 20, 20);
     }
 
     private void renderConsole() {
@@ -257,11 +255,11 @@ public class UI {
         for (int i = 0; i < console.size(); i++) {
             if (console.get(i) != null) {
                 // Shade
-                context.setFill(Color.BLACK);
-                context.fillText(console.get(i), x + 2, y + 2);
+                renderer.setFill(Color.BLACK);
+                renderer.fillText(console.get(i), x + 2, y + 2);
                 // Main color
-                context.setFill(Color.WHITE);
-                context.fillText(console.get(i), x, y);
+                renderer.setFill(Color.WHITE);
+                renderer.fillText(console.get(i), x, y);
                 // Acts as consoleCounter++
                 consoleCounter.set(i, consoleCounter.get(i) + 1);
 
@@ -277,7 +275,7 @@ public class UI {
     }
 
     private void changeFontSize(float size) {
-        context.setFont(Font.font(context.getFont().getFamily(), size));
+        // renderer.setFont(Font.font(renderer.getFont().getFamily(), size));
     }
 
     public void addMessageToConsole(String msg) {
@@ -293,7 +291,7 @@ public class UI {
      */
     private int getXforAlignToRightText(String text, int tailX) {
         Text theText = new Text(text);
-        theText.setFont(context.getFont());
+        //theText.setFont(renderer.getFont());
         double textWidth = theText.getBoundsInLocal().getWidth();
         // Additional value so that the text (for example, amount of gold) is not so close to the right edge of the window
         int distanceToTheRightBorder = 2;
@@ -307,7 +305,7 @@ public class UI {
      */
     private int getXForCenteredText(String text) {
         Text theText = new Text(text);
-        theText.setFont(context.getFont());
+        //theText.setFont(renderer.getFont());
         /* Para una mayor precision se puede usar getLayoutBounds() en lugar de getBoundsInLocal(). La diferencia es sutil, pero
          * getLayoutBounds() puede ser mas preciso en algunos casos, especialmente con fuentes complejas. */
         double textWidth = theText.getBoundsInLocal().getWidth();

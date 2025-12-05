@@ -1,6 +1,5 @@
 package com.punkipunk.physics;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.player.Player;

@@ -1,20 +1,17 @@
 package com.punkipunk.entity.spells;
 
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.gfx.Animation;
+import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.SpellData;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -36,7 +33,7 @@ public class BurstOfFire extends Spell {
         super(game, world, JsonLoader.getInstance().deserialize("spells.burstOfFire", SpellData.class));
         sound = AudioID.Sound.BURST_OF_FIRE;
         hitbox = new Rectangle(0, 0, tile * spellData.frameScale() - 35, tile * spellData.frameScale());
-        sheet.loadBurstOfFireFrames(new SpriteSheet(Utils.loadTexture(spellData.spriteSheetPath())), spellData.frameScale());
+        sheet.loadBurstOfFireFrames(spellData.spriteSheetPath(), spellData.frameScale());
         down = new Animation(spellData.animationSpeed(), sheet.down);
         up = new Animation(spellData.animationSpeed(), sheet.up);
         left = new Animation(spellData.animationSpeed(), sheet.left);
@@ -86,10 +83,11 @@ public class BurstOfFire extends Spell {
 
     }
 
+    // FIXME Mismo problema que el renderizado del player
     @Override
-    public void render(GraphicsContext context) {
-        context.drawImage(getCurrentAnimationFrame(), getScreenX() - 18, getScreenY());
-        if (game.getGameSystem().keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
+    public void render(Renderer2D renderer) {
+        renderRegion(renderer, getCurrentAnimationFrame(), getScreenX() - 18, getScreenY());
+        if (game.getGameSystem().keyboard.isKeyToggled(Key.RECTS)) drawRects(renderer);
     }
 
     @Override
@@ -122,7 +120,7 @@ public class BurstOfFire extends Spell {
         return 30;
     }
 
-    private Image getCurrentAnimationFrame() {
+    private SpriteSheet.SpriteRegion getCurrentAnimationFrame() {
         switch (direction) {
             case DOWN -> currentFrame = down.getCurrentFrame();
             case UP -> currentFrame = up.getCurrentFrame();
@@ -133,7 +131,7 @@ public class BurstOfFire extends Spell {
     }
 
     /**
-     * Resets frames to the 0 index.
+     * Resets frames to index 0.
      */
     private void resetFrames() {
         down.setFrame(0);
@@ -142,14 +140,14 @@ public class BurstOfFire extends Spell {
         right.setFrame(0);
     }
 
-    private void drawRects(GraphicsContext gc) {
+    private void drawRects(Renderer2D renderer) {
         // Frame
-        gc.setStroke(Color.MAGENTA);
-        gc.setLineWidth(1);
-        gc.strokeRect(getScreenX(), getScreenY(), sheet.frame.getWidth(), sheet.frame.getHeight());
+        renderer.setStroke(Color.MAGENTA);
+        renderer.setLineWidth(1);
+        renderer.strokeRect(getScreenX(), getScreenY(), currentFrame.width, currentFrame.height);
         // Hitbox
-        gc.setStroke(Color.BLUE);
-        gc.strokeRect(getScreenX() + hitbox.getX(), getScreenY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
+        renderer.setStroke(Color.BLUE);
+        renderer.strokeRect(getScreenX() + hitbox.getX(), getScreenY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
     }
 
 }

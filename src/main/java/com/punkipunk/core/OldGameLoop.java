@@ -53,7 +53,7 @@ import static com.punkipunk.utils.Global.*;
  * uso de nanosegundos, busca optimizar el rendimiento y la suavidad del juego segun sus necesidades especificas y las capacidades
  * del sistema.
  * <p>
- * Áreas de mejora potencial:
+ * Areas de mejora potencial:
  * <ol>
  * <li>Sincronizacion vertical: No hay manejo explicito de vsync, lo cual podria ser util para evitar tearing en algunos sistemas.
  * <li>Interpolacion: No se ve implementacion de interpolacion entre estados para renderizado suave a FPS mas altos que los ticks.

@@ -1,16 +1,15 @@
 package com.punkipunk.entity.interactive;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.item.Item;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.InteractiveData;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import javafx.scene.shape.Rectangle;
 
 import static com.punkipunk.utils.Global.INTERVAL_INVINCIBLE_INTERACTIVE;
+import static com.punkipunk.utils.Global.tile;
 
 public abstract class Interactive extends Entity {
 
@@ -24,7 +23,7 @@ public abstract class Interactive extends Entity {
 
         stats.hp = interactiveData.hp();
         destructible = interactiveData.destructible();
-        sheet.frame = Utils.loadTexture(interactiveData.texturePath());
+        sheet.loadStaticFrame(interactiveData.texturePath(), tile, tile);
 
         hitbox = new Rectangle(
                 interactiveData.hitbox().x(),

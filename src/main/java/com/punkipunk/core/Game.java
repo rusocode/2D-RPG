@@ -2,6 +2,7 @@ package com.punkipunk.core;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.controllers.GameController;
+import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.utils.Utils;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Scene;
@@ -277,8 +278,8 @@ public class Game extends AnimationTimer implements IGame {
     }
 
     @Override
-    public GraphicsContext getContext() {
-        return context;
+    public Renderer2D getRenderer() {
+        return null;
     }
 
     @Override
@@ -302,7 +303,7 @@ public class Game extends AnimationTimer implements IGame {
      * El rendering se sincroniza con la tasa de refresco del monitor (60Hz, 144Hz, etc.).
      */
     private void render() {
-        gameSystem.renderer.render(context);
+        //  gameSystem.renderer.render(context);
     }
 
 }

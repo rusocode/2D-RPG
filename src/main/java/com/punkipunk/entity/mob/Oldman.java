@@ -3,9 +3,7 @@ package com.punkipunk.entity.mob;
 import com.punkipunk.Dialogue;
 import com.punkipunk.core.IGame;
 import com.punkipunk.gfx.Animation;
-import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.states.State;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import javafx.scene.shape.Rectangle;
 
@@ -16,9 +14,9 @@ public class Oldman extends Mob {
     public Oldman(IGame game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
-        sheet.loadOldmanFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
-        hitbox.setWidth(sheet.frame.getWidth() / 2);
-        hitbox.setHeight(sheet.frame.getHeight() / 2);
+        sheet.loadOldmanFrames(mobData.spriteSheetPath(), mobData.frameScale());
+        hitbox.setWidth((double) currentFrame.width / 2);
+        hitbox.setHeight((double) currentFrame.height / 2);
         hitbox.setX(hitbox.getWidth() - hitbox.getWidth() / 2 + 1);
         hitbox.setY(hitbox.getHeight() - 4);
         hitbox = new Rectangle(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());

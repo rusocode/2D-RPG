@@ -1,7 +1,6 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;
@@ -19,13 +18,13 @@ public class IronDoor extends Item {
         dialogue.startDialogue(State.DIALOGUE, this, 0);
     }
 
-    private void initDialogue() {
-        dialogue.dialogues[0][0] = "It won't budge.";
-    }
-
     @Override
     public ItemID getID() {
         return ItemID.IRON_DOOR;
+    }
+
+    private void initDialogue() {
+        dialogue.dialogues[0][0] = "It won't budge.";
     }
 
 }

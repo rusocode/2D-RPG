@@ -53,25 +53,25 @@ public class CollisionChecker {
                 entityBottomRow = (entityBottomWorldY + entity.stats.speed) / tile;
                 tile1 = world.map.tileIndex[world.map.id.ordinal()][entityBottomRow][entityLeftCol];
                 tile2 = world.map.tileIndex[world.map.id.ordinal()][entityBottomRow][entityRightCol];
-                if (world.map.tiles.get(tile1).solid || world.map.tiles.get(tile2).solid) entity.flags.colliding = true;
+                if (world.map.tiles.get(tile1).solid() || world.map.tiles.get(tile2).solid()) entity.flags.colliding = true;
             }
             case UP -> {
                 entityTopRow = (entityTopWorldY - entity.stats.speed) / tile;
                 tile1 = world.map.tileIndex[world.map.id.ordinal()][entityTopRow][entityLeftCol];
                 tile2 = world.map.tileIndex[world.map.id.ordinal()][entityTopRow][entityRightCol];
-                if (world.map.tiles.get(tile1).solid || world.map.tiles.get(tile2).solid) entity.flags.colliding = true;
+                if (world.map.tiles.get(tile1).solid() || world.map.tiles.get(tile2).solid()) entity.flags.colliding = true;
             }
             case LEFT -> {
                 entityLeftCol = (entityLeftWorldX - entity.stats.speed) / tile;
                 tile1 = world.map.tileIndex[world.map.id.ordinal()][entityTopRow][entityLeftCol];
                 tile2 = world.map.tileIndex[world.map.id.ordinal()][entityBottomRow][entityLeftCol];
-                if (world.map.tiles.get(tile1).solid || world.map.tiles.get(tile2).solid) entity.flags.colliding = true;
+                if (world.map.tiles.get(tile1).solid() || world.map.tiles.get(tile2).solid()) entity.flags.colliding = true;
             }
             case RIGHT -> {
                 entityRightCol = (entityRightWorldX + entity.stats.speed) / tile;
                 tile1 = world.map.tileIndex[world.map.id.ordinal()][entityTopRow][entityRightCol];
                 tile2 = world.map.tileIndex[world.map.id.ordinal()][entityBottomRow][entityRightCol];
-                if (world.map.tiles.get(tile1).solid || world.map.tiles.get(tile2).solid) entity.flags.colliding = true;
+                if (world.map.tiles.get(tile1).solid() || world.map.tiles.get(tile2).solid()) entity.flags.colliding = true;
             }
         }
 

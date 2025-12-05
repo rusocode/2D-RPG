@@ -1,6 +1,6 @@
 package com.punkipunk.utils;
 
-import javafx.scene.canvas.GraphicsContext;
+import com.punkipunk.gfx.Renderer2D;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
@@ -99,11 +99,11 @@ public final class Utils {
     /**
      * Change the transparency of the image.
      */
-    public static void changeAlpha(GraphicsContext context, double alpha) {
+    public static void changeAlpha(Renderer2D renderer, double alpha) {
         // Asegurarse de que alpha este en el rango valido
         alpha = Math.max(0.0, Math.min(1.0, alpha));
         // Establecer la opacidad global para todas las operaciones de dibujo subsiguientes
-        context.setGlobalAlpha(alpha);
+        // renderer.setGlobalAlpha(alpha);
     }
 
     /**

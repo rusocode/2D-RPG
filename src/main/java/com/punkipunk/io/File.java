@@ -1,6 +1,5 @@
 package com.punkipunk.io;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Chest;
 import com.punkipunk.entity.item.Item;
@@ -39,38 +38,6 @@ public class File {
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "Error saving configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    /**
-     * Load the game configuration.
-     */
-    private void loadConfig() {
-        try {
-            VolumeData volumeConfig = new VolumeData(
-                    3,
-                    3,
-                    3
-            );
-            // VolumeLevelConfig volumeConfig = configManager.getConfig("audio.volume", VolumeLevelConfig.class);
-            game.getGameSystem().audio.getMusic().volume = volumeConfig.musicVolume();
-            game.getGameSystem().audio.getAmbient().volume = volumeConfig.ambientVolume();
-            game.getGameSystem().audio.getSound().volume = volumeConfig.soundVolume();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null,
-                    "Error loading audio configuration: " + e.getMessage(),
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-        /* try (BufferedReader br = new BufferedReader(new FileReader(config))) {
-            // game.fullScreen = ON.equals(br.readLine());
-            // TODO Verificar null
-            game.system.audio.getMusic().volumeScale = Integer.parseInt(br.readLine());
-            game.system.audio.getAmbient().volumeScale = Integer.parseInt(br.readLine());
-            game.system.audio.getSound().volumeScale = Integer.parseInt(br.readLine());
-        } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "Error loading configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        } */
     }
 
     /**
@@ -250,6 +217,38 @@ public class File {
         } catch (IOException | ClassNotFoundException e) {
             throw new RuntimeException("Error load path " + data, e);
         }
+    }
+
+    /**
+     * Load the game configuration.
+     */
+    private void loadConfig() {
+        try {
+            VolumeData volumeConfig = new VolumeData(
+                    3,
+                    3,
+                    3
+            );
+            // VolumeLevelConfig volumeConfig = configManager.getConfig("audio.volume", VolumeLevelConfig.class);
+            game.getGameSystem().audio.getMusic().volume = volumeConfig.musicVolume();
+            game.getGameSystem().audio.getAmbient().volume = volumeConfig.ambientVolume();
+            game.getGameSystem().audio.getSound().volume = volumeConfig.soundVolume();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null,
+                    "Error loading audio configuration: " + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        /* try (BufferedReader br = new BufferedReader(new FileReader(config))) {
+            // game.fullScreen = ON.equals(br.readLine());
+            // TODO Verificar null
+            game.system.audio.getMusic().volumeScale = Integer.parseInt(br.readLine());
+            game.system.audio.getAmbient().volumeScale = Integer.parseInt(br.readLine());
+            game.system.audio.getSound().volumeScale = Integer.parseInt(br.readLine());
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(null, "Error loading configuration: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } */
     }
 
 }

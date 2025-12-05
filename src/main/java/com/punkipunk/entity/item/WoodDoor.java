@@ -1,7 +1,6 @@
 package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.states.State;
 import com.punkipunk.world.World;

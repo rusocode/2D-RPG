@@ -1,6 +1,5 @@
 package com.punkipunk.entity.mob;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.player.PlayerDummy;
 import com.punkipunk.world.World;

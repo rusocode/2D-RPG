@@ -2,7 +2,7 @@ package com.punkipunk.utils;
 
 import com.punkipunk.Direction;
 import com.punkipunk.entity.Entity;
-import javafx.scene.canvas.GraphicsContext;
+import com.punkipunk.gfx.Renderer2D;
 
 import static com.punkipunk.utils.Global.*;
 
@@ -83,9 +83,9 @@ public class Timer {
      * <p>
      * Calculates the transparency based on the remainder of the division of the counter by the interval.
      */
-    public void timeDeadAnimation(Entity entity, int interval, GraphicsContext context) {
+    public void timeDeadAnimation(Entity entity, int interval, Renderer2D renderer) {
         int alpha = (++deadCounter / interval) % 2 == 0 ? 0 : 1;
-        Utils.changeAlpha(context, alpha);
+        Utils.changeAlpha(renderer, alpha);
         if (deadCounter > interval * 8) entity.flags.alive = false;
     }
 

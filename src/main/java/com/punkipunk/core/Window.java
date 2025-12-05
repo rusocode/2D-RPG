@@ -16,16 +16,12 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
  * Clase que maneja la ventana principal del juego usando LWJGL/GLFW. Reemplaza el sistema de Stage/Scene de JavaFX.
- * <p>
- * Configurada para usar OpenGL 2.1 (Compatibility Profile) que soporta renderizado inmediato (glBegin/glEnd). Esto permite usar
- * funciones legacy de OpenGL necesarias para el renderizado simple de texturas.
  */
 
 public class Window {
 
     private long windowHandle;
-    private int width;
-    private int height;
+    private int width, height;
     private String title;
 
     private boolean isRunning, isResized;
@@ -49,17 +45,14 @@ public class Window {
         // Inicializa GLFW
         if (!glfwInit()) throw new IllegalStateException("GLFW could not be initialized");
 
-        // Configura GLFW
+        // Configura GLFW para OpenGL 3.3 Core Profile
         glfwDefaultWindowHints();
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // La ventana estara oculta despues de la creacion
         glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
-
-        // TODO Implementar esto
-        // Usamos OpenGL 3.3 Core Profile para compatibilidad moderna
-        /* glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE); */
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GLFW_TRUE); // Para macOS
 
         // Crea la ventana
         windowHandle = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -82,9 +75,6 @@ public class Window {
 
         // Esta linea es critica para que LWJGL pueda usar el contexto OpenGL
         GL.createCapabilities();
-
-        // Configuracion inicial de OpenGL para renderizado 2D
-        setupOpenGL();
 
         isRunning = true;
 
@@ -112,17 +102,7 @@ public class Window {
     public void update() {
         glfwSwapBuffers(windowHandle);
         glfwPollEvents();
-        if (isResized) {
-            glViewport(0, 0, width, height);
-
-            // Actualiza la proyeccion ortografica cuando cambia el tamaño
-            glMatrixMode(GL_PROJECTION);
-            glLoadIdentity();
-            glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-            glMatrixMode(GL_MODELVIEW);
-
-            isResized = false;
-        }
+        if (isResized) isResized = false;
     }
 
     /**
@@ -130,6 +110,13 @@ public class Window {
      */
     public boolean shouldClose() {
         return glfwWindowShouldClose(windowHandle);
+    }
+
+    /**
+     * Solicita el cierre de la ventana.
+     */
+    public void close() {
+        glfwSetWindowShouldClose(windowHandle, true);
     }
 
     /**
@@ -148,12 +135,11 @@ public class Window {
         glfwFreeCallbacks(windowHandle);
         glfwDestroyWindow(windowHandle);
         glfwTerminate();
-
         GLFWErrorCallback callback = glfwSetErrorCallback(null);
         if (callback != null) callback.free();
 
         isRunning = false;
-        System.out.println("Ventana LWJGL cerrada");
+        System.out.println("Window cleaned up");
     }
 
     public long getWindowHandle() {
@@ -182,17 +168,6 @@ public class Window {
     }
 
     /**
-     * Configura OpenGL para renderizado 2D optimizado.
-     */
-    private void setupOpenGL() {
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glOrtho(-1.0, 1.0, -1.0, 1.0, -1.0, 1.0);
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
-    }
-
-    /**
      * Configura los callbacks de GLFW.
      */
     private void setupCallbacks() {
@@ -201,12 +176,19 @@ public class Window {
             this.width = w;
             this.height = h;
             this.isResized = true;
+            glViewport(0, 0, w, h); // TODO Hace falta?
         });
 
-        // Callback para la tecla ESC (cerrar ventana)
-        glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {
-            if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(window, true);
+        /*
+         // Callback para la tecla ESC (cerrar ventana)
+         glfwSetKeyCallback(windowHandle, (window, key, scancode, action, mods) -> {if (key == GLFW_KEY_ESCAPE && action == GLFW_RELEASE) glfwSetWindowShouldClose(window, true);});
+        */
+
+        // Callback para cierre de ventana
+        glfwSetWindowCloseCallback(windowHandle, (window) -> {
+            isRunning = false;
         });
+
     }
 
     /**

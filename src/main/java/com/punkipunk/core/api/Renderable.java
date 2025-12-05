@@ -1,10 +1,14 @@
 package com.punkipunk.core.api;
 
-import javafx.scene.canvas.GraphicsContext;
+import com.punkipunk.gfx.Renderer2D;
+
+/**
+ * Interfaz funcional para objetos que pueden renderizarse.
+ */
 
 @FunctionalInterface
 public interface Renderable {
 
-    void render(GraphicsContext context);
+    void render(Renderer2D renderer);
 
 }

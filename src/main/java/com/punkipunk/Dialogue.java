@@ -1,9 +1,8 @@
 package com.punkipunk;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
-import com.punkipunk.states.State;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.states.State;
 
 /**
  * Dialogues are the texts that are generated when you interact with an NPC, with a specific item or when an event occurs. These

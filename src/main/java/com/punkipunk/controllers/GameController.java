@@ -55,7 +55,7 @@ public class GameController implements Initializable {
     @FXML
     private AnchorPane root; // @FXML crea una conexion entre el elemento en el archivo FXML y la variable en el controlador
     @FXML
-    private Canvas canvas;
+    private Canvas canvas; // TODO Volar esto
     @FXML
     private VBox statsView; // Se inyecta automaticamente
     @FXML
@@ -125,37 +125,6 @@ public class GameController implements Initializable {
 
     }
 
-    /**
-     * Configura todos los botones.
-     *
-     * @param node nodo del arbol de la interfaz grafica.
-     */
-    private void configureButtons(Node node) {
-        /* Comprueba si el nodo es de tipo Label. Usa pattern matching (caracteristica de Java moderno) que permite hacer el
-         * casting a Label y asignarlo a la variable label en la misma linea: if (node instanceof Label) { Label label = (Label) node; } */
-        if (node instanceof Label label) {
-            String id = label.getId();
-            // Verifica que el id termine con la palabra "Button"
-            if (id != null && id.endsWith("Button")) {
-                // Guarda el manejador de eventos de clic original del Label (si existe)
-                EventHandler<? super MouseEvent> originalHandler = label.getOnMouseClicked();
-                label.setStyle("-fx-cursor: hand;");
-                /* Configura el nuevo manejador de eventos. Crea un nuevo manejador de eventos que primero reproduce un sonido de
-                 * clic y luego ejecuta el manejador original si existia uno. Esto preserva cualquier funcionalidad que el Label
-                 * ya tuviera. */
-                label.setOnMouseClicked(event -> {
-                    game.gameSystem.audio.playSound(AudioID.Sound.CLICK);
-                    if (originalHandler != null) originalHandler.handle(event); // Si habia un handler original, lo ejecuta
-                });
-            }
-        }
-
-        /* Hace un recorrido recursivo en donde verifica si el nodo es un contenedor (Parent). Si lo es, recorre recursivamente
-         * todos sus hijos. Usa method reference (this::configureButtons) para aplicar este mismo metodo a cada hijo. */
-        if (node instanceof Parent parent) parent.getChildrenUnmodifiable().forEach(this::configureButtons);
-
-    }
-
     public void toggleTestMode() {
         testModeLabel.setVisible(game.gameSystem.keyboard.isKeyToggled(Key.TEST));
     }
@@ -191,6 +160,37 @@ public class GameController implements Initializable {
 
     public StatsController getStatsViewController() {
         return statsViewController;
+    }
+
+    /**
+     * Configura todos los botones.
+     *
+     * @param node nodo del arbol de la interfaz grafica.
+     */
+    private void configureButtons(Node node) {
+        /* Comprueba si el nodo es de tipo Label. Usa pattern matching (caracteristica de Java moderno) que permite hacer el
+         * casting a Label y asignarlo a la variable label en la misma linea: if (node instanceof Label) { Label label = (Label) node; } */
+        if (node instanceof Label label) {
+            String id = label.getId();
+            // Verifica que el id termine con la palabra "Button"
+            if (id != null && id.endsWith("Button")) {
+                // Guarda el manejador de eventos de clic original del Label (si existe)
+                EventHandler<? super MouseEvent> originalHandler = label.getOnMouseClicked();
+                label.setStyle("-fx-cursor: hand;");
+                /* Configura el nuevo manejador de eventos. Crea un nuevo manejador de eventos que primero reproduce un sonido de
+                 * clic y luego ejecuta el manejador original si existia uno. Esto preserva cualquier funcionalidad que el Label
+                 * ya tuviera. */
+                label.setOnMouseClicked(event -> {
+                    game.gameSystem.audio.playSound(AudioID.Sound.CLICK);
+                    if (originalHandler != null) originalHandler.handle(event); // Si habia un handler original, lo ejecuta
+                });
+            }
+        }
+
+        /* Hace un recorrido recursivo en donde verifica si el nodo es un contenedor (Parent). Si lo es, recorre recursivamente
+         * todos sus hijos. Usa method reference (this::configureButtons) para aplicar este mismo metodo a cada hijo. */
+        if (node instanceof Parent parent) parent.getChildrenUnmodifiable().forEach(this::configureButtons);
+
     }
 
 }

@@ -109,7 +109,7 @@ public abstract class ContainerController implements ContainerListener {
 
         Item item = container.get(row, col);
         if (item != null) {
-            image.setImage(item.sheet.frame);
+            // image.setImage(item.sheet.frame);
             amount.setText(item.amount > 1 ? String.valueOf(item.amount) : "");
         }
 
@@ -162,7 +162,7 @@ public abstract class ContainerController implements ContainerListener {
     private void updateSlotWithItem(StackPane slot, Item item) {
         ImageView imageView = (ImageView) slot.getChildren().get(0);
         Label amount = (Label) slot.getChildren().get(1);
-        imageView.setImage(item.sheet.frame);
+        // imageView.setImage(item.sheet.frame);
         amount.setText(item.amount > 1 ? String.valueOf(item.amount) : "");
     }
 

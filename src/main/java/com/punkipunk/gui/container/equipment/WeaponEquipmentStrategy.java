@@ -9,7 +9,7 @@ public class WeaponEquipmentStrategy extends BaseEquipmentStrategy {
     protected void onEquip(Player player, Item item) {
         player.weapon = item;
         player.stats.attack = player.getAttack();
-        player.sheet.loadWeaponFrames(item.ss, 16, 16, 1);
+        player.sheet.loadWeaponFrames(item.spriteSheet, 16, 16, 1);
         player.game.getGameSystem().audio.playSound(item.soundDraw);
     }
 

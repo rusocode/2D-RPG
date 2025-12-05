@@ -1,11 +1,9 @@
 package com.punkipunk.entity.spells;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.SpellData;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -24,7 +22,7 @@ public class StickyBall extends Spell {
         hitbox = new Rectangle(8, 8, 15, 15);
         hitboxDefaultX = hitbox.getX();
         hitboxDefaultY = hitbox.getY();
-        sheet.frame = Utils.scaleTexture(Utils.loadTexture(spellData.texturePath()), tile, tile);
+        sheet.loadStaticFrame(spellData.texturePath(), tile, tile);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package com.punkipunk.entity;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.components.Particle;
 import com.punkipunk.entity.interactive.Interactive;
@@ -14,9 +13,9 @@ import com.punkipunk.entity.mob.MobFactory;
 import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.entity.spells.Spell;
+import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
-import javafx.scene.canvas.GraphicsContext;
 
 import java.util.*;
 
@@ -150,7 +149,7 @@ public class EntitySystem {
         interactives.get(mapId).forEach(Interactive::update);
     }
 
-    public void render(GraphicsContext context) {
+    public void render(Renderer2D renderer) {
         MapID mapId = world.map.id;
         renderOrder.clear();
 
@@ -182,16 +181,16 @@ public class EntitySystem {
 
         // Renderiza la placa de metal por debajo de todas las entidades
         interactives.get(mapId).forEach(interactive -> {
-            if (interactive.getID() == InteractiveID.METAL_PLATE) interactive.render(context);
+            if (interactive.getID() == InteractiveID.METAL_PLATE) interactive.render(renderer);
         });
 
         // Renderiza los items no solidos por debajo de las demas entidades
         items.get(mapId).forEach(item -> {
-            if (!item.solid) item.render(context);
+            if (!item.solid) item.render(renderer);
         });
 
         // Renderizar todas las entidades
-        renderOrder.forEach(entity -> entity.render(context));
+        renderOrder.forEach(entity -> entity.render(renderer));
 
     }
 

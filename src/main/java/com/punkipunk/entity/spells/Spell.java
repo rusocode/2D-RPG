@@ -1,16 +1,12 @@
 package com.punkipunk.entity.spells;
 
 import com.punkipunk.Direction;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.mob.MobCategory;
 import com.punkipunk.entity.player.Player;
-import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.json.model.SpellData;
 import com.punkipunk.world.World;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.paint.Color;
 
 import static com.punkipunk.utils.Global.INTERVAL_PROJECTILE_ANIMATION;
 

@@ -1,6 +1,5 @@
 package com.punkipunk.input.keyboard;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 
 /**

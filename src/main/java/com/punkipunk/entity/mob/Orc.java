@@ -1,12 +1,9 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Key;
 import com.punkipunk.gfx.Animation;
-import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
 import static com.punkipunk.utils.Global.INTERVAL_DIRECTION;
@@ -17,7 +14,7 @@ public class Orc extends Mob {
         super(game, world, pos);
         soundHit = AudioID.Sound.ORC_HIT;
         soundDeath = AudioID.Sound.ORC_DEATH;
-        sheet.loadOrcMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameScale());
+        sheet.loadOrcMovementFrames(mobData.spriteSheetPath(), mobData.frameScale());
         down = new Animation(mobData.animationSpeed(), sheet.down);
         up = new Animation(mobData.animationSpeed(), sheet.up);
         left = new Animation(mobData.animationSpeed(), sheet.left);

@@ -1,9 +1,9 @@
 package com.punkipunk.world.system;
 
+import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.world.World;
 import com.punkipunk.world.environment.Lighting;
-import javafx.scene.canvas.GraphicsContext;
 
 public class EnvironmentSystem {
 
@@ -19,8 +19,8 @@ public class EnvironmentSystem {
         lighting.update();
     }
 
-    public void render(GraphicsContext context) {
-        if (!world.entitySystem.player.game.getGameSystem().keyboard.isKeyToggled(Key.TEST)) lighting.render(context);
+    public void render(Renderer2D renderer) {
+        if (!world.entitySystem.player.game.getGameSystem().keyboard.isKeyToggled(Key.TEST)) lighting.render(renderer);
     }
 
 }

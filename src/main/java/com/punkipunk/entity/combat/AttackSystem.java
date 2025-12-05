@@ -1,6 +1,5 @@
 package com.punkipunk.entity.combat;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.player.Player;
 import com.punkipunk.physics.CollisionDetector;

@@ -1,25 +1,21 @@
 package com.punkipunk.gfx;
 
-import javafx.scene.image.Image;
+import com.punkipunk.gfx.SpriteSheet.SpriteRegion;
 
 /**
- * <p>
- * En los videojuegos, un "frame" se refiere a un fotograma individual de una animacion o imagen que se muestra en la pantalla
- * durante un periodo de tiempo especifico. Los videojuegos, al igual que las peliculas, funcionan mostrando una secuencia rapida
- * de imagenes estaticas para crear la ilusion de movimiento. Cada una de estas imagenes estaticas es un frame.
- * <p>
- * En este caso tenemos los frames de movimiento (en cuatro direcciones) y los frames de ataque (en cuatro direcciones) para cada
- * entidad. Al tener pocos frames no seria necesario aumentar los fps ya que no influyen en la sensacion de animacion.
+ * En los videojuegos, un <b>frame</b> se refiere a un fotograma individual de una animacion o imagen que se muestra en la
+ * pantalla durante un periodo de tiempo especifico. Los videojuegos, al igual que las peliculas, funcionan mostrando una
+ * secuencia rapida de imagenes estaticas para crear la ilusion de movimiento. Cada una de estas imagenes estaticas es un frame.
  */
 
 public class Animation {
 
     private final int speed;
-    private final Image[] frames;
+    private final SpriteRegion[] frames;
     private int index;
     private long lastTime, timer;
 
-    public Animation(int speed, Image[] frames) {
+    public Animation(int speed, SpriteRegion[] frames) {
         this.speed = speed;
         this.frames = frames;
         index = 0;
@@ -28,7 +24,6 @@ public class Animation {
     }
 
     /**
-     * <p>
      * Actualiza el frame en funcion de la velocidad. Si el temporizador alcanza la velocidad especificada, cambia el frame
      * incrementando la velocidad. Si llego al ultimo indice, vuelve al primer frame.
      */
@@ -42,12 +37,13 @@ public class Animation {
         }
     }
 
+
     /**
      * Gets the current frame.
      *
      * @return the current frame.
      */
-    public Image getCurrentFrame() {
+    public SpriteRegion getCurrentFrame() {
         return frames[index];
     }
 
@@ -56,7 +52,7 @@ public class Animation {
      *
      * @return the first frame.
      */
-    public Image getFirstFrame() {
+    public SpriteRegion getFirstFrame() {
         return frames[0];
     }
 
@@ -65,12 +61,21 @@ public class Animation {
      *
      * @return the last frame.
      */
-    public Image getLastFrame() {
+    public SpriteRegion getLastFrame() {
         return frames[frames.length - 1];
     }
 
     /**
-     * Set the frame.
+     * Get the frame index.
+     * <p>
+     * Necesario para sincronizar con entity.animationIndex.
+     */
+    public int getIndex() {
+        return index;
+    }
+
+    /**
+     * Set the frame index.
      *
      * @param i frame index.
      */

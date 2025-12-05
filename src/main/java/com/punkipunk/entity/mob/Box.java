@@ -3,14 +3,12 @@ package com.punkipunk.entity.mob;
 import com.punkipunk.Dialogue;
 import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.interactive.Interactive;
 import com.punkipunk.entity.interactive.InteractiveID;
 import com.punkipunk.entity.item.ItemID;
 import com.punkipunk.states.State;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
 import java.util.List;
@@ -25,7 +23,7 @@ public class Box extends Mob {
         super(game, world, pos);
         dialogue = new Dialogue(game);
         dialogue.set = -1;
-        sheet.frame = Utils.scaleTexture(Utils.loadTexture(mobData.texturePath()), mobData.frameWidth(), mobData.frameHeight());
+        sheet.loadStaticFrame(mobData.texturePath(), mobData.frameWidth(), mobData.frameHeight());
         initDialogue();
     }
 
@@ -54,6 +52,11 @@ public class Box extends Mob {
         dialogue.startDialogue(State.DIALOGUE, this, dialogue.set);
         dialogue.set++;
         if (dialogue.dialogues[dialogue.set][dialogue.index] == null) dialogue.set = 0;
+    }
+
+    @Override
+    public MobID getID() {
+        return MobID.BOX;
     }
 
     private void initDialogue() {
@@ -107,11 +110,6 @@ public class Box extends Mob {
                     });
         }
 
-    }
-
-    @Override
-    public MobID getID() {
-        return MobID.BOX;
     }
 
 }

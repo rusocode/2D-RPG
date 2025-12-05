@@ -34,8 +34,6 @@ public class MainGameLWJGL {
     private void init() {
         System.out.println("Starting game with LWJGL");
 
-        JavaFXHelper.initializeJavaFX();
-
         // Crea y configura la ventana
         window = new Window(WINDOW_WIDTH, WINDOW_HEIGHT, WINDOW_TITLE);
         window.init();

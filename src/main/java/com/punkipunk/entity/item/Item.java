@@ -1,12 +1,9 @@
 package com.punkipunk.entity.item;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
-import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.ItemData;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import javafx.scene.shape.Rectangle;
 
@@ -34,7 +31,7 @@ public abstract class Item extends Entity {
     public int attack, defense;
     public boolean solid, stackable;
     public boolean opened, empty;
-    public SpriteSheet ss;
+    public String spriteSheet;
     protected ItemData itemData;
     protected int points; // Puntos de las pociones azules y rojas que se usan para incrementar hp y mana
 
@@ -54,9 +51,12 @@ public abstract class Item extends Entity {
         lightRadius = itemData.lightRadius();
         stackable = itemData.stackable();
         solid = itemData.solid();
-        if (itemData.texturePath() != null) sheet.frame = Utils.loadTexture(itemData.texturePath());
-        // TODO No se esta creando dos veces para el Chest?
-        if (itemData.spriteSheetPath() != null) ss = new SpriteSheet(Utils.loadTexture(itemData.spriteSheetPath()));
+        // Si el item tiene una sola textura...
+        if (itemData.texturePath() != null)
+            sheet.loadStaticFrame(itemData.texturePath(), itemData.frameWidth(), itemData.frameHeight());
+        // Si el item tiene mas de una textura...
+        if (itemData.spriteSheetPath() != null)
+            spriteSheet = itemData.spriteSheetPath(); // TODO No se esta creando dos veces para el Chest?
 
         // Crea un Hitbox solo para los items de tipo OBSTACLE
         if (itemData.hitbox() != null) {

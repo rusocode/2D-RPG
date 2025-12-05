@@ -1,11 +1,9 @@
 package com.punkipunk.entity.mob;
 
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.Gold;
 import com.punkipunk.entity.spells.StickyBall;
-import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
@@ -18,7 +16,7 @@ public class Slime extends Mob {
         super(game, world, pos);
         soundHit = AudioID.Sound.SLIME_HIT;
         spell = new StickyBall(game, world);
-        sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(mobData.spriteSheetPath())), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
+        sheet.loadMovementFrames(mobData.spriteSheetPath(), mobData.frameWidth(), mobData.frameHeight(), mobData.frameScale());
     }
 
     @Override
@@ -43,17 +41,17 @@ public class Slime extends Mob {
         drop(new Gold(game, world, mobData.gold()));
     }
 
+    @Override
+    public MobID getID() {
+        return MobID.SLIME;
+    }
+
     private void checkShoot() {
         if (Utils.random(100) == 1 && !spell.flags.alive && timer.projectileCounter == INTERVAL_PROJECTILE) {
             spell.set(position.x + 8, position.y + 17, direction, true, this);
             world.entitySystem.getSpells(world.map.id).add(spell);
             timer.projectileCounter = 0;
         }
-    }
-
-    @Override
-    public MobID getID() {
-        return MobID.SLIME;
     }
 
 }

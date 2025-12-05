@@ -11,6 +11,7 @@ public class GameBuilder {
 
     private Scene scene;
     private GameController gameController;
+    // TODO Volar esto
     private Canvas canvas;
     private GraphicsContext context;
 
@@ -31,7 +32,7 @@ public class GameBuilder {
 
     public GameBuilder withRenderingComponents(GameController gameController) {
         canvas = gameController.getCanvas();
-        context = canvas.getGraphicsContext2D(); // Devuelve el GraphicsContext asociado con este Canvas
+        context = canvas.getGraphicsContext2D();
         return this;
     }
 

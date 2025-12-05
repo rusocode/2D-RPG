@@ -1,10 +1,9 @@
 package com.punkipunk.entity.components;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
+import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.world.World;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 import static com.punkipunk.utils.Global.*;
@@ -57,12 +56,12 @@ public class Particle extends Entity {
 
     }
 
-    public void render(GraphicsContext context) {
+    public void render(Renderer2D renderer) {
         int screenX = position.x - world.entitySystem.player.position.x + X_OFFSET;
         int screenY = position.y - world.entitySystem.player.position.y + Y_OFFSET;
-        context.setFill(color);
+        renderer.setFill(color);
         // g2.setColor(color);
-        context.fillRect(screenX, screenY, size, size); // Draw a rectangle as a particle
+        renderer.fillRect(screenX, screenY, size, size); // Draw a rectangle as a particle
     }
 
 }

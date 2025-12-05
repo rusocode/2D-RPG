@@ -2,11 +2,8 @@ package com.punkipunk.entity.item;
 
 import com.punkipunk.Dialogue;
 import com.punkipunk.audio.AudioID;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
-import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.states.State;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 
 public class Chest extends Item {
@@ -14,7 +11,7 @@ public class Chest extends Item {
     public Chest(IGame game, World world, int... pos) {
         super(game, world, pos);
         dialogue = new Dialogue(game);
-        sheet.loadItemFrames(new SpriteSheet(Utils.loadTexture(itemData.spriteSheetPath())), itemData.frameWidth(), itemData.frameHeight(), itemData.frameScale());
+        sheet.loadItemFrames(itemData.spriteSheetPath(), itemData.frameWidth(), itemData.frameHeight(), itemData.frameScale());
     }
 
     @Override

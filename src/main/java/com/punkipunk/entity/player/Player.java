@@ -5,7 +5,6 @@ import com.punkipunk.Direction;
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.classes.Character;
 import com.punkipunk.classes.Jester;
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.Entity;
 import com.punkipunk.entity.combat.AttackSystem;
@@ -19,6 +18,7 @@ import com.punkipunk.entity.mob.MobID;
 import com.punkipunk.entity.spells.BurstOfFire;
 import com.punkipunk.entity.spells.Spell;
 import com.punkipunk.gfx.Animation;
+import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.gui.container.hotbar.Hotbar;
 import com.punkipunk.gui.container.inventory.Inventory;
@@ -29,8 +29,6 @@ import com.punkipunk.states.State;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.MapID;
 import com.punkipunk.world.World;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -71,6 +69,112 @@ public class Player extends Entity {
         setInitialPosition();
     }
 
+    @Override
+    public void update() {
+        // El orden de los metodos es importante
+        attackSystem.update();
+        if (game.getGameSystem().keyboard.checkKeys()) {
+            checkCollisions();
+            // Si no esta colisionando y esta presionando las teclas de movimiento
+            if (!flags.colliding && game.getGameSystem().keyboard.checkMovementKeys()) position.update(this, direction);
+            mechanics.checkSpeed(this, otherEntity);
+            checkAttack();
+            checkShoot();
+            // Resetea las teclas de accion (atacar, por ejemplo) para darle prioridad a las teclas de movimiento y asi evitar que se "choquen"
+            game.getGameSystem().keyboard.resetActionKeys();
+            if (game.getGameSystem().keyboard.checkMovementKeys()) updateAnimation();
+        }
+
+        timer.checkTimers(this);
+        checkStats();
+    }
+
+    @Override
+    public void render(Renderer2D renderer) {
+        if (flags.invincible) Utils.changeAlpha(renderer, 0.3f);
+        if (drawing) {
+            if (!flags.hitting) renderRegion(renderer, getCurrentAnimationFrame(), X_OFFSET, Y_OFFSET);
+            else getCurrentItemFrame(renderer);
+        }
+        if (game.getGameSystem().keyboard.isKeyToggled(Key.RECTS)) drawRects(renderer);
+        Utils.changeAlpha(renderer, 1);
+    }
+
+    public void hitMob(Mob mob, Entity attacker, int knockback, int attack) {
+        if (!mob.flags.invincible && mob.mobCategory != MobCategory.NPC) {
+            // Aplica knockback si es necesario
+            if (knockback > 0) mob.mechanics.setKnockback(mob, attacker, knockback);
+            // Calcula y aplica daño
+            int damage = Math.max(attack - mob.stats.defense, 1);
+            mob.stats.decreaseHp(damage);
+            game.getGameSystem().ui.addMessageToConsole(damage + " damage!");
+            if (mob.stats.hp >= 0) {
+                game.getGameSystem().audio.playSound(AudioID.Sound.MOB_HIT); // Sonido de mob golpeado
+                game.getGameSystem().audio.playSound(mob.soundHit); // Sonido especifico de mob golpeado
+            }
+            mob.flags.invincible = true;
+            mob.flags.hpBar = true;
+            mob.damageReaction();
+            if (mob.stats.hp <= 0) handleMobDeath(mob);
+        }
+    }
+
+    public void hitInteractive(Interactive interactive) {
+        if (interactive.destructible && interactive.isCorrectWeapon(weapon) && !interactive.flags.invincible) {
+            interactive.playSound();
+            interactive.stats.hp--;
+            interactive.flags.invincible = true;
+            generateParticle(interactive, interactive);
+            if (interactive.stats.hp == 0) {
+                interactive.checkDrop();
+                // ?
+                // Reemplazar el interactive si es necesario
+                if (interactive.replaceBy() != null)
+                    world.entitySystem.replaceInteractive(world.map.id, interactive, interactive.replaceBy());
+                else world.entitySystem.removeInteractive(world.map.id, interactive);
+            }
+        }
+    }
+
+    public void hitSpell(Spell spell) {
+        if (spell != this.spell) { // Evita dañar el propio hechizo
+            game.getGameSystem().audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
+            spell.flags.alive = false;
+            generateParticle(spell, spell);
+        }
+    }
+
+    @Override
+    public void checkCollisions() {
+        flags.colliding = false;
+        direction.get(this);
+        if (!game.getGameSystem().keyboard.isKeyToggled(Key.TEST)) game.getGameSystem().collisionChecker.checkTile(this);
+        game.getGameSystem().collisionChecker.checkItem(this).ifPresent(this::executeItemInteraction);
+        game.getGameSystem().collisionChecker.checkMob(this).ifPresent(this::executeMobInteraction);
+        game.getGameSystem().collisionChecker.checkInteractive(this);
+        game.getGameSystem().eventSystem.checkAndTriggerEvents(this);
+    }
+
+    public int getAttack() {
+        return stats.strength + (weapon != null ? weapon.attack : 0);
+    }
+
+    public int getDefense() {
+        return stats.dexterity + (shield != null ? shield.defense : 0);
+    }
+
+    public void initSleepImage(SpriteSheet.SpriteRegion spriteRegion) {
+        currentFrame = spriteRegion;
+    }
+
+    public void reset(boolean fullReset) {
+        position.set(world, this, MapID.ABANDONED_ISLAND, 23, 21, Direction.DOWN);
+        stats.reset(fullReset);
+        timer.reset();
+        flags.reset();
+        if (fullReset) inventory.initializeDefaultItems();
+    }
+
     private void initializeContainers(IGame game, World world) {
         inventory = new Inventory(game, world, this);
         hotbar = new Hotbar(game, world, this, inventory);
@@ -93,7 +197,7 @@ public class Player extends Entity {
         stats.attack = getAttack();
         stats.defense = getDefense();
 
-        sheet.loadPlayerMovementFrames(new SpriteSheet(Utils.loadTexture(playerData.spriteSheetPath())), playerData.frameScale());
+        sheet.loadPlayerMovementFrames(playerData.spriteSheetPath(), playerData.frameScale());
     }
 
     private void initializeSpells() {
@@ -101,8 +205,8 @@ public class Player extends Entity {
     }
 
     private void initializeHitbox() {
-        double frameWidth = sheet.frame.getWidth();
-        double frameHeight = sheet.frame.getHeight();
+        double frameWidth = currentFrame.width;
+        double frameHeight = currentFrame.height;
 
         hitbox = new Rectangle(
                 frameWidth * HITBOX_WIDTH_RATIO - (frameWidth * HITBOX_WIDTH_RATIO / 2),  // x
@@ -124,37 +228,6 @@ public class Player extends Entity {
 
     private void setInitialPosition() {
         position.set(world, this, MapID.ABANDONED_ISLAND, 23, 20, Direction.DOWN);
-    }
-
-    @Override
-    public void update() {
-        // El orden de los metodos es importante
-        attackSystem.update();
-        if (game.getGameSystem().keyboard.checkKeys()) {
-            checkCollisions();
-            // Si no esta colisionando y esta presionando las teclas de movimiento
-            if (!flags.colliding && game.getGameSystem().keyboard.checkMovementKeys()) position.update(this, direction);
-            mechanics.checkSpeed(this, otherEntity);
-            checkAttack();
-            checkShoot();
-            // Resetea las teclas de accion (atacar, por ejemplo) para darle prioridad a las teclas de movimiento y asi evitar que se "choquen"
-            game.getGameSystem().keyboard.resetActionKeys();
-            if (game.getGameSystem().keyboard.checkMovementKeys()) updateAnimation();
-        }
-
-        timer.checkTimers(this);
-        checkStats();
-    }
-
-    @Override
-    public void render(GraphicsContext context) {
-        if (flags.invincible) Utils.changeAlpha(context, 0.3f);
-        if (drawing) {
-            if (!flags.hitting) context.drawImage(getCurrentAnimationFrame(), X_OFFSET, Y_OFFSET);
-            else getCurrentItemFrame(context);
-        }
-        if (game.getGameSystem().keyboard.isKeyToggled(Key.RECTS)) drawRects(context);
-        Utils.changeAlpha(context, 1);
     }
 
     /**
@@ -202,25 +275,6 @@ public class Player extends Entity {
         if (stats.mana > stats.maxMana) stats.mana = stats.maxMana;
     }
 
-    public void hitMob(Mob mob, Entity attacker, int knockback, int attack) {
-        if (!mob.flags.invincible && mob.mobCategory != MobCategory.NPC) {
-            // Aplica knockback si es necesario
-            if (knockback > 0) mob.mechanics.setKnockback(mob, attacker, knockback);
-            // Calcula y aplica daño
-            int damage = Math.max(attack - mob.stats.defense, 1);
-            mob.stats.decreaseHp(damage);
-            game.getGameSystem().ui.addMessageToConsole(damage + " damage!");
-            if (mob.stats.hp >= 0) {
-                game.getGameSystem().audio.playSound(AudioID.Sound.MOB_HIT); // Sonido de mob golpeado
-                game.getGameSystem().audio.playSound(mob.soundHit); // Sonido especifico de mob golpeado
-            }
-            mob.flags.invincible = true;
-            mob.flags.hpBar = true;
-            mob.damageReaction();
-            if (mob.stats.hp <= 0) handleMobDeath(mob);
-        }
-    }
-
     private void handleMobDeath(Mob mob) {
         game.getGameSystem().audio.playSound(mob.soundDeath);
         mob.flags.dead = true;
@@ -240,31 +294,6 @@ public class Player extends Entity {
                     world.entitySystem.removeItem(world.map.id, door);
                     game.getGameSystem().audio.playSound(AudioID.Sound.DOOR_IRON_OPENING);
                 });
-    }
-
-    public void hitInteractive(Interactive interactive) {
-        if (interactive.destructible && interactive.isCorrectWeapon(weapon) && !interactive.flags.invincible) {
-            interactive.playSound();
-            interactive.stats.hp--;
-            interactive.flags.invincible = true;
-            generateParticle(interactive, interactive);
-            if (interactive.stats.hp == 0) {
-                interactive.checkDrop();
-                // ?
-                // Reemplazar el interactive si es necesario
-                if (interactive.replaceBy() != null)
-                    world.entitySystem.replaceInteractive(world.map.id, interactive, interactive.replaceBy());
-                else world.entitySystem.removeInteractive(world.map.id, interactive);
-            }
-        }
-    }
-
-    public void hitSpell(Spell spell) {
-        if (spell != this.spell) { // Evita dañar el propio hechizo
-            game.getGameSystem().audio.playSound(AudioID.Sound.PLAYER_DAMAGE);
-            spell.flags.alive = false;
-            generateParticle(spell, spell);
-        }
     }
 
     private void executeItemInteraction(Item item) {
@@ -306,23 +335,13 @@ public class Player extends Entity {
         }
     }
 
-    @Override
-    public void checkCollisions() {
-        flags.colliding = false;
-        direction.get(this);
-        if (!game.getGameSystem().keyboard.isKeyToggled(Key.TEST)) game.getGameSystem().collisionChecker.checkTile(this);
-        game.getGameSystem().collisionChecker.checkItem(this).ifPresent(this::executeItemInteraction);
-        game.getGameSystem().collisionChecker.checkMob(this).ifPresent(this::executeMobInteraction);
-        game.getGameSystem().collisionChecker.checkInteractive(this);
-        game.getGameSystem().eventSystem.checkAndTriggerEvents(this);
-    }
-
-    private void updateAnimation() {
+    // TODO Tendria que sincronizar animationIndex o llamar al metodo padre en este caso?
+    /* private void updateAnimation() {
         down.tick();
         up.tick();
         left.tick();
         right.tick();
-    }
+    } */
 
     private void die() {
         game.getGameSystem().audio.playSound(AudioID.Sound.PLAYER_DEATH);
@@ -348,7 +367,7 @@ public class Player extends Entity {
         }
     }
 
-    private void getCurrentItemFrame(GraphicsContext g2) {
+    private void getCurrentItemFrame(Renderer2D renderer) {
         switch (direction) {
             case DOWN -> {
 
@@ -357,29 +376,29 @@ public class Player extends Entity {
                  * posicion de ataque inicial (UP). */
                 currentFrame = down.getFirstFrame();
 
-                g2.drawImage(sheet.down[1], X_OFFSET, Y_OFFSET);
-                g2.drawImage(sheet.weapon[0], X_OFFSET, Y_OFFSET + 34);
+                renderRegion(renderer, sheet.down[1], X_OFFSET, Y_OFFSET);
+                renderRegion(renderer, sheet.weapon[0], X_OFFSET, Y_OFFSET + 34);
 
             }
             case UP -> {
                 currentFrame = up.getFirstFrame();
-                g2.drawImage(sheet.up[2], X_OFFSET, Y_OFFSET);
-                g2.drawImage(sheet.weapon[1], X_OFFSET + 13, Y_OFFSET + 17);
+                renderRegion(renderer, sheet.up[2], X_OFFSET, Y_OFFSET);
+                renderRegion(renderer, sheet.weapon[1], X_OFFSET + 13, Y_OFFSET + 17);
             }
             case LEFT -> {
                 currentFrame = left.getFirstFrame();
-                g2.drawImage(sheet.left[2], X_OFFSET, Y_OFFSET);
-                g2.drawImage(sheet.weapon[2], X_OFFSET - 7, Y_OFFSET + 26);
+                renderRegion(renderer, sheet.left[2], X_OFFSET, Y_OFFSET);
+                renderRegion(renderer, sheet.weapon[2], X_OFFSET - 7, Y_OFFSET + 26);
             }
             case RIGHT -> {
                 currentFrame = right.getFirstFrame();
-                g2.drawImage(sheet.right[4], X_OFFSET, Y_OFFSET);
-                g2.drawImage(sheet.weapon[3], X_OFFSET + 15, Y_OFFSET + 28);
+                renderRegion(renderer, sheet.right[4], X_OFFSET, Y_OFFSET);
+                renderRegion(renderer, sheet.weapon[3], X_OFFSET + 15, Y_OFFSET + 28);
             }
         }
     }
 
-    private Image getCurrentAnimationFrame() {
+    private SpriteSheet.SpriteRegion getCurrentAnimationFrame() {
         // Cuando deja de moverse, devuelve el primer frame guardado de la ultima direccion para representar la parada del player
         if (game.getGameSystem().keyboard.checkMovementKeys()) {
             switch (direction) {
@@ -390,7 +409,8 @@ public class Player extends Entity {
                      * player esta siguiendo al mob justo por detras. Entonces, para este caso, al estar en movimiento y al mismo
                      * tiempo colisionando con el mob, devuelve el frame actual para esa direccion y asi no alterna entre devolver
                      * el primer frame y el frame actual. */
-                    if (flags.collidingOnMob) return down.getCurrentFrame();
+                    if (flags.collidingOnMob)
+                        return down.getCurrentFrame(); // TODO O deberia devolver sheet.down[player.animationIndex];?
                     else return flags.colliding ? down.getFirstFrame() : down.getCurrentFrame();
                 }
                 case UP -> {
@@ -413,41 +433,21 @@ public class Player extends Entity {
         return currentFrame;
     }
 
-    public int getAttack() {
-        return stats.strength + (weapon != null ? weapon.attack : 0);
-    }
-
-    public int getDefense() {
-        return stats.dexterity + (shield != null ? shield.defense : 0);
-    }
-
-    public void initSleepImage(Image image) {
-        currentFrame = image;
-    }
-
-    public void reset(boolean fullReset) {
-        position.set(world, this, MapID.ABANDONED_ISLAND, 23, 21, Direction.DOWN);
-        stats.reset(fullReset);
-        timer.reset();
-        flags.reset();
-        if (fullReset) inventory.initializeDefaultItems();
-    }
-
-    private void drawRects(GraphicsContext gc) {
+    private void drawRects(Renderer2D renderer) {
         // Frame
-        gc.setStroke(Color.MAGENTA);
-        gc.setLineWidth(1);
-        gc.strokeRect(getScreenX(), getScreenY(), sheet.frame.getWidth(), sheet.frame.getHeight());
+        renderer.setStroke(Color.MAGENTA);
+        renderer.setLineWidth(1);
+        renderer.strokeRect(getScreenX(), getScreenY(), currentFrame.width, currentFrame.height);
         // Hitbox
-        gc.setStroke(Color.YELLOW);
-        gc.strokeRect(getScreenX() + hitbox.getX(), getScreenY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
+        renderer.setStroke(Color.YELLOW);
+        renderer.strokeRect(getScreenX() + hitbox.getX(), getScreenY() + hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());
         // Attackbox
         if (flags.hitting) {
-            gc.setStroke(Color.RED);
+            renderer.setStroke(Color.RED);
             /* La posicion del cuadro de ataque se suma a la posicion del player porque despues de verificar la deteccion de
              * ataque, la posicion del player se reinicia, por lo tanto, se calcula desde aqui para que el rectangulo dibujado
              * coincida con la posicion especificada de ataque. */
-            gc.strokeRect(getScreenX() + attackbox.getX() + hitbox.getX(),
+            renderer.strokeRect(getScreenX() + attackbox.getX() + hitbox.getX(),
                     getScreenY() + attackbox.getY() + hitbox.getY(),
                     attackbox.getWidth(), attackbox.getHeight());
         }

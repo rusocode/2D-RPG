@@ -2,12 +2,9 @@ package com.punkipunk.entity.spells;
 
 import com.punkipunk.audio.AudioID;
 import com.punkipunk.core.IGame;
+import com.punkipunk.entity.Entity;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.SpellData;
-import com.punkipunk.core.Game;
-import com.punkipunk.entity.Entity;
-import com.punkipunk.gfx.SpriteSheet;
-import com.punkipunk.utils.Utils;
 import com.punkipunk.world.World;
 import javafx.scene.paint.Color;
 
@@ -16,7 +13,7 @@ public class Fireball extends Spell {
     public Fireball(IGame game, World world) {
         super(game, world, JsonLoader.getInstance().deserialize("spells.fireball", SpellData.class));
         sound = AudioID.Sound.FIREBALL;
-        sheet.loadMovementFrames(new SpriteSheet(Utils.loadTexture(spellData.spriteSheetPath())), spellData.frameWidth(), spellData.frameHeight(), spellData.frameScale());
+        sheet.loadMovementFrames(spellData.spriteSheetPath(), spellData.frameWidth(), spellData.frameHeight(), spellData.frameScale());
     }
 
     @Override

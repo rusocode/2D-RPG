@@ -15,6 +15,7 @@ module com.punkipunk {
     requires org.lwjgl.opengl;
     requires imgui.binding;
     requires imgui.lwjgl3;
+    requires org.joml;
 
     opens com.punkipunk.controllers to javafx.fxml;
     opens com.punkipunk.core.api to javafx.fxml;
@@ -49,8 +50,10 @@ module com.punkipunk {
     exports com.punkipunk.entity.mob;
     exports com.punkipunk.entity.player;
     exports com.punkipunk.entity.spells;
+    exports com.punkipunk.gfx;
+    exports com.punkipunk.gfx.opengl;
     exports com.punkipunk.json.model.event;
-    exports com.punkipunk.physics.event;
     exports com.punkipunk.json.model.map;
+    exports com.punkipunk.physics.event;
 
 }

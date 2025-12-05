@@ -12,7 +12,7 @@ public class LauncherLWJGL {
         try {
             new MainGameLWJGL().start();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error starting the game: " + e.getMessage());
             System.exit(1);
         }
     }

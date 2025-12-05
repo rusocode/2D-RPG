@@ -1,6 +1,5 @@
 package com.punkipunk.entity.interactive;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.world.World;
 

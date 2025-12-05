@@ -57,6 +57,19 @@ public class OptionsController implements Initializable {
     }
 
     /**
+     * Establece el controlador del juego.
+     *
+     * @param gameController controlador del juego.
+     */
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
+    }
+
+    /**
      * Configura un listener (escuchador) para los cambios de valor en un slider que controla el volumen del audio.
      * <p>
      * La linea {@code musicSlider.valueProperty().addListener()} añade un listener a la propiedad de valor del slider.
@@ -83,19 +96,6 @@ public class OptionsController implements Initializable {
             sound.setVolume(newValue.intValue(), true);
             game.gameSystem.audio.saveVolume();
         }));
-    }
-
-    /**
-     * Establece el controlador del juego.
-     *
-     * @param gameController controlador del juego.
-     */
-    public void setGameController(GameController gameController) {
-        this.gameController = gameController;
-    }
-
-    public void setGame(Game game) {
-        this.game = game;
     }
 
 }

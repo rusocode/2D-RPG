@@ -1,10 +1,9 @@
 package com.punkipunk.world.environment;
 
+import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.world.World;
-import com.punkipunk.world.Zone;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
@@ -106,7 +105,7 @@ public class Lighting {
      * <p>
      * Si la zona es INTERIOR, no configura ni dibuja el filtro oscuro. Significa que permanecera luminosa todo el tiempo.
      */
-    public void render(GraphicsContext context) {
+    public void render(Renderer2D renderer) {
         // if (world.map.zone == OVERWORLD) g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, filterAlpha));
         // if (world.map.zone == OVERWORLD || world.map.zone == DUNGEON || world.map.zone == BOSS) g2.drawImage(darknessFilter, 0, 0, null);
         // g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1f));

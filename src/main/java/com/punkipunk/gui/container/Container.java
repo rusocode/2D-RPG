@@ -1,6 +1,5 @@
 package com.punkipunk.gui.container;
 
-import com.punkipunk.core.Game;
 import com.punkipunk.core.IGame;
 import com.punkipunk.entity.item.*;
 import com.punkipunk.entity.player.Player;
@@ -40,13 +39,6 @@ public abstract class Container {
         this.rows = rows;
         this.cols = cols;
         this.occupiedSlots = new BitSet(rows * cols);
-    }
-
-    /**
-     * Notifica a todos los listeners que el contenedor ha cambiado.
-     */
-    protected void notifyContainerChanged() {
-        listeners.forEach(ContainerListener::onContainerChanged);
     }
 
     /**
@@ -188,35 +180,6 @@ public abstract class Container {
     }
 
     /**
-     * Genera un nuevo item segun el tipo de item.
-     *
-     * @param id id del item
-     * @return el nuevo item generado
-     */
-    private Item generate(ItemID id) {
-        return switch (id) {
-            case STONE_AXE -> new StoneAxe(game, world);
-            case BOOTS -> new Boots(game, world);
-            case CHEST -> new Chest(game, world);
-            case CHICKEN -> new Chicken(game, world);
-            case GOLD -> new Gold(game, world, 0);
-            case WOOD_DOOR -> new WoodDoor(game, world);
-            case IRON_DOOR -> new IronDoor(game, world);
-            case KEY -> new Key(game, world);
-            case LANTERN -> new Lantern(game, world);
-            case STONE_PICKAXE -> new StonePickaxe(game, world);
-            case POTION_BLUE -> new PotionBlue(game, world, 0);
-            case POTION_RED -> new PotionRed(game, world, 0);
-            case IRON_SHIELD -> new IronShield(game, world);
-            case WOOD_SHIELD -> new WoodShield(game, world);
-            case STONE -> new Stone(game, world, 0);
-            case STONE_SWORD -> new StoneSword(game, world);
-            case TENT -> new Tent(game, world);
-            case WOOD -> new Wood(game, world, 0);
-        };
-    }
-
-    /**
      * Obtiene todos los items almacenados en el contenedor.
      *
      * @return coleccion con todos los items
@@ -249,6 +212,42 @@ public abstract class Container {
 
     public int getCols() {
         return cols;
+    }
+
+    /**
+     * Notifica a todos los listeners que el contenedor ha cambiado.
+     */
+    protected void notifyContainerChanged() {
+        listeners.forEach(ContainerListener::onContainerChanged);
+    }
+
+    /**
+     * Genera un nuevo item segun el tipo de item.
+     *
+     * @param id id del item
+     * @return el nuevo item generado
+     */
+    private Item generate(ItemID id) {
+        return switch (id) {
+            case STONE_AXE -> new StoneAxe(game, world);
+            case BOOTS -> new Boots(game, world);
+            case CHEST -> new Chest(game, world);
+            case CHICKEN -> new Chicken(game, world);
+            case GOLD -> new Gold(game, world, 0);
+            case WOOD_DOOR -> new WoodDoor(game, world);
+            case IRON_DOOR -> new IronDoor(game, world);
+            case KEY -> new Key(game, world);
+            case LANTERN -> new Lantern(game, world);
+            case STONE_PICKAXE -> new StonePickaxe(game, world);
+            case POTION_BLUE -> new PotionBlue(game, world, 0);
+            case POTION_RED -> new PotionRed(game, world, 0);
+            case IRON_SHIELD -> new IronShield(game, world);
+            case WOOD_SHIELD -> new WoodShield(game, world);
+            case STONE -> new Stone(game, world, 0);
+            case STONE_SWORD -> new StoneSword(game, world);
+            case TENT -> new Tent(game, world);
+            case WOOD -> new Wood(game, world, 0);
+        };
     }
 
 

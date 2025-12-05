@@ -1,16 +1,17 @@
 package com.punkipunk.world;
 
+import com.punkipunk.gfx.opengl.Texture;
 import com.punkipunk.json.JsonLoader;
 import com.punkipunk.json.model.map.MapData;
 import com.punkipunk.json.model.map.MapsConfig;
-import com.punkipunk.utils.Utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
 
-import static com.punkipunk.utils.Global.*;
+import static com.punkipunk.utils.Global.MAX_MAP_COL;
+import static com.punkipunk.utils.Global.MAX_MAP_ROW;
 
 /**
  * Maneja la carga y almacenamiento de mapas y tiles.
@@ -72,7 +73,9 @@ public class Map {
      * @return el nuevo tile
      */
     private Tile createTile(String name, boolean solid) {
-        return new Tile(Utils.scaleTexture(Utils.loadTexture("textures/tiles/" + name), tile, tile), solid);
+        // return new Tile(Utils.scaleTexture(Utils.loadTexture("textures/tiles/" + name), tile, tile), solid);
+        // Cargar directamente con Texture - el escalado lo haras en el shader o al renderizar
+        return new Tile(new Texture("textures/tiles/" + name), solid);
     }
 
     /**
