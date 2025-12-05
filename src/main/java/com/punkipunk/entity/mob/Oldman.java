@@ -15,8 +15,12 @@ public class Oldman extends Mob {
         super(game, world, pos);
         dialogue = new Dialogue(game);
         sheet.loadOldmanFrames(mobData.spriteSheetPath(), mobData.frameScale());
+
+        currentFrame = sheet.frame;
+
         hitbox.setWidth((double) currentFrame.width / 2);
         hitbox.setHeight((double) currentFrame.height / 2);
+
         hitbox.setX(hitbox.getWidth() - hitbox.getWidth() / 2 + 1);
         hitbox.setY(hitbox.getHeight() - 4);
         hitbox = new Rectangle(hitbox.getX(), hitbox.getY(), hitbox.getWidth(), hitbox.getHeight());

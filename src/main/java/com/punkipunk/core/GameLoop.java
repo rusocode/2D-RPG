@@ -35,7 +35,7 @@ public class GameLoop {
     /**
      * Inicializa el game loop.
      */
-    public void init() {
+    public void init()  {
         lastTime = glfwGetTime();
         // Inicializa UI
         mainMenu.init(window.getWindowHandle());

@@ -71,7 +71,7 @@ public class Texture {
         // Desvincula la textura
         glBindTexture(GL_TEXTURE_2D, 0);
 
-        System.out.println("[Texture] Successfully loaded '" + resourcePath + "' (ID: " + textureID + ", " + width + "x" + height + ")");
+        // System.out.println("[Texture] Successfully loaded '" + resourcePath + "' (ID: " + textureID + ", " + width + "x" + height + ")");
     }
 
     /**

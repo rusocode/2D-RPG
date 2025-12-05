@@ -43,7 +43,7 @@ import java.util.*;
  * </ul>
  * Operaciones terminales (producen un resultado final):
  * <ul>
- * <li{@code collect()}: Para acumular elementos en una nueva coleccion
+ * <li>{@code collect()}: Para acumular elementos en una nueva coleccion
  * <li>{@code forEach()}: Para realizar una accion con cada elemento
  * <li>{@code reduce()}: Para combinar elementos
  * <li>{@code count()}: Para contar elementos

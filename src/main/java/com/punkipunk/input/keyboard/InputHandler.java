@@ -18,7 +18,6 @@ import static org.lwjgl.glfw.GLFW.*;
 
 public class InputHandler {
 
-
     private final long windowHandle;
     private final IGame game;
     private final Keyboard keyboard;

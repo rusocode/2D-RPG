@@ -198,6 +198,8 @@ public class Player extends Entity {
         stats.defense = getDefense();
 
         sheet.loadPlayerMovementFrames(playerData.spriteSheetPath(), playerData.frameScale());
+
+        currentFrame = sheet.down != null ? sheet.down[0] : sheet.frame;
     }
 
     private void initializeSpells() {
