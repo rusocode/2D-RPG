@@ -14,14 +14,14 @@ import com.punkipunk.gfx.Animation;
 import com.punkipunk.gfx.Renderer2D;
 import com.punkipunk.gfx.SpriteSheet;
 import com.punkipunk.gfx.SpriteSheet.SpriteRegion;
+import com.punkipunk.gfx.opengl.Color;
 import com.punkipunk.input.keyboard.Key;
 import com.punkipunk.physics.Mechanics;
+import com.punkipunk.physics.Rectangle;
 import com.punkipunk.utils.Timer;
 import com.punkipunk.utils.Utils;
 import com.punkipunk.world.Position;
 import com.punkipunk.world.World;
-import com.punkipunk.gfx.opengl.Color;
-import com.punkipunk.physics.Rectangle;
 
 import static com.punkipunk.utils.Global.*;
 
@@ -142,14 +142,6 @@ public abstract class Entity {
         // 7. Restaura alpha si fue cambiado
         Utils.changeAlpha(renderer, 1f); // TODO Cambiar por renderer.setAlpha(1.0f);
 
-    }
-
-    protected void renderRegion(Renderer2D renderer, SpriteSheet.SpriteRegion region, int x, int y) {
-        float sx = region.u0 * sheet.getTexture().getWidth();
-        float sy = region.v0 * sheet.getTexture().getHeight();
-        float sw = (region.u1 - region.u0) * sheet.getTexture().getWidth();
-        float sh = (region.v1 - region.v0) * sheet.getTexture().getHeight();
-        renderer.drawImage(sheet.getTexture(), sx, sy, sw, sh, x, y, region.width, region.height);
     }
 
     /**
@@ -289,7 +281,8 @@ public abstract class Entity {
      * Obtiene la posicion Y en pantalla relativo al player.
      */
     public int getScreenY() {
-        return position.y - world.entitySystem.player.position.y + Y_OFFSET;
+        int relativeY = position.y - world.entitySystem.player.position.y;
+        return relativeY + Y_OFFSET;
     }
 
     /**
@@ -308,6 +301,14 @@ public abstract class Entity {
      */
     public int getCenterY() {
         return (int) (position.y + currentFrame.height / 2);
+    }
+
+    protected void renderRegion(Renderer2D renderer, SpriteSheet.SpriteRegion region, int x, int y) {
+        float sx = region.u0 * sheet.getTexture().getWidth();
+        float sy = region.v0 * sheet.getTexture().getHeight();
+        float sw = (region.u1 - region.u0) * sheet.getTexture().getWidth();
+        float sh = (region.v1 - region.v0) * sheet.getTexture().getHeight();
+        renderer.drawImage(sheet.getTexture(), sx, sy, sw, sh, x, y, region.width, region.height);
     }
 
     /**
@@ -375,6 +376,33 @@ public abstract class Entity {
     }
 
     /**
+     * Actualiza el indice de animacion para entidades con multiples frames.
+     * <p>
+     * Este metodo se llama en cada frame y avanza el indice de animacion segun la velocidad de animacion configurada.
+     */
+    protected void updateAnimation() {
+        // Si la entidad usa objetos Animation (Player, Orc, etc.)
+        if (down != null && up != null && left != null && right != null) {
+            // Los objetos Animation manejan su propio indice internamente
+            switch (direction) {
+                case DOWN -> down.tick();
+                case UP -> up.tick();
+                case LEFT -> left.tick();
+                case RIGHT -> right.tick();
+            }
+
+            // Sincroniza animationIndex con el indice del Animation actual
+            Animation currentAnimation = getCurrentAnimation();
+            if (currentAnimation != null) animationIndex = currentAnimation.getIndex();
+
+        }
+        // Si usa el sistema simple de 2 frames (la mayoria de mobs)
+        else if (sheet.movement != null) {
+            // El Timer ya maneja movementNum (1 o 2) en timer.timeMovement(), por lo tanto no necesitamos hacer nada aqui
+        }
+    }
+
+    /**
      * Obtiene el frame actual segun el tipo de animacion.
      * <p>
      * Tipos de animacion:
@@ -420,33 +448,6 @@ public abstract class Entity {
                 region.width,          // ancho destino (ya incluye el escalado)
                 region.height          // alto destino (ya incluye el escalado)
         );
-    }
-
-    /**
-     * Actualiza el indice de animacion para entidades con multiples frames.
-     * <p>
-     * Este metodo se llama en cada frame y avanza el indice de animacion segun la velocidad de animacion configurada.
-     */
-    protected void updateAnimation() {
-        // Si la entidad usa objetos Animation (Player, Orc, etc.)
-        if (down != null && up != null && left != null && right != null) {
-            // Los objetos Animation manejan su propio indice internamente
-            switch (direction) {
-                case DOWN -> down.tick();
-                case UP -> up.tick();
-                case LEFT -> left.tick();
-                case RIGHT -> right.tick();
-            }
-
-            // Sincroniza animationIndex con el indice del Animation actual
-            Animation currentAnimation = getCurrentAnimation();
-            if (currentAnimation != null) animationIndex = currentAnimation.getIndex();
-
-        }
-        // Si usa el sistema simple de 2 frames (la mayoria de mobs)
-        else if (sheet.movement != null) {
-            // El Timer ya maneja movementNum (1 o 2) en timer.timeMovement(), por lo tanto no necesitamos hacer nada aqui
-        }
     }
 
     /**

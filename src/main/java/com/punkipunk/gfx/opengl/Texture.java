@@ -39,9 +39,6 @@ public class Texture {
             throw new RuntimeException("[Texture] Failed to load texture '" + resourcePath + "'");
         }
 
-        // Voltea la imagen verticalmente (OpenGL espera el origen abajo-izquierda)
-        STBImage.stbi_set_flip_vertically_on_load(true);
-
         // Decodifica la imagen
         ByteBuffer imageData = STBImage.stbi_load_from_memory(imageBuffer, w, h, comp, 4); // RGBA
 
